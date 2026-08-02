@@ -1,0 +1,10 @@
+SHABABUNA static security audit
+Generated: 2026-08-02T05:12:06.663Z
+Files scanned: 408
+Migrations indexed: 29
+Migration index SHA-256: b94e6dd21caf56918695bf500045051e1c4d55930a3ad0ab069f775d25e3595e
+Findings: 0
+
+No blocking static findings detected.
+
+Scope note: this is a source/configuration audit. It does not replace live penetration testing, provider verification, dependency installation, or Supabase RLS execution against a running database.

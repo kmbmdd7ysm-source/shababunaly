@@ -1,0 +1,35 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "useUnknownInCatchVariables": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": [
+    "types/strict-critical.d.ts",
+    "src/config/commerce.js",
+    "src/config/shipping.js",
+    "src/services/money.js",
+    "src/services/orderStatus.js",
+    "src/utils/fulfillment.js",
+    "src/utils/productEligibility.js",
+    "src/utils/safeReturnPath.js",
+    "src/config.js",
+    "src/data/categories.js",
+    "src/data/countries.js",
+    "src/data/customization.js",
+    "src/data/navigation.js",
+    "src/utils/scrollLock.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "reports"
+  ]
+}

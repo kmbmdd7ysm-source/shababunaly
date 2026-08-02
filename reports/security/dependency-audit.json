@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "generatedAt": "2026-08-02T18:55:42.940006+00:00",
+  "auditCompleted": false,
+  "blockingVulnerabilities": null,
+  "reason": "npm registry could not be reached; zero vulnerabilities is not claimed."
+}

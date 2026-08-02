@@ -1,0 +1,70 @@
+{
+  "status": "provider_selection_required",
+  "generatedAt": "2026-08-02T18:53:59.113Z",
+  "productionReady": false,
+  "codeReady": true,
+  "codeChecks": {
+    "externalEnvelopeApi": true,
+    "signatureWebhook": true,
+    "externalSignatureMigration": true,
+    "paymentWebhook": true,
+    "paymentRefund": true,
+    "paymentRetrieve": true
+  },
+  "paymentReady": false,
+  "paymentChecks": [
+    {
+      "method": "online_card",
+      "enabled": false,
+      "checks": {
+        "namedProvider": false,
+        "apiVersion": false,
+        "documentation": false,
+        "sandbox": false,
+        "webhookSchema": false,
+        "threeDS": false,
+        "retrieve": false,
+        "refund": false,
+        "fraud": false,
+        "reconciliation": false,
+        "applePay": true,
+        "googlePay": true
+      },
+      "ready": false
+    },
+    {
+      "method": "libyan_bank_card",
+      "enabled": false,
+      "checks": {
+        "namedProvider": false,
+        "apiVersion": false,
+        "documentation": false,
+        "sandbox": false,
+        "webhookSchema": false,
+        "threeDS": false,
+        "retrieve": false,
+        "refund": false,
+        "fraud": false,
+        "reconciliation": false,
+        "applePay": true,
+        "googlePay": true
+      },
+      "ready": false
+    }
+  ],
+  "signatureReady": false,
+  "signatureChecks": {
+    "namedProvider": false,
+    "apiVersion": false,
+    "documentation": false,
+    "sandbox": false,
+    "webhookSchema": false,
+    "identityVerification": false,
+    "trustedTimestamp": false,
+    "auditCertificate": false,
+    "tamperEvidentSignedDocument": false,
+    "complianceEvidence": false,
+    "completedSandboxEnvelope": false,
+    "approval": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "status": "failed",
+  "generatedAt": "2026-08-02T18:55:00.615Z",
+  "commitSha": null,
+  "runId": null,
+  "checks": [
+    {
+      "name": "format",
+      "status": "failed",
+      "exitCode": 127
+    },
+    {
+      "name": "eslint",
+      "status": "failed",
+      "exitCode": 127
+    },
+    {
+      "name": "customSource",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "name": "customLint",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "name": "typecheck",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "name": "strictCritical",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "name": "strictProduction",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "name": "nodeTests",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "name": "nodeCoverage",
+      "status": "passed",
+      "exitCode": 0
+    }
+  ]
+}

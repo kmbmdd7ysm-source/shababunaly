@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+reports
+public/sw.js
+package-lock.json
+
+coverage-critical

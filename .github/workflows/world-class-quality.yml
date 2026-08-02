@@ -1,0 +1,170 @@
+name: SHABABUNA Complete Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: shababuna-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  source-unit-coverage-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - name: Install locked application dependencies
+        run: npm ci --registry=https://registry.npmjs.org
+      - name: Install official quality tooling
+        run: npm run quality:install -- --registry=https://registry.npmjs.org
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run typecheck:strict-critical
+      - run: npm run typecheck:production
+      - run: npm run audit:typescript
+      - run: npm run test:node
+      - run: npm run test:ui
+      - run: npm run coverage
+      - run: npm run verify:source
+      - run: npm run security:audit
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: source-unit-coverage-security
+          path: |
+            coverage
+            coverage-critical
+            coverage-project
+            reports
+          if-no-files-found: warn
+          retention-days: 30
+
+  database-rls-concurrency:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci --registry=https://registry.npmjs.org
+      - uses: supabase/setup-cli@46f7f98c7f948ad727d22c1e67fab04c223a0520 # v3.0.0
+        with: { version: 2.109.1 }
+      - name: Empty-database migrations, pgTAP, RLS and race tests (3 runs)
+        run: npm run test:db
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: database-rls-concurrency
+          path: reports/database
+          if-no-files-found: error
+          retention-days: 30
+
+  production-build-bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      VITE_BUILD_ID: ${{ github.sha }}
+      BUILD_ID: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci --registry=https://registry.npmjs.org
+      - run: npm run build
+      - run: npm run analyze
+      - name: Verify build provenance exists
+        run: test -s reports/build/build-provenance.json && test -s dist/BUILD_PROVENANCE.json
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: production-dist-${{ github.sha }}
+          path: |
+            dist
+            reports/build
+            reports/bundle*
+          if-no-files-found: error
+          retention-days: 30
+
+  browser-a11y-visual-pwa-lighthouse:
+    needs: [database-rls-concurrency, production-build-bundle]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      CI: 'true'
+      VITE_BUILD_ID: ${{ github.sha }}
+      BUILD_ID: ${{ github.sha }}
+      FULL_STACK_E2E: 'false'
+      BROWSER_CONTRACT_E2E: 'true'
+      TURNSTILE_TEST_MODE: 'true'
+      MALWARE_SCAN_TEST_MODE: 'true'
+      VITE_ALLOW_LOCAL_AUTH: 'false'
+      VITE_PAYMENTS_PROVIDER: e2e_mock_card
+      VITE_PAYMENTS_PUBLISHABLE_KEY: e2e-publishable
+      VITE_CHECKOUT_API_BASE: /api
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci --registry=https://registry.npmjs.org
+      - uses: supabase/setup-cli@46f7f98c7f948ad727d22c1e67fab04c223a0520 # v3.0.0
+        with: { version: 2.109.1 }
+      - name: Start clean local Supabase stack
+        shell: bash
+        run: |
+          supabase start
+          supabase db reset
+          eval "$(supabase status -o env)"
+          echo "VITE_SUPABASE_URL=${API_URL}" >> "$GITHUB_ENV"
+          echo "VITE_SUPABASE_ANON_KEY=${ANON_KEY}" >> "$GITHUB_ENV"
+          echo "SUPABASE_URL=${API_URL}" >> "$GITHUB_ENV"
+          echo "SUPABASE_SERVICE_ROLE_KEY=${SERVICE_ROLE_KEY}" >> "$GITHUB_ENV"
+          echo "INBUCKET_URL=${INBUCKET_URL:-http://127.0.0.1:54324}" >> "$GITHUB_ENV"
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run build
+      - name: End-to-end customer, staff, payment and B2B workflows
+        run: npm run test:e2e:contracts
+      - name: WCAG, keyboard, focus, zoom, reduced-motion and RTL
+        run: npm run test:a11y:run
+      - name: Visual regression against reviewed baselines
+        run: npm run visual:run
+      - name: Service-worker two-version upgrade test
+        run: npm run test:pwa-upgrade
+      - name: Lighthouse mobile and desktop
+        run: npm run lighthouse
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: browser-a11y-visual-pwa-lighthouse
+          path: |
+            reports
+            test-results
+            e2e/**/*-snapshots
+          if-no-files-found: warn
+          retention-days: 30
+      - if: always()
+        run: supabase stop --no-backup || true

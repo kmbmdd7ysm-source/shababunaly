@@ -1,0 +1,148 @@
+{
+  "status": "review_required",
+  "generatedAt": "2026-08-02T18:53:59.015Z",
+  "schemaVersion": 2,
+  "locale": "ar-LY",
+  "translationSourceSha256": "ddf61f9a477be5a8d428a7ec68b9179784c5ac0632d4e02432868241461a2900",
+  "manifestSourceMatches": false,
+  "sourceCommitPresent": false,
+  "counts": {
+    "englishKeys": 514,
+    "arabicKeys": 514,
+    "approvedSections": 0,
+    "totalSections": 10
+  },
+  "structuralPass": true,
+  "productionReady": false,
+  "missingArabic": [],
+  "missingEnglish": [],
+  "emptyArabic": [],
+  "suspiciousArabic": [
+    "footer.lhaStore",
+    "nav.lhaStore"
+  ],
+  "sections": [
+    {
+      "name": "navigation_and_cta",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "accounts_and_mfa",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "catalog_and_product",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "cart_and_checkout",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "payments_refunds_returns",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "b2b_quotes_production",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "contracts_invoices",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "operations_and_security",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "errors_notifications_email",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "rtl_mobile_desktop",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    }
+  ],
+  "pendingSections": [
+    {
+      "name": "navigation_and_cta",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "accounts_and_mfa",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "catalog_and_product",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "cart_and_checkout",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "payments_refunds_returns",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "b2b_quotes_production",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "contracts_invoices",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "operations_and_security",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "errors_notifications_email",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    },
+    {
+      "name": "rtl_mobile_desktop",
+      "status": "pending",
+      "approved": false,
+      "stale": false
+    }
+  ]
+}

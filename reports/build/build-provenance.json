@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "generatedAt": "2026-08-02T18:55:08.268551+00:00",
+  "distSha256": null,
+  "commitSha": null,
+  "reason": "Production build was attempted after source validation, but the locked Vite executable was unavailable because clean registry installation could not be completed in this sandbox. No dist artifact is claimed."
+}

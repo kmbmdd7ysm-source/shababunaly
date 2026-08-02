@@ -1,0 +1,11 @@
+{
+  "name": "yocto-queue",
+  "version": "0.1.0",
+  "description": "Tiny queue data structure",
+  "license": "MIT",
+  "type": "module",
+  "exports": "./index.js",
+  "engines": {
+    "node": ">=10"
+  }
+}

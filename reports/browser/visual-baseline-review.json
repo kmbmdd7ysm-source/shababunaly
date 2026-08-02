@@ -1,0 +1,9 @@
+{
+  "status": "review_required",
+  "generatedAt": "2026-08-02T18:53:59.245Z",
+  "productionReady": false,
+  "baselineCount": 0,
+  "reviewerEvidence": false,
+  "missingApproval": [],
+  "missingFile": []
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "",
+  "reviewedAt": "",
+  "sourceCommit": "",
+  "baselineDirectory": "e2e/visual.spec.js-snapshots",
+  "approvedFiles": {}
+}
