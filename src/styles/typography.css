@@ -1,106 +1,12 @@
 /* ==========================================================================
-   SHABABUNA — GROUNDWORK TYPOGRAPHY
+   SHABABUNA — GROUNDWORK APPLIED TYPOGRAPHY
    --------------------------------------------------------------------------
-   ISOLATION CONTRACT (Phase 1)
-   The families declared here are named `Shababuna Display`, `Shababuna Text`
-   and `Shababuna Arabic`. No existing stylesheet references those names, so
-   declaring them cannot repaint the live site. `global.css` keeps asking for
-   `Inter` / `Archivo` / `Noto Kufi Arabic`, which remain unloaded and continue
-   resolving to the system stack exactly as before. Every *applied* rule below
-   is scoped to `.lab-scope`.
+   The type scale as applied rules. Imported by the components that use it so
+   Vite emits it in a route chunk rather than the entry bundle. The @font-face
+   contract these rules depend on lives in `fonts.css`, which is global.
 
-   Delivery notes
-   - Faces are self-hosted (`font-src 'self'` is already allowed by the CSP);
-     no third-party origin, no render-blocking stylesheet from another domain.
-   - `unicode-range` splits Latin from Arabic so each locale downloads only
-     what it paints.
-   - Every real face has a metric-matched fallback face so the `swap` never
-     moves layout. Overrides are measured from the shipped files, not guessed.
+   ISOLATION CONTRACT (Phase 1): every rule below is scoped to `.lab-scope`.
    ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   Latin coverage actually present in the shipped subsets.
-   Deliberately EXCLUDES the bidi isolates U+2066–2069 and the joiners
-   U+200C–200F: `money.js` emits isolates in BOTH locales, and listing them in
-   the Arabic range would make an English page download the Arabic file for an
-   invisible formatting character.
-   -------------------------------------------------------------------------- */
-
-@font-face {
-  font-family: 'Shababuna Display';
-  src: url('/fonts/shababuna-display-latin.woff2') format('woff2-variations');
-  font-weight: 600 900;
-  font-stretch: 90% 125%;
-  font-style: normal;
-  font-display: swap;
-  unicode-range:
-    U+0020-007E, U+00A0, U+00A9, U+00AB, U+00B0, U+00B7, U+00BB, U+00D7, U+2010-2015, U+2018-201A,
-    U+201C-201E, U+2020-2022, U+2026, U+2030, U+2032-2033, U+2039-203A, U+2044, U+20AC, U+2192,
-    U+2212, U+2264-2265;
-}
-
-@font-face {
-  font-family: 'Shababuna Text';
-  src: url('/fonts/shababuna-text-latin.woff2') format('woff2-variations');
-  font-weight: 400 800;
-  font-style: normal;
-  font-display: swap;
-  unicode-range:
-    U+0020-007E, U+00A0, U+00A9, U+00AB, U+00B0, U+00B7, U+00BB, U+00D7, U+2010-2015, U+2018-201A,
-    U+201C-201E, U+2020-2022, U+2026, U+2030, U+2032-2033, U+2039-203A, U+2044, U+20AC, U+2192,
-    U+2212, U+2264-2265;
-}
-
-@font-face {
-  font-family: 'Shababuna Arabic';
-  src: url('/fonts/shababuna-arabic.woff2') format('woff2-variations');
-  font-weight: 400 900;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
-}
-
-/* --------------------------------------------------------------------------
-   Metric-matched fallbacks — CLS protection.
-   Measured from the shipped files:
-     display  upm 1000  asc  878  desc -210  gap 0  xHeight 526
-     text     upm 2048  asc 1984  desc -494  gap 0  xHeight 1118
-     arabic   upm 1000  asc 1303  desc -571  gap 0  xHeight 500
-   `size-adjust` normalises x-height against Arial (xHeight 1062 / upm 2048 =
-   51.86%) so the swap changes the glyphs without changing the line box.
-   -------------------------------------------------------------------------- */
-
-@font-face {
-  font-family: 'Shababuna Display Fallback';
-  src: local('Arial Black'), local('Helvetica Neue Bold'), local('Arial Bold'), local('Arial');
-  ascent-override: 87.8%;
-  descent-override: 21%;
-  line-gap-override: 0%;
-  size-adjust: 101.4%;
-}
-
-@font-face {
-  font-family: 'Shababuna Text Fallback';
-  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('Roboto');
-  ascent-override: 96.88%;
-  descent-override: 24.12%;
-  line-gap-override: 0%;
-  size-adjust: 105.3%;
-}
-
-@font-face {
-  font-family: 'Shababuna Arabic Fallback';
-  src: local('Tahoma'), local('Arial'), local('Segoe UI');
-  ascent-override: 130.3%;
-  descent-override: 57.1%;
-  line-gap-override: 0%;
-  size-adjust: 96.4%;
-}
-
-/* ==========================================================================
-   Applied typography — scoped to `.lab-scope`
-   ========================================================================== */
-
 .lab-scope {
   font-family: var(--sh-font-text);
   font-size: var(--sh-t-body);

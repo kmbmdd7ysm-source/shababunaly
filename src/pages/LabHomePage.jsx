@@ -9,8 +9,14 @@ import { SITE } from '../config';
 import { shippingConfig } from '../config/shipping';
 import { categories } from '../data/categories';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
-// Imported here rather than in main.jsx so Vite emits it as part of the lazy
-// route chunk and it never enters the entry CSS.
+// The applied GROUNDWORK layers are imported by the route that renders them,
+// so Vite emits them in this lazy chunk and the entry CSS never carries rules
+// no current route paints. `tokens.css` and `fonts.css` stay global in
+// main.jsx because they are contracts, not applied rules.
+import '../styles/typography.css';
+import '../styles/motion.css';
+import '../styles/geometry.css';
+import '../styles/layout.css';
 import '../styles/lab-home.css';
 
 /*

@@ -19,13 +19,16 @@ import './styles/account-sync.css';
 import './styles/shababuna.css';
 // GROUNDWORK foundation. Loaded after the existing cascade so that where
 // specificity ties the new system wins, and namespaced (`--sh-*` tokens,
-// `.lab-scope` rules, `Shababuna *` font families) so that nothing it declares
-// can reach a selector the current site actually uses.
+// `Shababuna *` font families) so that nothing it declares can reach a
+// selector the current site actually uses.
+//
+// Only the two genuinely global layers live in the entry bundle: the token
+// contract and the @font-face declarations. The layers that emit *applied*
+// rules (typography classes, motion, geometry, layout) are imported by the
+// components that use them, so Vite splits them into route chunks and the
+// entry CSS does not carry rules no current route renders.
 import './styles/tokens.css';
-import './styles/typography.css';
-import './styles/motion.css';
-import './styles/geometry.css';
-import './styles/layout.css';
+import './styles/fonts.css';
 
 installGlobalErrorMonitoring();
 
