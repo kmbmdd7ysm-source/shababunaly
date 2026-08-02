@@ -20,7 +20,6 @@ export default defineConfig({
       exclude: [
         'src/data/translations.js',
         'src/data/legal.js',
-        'src/data/ourWork.js',
         'src/data/sizeGuide.js',
         'src/main.jsx',
       ],

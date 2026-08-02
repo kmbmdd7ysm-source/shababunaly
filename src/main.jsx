@@ -17,6 +17,15 @@ import './styles/global.css';
 import './styles/premium.css';
 import './styles/account-sync.css';
 import './styles/shababuna.css';
+// GROUNDWORK foundation. Loaded after the existing cascade so that where
+// specificity ties the new system wins, and namespaced (`--sh-*` tokens,
+// `.lab-scope` rules, `Shababuna *` font families) so that nothing it declares
+// can reach a selector the current site actually uses.
+import './styles/tokens.css';
+import './styles/typography.css';
+import './styles/motion.css';
+import './styles/geometry.css';
+import './styles/layout.css';
 
 installGlobalErrorMonitoring();
 

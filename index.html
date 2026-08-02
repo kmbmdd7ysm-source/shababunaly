@@ -28,6 +28,9 @@
     <link rel="mask-icon" href="/favicon.svg" color="#050505" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" as="image" href="/media/hero/shababuna-hero-poster.webp" imagesrcset="/media/hero/shababuna-hero-poster-mobile.webp 960w, /media/hero/shababuna-hero-poster.webp 1940w" imagesizes="100vw" fetchpriority="high" />
+    <!-- Self-hosted display face. One preload only, so the LCP image keeps priority.
+         The text and Arabic faces are unicode-range split and load on demand. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/shababuna-display-latin.woff2" crossorigin="anonymous" />
     <title>SHABABUNA | BUILT DIFFERENT</title>
   </head>
   <body>

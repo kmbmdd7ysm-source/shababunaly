@@ -40,6 +40,9 @@ const Operations = lazy(() => import('./pages/OperationsPage'));
 const SpecialRequest = lazy(() => import('./pages/SpecialRequestPage'));
 const TeamLocker = lazy(() => import('./pages/TeamLockerPage'));
 const DesignShare = lazy(() => import('./pages/DesignSharePage'));
+// Isolated design-direction prototype. Additive, noindex, robots-disallowed and
+// absent from the pre-render route list. Removing it is one line plus two files.
+const LabHome = lazy(() => import('./pages/LabHomePage'));
 
 export default function App() {
   usePageTracking();
@@ -88,6 +91,7 @@ export default function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/orders" element={<Navigate to="/account?section=orders" replace />} />
               <Route path="/offline" element={<Offline />} />
+              <Route path="/lab/home" element={<LabHome />} />
               <Route path="/privacy-policy" element={<Legal docKey="privacy-policy" />} />
               <Route path="/terms" element={<Legal docKey="terms" />} />
               <Route path="/cookies" element={<Legal docKey="cookies" />} />

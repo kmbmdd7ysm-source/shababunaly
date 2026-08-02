@@ -3,7 +3,6 @@
   "exclude": {
     "src/data/translations.js": "Static bilingual dictionary; parity is validated by dedicated translation tests.",
     "src/data/legal.js": "Static legal copy; content review is tracked separately from runtime branch coverage.",
-    "src/data/ourWork.js": "Static editorial dataset with no executable business logic.",
     "src/data/sizeGuide.js": "Static measurement dataset with no executable business logic.",
     "src/main.jsx": "Browser bootstrap is verified by production-build E2E and startup smoke tests."
   },
