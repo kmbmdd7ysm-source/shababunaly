@@ -1,15 +1,15 @@
 # Shababuna self-hosted web fonts
 
 All three faces are licensed under the **SIL Open Font License 1.1** (OFL), which permits
-self-hosting, subsetting and web embedding. Each file below is a *subset and axis-restricted
-derivative* of its upstream source, produced offline with `fonttools`. Under OFL clause 3 a
+self-hosting, subsetting and web embedding. Each file below is a _subset and axis-restricted
+derivative_ of its upstream source, produced offline with `fonttools`. Under OFL clause 3 a
 derivative may not use the Reserved Font Name, so the shipped files are renamed.
 
-| Shipped file | Upstream family | Designer / Foundry | Licence | Axes retained | Unicode coverage |
-| --- | --- | --- | --- | --- | --- |
-| `shababuna-display-latin.woff2` | Archivo | Omnibus-Type | OFL 1.1 | `wght 600–900`, `wdth 90–125` | Latin essential |
-| `shababuna-text-latin.woff2` | Inter | Rasmus Andersson | OFL 1.1 | `wght 400–800` | Latin essential |
-| `shababuna-arabic.woff2` | Cairo | Mohamed Gaber | OFL 1.1 | `wght 400–900` | Arabic + Arabic Supplement + Presentation Forms |
+| Shipped file                    | Upstream family | Designer / Foundry | Licence | Axes retained                 | Unicode coverage                                |
+| ------------------------------- | --------------- | ------------------ | ------- | ----------------------------- | ----------------------------------------------- |
+| `shababuna-display-latin.woff2` | Archivo         | Omnibus-Type       | OFL 1.1 | `wght 600–900`, `wdth 90–125` | Latin essential                                 |
+| `shababuna-text-latin.woff2`    | Inter           | Rasmus Andersson   | OFL 1.1 | `wght 400–800`                | Latin essential                                 |
+| `shababuna-arabic.woff2`        | Cairo           | Mohamed Gaber      | OFL 1.1 | `wght 400–900`                | Arabic + Arabic Supplement + Presentation Forms |
 
 ## Derivation
 

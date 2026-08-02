@@ -1,0 +1,343 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK LAYOUT
+   --------------------------------------------------------------------------
+   A 12-column grid with three named regions reused across every page:
+
+     BASELINE  full-bleed, anchors a chapter
+     KEY       8 of 12 — the dense commercial block (grids, forms, summaries)
+     ARC       10 of 12, offset — the wide editorial band
+
+   RTL: logical properties throughout (`margin-inline`, `padding-inline`,
+   `inset-inline`, `border-inline`, `text-align: start`). There is not a single
+   physical `left`/`right` declaration in this file, so RTL needs no override.
+
+   ISOLATION CONTRACT (Phase 1): every rule is scoped to `.lab-scope`.
+   Reuses the existing global `.sr-only` utility rather than redefining it.
+   ========================================================================== */
+
+.lab-scope {
+  box-sizing: border-box;
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+}
+
+.lab-scope *,
+.lab-scope *::before,
+.lab-scope *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Container ---------------------------------------------------- */
+
+.lab-scope .gw-container {
+  inline-size: 100%;
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: var(--sh-gutter);
+}
+
+.lab-scope .gw-container--narrow {
+  max-inline-size: var(--sh-container-narrow);
+}
+
+/* ---------- Section rhythm ----------------------------------------------- */
+
+.lab-scope .gw-section {
+  padding-block: var(--sh-section-y);
+}
+
+.lab-scope .gw-section--tight {
+  padding-block: clamp(32px, 5vw, 72px);
+}
+
+.lab-scope .gw-section--flush {
+  padding-block: 0;
+}
+
+.lab-scope .gw-section--inset {
+  background: var(--sh-chalk-2);
+}
+
+.lab-scope .gw-section--maple {
+  background: var(--sh-maple-tint);
+}
+
+/* ---------- The 12-column grid and its three regions --------------------- */
+
+.lab-scope .gw-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sh-columns), minmax(0, 1fr));
+  gap: var(--sh-col-gap);
+}
+
+.lab-scope .gw-baseline {
+  grid-column: 1 / -1;
+}
+
+.lab-scope .gw-key {
+  grid-column: 1 / -1;
+}
+
+.lab-scope .gw-arc {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 900px) {
+  .lab-scope .gw-key {
+    grid-column: 1 / span 8;
+  }
+
+  .lab-scope .gw-arc {
+    grid-column: 2 / span 10;
+  }
+}
+
+/* ---------- Composition helpers ------------------------------------------ */
+
+.lab-scope .gw-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+  align-items: start;
+}
+
+.lab-scope .gw-stack--tight {
+  gap: var(--sh-s-2);
+}
+
+.lab-scope .gw-stack--loose {
+  gap: var(--sh-s-6);
+}
+
+.lab-scope .gw-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+}
+
+.lab-scope .gw-split {
+  display: grid;
+  gap: var(--sh-s-7);
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .lab-scope .gw-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* ---------- Auto grid for plates ----------------------------------------- */
+
+.lab-scope .gw-plates {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+/* ==========================================================================
+   Focus — a dual ring so it survives on chalk AND inside a dark chapter
+   ========================================================================== */
+
+.lab-scope :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-focus-color);
+  outline-offset: var(--sh-focus-offset);
+  border-radius: var(--sh-r-1);
+}
+
+/* ==========================================================================
+   Buttons — three ranks, all with a drawn identity
+   Minimum target 44px; the leading tick extends on hover and on focus, never
+   on hover alone, so nothing is discoverable by pointer only.
+   ========================================================================== */
+
+.lab-scope .gw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-5);
+  padding-block: var(--sh-s-3);
+  border: 1px solid transparent;
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 96%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--sh-d-1) var(--sh-e-draw),
+    border-color var(--sh-d-1) var(--sh-e-draw),
+    color var(--sh-d-1) var(--sh-e-draw);
+}
+
+.lab-scope .gw-btn:lang(ar),
+[lang='ar'] .lab-scope .gw-btn {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.9375rem;
+}
+
+.lab-scope .gw-btn--primary {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+  border-color: var(--sh-ink);
+}
+
+.lab-scope .gw-btn--primary:hover {
+  background: var(--sh-signal);
+  border-color: var(--sh-signal);
+}
+
+.lab-scope .gw-btn--secondary {
+  background: transparent;
+  color: var(--sh-ink);
+  border-color: var(--sh-rule-strong);
+}
+
+.lab-scope .gw-btn--secondary:hover {
+  border-color: var(--sh-ink);
+}
+
+.lab-scope .gw-btn--ghost {
+  background: transparent;
+  color: var(--sh-ink);
+  border-color: transparent;
+  padding-inline: var(--sh-s-2);
+}
+
+.lab-scope .gw-btn--ghost:hover {
+  color: var(--sh-signal);
+}
+
+/* Ranks re-solved for the dark chapter. */
+.lab-scope .gw-chapter .gw-btn--primary {
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  border-color: var(--sh-chalk);
+}
+
+.lab-scope .gw-chapter .gw-btn--primary:hover {
+  background: var(--sh-sodium);
+  border-color: var(--sh-sodium);
+  color: var(--sh-night);
+}
+
+.lab-scope .gw-chapter .gw-btn--secondary {
+  color: var(--sh-night-ink);
+  border-color: var(--sh-rule-inverse-strong);
+}
+
+.lab-scope .gw-chapter .gw-btn--secondary:hover {
+  border-color: var(--sh-night-ink);
+}
+
+.lab-scope .gw-chapter .gw-btn--ghost {
+  color: var(--sh-night-ink);
+}
+
+.lab-scope .gw-chapter .gw-btn--ghost:hover {
+  color: var(--sh-sodium);
+}
+
+/* ==========================================================================
+   Spec table — the commercial voice of the system
+   Tabular numerals, hairline rules, `text-align: start` so it mirrors cleanly.
+   ========================================================================== */
+
+.lab-scope .gw-spec-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-scope .gw-spec-table th,
+.lab-scope .gw-spec-table td {
+  text-align: start;
+  padding-block: var(--sh-s-3);
+  padding-inline: 0;
+  border-block-end: 1px solid var(--sh-rule);
+  vertical-align: baseline;
+}
+
+.lab-scope .gw-spec-table th {
+  inline-size: 40%;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+.lab-scope .gw-spec-table th:lang(ar),
+[lang='ar'] .lab-scope .gw-spec-table th {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.lab-scope .gw-spec-table td {
+  color: var(--sh-ink);
+}
+
+.lab-scope .gw-chapter .gw-spec-table th,
+.lab-scope .gw-chapter .gw-spec-table td {
+  border-block-end-color: var(--sh-rule-inverse);
+}
+
+.lab-scope .gw-chapter .gw-spec-table th {
+  color: var(--sh-night-ink-70);
+}
+
+.lab-scope .gw-chapter .gw-spec-table td {
+  color: var(--sh-night-ink);
+}
+
+/* ==========================================================================
+   Media plate — reserves its ratio so nothing shifts while loading
+   ========================================================================== */
+
+.lab-scope .gw-media {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--sh-chalk-3);
+  border-radius: var(--sh-r-1);
+}
+
+.lab-scope .gw-media--wide {
+  aspect-ratio: 16 / 9;
+}
+
+.lab-scope .gw-media--square {
+  aspect-ratio: 1 / 1;
+}
+
+/* ==========================================================================
+   Zoom resilience
+   The a11y suite asserts <= 2px horizontal overflow at 200% and 400% zoom, so
+   every long token has an explicit wrapping rule.
+   ========================================================================== */
+
+.lab-scope {
+  overflow-wrap: break-word;
+}
+
+.lab-scope .gw-figure,
+.lab-scope .gw-spec {
+  overflow-wrap: normal;
+}

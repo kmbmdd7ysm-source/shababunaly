@@ -1,0 +1,188 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK MOTION
+   --------------------------------------------------------------------------
+   The motion language is DRAWING. Lines extend from an origin, dimensions
+   measure themselves, plates register into position with one decisive snap.
+   Nothing floats. Nothing bounces. Nothing drifts. Nothing loops.
+
+   WHY THIS IS PURE CSS
+   `scripts/lint-project.mjs` fails the build on `style={{` or `.style.`
+   anywhere in `src/`, and the CSP sets `style-src-attr 'none'`. JavaScript
+   therefore cannot drive visuals here — which is a gift, not a limit: CSS
+   scroll-driven animations run off the main thread, cost zero bytes of
+   library, and keep TBT inside the 150 ms mobile budget that the repeated-run
+   Lighthouse gate enforces.
+
+   PROGRESSIVE ENHANCEMENT
+   Every choreographed element is authored in its FINISHED state by default.
+   Motion is layered on only inside `@supports (animation-timeline: view())`.
+   A browser without support shows the finished composition immediately — no
+   polyfill, no JavaScript, and no flash of hidden content if the enhancement
+   never arrives.
+
+   ISOLATION CONTRACT (Phase 1)
+   Keyframes are inert until referenced. Every applied rule is scoped to
+   `.lab-scope`.
+   ========================================================================== */
+
+/* ---------- Keyframes --------------------------------------------------- */
+
+@keyframes gw-draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes gw-register {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes gw-measure-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ==========================================================================
+   Threshold — the only motion that runs on load.
+   A single hairline draws across the frame in 320 ms. That is the entire
+   loading experience: no spinner, no skeleton, no route loader.
+   ========================================================================== */
+
+.lab-scope .gw-threshold-rule {
+  display: block;
+  block-size: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--sh-rule-strong);
+  transform-origin: left center;
+}
+
+[dir='rtl'] .lab-scope .gw-threshold-rule {
+  transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lab-scope .gw-threshold-rule {
+    animation: gw-draw-line 320ms var(--sh-e-draw) both;
+  }
+}
+
+/* ==========================================================================
+   Scroll choreography — off the main thread, opt-in by support.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lab-scope .gw-register {
+      animation: gw-register var(--sh-d-3) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+
+    .lab-scope .gw-measure {
+      animation: gw-measure-in var(--sh-d-4) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+
+    /* Staggering is a per-element delay expressed as a range offset, so it
+       stays declarative and never needs a JavaScript index. */
+    .lab-scope .gw-stagger > * {
+      animation: gw-register var(--sh-d-3) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 24%;
+    }
+  }
+}
+
+/* Elements are authored finished. These are the defaults that apply when the
+   enhancement above is unavailable, when motion is reduced, or on Tier C. */
+.lab-scope .gw-register,
+.lab-scope .gw-measure,
+.lab-scope .gw-stagger > * {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+
+/* ==========================================================================
+   Interaction feedback
+   Tier 2 of the reduced-motion policy: state changes that carry MEANING keep
+   a 120 ms transition even under `prefers-reduced-motion`, because instant
+   appearance genuinely harms comprehension. Only choreography is removed.
+   ========================================================================== */
+
+.lab-scope .gw-interactive {
+  transition:
+    background-color var(--sh-d-1) var(--sh-e-draw),
+    border-color var(--sh-d-1) var(--sh-e-draw),
+    color var(--sh-d-1) var(--sh-e-draw);
+}
+
+.lab-scope .gw-rule-extend {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--sh-d-2) var(--sh-e-draw);
+}
+
+[dir='rtl'] .lab-scope .gw-rule-extend {
+  transform-origin: right center;
+}
+
+.lab-scope .gw-extends:hover .gw-rule-extend,
+.lab-scope .gw-extends:focus-visible .gw-rule-extend {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   Reduced motion — designed tiers, not a global kill switch
+   Tier 1 removed:  all choreography, the threshold draw, chapter reveals.
+   Tier 2 retained: 120 ms state feedback that carries meaning.
+   Tier 3 absent:   parallax, auto-rotation, looping media, floating elements
+                    do not exist in this design in ANY mode.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-scope .gw-threshold-rule,
+  .lab-scope .gw-register,
+  .lab-scope .gw-measure,
+  .lab-scope .gw-stagger > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .lab-scope .gw-rule-extend {
+    transition: none;
+    transform: scaleX(1);
+  }
+}
+
+/* Tier C devices get the same treatment as reduced motion: the capability
+   attribute is written once by `useDeviceCapability`, and CSS reads it. */
+[data-capability='c'] .lab-scope .gw-threshold-rule,
+[data-capability='c'] .lab-scope .gw-register,
+[data-capability='c'] .lab-scope .gw-measure,
+[data-capability='c'] .lab-scope .gw-stagger > * {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}

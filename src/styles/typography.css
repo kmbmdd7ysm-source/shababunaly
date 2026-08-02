@@ -1,0 +1,275 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK TYPOGRAPHY
+   --------------------------------------------------------------------------
+   ISOLATION CONTRACT (Phase 1)
+   The families declared here are named `Shababuna Display`, `Shababuna Text`
+   and `Shababuna Arabic`. No existing stylesheet references those names, so
+   declaring them cannot repaint the live site. `global.css` keeps asking for
+   `Inter` / `Archivo` / `Noto Kufi Arabic`, which remain unloaded and continue
+   resolving to the system stack exactly as before. Every *applied* rule below
+   is scoped to `.lab-scope`.
+
+   Delivery notes
+   - Faces are self-hosted (`font-src 'self'` is already allowed by the CSP);
+     no third-party origin, no render-blocking stylesheet from another domain.
+   - `unicode-range` splits Latin from Arabic so each locale downloads only
+     what it paints.
+   - Every real face has a metric-matched fallback face so the `swap` never
+     moves layout. Overrides are measured from the shipped files, not guessed.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Latin coverage actually present in the shipped subsets.
+   Deliberately EXCLUDES the bidi isolates U+2066–2069 and the joiners
+   U+200C–200F: `money.js` emits isolates in BOTH locales, and listing them in
+   the Arabic range would make an English page download the Arabic file for an
+   invisible formatting character.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Shababuna Display';
+  src: url('/fonts/shababuna-display-latin.woff2') format('woff2-variations');
+  font-weight: 600 900;
+  font-stretch: 90% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-007E, U+00A0, U+00A9, U+00AB, U+00B0, U+00B7, U+00BB, U+00D7, U+2010-2015, U+2018-201A,
+    U+201C-201E, U+2020-2022, U+2026, U+2030, U+2032-2033, U+2039-203A, U+2044, U+20AC, U+2192,
+    U+2212, U+2264-2265;
+}
+
+@font-face {
+  font-family: 'Shababuna Text';
+  src: url('/fonts/shababuna-text-latin.woff2') format('woff2-variations');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-007E, U+00A0, U+00A9, U+00AB, U+00B0, U+00B7, U+00BB, U+00D7, U+2010-2015, U+2018-201A,
+    U+201C-201E, U+2020-2022, U+2026, U+2030, U+2032-2033, U+2039-203A, U+2044, U+20AC, U+2192,
+    U+2212, U+2264-2265;
+}
+
+@font-face {
+  font-family: 'Shababuna Arabic';
+  src: url('/fonts/shababuna-arabic.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+/* --------------------------------------------------------------------------
+   Metric-matched fallbacks — CLS protection.
+   Measured from the shipped files:
+     display  upm 1000  asc  878  desc -210  gap 0  xHeight 526
+     text     upm 2048  asc 1984  desc -494  gap 0  xHeight 1118
+     arabic   upm 1000  asc 1303  desc -571  gap 0  xHeight 500
+   `size-adjust` normalises x-height against Arial (xHeight 1062 / upm 2048 =
+   51.86%) so the swap changes the glyphs without changing the line box.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Shababuna Display Fallback';
+  src: local('Arial Black'), local('Helvetica Neue Bold'), local('Arial Bold'), local('Arial');
+  ascent-override: 87.8%;
+  descent-override: 21%;
+  line-gap-override: 0%;
+  size-adjust: 101.4%;
+}
+
+@font-face {
+  font-family: 'Shababuna Text Fallback';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('Roboto');
+  ascent-override: 96.88%;
+  descent-override: 24.12%;
+  line-gap-override: 0%;
+  size-adjust: 105.3%;
+}
+
+@font-face {
+  font-family: 'Shababuna Arabic Fallback';
+  src: local('Tahoma'), local('Arial'), local('Segoe UI');
+  ascent-override: 130.3%;
+  descent-override: 57.1%;
+  line-gap-override: 0%;
+  size-adjust: 96.4%;
+}
+
+/* ==========================================================================
+   Applied typography — scoped to `.lab-scope`
+   ========================================================================== */
+
+.lab-scope {
+  font-family: var(--sh-font-text);
+  font-size: var(--sh-t-body);
+  line-height: var(--sh-lh-body);
+  color: var(--sh-ink);
+  font-variant-numeric: tabular-nums;
+  font-synthesis-weight: none;
+  font-synthesis-style: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Arabic is a native cut of the same brand, never a translated Latin layout. */
+.lab-scope:lang(ar),
+[lang='ar'] .lab-scope {
+  font-size: var(--sh-t-body-ar);
+  line-height: var(--sh-lh-body-ar);
+  letter-spacing: var(--sh-tr-ar);
+}
+
+/* ---------- Display ---------------------------------------------------- */
+
+.lab-scope .gw-hero-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-hero);
+  font-weight: 900;
+  font-stretch: 118%;
+  line-height: var(--sh-lh-hero);
+  letter-spacing: var(--sh-tr-hero);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.lab-scope .gw-display {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: var(--sh-lh-display);
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.lab-scope .gw-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-title);
+  font-weight: 700;
+  font-stretch: 105%;
+  line-height: var(--sh-lh-title);
+  letter-spacing: var(--sh-tr-title);
+}
+
+/* Arabic display: hierarchy comes from weight and size, never from width
+   distortion, never from uppercase, never from negative tracking. */
+.lab-scope .gw-hero-title:lang(ar),
+[lang='ar'] .lab-scope .gw-hero-title {
+  font-size: var(--sh-t-hero-ar);
+  line-height: var(--sh-lh-hero-ar);
+  letter-spacing: var(--sh-tr-ar);
+  font-stretch: normal;
+  text-transform: none;
+}
+
+.lab-scope .gw-display:lang(ar),
+[lang='ar'] .lab-scope .gw-display {
+  font-size: var(--sh-t-display-ar);
+  line-height: var(--sh-lh-display-ar);
+  letter-spacing: var(--sh-tr-ar);
+  font-stretch: normal;
+  text-transform: none;
+}
+
+.lab-scope .gw-title:lang(ar),
+[lang='ar'] .lab-scope .gw-title {
+  font-size: var(--sh-t-title-ar);
+  line-height: var(--sh-lh-title-ar);
+  letter-spacing: var(--sh-tr-ar);
+  font-stretch: normal;
+}
+
+/* ---------- Body and supporting ---------------------------------------- */
+
+.lab-scope .gw-lead {
+  margin: 0;
+  font-size: var(--sh-t-lead);
+  line-height: var(--sh-lh-lead);
+  color: var(--sh-ink-70);
+  max-inline-size: 62ch;
+}
+
+.lab-scope .gw-lead:lang(ar),
+[lang='ar'] .lab-scope .gw-lead {
+  font-size: var(--sh-t-lead-ar);
+  line-height: var(--sh-lh-body-ar);
+  max-inline-size: 54ch;
+}
+
+.lab-scope .gw-body {
+  margin: 0;
+  font-size: var(--sh-t-body);
+  line-height: var(--sh-lh-body);
+  max-inline-size: 68ch;
+}
+
+.lab-scope .gw-body:lang(ar),
+[lang='ar'] .lab-scope .gw-body {
+  font-size: var(--sh-t-body-ar);
+  line-height: var(--sh-lh-body-ar);
+  max-inline-size: 58ch;
+}
+
+/* ---------- Spec label — the condensed, wide-tracked voice of the system - */
+
+.lab-scope .gw-spec {
+  display: inline-block;
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  line-height: var(--sh-lh-spec);
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+}
+
+/* Arabic never uppercases and never tracks. It steps down in size instead. */
+.lab-scope .gw-spec:lang(ar),
+[lang='ar'] .lab-scope .gw-spec {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+/* ---------- Numerals ---------------------------------------------------- */
+
+.lab-scope .gw-figure {
+  font-family: var(--sh-font-display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Latin digits in both locales: `money.js` already formats with
+   `ar-LY-u-nu-latn`, and Latin digits are the sporting convention for jersey
+   numbers and sizes. Keep the Latin face for figures even inside Arabic. */
+.lab-scope .gw-figure:lang(ar),
+[lang='ar'] .lab-scope .gw-figure {
+  font-family: var(--sh-font-display);
+  letter-spacing: 0;
+}
+
+/* ---------- Bidi isolation for mixed content ---------------------------
+   Extends the pattern `services/money.js` already uses correctly, so SKUs,
+   sizes, currency codes and brand names never reorder inside Arabic copy. */
+
+.lab-scope .gw-isolate {
+  unicode-bidi: isolate;
+}
+
+.lab-scope .gw-isolate-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

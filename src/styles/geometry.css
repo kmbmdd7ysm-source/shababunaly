@@ -1,0 +1,314 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK GEOMETRY
+   --------------------------------------------------------------------------
+   The drawing primitives of the system: hairlines, tick rules, dimension
+   leaders, registration marks, plates and stamps.
+
+   Every measurement below is derived from real FIBA court geometry so the
+   layout is a survey of an actual court rather than a decorative motif:
+     court            28.00 m x 15.00 m   -> --gw-court-ratio
+     three-point arc   6.75 m radius
+     free-throw key    4.90 m x 5.80 m
+     centre circle     3.60 m diameter
+     restricted arc    1.25 m radius
+
+   RTL: logical properties only. A basketball court is bilaterally symmetric,
+   so mirroring this system produces a CORRECT court, not a broken layout.
+
+   ISOLATION CONTRACT (Phase 1): every rule is scoped to `.lab-scope`.
+   ========================================================================== */
+
+.lab-scope {
+  --gw-court-ratio: calc(28 / 15);
+  --gw-arc-r: 6.75;
+  --gw-key-w: 4.9;
+  --gw-key-h: 5.8;
+  --gw-circle-d: 3.6;
+  --gw-tick: 8px;
+  --gw-tick-gap: 24px;
+}
+
+/* ---------- Hairline rules ---------------------------------------------- */
+
+.lab-scope .gw-rule-h {
+  inline-size: 100%;
+  block-size: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--sh-rule);
+}
+
+.lab-scope .gw-rule-h--strong {
+  background: var(--sh-rule-strong);
+}
+
+.lab-scope .gw-rule-v {
+  inline-size: 1px;
+  align-self: stretch;
+  background: var(--sh-rule);
+}
+
+/* ---------- Tick rule — a measured edge, the signature of the system ----
+   A repeating-linear-gradient is a single paint with no extra DOM. */
+
+.lab-scope .gw-tick-rule {
+  position: relative;
+  padding-block-start: var(--gw-tick);
+  border-block-start: 1px solid var(--sh-rule-strong);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--sh-rule) 0 1px,
+    transparent 1px var(--gw-tick-gap)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% var(--gw-tick);
+  background-position: top left;
+}
+
+[dir='rtl'] .lab-scope .gw-tick-rule {
+  background-position: top right;
+}
+
+/* ---------- Dimension leader — annotates a measurement ------------------ */
+
+.lab-scope .gw-leader {
+  display: flex;
+  align-items: center;
+  gap: var(--sh-s-3);
+  color: var(--sh-ink-50);
+}
+
+.lab-scope .gw-leader::before,
+.lab-scope .gw-leader::after {
+  content: '';
+  block-size: 1px;
+  flex: 1 1 auto;
+  background: var(--sh-rule-strong);
+}
+
+.lab-scope .gw-leader--start::before {
+  display: none;
+}
+
+.lab-scope .gw-leader--end::after {
+  display: none;
+}
+
+/* ---------- Registration marks — corner crosses on a plate -------------- */
+
+.lab-scope .gw-registered {
+  position: relative;
+}
+
+.lab-scope .gw-registered::before,
+.lab-scope .gw-registered::after {
+  content: '';
+  position: absolute;
+  inline-size: 10px;
+  block-size: 10px;
+  pointer-events: none;
+  border-color: var(--sh-rule-strong);
+  border-style: solid;
+}
+
+.lab-scope .gw-registered::before {
+  inset-block-start: -1px;
+  inset-inline-start: -1px;
+  border-width: 1px 0 0 1px;
+}
+
+.lab-scope .gw-registered::after {
+  inset-block-end: -1px;
+  inset-inline-end: -1px;
+  border-width: 0 1px 1px 0;
+}
+
+/* ---------- Plate — an object placed on the sheet ----------------------- */
+
+.lab-scope .gw-plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+  padding: var(--sh-s-5);
+  background: var(--sh-chalk);
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+}
+
+.lab-scope .gw-plate--inset {
+  background: var(--sh-chalk-2);
+}
+
+.lab-scope .gw-plate--field {
+  background: var(--sh-chalk-3);
+}
+
+.lab-scope .gw-plate--maple {
+  background: var(--sh-maple-tint);
+}
+
+.lab-scope .gw-plate--flush {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* ---------- Scale tick — the leading edge marker on a media plate ------- */
+
+.lab-scope .gw-scaled {
+  position: relative;
+}
+
+.lab-scope .gw-scaled::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--sh-s-4);
+  inset-inline-start: 0;
+  inline-size: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--sh-rule-strong) 0 1px,
+    transparent 1px 12px
+  );
+  pointer-events: none;
+}
+
+/* ---------- Stamp — a verified or status mark --------------------------- */
+
+.lab-scope .gw-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target-min);
+  padding: 4px var(--sh-s-3);
+  border: 1px solid currentColor;
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+  background: transparent;
+}
+
+.lab-scope .gw-stamp:lang(ar),
+[lang='ar'] .lab-scope .gw-stamp {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* Colour is never the only signal: each tone also carries a leading glyph
+   rendered by the component, and the label text states the meaning. */
+.lab-scope .gw-stamp--verified {
+  color: var(--sh-verified);
+}
+
+.lab-scope .gw-stamp--alert {
+  color: var(--sh-alert);
+}
+
+.lab-scope .gw-stamp--warn {
+  color: var(--sh-warn);
+}
+
+.lab-scope .gw-stamp--signal {
+  color: var(--sh-signal);
+}
+
+.lab-scope .gw-stamp-dot {
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+/* ==========================================================================
+   Court plan — the drawn ground
+   Built from gradients only: no image request, no SVG DOM, no layout cost,
+   and it scales to any DPR without shimmering because every line is 1px.
+   ========================================================================== */
+
+.lab-scope .gw-court {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  color: var(--sh-rule);
+}
+
+.lab-scope .gw-court-svg {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: min(150%, 1600px);
+  block-size: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+}
+
+[dir='rtl'] .lab-scope .gw-court-svg {
+  transform: translate(50%, -50%) scaleX(-1);
+}
+
+/* ---------- Dark chapter -------------------------------------------------
+   Chapters are full-bleed and bounded by a drawn rule. The system and the
+   film never blend: there is no gradient between the two worlds. */
+
+.lab-scope .gw-chapter {
+  position: relative;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  border-block: 1px solid var(--sh-rule-inverse-strong);
+  padding-block: var(--sh-chapter-y);
+}
+
+.lab-scope .gw-chapter .gw-rule-h {
+  background: var(--sh-rule-inverse);
+}
+
+.lab-scope .gw-chapter .gw-rule-h--strong {
+  background: var(--sh-rule-inverse-strong);
+}
+
+.lab-scope .gw-chapter .gw-tick-rule {
+  border-block-start-color: var(--sh-rule-inverse-strong);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--sh-rule-inverse) 0 1px,
+    transparent 1px var(--gw-tick-gap)
+  );
+}
+
+.lab-scope .gw-chapter .gw-spec,
+.lab-scope .gw-chapter .gw-lead,
+.lab-scope .gw-chapter .gw-body {
+  color: var(--sh-night-ink-70);
+}
+
+.lab-scope .gw-chapter .gw-stamp {
+  color: var(--sh-night-ink-70);
+}
+
+.lab-scope .gw-chapter .gw-leader {
+  color: var(--sh-night-ink-70);
+}
+
+.lab-scope .gw-chapter .gw-leader::before,
+.lab-scope .gw-chapter .gw-leader::after {
+  background: var(--sh-rule-inverse-strong);
+}
+
+.lab-scope .gw-chapter .gw-court {
+  color: var(--sh-rule-inverse);
+}
+
+/* The focus ring is re-solved for the dark chapter so it never disappears. */
+.lab-scope .gw-chapter :focus-visible {
+  outline-color: var(--sh-signal-on-dark);
+}
