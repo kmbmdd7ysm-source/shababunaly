@@ -41,7 +41,7 @@ jobs:
       - run: npm run coverage
       - run: npm run verify:source
       - run: npm run security:audit
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: source-unit-coverage-security
@@ -68,7 +68,7 @@ jobs:
         with: { version: 2.109.1 }
       - name: Empty-database migrations, pgTAP, RLS and race tests (3 runs)
         run: npm run test:db
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: database-rls-concurrency
@@ -95,7 +95,7 @@ jobs:
       - run: npm run analyze
       - name: Verify build provenance exists
         run: test -s reports/build/build-provenance.json && test -s dist/BUILD_PROVENANCE.json
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: production-dist-${{ github.sha }}
@@ -156,7 +156,7 @@ jobs:
         run: npm run test:pwa-upgrade
       - name: Lighthouse mobile and desktop
         run: npm run lighthouse
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: browser-a11y-visual-pwa-lighthouse
