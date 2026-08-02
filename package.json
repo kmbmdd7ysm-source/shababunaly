@@ -89,11 +89,11 @@
     "test:malware-pipeline": "node scripts/verify-malware-pipeline.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "2.110.6",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-helmet-async": "2.0.5",
-    "react-router-dom": "6.30.4"
+    "@supabase/supabase-js": "2.111.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-helmet-async": "3.0.0",
+    "react-router-dom": "7.18.2"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
