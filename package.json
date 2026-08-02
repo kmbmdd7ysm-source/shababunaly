@@ -97,13 +97,13 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
-    "@playwright/test": "1.61.1",
-    "@vitejs/plugin-react": "4.7.0",
+    "@playwright/test": "1.62.1",
+    "@vitejs/plugin-react": "6.0.5",
     "axe-core": "4.12.1",
-    "playwright": "1.61.1",
-    "prettier": "3.9.5",
+    "playwright": "1.62.1",
+    "prettier": "3.9.6",
     "typescript": "7.0.2",
-    "vite": "7.3.6",
+    "vite": "8.2.0",
     "yocto-queue": "file:vendor/yocto-queue",
     "yallist": "file:vendor/yallist",
     "word-wrap": "file:vendor/word-wrap"
