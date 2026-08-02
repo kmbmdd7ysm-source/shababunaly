@@ -53,9 +53,10 @@
   --sh-moon: #9db7c4; /* film-world cool fill */
 
   /* ---------- Typography · families ------------------------------------- */
-  /* Faces are declared in typography.css. Names are Shababuna-specific so the
+  /* Faces are declared in fonts.css. Names are Shababuna-specific so the
      existing `Inter` / `Archivo` / `Noto Kufi Arabic` declarations in
-     global.css keep resolving to the system stack until a later phase. */
+     global.css keep resolving to the system stack until a later phase.
+
      Each stack lists the Arabic face straight after the Latin one. Because the
      faces are split by `unicode-range`, the browser resolves the correct face
      per character with no `dir`/`lang` switching, and a mixed string such as
@@ -63,8 +64,12 @@
      face automatically. An English visitor never downloads the Arabic file and
      an Arabic visitor never downloads the Latin display file unless Latin
      glyphs are actually painted. */
-  --sh-font-display: 'Shababuna Display', 'Shababuna Arabic', 'Shababuna Display Fallback', 'Arial Black', system-ui, sans-serif;
-  --sh-font-text: 'Shababuna Text', 'Shababuna Arabic', 'Shababuna Text Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sh-font-display:
+    'Shababuna Display', 'Shababuna Arabic', 'Shababuna Display Fallback', 'Arial Black', system-ui,
+    sans-serif;
+  --sh-font-text:
+    'Shababuna Text', 'Shababuna Arabic', 'Shababuna Text Fallback', system-ui, -apple-system,
+    'Segoe UI', sans-serif;
   --sh-font-arabic: 'Shababuna Arabic', 'Shababuna Arabic Fallback', Tahoma, Arial, sans-serif;
 
   /* ---------- Typography · Latin scale (fluid) --------------------------- */
