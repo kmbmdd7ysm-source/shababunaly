@@ -59,26 +59,29 @@ describe('GROUNDWORK homepage prototype', () => {
     }
     expect(hrefs).not.toContain('/shop/ready-to-ship');
 
-    // 04 IN STOCK — every delivery figure is read from config/shipping.js.
+    // 04 IN STOCK — every delivery figure is read from config/shipping.js, and
+    // every numeric range is bidi-isolated so it cannot reorder inside Arabic.
     const libya = shippingConfig.libya;
-    expect(
-      screen.getByText(`${libya.readyDelivery.minHours}–${libya.readyDelivery.maxHours} hours`),
-    ).toBeVisible();
-    expect(
-      screen.getByText(`${libya.standardDelivery.minDays}–${libya.standardDelivery.maxDays} days`),
-    ).toBeVisible();
-    expect(
-      screen.getByText(`${shippingConfig.custom.minDays}–${shippingConfig.custom.maxDays} days`),
-    ).toBeVisible();
+    const delivery = screen.getByRole('table', { name: 'Delivery specification' });
+    for (const range of [
+      `${libya.readyDelivery.minHours}–${libya.readyDelivery.maxHours}`,
+      `${libya.standardDelivery.minDays}–${libya.standardDelivery.maxDays}`,
+      `${shippingConfig.custom.minDays}–${shippingConfig.custom.maxDays}`,
+    ]) {
+      expect(within(delivery).getByText(range)).toHaveClass('gw-isolate-ltr');
+    }
+    expect(within(delivery).getByText('hours', { exact: false })).toBeVisible();
     expect(screen.getByText(`${libya.deliveryFee.amount} LYD`)).toBeVisible();
     expect(screen.getByText(`${libya.freeThreshold.amount} LYD`)).toBeVisible();
 
     // 05 THE WORKSHOP — minimums come from data/customization.js, not prose.
     const minimum = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
-    expect(screen.getByText(`From ${minimum('game-set')} pieces`)).toBeVisible();
-    expect(screen.getByText(`From ${minimum('basketball')} balls`)).toBeVisible();
-    expect(screen.getByText(`From ${minimum('hoop-padding')} unit`)).toBeVisible();
-    expect(screen.getByText(String(CUSTOM_PRODUCT_TYPES.length))).toBeVisible();
+    const minimums = screen.getByRole('table', { name: 'Minimum order' });
+    for (const key of ['game-set', 'basketball', 'hoop-padding']) {
+      expect(within(minimums).getByText(String(minimum(key)))).toHaveClass('gw-isolate-ltr');
+    }
+    expect(within(minimums).getByText('pieces', { exact: false })).toBeVisible();
+    expect(within(minimums).getByText(String(CUSTOM_PRODUCT_TYPES.length))).toBeVisible();
 
     // 06 THE ROSTER — the staged-payment terms are stated exactly as the
     // commerce layer enforces them.
@@ -102,9 +105,18 @@ describe('GROUNDWORK homepage prototype', () => {
       expect(screen.getByText(department.name.ar)).toBeVisible();
     }
 
-    // Currency stays LTR-isolated inside Arabic so digits never reorder.
+    // Currency AND every numeric range stay LTR-isolated inside Arabic, so a
+    // delivery window can never render as "72–24" and promise something else.
     const fee = screen.getByText(`${shippingConfig.libya.deliveryFee.amount} LYD`);
     expect(fee).toHaveClass('gw-isolate-ltr');
+    const libya = shippingConfig.libya;
+    for (const range of [
+      `${libya.readyDelivery.minHours}–${libya.readyDelivery.maxHours}`,
+      `${libya.standardDelivery.minDays}–${libya.standardDelivery.maxDays}`,
+    ]) {
+      expect(screen.getAllByText(range)[0]).toHaveClass('gw-isolate-ltr');
+    }
+    expect(screen.getByText('ساعة', { exact: false })).toBeVisible();
 
     // Destinations are identical across locales — Arabic is a cut, not a fork.
     const hrefs = [...container.querySelectorAll('a')].map((a) => a.getAttribute('href'));

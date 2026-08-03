@@ -94,11 +94,27 @@
 
 /* ---------- Composition helpers ------------------------------------------ */
 
+/* Block children must fill the stack, so `align-items` stays at its default
+   `stretch`. Intrinsically-sized controls opt out individually below — the
+   opposite arrangement (`align-items: start`) silently collapses any grid or
+   table placed in a stack to its content width. */
 .lab-scope .gw-stack {
   display: flex;
   flex-direction: column;
   gap: var(--sh-s-4);
-  align-items: start;
+  align-items: stretch;
+}
+
+.lab-scope .gw-stack > .gw-btn,
+.lab-scope .gw-stack > .gw-stamp,
+.lab-scope .gw-stack > .gw-spec {
+  align-self: start;
+}
+
+[dir='rtl'] .lab-scope .gw-stack > .gw-btn,
+[dir='rtl'] .lab-scope .gw-stack > .gw-stamp,
+[dir='rtl'] .lab-scope .gw-stack > .gw-spec {
+  align-self: end;
 }
 
 .lab-scope .gw-stack--tight {
@@ -340,4 +356,14 @@
 .lab-scope .gw-figure,
 .lab-scope .gw-spec {
   overflow-wrap: normal;
+}
+
+/* Arabic is a connected script: breaking inside a word splits letterforms that
+   belong together and produces something a reader will not recognise. Arabic
+   therefore never breaks mid-word — it is sized to fit instead. */
+.lab-scope:lang(ar),
+[lang='ar'] .lab-scope {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }

@@ -46,6 +46,35 @@ const ZONE_LABELS = {
 
 const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
 
+/**
+ * A numeric range inside prose.
+ *
+ * Without isolation the Unicode bidi algorithm reorders `24–72` to `72–24`
+ * inside an Arabic paragraph, because the en dash is a neutral character
+ * between two LTR digit runs. That turns a delivery promise into a different
+ * delivery promise, so every range is isolated — the same discipline
+ * `services/money.js` already applies to currency.
+ */
+function Range({ from, to, unit }) {
+  return (
+    <>
+      <span className="gw-isolate-ltr">
+        {from}–{to}
+      </span>{' '}
+      {unit}
+    </>
+  );
+}
+
+/** A minimum-order figure inside prose, isolated for the same reason as `Range`. */
+function Minimum({ count, unit }) {
+  return (
+    <>
+      <span className="gw-isolate-ltr">{count}</span> {unit}
+    </>
+  );
+}
+
 function CourtPlan() {
   return (
     <div className="gw-court" aria-hidden="true">
@@ -81,24 +110,33 @@ export default function LabHomePage() {
   const deliverySpec = [
     {
       label: pick({ en: 'Ready to Ship · Libya', ar: 'تسليم فوري · ليبيا' }),
-      value: pick({
-        en: `${libya.readyDelivery.minHours}–${libya.readyDelivery.maxHours} hours`,
-        ar: `${libya.readyDelivery.minHours}–${libya.readyDelivery.maxHours} ساعة`,
-      }),
+      value: (
+        <Range
+          from={libya.readyDelivery.minHours}
+          to={libya.readyDelivery.maxHours}
+          unit={pick({ en: 'hours', ar: 'ساعة' })}
+        />
+      ),
     },
     {
       label: pick({ en: 'Standard · Libya', ar: 'عادي · ليبيا' }),
-      value: pick({
-        en: `${libya.standardDelivery.minDays}–${libya.standardDelivery.maxDays} days`,
-        ar: `${libya.standardDelivery.minDays}–${libya.standardDelivery.maxDays} يومًا`,
-      }),
+      value: (
+        <Range
+          from={libya.standardDelivery.minDays}
+          to={libya.standardDelivery.maxDays}
+          unit={pick({ en: 'days', ar: 'يومًا' })}
+        />
+      ),
     },
     {
       label: pick({ en: 'Custom & wholesale', ar: 'مخصص وجملة' }),
-      value: pick({
-        en: `${shippingConfig.custom.minDays}–${shippingConfig.custom.maxDays} days`,
-        ar: `${shippingConfig.custom.minDays}–${shippingConfig.custom.maxDays} يومًا`,
-      }),
+      value: (
+        <Range
+          from={shippingConfig.custom.minDays}
+          to={shippingConfig.custom.maxDays}
+          unit={pick({ en: 'days', ar: 'يومًا' })}
+        />
+      ),
     },
     {
       label: pick({ en: 'Libya delivery fee', ar: 'رسوم التوصيل داخل ليبيا' }),
@@ -122,7 +160,7 @@ export default function LabHomePage() {
     {
       label: pick({ en: 'Production estimate', ar: 'المدة التقديرية للتصنيع' }),
       value: (
-        <span className="gw-figure">
+        <span className="gw-figure gw-isolate-ltr">
           {shippingConfig.custom.minDays}–{shippingConfig.custom.maxDays}
         </span>
       ),
@@ -136,28 +174,19 @@ export default function LabHomePage() {
   const customSpec = [
     {
       label: pick({ en: 'Custom apparel', ar: 'الملابس المخصصة' }),
-      value: pick({
-        en: `From ${minimumFor('game-set')} pieces`,
-        ar: `ابتداءً من ${minimumFor('game-set')} قطع`,
-      }),
+      value: <Minimum count={minimumFor('game-set')} unit={pick({ en: 'pieces', ar: 'قطع' })} />,
     },
     {
       label: pick({ en: 'Custom basketballs', ar: 'الكرات المخصصة' }),
-      value: pick({
-        en: `From ${minimumFor('basketball')} balls`,
-        ar: `ابتداءً من ${minimumFor('basketball')} كرات`,
-      }),
+      value: <Minimum count={minimumFor('basketball')} unit={pick({ en: 'balls', ar: 'كرات' })} />,
     },
     {
       label: pick({ en: 'Hoop padding', ar: 'تغليف السلة' }),
-      value: pick({
-        en: `From ${minimumFor('hoop-padding')} unit`,
-        ar: `ابتداءً من ${minimumFor('hoop-padding')} وحدة`,
-      }),
+      value: <Minimum count={minimumFor('hoop-padding')} unit={pick({ en: 'unit', ar: 'وحدة' })} />,
     },
     {
       label: pick({ en: 'Product types', ar: 'أنواع المنتجات' }),
-      value: <span className="gw-figure">{CUSTOM_PRODUCT_TYPES.length}</span>,
+      value: <span className="gw-figure gw-isolate-ltr">{CUSTOM_PRODUCT_TYPES.length}</span>,
     },
   ];
 
@@ -237,7 +266,7 @@ export default function LabHomePage() {
               {pick({ en: 'Everything basketball needs', ar: 'كل ما تحتاجه كرة السلة' })}
             </h2>
           </div>
-          <div className="gw-plates gw-stagger">
+          <div className="gw-plates gw-department-plates gw-stagger">
             {DEPARTMENTS.map((department) => (
               <Link
                 key={department.slug}

@@ -204,6 +204,27 @@ violate the CSP or the lint gate.
 - The `[dir='rtl']` override count is a **tracked, decreasing metric** across
   phases.
 
+### Known limitation, for the cascade-cleanup phase
+
+`global.css` carries a universal reset:
+
+```css
+html[dir='rtl'] * {
+  letter-spacing: 0 !important;
+}
+```
+
+The policy is right — Arabic is never tracked — but the blast radius is not. It
+flattens tracking on **every** element in Arabic, including a Latin wordmark, so
+`BUILT DIFFERENT.` renders at `-0.03em` in English and `0` in Arabic. The
+prototype does **not** override it: answering `!important` with `!important` is
+the cascade war the cleanup phase exists to end.
+
+The fix belongs with that phase: narrow the reset to Arabic _text_ rather than
+to `*`. For scale, the existing sheets carry **291 `!important` declarations in
+`global.css`, 61 in `premium.css` and 2 in `shababuna.css`** — 354 in total, and
+each one is a place where the new system cannot express itself without a fight.
+
 ---
 
 ## 10. Strings the release gate asserts

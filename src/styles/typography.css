@@ -34,7 +34,6 @@
   font-family: var(--sh-font-display);
   font-size: var(--sh-t-hero);
   font-weight: 900;
-  font-stretch: 118%;
   line-height: var(--sh-lh-hero);
   letter-spacing: var(--sh-tr-hero);
   text-transform: uppercase;
@@ -70,7 +69,6 @@
   font-size: var(--sh-t-hero-ar);
   line-height: var(--sh-lh-hero-ar);
   letter-spacing: var(--sh-tr-ar);
-  font-stretch: normal;
   text-transform: none;
 }
 

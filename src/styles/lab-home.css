@@ -21,12 +21,37 @@
   z-index: var(--sh-z-plate);
 }
 
-.lab-scope .gw-hero .gw-stack {
-  max-inline-size: 46rem;
-}
-
+/* The slogan lockup is Latin in BOTH locales, so it carries the width axis
+   itself rather than inheriting it from the heading box. That keeps the Arabic
+   metrics override free to do its real job (size, leading, tracking, case)
+   without flattening a Latin wordmark. */
+/* `BUILT DIFFERENT.` is a Latin wordmark and must be byte-identical in both
+   locales. Left to the bidi algorithm inside an Arabic paragraph the trailing
+   full stop is a neutral character and migrates to the visual left, rendering
+   the slogan as ".DIFFERENT". Isolating the lockup as an LTR run fixes the
+   glyph order; `fit-content` keeps the box itself on the inline-start edge, so
+   the lockup still sits on the right in Arabic. */
 .lab-scope .gw-hero-line {
   display: block;
+  inline-size: fit-content;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-stretch: 118%;
+  text-transform: uppercase;
+}
+
+/* Latin tracking for the wordmark.
+   KNOWN LIMITATION, deliberately not fought here: `global.css` carries a
+   pre-existing `html[dir='rtl'] * { letter-spacing: 0 !important }`, a
+   universal reset that flattens tracking on every element in Arabic —
+   including a Latin wordmark. The policy behind it is right (Arabic is never
+   tracked) but the blast radius is not. Overriding it would mean answering
+   `!important` with `!important`, which is the cascade war the cleanup phase
+   exists to end. The wordmark therefore renders at 0 tracking in Arabic and
+   -0.03em in English until that reset is narrowed. Recorded in
+   docs/DESIGN_SYSTEM.md. */
+.lab-scope .gw-hero-line {
+  letter-spacing: var(--sh-tr-hero);
 }
 
 /* The outlined second line is the one deliberate piece of display drama.
@@ -48,6 +73,12 @@
     color: CanvasText;
     -webkit-text-stroke: 0;
   }
+}
+
+/* The reading measure belongs to the prose, not to the display type: capping
+   the whole stack was forcing "DIFFERENT." onto two lines at 1440px. */
+.lab-scope .gw-hero .gw-lead {
+  max-inline-size: 34rem;
 }
 
 .lab-scope .gw-hero .gw-leader {
@@ -91,6 +122,14 @@
 
 /* ---------- 03 · THE PLAN ------------------------------------------------ */
 
+/* Five departments read as the five zones of a court, so at desktop widths they
+   sit on one row rather than wrapping 4 + 1. */
+@media (min-width: 1100px) {
+  .lab-scope .gw-department-plates {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
 .lab-scope .gw-department {
   gap: var(--sh-s-3);
   color: inherit;
@@ -106,6 +145,14 @@
 
 .lab-scope .gw-department-name {
   font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+}
+
+/* Arabic department names are longer than their Latin counterparts at the same
+   optical size, and the five-zone row is deliberately narrow, so Arabic steps
+   down rather than wrapping inside a word. */
+.lab-scope .gw-department-name:lang(ar),
+[lang='ar'] .lab-scope .gw-department-name {
+  font-size: clamp(1rem, 0.86rem + 0.45vw, 1.25rem);
 }
 
 .lab-scope .gw-department-count {
@@ -139,6 +186,14 @@
     display: grid;
     justify-items: start;
     gap: var(--sh-s-3);
+  }
+
+  /* The width axis is what keeps the headline on one line at 390px. Condensing
+     is the correct answer here; shrinking the type would cost the hero its
+     authority, and letting "DIFFERENT." wrap would drop the full stop onto a
+     line of its own. */
+  .lab-scope .gw-hero-line {
+    font-stretch: 96%;
   }
 
   .lab-scope .gw-hero-line--outline {
