@@ -63,13 +63,19 @@
      «طقم لعب 2XL» renders Arabic in the Arabic face and `2XL` in the Latin
      face automatically. An English visitor never downloads the Arabic file and
      an Arabic visitor never downloads the Latin display file unless Latin
-     glyphs are actually painted. */
+     glyphs are actually painted.
+
+     Each stack carries BOTH metric-matched fallbacks. Listing only the Latin
+     one meant that, while the Arabic face was still loading, Arabic glyphs were
+     measured with Inter/Archivo metrics — a 96.9%/24.1% ascent-descent standing
+     in for Cairo's 130.3%/57.1%. That mismatch was the entire Arabic font-swap
+     layout shift. */
   --sh-font-display:
-    'Shababuna Display', 'Shababuna Arabic', 'Shababuna Display Fallback', 'Arial Black', system-ui,
-    sans-serif;
+    'Shababuna Display', 'Shababuna Arabic', 'Shababuna Display Fallback',
+    'Shababuna Arabic Fallback', 'Arial Black', system-ui, sans-serif;
   --sh-font-text:
-    'Shababuna Text', 'Shababuna Arabic', 'Shababuna Text Fallback', system-ui, -apple-system,
-    'Segoe UI', sans-serif;
+    'Shababuna Text', 'Shababuna Arabic', 'Shababuna Text Fallback', 'Shababuna Arabic Fallback',
+    system-ui, -apple-system, 'Segoe UI', sans-serif;
   --sh-font-arabic: 'Shababuna Arabic', 'Shababuna Arabic Fallback', Tahoma, Arial, sans-serif;
 
   /* ---------- Typography · Latin scale (fluid) --------------------------- */

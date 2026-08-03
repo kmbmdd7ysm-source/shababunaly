@@ -33,6 +33,11 @@
    the lockup still sits on the right in Arabic. */
 .lab-scope .gw-hero-line {
   display: block;
+  /* `fit-content` keeps the box on the inline-start edge in both locales.
+     A full-width box with an explicit text-align pair was tried as a possible
+     CLS improvement and measured WORSE on every case over three runs each
+     (Arabic desktop font-swap CLS 0.0235 vs 0.0119, English 0.0023 vs 0.0013),
+     so shrink-to-fit stays. */
   inline-size: fit-content;
   direction: ltr;
   unicode-bidi: isolate;

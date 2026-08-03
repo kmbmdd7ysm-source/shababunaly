@@ -204,6 +204,52 @@ violate the CSP or the lint gate.
 - The `[dir='rtl']` override count is a **tracked, decreasing metric** across
   phases.
 
+### Measured: Arabic has a large pre-existing layout shift
+
+Measuring CLS with font delivery deliberately delayed by 1.2 s (so the fallback
+is guaranteed to paint first) turned up something bigger than anything the type
+system does. On the **untouched baseline build**, with **zero fonts loaded**:
+
+| build              | route           | CLS       | shift source                                                                          |
+| ------------------ | --------------- | --------- | ------------------------------------------------------------------------------------- |
+| baseline `a905b51` | `/` ar 1440     | **0.517** | `NAV.mobile-menu`, `DIV.header-actions`, `NAV.desktop-nav`, `LABEL.currency-selector` |
+| baseline `a905b51` | `/shop` ar 1440 | **0.154** | same header elements                                                                  |
+| baseline `a905b51` | `/` ar 390      | 0.014     | `NAV.mobile-menu`                                                                     |
+| baseline `a905b51` | `/` en 1440     | **0.000** | —                                                                                     |
+
+The header reflows when `LanguageContext` flips `dir` after hydration. English
+is clean; Arabic is **3–10× over the 0.05 Lighthouse gate**. It has never shown
+up because `reports/lighthouse-*.json` is `not_run` and Lighthouse would have
+been run in English.
+
+**This is not caused by the redesign and was not fixed in Phase 1.** It belongs
+to the global-chrome phase, and it is arguably the single highest-value
+performance fix available on the whole site.
+
+### Measured: font-swap CLS attributable to the type system
+
+Median of three runs each, same 1.2 s font delay, counting only shifts after
+1 s (i.e. the swap itself):
+
+| case                | font-swap CLS |
+| ------------------- | ------------- |
+| `/lab/home` en 1440 | **0.0013**    |
+| `/lab/home` ar 390  | **0.0044**    |
+| `/lab/home` ar 1440 | **0.0119**    |
+
+English is essentially free. Arabic costs more because no `size-adjust` value
+can reconcile Cairo's advance widths with a system Arabic fallback — vertical
+metrics can be matched, horizontal ones cannot. It is inside the 0.05 gate but
+over the 0.01 target.
+
+**Caveat worth stating:** this container has neither Tahoma nor Geeza Pro, so
+the fallback resolves to DejaVu Sans. Real-world Arabic swap CLS will differ by
+platform. The durable fix is to **preload the Arabic face on Arabic documents**,
+which needs locale-aware HTML — i.e. the `/ar/` routing phase. Until then
+`font-display: swap` is retained deliberately: `optional` would give 0 CLS but
+would let a first-time Arabic visitor see a system font, which is precisely the
+impression this work exists to remove.
+
 ### Known limitation, for the cascade-cleanup phase
 
 `global.css` carries a universal reset:
