@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext';
 import { useCompare } from '../context/CompareContext';
 import { useCommerce } from '../context/CommerceContext';
 import Seo from '../components/common/Seo';
+import '../styles/account.css';
 import AddressesSection from '../components/account/AddressesSection';
 import CurrencySelector from '../components/common/CurrencySelector';
 import Avatar from '../components/common/Avatar';
@@ -19,7 +20,11 @@ import OrganizationWorkspace from '../components/account/OrganizationWorkspace';
 import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import MfaSecurityPanel from '../components/account/MfaSecurityPanel';
-import { downloadPrivacyExport, listPrivacyExports, requestPrivacyExport } from '../services/privacy';
+import {
+  downloadPrivacyExport,
+  listPrivacyExports,
+  requestPrivacyExport,
+} from '../services/privacy';
 
 const ACCOUNT_SECTIONS = [
   'overview',
@@ -82,9 +87,15 @@ export default function AccountPage() {
     [ordersState, setOrdersState] = useState({ state: 'idle', orders: [], error: null }),
     [profile, setProfile] = useState(() => ({
       firstName:
-        data?.profile?.first_name || data?.profile?.firstName || auth.user?.user_metadata?.first_name || '',
+        data?.profile?.first_name ||
+        data?.profile?.firstName ||
+        auth.user?.user_metadata?.first_name ||
+        '',
       lastName:
-        data?.profile?.last_name || data?.profile?.lastName || auth.user?.user_metadata?.last_name || '',
+        data?.profile?.last_name ||
+        data?.profile?.lastName ||
+        auth.user?.user_metadata?.last_name ||
+        '',
       displayName:
         data?.profile?.display_name ||
         data?.profile?.displayName ||
@@ -239,7 +250,7 @@ export default function AccountPage() {
       orders: pick({ en: 'Orders', ar: 'الطلبات' }),
       workspace: pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' }),
       returns: pick({ en: 'Returns', ar: 'الإرجاع' }),
-                    'special-requests': pick({ en: 'Special Requests', ar: 'طلبات خاصة' }),
+      'special-requests': pick({ en: 'Special Requests', ar: 'طلبات خاصة' }),
     }),
     [pick],
   );
@@ -304,8 +315,7 @@ export default function AccountPage() {
           organization_name: accountType === 'organization' ? clean(organizationName) : '',
           organization_type: accountType === 'organization' ? organizationType : '',
         });
-      }
-      else if (mode === 'reset') r = await auth.reset(normalizedEmail);
+      } else if (mode === 'reset') r = await auth.reset(normalizedEmail);
       else if (mode === 'reset-password') r = await auth.updatePassword(password);
       else r = await auth.signIn(normalizedEmail, password);
       if (r?.error) throw r.error;
@@ -354,10 +364,13 @@ export default function AccountPage() {
     return (
       <>
         <Seo title="Account" path="/account" noindex />
-        <section className="section">
-          <form className="container account-panel auth-form" onSubmit={submit} noValidate>
-            <p className="section-label">SHABABUNA ACCOUNT</p>
-            <h1>
+        {/* THE GATE — authentication is a single focused task, so it gets a
+            centred plate on a measured ground rather than a full page section
+            wrapping a container. Nothing competes with the form. */}
+        <section className="gw-gate">
+          <form className="gw-gate-form" onSubmit={submit} noValidate>
+            <p className="gw-spec">SHABABUNA ACCOUNT</p>
+            <h1 className="gw-gate-title">
               {pick({
                 en:
                   mode === 'signup'
@@ -416,7 +429,9 @@ export default function AccountPage() {
                         setMsg('');
                       }}
                     >
-                      <strong>{pick({ en: 'Team & business account', ar: 'حساب فريق أو مؤسسة' })}</strong>
+                      <strong>
+                        {pick({ en: 'Team & business account', ar: 'حساب فريق أو مؤسسة' })}
+                      </strong>
                       <span>
                         {pick({
                           en: 'For clubs, academies, federations, wholesale and distributors.',
@@ -632,17 +647,38 @@ export default function AccountPage() {
             )}
             <div className="account-switch">
               {mode !== 'signin' && (
-                <button type="button" onClick={() => { setMode('signin'); setVerificationEmail(''); setMsg(''); }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('signin');
+                    setVerificationEmail('');
+                    setMsg('');
+                  }}
+                >
                   {pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}
                 </button>
               )}
               {mode !== 'signup' && (
-                <button type="button" onClick={() => { setMode('signup'); setVerificationEmail(''); setMsg(''); }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('signup');
+                    setVerificationEmail('');
+                    setMsg('');
+                  }}
+                >
                   {pick({ en: 'Create account', ar: 'إنشاء حساب' })}
                 </button>
               )}
               {mode === 'signin' && (
-                <button type="button" onClick={() => { setMode('reset'); setVerificationEmail(''); setMsg(''); }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('reset');
+                    setVerificationEmail('');
+                    setMsg('');
+                  }}
+                >
                   {pick({ en: 'Forgot password?', ar: 'نسيت كلمة المرور؟' })}
                 </button>
               )}
@@ -668,7 +704,8 @@ export default function AccountPage() {
       });
       const firstName = clean(profile.firstName);
       const lastName = clean(profile.lastName);
-      const displayName = clean(profile.displayName) || [firstName, lastName].filter(Boolean).join(' ');
+      const displayName =
+        clean(profile.displayName) || [firstName, lastName].filter(Boolean).join(' ');
       const metadataResult = await auth.updateMetadata({
         first_name: firstName,
         last_name: lastName,
@@ -706,10 +743,15 @@ export default function AccountPage() {
   return (
     <>
       <Seo title="Account" path="/account" noindex />
-      <section className="section account-page">
-        <div className="container">
-          <div className="account-heading">
-            <label className="account-avatar-editor">
+      {/* THE ACCOUNT SHELL — an identity masthead over a numbered section
+          register, rather than a heading row above a plain nav column. The
+          identity carries the avatar editor, the signed-in address and the
+          live sync status as specification, and sign-out sits as the
+          masthead's action. */}
+      <section className="gw-account">
+        <div className="gw-account-inner">
+          <div className="gw-account-identity">
+            <label className="gw-account-avatar">
               <Avatar
                 name={
                   profile.displayName ||
@@ -753,7 +795,10 @@ export default function AccountPage() {
                       data.saveProfile(nextProfile),
                       auth.updateMetadata({ avatar_url: avatarUrl }),
                     ]);
-                    if (profileResult.status === 'rejected' && metadataResult.status === 'rejected') {
+                    if (
+                      profileResult.status === 'rejected' &&
+                      metadataResult.status === 'rejected'
+                    ) {
                       throw profileResult.reason || metadataResult.reason;
                     }
                     if (metadataResult.status === 'fulfilled' && metadataResult.value?.error) {
@@ -786,15 +831,18 @@ export default function AccountPage() {
                 }}
               />
             </label>
-            <div>
-              <p className="section-label">SHABABUNA ACCOUNT</p>
-              <h1>{pick({ en: 'Your account', ar: 'حسابك' })}</h1>
-              <p>
-                {auth.user.email} · {data.status}
+            <div className="gw-account-who">
+              <p className="gw-spec">SHABABUNA ACCOUNT</p>
+              <h1 className="gw-account-title">{pick({ en: 'Your account', ar: 'حسابك' })}</h1>
+              <p className="gw-account-meta">
+                <span className="gw-isolate-ltr">{auth.user.email}</span>
+                <span className="gw-account-sync" data-status={data.status}>
+                  {data.status}
+                </span>
               </p>
             </div>
             <button
-              className="btn-secondary"
+              className="gw-btn gw-btn--secondary gw-account-signout"
               onClick={async () => {
                 try {
                   await data.flush?.();
@@ -806,23 +854,27 @@ export default function AccountPage() {
               {pick({ en: 'Sign out', ar: 'تسجيل الخروج' })}
             </button>
           </div>
-          <div className="account-layout">
+          <div className="gw-account-body">
             <nav
-              className="account-nav"
+              className="gw-account-register"
               aria-label={pick({ en: 'Account sections', ar: 'أقسام الحساب' })}
             >
-              {Object.entries(t).map(([k, v]) => (
+              {Object.entries(t).map(([k, v], position) => (
                 <button
                   key={k}
-                  className={section === k ? 'active' : ''}
+                  type="button"
+                  className={`gw-account-tab${section === k ? ' is-active' : ''}`}
                   aria-current={section === k ? 'page' : undefined}
                   onClick={() => selectSection(k)}
                 >
-                  {v}
+                  <span className="gw-account-tab-index" aria-hidden="true">
+                    {String(position + 1).padStart(2, '0')}
+                  </span>
+                  <span>{v}</span>
                 </button>
               ))}
             </nav>
-            <div className="account-content">
+            <div className="gw-account-panel">
               {section === 'overview' && (
                 <div className="account-grid">
                   <article>
@@ -1187,7 +1239,9 @@ function Security({ auth, pick, lang }) {
     [exports, setExports] = useState([]);
   useEffect(() => {
     if (!auth.cloudConfigured) return;
-    listPrivacyExports().then(setExports).catch(() => setExports([]));
+    listPrivacyExports()
+      .then(setExports)
+      .catch(() => setExports([]));
   }, [auth.cloudConfigured]);
   const change = async (e) => {
     e.preventDefault();
@@ -1228,7 +1282,61 @@ function Security({ auth, pick, lang }) {
         </button>
       </form>
       <MfaSecurityPanel auth={auth} pick={pick} />
-      <section className="privacy-export-panel"><h2>{pick({ en: 'Privacy export', ar: 'تصدير بيانات الخصوصية' })}</h2><p>{pick({ en: 'Request a secure export of the personal data linked to your account.', ar: 'اطلب نسخة آمنة من البيانات الشخصية المرتبطة بحسابك.' })}</p><button type="button" className="btn-secondary" disabled={busy || !auth.cloudConfigured} onClick={async () => { setBusy(true); try { await requestPrivacyExport(); setExports(await listPrivacyExports()); setMsg(pick({ en: 'Privacy export requested.', ar: 'تم طلب تصدير بياناتك.' })); } catch (x) { setMsg(errorText(x, lang)); } finally { setBusy(false); } }}>{pick({ en: 'Request data export', ar: 'طلب تصدير البيانات' })}</button>{exports.length > 0 && <ul className="privacy-export-list">{exports.map((item) => <li key={item.id}><span>{item.status}</span><time>{new Date(item.created_at).toLocaleDateString(lang === 'ar' ? 'ar-LY' : 'en-US')}</time>{item.status === 'ready' && item.export_asset_id && <button type="button" className="btn-secondary compact" onClick={async () => { try { await downloadPrivacyExport(item.export_asset_id); } catch (error) { setMsg(errorText(error, lang)); } }}>{pick({ en: 'Download', ar: 'تحميل' })}</button>}</li>)}</ul>}</section>
+      <section className="privacy-export-panel">
+        <h2>{pick({ en: 'Privacy export', ar: 'تصدير بيانات الخصوصية' })}</h2>
+        <p>
+          {pick({
+            en: 'Request a secure export of the personal data linked to your account.',
+            ar: 'اطلب نسخة آمنة من البيانات الشخصية المرتبطة بحسابك.',
+          })}
+        </p>
+        <button
+          type="button"
+          className="btn-secondary"
+          disabled={busy || !auth.cloudConfigured}
+          onClick={async () => {
+            setBusy(true);
+            try {
+              await requestPrivacyExport();
+              setExports(await listPrivacyExports());
+              setMsg(pick({ en: 'Privacy export requested.', ar: 'تم طلب تصدير بياناتك.' }));
+            } catch (x) {
+              setMsg(errorText(x, lang));
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          {pick({ en: 'Request data export', ar: 'طلب تصدير البيانات' })}
+        </button>
+        {exports.length > 0 && (
+          <ul className="privacy-export-list">
+            {exports.map((item) => (
+              <li key={item.id}>
+                <span>{item.status}</span>
+                <time>
+                  {new Date(item.created_at).toLocaleDateString(lang === 'ar' ? 'ar-LY' : 'en-US')}
+                </time>
+                {item.status === 'ready' && item.export_asset_id && (
+                  <button
+                    type="button"
+                    className="btn-secondary compact"
+                    onClick={async () => {
+                      try {
+                        await downloadPrivacyExport(item.export_asset_id);
+                      } catch (error) {
+                        setMsg(errorText(error, lang));
+                      }
+                    }}
+                  >
+                    {pick({ en: 'Download', ar: 'تحميل' })}
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
       <button className="btn-secondary" onClick={() => auth.signOut('global')}>
         {pick({ en: 'Sign out all devices', ar: 'تسجيل الخروج من جميع الأجهزة' })}
       </button>

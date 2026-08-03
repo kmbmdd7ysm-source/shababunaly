@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:08:49.594Z",
+  "generatedAt": "2026-08-03T16:36:06.948Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 26,
+    "fully-rebuilt": 27,
     "partially-rebuilt": 0,
-    "not-rebuilt": 10,
+    "not-rebuilt": 9,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 19,
+    "fully-rebuilt": 20,
     "partially-rebuilt": 0,
-    "not-rebuilt": 10
+    "not-rebuilt": 9
   },
   "routes": [
     {
@@ -442,14 +442,13 @@
       "component": "Account",
       "file": "src/pages/AccountPage.jsx",
       "access": "customer",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 142,
+      "linesRemoved": 34,
+      "compositionMarkers": [
+        "gw-account"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/orders",
