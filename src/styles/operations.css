@@ -1,0 +1,361 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK Operations (Phase 8)
+   --------------------------------------------------------------------------
+   The internal control system. Explicitly NOT cinematic.
+
+   Operations is used all day, on a laptop, under time pressure. It optimises
+   for scan speed and information density, not for impression:
+
+     - a tighter type scale and tighter spacing than the storefront
+     - tabular figures everywhere a number appears
+     - sticky table headers, so the columns stay readable in a long list
+     - status carried by a word AND a shape, never colour alone
+     - zero decorative motion; the only transitions are 120ms state feedback
+
+   No permission boundary, role check, AAL2 requirement, audit path or data
+   request is touched. Presentation only.
+   ========================================================================== */
+
+.operations-page {
+  /* A denser rhythm than the storefront: this is a working surface. */
+  --sh-s-4: 12px;
+  --sh-s-5: 16px;
+  background: var(--sh-chalk-2);
+  font-size: 0.9375rem;
+}
+
+.operations-page .container {
+  max-inline-size: 1600px;
+}
+
+/* ---------- Control centre and section heads ------------------------------ */
+
+.operations-control-center,
+.operations-section {
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+  margin-block-end: var(--sh-s-5);
+}
+
+.operations-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-block-end: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  margin-block-end: var(--sh-s-4);
+}
+
+.operations-section-head h2,
+.operations-section-head h3 {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink);
+  margin: 0;
+}
+
+[lang='ar'] .operations-section-head h2,
+[lang='ar'] .operations-section-head h3 {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Toolbar, search and filters ----------------------------------- */
+
+.operations-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+  padding-block-end: var(--sh-s-3);
+  margin-block-end: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.operations-search input,
+.operations-toolbar input,
+.operations-toolbar select {
+  min-block-size: var(--sh-target-min);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  padding-inline: 10px;
+  font-size: 0.9375rem;
+}
+
+.operations-search input:focus-visible,
+.operations-toolbar input:focus-visible,
+.operations-toolbar select:focus-visible {
+  border-color: var(--sh-ink);
+}
+
+/* ---------- Tables ---------------------------------------------------------
+   The core of the whole module. Sticky header, hairline rows, tabular figures,
+   and horizontal scroll rather than a squeezed layout. */
+
+.operations-table-wrap {
+  overflow: auto;
+  max-block-size: 70vh;
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+}
+
+.operations-table,
+.catalog-operations-table {
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.operations-table thead th,
+.catalog-operations-table thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  text-align: start;
+  padding: 9px var(--sh-s-3);
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+[lang='ar'] .operations-table thead th,
+[lang='ar'] .catalog-operations-table thead th {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.operations-table tbody td,
+.operations-table tbody th,
+.catalog-operations-table tbody td,
+.catalog-operations-table tbody th {
+  padding: 9px var(--sh-s-3);
+  border-block-start: 1px solid var(--sh-rule);
+  color: var(--sh-ink);
+  text-align: start;
+  vertical-align: top;
+}
+
+.operations-table tbody tr:hover td,
+.catalog-operations-table tbody tr:hover td {
+  background: var(--sh-chalk-2);
+}
+
+/* ---------- Cards and stats ------------------------------------------------ */
+
+.operations-card,
+.operations-product-card,
+.order-operations-card,
+.return-operations-card,
+.enterprise-action-card,
+.enterprise-panel-stack > *,
+.manual-payment-panel,
+.refund-panel {
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-4);
+}
+
+.operations-card-grid,
+.operations-product-grid,
+.operations-bi-grid,
+.operations-check-grid,
+.operations-master-grid {
+  display: grid;
+  gap: var(--sh-s-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+/* A statistic is a figure first and a label second. */
+.operations-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-4);
+}
+
+.operations-stat strong,
+.operations-stat b {
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--sh-ink);
+}
+
+.operations-stat span,
+.operations-stat small {
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .operations-stat span,
+[lang='ar'] .operations-stat small {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Business intelligence ------------------------------------------
+   Figures are presented with their own provenance. Where event coverage is
+   incomplete the module says so rather than implying a complete series. */
+
+.operations-bi {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+}
+
+.operations-bi [data-quality='partial'],
+.operations-bi .data-quality-warning {
+  border-inline-start: 3px solid var(--sh-maple);
+  padding-inline-start: var(--sh-s-3);
+  color: var(--sh-ink-70);
+  font-size: var(--sh-t-small);
+}
+
+/* ---------- Checks and status ---------------------------------------------- */
+
+.operations-check {
+  display: flex;
+  align-items: start;
+  gap: var(--sh-s-2);
+  padding-block: 6px;
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+/* Pass and fail differ in glyph as well as colour, because an operator scanning
+   fifty rows must not depend on hue. */
+.operations-check[data-state='pass']::before,
+.operations-check.pass::before {
+  content: '\2713';
+  color: var(--sh-verified);
+  font-weight: 800;
+}
+
+.operations-check[data-state='fail']::before,
+.operations-check.fail::before {
+  content: '\2715';
+  color: var(--sh-alert);
+  font-weight: 800;
+}
+
+/* ---------- Forms ----------------------------------------------------------- */
+
+.operations-form-grid,
+.operations-price-grid {
+  display: grid;
+  gap: var(--sh-s-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+}
+
+.operations-page label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8125rem;
+}
+
+.operations-page input,
+.operations-page select,
+.operations-page textarea {
+  min-block-size: var(--sh-target-min);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  padding: 6px 10px;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.operations-page .btn-primary,
+.operations-page .btn-secondary {
+  min-block-size: var(--sh-target-min);
+  font-size: var(--sh-t-spec);
+  letter-spacing: var(--sh-tr-spec);
+}
+
+/* ---------- Rates and configuration ---------------------------------------- */
+
+.configured-rate-list,
+.operations-rate {
+  font-variant-numeric: tabular-nums;
+}
+
+.operations-rate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-block: 8px;
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+/* ---------- No decoration --------------------------------------------------
+   Operations gets state feedback and nothing else. */
+
+.operations-page * {
+  animation: none !important;
+}
+
+.operations-page a,
+.operations-page button,
+.operations-page input,
+.operations-page select {
+  transition-duration: var(--sh-d-1);
+}
+
+/* ---------- Mobile-tolerant, not mobile-first -------------------------------
+   Operations is a desktop tool. On a phone it stays usable: tables scroll,
+   cards stack, and nothing overflows the viewport. */
+
+@media (max-width: 899px) {
+  .operations-control-center,
+  .operations-section {
+    padding: var(--sh-s-4);
+  }
+
+  .operations-table-wrap {
+    max-block-size: none;
+  }
+
+  .operations-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .operations-section-head {
+    flex-direction: column;
+    align-items: start;
+  }
+}

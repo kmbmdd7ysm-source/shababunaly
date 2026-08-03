@@ -21,6 +21,7 @@ const BRIDGE_LAYERS = [
   'workspace.css',
   'content.css',
   'transact.css',
+  'operations.css',
 ];
 const SCOPED_LAYERS = [
   'typography.css',
