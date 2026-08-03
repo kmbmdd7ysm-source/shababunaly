@@ -19,13 +19,26 @@ const PORT = Number(process.env.REVIEW_PORT || 4173);
 const HOST = process.env.REVIEW_HOST || '0.0.0.0';
 
 const MIME = {
-  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8',
-  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp',
-  '.avif': 'image/avif', '.svg': 'image/svg+xml', '.ico': 'image/x-icon',
-  '.woff2': 'font/woff2', '.woff': 'font/woff', '.txt': 'text/plain; charset=utf-8',
-  '.xml': 'application/xml; charset=utf-8', '.webmanifest': 'application/manifest+json',
-  '.mp4': 'video/mp4', '.webm': 'video/webm', '.glb': 'model/gltf-binary', '.map': 'application/json',
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.glb': 'model/gltf-binary',
+  '.map': 'application/json',
 };
 
 const server = http.createServer((request, response) => {
@@ -60,7 +73,8 @@ const server = http.createServer((request, response) => {
 
 server.listen(PORT, HOST, () => {
   const pages = fs.existsSync(ROOT)
-    ? fs.readdirSync(ROOT, { recursive: true }).filter((f) => String(f).endsWith('index.html')).length
+    ? fs.readdirSync(ROOT, { recursive: true }).filter((f) => String(f).endsWith('index.html'))
+        .length
     : 0;
   console.info(`Shababuna review server`);
   console.info(`  serving : ${path.resolve(ROOT)} (${pages} prerendered HTML pages)`);
