@@ -197,13 +197,8 @@ export default function CheckoutPage() {
   const onlineCardConfigured = isPaymentMethodConfigured('online_card');
   const libyanCardConfigured = isPaymentMethodConfigured('libyan_bank_card');
   const paymentConfigured = paymentMethod === 'cash' || isPaymentMethodConfigured(paymentMethod);
-  const paymentPlan = shippingQuoteRequired
-    ? 'pending_shipping_quote'
-    : stagedOrder
-      ? 'half'
-      : paymentMethod === 'cash'
-        ? cashPlan
-        : 'full';
+  // prettier-ignore
+  const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : stagedOrder ? 'half' : paymentMethod === 'cash' ? cashPlan : 'full';
   const dueRatio = paymentPlan === 'half' ? 0.5 : paymentPlan === 'pending_shipping_quote' ? 0 : 1;
   const amountDueNow = total * dueRatio;
   const remainingBalance = Math.max(0, total - amountDueNow);
