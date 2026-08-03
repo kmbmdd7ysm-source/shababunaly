@@ -10,12 +10,12 @@ that is the precise failure this ledger exists to expose.
 | Status | Count |
 | --- | ---: |
 | Fully rebuilt | **22** |
-| Partially rebuilt | **11** |
-| Not rebuilt | **3** |
+| Partially rebuilt | **0** |
+| Not rebuilt | **14** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 15 rebuilt, 11 partial, 3 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 15 rebuilt, 0 partial, 14 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
@@ -30,27 +30,27 @@ Distinct page components: **29** — 15 rebuilt, 11 partial, 3 legacy. One compo
 | `/checkout/success` | CheckoutStatus | public | +18/-11 | gw-terminal | **REBUILT** |
 | `/checkout/cancelled` | CheckoutStatus | public | +18/-11 | gw-terminal | **REBUILT** |
 | `/customize` | Customize | public | +981/-129 | StudioStage | **REBUILT** |
-| `/special-request` | SpecialRequest | public | +358/-40 | — | _partial_ |
-| `/teams-wholesale` | TeamsWholesale | public | +473/-56 | — | _partial_ |
-| `/team-locker/:slug` | TeamLocker | team | +88/-9 | — | _partial_ |
-| `/design-share/:token` | DesignShare | public | +232/-20 | — | _partial_ |
-| `/lha-store` | LhaStore | public | +47/-6 | — | _partial_ |
-| `/our-work` | OurWork | public | +37/-9 | — | _partial_ |
+| `/special-request` | SpecialRequest | public | +0/-0 | — | LEGACY |
+| `/teams-wholesale` | TeamsWholesale | public | +0/-0 | — | LEGACY |
+| `/team-locker/:slug` | TeamLocker | team | +0/-0 | — | LEGACY |
+| `/design-share/:token` | DesignShare | public | +0/-0 | — | LEGACY |
+| `/lha-store` | LhaStore | public | +0/-0 | — | LEGACY |
+| `/our-work` | OurWork | public | +0/-0 | — | LEGACY |
 | `/programs/*` | Navigate | public | +0/-0 | — | redirect |
 | `/events/*` | Navigate | public | +0/-0 | — | redirect |
 | `/online-training/*` | Navigate | public | +0/-0 | — | redirect |
 | `/coaches/*` | Navigate | public | +0/-0 | — | redirect |
-| `/contact` | Contact | public | +202/-30 | — | _partial_ |
+| `/contact` | Contact | public | +0/-0 | — | LEGACY |
 | `/faq` | Faq | public | +56/-27 | gw-terminal, RouteMasthead, Dossier | **REBUILT** |
 | `/help` | Help | public | +0/-0 | — | LEGACY |
-| `/operations/*` | Operations | staff | +52/-24 | — | _partial_ |
+| `/operations/*` | Operations | staff | +0/-0 | — | LEGACY |
 | `/size-guide` | SizeGuide | public | +48/-34 | RouteMasthead, Dossier | **REBUILT** |
-| `/search` | Search | public | +159/-23 | — | _partial_ |
-| `/order-tracking` | OrderTracking | public | +8/-2 | — | LEGACY |
-| `/order-tracking/:orderNumber` | OrderDetail | public | +212/-44 | — | _partial_ |
-| `/compare` | Compare | public | +5/-2 | — | LEGACY |
+| `/search` | Search | public | +0/-0 | — | LEGACY |
+| `/order-tracking` | OrderTracking | public | +0/-0 | — | LEGACY |
+| `/order-tracking/:orderNumber` | OrderDetail | public | +0/-0 | — | LEGACY |
+| `/compare` | Compare | public | +0/-0 | — | LEGACY |
 | `/favorites` | Favorites | public | +41/-31 | gw-catalogue, gw-terminal, RouteMasthead | **REBUILT** |
-| `/account` | Account | customer | +106/-14 | — | _partial_ |
+| `/account` | Account | customer | +0/-0 | — | LEGACY |
 | `/orders` | Navigate | customer | +0/-0 | — | redirect |
 | `/offline` | Offline | public | +39/-3 | gw-terminal | **REBUILT** |
 | `/lab/home` | LabHome | public | +405/-0 | gw-hero, gw-section, Chapter, SpecBlock | **REBUILT** |

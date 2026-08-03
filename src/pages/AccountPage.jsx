@@ -19,11 +19,7 @@ import OrganizationWorkspace from '../components/account/OrganizationWorkspace';
 import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import MfaSecurityPanel from '../components/account/MfaSecurityPanel';
-import {
-  downloadPrivacyExport,
-  listPrivacyExports,
-  requestPrivacyExport,
-} from '../services/privacy';
+import { downloadPrivacyExport, listPrivacyExports, requestPrivacyExport } from '../services/privacy';
 
 const ACCOUNT_SECTIONS = [
   'overview',
@@ -86,15 +82,9 @@ export default function AccountPage() {
     [ordersState, setOrdersState] = useState({ state: 'idle', orders: [], error: null }),
     [profile, setProfile] = useState(() => ({
       firstName:
-        data?.profile?.first_name ||
-        data?.profile?.firstName ||
-        auth.user?.user_metadata?.first_name ||
-        '',
+        data?.profile?.first_name || data?.profile?.firstName || auth.user?.user_metadata?.first_name || '',
       lastName:
-        data?.profile?.last_name ||
-        data?.profile?.lastName ||
-        auth.user?.user_metadata?.last_name ||
-        '',
+        data?.profile?.last_name || data?.profile?.lastName || auth.user?.user_metadata?.last_name || '',
       displayName:
         data?.profile?.display_name ||
         data?.profile?.displayName ||
@@ -249,7 +239,7 @@ export default function AccountPage() {
       orders: pick({ en: 'Orders', ar: 'الطلبات' }),
       workspace: pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' }),
       returns: pick({ en: 'Returns', ar: 'الإرجاع' }),
-      'special-requests': pick({ en: 'Special Requests', ar: 'طلبات خاصة' }),
+                    'special-requests': pick({ en: 'Special Requests', ar: 'طلبات خاصة' }),
     }),
     [pick],
   );
@@ -314,7 +304,8 @@ export default function AccountPage() {
           organization_name: accountType === 'organization' ? clean(organizationName) : '',
           organization_type: accountType === 'organization' ? organizationType : '',
         });
-      } else if (mode === 'reset') r = await auth.reset(normalizedEmail);
+      }
+      else if (mode === 'reset') r = await auth.reset(normalizedEmail);
       else if (mode === 'reset-password') r = await auth.updatePassword(password);
       else r = await auth.signIn(normalizedEmail, password);
       if (r?.error) throw r.error;
@@ -425,9 +416,7 @@ export default function AccountPage() {
                         setMsg('');
                       }}
                     >
-                      <strong>
-                        {pick({ en: 'Team & business account', ar: 'حساب فريق أو مؤسسة' })}
-                      </strong>
+                      <strong>{pick({ en: 'Team & business account', ar: 'حساب فريق أو مؤسسة' })}</strong>
                       <span>
                         {pick({
                           en: 'For clubs, academies, federations, wholesale and distributors.',
@@ -643,38 +632,17 @@ export default function AccountPage() {
             )}
             <div className="account-switch">
               {mode !== 'signin' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('signin');
-                    setVerificationEmail('');
-                    setMsg('');
-                  }}
-                >
+                <button type="button" onClick={() => { setMode('signin'); setVerificationEmail(''); setMsg(''); }}>
                   {pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}
                 </button>
               )}
               {mode !== 'signup' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('signup');
-                    setVerificationEmail('');
-                    setMsg('');
-                  }}
-                >
+                <button type="button" onClick={() => { setMode('signup'); setVerificationEmail(''); setMsg(''); }}>
                   {pick({ en: 'Create account', ar: 'إنشاء حساب' })}
                 </button>
               )}
               {mode === 'signin' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('reset');
-                    setVerificationEmail('');
-                    setMsg('');
-                  }}
-                >
+                <button type="button" onClick={() => { setMode('reset'); setVerificationEmail(''); setMsg(''); }}>
                   {pick({ en: 'Forgot password?', ar: 'نسيت كلمة المرور؟' })}
                 </button>
               )}
@@ -700,8 +668,7 @@ export default function AccountPage() {
       });
       const firstName = clean(profile.firstName);
       const lastName = clean(profile.lastName);
-      const displayName =
-        clean(profile.displayName) || [firstName, lastName].filter(Boolean).join(' ');
+      const displayName = clean(profile.displayName) || [firstName, lastName].filter(Boolean).join(' ');
       const metadataResult = await auth.updateMetadata({
         first_name: firstName,
         last_name: lastName,
@@ -786,10 +753,7 @@ export default function AccountPage() {
                       data.saveProfile(nextProfile),
                       auth.updateMetadata({ avatar_url: avatarUrl }),
                     ]);
-                    if (
-                      profileResult.status === 'rejected' &&
-                      metadataResult.status === 'rejected'
-                    ) {
+                    if (profileResult.status === 'rejected' && metadataResult.status === 'rejected') {
                       throw profileResult.reason || metadataResult.reason;
                     }
                     if (metadataResult.status === 'fulfilled' && metadataResult.value?.error) {
@@ -1223,9 +1187,7 @@ function Security({ auth, pick, lang }) {
     [exports, setExports] = useState([]);
   useEffect(() => {
     if (!auth.cloudConfigured) return;
-    listPrivacyExports()
-      .then(setExports)
-      .catch(() => setExports([]));
+    listPrivacyExports().then(setExports).catch(() => setExports([]));
   }, [auth.cloudConfigured]);
   const change = async (e) => {
     e.preventDefault();
@@ -1266,61 +1228,7 @@ function Security({ auth, pick, lang }) {
         </button>
       </form>
       <MfaSecurityPanel auth={auth} pick={pick} />
-      <section className="privacy-export-panel">
-        <h2>{pick({ en: 'Privacy export', ar: 'تصدير بيانات الخصوصية' })}</h2>
-        <p>
-          {pick({
-            en: 'Request a secure export of the personal data linked to your account.',
-            ar: 'اطلب نسخة آمنة من البيانات الشخصية المرتبطة بحسابك.',
-          })}
-        </p>
-        <button
-          type="button"
-          className="btn-secondary"
-          disabled={busy || !auth.cloudConfigured}
-          onClick={async () => {
-            setBusy(true);
-            try {
-              await requestPrivacyExport();
-              setExports(await listPrivacyExports());
-              setMsg(pick({ en: 'Privacy export requested.', ar: 'تم طلب تصدير بياناتك.' }));
-            } catch (x) {
-              setMsg(errorText(x, lang));
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          {pick({ en: 'Request data export', ar: 'طلب تصدير البيانات' })}
-        </button>
-        {exports.length > 0 && (
-          <ul className="privacy-export-list">
-            {exports.map((item) => (
-              <li key={item.id}>
-                <span>{item.status}</span>
-                <time>
-                  {new Date(item.created_at).toLocaleDateString(lang === 'ar' ? 'ar-LY' : 'en-US')}
-                </time>
-                {item.status === 'ready' && item.export_asset_id && (
-                  <button
-                    type="button"
-                    className="btn-secondary compact"
-                    onClick={async () => {
-                      try {
-                        await downloadPrivacyExport(item.export_asset_id);
-                      } catch (error) {
-                        setMsg(errorText(error, lang));
-                      }
-                    }}
-                  >
-                    {pick({ en: 'Download', ar: 'تحميل' })}
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <section className="privacy-export-panel"><h2>{pick({ en: 'Privacy export', ar: 'تصدير بيانات الخصوصية' })}</h2><p>{pick({ en: 'Request a secure export of the personal data linked to your account.', ar: 'اطلب نسخة آمنة من البيانات الشخصية المرتبطة بحسابك.' })}</p><button type="button" className="btn-secondary" disabled={busy || !auth.cloudConfigured} onClick={async () => { setBusy(true); try { await requestPrivacyExport(); setExports(await listPrivacyExports()); setMsg(pick({ en: 'Privacy export requested.', ar: 'تم طلب تصدير بياناتك.' })); } catch (x) { setMsg(errorText(x, lang)); } finally { setBusy(false); } }}>{pick({ en: 'Request data export', ar: 'طلب تصدير البيانات' })}</button>{exports.length > 0 && <ul className="privacy-export-list">{exports.map((item) => <li key={item.id}><span>{item.status}</span><time>{new Date(item.created_at).toLocaleDateString(lang === 'ar' ? 'ar-LY' : 'en-US')}</time>{item.status === 'ready' && item.export_asset_id && <button type="button" className="btn-secondary compact" onClick={async () => { try { await downloadPrivacyExport(item.export_asset_id); } catch (error) { setMsg(errorText(error, lang)); } }}>{pick({ en: 'Download', ar: 'تحميل' })}</button>}</li>)}</ul>}</section>
       <button className="btn-secondary" onClick={() => auth.signOut('global')}>
         {pick({ en: 'Sign out all devices', ar: 'تسجيل الخروج من جميع الأجهزة' })}
       </button>

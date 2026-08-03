@@ -108,13 +108,16 @@ for (const { path, component } of routes) {
   // `<Navigate>` entries are redirects, not pages. They have no composition to
   // rebuild and must not inflate the legacy count.
   const isRedirect = component === 'Navigate';
+  // Churn WITHOUT composition markers is formatting, not a rebuild, and must
+  // never earn credit - a `prettier --write` across src/pages would otherwise
+  // promote every legacy page to "partially rebuilt" overnight.
   const status = isRedirect
     ? 'redirect'
-    : jsxChanged && markers.length > 0
-      ? 'fully-rebuilt'
-      : markers.length > 0 || jsxChanged
-        ? 'partially-rebuilt'
-        : 'not-rebuilt';
+    : markers.length === 0
+      ? 'not-rebuilt'
+      : jsxChanged
+        ? 'fully-rebuilt'
+        : 'partially-rebuilt';
 
   rows.push({
     route: path,
