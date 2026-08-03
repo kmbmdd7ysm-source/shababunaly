@@ -47,13 +47,63 @@ export default function ComparePage() {
       <section className="gw-matrix">
         <div className="gw-matrix-inner">
           {!list.length ? (
-            <div className="gw-terminal-inner">
-              <h2 className="gw-terminal-title">
-                {pick({ en: 'No products selected', ar: 'لم تختر منتجات' })}
-              </h2>
-              <Link className="gw-btn gw-btn--primary" to="/shop">
-                {pick({ en: 'Browse shop', ar: 'تصفح المتجر' })}
-              </Link>
+            /* An empty comparison was a thin dead band saying nothing. A
+               comparison page's whole value is its AXES, so the empty state
+               shows them: the exact eight attributes the matrix will line up,
+               read from the same `rows` the built matrix uses so the preview
+               can never promise a column that does not appear. Three empty
+               slots stand in for the products, making the shape of the answer
+               visible before the visitor commits to filling it. */
+            <div className="gw-matrix-blank">
+              <div className="gw-matrix-blank-say">
+                <h2 className="gw-matrix-blank-title">
+                  {pick({ en: 'No products selected', ar: 'لم تختر منتجات' })}
+                </h2>
+                <p className="gw-matrix-blank-hint">
+                  {pick({
+                    en: 'Add products from the shop and they will be lined up against each of these.',
+                    ar: 'أضف منتجات من المتجر لتُعرض جنبًا إلى جنب على هذه المعايير.',
+                  })}
+                </p>
+                <Link className="gw-btn gw-btn--primary" to="/shop">
+                  {pick({ en: 'Browse shop', ar: 'تصفح المتجر' })}
+                </Link>
+              </div>
+              <table className="gw-matrix-preview">
+                <caption className="sr-only">
+                  {pick({
+                    en: 'Attributes this comparison comes with',
+                    ar: 'المعايير التي تشملها المقارنة',
+                  })}
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{pick({ en: 'Attribute', ar: 'المعيار' })}</th>
+                    {[0, 1, 2].map((slot) => (
+                      <th scope="col" key={slot}>
+                        <span className="gw-matrix-slot" aria-hidden="true">
+                          {String(slot + 1).padStart(2, '0')}
+                        </span>
+                        <span className="sr-only">
+                          {pick({ en: 'Empty slot', ar: 'خانة فارغة' })}
+                        </span>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map(([label]) => (
+                    <tr key={String(label)}>
+                      <th scope="row">{label}</th>
+                      {[0, 1, 2].map((slot) => (
+                        <td key={slot} aria-hidden="true">
+                          —
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ) : (
             <div

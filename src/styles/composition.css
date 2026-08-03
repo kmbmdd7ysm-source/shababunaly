@@ -1489,3 +1489,100 @@
   margin-inline: auto;
   padding-inline: clamp(16px, 3vw, 48px);
 }
+
+/* ---------- Compare: the empty matrix previews its own axes -------------------
+   A comparison page's value is its AXES. An empty state that says only "no
+   products selected" throws that away. This shows the exact attributes the
+   matrix will line up, with three empty slots standing in for the products, so
+   the shape of the answer is visible before the visitor commits to it. */
+
+.gw-matrix-blank {
+  display: grid;
+  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  padding-block: clamp(28px, 5vh, 64px);
+}
+
+@media (min-width: 900px) {
+  .gw-matrix-blank {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+.gw-matrix-blank-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.6rem, 1.2rem + 2vw, 2.6rem);
+  font-weight: 800;
+  font-stretch: 102%;
+  line-height: 1.02;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-matrix-blank-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.3;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-matrix-blank-hint {
+  margin: var(--sh-s-3) 0 var(--sh-s-4);
+  max-inline-size: 42ch;
+  color: var(--sh-ink-70);
+}
+
+.gw-matrix-preview {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.gw-matrix-preview th,
+.gw-matrix-preview td {
+  padding: var(--sh-s-2) var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  text-align: start;
+}
+
+.gw-matrix-preview thead th {
+  border-block-end-color: var(--sh-rule-strong);
+}
+
+.gw-matrix-preview tbody th {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+}
+
+[lang='ar'] .gw-matrix-preview tbody th {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.gw-matrix-preview td {
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-matrix-slot {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 34px;
+  block-size: 34px;
+  border: 1px dashed var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+}
