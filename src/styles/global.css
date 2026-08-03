@@ -459,8 +459,13 @@ strong {
   margin-inline-start: auto;
 }
 .icon-btn {
-  width: 40px;
-  height: 40px;
+  /* WCAG 2.2 AA 2.5.8 requires 24x24 CSS px. These buttons were being squeezed
+     to 14px wide by the header flex row, so they are now non-shrinking and
+     never narrower than a comfortable 44px target. */
+  width: 44px;
+  height: 44px;
+  min-inline-size: 44px;
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;

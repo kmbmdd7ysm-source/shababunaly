@@ -34,6 +34,9 @@ import './styles/typography.css';
 import './styles/motion.css';
 import './styles/geometry.css';
 import './styles/layout.css';
+// The shell bridge loads last so it can migrate the legacy chrome onto the new
+// system in place, without needing `!important` to win.
+import './styles/shell.css';
 
 installGlobalErrorMonitoring();
 

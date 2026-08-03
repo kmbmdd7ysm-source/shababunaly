@@ -127,14 +127,12 @@ if (existsSync(MODELS_MANIFEST)) {
 }
 
 const rows = products.map((product) => assess(product, manifest));
-const counts = rows.reduce(
-  (acc, row) => ({ ...acc, [row.currentTier]: (acc[row.currentTier] || 0) + 1 }),
-  {},
-);
-const targets = rows.reduce(
-  (acc, row) => ({ ...acc, [row.targetTier]: (acc[row.targetTier] || 0) + 1 }),
-  {},
-);
+const counts = { A: 0, B: 0, C: 0, D: 0 };
+const targets = { A: 0, B: 0, C: 0, D: 0 };
+for (const row of rows) {
+  counts[row.currentTier] += 1;
+  targets[row.targetTier] += 1;
+}
 
 // Level D is not one problem but two, and they cost very different amounts.
 const blockedWithRealPhoto = rows.filter(
@@ -147,8 +145,8 @@ const report = {
   generatedAt: new Date().toISOString(),
   minimumSpinFrames: MIN_SPIN_FRAMES,
   totalProducts: rows.length,
-  currentTierCounts: { A: counts.A || 0, B: counts.B || 0, C: counts.C || 0, D: counts.D || 0 },
-  targetTierCounts: { A: targets.A || 0, B: targets.B || 0 },
+  currentTierCounts: { ...counts },
+  targetTierCounts: { A: targets.A, B: targets.B },
   levelDBreakdown: {
     oneVerifiedPhotograph: blockedWithRealPhoto,
     placeholderConceptArtOnly: blockedOnPlaceholder,
@@ -181,7 +179,7 @@ const md = [
   `- **${blockedOnPlaceholder}** products have no photography at all and are showing purpose-built concept artwork.`,
   '  They need a first shoot before any viewer tier is possible.',
   '',
-  `Target distribution once assets land: **${report.targetTierCounts.A || 0}** at Level A, **${report.targetTierCounts.B || 0}** at Level B.`,
+  `Target distribution once assets land: **${report.targetTierCounts.A}** at Level A, **${report.targetTierCounts.B}** at Level B.`,
   '',
   '## Every product',
   '',

@@ -464,7 +464,7 @@ body {
 .product-card-brand {
   display: block;
   margin-bottom: 7px;
-  color: #777;
+  color: var(--sh-ink-50);
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.13em;

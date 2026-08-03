@@ -60,6 +60,7 @@ export function resolveProductViewer(product) {
       ? source.model3d
       : null;
 
+  /** @type {'A'|'B'|'C'|'D'} */
   let tier = 'D';
   if (model) tier = 'A';
   else if (frames.length > 0) tier = 'B';

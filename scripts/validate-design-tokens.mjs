@@ -11,6 +11,10 @@ import { readFileSync, existsSync } from 'node:fs';
 const STYLES = 'src/styles';
 const TOKENS = `${STYLES}/tokens.css`;
 const GLOBAL_LAYERS = ['tokens.css', 'fonts.css'];
+// The Phase 2A shell bridge is allowed to target legacy shell class names —
+// that is its entire purpose — but it is still held to tokens-only colours and
+// logical-properties-only layout.
+const BRIDGE_LAYERS = ['shell.css'];
 const SCOPED_LAYERS = [
   'typography.css',
   'motion.css',
@@ -290,7 +294,7 @@ for (const file of GLOBAL_LAYERS) {
 
 /* --------------------------------------------------------- raw hex / RTL -- */
 
-for (const file of SCOPED_LAYERS) {
+for (const file of [...SCOPED_LAYERS, ...BRIDGE_LAYERS]) {
   const css = strip(read(`${STYLES}/${file}`));
   for (const match of css.matchAll(/#[0-9a-f]{3,8}\b/gi)) {
     failures.push(`${file}: raw colour ${match[0]} must come from a --sh-* token`);
@@ -318,7 +322,7 @@ if (failures.length) {
 }
 console.info(
   `Design tokens passed: ${audited.length} colour pairs meet WCAG contrast across ${PALETTES.length} palettes, ` +
-    `${SCOPED_LAYERS.length} applied layers use only gw-* selectors, ` +
+    `${SCOPED_LAYERS.length} applied layers use only gw-* selectors, ${BRIDGE_LAYERS.length} bridge layer checked for tokens and logical properties, ` +
     `${GLOBAL_LAYERS.length} global layers declare custom properties only, ` +
     'and no scoped layer uses a raw colour or a physical left/right property.',
 );
