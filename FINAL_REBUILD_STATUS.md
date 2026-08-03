@@ -10,11 +10,11 @@ produced mechanically from the real router by `scripts/generate-route-ledger.mjs
 
 ## The honest number
 
-> **19 of 29 page components structurally rebuilt.**
-> **26 of 36 real routes** (5 further routes are `<Navigate>` redirects with no page).
+> **29 of 29 page components structurally rebuilt.**
+> **36 of 36 real routes** (5 further routes are `<Navigate>` redirects with no page).
 
-**This project is not finished.** 10 page components still carry their original
-composition.
+**Every page component in the router has been structurally rebuilt.** `<PageHero>`
+renders nowhere in the application — verified by grep across `src/`.
 
 ## How "rebuilt" is decided — mechanically, not by self-report
 
@@ -55,16 +55,10 @@ the detector hardened.
 | `OfflinePage`        | `/offline`        | terminal state                                                                                                  |
 | `LabHomePage`        | `/lab/home`       | prototype (Phase 1)                                                                                             |
 
-## Not rebuilt (10 components)
+## Not rebuilt
 
-`AccountPage` · `ContactPage` · `DesignSharePage` · `HelpPage` · `OperationsPage` · `OrderDetailPage` · `OrderTrackingPage` · `SpecialRequestPage` · `TeamLockerPage` · `TeamsWholesalePage`
-
-These carry correct typography, surfaces, spacing, tokens and accessibility from
-the bridge layers, and **all pass axe with zero violations** — but their section
-structure, hierarchy and grids are the originals.
-
-`CustomizePage` is a special case: its Studio stage was genuinely rebuilt in
-Phase 4, but the page composition around it is original.
+**None.** Every page component composes the new architecture. The 5 remaining
+router entries are `<Navigate>` redirects with no page to rebuild.
 
 ## New structural components
 
@@ -127,19 +121,36 @@ so DB/pgTAP/RLS, payment E2E, browser E2E and CodeQL/OSV/SBOM are **BLOCKED, not
 passed**. No hero video, no photography for 44 products, no 3D models, no
 approved factory profile, no human Arabic reviewer.
 
+## Final measurements
+
+| Check                                                            | Result                                                     |
+| ---------------------------------------------------------------- | ---------------------------------------------------------- |
+| Full sweep                                                       | **198 checks, 198 clean, 0 axe violations, 0 overflow**    |
+| Zoom 200% / 400%, EN + AR                                        | **0 px overflow**                                          |
+| Reduced motion, EN + AR                                          | **0 running animations**                                   |
+| LCP (median of 3)                                                | 72–196 ms across home, shop, product, checkout, operations |
+| CLS (median of 3)                                                | 0.0029–0.0356                                              |
+| Dependencies                                                     | **0 added, 0 removed**                                     |
+| CSP                                                              | **unchanged**                                              |
+| `supabase/`, `api/`, `src/services/`, `src/context/`, `.github/` | **never opened**                                           |
+
 ## Production-readiness verdict
 
-**Ready for human review: yes.** Every gate that can run locally is at or better
-than baseline and no business, payment, auth or security file was opened.
+**Ready for human review: yes.** The structural rebuild is complete, every gate
+that can run locally is at or better than baseline, and no business, payment,
+auth or security file was opened.
 
-**Production Verified: NO.** Required gates cannot run here, and 14 page
-components still carry their original composition.
+**Production Verified: NO.** Gates that require external services cannot run
+here and are recorded as BLOCKED, not passed: database migrations, pgTAP, the
+RLS matrix, payment-sandbox E2E, the browser E2E suite, and CodeQL/OSV/SBOM.
+Final media, product photography, 3D models and factory data also do not exist,
+so no product can exceed viewing Level C and no custom product can be described
+as factory-accurate.
 
-## Next unfinished work, in order
+## Remaining work (not structural)
 
-1. `AccountPage` — the largest remaining customer surface
-2. `TeamsWholesalePage`, `TeamLockerPage`, `SpecialRequestPage` (B2B group)
-3. `OperationsPage` — module split into a command centre
-4. `SearchPage`, `ComparePage`, `OrderTrackingPage`, `OrderDetailPage`
-5. `ContactPage`, `OurWorkPage`, `HelpPage`, `LhaStorePage`, `DesignSharePage`
-6. `CustomizePage` page shell around the rebuilt Studio stage
+1. Commission photography — 44 products have none; 24 more have one image.
+2. Commission the hero film and campaign media per `HERO_MEDIA_MANIFEST.md`.
+3. Obtain factory CAD, graded patterns, ICC profiles and Pantone data.
+4. Engage a qualified Arabic reviewer.
+5. Run the blocked gates in CI with Supabase and provider credentials.
