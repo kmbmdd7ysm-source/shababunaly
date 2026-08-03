@@ -88,17 +88,8 @@
   border: 1px solid #d5d5d5;
   background: #f7f7f7;
 }
-.account-verification-panel p {
-  margin: 0;
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-.account-verification-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
+.account-verification-panel p { margin: 0; line-height: 1.55; overflow-wrap: anywhere; }
+.account-verification-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .account-verification-signin {
   min-height: 44px;
   padding: 0 4px;

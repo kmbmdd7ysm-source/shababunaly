@@ -137,7 +137,7 @@ for (const route of ROUTES) {
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         main: Boolean(document.querySelector('#main-content')),
         textLength: /** @type {HTMLElement|null} */ (
-          (document.querySelector('#main-content'))?.innerText || ''
+          document.querySelector('#main-content')?.innerText || ''
         ).trim().length,
         h1: document.querySelectorAll('h1').length,
       }));
