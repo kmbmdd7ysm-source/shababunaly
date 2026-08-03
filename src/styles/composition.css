@@ -953,3 +953,68 @@
 [dir='rtl'] .gw-matrix tr.is-different td {
   box-shadow: inset -2px 0 0 var(--sh-ink);
 }
+
+/* ---------- The desk ---------------------------------------------------------------
+   One narrow measured column for single-task routes: order lookup, order
+   detail. Not a browsing surface, so it never widens to the full container. */
+
+.gw-desk {
+  padding-block: clamp(28px, 4vw, 56px) clamp(48px, 7vw, 96px);
+}
+
+.gw-desk-inner {
+  max-inline-size: 56rem;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.gw-desk h2 {
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: var(--sh-tr-title);
+}
+
+[lang='ar'] .gw-desk h2 {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  line-height: 1.4;
+}
+
+.gw-desk .section-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-block-end: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  margin-block-end: var(--sh-s-4);
+}
+
+.gw-desk .track-form,
+.gw-desk form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-strong);
+  border-block-start: 3px solid var(--sh-ink);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+  margin-block: var(--sh-s-4);
+}
+
+.gw-desk .notice {
+  border-inline-start: 3px solid var(--sh-rule-strong);
+  padding: var(--sh-s-4);
+  background: var(--sh-chalk-2);
+  border-radius: var(--sh-r-1);
+  margin-block: var(--sh-s-3);
+}
+
+.gw-desk .orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-3);
+}

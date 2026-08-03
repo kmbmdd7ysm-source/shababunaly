@@ -4,8 +4,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { getMyOrders, lookupGuestOrder } from '../services/orders';
 import Seo from '../components/common/Seo';
-import PageHero from '../components/common/PageHero';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+import RouteMasthead from '../components/composition/RouteMasthead';
+import '../styles/composition.css';
 import OrderCard from '../components/account/OrderCard';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 
@@ -39,7 +39,10 @@ export default function OrderTrackingPage() {
       return;
     }
     setLookup({ state: 'loading', order: null, error: null });
-    if (!turnstileToken) { setLookup({ state: 'captcha-required', order: null, error: null }); return; }
+    if (!turnstileToken) {
+      setLookup({ state: 'captcha-required', order: null, error: null });
+      return;
+    }
     const result = await lookupGuestOrder(orderNumber, email, turnstileToken);
     setLookup(result);
     if (result.order && result.accessToken) {
@@ -61,16 +64,21 @@ export default function OrderTrackingPage() {
         path="/order-tracking"
         noindex
       />
-      <PageHero
-        label={t.orderTracking.label}
+      <RouteMasthead
+        eyebrow={t.orderTracking.label}
         title={t.orderTracking.title}
-        description={t.orderTracking.sub}
+        lede={t.orderTracking.sub}
+        trail={[{ label: t.orderTracking.title }]}
+        figure={
+          auth.user && ordersState.orders.length
+            ? { value: ordersState.orders.length, label: pick({ en: 'orders', ar: 'طلب' }) }
+            : null
+        }
       />
-      <div className="container">
-        <Breadcrumbs items={[{ label: t.orderTracking.title }]} />
-      </div>
-      <section className="section">
-        <div className="container narrow order-destination">
+      {/* A LOOKUP DESK: a narrow measured column, because tracking is one
+          focused task with one answer - not a browsing surface. */}
+      <section className="gw-desk">
+        <div className="gw-desk-inner">
           {auth.user && (
             <section aria-labelledby="my-orders-title">
               <div className="section-heading-row">
@@ -166,7 +174,10 @@ export default function OrderTrackingPage() {
             </form>
             {lookup.state === 'captcha-required' && (
               <div className="notice notice--info" role="alert">
-                {pick({ en: 'Complete the security check before looking up the order.', ar: 'أكمل فحص الأمان قبل البحث عن الطلب.' })}
+                {pick({
+                  en: 'Complete the security check before looking up the order.',
+                  ar: 'أكمل فحص الأمان قبل البحث عن الطلب.',
+                })}
               </div>
             )}
             {lookup.state === 'invalid' && (

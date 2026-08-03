@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:36:06.948Z",
+  "generatedAt": "2026-08-03T16:39:34.010Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 27,
+    "fully-rebuilt": 29,
     "partially-rebuilt": 0,
-    "not-rebuilt": 9,
+    "not-rebuilt": 7,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 20,
+    "fully-rebuilt": 22,
     "partially-rebuilt": 0,
-    "not-rebuilt": 9
+    "not-rebuilt": 7
   },
   "routes": [
     {
@@ -385,28 +385,26 @@
       "component": "OrderTracking",
       "file": "src/pages/OrderTrackingPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 23,
+      "linesRemoved": 12,
+      "compositionMarkers": [
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/order-tracking/:orderNumber",
       "component": "OrderDetail",
       "file": "src/pages/OrderDetailPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "section className=\"section\""
+      "linesAdded": 221,
+      "linesRemoved": 48,
+      "compositionMarkers": [
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/compare",

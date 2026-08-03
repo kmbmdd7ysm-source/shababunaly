@@ -9,13 +9,13 @@ that is the precise failure this ledger exists to expose.
 
 | Status | Count |
 | --- | ---: |
-| Fully rebuilt | **27** |
+| Fully rebuilt | **29** |
 | Partially rebuilt | **0** |
-| Not rebuilt | **9** |
+| Not rebuilt | **7** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 20 rebuilt, 0 partial, 9 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 22 rebuilt, 0 partial, 7 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
@@ -46,8 +46,8 @@ Distinct page components: **29** — 20 rebuilt, 0 partial, 9 legacy. One compon
 | `/operations/*` | Operations | staff | +0/-0 | — | LEGACY |
 | `/size-guide` | SizeGuide | public | +48/-34 | RouteMasthead, Dossier | **REBUILT** |
 | `/search` | Search | public | +191/-25 | gw-catalogue, gw-console, gw-terminal | **REBUILT** |
-| `/order-tracking` | OrderTracking | public | +0/-0 | — | LEGACY |
-| `/order-tracking/:orderNumber` | OrderDetail | public | +0/-0 | — | LEGACY |
+| `/order-tracking` | OrderTracking | public | +23/-12 | RouteMasthead | **REBUILT** |
+| `/order-tracking/:orderNumber` | OrderDetail | public | +221/-48 | RouteMasthead | **REBUILT** |
 | `/compare` | Compare | public | +26/-18 | gw-terminal, RouteMasthead | **REBUILT** |
 | `/favorites` | Favorites | public | +41/-31 | gw-catalogue, gw-terminal, RouteMasthead | **REBUILT** |
 | `/account` | Account | customer | +142/-34 | gw-account | **REBUILT** |
