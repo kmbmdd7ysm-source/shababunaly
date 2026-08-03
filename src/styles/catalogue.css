@@ -162,7 +162,7 @@
 .gw-department-tab-index {
   font-size: 0.5625rem;
   font-variant-numeric: tabular-nums;
-  color: var(--sh-ink-35);
+  color: var(--sh-ink-50);
 }
 
 .gw-department-tab::after {

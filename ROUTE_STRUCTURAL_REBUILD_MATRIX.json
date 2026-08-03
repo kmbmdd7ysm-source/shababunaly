@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-03T08:59:41.992Z",
+  "baselineRef": "main",
+  "totalRoutes": 41,
+  "counts": {
+    "fully-rebuilt": 8,
+    "partially-rebuilt": 1,
+    "not-rebuilt": 27,
+    "redirect": 5
+  },
+  "distinctPageComponents": 29,
+  "pageComponentCounts": {
+    "fully-rebuilt": 6,
+    "partially-rebuilt": 1,
+    "not-rebuilt": 22
+  },
+  "routes": [
+    {
+      "route": "/",
+      "component": "Home",
+      "file": "src/pages/HomePage.jsx",
+      "access": "public",
+      "linesAdded": 422,
+      "linesRemoved": 24,
+      "compositionMarkers": [
+        "gw-section"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/about",
+      "component": "About",
+      "file": "src/pages/AboutPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/shop",
+      "component": "Shop",
+      "file": "src/pages/ShopPage.jsx",
+      "access": "public",
+      "linesAdded": 431,
+      "linesRemoved": 101,
+      "compositionMarkers": [
+        "gw-catalogue"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/shop/:category",
+      "component": "Shop",
+      "file": "src/pages/ShopPage.jsx",
+      "access": "public",
+      "linesAdded": 431,
+      "linesRemoved": 101,
+      "compositionMarkers": [
+        "gw-catalogue"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/shop/:category/:subcategory",
+      "component": "Shop",
+      "file": "src/pages/ShopPage.jsx",
+      "access": "public",
+      "linesAdded": 431,
+      "linesRemoved": 101,
+      "compositionMarkers": [
+        "gw-catalogue"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/products/:slug",
+      "component": "Product",
+      "file": "src/pages/ProductPage.jsx",
+      "access": "public",
+      "linesAdded": 485,
+      "linesRemoved": 77,
+      "compositionMarkers": [
+        "gw-catalogue",
+        "gw-stage",
+        "gw-deck"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/cart",
+      "component": "Cart",
+      "file": "src/pages/CartPage.jsx",
+      "access": "public",
+      "linesAdded": 98,
+      "linesRemoved": 55,
+      "compositionMarkers": [
+        "gw-ledger"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/checkout",
+      "component": "Checkout",
+      "file": "src/pages/CheckoutPage.jsx",
+      "access": "public",
+      "linesAdded": 910,
+      "linesRemoved": 166,
+      "compositionMarkers": [
+        "gw-checkout"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/checkout/success",
+      "component": "CheckoutStatus",
+      "file": "src/pages/CheckoutStatusPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/checkout/cancelled",
+      "component": "CheckoutStatus",
+      "file": "src/pages/CheckoutStatusPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/customize",
+      "component": "Customize",
+      "file": "src/pages/CustomizePage.jsx",
+      "access": "public",
+      "linesAdded": 981,
+      "linesRemoved": 129,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "className=\"container\""
+      ],
+      "status": "partially-rebuilt"
+    },
+    {
+      "route": "/special-request",
+      "component": "SpecialRequest",
+      "file": "src/pages/SpecialRequestPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/teams-wholesale",
+      "component": "TeamsWholesale",
+      "file": "src/pages/TeamsWholesalePage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/team-locker/:slug",
+      "component": "TeamLocker",
+      "file": "src/pages/TeamLockerPage.jsx",
+      "access": "team",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/design-share/:token",
+      "component": "DesignShare",
+      "file": "src/pages/DesignSharePage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/lha-store",
+      "component": "LhaStore",
+      "file": "src/pages/LhaStorePage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/our-work",
+      "component": "OurWork",
+      "file": "src/pages/OurWorkPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/programs/*",
+      "component": "Navigate",
+      "file": "(unresolved)",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "redirect"
+    },
+    {
+      "route": "/events/*",
+      "component": "Navigate",
+      "file": "(unresolved)",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "redirect"
+    },
+    {
+      "route": "/online-training/*",
+      "component": "Navigate",
+      "file": "(unresolved)",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "redirect"
+    },
+    {
+      "route": "/coaches/*",
+      "component": "Navigate",
+      "file": "(unresolved)",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "redirect"
+    },
+    {
+      "route": "/contact",
+      "component": "Contact",
+      "file": "src/pages/ContactPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/faq",
+      "component": "Faq",
+      "file": "src/pages/FaqPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/help",
+      "component": "Help",
+      "file": "src/pages/HelpPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/operations/*",
+      "component": "Operations",
+      "file": "src/pages/OperationsPage.jsx",
+      "access": "staff",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/size-guide",
+      "component": "SizeGuide",
+      "file": "src/pages/SizeGuidePage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/search",
+      "component": "Search",
+      "file": "src/pages/SearchPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/order-tracking",
+      "component": "OrderTracking",
+      "file": "src/pages/OrderTrackingPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero",
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/order-tracking/:orderNumber",
+      "component": "OrderDetail",
+      "file": "src/pages/OrderDetailPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "section className=\"section\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/compare",
+      "component": "Compare",
+      "file": "src/pages/ComparePage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/favorites",
+      "component": "Favorites",
+      "file": "src/pages/FavoritesPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/account",
+      "component": "Account",
+      "file": "src/pages/AccountPage.jsx",
+      "access": "customer",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "section className=\"section\"",
+        "className=\"container\""
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/orders",
+      "component": "Navigate",
+      "file": "(unresolved)",
+      "access": "customer",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "redirect"
+    },
+    {
+      "route": "/offline",
+      "component": "Offline",
+      "file": "src/pages/OfflinePage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/lab/home",
+      "component": "LabHome",
+      "file": "src/pages/LabHomePage.jsx",
+      "access": "public",
+      "linesAdded": 405,
+      "linesRemoved": 0,
+      "compositionMarkers": [
+        "gw-hero",
+        "gw-section"
+      ],
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
+    },
+    {
+      "route": "/privacy-policy",
+      "component": "Legal",
+      "file": "src/pages/LegalPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/terms",
+      "component": "Legal",
+      "file": "src/pages/LegalPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/cookies",
+      "component": "Legal",
+      "file": "src/pages/LegalPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/shipping-returns",
+      "component": "Legal",
+      "file": "src/pages/LegalPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "/refund-policy",
+      "component": "Legal",
+      "file": "src/pages/LegalPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "not-rebuilt"
+    },
+    {
+      "route": "*",
+      "component": "NotFound",
+      "file": "src/pages/NotFoundPage.jsx",
+      "access": "public",
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "compositionMarkers": [],
+      "legacyWrappers": [],
+      "status": "not-rebuilt"
+    }
+  ]
+}

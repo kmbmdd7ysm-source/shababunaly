@@ -99,7 +99,7 @@
   font-size: 0.5625rem;
   font-weight: 700;
   letter-spacing: var(--sh-tr-spec);
-  color: var(--sh-ink-35);
+  color: var(--sh-ink-50);
   font-variant-numeric: tabular-nums;
   transition: color var(--sh-d-1) var(--sh-e-draw);
 }
