@@ -6,3 +6,6 @@ dist
 .DS_Store
 *.log
 .vercel
+coverage
+coverage-critical
+coverage-project
