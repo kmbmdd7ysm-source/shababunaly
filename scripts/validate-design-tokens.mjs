@@ -27,6 +27,7 @@ const BRIDGE_LAYERS = [
   'catalogue.css',
   'stage.css',
   'ledger.css',
+  'checkout.css',
 ];
 const SCOPED_LAYERS = [
   'typography.css',
