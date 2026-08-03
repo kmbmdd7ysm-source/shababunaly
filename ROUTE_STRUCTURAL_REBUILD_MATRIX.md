@@ -9,13 +9,13 @@ that is the precise failure this ledger exists to expose.
 
 | Status | Count |
 | --- | ---: |
-| Fully rebuilt | **31** |
+| Fully rebuilt | **32** |
 | Partially rebuilt | **0** |
-| Not rebuilt | **5** |
+| Not rebuilt | **4** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 24 rebuilt, 0 partial, 5 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 25 rebuilt, 0 partial, 4 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
@@ -32,7 +32,7 @@ Distinct page components: **29** — 24 rebuilt, 0 partial, 5 legacy. One compon
 | `/customize` | Customize | public | +981/-129 | StudioStage | **REBUILT** |
 | `/special-request` | SpecialRequest | public | +0/-0 | — | LEGACY |
 | `/teams-wholesale` | TeamsWholesale | public | +0/-0 | — | LEGACY |
-| `/team-locker/:slug` | TeamLocker | team | +0/-0 | — | LEGACY |
+| `/team-locker/:slug` | TeamLocker | team | +108/-10 | gw-catalogue, gw-terminal, RouteMasthead | **REBUILT** |
 | `/design-share/:token` | DesignShare | public | +0/-0 | — | LEGACY |
 | `/lha-store` | LhaStore | public | +67/-6 | gw-catalogue, RouteMasthead | **REBUILT** |
 | `/our-work` | OurWork | public | +78/-30 | RouteMasthead | **REBUILT** |

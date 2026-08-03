@@ -1239,3 +1239,20 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+.gw-locker-status {
+  padding-block: var(--sh-s-6);
+  text-align: center;
+  color: var(--sh-ink-70);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-locker-status {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}

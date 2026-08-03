@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:44:39.684Z",
+  "generatedAt": "2026-08-03T16:46:56.323Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 31,
+    "fully-rebuilt": 32,
     "partially-rebuilt": 0,
-    "not-rebuilt": 5,
+    "not-rebuilt": 4,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 24,
+    "fully-rebuilt": 25,
     "partially-rebuilt": 0,
-    "not-rebuilt": 5
+    "not-rebuilt": 4
   },
   "routes": [
     {
@@ -202,15 +202,15 @@
       "component": "TeamLocker",
       "file": "src/pages/TeamLockerPage.jsx",
       "access": "team",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 108,
+      "linesRemoved": 10,
+      "compositionMarkers": [
+        "gw-catalogue",
+        "gw-terminal",
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/design-share/:token",
