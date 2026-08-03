@@ -1586,3 +1586,24 @@
   color: var(--sh-ink-50);
   font-variant-numeric: tabular-nums;
 }
+
+/* ---------- Unconfigured verification note -----------------------------------
+   A standing condition, not an event. Reads as a quiet note wherever it lands
+   — including the footer, where it appears on every route — rather than as a
+   red error the visitor caused. */
+
+.gw-verify-note {
+  margin: var(--sh-s-2) 0 0;
+  padding: var(--sh-s-2) var(--sh-s-3);
+  border-inline-start: 2px solid var(--sh-rule-strong);
+  color: var(--sh-ink-70);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* On the night ground of the footer it needs the inverse rule and ink. */
+footer .gw-verify-note,
+.gw-colophon .gw-verify-note {
+  border-inline-start-color: var(--sh-rule-inverse-strong);
+  color: var(--sh-night-ink-70);
+}

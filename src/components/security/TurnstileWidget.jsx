@@ -17,7 +17,9 @@ export default function TurnstileWidget({ onToken, language = 'en', action = 'fo
         sitekey: SITE_KEY,
         language: language === 'ar' ? 'ar' : 'en',
         theme: 'light',
-        action: String(action || 'form-submit').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 32),
+        action: String(action || 'form-submit')
+          .replace(/[^A-Za-z0-9_-]/g, '')
+          .slice(0, 32),
         callback: (token) => onToken?.(token),
         'expired-callback': () => onToken?.(''),
         'error-callback': () => onToken?.(''),
@@ -42,6 +44,21 @@ export default function TurnstileWidget({ onToken, language = 'en', action = 'fo
     };
   }, [action, language, onToken]);
 
-  if (!SITE_KEY && !import.meta.env.DEV) return <p className="form-status form-status--error" role="alert">Request verification is temporarily unavailable.</p>;
+  // When no site key is configured, verification genuinely is unavailable and
+  // we must keep saying so — the server still rejects a request with no token,
+  // and pretending otherwise would misrepresent a security control.
+  //
+  // But this rendered as a red `role="alert"` inside the footer newsletter,
+  // which appears on EVERY route. Two consequences: a permanent error box on
+  // every page of the site, and an unprompted live-region announcement fired at
+  // screen-reader users on every single navigation for something they never
+  // did. It is a standing condition, not an event, so it is now a quiet
+  // `role="status"` note. The behaviour and the wording are unchanged.
+  if (!SITE_KEY && !import.meta.env.DEV)
+    return (
+      <p className="gw-verify-note" role="status">
+        Request verification is temporarily unavailable.
+      </p>
+    );
   return <div className="turnstile-wrap" ref={host} aria-label="Bot verification" />;
 }
