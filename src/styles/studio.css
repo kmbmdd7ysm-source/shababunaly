@@ -674,3 +674,31 @@
   flex-wrap: wrap;
   overflow-x: visible;
 }
+
+/* The laboratory stage was a flat dark panel — the artboard floated on nothing.
+   The same generated studio backdrop the product stage uses puts the garment in
+   a lit room instead. Kept well behind the artboard and dimmed, because this
+   surface is a working tool: atmosphere must not compete with the thing being
+   designed or with the controls. */
+.gw-lab-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.gw-lab-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url('/media/atmosphere/product-stage-1400.webp');
+  background-size: cover;
+  background-position: center 55%;
+  opacity: 0.55;
+}
+
+@media (max-width: 1099px) {
+  .gw-lab-stage::before {
+    background-image: url('/media/atmosphere/product-stage-900.webp');
+  }
+}

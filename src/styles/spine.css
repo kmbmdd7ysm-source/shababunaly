@@ -101,13 +101,71 @@
   min-inline-size: 0;
 }
 
+/* The spine head opened on flat chalk, which read as a form rather than the
+   entrance to a professional workspace. Original generated court artwork sits
+   behind it under a heavy veil — enough to give the head a place, not enough to
+   compete with the lifecycle beneath it. */
 .gw-spine-head {
-  padding: clamp(28px, 5vh, 64px) clamp(20px, 4vw, 64px);
+  position: relative;
+  isolation: isolate;
+  padding: clamp(40px, 7vh, 88px) clamp(20px, 4vw, 64px) clamp(28px, 5vh, 56px);
   border-block-end: 1px solid var(--sh-rule-strong);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow: hidden;
+}
+
+.gw-spine-head::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url('/media/atmosphere/court-overhead-1600.webp');
+  background-size: cover;
+  background-position: center 40%;
+}
+
+.gw-spine-head::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    var(--sh-night) 30%,
+    color-mix(in srgb, var(--sh-night) 74%, transparent) 68%,
+    color-mix(in srgb, var(--sh-night) 40%, transparent) 100%
+  );
+}
+
+@media (max-width: 999px) {
+  .gw-spine-head::before {
+    background-image: url('/media/atmosphere/court-overhead-1024.webp');
+  }
+}
+
+.gw-spine-head .breadcrumbs,
+.gw-spine-head .breadcrumbs a,
+.gw-spine-head .breadcrumbs span {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-spine-head .breadcrumbs a:hover {
+  color: var(--sh-night-ink);
+}
+
+.gw-spine-head .gw-spine-lede {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-spine-head :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
 }
 
 .gw-spine-head .gw-spec {
   margin: var(--sh-s-3) 0 var(--sh-s-2);
+  color: var(--sh-night-ink-70);
 }
 
 .gw-spine-title {
