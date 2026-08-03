@@ -244,32 +244,39 @@ export default function HelpPage() {
           <p className="help-result-count" role="status" aria-live="polite">
             {pick({ en: `${filtered.length} topics`, ar: `${filtered.length} مواضيع` })}
           </p>
-          <div className="help-accordions">
-            {filtered.map((topic) => {
+          {/* Topics as a NUMBERED register rather than an undifferentiated
+              accordion stack. The index stays tied to the filtered list, so a
+              search result set renumbers itself instead of showing gaps, and
+              each topic's onward links read as a drawn route list. */}
+          <div className="gw-helpindex">
+            {filtered.map((topic, position) => {
               const panelId = `help-${topic.id}`;
               const expanded = open === topic.id;
               return (
-                <section className="help-topic" key={topic.id}>
-                  <h3>
+                <section className={`gw-helptopic${expanded ? ' is-open' : ''}`} key={topic.id}>
+                  <h3 className="gw-helptopic-head">
                     <button
                       type="button"
                       aria-expanded={expanded}
                       aria-controls={panelId}
                       onClick={() => setOpen(expanded ? '' : topic.id)}
                     >
-                      <span>{pick(topic.title)}</span>
+                      <span className="gw-helptopic-index" aria-hidden="true">
+                        {String(position + 1).padStart(2, '0')}
+                      </span>
+                      <span className="gw-helptopic-title">{pick(topic.title)}</span>
                       <Icon name={expanded ? 'minus' : 'plus'} size={20} />
                     </button>
                   </h3>
-                  <div id={panelId} hidden={!expanded}>
+                  <div id={panelId} className="gw-helptopic-body" hidden={!expanded}>
                     <p>{pick(topic.summary)}</p>
-                    <div className="help-topic-links">
+                    <ul className="gw-helptopic-routes">
                       {topic.links.map((link) => (
-                        <Link key={link.to} to={link.to}>
-                          {pick(link.label)}
-                        </Link>
+                        <li key={link.to}>
+                          <Link to={link.to}>{pick(link.label)}</Link>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 </section>
               );

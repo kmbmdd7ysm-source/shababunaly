@@ -1140,3 +1140,102 @@
   gap: var(--sh-s-3);
   margin-block-start: var(--sh-s-3);
 }
+
+/* ---------- Help topic register ------------------------------------------------------- */
+
+.gw-helpindex {
+  border-block-start: 1px solid var(--sh-rule);
+}
+
+.gw-helptopic {
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-helptopic-head {
+  margin: 0;
+}
+
+.gw-helptopic-head button {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  inline-size: 100%;
+  min-block-size: var(--sh-target);
+  padding-block: var(--sh-s-3);
+  border: 0;
+  background: transparent;
+  color: var(--sh-ink);
+  cursor: pointer;
+  text-align: start;
+}
+
+.gw-helptopic-index {
+  flex: none;
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-helptopic-title {
+  flex: 1;
+  font-family: var(--sh-font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-stretch: 98%;
+}
+
+[lang='ar'] .gw-helptopic-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+}
+
+.gw-helptopic.is-open .gw-helptopic-index {
+  color: var(--sh-ink);
+}
+
+.gw-helptopic-body {
+  padding-block-end: var(--sh-s-4);
+  padding-inline-start: calc(var(--sh-s-3) + 20px);
+}
+
+.gw-helptopic-body p {
+  margin: 0 0 var(--sh-s-3);
+  color: var(--sh-ink-70);
+  line-height: 1.6;
+  max-inline-size: 66ch;
+}
+
+.gw-helptopic-routes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-inline-start: 2px solid var(--sh-ink);
+  padding-inline-start: var(--sh-s-3);
+}
+
+.gw-helptopic-routes a {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--sh-target-min);
+  color: var(--sh-ink);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+[lang='ar'] .gw-helptopic-routes a {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-helptopic-routes a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
