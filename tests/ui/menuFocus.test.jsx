@@ -121,17 +121,20 @@ describe('mobile menu focus management', () => {
     fireEvent.click(trigger());
     await waitFor(() => expect(drawer().contains(document.activeElement)).toBe(true));
 
-    const focusables = [...drawer().querySelectorAll('a[href],button:not([disabled]),select')];
+    /** @type {HTMLElement[]} */
+    const focusables = [...drawer().querySelectorAll('a[href],button:not([disabled]),select')].map(
+      (node) => /** @type {HTMLElement} */ (node),
+    );
     expect(focusables.length).toBeGreaterThan(4);
 
     // Forward from the last element wraps to the first.
-    focusables.at(-1).focus();
+    focusables[focusables.length - 1].focus();
     fireEvent.keyDown(document, { key: 'Tab' });
     expect(document.activeElement).toBe(focusables[0]);
 
     // Backward from the first wraps to the last.
     fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
-    expect(document.activeElement).toBe(focusables.at(-1));
+    expect(document.activeElement).toBe(focusables[focusables.length - 1]);
   });
 
   test('the closed drawer is hidden from assistive technology', () => {
