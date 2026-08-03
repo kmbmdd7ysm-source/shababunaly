@@ -9,17 +9,17 @@ that is the precise failure this ledger exists to expose.
 
 | Status | Count |
 | --- | ---: |
-| Fully rebuilt | **8** |
-| Partially rebuilt | **1** |
-| Not rebuilt | **27** |
+| Fully rebuilt | **15** |
+| Partially rebuilt | **3** |
+| Not rebuilt | **18** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 6 rebuilt, 1 partial, 22 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 9 rebuilt, 3 partial, 17 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
-| `/` | Home | public | +422/-24 | gw-section | **REBUILT** |
+| `/` | Home | public | +422/-24 | gw-section, Chapter, SpecBlock | **REBUILT** |
 | `/about` | About | public | +0/-0 | — | LEGACY |
 | `/shop` | Shop | public | +431/-101 | gw-catalogue | **REBUILT** |
 | `/shop/:category` | Shop | public | +431/-101 | gw-catalogue | **REBUILT** |
@@ -29,7 +29,7 @@ Distinct page components: **29** — 6 rebuilt, 1 partial, 22 legacy. One compon
 | `/checkout` | Checkout | public | +910/-166 | gw-checkout | **REBUILT** |
 | `/checkout/success` | CheckoutStatus | public | +0/-0 | — | LEGACY |
 | `/checkout/cancelled` | CheckoutStatus | public | +0/-0 | — | LEGACY |
-| `/customize` | Customize | public | +981/-129 | — | _partial_ |
+| `/customize` | Customize | public | +981/-129 | StudioStage | **REBUILT** |
 | `/special-request` | SpecialRequest | public | +0/-0 | — | LEGACY |
 | `/teams-wholesale` | TeamsWholesale | public | +0/-0 | — | LEGACY |
 | `/team-locker/:slug` | TeamLocker | team | +0/-0 | — | LEGACY |
@@ -41,10 +41,10 @@ Distinct page components: **29** — 6 rebuilt, 1 partial, 22 legacy. One compon
 | `/online-training/*` | Navigate | public | +0/-0 | — | redirect |
 | `/coaches/*` | Navigate | public | +0/-0 | — | redirect |
 | `/contact` | Contact | public | +0/-0 | — | LEGACY |
-| `/faq` | Faq | public | +0/-0 | — | LEGACY |
+| `/faq` | Faq | public | +0/-0 | gw-terminal, RouteMasthead, Dossier | _partial_ |
 | `/help` | Help | public | +0/-0 | — | LEGACY |
 | `/operations/*` | Operations | staff | +0/-0 | — | LEGACY |
-| `/size-guide` | SizeGuide | public | +0/-0 | — | LEGACY |
+| `/size-guide` | SizeGuide | public | +0/-0 | RouteMasthead, Dossier | _partial_ |
 | `/search` | Search | public | +0/-0 | — | LEGACY |
 | `/order-tracking` | OrderTracking | public | +0/-0 | — | LEGACY |
 | `/order-tracking/:orderNumber` | OrderDetail | public | +0/-0 | — | LEGACY |
@@ -52,12 +52,12 @@ Distinct page components: **29** — 6 rebuilt, 1 partial, 22 legacy. One compon
 | `/favorites` | Favorites | public | +0/-0 | — | LEGACY |
 | `/account` | Account | customer | +0/-0 | — | LEGACY |
 | `/orders` | Navigate | customer | +0/-0 | — | redirect |
-| `/offline` | Offline | public | +0/-0 | — | LEGACY |
-| `/lab/home` | LabHome | public | +405/-0 | gw-hero, gw-section | **REBUILT** |
-| `/privacy-policy` | Legal | public | +0/-0 | — | LEGACY |
-| `/terms` | Legal | public | +0/-0 | — | LEGACY |
-| `/cookies` | Legal | public | +0/-0 | — | LEGACY |
-| `/shipping-returns` | Legal | public | +0/-0 | — | LEGACY |
-| `/refund-policy` | Legal | public | +0/-0 | — | LEGACY |
-| `*` | NotFound | public | +0/-0 | — | LEGACY |
+| `/offline` | Offline | public | +0/-0 | gw-terminal | _partial_ |
+| `/lab/home` | LabHome | public | +405/-0 | gw-hero, gw-section, Chapter, SpecBlock | **REBUILT** |
+| `/privacy-policy` | Legal | public | +36/-21 | RouteMasthead, Dossier | **REBUILT** |
+| `/terms` | Legal | public | +36/-21 | RouteMasthead, Dossier | **REBUILT** |
+| `/cookies` | Legal | public | +36/-21 | RouteMasthead, Dossier | **REBUILT** |
+| `/shipping-returns` | Legal | public | +36/-21 | RouteMasthead, Dossier | **REBUILT** |
+| `/refund-policy` | Legal | public | +36/-21 | RouteMasthead, Dossier | **REBUILT** |
+| `*` | NotFound | public | +25/-9 | gw-terminal | **REBUILT** |
 

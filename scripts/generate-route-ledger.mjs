@@ -31,7 +31,16 @@ const REBUILT_MARKERS = [
   'gw-dossier',
   'gw-console',
   'gw-account',
+  'gw-terminal',
+  'gw-routehead',
+  'gw-panelgrid',
 ];
+
+/**
+ * A page that delegates its structure to a shared kit component is as rebuilt
+ * as one that writes the grid itself, so composing the kit also counts.
+ */
+const KIT_COMPONENTS = ['RouteMasthead', 'Dossier', 'StudioStage', 'Chapter', 'SpecBlock'];
 
 /** Legacy wrappers whose presence means the old composition still dominates. */
 const LEGACY_WRAPPERS = ['PageHero', 'section className="section"', 'className="container"'];
@@ -87,11 +96,15 @@ for (const { path, component } of routes) {
   const numstat = file ? git(['diff', '--numstat', `${BASELINE}..HEAD`, '--', file]).trim() : '';
   const [added, removed] = numstat ? numstat.split(/\s+/).map(Number) : [0, 0];
 
-  const markers = REBUILT_MARKERS.filter((marker) => source.includes(marker));
+  const markers = [
+    ...REBUILT_MARKERS.filter((marker) => source.includes(marker)),
+    ...KIT_COMPONENTS.filter((name) => new RegExp(`<${name}[\\s/>]`).test(source)),
+  ];
   const legacy = LEGACY_WRAPPERS.filter((wrapper) => source.includes(wrapper));
   // A page is only "rebuilt" when its own JSX moved AND it renders new
   // composition markers. Either alone is not enough.
-  const jsxChanged = added + removed > 40;
+  // Rebuilding onto the kit often SHRINKS a page, so churn is what matters.
+  const jsxChanged = added + removed > 25;
   // `<Navigate>` entries are redirects, not pages. They have no composition to
   // rebuild and must not inflate the legacy count.
   const isRedirect = component === 'Navigate';

@@ -1,50 +1,64 @@
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo';
-import PageHero from '../components/common/PageHero';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+import RouteMasthead from '../components/composition/RouteMasthead';
+import Dossier from '../components/composition/Dossier';
 import { sizeGuides, sizeUnitNote } from '../data/sizeGuide';
 
+/*
+ * The size guide, rebuilt as a DOSSIER of specifications.
+ *
+ * WAS: PageHero, a breadcrumb strip, a notice, then every table stacked in one
+ * column — so finding the right garment meant scrolling past all the others.
+ *
+ * NOW: a masthead with the guide count as a figure, a sticky numbered index of
+ * garments, and each table as its own numbered chapter with a stable anchor,
+ * so a product page can deep-link straight to the right one.
+ *
+ * Same `sizeGuides` data, same columns, same rows, same unit note.
+ */
 export default function SizeGuidePage() {
   const { t, pick, lang } = useLanguage();
 
   return (
     <>
       <Seo title={t.sizeGuide.title} description={t.sizeGuide.sub} path="/size-guide" />
-      <PageHero label={t.sizeGuide.label} title={t.sizeGuide.title} description={t.sizeGuide.sub} />
-      <div className="container">
-        <Breadcrumbs items={[{ label: t.sizeGuide.title }]} />
-      </div>
-
-      <section className="section">
-        <div className="container size-guide-layout">
-          <p className="notice notice--muted">{pick(sizeUnitNote)}</p>
-          {sizeGuides.map((g) => (
-            <div key={g.key} className="size-guide-block">
-              <h2 className="section-title">{pick(g.title)}</h2>
-              <div className="size-table-wrap">
-                <table className="size-table">
-                  <thead>
-                    <tr>
-                      {g.columns.map((c, i) => (
-                        <th key={i}>{c[lang] ?? c.en}</th>
+      <RouteMasthead
+        eyebrow={t.sizeGuide.label}
+        title={t.sizeGuide.title}
+        lede={t.sizeGuide.sub}
+        trail={[{ label: t.sizeGuide.title }]}
+        figure={{ value: sizeGuides.length, label: pick({ en: 'guides', ar: 'أدلة' }) }}
+      />
+      <Dossier
+        meta={pick(sizeUnitNote)}
+        aside={pick(sizeUnitNote)}
+        chapters={sizeGuides.map((guide) => ({
+          id: `size-${guide.key}`,
+          title: pick(guide.title),
+          body: (
+            <div className="size-table-wrap">
+              <table className="size-table">
+                <thead>
+                  <tr>
+                    {guide.columns.map((column, index) => (
+                      <th key={index}>{column[lang] ?? column.en}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {guide.rows.map((row, index) => (
+                    <tr key={index}>
+                      {row.map((cell, cellIndex) => (
+                        <td key={cellIndex}>{cell}</td>
                       ))}
                     </tr>
-                  </thead>
-                  <tbody>
-                    {g.rows.map((row, i) => (
-                      <tr key={i}>
-                        {row.map((cell, j) => (
-                          <td key={j}>{cell}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          ))}
-        </div>
-      </section>
+          ),
+        }))}
+      />
     </>
   );
 }

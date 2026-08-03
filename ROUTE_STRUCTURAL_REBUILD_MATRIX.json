@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T08:59:41.992Z",
+  "generatedAt": "2026-08-03T09:04:01.021Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 8,
-    "partially-rebuilt": 1,
-    "not-rebuilt": 27,
+    "fully-rebuilt": 15,
+    "partially-rebuilt": 3,
+    "not-rebuilt": 18,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 6,
-    "partially-rebuilt": 1,
-    "not-rebuilt": 22
+    "fully-rebuilt": 9,
+    "partially-rebuilt": 3,
+    "not-rebuilt": 17
   },
   "routes": [
     {
@@ -24,7 +24,9 @@
       "linesAdded": 422,
       "linesRemoved": 24,
       "compositionMarkers": [
-        "gw-section"
+        "gw-section",
+        "Chapter",
+        "SpecBlock"
       ],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
@@ -153,12 +155,14 @@
       "access": "public",
       "linesAdded": 981,
       "linesRemoved": 129,
-      "compositionMarkers": [],
+      "compositionMarkers": [
+        "StudioStage"
+      ],
       "legacyWrappers": [
         "PageHero",
         "className=\"container\""
       ],
-      "status": "partially-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/special-request",
@@ -309,13 +313,15 @@
       "access": "public",
       "linesAdded": 0,
       "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\"",
-        "className=\"container\""
+      "compositionMarkers": [
+        "gw-terminal",
+        "RouteMasthead",
+        "Dossier"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "partially-rebuilt"
     },
     {
       "route": "/help",
@@ -348,13 +354,14 @@
       "access": "public",
       "linesAdded": 0,
       "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\"",
-        "className=\"container\""
+      "compositionMarkers": [
+        "RouteMasthead",
+        "Dossier"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "partially-rebuilt"
     },
     {
       "route": "/search",
@@ -457,9 +464,11 @@
       "access": "public",
       "linesAdded": 0,
       "linesRemoved": 0,
-      "compositionMarkers": [],
+      "compositionMarkers": [
+        "gw-terminal"
+      ],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/lab/home",
@@ -470,7 +479,9 @@
       "linesRemoved": 0,
       "compositionMarkers": [
         "gw-hero",
-        "gw-section"
+        "gw-section",
+        "Chapter",
+        "SpecBlock"
       ],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
@@ -480,76 +491,93 @@
       "component": "Legal",
       "file": "src/pages/LegalPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 36,
+      "linesRemoved": 21,
+      "compositionMarkers": [
+        "RouteMasthead",
+        "Dossier"
+      ],
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/terms",
       "component": "Legal",
       "file": "src/pages/LegalPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 36,
+      "linesRemoved": 21,
+      "compositionMarkers": [
+        "RouteMasthead",
+        "Dossier"
+      ],
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/cookies",
       "component": "Legal",
       "file": "src/pages/LegalPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 36,
+      "linesRemoved": 21,
+      "compositionMarkers": [
+        "RouteMasthead",
+        "Dossier"
+      ],
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/shipping-returns",
       "component": "Legal",
       "file": "src/pages/LegalPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 36,
+      "linesRemoved": 21,
+      "compositionMarkers": [
+        "RouteMasthead",
+        "Dossier"
+      ],
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/refund-policy",
       "component": "Legal",
       "file": "src/pages/LegalPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 36,
+      "linesRemoved": 21,
+      "compositionMarkers": [
+        "RouteMasthead",
+        "Dossier"
+      ],
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "*",
       "component": "NotFound",
       "file": "src/pages/NotFoundPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 25,
+      "linesRemoved": 9,
+      "compositionMarkers": [
+        "gw-terminal"
+      ],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     }
   ]
 }
