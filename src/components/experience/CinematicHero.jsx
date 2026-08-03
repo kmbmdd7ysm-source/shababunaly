@@ -2,11 +2,37 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { fetchSiteContent } from '../../services/siteContent';
+import { SITE } from '../../config';
 
 const ENV_DESKTOP_VIDEO = String(import.meta.env.VITE_HERO_VIDEO_URL || '').trim();
 const ENV_MOBILE_VIDEO = String(import.meta.env.VITE_HERO_MOBILE_VIDEO_URL || '').trim();
 
+/** Only an https source is ever accepted; `media-src` allows https and nothing else useful. */
+const safeUrl = (value) =>
+  /^https:\/\//i.test(String(value || '').trim()) ? String(value).trim() : '';
+
+/**
+ * The opening sequence.
+ *
+ * GROUNDWORK: before anyone plays, someone draws the ground. The poster is the
+ * ground; the court plan is drawn over it in hairlines; the film, when one
+ * exists, dissolves in behind the drawing. The commercial message, the three
+ * calls to action and the location all live in the DOM — never inside the
+ * canvas, the video or an animation — so the hero is complete and purchasable
+ * with media, motion and scripting all switched off.
+ *
+ * Media architecture (all of it fallback-first):
+ *   poster            always painted, preloaded, explicit dimensions, no CLS
+ *   desktop source    >= 900px, only after real user intent
+ *   mobile source     < 900px, separate encode, only after real user intent
+ *   reduced motion    poster only, never requests the film
+ *   saveData          poster only, never requests the film
+ *   Tier C device     poster only, court drawing withheld
+ *   video error       falls back to the poster and never retries
+ *   sound             muted always; there is no autoplay audio path at all
+ */
 export default function CinematicHero() {
   const { pick } = useLanguage();
   const video = useRef(null);
@@ -18,6 +44,7 @@ export default function CinematicHero() {
   });
   const [failed, setFailed] = useState(false);
   const reduced = useReducedMotion();
+  const capability = useDeviceCapability();
 
   useEffect(() => {
     let active = true;
@@ -25,8 +52,6 @@ export default function CinematicHero() {
       fetchSiteContent('home_hero')
         .then((content) => {
           if (!active || !content) return;
-          const safeUrl = (value) =>
-            /^https:\/\//i.test(String(value || '').trim()) ? String(value).trim() : '';
           setMediaConfig({
             enabled: content.enabled !== false,
             desktopVideoUrl: safeUrl(content.desktopVideoUrl) || ENV_DESKTOP_VIDEO,
@@ -37,7 +62,7 @@ export default function CinematicHero() {
     const idle = globalThis.requestIdleCallback?.(load, { timeout: 2200 });
     const timer = idle == null ? setTimeout(load, 900) : null;
     return () => {
-      active = false;
+      if (active) active = false;
       if (idle != null) globalThis.cancelIdleCallback?.(idle);
       if (timer) clearTimeout(timer);
     };
@@ -50,33 +75,39 @@ export default function CinematicHero() {
       : mediaConfig.mobileVideoUrl
     : '';
 
+  // The film is never requested until the visitor has actually engaged, and
+  // never at all when the device or the visitor has told us not to.
+  const mediaAllowed = capability === 'a' && !reduced && !navigator.connection?.saveData;
+
   useEffect(() => {
-    if (!selectedVideo || reduced || navigator.connection?.saveData) return undefined;
-    const media = matchMedia('(hover: hover) and (pointer: fine), (max-width: 899px)');
-    if (!media.matches) return undefined;
+    if (!selectedVideo || !mediaAllowed) return undefined;
     const enable = () => setVideoEnabled(true);
     addEventListener('pointerdown', enable, { once: true, passive: true });
     addEventListener('keydown', enable, { once: true });
+    addEventListener('scroll', enable, { once: true, passive: true });
     return () => {
       removeEventListener('pointerdown', enable);
       removeEventListener('keydown', enable);
+      removeEventListener('scroll', enable);
     };
-  }, [reduced, selectedVideo]);
+  }, [mediaAllowed, selectedVideo]);
 
   useEffect(() => {
     if (videoEnabled && !failed) video.current?.play().catch(() => {});
   }, [videoEnabled, failed]);
 
+  const showFilm = Boolean(selectedVideo) && videoEnabled && !failed;
+
   return (
-    <section className="hero cinematic-hero shababuna-hero">
-      <div className="hero-media" aria-hidden="true">
-        <picture className="hero-poster-picture">
+    <section className="gw-hero" aria-labelledby="gw-home-hero-title">
+      <div className="gw-hero-media" aria-hidden="true">
+        <picture>
           <source
             media="(max-width: 767px)"
             srcSet="/media/hero/shababuna-hero-poster-mobile.webp"
           />
           <img
-            className="hero-poster"
+            className="gw-hero-poster"
             src="/media/hero/shababuna-hero-poster.webp"
             alt=""
             width="1940"
@@ -85,52 +116,97 @@ export default function CinematicHero() {
             decoding="async"
           />
         </picture>
-        {selectedVideo && videoEnabled && !failed && (
+        {showFilm && (
           <video
             ref={video}
+            className="gw-hero-film"
             muted
             loop
             playsInline
             autoPlay
             preload="none"
+            width="1940"
+            height="1024"
             poster="/media/hero/shababuna-hero-poster.webp"
             onError={() => setFailed(true)}
           >
             <source src={selectedVideo} type="video/mp4" />
           </video>
         )}
+        <span className="gw-hero-wash" />
       </div>
-      <div className="container hero-inner">
-        <p className="hero-kicker">SHABABUNA · BASKETBALL SUPPLY</p>
-        <h1 className="hero-title display-title">
-          <span>BUILT</span>
-          <br />
-          <span className="outline">DIFFERENT.</span>
-        </h1>
-        <p className="hero-text">
-          {pick({
-            en: 'Basketball retail, custom manufacturing, club supply and wholesale — built in one global platform.',
-            ar: 'متجر كرة سلة وتصنيع مخصص وتجهيز أندية وجملة — ضمن منصة عالمية واحدة.',
-          })}
-        </p>
-        <div className="hero-actions">
-          <Link to="/shop" className="btn-primary block">
-            {pick({ en: 'Shop', ar: 'تسوّق' })}
-          </Link>
-          <Link to="/customize" className="btn-secondary block">
-            {pick({ en: 'Customize', ar: 'صمّم' })}
-          </Link>
-          <Link to="/teams-wholesale" className="btn-ghost block">
-            {pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
-          </Link>
+
+      <CourtPlan />
+
+      <div className="gw-container gw-hero-inner">
+        <div className="gw-stack gw-stack--loose gw-hero-copy">
+          <p className="gw-spec gw-hero-kicker">
+            {pick({ en: 'Shababuna · Basketball supply', ar: 'شبابنا · تجهيز كرة السلة' })}
+          </p>
+          <h1 id="gw-home-hero-title" className="gw-hero-title">
+            <span className="gw-hero-line">BUILT</span>
+            <span className="gw-hero-line gw-hero-line--outline">DIFFERENT.</span>
+          </h1>
+          <p className="gw-lead gw-hero-lead">
+            {pick({
+              en: 'Basketball retail, custom manufacturing, club supply and wholesale — built in one global platform.',
+              ar: 'متجر كرة سلة وتصنيع مخصص وتجهيز أندية وجملة — ضمن منصة عالمية واحدة.',
+            })}
+          </p>
+          <div className="gw-cluster gw-hero-actions">
+            <Link className="gw-btn gw-btn--primary" to="/shop">
+              {pick({ en: 'Shop', ar: 'تسوّق' })}
+            </Link>
+            <Link className="gw-btn gw-btn--secondary" to="/customize">
+              {pick({ en: 'Customize', ar: 'صمّم' })}
+            </Link>
+            <Link className="gw-btn gw-btn--secondary" to="/teams-wholesale">
+              {pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
+            </Link>
+          </div>
+          <p className="gw-leader gw-leader--start gw-spec gw-hero-place">
+            <span>{pick(SITE.address)}</span>
+          </p>
         </div>
       </div>
-      <a className="hero-scroll" href="#departments">
+
+      <a className="gw-hero-scroll" href="#gw-departments">
         <span className="sr-only">
           {pick({ en: 'Scroll to shop departments', ar: 'انتقل إلى أقسام المتجر' })}
         </span>
-        <span className="hero-scroll-dot" aria-hidden="true" />
+        <span className="gw-hero-scroll-tick" aria-hidden="true" />
       </a>
     </section>
+  );
+}
+
+/**
+ * The drawn ground: a half court at FIBA dimensions in centimetres.
+ * Pure inline SVG — no image request, no layout cost, crisp at any DPR, and
+ * withheld entirely on Tier C devices by `geometry.css`.
+ */
+export function CourtPlan() {
+  return (
+    <div className="gw-court gw-hero-court" aria-hidden="true">
+      <svg
+        className="gw-court-svg"
+        viewBox="0 0 1500 1400"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        vectorEffect="non-scaling-stroke"
+      >
+        <rect x="1.5" y="1.5" width="1497" height="1397" />
+        <rect x="505" y="0" width="490" height="580" />
+        <circle cx="750" cy="580" r="180" />
+        <circle cx="750" cy="157.5" r="22" />
+        <path d="M 630 90 H 870" />
+        <path d="M 90 0 V 299" />
+        <path d="M 1410 0 V 299" />
+        <path d="M 90 299 A 675 675 0 0 0 1410 299" />
+        <path d="M 625 157.5 A 125 125 0 0 0 875 157.5" />
+        <circle cx="750" cy="1400" r="180" />
+      </svg>
+    </div>
   );
 }

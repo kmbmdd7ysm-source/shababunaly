@@ -52,6 +52,13 @@
   --sh-sodium: #e39b3d; /* film-world warm key */
   --sh-moon: #9db7c4; /* film-world cool fill */
 
+  /* Hero wash stops. The film is a chapter, so the wash is a flat directed
+     scrim rather than a photographic vignette. */
+  --sh-wash-1: rgba(10, 11, 13, 0.94);
+  --sh-wash-2: rgba(10, 11, 13, 0.84);
+  --sh-wash-3: rgba(10, 11, 13, 0.46);
+  --sh-wash-4: rgba(10, 11, 13, 0.32);
+
   /* ---------- Typography · families ------------------------------------- */
   /* Faces are declared in fonts.css. Names are Shababuna-specific so the
      existing `Inter` / `Archivo` / `Noto Kufi Arabic` declarations in

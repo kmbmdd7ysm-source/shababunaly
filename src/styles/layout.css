@@ -343,21 +343,29 @@ body {
    every long token has an explicit wrapping rule.
    ========================================================================== */
 
-body {
+/* Long-token wrapping is applied to the system's own prose classes, never to
+   `body`. A global `overflow-wrap: break-word` broke the Arabic label on the
+   language switcher into one letter per line on English pages, because Arabic
+   is a connected script and the rule did not know the difference. */
+.gw-lead,
+.gw-body,
+.gw-department-copy {
   overflow-wrap: break-word;
 }
 
 .gw-figure,
-.gw-spec {
+.gw-spec,
+.gw-hero-title,
+.gw-display,
+.gw-title {
   overflow-wrap: normal;
 }
 
 /* Arabic is a connected script: breaking inside a word splits letterforms that
-   belong together and produces something a reader will not recognise. Arabic
-   therefore never breaks mid-word — it is sized to fit instead. */
-body:lang(ar),
-[lang='ar'] body {
+   belong together and produces something a reader cannot parse. Arabic is
+   never broken mid-word anywhere on the site — it is sized to fit instead. */
+:lang(ar) {
   overflow-wrap: normal;
-  word-break: normal;
+  word-break: keep-all;
   hyphens: none;
 }

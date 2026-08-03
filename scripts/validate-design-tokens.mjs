@@ -17,6 +17,7 @@ const SCOPED_LAYERS = [
   'geometry.css',
   'layout.css',
   'lab-home.css',
+  'home.css',
 ];
 
 const failures = [];
@@ -292,6 +293,9 @@ for (const file of SCOPED_LAYERS) {
   const css = strip(read(`${STYLES}/${file}`));
   for (const match of css.matchAll(/#[0-9a-f]{3,8}\b/gi)) {
     failures.push(`${file}: raw colour ${match[0]} must come from a --sh-* token`);
+  }
+  for (const match of css.matchAll(/\b(?:rgba?|hsla?)\([^)]*\)/gi)) {
+    failures.push(`${file}: raw colour ${match[0].slice(0, 40)} must come from a --sh-* token`);
   }
   for (const match of css.matchAll(/(?:^|[;{\s])(margin|padding|border)-(left|right)\s*:/g)) {
     failures.push(
