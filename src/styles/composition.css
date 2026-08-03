@@ -887,3 +887,69 @@
   border-radius: var(--sh-r-1);
   padding: var(--sh-s-4);
 }
+
+/* ---------- Comparison matrix ----------------------------------------------------
+   A specification matrix, with differing rows marked by a drawn edge as well as
+   a tint - so the distinction survives greyscale and colour-blind vision. */
+
+.gw-matrix {
+  padding-block: clamp(32px, 5vw, 64px);
+}
+
+.gw-matrix-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.gw-matrix table {
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-matrix th,
+.gw-matrix td {
+  padding: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  text-align: start;
+  vertical-align: top;
+}
+
+.gw-matrix thead th {
+  position: sticky;
+  inset-block-start: 72px;
+  z-index: 1;
+  background: var(--sh-chalk);
+  border-block-end: 2px solid var(--sh-ink);
+}
+
+.gw-matrix tbody th {
+  inline-size: 180px;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .gw-matrix tbody th {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-matrix tr.is-different th {
+  color: var(--sh-ink);
+}
+
+.gw-matrix tr.is-different td {
+  background: var(--sh-chalk-2);
+  box-shadow: inset 2px 0 0 var(--sh-ink);
+}
+
+[dir='rtl'] .gw-matrix tr.is-different td {
+  box-shadow: inset -2px 0 0 var(--sh-ink);
+}

@@ -4,6 +4,8 @@ import { useCatalog } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart, cartKey } from '../context/CartContext';
 import Seo from '../components/common/Seo';
+import RouteMasthead from '../components/composition/RouteMasthead';
+import '../styles/composition.css';
 import Price from '../components/common/Price';
 import { getCompareAction } from '../utils/productOptions';
 import Icon from '../components/icons/Icon';
@@ -30,23 +32,26 @@ export default function ComparePage() {
   return (
     <>
       <Seo title="Compare products" path="/compare" noindex />
-      <section className="section">
-        <div className="container">
-          <div className="compare-head">
-            <div>
-              <p className="section-label">SHABABUNA</p>
-              <h1>{pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}</h1>
-            </div>
-            {list.length > 0 && (
-              <button className="btn-secondary" onClick={c.clear}>
-                {pick({ en: 'Clear all', ar: 'مسح الكل' })}
-              </button>
-            )}
-          </div>
+      <RouteMasthead
+        eyebrow="Shababuna"
+        title={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
+        trail={[{ label: pick({ en: 'Compare', ar: 'المقارنة' }) }]}
+        figure={{ value: list.length, label: pick({ en: 'selected', ar: 'محدد' }) }}
+      >
+        {list.length > 0 && (
+          <button type="button" className="gw-btn gw-btn--secondary" onClick={c.clear}>
+            {pick({ en: 'Clear all', ar: 'مسح الكل' })}
+          </button>
+        )}
+      </RouteMasthead>
+      <section className="gw-matrix">
+        <div className="gw-matrix-inner">
           {!list.length ? (
-            <div className="empty-state">
-              <h2>{pick({ en: 'No products selected', ar: 'لم تختر منتجات' })}</h2>
-              <Link className="btn-primary" to="/shop">
+            <div className="gw-terminal-inner">
+              <h2 className="gw-terminal-title">
+                {pick({ en: 'No products selected', ar: 'لم تختر منتجات' })}
+              </h2>
+              <Link className="gw-btn gw-btn--primary" to="/shop">
                 {pick({ en: 'Browse shop', ar: 'تصفح المتجر' })}
               </Link>
             </div>
@@ -107,7 +112,9 @@ export default function ComparePage() {
                                   return;
                                 }
                                 if (action.type === 'quote') {
-                                  navigate(`/teams-wholesale?product=${encodeURIComponent(p.slug)}#quote`);
+                                  navigate(
+                                    `/teams-wholesale?product=${encodeURIComponent(p.slug)}#quote`,
+                                  );
                                   return;
                                 }
                                 const v = action.variant;
@@ -121,7 +128,8 @@ export default function ComparePage() {
                                   image: p.image,
                                   price: Number(v.unitPrice ?? p.price),
                                   retailPrice: Number(v.unitPrice ?? p.price),
-                                  wholesalePrice: Number(v.wholesalePrice ?? p.wholesalePrice ?? 0) || null,
+                                  wholesalePrice:
+                                    Number(v.wholesalePrice ?? p.wholesalePrice ?? 0) || null,
                                   size: v.size,
                                   color: v.color,
                                   sku: v.sku,

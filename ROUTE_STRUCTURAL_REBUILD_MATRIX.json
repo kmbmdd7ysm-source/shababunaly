@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:06:41.107Z",
+  "generatedAt": "2026-08-03T16:08:49.594Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 25,
+    "fully-rebuilt": 26,
     "partially-rebuilt": 0,
-    "not-rebuilt": 11,
+    "not-rebuilt": 10,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 18,
+    "fully-rebuilt": 19,
     "partially-rebuilt": 0,
-    "not-rebuilt": 11
+    "not-rebuilt": 10
   },
   "routes": [
     {
@@ -413,14 +413,14 @@
       "component": "Compare",
       "file": "src/pages/ComparePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 26,
+      "linesRemoved": 18,
+      "compositionMarkers": [
+        "gw-terminal",
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/favorites",
