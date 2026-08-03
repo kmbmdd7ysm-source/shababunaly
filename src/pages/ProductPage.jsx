@@ -6,6 +6,7 @@ import { useCart, cartKey } from '../context/CartContext';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { trackEvent } from '../utils/analytics';
 import Seo from '../components/common/Seo';
+import { resolveProductViewer } from '../utils/productViewerTier';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import SmartImage from '../components/common/SmartImage';
 import Price from '../components/common/Price';
@@ -66,6 +67,11 @@ export default function ProductPage() {
     setActiveImg(0);
     setError('');
   }, [slug]);
+
+  /* Verified photography and a concept plate need different stage treatments:
+     a photograph shot on white should read as a print laid on the stage, a
+     transparent plate should read as a drawing floating in the light. */
+  const viewerTier = resolveProductViewer(product).tier;
 
   const gallery = useMemo(() => {
     if (!product) return [];
@@ -282,7 +288,7 @@ export default function ProductPage() {
         {/* The viewer is the stage, not a column of it. It fills the section
             edge to edge; identity, trail and the angle register are overlaid on
             top of it. Nothing sits beside it competing for the same width. */}
-        <div className="gw-stage-canvas">
+        <div className="gw-stage-canvas" data-tier={viewerTier}>
           <button
             type="button"
             className="gw-stage-frame"

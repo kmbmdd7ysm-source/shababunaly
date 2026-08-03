@@ -291,7 +291,6 @@ export default function ShopPage() {
   ];
 
   const departments = categories.filter((item) => isLibya || item.slug !== 'ready-to-ship');
-  const departmentIndex = (position) => String(position + 1).padStart(2, '0');
 
   // The catalogue reads as a set of RUNS rather than one undifferentiated grid.
   // The lead product of each run gets a plinth; the remainder gets an efficient
@@ -334,12 +333,9 @@ export default function ShopPage() {
               </p>
             </div>
             <ul className="gw-entrance-gates">
-              {departments.map((item, position) => (
+              {departments.map((item) => (
                 <li key={item.slug}>
                   <Link to={`/shop/${item.slug}`} className="gw-gate">
-                    <span className="gw-gate-num" aria-hidden="true">
-                      {departmentIndex(position)}
-                    </span>
                     <span className="gw-gate-name">{pick(item.name)}</span>
                     <span className="gw-gate-count gw-isolate-ltr">
                       {products.filter((entry) => entry.category === item.slug).length ||

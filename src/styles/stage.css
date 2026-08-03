@@ -531,6 +531,59 @@
   min-inline-size: 0;
 }
 
+/* A lit stage rather than a void.
+
+   The instruction is explicit: a product with no verified 3D or turntable
+   assets must still get a complete, premium stage. Previously a Level D
+   product floated in flat black with enormous dead margins and read as a
+   broken page. This is original generated studio backdrop artwork — a
+   cyclorama sweep with a soft pool of light and a contact shadow — so even a
+   single verified image is *presented*. It changes nothing about what is
+   claimed: the tier note above still says exactly what the media is. */
+.gw-stage-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: image-set(
+    url('/media/atmosphere/product-stage-1400.webp') 1x,
+    url('/media/atmosphere/product-stage-1400.webp') 2x
+  );
+  background-size: cover;
+  background-position: center 62%;
+  opacity: 0.75;
+}
+
+@media (max-width: 899px) {
+  .gw-stage-canvas::before {
+    background-image: image-set(url('/media/atmosphere/product-stage-900.webp') 1x);
+    background-position: center 58%;
+  }
+}
+
+.gw-stage-frame,
+.gw-stage-angles,
+.gw-stage-overlay,
+.gw-stage-tier {
+  position: relative;
+  z-index: 2;
+}
+
+.gw-stage-angles,
+.gw-stage-overlay,
+.gw-stage-tier {
+  position: absolute;
+}
+
+@media (max-width: 899px) {
+  .gw-stage-angles,
+  .gw-stage-overlay,
+  .gw-stage-tier {
+    position: static;
+  }
+}
+
 .gw-stage-frame {
   inline-size: 100%;
   block-size: 100%;
@@ -786,4 +839,27 @@
 .gw-stage :focus-visible {
   outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
   outline-offset: 3px;
+}
+
+/* global.css carries `.smart-img { background: #fff !important }` — a legacy
+   guard so photographs shot on white do not show a seam against a light card.
+   On the lit product stage it punches a hard white rectangle straight through
+   the backdrop, and it makes the transparent concept plates invisible. Scoped
+   off here only; the rule still does its job everywhere else. Photographs shot
+   on white are unaffected, because the white is in their own pixels. */
+.gw-stage-frame .smart-img,
+.gw-stage-frame img {
+  background: transparent !important;
+}
+
+/* Verified photography is nearly always shot on white, so on the night stage it
+   lands as a hard pasted rectangle. Treated as a PRINT laid on the stage — a
+   soft edge and an ambient shadow — it belongs to the composition instead.
+
+   Tier D is a transparent concept plate: a shadow there would draw a box around
+   nothing, so it gets none. The tier already drives the honest disclosure above
+   the stage; here it drives the art direction too. */
+.gw-stage-canvas:not([data-tier='D']) .gw-stage-frame img {
+  border-radius: var(--sh-r-1);
+  box-shadow: var(--sh-lift);
 }

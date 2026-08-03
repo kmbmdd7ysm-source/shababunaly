@@ -112,7 +112,7 @@
 
 .gw-gate {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
   align-items: baseline;
   gap: var(--sh-s-3);
   min-block-size: clamp(56px, 8vh, 74px);
@@ -134,7 +134,6 @@
   }
 }
 
-.gw-gate-num,
 .gw-gate-count {
   font-family: var(--sh-font-display);
   font-size: 0.625rem;
