@@ -7,79 +7,124 @@ import { trackEvent } from '../../utils/analytics';
 import { footerNav } from '../../data/navigation';
 import { footerContacts } from '../../data/footerSocial';
 import Newsletter from '../common/Newsletter';
+import '../../styles/colophon.css';
 
+/*
+ * THE COLOPHON — rebuilt composition, identical content and behaviour.
+ *
+ * The old footer was four link columns plus a brand block, all at the same
+ * weight. This is the closing chapter of the page instead:
+ *
+ *   1  a full-bleed sign-off — the wordmark at display scale against the
+ *      slogan, with the newsletter as the single call to action
+ *   2  a drawn directory: three numbered indexes on hairline rules
+ *   3  an instruments strip: payments and social, each a labelled specimen
+ *   4  a datum line: legal, cookie preferences and the copyright
+ *
+ * Every link, every payment logo, the social outbound tracking event, the
+ * Libya-conditional Ready-to-Ship link and the cookie-preferences trigger are
+ * carried over exactly.
+ */
 export default function Footer() {
   const { t, pick, lang } = useLanguage();
   const { openPreferences } = useCookies();
   const { countryCode } = useCommerce();
-  const shopFooterLinks = footerNav.shop.filter((item) => countryCode === 'LY' || item.key !== 'readyToShip');
+  const shopFooterLinks = footerNav.shop.filter(
+    (item) => countryCode === 'LY' || item.key !== 'readyToShip',
+  );
 
   const renderLinks = (items) =>
     items.map((l) => (
       <li key={l.to}>
-        <Link to={l.to}>{l.key ? t.nav[l.key] : pick(l.label)}</Link>
+        <Link to={l.to} className="gw-colophon-link">
+          {l.key ? t.nav[l.key] : pick(l.label)}
+        </Link>
       </li>
     ));
 
+  const directories = [
+    { index: '01', title: t.footer.shop, label: t.footer.shop, items: shopFooterLinks },
+    {
+      index: '02',
+      title: pick({ en: 'Services', ar: 'الخدمات' }),
+      label: t.footer.academy,
+      items: footerNav.academy,
+    },
+    { index: '03', title: t.footer.help, label: t.footer.help, items: footerNav.help },
+  ];
+
   return (
-    <footer className="site-footer">
-      <div className="container footer-top">
-        <div className="footer-brand-col">
-          <Link to="/" className="brand footer-brand" aria-label={SITE.name}>
-            <img
-              src={lang === 'ar' ? SITE.wordmarkArLight : SITE.wordmarkLight}
-              alt=""
-              width="244"
-              height="68"
-              className="footer-brand-wordmark"
-            />
-          </Link>
-          <p className="footer-slogan">{pick(SITE.slogan)}</p>
-          <p className="footer-tagline">{t.footer.tagline}</p>
-          <div className="footer-social" aria-label={t.footer.socialLinks}>
-            {footerContacts.filter((item) => item.href).map(({ id, href, labelKey, external, icon }) => (
-              <a
-                key={id}
-                href={href}
-                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                aria-label={t.footer.socialLabels[labelKey]}
-                onClick={() => trackEvent('outbound_social', { network: id, source: 'footer' })}
-              >
-                <svg
-                  className={`footer-social-icon footer-social-icon--${id}`}
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  {icon}
-                </svg>
-              </a>
-            ))}
+    <footer className="gw-colophon">
+      {/* 1 — the sign-off */}
+      <div className="gw-colophon-signoff">
+        <div className="gw-colophon-inner gw-colophon-signoff-grid">
+          <div className="gw-colophon-identity">
+            <Link to="/" className="gw-colophon-mark" aria-label={SITE.name}>
+              <img
+                src={lang === 'ar' ? SITE.wordmarkArLight : SITE.wordmarkLight}
+                alt=""
+                width="244"
+                height="68"
+              />
+            </Link>
+            <p className="gw-colophon-slogan">{pick(SITE.slogan)}</p>
+            <p className="gw-colophon-tagline">{t.footer.tagline}</p>
           </div>
-        </div>
 
-        <nav className="footer-col" aria-label={t.footer.shop}>
-          <h3>{t.footer.shop}</h3>
-          <ul>{renderLinks(shopFooterLinks)}</ul>
-        </nav>
-        <nav className="footer-col" aria-label={t.footer.academy}>
-          <h3>{pick({ en: 'Services', ar: 'الخدمات' })}</h3>
-          <ul>{renderLinks(footerNav.academy)}</ul>
-        </nav>
-        <nav className="footer-col" aria-label={t.footer.help}>
-          <h3>{t.footer.help}</h3>
-          <ul>{renderLinks(footerNav.help)}</ul>
-        </nav>
-
-        <div className="footer-col footer-newsletter-col">
-          <h3>{t.footer.newsletter}</h3>
-          <p className="footer-nl-text">{t.newsletter.text}</p>
-          <Newsletter compact />
+          <div className="gw-colophon-subscribe">
+            <p className="gw-spec">{t.footer.newsletter}</p>
+            <p className="gw-colophon-subscribe-text">{t.newsletter.text}</p>
+            <Newsletter compact />
+          </div>
         </div>
       </div>
 
-      <div className="container footer-mid">
-        <div className="footer-payments" aria-label={t.footer.payments}>
+      {/* 2 — the directory */}
+      <div className="gw-colophon-inner gw-colophon-directory">
+        {directories.map((column) => (
+          <nav className="gw-colophon-column" aria-label={column.label} key={column.index}>
+            <p className="gw-colophon-column-head">
+              <span className="gw-colophon-index" aria-hidden="true">
+                {column.index}
+              </span>
+              <span>{column.title}</span>
+            </p>
+            <ul>{renderLinks(column.items)}</ul>
+          </nav>
+        ))}
+
+        <div className="gw-colophon-column gw-colophon-column--contact">
+          <p className="gw-colophon-column-head">
+            <span className="gw-colophon-index" aria-hidden="true">
+              04
+            </span>
+            <span>{pick({ en: 'Contact', ar: 'تواصل' })}</span>
+          </p>
+          <p className="gw-colophon-place">{pick(SITE.address)}</p>
+          <div className="gw-colophon-social" aria-label={t.footer.socialLinks}>
+            {footerContacts
+              .filter((item) => item.href)
+              .map(({ id, href, labelKey, external, icon }) => (
+                <a
+                  key={id}
+                  href={href}
+                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  aria-label={t.footer.socialLabels[labelKey]}
+                  onClick={() => trackEvent('outbound_social', { network: id, source: 'footer' })}
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    {icon}
+                  </svg>
+                </a>
+              ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 3 — instruments */}
+      <div className="gw-colophon-inner gw-colophon-instruments">
+        <p className="gw-spec">{t.footer.payments}</p>
+        <div className="gw-colophon-payments" aria-label={t.footer.payments}>
           {[
             ['visa', 'Visa', 443, 148],
             ['mastercard', 'Mastercard', 435, 260],
@@ -94,25 +139,26 @@ export default function Footer() {
               alt={label}
               width={width}
               height={height}
-              className={`payment-logo payment-logo--${key}`}
+              className={`gw-colophon-payment gw-colophon-payment--${key}`}
               loading="lazy"
             />
           ))}
         </div>
       </div>
 
-      <div className="container footer-bottom">
-        <nav className="footer-legal" aria-label={t.footer.legal}>
+      {/* 4 — the datum */}
+      <div className="gw-colophon-inner gw-colophon-datum">
+        <nav className="gw-colophon-legal" aria-label={t.footer.legal}>
           {footerNav.legal.map((l) => (
             <Link key={l.to} to={l.to}>
               {t.nav[l.key]}
             </Link>
           ))}
-          <button className="footer-link-button" onClick={openPreferences}>
+          <button type="button" onClick={openPreferences}>
             {t.common.changePreferences}
           </button>
         </nav>
-        <p className="footer-copy">
+        <p className="gw-colophon-copy">
           © {new Date().getFullYear()} {SITE.name}. {t.footer.rights}
         </p>
       </div>
