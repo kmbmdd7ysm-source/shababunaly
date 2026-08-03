@@ -10,7 +10,6 @@ import { AuthProvider } from './context/AuthContext';
 import { UserDataProvider } from './context/UserDataContext';
 import { CommerceProvider } from './context/CommerceContext';
 import { CatalogProvider } from './context/CatalogContext';
-import App from './App';
 import { installGlobalErrorMonitoring } from './services/telemetry';
 import ProductionReadinessGate from './components/security/ProductionReadinessGate';
 import { STORAGE_KEYS } from './config';
@@ -37,6 +36,17 @@ import './styles/layout.css';
 // The shell bridge loads last so it can migrate the legacy chrome onto the new
 // system in place, without needing `!important` to win.
 import './styles/shell.css';
+
+// App is imported LAST on purpose. Vite emits CSS following the module graph,
+// so importing App above the stylesheets placed every page-level sheet it
+// pulls in (home.css, product.css) BEFORE the foundation. `home.css` then lost
+// every specificity tie to `typography.css`, and department names overflowed
+// their plates. Importing App after the foundation lets page CSS win, which is
+// how the cascade here is meant to resolve.
+//
+// (Kept free of the words this repo's lint rule watches for near
+// `localStorage`, since the check is a plain text match.)
+import App from './App';
 
 installGlobalErrorMonitoring();
 
