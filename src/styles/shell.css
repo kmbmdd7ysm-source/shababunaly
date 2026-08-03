@@ -292,10 +292,3 @@ input[type='radio'] {
   accent-color: var(--sh-ink);
   cursor: pointer;
 }
-
-/* The design preview disclaimer is exactly the text a customer must be able to
-   read, and it measured 2.35:1. Pre-existing, fixed here because it is the
-   cinematic-versus-production warning. */
-.design-preview-disclaimer {
-  color: var(--sh-ink-70);
-}

@@ -14,7 +14,7 @@ const GLOBAL_LAYERS = ['tokens.css', 'fonts.css'];
 // The Phase 2A shell bridge is allowed to target legacy shell class names —
 // that is its entire purpose — but it is still held to tokens-only colours and
 // logical-properties-only layout.
-const BRIDGE_LAYERS = ['shell.css', 'catalog.css'];
+const BRIDGE_LAYERS = ['shell.css', 'catalog.css', 'studio.css'];
 const SCOPED_LAYERS = [
   'typography.css',
   'motion.css',

@@ -1,0 +1,396 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK Customize Studio (Phase 4)
+   --------------------------------------------------------------------------
+   The design laboratory. An artboard on a measured ground, with the tools
+   drawn around it rather than floating over it.
+
+   Every selector is a `gw-studio*` class except the small bridge block at the
+   end, which migrates the surrounding legacy studio chrome.
+   ========================================================================== */
+
+.gw-studio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-3);
+}
+
+.gw-studio-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-block-end: var(--sh-s-2);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-studio-eyebrow {
+  margin: 0;
+}
+
+/* Accuracy is stated in words with a shape, never by colour alone. */
+.gw-studio-accuracy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh-s-2);
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-studio-accuracy {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-studio-accuracy-mark {
+  inline-size: 10px;
+  block-size: 10px;
+  border: 2px solid currentColor;
+}
+
+.gw-studio-accuracy--concept {
+  color: var(--sh-maple);
+}
+
+/* A hollow square for concept, a filled one for factory-approved: the two
+   states differ in shape as well as colour and wording. */
+.gw-studio-accuracy--verified {
+  color: var(--sh-verified);
+}
+
+.gw-studio-accuracy--verified .gw-studio-accuracy-mark {
+  background: currentColor;
+  border-radius: 50%;
+}
+
+/* ---------- Artboard ------------------------------------------------------ */
+
+.gw-studio-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  padding: var(--sh-s-4);
+  touch-action: pan-y;
+}
+
+.gw-studio-stage:focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-focus-color);
+  outline-offset: 2px;
+}
+
+/* The measured ground: a faint grid that reads as a cutting mat. */
+.gw-studio-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, var(--sh-rule) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(to bottom, var(--sh-rule) 0 1px, transparent 1px 40px);
+  opacity: 0.55;
+}
+
+.gw-studio-frame {
+  position: relative;
+  z-index: 1;
+  transform-origin: center;
+  transition: transform var(--sh-d-3) var(--sh-e-draw);
+}
+
+/* Zoom is a data attribute rather than an inline style, because the CSP here
+   forbids inline style mutation. */
+.gw-studio-frame[data-zoom='120'] {
+  transform: scale(1.2);
+}
+.gw-studio-frame[data-zoom='140'] {
+  transform: scale(1.4);
+}
+.gw-studio-frame[data-zoom='160'] {
+  transform: scale(1.6);
+}
+.gw-studio-frame[data-zoom='180'] {
+  transform: scale(1.8);
+}
+.gw-studio-frame[data-zoom='200'] {
+  transform: scale(2);
+}
+.gw-studio-frame[data-zoom='220'] {
+  transform: scale(2.2);
+}
+
+.gw-studio-stage[data-reduced='on'] .gw-studio-frame {
+  transition: none;
+}
+
+/* The camera ring. The artboard is a vector approximation, so the "views" are
+   presented as an honest rotation of the same drawing rather than as separate
+   photographed faces. The back view mirrors, which is what a back actually is;
+   the side views compress, which is what a side actually does. */
+.gw-studio[data-view='back'] .gw-studio-artboard {
+  transform: scaleX(-1);
+}
+
+.gw-studio[data-view='left'] .gw-studio-artboard,
+.gw-studio[data-view='right'] .gw-studio-artboard {
+  transform: perspective(1400px) rotateY(58deg);
+}
+
+.gw-studio[data-view='left'] .gw-studio-artboard {
+  transform: perspective(1400px) rotateY(-58deg);
+}
+
+.gw-studio[data-view='detail'] .gw-studio-artboard {
+  transform: perspective(1600px) rotateY(18deg) scale(1.14);
+}
+
+.gw-studio-artboard {
+  transition: transform var(--sh-d-4) var(--sh-e-arc);
+  transform-style: preserve-3d;
+}
+
+.gw-studio-stage[data-reduced='on'] .gw-studio-artboard {
+  transition: none;
+}
+
+/* ---------- Lighting -----------------------------------------------------
+   Named, honest modes. These are presentation filters on a vector drawing and
+   are never represented as measured colour - the accuracy note says so. */
+
+.gw-studio[data-lighting='studio'] .gw-studio-stage {
+  background: var(--sh-chalk);
+}
+
+.gw-studio[data-lighting='arena'] .gw-studio-stage {
+  background: var(--sh-night);
+}
+
+.gw-studio[data-lighting='arena'] .gw-studio-grid {
+  opacity: 0.18;
+  background-image:
+    repeating-linear-gradient(to right, var(--sh-rule-inverse) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(to bottom, var(--sh-rule-inverse) 0 1px, transparent 1px 40px);
+}
+
+/* ---------- Print-zone and safe-area overlay ------------------------------ */
+
+.gw-studio-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gw-studio-safe,
+.gw-studio-bleed {
+  position: absolute;
+  display: block;
+}
+
+/* Safe area: 12mm inset, the value declared in FACTORY_TEMPLATE_SPECS. */
+.gw-studio-safe {
+  inset: 12%;
+  border: 1px dashed var(--sh-verified);
+}
+
+/* Bleed: 5mm outside the trim. */
+.gw-studio-bleed {
+  inset: 6%;
+  border: 1px solid var(--sh-maple);
+}
+
+/* ---------- Controls ------------------------------------------------------ */
+
+.gw-studio-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+}
+
+.gw-studio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-2);
+}
+
+.gw-studio-row--split {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gw-studio-btn {
+  min-block-size: var(--sh-target-min);
+  min-inline-size: var(--sh-target-min);
+  padding-inline: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-ink-70);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--sh-d-1) var(--sh-e-draw);
+}
+
+[lang='ar'] .gw-studio-btn {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.gw-studio-btn:hover {
+  border-color: var(--sh-ink);
+  color: var(--sh-ink);
+}
+
+.gw-studio-btn.is-active {
+  background: var(--sh-ink);
+  border-color: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+.gw-studio-zoom {
+  display: flex;
+  align-items: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target-min);
+}
+
+.gw-studio-zoom input[type='range'] {
+  inline-size: clamp(90px, 22vw, 180px);
+  accent-color: var(--sh-ink);
+  block-size: var(--sh-target-min);
+}
+
+.gw-studio-note {
+  margin: 0;
+  color: var(--sh-ink-70);
+  font-size: var(--sh-t-small);
+  line-height: 1.5;
+}
+
+/* ---------- Mobile: a designed workspace, not a squeezed desktop ---------- */
+
+@media (max-width: 699px) {
+  .gw-studio-stage {
+    padding: var(--sh-s-3);
+  }
+
+  .gw-studio-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    padding-block-end: 2px;
+  }
+
+  .gw-studio-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gw-studio-btn {
+    flex: none;
+  }
+
+  .gw-studio-row--split {
+    flex-wrap: wrap;
+  }
+}
+
+/* ==========================================================================
+   Bridge: the surrounding legacy studio chrome
+   ========================================================================== */
+
+.studio-preview-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+}
+
+.studio-contract-card {
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  padding: var(--sh-s-4);
+}
+
+.studio-contract-card > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-block: 7px;
+  border-block-end: 1px solid var(--sh-rule);
+  font-variant-numeric: tabular-nums;
+}
+
+.studio-contract-card > div:last-child {
+  border-block-end: 0;
+}
+
+.studio-contract-card span {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .studio-contract-card span {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.studio-step-nav button,
+.studio-steps button {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  min-block-size: var(--sh-target-min);
+}
+
+[lang='ar'] .studio-step-nav button,
+[lang='ar'] .studio-steps button {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* The legacy artboard paints on a near-black ground, so the disclaimer - the
+   one line telling a customer this is a draft and not a production proof -
+   needs the inverse ink. It measured 2.35:1 as dark grey on near-black; an
+   earlier attempt in shell.css assumed a light ground and made it worse. */
+.design-preview .design-preview-disclaimer {
+  /* Two classes, because the winner here was `.section p { color:#4d4d4d }` at
+     (0,1,1) - a pre-existing bug that had already been overriding the
+     artboard's own #a9a9a3 long before this phase. */
+  color: var(--sh-night-ink-70);
+}
+
+.design-preview-label {
+  color: var(--sh-night-ink);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .design-preview-label {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
