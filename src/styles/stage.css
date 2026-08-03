@@ -1,0 +1,518 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK product stage (rebuilt composition)
+   --------------------------------------------------------------------------
+   The old product page was gallery-left / details-right inside one container.
+   This is three movements:
+
+     STAGE        a dark chapter where the product IS the room, with identity
+                  and trail as overlaid specification and an angle register
+     DECK         commerce instruments on a light ground, with fulfilment and
+                  specification as OPEN plates beside them - not an accordion
+     CONTINUATION related work as chapters rather than three identical grids
+
+   Plus a sticky commit bar on mobile so price and action never separate.
+   ========================================================================== */
+
+/* ---------- 1. Stage -------------------------------------------------------- */
+
+.gw-stage {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  padding-block: clamp(20px, 3vw, 36px) clamp(32px, 5vw, 64px);
+}
+
+.gw-stage-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+  display: grid;
+  gap: var(--sh-s-5);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1000px) {
+  .gw-stage-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--sh-s-7);
+    align-items: center;
+  }
+}
+
+.gw-stage-trail {
+  margin-block-end: var(--sh-s-4);
+}
+
+.gw-stage-trail a,
+.gw-stage-trail li,
+.gw-stage-trail span,
+.gw-stage-trail [aria-current='page'] {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-trail a:hover,
+.gw-stage-trail [aria-current='page'] {
+  color: var(--sh-night-ink);
+}
+
+.gw-stage-origin {
+  margin: 0 0 var(--sh-s-2);
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(2rem, 1.3rem + 3.2vw, 3.8rem);
+  font-weight: 800;
+  font-stretch: 106%;
+  line-height: 0.98;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .gw-stage-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.7rem, 1.2rem + 2.4vw, 2.9rem);
+  line-height: 1.26;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-stage-sku {
+  margin: var(--sh-s-3) 0 0;
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-2);
+  margin-block-start: var(--sh-s-4);
+}
+
+.gw-stage-badges .badge,
+.gw-stage-badges .ready-badge {
+  background: transparent;
+  border-color: var(--sh-night-ink-70);
+  color: var(--sh-night-ink);
+}
+
+.gw-stage-badges .ready-badge {
+  border-color: var(--sh-verified);
+  color: var(--sh-night-ink);
+}
+
+/* The frame: a drawn plate on the chalk ground the product was shot on, with
+   a measurement tick on its leading edge. */
+.gw-stage-frame {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  padding: 0;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.gw-stage-frame::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--sh-s-4);
+  inset-inline-start: 0;
+  inline-size: 1px;
+  z-index: 1;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--sh-rule-strong) 0 1px,
+    transparent 1px 12px
+  );
+}
+
+.gw-stage-image {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  display: block;
+}
+
+.gw-stage-zoom {
+  position: absolute;
+  inset-block-end: var(--sh-s-3);
+  inset-inline-end: var(--sh-s-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--sh-r-1);
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-stage-zoom {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-stage-zoom svg {
+  inline-size: 14px;
+  block-size: 14px;
+}
+
+/* The angle register: numbered, part of the architecture. */
+.gw-angle-register {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-2);
+  margin-block-start: var(--sh-s-3);
+}
+
+.gw-angle {
+  position: relative;
+  inline-size: 64px;
+  block-size: 80px;
+  padding: 0;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gw-angle img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.gw-angle-index {
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 4px;
+  font-family: var(--sh-font-display);
+  font-size: 0.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--sh-ink-50);
+}
+
+.gw-angle.is-active {
+  border-color: var(--sh-night-ink);
+  box-shadow: inset 0 0 0 2px var(--sh-night-ink);
+}
+
+.gw-stage .gw-tier-note {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 2px;
+}
+
+/* ---------- 2. Deck ---------------------------------------------------------- */
+
+.gw-deck {
+  padding-block: clamp(32px, 5vw, 64px);
+}
+
+.gw-deck-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .gw-deck-inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.gw-deck-buy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+}
+
+.gw-deck-price {
+  padding-block-end: var(--sh-s-3);
+  border-block-end: 2px solid var(--sh-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-deck-desc {
+  margin: 0;
+  max-inline-size: 60ch;
+  color: var(--sh-ink-70);
+}
+
+/* Purchase mode as two measured plates. */
+.gw-mode {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: var(--sh-s-2);
+}
+
+.gw-mode-option {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 4px;
+  min-block-size: var(--sh-target-lg);
+  padding: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-ink);
+  cursor: pointer;
+  text-align: start;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-mode-option .gw-spec {
+  margin: 0;
+  color: var(--sh-ink-50);
+}
+
+.gw-mode-option.is-active {
+  border-color: var(--sh-ink);
+  box-shadow: inset 0 0 0 1px var(--sh-ink);
+}
+
+.gw-mode-option.is-active .gw-spec {
+  color: var(--sh-ink);
+}
+
+.gw-size-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  margin-block-end: var(--sh-s-2);
+}
+
+.gw-deck-quote {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  padding: var(--sh-s-4);
+  background: var(--sh-chalk-2);
+}
+
+.gw-deck-secondary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+  padding-block-start: var(--sh-s-3);
+  border-block-start: 1px solid var(--sh-rule);
+}
+
+.gw-deck-compare {
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-ink);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-deck-compare {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-deck-compare.is-active {
+  background: var(--sh-ink);
+  border-color: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+/* ---------- Specification plates ---------------------------------------------
+   Open by default. A customer deciding on a uniform should not have to click
+   to discover the fabric or the delivery window. */
+
+.gw-deck-spec {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-3);
+}
+
+.gw-fulfilment,
+.gw-specplate {
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  padding: var(--sh-s-4);
+}
+
+.gw-fulfilment.is-ready {
+  border-inline-start: 3px solid var(--sh-verified);
+}
+
+.gw-fulfilment .gw-spec,
+.gw-specplate .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+  color: var(--sh-ink-50);
+}
+
+.gw-fulfilment p,
+.gw-specplate-body p,
+.gw-specplate-body li {
+  margin: 0;
+  color: var(--sh-ink-70);
+  line-height: 1.55;
+}
+
+.gw-fulfilment-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-block-end: 6px;
+  color: var(--sh-verified);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-fulfilment-ready {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-fulfilment-origin {
+  margin-block-start: 6px !important;
+}
+
+.gw-fulfilment-link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--sh-target-min);
+  margin-block-start: var(--sh-s-2);
+  color: var(--sh-ink);
+  font-weight: 700;
+}
+
+.gw-specplate-body ul {
+  margin: 0;
+  padding-inline-start: var(--sh-s-4);
+}
+
+/* ---------- Sticky commit bar (mobile) ----------------------------------------
+   Marked aria-hidden and its control removed from the tab order: it is a
+   convenience duplicate of the deck's real add-to-cart, which stays fully
+   reachable. Nothing here is the only way to do anything. */
+
+.gw-buybar {
+  display: none;
+}
+
+@media (max-width: 999px) {
+  .gw-buybar {
+    position: sticky;
+    inset-block-end: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sh-s-3);
+    padding: var(--sh-s-3) var(--sh-s-4);
+    padding-block-end: calc(var(--sh-s-3) + env(safe-area-inset-bottom));
+    background: var(--sh-chalk);
+    border-block-start: 2px solid var(--sh-ink);
+  }
+
+  .gw-buybar-price {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gw-buybar .gw-btn {
+    flex: 1;
+    max-inline-size: 60%;
+    justify-content: center;
+  }
+}
+
+/* ---------- 3. Continuation ----------------------------------------------------- */
+
+.gw-continue {
+  padding-block: clamp(40px, 6vw, 80px);
+  border-block-start: 1px solid var(--sh-rule);
+}
+
+.gw-continue--maple {
+  background: var(--sh-maple-tint);
+  border-block-start: 0;
+}
+
+.gw-continue-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.gw-continue-head {
+  padding-block-end: var(--sh-s-4);
+  border-block-end: 1px solid var(--sh-rule);
+  margin-block-end: var(--sh-s-5);
+}
+
+.gw-continue-head .gw-spec {
+  margin: 0 0 4px;
+  color: var(--sh-ink-50);
+}
+
+.gw-continue-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.4rem);
+  font-weight: 800;
+  font-stretch: 102%;
+  line-height: 1.04;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-continue-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.34;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Mobile ---------------------------------------------------------------- */
+
+@media (max-width: 699px) {
+  .gw-angle {
+    inline-size: 54px;
+    block-size: 68px;
+  }
+
+  .gw-deck-inner {
+    gap: var(--sh-s-5);
+  }
+}

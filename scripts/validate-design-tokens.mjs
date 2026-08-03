@@ -25,6 +25,7 @@ const BRIDGE_LAYERS = [
   'masthead.css',
   'colophon.css',
   'catalogue.css',
+  'stage.css',
 ];
 const SCOPED_LAYERS = [
   'typography.css',
