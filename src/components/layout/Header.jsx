@@ -14,9 +14,35 @@ import AnnouncementBar from './AnnouncementBar';
 import CurrencySelector from '../common/CurrencySelector';
 
 import Icon from '../icons/Icon';
+import '../../styles/masthead.css';
 
 const SearchOverlay = lazy(() => import('./SearchOverlay'));
 
+/*
+ * THE MASTHEAD — rebuilt composition, identical behaviour.
+ *
+ * The old header was a single flex row: brand, links, icons. This is a drawn
+ * datum instead — the line the whole site is measured from.
+ *
+ *   row 1  the announcement rail
+ *   row 2  a three-column grid: mark / register / instruments
+ *          with a hairline baseline that thickens when the page leaves the top
+ *   row 3  the mega plate, a full-bleed dark chapter rather than a dropdown
+ *
+ * Navigation entries carry a two-digit index, so the nav reads as a numbered
+ * register of the site rather than a row of words, and the active entry is
+ * marked by a rule drawn from the leading edge — which means it starts on the
+ * right in Arabic without a single directional override.
+ *
+ * Mobile is not the desktop header collapsed. It is a full-screen dark chapter
+ * with display-scale numbered entries, a drawn instrument grid and the
+ * language and currency controls on their own plate.
+ *
+ * Every behaviour is carried over untouched: mega hover intent and its timer,
+ * the lazy search overlay, cart drawer opening, the three analytics events,
+ * scroll state, route-change close, scroll lock, the focus trap, Escape, and
+ * focus return to the trigger.
+ */
 export default function Header() {
   const { t, pick, lang, setLang } = useLanguage();
   const { count, openDrawer } = useCart();
@@ -25,7 +51,9 @@ export default function Header() {
   const auth = useAuth();
   const { countryCode } = useCommerce();
   const isLibya = countryCode === 'LY';
-  const featuredShopLinks = megaMenu.featured.filter((item) => isLibya || item.key !== 'readyToShip');
+  const featuredShopLinks = megaMenu.featured.filter(
+    (item) => isLibya || item.key !== 'readyToShip',
+  );
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileShopOpen, setMobileShopOpen] = useState(false);
@@ -77,7 +105,12 @@ export default function Header() {
     return () => {
       document.removeEventListener('keydown', key);
       unlock();
-      menuButton.current?.focus();
+      // Restore focus AFTER the paint that hides the drawer. Calling focus()
+      // synchronously here loses: hiding the panel blurs whatever inside it
+      // still held focus, and the browser resets to <body> during the same
+      // style recalculation, so the trigger never actually receives it.
+      const trigger = menuButton.current;
+      requestAnimationFrame(() => trigger?.focus());
     };
   }, [mobileOpen]);
   const toggleLang = () => {
@@ -88,20 +121,32 @@ export default function Header() {
   const navLabel = (item) => t.nav[item.key] || pick(item.label || { en: item.key, ar: item.key });
   const headerWordmark = lang === 'ar' ? SITE.wordmarkAr : SITE.wordmark;
   const close = () => setMobileOpen(false);
+  const index = (position) => String(position + 1).padStart(2, '0');
+
   return (
     <>
       <AnnouncementBar />
-      <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
-        <div className="container header-inner">
-          <Link to="/" className="brand" aria-label={SITE.name}>
-            <img src={headerWordmark} alt="" width="460" height="130" className="brand-logo brand-logo--header brand-wordmark--header" />
+      <header
+        className={`gw-masthead${scrolled ? ' is-scrolled' : ''}`}
+        data-mega={megaOpen ? 'open' : 'closed'}
+      >
+        <div className="gw-masthead-bar">
+          <Link to="/" className="gw-mark" aria-label={SITE.name}>
+            <img
+              src={headerWordmark}
+              alt=""
+              width="460"
+              height="130"
+              className="gw-mark-wordmark"
+            />
           </Link>
-          <nav className="desktop-nav" aria-label={t.a11y.mainNav}>
-            {mainNav.map((item) =>
+
+          <nav className="gw-register" aria-label={t.a11y.mainNav}>
+            {mainNav.map((item, position) =>
               item.mega ? (
                 <div
                   key={item.to}
-                  className="nav-mega-wrap"
+                  className="gw-register-item gw-register-item--mega"
                   onMouseEnter={() => {
                     clearTimeout(megaTimer.current);
                     setMegaOpen(true);
@@ -112,23 +157,32 @@ export default function Header() {
                 >
                   <NavLink
                     to={item.to}
-                    className="nav-link"
+                    className="gw-register-link"
                     aria-haspopup="true"
                     aria-expanded={megaOpen}
                   >
-                    {navLabel(item)}
+                    <span className="gw-register-index" aria-hidden="true">
+                      {index(position)}
+                    </span>
+                    <span className="gw-register-label">{navLabel(item)}</span>
                   </NavLink>
                 </div>
               ) : (
-                <NavLink key={item.to} to={item.to} end={item.to === '/'} className="nav-link">
-                  {navLabel(item)}
-                </NavLink>
+                <div key={item.to} className="gw-register-item">
+                  <NavLink to={item.to} end={item.to === '/'} className="gw-register-link">
+                    <span className="gw-register-index" aria-hidden="true">
+                      {index(position)}
+                    </span>
+                    <span className="gw-register-label">{navLabel(item)}</span>
+                  </NavLink>
+                </div>
               ),
             )}
           </nav>
-          <div className="header-actions">
+
+          <div className="gw-instruments">
             <button
-              className="icon-btn"
+              className="gw-instrument"
               ref={searchButton}
               onClick={() => {
                 setMobileOpen(false);
@@ -138,13 +192,16 @@ export default function Header() {
             >
               <Icon name="search" />
             </button>
-            <div className="desktop-utilities">
+
+            <div className="gw-instruments-desktop">
+              <span className="gw-instrument-rule" aria-hidden="true" />
               <CurrencySelector compact />
-              <button className="lang-text-btn" onClick={toggleLang}>
+              <button className="gw-instrument gw-instrument--text" onClick={toggleLang}>
                 {lang === 'en' ? 'العربية' : 'English'}
               </button>
+              <span className="gw-instrument-rule" aria-hidden="true" />
               <Link
-                className="icon-btn"
+                className="gw-instrument"
                 to="/favorites"
                 aria-label={pick({
                   en: `Favorites, ${wishlist.ids.length} items`,
@@ -154,23 +211,24 @@ export default function Header() {
                 <Icon name="heart" />
               </Link>
               <Link
-                className="icon-btn"
+                className="gw-instrument"
                 to="/compare"
                 aria-label={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
               >
                 <Icon name="compare" />
-                {compare.count > 0 && <span className="cart-count">{compare.count}</span>}
+                {compare.count > 0 && <span className="gw-tally">{compare.count}</span>}
               </Link>
               <Link
-                className="icon-btn"
+                className="gw-instrument"
                 to="/account"
                 aria-label={pick({ en: 'Account', ar: 'الحساب' })}
               >
                 <Icon name="user" />
               </Link>
             </div>
+
             <Link
-              className="icon-btn mobile-account-action"
+              className="gw-instrument gw-instrument--mobile"
               to="/account"
               aria-label={pick({ en: 'Account', ar: 'الحساب' })}
               onClick={() => trackEvent('account_header_click')}
@@ -178,7 +236,7 @@ export default function Header() {
               <Icon name="user" />
             </Link>
             <button
-              className="icon-btn cart-btn"
+              className="gw-instrument"
               onClick={() => {
                 trackEvent('bag_header_click');
                 openDrawer();
@@ -186,11 +244,11 @@ export default function Header() {
               aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
             >
               <Icon name="bag" />
-              {count > 0 && <span className="cart-count">{count}</span>}
+              {count > 0 && <span className="gw-tally">{count}</span>}
             </button>
             <button
               ref={menuButton}
-              className="icon-btn mobile-more-action"
+              className="gw-instrument gw-instrument--mobile"
               onClick={() => {
                 setSearchOpen(false);
                 setMobileOpen(true);
@@ -203,20 +261,26 @@ export default function Header() {
             </button>
           </div>
         </div>
-        <div className={`mega-menu${megaOpen ? ' open' : ''}`} hidden={!megaOpen}>
-          <div className="container mega-inner">
-            <div className="mega-col mega-featured">
+
+        {/* The baseline. It is the datum the page hangs from, and it thickens
+            when the page leaves the top rather than a shadow appearing. */}
+        <span className="gw-masthead-datum" aria-hidden="true" />
+
+        <div className="gw-megaplate" hidden={!megaOpen}>
+          <div className="gw-megaplate-inner">
+            <div className="gw-megaplate-col gw-megaplate-col--featured">
+              <p className="gw-spec">{pick({ en: 'Departments', ar: 'الأقسام' })}</p>
               {featuredShopLinks.map((l) => (
-                <Link key={l.to} to={l.to}>
+                <Link key={l.to} to={l.to} className="gw-megaplate-link gw-megaplate-link--lead">
                   {t.nav[l.key]}
                 </Link>
               ))}
             </div>
             {megaMenu.columns.map((col) => (
-              <div className="mega-col" key={pick(col.title)}>
-                <h3>{pick(col.title)}</h3>
+              <div className="gw-megaplate-col" key={pick(col.title)}>
+                <h3 className="gw-spec">{pick(col.title)}</h3>
                 {col.links.map((l) => (
-                  <Link key={l.to} to={l.to}>
+                  <Link key={l.to} to={l.to} className="gw-megaplate-link">
                     {pick(l.label)}
                   </Link>
                 ))}
@@ -225,49 +289,61 @@ export default function Header() {
           </div>
         </div>
       </header>
+
       <div
-        className={`mobile-overlay${mobileOpen ? ' open' : ''}`}
+        className={`gw-scrim${mobileOpen ? ' is-open' : ''}`}
         onClick={close}
         aria-hidden="true"
       />
+
       <nav
         ref={menuPanel}
         id="mobile-menu"
-        className={`mobile-menu${mobileOpen ? ' open' : ''}`}
+        className={`gw-drawer${mobileOpen ? ' is-open' : ''}`}
         aria-label={t.a11y.mobileNav}
         aria-hidden={!mobileOpen}
       >
-        <div className="mobile-menu-head">
-          <Link to="/" className="brand" onClick={close} aria-label={SITE.name}>
-            <img src={headerWordmark} alt="" width="460" height="130" className="brand-logo brand-logo--header brand-wordmark--header" />
+        <div className="gw-drawer-head">
+          <Link to="/" className="gw-mark" onClick={close} aria-label={SITE.name}>
+            <img
+              src={headerWordmark}
+              alt=""
+              width="460"
+              height="130"
+              className="gw-mark-wordmark"
+            />
           </Link>
-          <button className="icon-btn" onClick={close} aria-label={t.a11y.closeMenu}>
+          <button className="gw-instrument" onClick={close} aria-label={t.a11y.closeMenu}>
             <Icon name="close" />
           </button>
         </div>
-        <div className="mobile-menu-body">
-          {mainNav.map((item) =>
+
+        <div className="gw-drawer-body">
+          {mainNav.map((item, position) =>
             item.mega ? (
-              <div key={item.to} className="mobile-accordion">
+              <div key={item.to} className="gw-drawer-group">
                 <button
-                  className="mobile-accordion-btn"
+                  className="gw-drawer-link gw-drawer-link--toggle"
                   aria-expanded={mobileShopOpen}
                   onClick={() => setMobileShopOpen((v) => !v)}
                 >
-                  <span>{navLabel(item)}</span>
+                  <span className="gw-drawer-index" aria-hidden="true">
+                    {index(position)}
+                  </span>
+                  <span className="gw-drawer-label">{navLabel(item)}</span>
                   <Icon name="chevron" className={mobileShopOpen ? 'rotated' : ''} />
                 </button>
                 {mobileShopOpen && (
-                  <div className="mobile-accordion-panel">
+                  <div className="gw-drawer-sublist">
                     {featuredShopLinks.map((l) => (
-                      <NavLink key={l.to} to={l.to} onClick={close} className="mobile-sublink">
+                      <NavLink key={l.to} to={l.to} onClick={close} className="gw-drawer-sublink">
                         {t.nav[l.key]}
                       </NavLink>
                     ))}
                     {megaMenu.columns
                       .flatMap((col) => col.links)
                       .map((l) => (
-                        <NavLink key={l.to} to={l.to} onClick={close} className="mobile-sublink">
+                        <NavLink key={l.to} to={l.to} onClick={close} className="gw-drawer-sublink">
                           {pick(l.label)}
                         </NavLink>
                       ))}
@@ -275,31 +351,40 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <NavLink key={item.to} to={item.to} onClick={close} className="mobile-link">
-                {navLabel(item)}
+              <NavLink key={item.to} to={item.to} onClick={close} className="gw-drawer-link">
+                <span className="gw-drawer-index" aria-hidden="true">
+                  {index(position)}
+                </span>
+                <span className="gw-drawer-label">{navLabel(item)}</span>
               </NavLink>
             ),
           )}
-          <NavLink to="/favorites" onClick={close} className="mobile-link">
-            {pick({
-              en: `Favorites (${wishlist.ids.length})`,
-              ar: `المفضلة (${wishlist.ids.length})`,
-            })}
+          <NavLink to="/favorites" onClick={close} className="gw-drawer-link gw-drawer-link--minor">
+            <span className="gw-drawer-label">
+              {pick({
+                en: `Favorites (${wishlist.ids.length})`,
+                ar: `المفضلة (${wishlist.ids.length})`,
+              })}
+            </span>
           </NavLink>
-          <NavLink to="/compare" onClick={close} className="mobile-link">
-            {pick({ en: `Compare (${compare.count})`, ar: `المقارنة (${compare.count})` })}
+          <NavLink to="/compare" onClick={close} className="gw-drawer-link gw-drawer-link--minor">
+            <span className="gw-drawer-label">
+              {pick({ en: `Compare (${compare.count})`, ar: `المقارنة (${compare.count})` })}
+            </span>
           </NavLink>
-          <div className="mobile-menu-divider" aria-hidden="true" />
+
           {auth.user ? (
-            <div className="mobile-account-signed-in mobile-menu-integrated-account">
-              <span className="mobile-account-identity">
+            <div className="gw-drawer-account">
+              <p className="gw-spec">{pick({ en: 'Signed in', ar: 'مسجّل الدخول' })}</p>
+              <span className="gw-drawer-identity">
                 {auth.user.user_metadata?.display_name || auth.user.email}
               </span>
-              <Link to="/account" onClick={close}>
+              <Link to="/account" onClick={close} className="gw-drawer-sublink">
                 {pick({ en: 'View Account', ar: 'عرض الحساب' })}
               </Link>
               <button
                 type="button"
+                className="gw-drawer-sublink"
                 onClick={async () => {
                   await auth.signOut();
                   close();
@@ -310,19 +395,22 @@ export default function Header() {
             </div>
           ) : (
             <div
-              className="mobile-auth-links mobile-menu-integrated-account"
+              className="gw-drawer-account"
               aria-label={pick({ en: 'Account access', ar: 'الدخول إلى الحساب' })}
             >
-              <Link to="/account?mode=signup" onClick={close}>
+              <p className="gw-spec">{pick({ en: 'Account', ar: 'الحساب' })}</p>
+              <Link to="/account?mode=signup" onClick={close} className="gw-drawer-sublink">
                 {pick({ en: 'Join Us', ar: 'انضم إلينا' })}
               </Link>
-              <Link to="/account" onClick={close}>
+              <Link to="/account" onClick={close} className="gw-drawer-sublink">
                 {pick({ en: 'Sign In', ar: 'تسجيل الدخول' })}
               </Link>
             </div>
           )}
         </div>
-        <div className="mobile-quick-actions">
+
+        {/* Instruments as a drawn grid, not a toolbar. */}
+        <div className="gw-drawer-instruments">
           <NavLink to="/account" onClick={close}>
             <Icon name="user" />
             <span>{pick({ en: 'Account', ar: 'الحساب' })}</span>
@@ -335,7 +423,7 @@ export default function Header() {
           >
             <Icon name="bag" />
             <span>{pick({ en: 'Bag', ar: 'الحقيبة' })}</span>
-            {count > 0 && <b>{count}</b>}
+            {count > 0 && <b className="gw-tally">{count}</b>}
           </button>
           <NavLink to="/order-tracking" onClick={close}>
             <Icon name="orders" />
@@ -346,20 +434,18 @@ export default function Header() {
             <span>{pick({ en: 'Help', ar: 'المساعدة' })}</span>
           </NavLink>
         </div>
-        <div className="mobile-menu-foot">
+
+        <div className="gw-drawer-foot">
           <CurrencySelector />
-          <button className="btn-secondary block" onClick={toggleLang}>
+          <button className="gw-drawer-lang" onClick={toggleLang}>
             {lang === 'en' ? 'العربية' : 'English'}
           </button>
         </div>
       </nav>
+
       {searchOpen && (
         <Suspense fallback={null}>
-          <SearchOverlay
-            open
-            onClose={() => setSearchOpen(false)}
-            triggerRef={searchButton}
-          />
+          <SearchOverlay open onClose={() => setSearchOpen(false)} triggerRef={searchButton} />
         </Suspense>
       )}
     </>

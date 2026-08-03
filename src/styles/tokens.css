@@ -60,6 +60,10 @@
   --sh-wash-3: rgba(10, 11, 13, 0.46);
   --sh-wash-4: rgba(10, 11, 13, 0.32);
 
+  /* The scrim behind an open drawer or dialog. Dense enough that the page
+     behind reads as withdrawn rather than merely dimmed. */
+  --sh-scrim: rgba(10, 11, 13, 0.62);
+
   /* ---------- Typography · families ------------------------------------- */
   /* Faces are declared in fonts.css. Names are Shababuna-specific so the
      existing `Inter` / `Archivo` / `Noto Kufi Arabic` declarations in

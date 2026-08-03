@@ -82,6 +82,12 @@ function serve(root) {
 }
 
 const seed = (language) => {
+  // Neutralise the service worker for review runs. `PwaPrompt` calls
+  // location.reload() on the first `controllerchange`, which in a fresh
+  // profile fires on the visitor's very first pointerdown and destroys any
+  // interaction under test. Pre-existing behaviour on main; blocked here so
+  // the harness measures the page rather than the reload.
+  Object.defineProperty(navigator, 'serviceWorker', { get: () => undefined, configurable: true });
   localStorage.setItem('shababuna-language', language);
   localStorage.setItem('shababuna-commerce-welcome-v1', 'done');
   localStorage.setItem(
