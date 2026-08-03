@@ -39,6 +39,7 @@ import './styles/shell.css';
 import './styles/catalog.css';
 import './styles/workspace.css';
 import './styles/content.css';
+import './styles/transact.css';
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,
 // so importing App above the stylesheets placed every page-level sheet it

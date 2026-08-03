@@ -14,7 +14,14 @@ const GLOBAL_LAYERS = ['tokens.css', 'fonts.css'];
 // The Phase 2A shell bridge is allowed to target legacy shell class names —
 // that is its entire purpose — but it is still held to tokens-only colours and
 // logical-properties-only layout.
-const BRIDGE_LAYERS = ['shell.css', 'catalog.css', 'studio.css', 'workspace.css', 'content.css'];
+const BRIDGE_LAYERS = [
+  'shell.css',
+  'catalog.css',
+  'studio.css',
+  'workspace.css',
+  'content.css',
+  'transact.css',
+];
 const SCOPED_LAYERS = [
   'typography.css',
   'motion.css',
@@ -184,9 +191,10 @@ for (const [mode, palette] of PALETTES) {
   }
   for (const file of [...SCOPED_LAYERS, ...BRIDGE_LAYERS]) {
     const css = read(`${STYLES}/${file}`);
-    for (const match of css.matchAll(/var\(\s*(--sh-[a-z0-9-]+)/gi)) {
-      // A reference with its own fallback is deliberate, not a typo.
-      if (!declared.has(match[1])) {
+    for (const match of css.matchAll(/var\(\s*(--sh-[a-z0-9-]+)\s*(,)?/gi)) {
+      // A reference carrying its own fallback degrades safely and is a
+      // deliberate pattern; a bare reference to a missing token is a typo.
+      if (!match[2] && !declared.has(match[1])) {
         failures.push(`${file}: var(${match[1]}) is not a declared token`);
       }
     }

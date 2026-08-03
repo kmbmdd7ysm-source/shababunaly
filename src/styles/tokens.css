@@ -199,6 +199,7 @@
 
   /* ---------- Targets ---------------------------------------------------- */
   --sh-target-min: 24px; /* WCAG 2.2 AA 2.5.8 floor */
+  --sh-target-lg: 52px; /* commit controls: checkout, pay, approve */
   --sh-target: 44px; /* design target */
 
   /* ---------- Z-index scale ---------------------------------------------- */
