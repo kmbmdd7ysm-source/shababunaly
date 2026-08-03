@@ -52,7 +52,8 @@ vi.mock('../../src/components/common/CurrencySelector', () => ({
   default: () => <select aria-label="Currency" />,
 }));
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
 import Header from '../../src/components/layout/Header';
 
