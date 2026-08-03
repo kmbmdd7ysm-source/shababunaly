@@ -6,8 +6,10 @@ export const SITE = {
   slogan: { en: 'BUILT DIFFERENT.', ar: 'BUILT DIFFERENT.' },
   domain: 'https://shababuna.ly',
 
-  logo: '/brand/shababuna-mark-black.png',
-  logoLight: '/brand/shababuna-mark-white.png',
+  // Interim typographic plate; the previous mark reproduced the NBA Logoman
+  // and is quarantined. See public/brand/quarantine/README.md.
+  logo: '/brand/shababuna-monogram.svg',
+  logoLight: '/brand/shababuna-monogram.svg',
   wordmark: '/brand/shababuna-wordmark-black.png',
   wordmarkLight: '/brand/shababuna-wordmark-white.png',
   wordmarkAr: '/brand/shababuna-wordmark-ar-black.png',

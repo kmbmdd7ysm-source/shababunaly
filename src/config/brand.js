@@ -1,4 +1,15 @@
-// Approved SHABABUNA identity assets derived from the uploaded source marks.
+/*
+ * SHABABUNA identity assets.
+ *
+ * The `mark` and `fullLockup` entries previously pointed at artwork containing a
+ * reproduction of the NBA Logoman. That artwork is quarantined under
+ * public/brand/quarantine/ and is no longer referenced anywhere.
+ *
+ * The script wordmark is the only verified original brand asset, so it is what
+ * the site displays. Where a square mark is structurally unavoidable — favicon,
+ * app icon, structured data — an interim typographic plate stands in. See
+ * public/brand/quarantine/README.md.
+ */
 export const BRAND = {
   name: 'Shababuna',
   nameAr: 'شبابنا',
@@ -18,19 +29,21 @@ export const BRAND = {
       white: '/brand/shababuna-wordmark-ar-white.png',
     },
   },
+  /* No verified full lockup exists. Consumers fall back to the wordmark. */
   fullLockup: {
     en: {
-      black: '/brand/shababuna-full-en-black.png',
-      white: '/brand/shababuna-full-en-white.png',
+      black: '/brand/shababuna-wordmark-black.png',
+      white: '/brand/shababuna-wordmark-white.png',
     },
     ar: {
-      black: '/brand/shababuna-full-ar-black.png',
-      white: '/brand/shababuna-full-ar-white.png',
+      black: '/brand/shababuna-wordmark-ar-black.png',
+      white: '/brand/shababuna-wordmark-ar-white.png',
     },
   },
+  /* Interim typographic plate. Not the identity — awaiting a designed symbol. */
   mark: {
-    black: '/brand/shababuna-mark-black.png',
-    white: '/brand/shababuna-mark-white.png',
+    black: '/brand/shababuna-monogram.svg',
+    white: '/brand/shababuna-monogram.svg',
   },
   social: '/brand/shababuna-social.png',
 };

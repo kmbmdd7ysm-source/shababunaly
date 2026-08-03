@@ -379,8 +379,8 @@ export default function AccountPage() {
             <img
               className="gw-gatewall-mark"
               src={pick({
-                en: '/brand/shababuna-full-en-white.png',
-                ar: '/brand/shababuna-full-ar-white.png',
+                en: '/brand/shababuna-wordmark-white.png',
+                ar: '/brand/shababuna-wordmark-ar-white.png',
               })}
               alt=""
               width="240"
