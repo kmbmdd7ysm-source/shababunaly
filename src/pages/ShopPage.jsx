@@ -8,12 +8,14 @@ import Breadcrumbs from '../components/common/Breadcrumbs';
 import Filters from '../components/shop/Filters';
 import SortSelect, { SORT_OPTIONS } from '../components/shop/SortSelect';
 import ProductCard from '../components/shop/ProductCard';
+import ProductPlinth from '../components/shop/ProductPlinth';
 import EmptyState from '../components/common/EmptyState';
 import Icon from '../components/icons/Icon';
 import { useCatalog } from '../context/CatalogContext';
 import { categories, getCategory, getSubcategory } from '../data/categories';
 import { lockDocumentScroll } from '../utils/scrollLock';
 import '../styles/catalogue.css';
+import '../styles/runs.css';
 
 const numberOrNull = (value) =>
   value === '' || value == null || Number.isNaN(Number(value)) ? null : Number(value);
@@ -291,83 +293,83 @@ export default function ShopPage() {
   const departments = categories.filter((item) => isLibya || item.slug !== 'ready-to-ship');
   const departmentIndex = (position) => String(position + 1).padStart(2, '0');
 
+  // The catalogue reads as a set of RUNS rather than one undifferentiated grid.
+  // The lead product of each run gets a plinth; the remainder gets an efficient
+  // grid. This is presentation only — `filtered` and its order are untouched.
+  const RUN = 9;
+  const runs = [];
+  for (let index = 0; index < filtered.length; index += RUN) {
+    const slice = filtered.slice(index, index + RUN);
+    runs.push({ lead: slice[0], rest: slice.slice(1), from: index });
+  }
+
+  // The entrance only stands when nothing has been narrowed yet. The moment a
+  // visitor filters, sorts or picks a department they are working, not
+  // arriving, and the gateway would be in the way.
+  const showEntrance = !category && !sub && activeTokens.length === 0 && sort === 'featured';
+
   return (
     <>
       <Seo title={heading} description={description} path={path} />
 
-      {/* THE CATALOGUE MASTHEAD — a dark chapter carrying the department name at
-          display scale, the live count as a figure, and the breadcrumb as a
-          measured trail rather than a separate strip above the page. */}
-      <section className="gw-catalogue-head" aria-labelledby="gw-catalogue-title">
-        <div className="gw-catalogue-head-inner">
-          <div className="gw-catalogue-head-trail">
+      {/* ── THE ENTRANCE ────────────────────────────────────────────────
+          A collection gateway, shown only on arrival. Departments as plates
+          over court geometry, with the live count of each. Not a hero: a
+          doorway that answers "where do I go" before any grid appears. */}
+      {showEntrance && (
+        <section className="gw-entrance" aria-labelledby="gw-catalogue-title">
+          <div className="gw-entrance-inner">
+            <div className="gw-entrance-lede">
+              <Breadcrumbs items={crumbs} />
+              <p className="gw-spec">{pick({ en: 'Shababuna shop', ar: 'متجر شبابنا' })}</p>
+              <h1 id="gw-catalogue-title" className="gw-entrance-title">
+                {pick({ en: 'The catalogue', ar: 'الكتالوج' })}
+              </h1>
+              <p className="gw-entrance-copy">{description}</p>
+              <p className="gw-entrance-count">
+                <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
+                <span className="gw-spec">
+                  {filtered.length === 1 ? t.common.result : t.common.results}
+                </span>
+              </p>
+            </div>
+            <ul className="gw-entrance-gates">
+              {departments.map((item, position) => (
+                <li key={item.slug}>
+                  <Link to={`/shop/${item.slug}`} className="gw-gate">
+                    <span className="gw-gate-num" aria-hidden="true">
+                      {departmentIndex(position)}
+                    </span>
+                    <span className="gw-gate-name">{pick(item.name)}</span>
+                    <span className="gw-gate-count gw-isolate-ltr">
+                      {products.filter((entry) => entry.category === item.slug).length ||
+                        baseProducts.length}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* ── THE HEADER ──────────────────────────────────────────────────
+          Only when working. It carries the department name and the count. */}
+      {!showEntrance && (
+        <section className="gw-cat-head" aria-labelledby="gw-catalogue-title">
+          <div className="gw-cat-head-inner">
             <Breadcrumbs items={crumbs} />
-          </div>
-          <p className="gw-spec gw-catalogue-eyebrow">
-            {pick({ en: 'Shababuna shop', ar: 'متجر شبابنا' })}
-          </p>
-          <div className="gw-catalogue-head-row">
-            <h1 id="gw-catalogue-title" className="gw-catalogue-title">
-              {heading}
-            </h1>
-            <p className="gw-catalogue-count">
-              <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
-              <span className="gw-spec">
-                {filtered.length === 1 ? t.common.result : t.common.results}
-              </span>
-            </p>
-          </div>
-          <p className="gw-catalogue-lede">{description}</p>
-        </div>
-      </section>
-
-      {/* THE DEPARTMENT REGISTER — the same numbered index language as the
-          masthead, so the site reads as one system. */}
-      <nav
-        className="gw-department-register"
-        aria-label={pick({ en: 'Shop departments', ar: 'أقسام المتجر' })}
-      >
-        <div className="gw-department-register-inner">
-          <button
-            type="button"
-            className={`gw-department-tab${!category ? ' is-active' : ''}`}
-            aria-current={!category ? 'page' : undefined}
-            onClick={() => navigate('/shop')}
-          >
-            <span className="gw-department-tab-index" aria-hidden="true">
-              00
-            </span>
-            <span>{t.common.all}</span>
-          </button>
-          {departments.map((item, position) => (
-            <button
-              key={item.slug}
-              type="button"
-              className={`gw-department-tab${category === item.slug ? ' is-active' : ''}`}
-              aria-current={category === item.slug ? 'page' : undefined}
-              onClick={() => navigate(`/shop/${item.slug}`)}
-            >
-              <span className="gw-department-tab-index" aria-hidden="true">
-                {departmentIndex(position)}
-              </span>
-              <span>{pick(item.name)}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
-
-      <div className="gw-catalogue">
-        <div className="gw-catalogue-inner">
-          <aside className="gw-catalogue-rail">
-            <Filters
-              filters={filters}
-              onChange={onChange}
-              onClear={() => navigate('/shop')}
-              visibleProducts={baseProducts}
-            />
-          </aside>
-
-          <div className="gw-catalogue-main">
+            <div className="gw-cat-head-row">
+              <h1 id="gw-catalogue-title" className="gw-cat-title">
+                {heading}
+              </h1>
+              <p className="gw-cat-count">
+                <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
+                <span className="gw-spec">
+                  {filtered.length === 1 ? t.common.result : t.common.results}
+                </span>
+              </p>
+            </div>
             {!!cat?.subcategories?.length && (
               <nav
                 className="gw-subregister"
@@ -394,92 +396,137 @@ export default function ShopPage() {
                 ))}
               </nav>
             )}
+          </div>
+        </section>
+      )}
 
-            <div className="gw-catalogue-bar">
+      {/* ── THE CONSOLE ─────────────────────────────────────────────────
+          The filter sidebar is gone. Every control now lives in one sticky
+          instrument strip and filters open as a sheet on ALL viewports, so the
+          products get the full measure of the page instead of two thirds. */}
+      <div className="gw-console-strip">
+        <div className="gw-console-strip-inner">
+          <nav
+            className="gw-console-departments"
+            aria-label={pick({ en: 'Shop departments', ar: 'أقسام المتجر' })}
+          >
+            <button
+              type="button"
+              className={`gw-console-dept${!category ? ' is-active' : ''}`}
+              aria-current={!category ? 'page' : undefined}
+              onClick={() => navigate('/shop')}
+            >
+              {t.common.all}
+            </button>
+            {departments.map((item) => (
               <button
-                ref={triggerRef}
+                key={item.slug}
                 type="button"
-                className="gw-catalogue-filter-btn"
-                onClick={() => setDrawerOpen(true)}
+                className={`gw-console-dept${category === item.slug ? ' is-active' : ''}`}
+                aria-current={category === item.slug ? 'page' : undefined}
+                onClick={() => navigate(`/shop/${item.slug}`)}
               >
-                <Icon name="filter" />
-                <span>{t.common.filters}</span>
-                {activeTokens.length > 0 && (
-                  <span className="gw-tally gw-tally--inline">{activeTokens.length}</span>
-                )}
+                {pick(item.name)}
               </button>
-              <SortSelect
-                value={sort}
-                onChange={(value) =>
-                  updateParams((query) =>
-                    value === 'featured' ? query.delete('sort') : query.set('sort', value),
-                  )
-                }
-                options={SORT_OPTIONS}
-              />
-            </div>
+            ))}
+          </nav>
 
-            {activeTokens.length > 0 && (
-              <div
-                className="gw-active-filters"
-                aria-label={pick({ en: 'Active filters', ar: 'عوامل التصفية النشطة' })}
-              >
-                <p className="gw-spec">{pick({ en: 'Filtering by', ar: 'التصفية حسب' })}</p>
-                <ul>
-                  {activeTokens.map((token) => (
-                    <li key={token.key}>
-                      <button type="button" onClick={token.clear}>
-                        <span>{token.label}</span>
-                        <Icon name="close" />
-                        <span className="sr-only">
-                          {pick({ en: 'Remove filter', ar: 'إزالة عامل التصفية' })}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  type="button"
-                  className="gw-active-filters-clear"
-                  onClick={() => navigate('/shop')}
-                >
-                  {t.common.clearAll}
-                </button>
-              </div>
-            )}
-
-            {filtered.length ? (
-              <div className="gw-catalogue-grid">
-                {filtered.map((product, index) => (
-                  <ProductCard key={product.id} product={product} eager={index < 4} />
-                ))}
-              </div>
-            ) : (
-              <EmptyState
-                message={t.shop.empty}
-                hint={t.shop.emptyHint}
-                action={{ label: t.common.clearAll, onClick: () => navigate('/shop') }}
-              />
-            )}
-
-            {/* The unlisted-product path, drawn as a plate at the foot of the
-                catalogue rather than as a banner above the products. */}
-            <aside className="gw-catalogue-request">
-              <div>
-                <p className="gw-spec">{pick({ en: 'Not listed?', ar: 'غير موجود؟' })}</p>
-                <p className="gw-catalogue-request-copy">
-                  {pick({
-                    en: 'Send a link or an image and receive a verified quote.',
-                    ar: 'أرسل رابطًا أو صورة واحصل على عرض موثق.',
-                  })}
-                </p>
-              </div>
-              <Link to="/special-request" className="gw-btn gw-btn--secondary">
-                {pick({ en: 'Special Request', ar: 'طلب خاص' })}
-              </Link>
-            </aside>
+          <div className="gw-console-tools">
+            <button
+              ref={triggerRef}
+              type="button"
+              className="gw-console-filter"
+              onClick={() => setDrawerOpen(true)}
+            >
+              <Icon name="filter" />
+              <span>{t.common.filters}</span>
+              {activeTokens.length > 0 && (
+                <span className="gw-tally gw-tally--inline">{activeTokens.length}</span>
+              )}
+            </button>
+            <SortSelect
+              value={sort}
+              onChange={(value) =>
+                updateParams((query) =>
+                  value === 'featured' ? query.delete('sort') : query.set('sort', value),
+                )
+              }
+              options={SORT_OPTIONS}
+            />
           </div>
         </div>
+
+        {activeTokens.length > 0 && (
+          <div
+            className="gw-console-active"
+            aria-label={pick({ en: 'Active filters', ar: 'عوامل التصفية النشطة' })}
+          >
+            <p className="gw-spec">{pick({ en: 'Filtering by', ar: 'التصفية حسب' })}</p>
+            <ul>
+              {activeTokens.map((token) => (
+                <li key={token.key}>
+                  <button type="button" onClick={token.clear}>
+                    <span>{token.label}</span>
+                    <Icon name="close" />
+                    <span className="sr-only">
+                      {pick({ en: 'Remove filter', ar: 'إزالة عامل التصفية' })}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" className="gw-console-clear" onClick={() => navigate('/shop')}>
+              {t.common.clearAll}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* ── THE RUNS ────────────────────────────────────────────────────
+          Lead product on a plinth, remainder in an efficient grid. Repeats
+          every nine products so a long catalogue keeps its rhythm. */}
+      <div className="gw-runs">
+        {filtered.length ? (
+          runs.map((run) => (
+            <section key={run.from} className="gw-run" aria-label={`${heading} ${run.from + 1}`}>
+              <ProductPlinth product={run.lead} index={run.from / RUN} eager={run.from === 0} />
+              {run.rest.length > 0 && (
+                <div className="gw-run-grid">
+                  {run.rest.map((product, position) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      eager={run.from === 0 && position < 3}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+          ))
+        ) : (
+          <div className="gw-run">
+            <EmptyState
+              message={t.shop.empty}
+              hint={t.shop.emptyHint}
+              action={{ label: t.common.clearAll, onClick: () => navigate('/shop') }}
+            />
+          </div>
+        )}
+
+        <aside className="gw-runs-request">
+          <div>
+            <p className="gw-spec">{pick({ en: 'Not listed?', ar: 'غير موجود؟' })}</p>
+            <p className="gw-runs-request-copy">
+              {pick({
+                en: 'Send a link or an image and receive a verified quote.',
+                ar: 'أرسل رابطًا أو صورة واحصل على عرض موثق.',
+              })}
+            </p>
+          </div>
+          <Link to="/special-request" className="gw-btn gw-btn--secondary">
+            {pick({ en: 'Special Request', ar: 'طلب خاص' })}
+          </Link>
+        </aside>
       </div>
 
       {drawerOpen &&
