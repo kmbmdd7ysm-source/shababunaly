@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:03:33.959Z",
+  "generatedAt": "2026-08-03T16:06:41.107Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 23,
+    "fully-rebuilt": 25,
     "partially-rebuilt": 0,
-    "not-rebuilt": 13,
+    "not-rebuilt": 11,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 16,
+    "fully-rebuilt": 18,
     "partially-rebuilt": 0,
-    "not-rebuilt": 13
+    "not-rebuilt": 11
   },
   "routes": [
     {
@@ -228,29 +228,27 @@
       "component": "LhaStore",
       "file": "src/pages/LhaStorePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 67,
+      "linesRemoved": 6,
+      "compositionMarkers": [
+        "gw-catalogue",
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/our-work",
       "component": "OurWork",
       "file": "src/pages/OurWorkPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 78,
+      "linesRemoved": 30,
+      "compositionMarkers": [
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/programs/*",

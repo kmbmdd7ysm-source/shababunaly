@@ -9,13 +9,13 @@ that is the precise failure this ledger exists to expose.
 
 | Status | Count |
 | --- | ---: |
-| Fully rebuilt | **23** |
+| Fully rebuilt | **25** |
 | Partially rebuilt | **0** |
-| Not rebuilt | **13** |
+| Not rebuilt | **11** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 16 rebuilt, 0 partial, 13 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 18 rebuilt, 0 partial, 11 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
@@ -34,8 +34,8 @@ Distinct page components: **29** — 16 rebuilt, 0 partial, 13 legacy. One compo
 | `/teams-wholesale` | TeamsWholesale | public | +0/-0 | — | LEGACY |
 | `/team-locker/:slug` | TeamLocker | team | +0/-0 | — | LEGACY |
 | `/design-share/:token` | DesignShare | public | +0/-0 | — | LEGACY |
-| `/lha-store` | LhaStore | public | +0/-0 | — | LEGACY |
-| `/our-work` | OurWork | public | +0/-0 | — | LEGACY |
+| `/lha-store` | LhaStore | public | +67/-6 | gw-catalogue, RouteMasthead | **REBUILT** |
+| `/our-work` | OurWork | public | +78/-30 | RouteMasthead | **REBUILT** |
 | `/programs/*` | Navigate | public | +0/-0 | — | redirect |
 | `/events/*` | Navigate | public | +0/-0 | — | redirect |
 | `/online-training/*` | Navigate | public | +0/-0 | — | redirect |
