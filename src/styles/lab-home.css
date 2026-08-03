@@ -3,12 +3,12 @@
    --------------------------------------------------------------------------
    Prototype-only composition. Deleting this file, `src/pages/LabHomePage.jsx`
    and one route line in `src/App.jsx` removes the prototype completely.
-   Every rule is scoped to `.lab-scope`.
+   Prototype-only composition; the shared `gw-*` system is global.
    ========================================================================== */
 
 /* ---------- 01 · THE LINE ------------------------------------------------ */
 
-.lab-scope .gw-hero {
+.gw-hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -16,7 +16,7 @@
   background: var(--sh-chalk);
 }
 
-.lab-scope .gw-hero-inner {
+.gw-hero-inner {
   position: relative;
   z-index: var(--sh-z-plate);
 }
@@ -31,7 +31,7 @@
    the slogan as ".DIFFERENT". Isolating the lockup as an LTR run fixes the
    glyph order; `fit-content` keeps the box itself on the inline-start edge, so
    the lockup still sits on the right in Arabic. */
-.lab-scope .gw-hero-line {
+.gw-hero-line {
   display: block;
   /* `fit-content` keeps the box on the inline-start edge in both locales.
      A full-width box with an explicit text-align pair was tried as a possible
@@ -55,26 +55,26 @@
    exists to end. The wordmark therefore renders at 0 tracking in Arabic and
    -0.03em in English until that reset is narrowed. Recorded in
    docs/DESIGN_SYSTEM.md. */
-.lab-scope .gw-hero-line {
+.gw-hero-line {
   letter-spacing: var(--sh-tr-hero);
 }
 
 /* The outlined second line is the one deliberate piece of display drama.
    `-webkit-text-stroke` is progressively enhanced: without it the line simply
    renders solid, which is still correct. */
-.lab-scope .gw-hero-line--outline {
+.gw-hero-line--outline {
   color: transparent;
   -webkit-text-stroke: 1.5px var(--sh-ink);
 }
 
 @supports not (-webkit-text-stroke: 1px black) {
-  .lab-scope .gw-hero-line--outline {
+  .gw-hero-line--outline {
     color: var(--sh-ink-35);
   }
 }
 
 @media (forced-colors: active) {
-  .lab-scope .gw-hero-line--outline {
+  .gw-hero-line--outline {
     color: CanvasText;
     -webkit-text-stroke: 0;
   }
@@ -82,21 +82,21 @@
 
 /* The reading measure belongs to the prose, not to the display type: capping
    the whole stack was forcing "DIFFERENT." onto two lines at 1440px. */
-.lab-scope .gw-hero .gw-lead {
+.gw-hero .gw-lead {
   max-inline-size: 34rem;
 }
 
-.lab-scope .gw-hero .gw-leader {
+.gw-hero .gw-leader {
   inline-size: min(100%, 24rem);
 }
 
 /* ---------- 02 · THE MEASURE --------------------------------------------- */
 
-.lab-scope .gw-chapter--strip {
+.gw-chapter--strip {
   padding-block: clamp(28px, 4vw, 44px);
 }
 
-.lab-scope .gw-measure-strip {
+.gw-measure-strip {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -104,12 +104,12 @@
   gap: var(--sh-s-4);
 }
 
-.lab-scope .gw-measure-strip .gw-title {
+.gw-measure-strip .gw-title {
   color: var(--sh-night-ink);
   margin: 0;
 }
 
-.lab-scope .gw-measure-terms {
+.gw-measure-terms {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -120,7 +120,7 @@
 }
 
 /* Tick separators between the four terms — drawn, not typed. */
-.lab-scope .gw-measure-terms li + li {
+.gw-measure-terms li + li {
   padding-inline-start: var(--sh-s-3);
   border-inline-start: 1px solid var(--sh-rule-inverse-strong);
 }
@@ -130,41 +130,41 @@
 /* Five departments read as the five zones of a court, so at desktop widths they
    sit on one row rather than wrapping 4 + 1. */
 @media (min-width: 1100px) {
-  .lab-scope .gw-department-plates {
+  .gw-department-plates {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
-.lab-scope .gw-department {
+.gw-department {
   gap: var(--sh-s-3);
   color: inherit;
   text-decoration: none;
   overflow: hidden;
 }
 
-.lab-scope .gw-department .gw-media {
+.gw-department .gw-media {
   background: var(--sh-chalk-2);
   object-fit: contain;
   padding: var(--sh-s-5);
 }
 
-.lab-scope .gw-department-name {
+.gw-department-name {
   font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
 }
 
 /* Arabic department names are longer than their Latin counterparts at the same
    optical size, and the five-zone row is deliberately narrow, so Arabic steps
    down rather than wrapping inside a word. */
-.lab-scope .gw-department-name:lang(ar),
-[lang='ar'] .lab-scope .gw-department-name {
+.gw-department-name:lang(ar),
+[lang='ar'] .gw-department-name {
   font-size: clamp(1rem, 0.86rem + 0.45vw, 1.25rem);
 }
 
-.lab-scope .gw-department-count {
+.gw-department-count {
   color: var(--sh-ink-50);
 }
 
-.lab-scope .gw-department .gw-rule-extend {
+.gw-department .gw-rule-extend {
   display: block;
   block-size: 2px;
   background: var(--sh-ink);
@@ -172,11 +172,11 @@
 
 /* ---------- 05 · THE WORKSHOP -------------------------------------------- */
 
-.lab-scope .gw-workshop-plate {
+.gw-workshop-plate {
   gap: var(--sh-s-4);
 }
 
-.lab-scope .gw-workshop-art {
+.gw-workshop-art {
   background: var(--sh-chalk);
   object-fit: contain;
   padding: var(--sh-s-6);
@@ -187,7 +187,7 @@
    that costs a composite layer. */
 
 @media (max-width: 699px) {
-  .lab-scope .gw-measure-strip {
+  .gw-measure-strip {
     display: grid;
     justify-items: start;
     gap: var(--sh-s-3);
@@ -197,15 +197,15 @@
      is the correct answer here; shrinking the type would cost the hero its
      authority, and letting "DIFFERENT." wrap would drop the full stop onto a
      line of its own. */
-  .lab-scope .gw-hero-line {
+  .gw-hero-line {
     font-stretch: 96%;
   }
 
-  .lab-scope .gw-hero-line--outline {
+  .gw-hero-line--outline {
     -webkit-text-stroke-width: 1px;
   }
 
-  .lab-scope .gw-department .gw-media {
+  .gw-department .gw-media {
     padding: var(--sh-s-4);
   }
 }
@@ -215,12 +215,12 @@
    1500-unit SVG on a 390px viewport is noise rather than structure. */
 
 @media (max-width: 699px) {
-  .lab-scope .gw-court-svg {
+  .gw-court-svg {
     inline-size: 220%;
     opacity: 0.75;
   }
 }
 
-[data-capability='c'] .lab-scope .gw-court {
+[data-capability='c'] .gw-court {
   display: none;
 }

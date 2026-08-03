@@ -1,6 +1,6 @@
 // Guards the GROUNDWORK design foundation:
 //   1. every audited colour pair meets WCAG contrast,
-//   2. no applied rule in a foundation stylesheet escapes its scope,
+//   2. no applied rule targets anything but a gw-* class or an owned base element,
 //   3. no raw hex colour is used outside the token file,
 //   4. new stylesheets stay RTL-safe (logical properties, no physical
 //      left/right), so the Arabic cut needs no override layer.
@@ -18,7 +18,6 @@ const SCOPED_LAYERS = [
   'layout.css',
   'lab-home.css',
 ];
-const SCOPE = '.lab-scope';
 
 const failures = [];
 const strip = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
@@ -225,11 +224,36 @@ const selectorsOf = (css) => {
   return found;
 };
 
+// Phase 2 promoted the applied layers from a prototype scope to global, so the
+// isolation rule changes shape. It is no longer "everything sits under
+// .lab-scope"; it is now "nothing may target a legacy class name". Every
+// selector in an applied layer must be built from `gw-*` classes, the handful
+// of base elements the system deliberately owns, or a documented state hook.
+const OWNED_ELEMENTS = new Set([':root', 'body', 'html']);
+const STATE_HOOKS = ['[dir=', '[lang=', '[data-capability=', '[data-gw'];
+
+function isOwnedSelector(selector) {
+  const trimmed = selector.trim();
+  if (OWNED_ELEMENTS.has(trimmed)) return true;
+  const compounds = trimmed.split(/\s+|>|\+|~/).filter(Boolean);
+  // A `gw-*` class anywhere in the selector confines the whole rule to markup
+  // this system owns, so descendants such as `.gw-spec-table th` are safe.
+  const anchored = compounds.some((c) => c.includes('.gw-'));
+  if (anchored) return true;
+  // Otherwise every compound must be an owned element or a documented hook.
+  return compounds.every((compound) => {
+    const bare = compound.replace(/::?[a-zA-Z-]+(\([^)]*\))?/g, '');
+    if (!bare) return true;
+    if (OWNED_ELEMENTS.has(bare)) return true;
+    return STATE_HOOKS.some((hook) => bare.startsWith(hook));
+  });
+}
+
 for (const file of SCOPED_LAYERS) {
   for (const selector of selectorsOf(read(`${STYLES}/${file}`))) {
-    if (!selector.includes(SCOPE)) {
+    if (!isOwnedSelector(selector)) {
       failures.push(
-        `${file}: selector escapes ${SCOPE} and could reach the live site -> "${selector.slice(0, 90)}"`,
+        `${file}: selector is neither a gw-* class nor an owned base element, so it may collide with legacy styles -> "${selector.slice(0, 90)}"`,
       );
     }
   }
@@ -237,10 +261,7 @@ for (const file of SCOPED_LAYERS) {
 
 for (const file of GLOBAL_LAYERS) {
   for (const selector of selectorsOf(read(`${STYLES}/${file}`))) {
-    const allowed =
-      selector.startsWith(':root') ||
-      selector.startsWith('[data-capability') ||
-      selector.includes(SCOPE);
+    const allowed = selector.startsWith(':root') || selector.startsWith('[data-capability');
     if (!allowed)
       failures.push(
         `${file}: global selector must declare custom properties only -> "${selector.slice(0, 90)}"`,
@@ -292,7 +313,7 @@ if (failures.length) {
 }
 console.info(
   `Design tokens passed: ${audited.length} colour pairs meet WCAG contrast across ${PALETTES.length} palettes, ` +
-    `${SCOPED_LAYERS.length} applied layers stay inside ${SCOPE}, ` +
+    `${SCOPED_LAYERS.length} applied layers use only gw-* selectors, ` +
     `${GLOBAL_LAYERS.length} global layers declare custom properties only, ` +
     'and no scoped layer uses a raw colour or a physical left/right property.',
 );

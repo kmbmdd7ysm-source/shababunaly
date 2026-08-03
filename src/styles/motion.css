@@ -21,8 +21,7 @@
    never arrives.
 
    ISOLATION CONTRACT (Phase 1)
-   Keyframes are inert until referenced. Every applied rule is scoped to
-   `.lab-scope`.
+   SCOPE (Phase 2): global. Keyframes stay inert until a `gw-*` class uses them.
    ========================================================================== */
 
 /* ---------- Keyframes --------------------------------------------------- */
@@ -69,7 +68,7 @@
    loading experience: no spinner, no skeleton, no route loader.
    ========================================================================== */
 
-.lab-scope .gw-threshold-rule {
+.gw-threshold-rule {
   display: block;
   block-size: 1px;
   border: 0;
@@ -78,12 +77,12 @@
   transform-origin: left center;
 }
 
-[dir='rtl'] .lab-scope .gw-threshold-rule {
+[dir='rtl'] .gw-threshold-rule {
   transform-origin: right center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .lab-scope .gw-threshold-rule {
+  .gw-threshold-rule {
     animation: gw-draw-line 320ms var(--sh-e-draw) both;
   }
 }
@@ -94,13 +93,13 @@
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .lab-scope .gw-register {
+    .gw-register {
       animation: gw-register var(--sh-d-3) var(--sh-e-draw) both;
       animation-timeline: view();
       animation-range: entry 8% cover 26%;
     }
 
-    .lab-scope .gw-measure {
+    .gw-measure {
       animation: gw-measure-in var(--sh-d-4) var(--sh-e-draw) both;
       animation-timeline: view();
       animation-range: entry 5% cover 30%;
@@ -108,7 +107,7 @@
 
     /* Staggering is a per-element delay expressed as a range offset, so it
        stays declarative and never needs a JavaScript index. */
-    .lab-scope .gw-stagger > * {
+    .gw-stagger > * {
       animation: gw-register var(--sh-d-3) var(--sh-e-draw) both;
       animation-timeline: view();
       animation-range: entry 6% cover 24%;
@@ -118,9 +117,9 @@
 
 /* Elements are authored finished. These are the defaults that apply when the
    enhancement above is unavailable, when motion is reduced, or on Tier C. */
-.lab-scope .gw-register,
-.lab-scope .gw-measure,
-.lab-scope .gw-stagger > * {
+.gw-register,
+.gw-measure,
+.gw-stagger > * {
   opacity: 1;
   transform: none;
   clip-path: none;
@@ -133,25 +132,25 @@
    appearance genuinely harms comprehension. Only choreography is removed.
    ========================================================================== */
 
-.lab-scope .gw-interactive {
+.gw-interactive {
   transition:
     background-color var(--sh-d-1) var(--sh-e-draw),
     border-color var(--sh-d-1) var(--sh-e-draw),
     color var(--sh-d-1) var(--sh-e-draw);
 }
 
-.lab-scope .gw-rule-extend {
+.gw-rule-extend {
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--sh-d-2) var(--sh-e-draw);
 }
 
-[dir='rtl'] .lab-scope .gw-rule-extend {
+[dir='rtl'] .gw-rule-extend {
   transform-origin: right center;
 }
 
-.lab-scope .gw-extends:hover .gw-rule-extend,
-.lab-scope .gw-extends:focus-visible .gw-rule-extend {
+.gw-extends:hover .gw-rule-extend,
+.gw-extends:focus-visible .gw-rule-extend {
   transform: scaleX(1);
 }
 
@@ -164,17 +163,17 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .lab-scope .gw-threshold-rule,
-  .lab-scope .gw-register,
-  .lab-scope .gw-measure,
-  .lab-scope .gw-stagger > * {
+  .gw-threshold-rule,
+  .gw-register,
+  .gw-measure,
+  .gw-stagger > * {
     animation: none;
     opacity: 1;
     transform: none;
     clip-path: none;
   }
 
-  .lab-scope .gw-rule-extend {
+  .gw-rule-extend {
     transition: none;
     transform: scaleX(1);
   }
@@ -182,10 +181,10 @@
 
 /* Tier C devices get the same treatment as reduced motion: the capability
    attribute is written once by `useDeviceCapability`, and CSS reads it. */
-[data-capability='c'] .lab-scope .gw-threshold-rule,
-[data-capability='c'] .lab-scope .gw-register,
-[data-capability='c'] .lab-scope .gw-measure,
-[data-capability='c'] .lab-scope .gw-stagger > * {
+[data-capability='c'] .gw-threshold-rule,
+[data-capability='c'] .gw-register,
+[data-capability='c'] .gw-measure,
+[data-capability='c'] .gw-stagger > * {
   animation: none;
   opacity: 1;
   transform: none;

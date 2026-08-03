@@ -30,6 +30,10 @@ import './styles/shababuna.css';
 // entry CSS does not carry rules no current route renders.
 import './styles/tokens.css';
 import './styles/fonts.css';
+import './styles/typography.css';
+import './styles/motion.css';
+import './styles/geometry.css';
+import './styles/layout.css';
 
 installGlobalErrorMonitoring();
 
@@ -71,21 +75,21 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <LanguageProvider>
           <ProductionReadinessGate>
-          <CookieProvider>
-            <AuthProvider>
-              <CommerceProvider>
-                <CatalogProvider>
-                  <CompareProvider>
-                  <CartProvider>
-                    <UserDataProvider>
-                      <App />
-                    </UserDataProvider>
-                  </CartProvider>
-                  </CompareProvider>
-                </CatalogProvider>
-              </CommerceProvider>
-            </AuthProvider>
-          </CookieProvider>
+            <CookieProvider>
+              <AuthProvider>
+                <CommerceProvider>
+                  <CatalogProvider>
+                    <CompareProvider>
+                      <CartProvider>
+                        <UserDataProvider>
+                          <App />
+                        </UserDataProvider>
+                      </CartProvider>
+                    </CompareProvider>
+                  </CatalogProvider>
+                </CommerceProvider>
+              </AuthProvider>
+            </CookieProvider>
           </ProductionReadinessGate>
         </LanguageProvider>
       </BrowserRouter>
@@ -102,9 +106,7 @@ if (typeof window !== 'undefined') {
     clearTimeout(backgroundTimer);
     window.removeEventListener('pointerdown', startBackgroundTasks);
     window.removeEventListener('keydown', startBackgroundTasks);
-    import('./utils/registerPwa')
-      .then((pwa) => pwa.registerPwa())
-      .catch(() => {});
+    import('./utils/registerPwa').then((pwa) => pwa.registerPwa()).catch(() => {});
   };
 
   // Service-worker installation downloads the offline shell. Keep it out of the

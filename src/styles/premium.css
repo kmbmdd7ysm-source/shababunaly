@@ -1902,19 +1902,39 @@ main,
 }
 
 /* Product photography must remain on a pure white studio surface. */
-.product-card-media, .gallery-main, .smart-img { background: #fff !important; }
+.product-card-media,
+.gallery-main,
+.smart-img {
+  background: #fff !important;
+}
 
-.media-lightbox{position:fixed!important;inset:0!important}.lightbox-stage img{width:auto!important;height:auto!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important}
+.media-lightbox {
+  position: fixed !important;
+  inset: 0 !important;
+}
+.lightbox-stage img {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
 
 /* Performance stability: reserve paint geometry and keep route motion composited. */
-.route-enter { will-change: opacity, transform; }
-.hero-poster { aspect-ratio: 1940 / 1024; }
+.route-enter {
+  will-change: opacity, transform;
+}
+.hero-poster {
+  aspect-ratio: 1940 / 1024;
+}
 .product-card-img,
 .category-card-img,
 .program-card-img,
 .event-card-img,
 .training-card-img,
-.coach-card-img { display: block; }
+.coach-card-img {
+  display: block;
+}
 
 /* Mobile performance hardening: preserve the visual design while keeping the
    first paint limited to the poster and above-the-fold content. */

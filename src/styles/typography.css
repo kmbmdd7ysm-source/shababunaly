@@ -5,9 +5,14 @@
    Vite emits it in a route chunk rather than the entry bundle. The @font-face
    contract these rules depend on lives in `fonts.css`, which is global.
 
-   ISOLATION CONTRACT (Phase 1): every rule below is scoped to `.lab-scope`.
+   SCOPE (Phase 2): the `gw-*` classes are global utilities and the base type
+   is applied to `body`, so the whole site inherits the real faces rather than
+   the system stack. Nothing here targets a legacy class name, so no existing
+   component is restyled by accident — legacy components simply inherit better
+   typography through `--font-body` / `--font-display`, which `tokens.css`
+   now points at the shipped faces.
    ========================================================================== */
-.lab-scope {
+body {
   font-family: var(--sh-font-text);
   font-size: var(--sh-t-body);
   line-height: var(--sh-lh-body);
@@ -20,8 +25,8 @@
 }
 
 /* Arabic is a native cut of the same brand, never a translated Latin layout. */
-.lab-scope:lang(ar),
-[lang='ar'] .lab-scope {
+body:lang(ar),
+[lang='ar'] body {
   font-size: var(--sh-t-body-ar);
   line-height: var(--sh-lh-body-ar);
   letter-spacing: var(--sh-tr-ar);
@@ -29,7 +34,7 @@
 
 /* ---------- Display ---------------------------------------------------- */
 
-.lab-scope .gw-hero-title {
+.gw-hero-title {
   margin: 0;
   font-family: var(--sh-font-display);
   font-size: var(--sh-t-hero);
@@ -40,7 +45,7 @@
   text-wrap: balance;
 }
 
-.lab-scope .gw-display {
+.gw-display {
   margin: 0;
   font-family: var(--sh-font-display);
   font-size: var(--sh-t-display);
@@ -52,7 +57,7 @@
   text-wrap: balance;
 }
 
-.lab-scope .gw-title {
+.gw-title {
   margin: 0;
   font-family: var(--sh-font-display);
   font-size: var(--sh-t-title);
@@ -64,16 +69,16 @@
 
 /* Arabic display: hierarchy comes from weight and size, never from width
    distortion, never from uppercase, never from negative tracking. */
-.lab-scope .gw-hero-title:lang(ar),
-[lang='ar'] .lab-scope .gw-hero-title {
+.gw-hero-title:lang(ar),
+[lang='ar'] .gw-hero-title {
   font-size: var(--sh-t-hero-ar);
   line-height: var(--sh-lh-hero-ar);
   letter-spacing: var(--sh-tr-ar);
   text-transform: none;
 }
 
-.lab-scope .gw-display:lang(ar),
-[lang='ar'] .lab-scope .gw-display {
+.gw-display:lang(ar),
+[lang='ar'] .gw-display {
   font-size: var(--sh-t-display-ar);
   line-height: var(--sh-lh-display-ar);
   letter-spacing: var(--sh-tr-ar);
@@ -81,8 +86,8 @@
   text-transform: none;
 }
 
-.lab-scope .gw-title:lang(ar),
-[lang='ar'] .lab-scope .gw-title {
+.gw-title:lang(ar),
+[lang='ar'] .gw-title {
   font-size: var(--sh-t-title-ar);
   line-height: var(--sh-lh-title-ar);
   letter-spacing: var(--sh-tr-ar);
@@ -91,7 +96,7 @@
 
 /* ---------- Body and supporting ---------------------------------------- */
 
-.lab-scope .gw-lead {
+.gw-lead {
   margin: 0;
   font-size: var(--sh-t-lead);
   line-height: var(--sh-lh-lead);
@@ -99,22 +104,22 @@
   max-inline-size: 62ch;
 }
 
-.lab-scope .gw-lead:lang(ar),
-[lang='ar'] .lab-scope .gw-lead {
+.gw-lead:lang(ar),
+[lang='ar'] .gw-lead {
   font-size: var(--sh-t-lead-ar);
   line-height: var(--sh-lh-body-ar);
   max-inline-size: 54ch;
 }
 
-.lab-scope .gw-body {
+.gw-body {
   margin: 0;
   font-size: var(--sh-t-body);
   line-height: var(--sh-lh-body);
   max-inline-size: 68ch;
 }
 
-.lab-scope .gw-body:lang(ar),
-[lang='ar'] .lab-scope .gw-body {
+.gw-body:lang(ar),
+[lang='ar'] .gw-body {
   font-size: var(--sh-t-body-ar);
   line-height: var(--sh-lh-body-ar);
   max-inline-size: 58ch;
@@ -122,7 +127,7 @@
 
 /* ---------- Spec label — the condensed, wide-tracked voice of the system - */
 
-.lab-scope .gw-spec {
+.gw-spec {
   display: inline-block;
   margin: 0;
   font-family: var(--sh-font-display);
@@ -136,8 +141,8 @@
 }
 
 /* Arabic never uppercases and never tracks. It steps down in size instead. */
-.lab-scope .gw-spec:lang(ar),
-[lang='ar'] .lab-scope .gw-spec {
+.gw-spec:lang(ar),
+[lang='ar'] .gw-spec {
   font-family: var(--sh-font-arabic);
   font-stretch: normal;
   letter-spacing: var(--sh-tr-ar);
@@ -148,7 +153,7 @@
 
 /* ---------- Numerals ---------------------------------------------------- */
 
-.lab-scope .gw-figure {
+.gw-figure {
   font-family: var(--sh-font-display);
   font-weight: 800;
   font-stretch: 108%;
@@ -159,8 +164,8 @@
 /* Latin digits in both locales: `money.js` already formats with
    `ar-LY-u-nu-latn`, and Latin digits are the sporting convention for jersey
    numbers and sizes. Keep the Latin face for figures even inside Arabic. */
-.lab-scope .gw-figure:lang(ar),
-[lang='ar'] .lab-scope .gw-figure {
+.gw-figure:lang(ar),
+[lang='ar'] .gw-figure {
   font-family: var(--sh-font-display);
   letter-spacing: 0;
 }
@@ -169,11 +174,11 @@
    Extends the pattern `services/money.js` already uses correctly, so SKUs,
    sizes, currency codes and brand names never reorder inside Arabic copy. */
 
-.lab-scope .gw-isolate {
+.gw-isolate {
   unicode-bidi: isolate;
 }
 
-.lab-scope .gw-isolate-ltr {
+.gw-isolate-ltr {
   direction: ltr;
   unicode-bidi: isolate;
 }

@@ -78,6 +78,16 @@
     system-ui, -apple-system, 'Segoe UI', sans-serif;
   --sh-font-arabic: 'Shababuna Arabic', 'Shababuna Arabic Fallback', Tahoma, Arial, sans-serif;
 
+  /* ---------- Site-wide adoption -----------------------------------------
+     `global.css` already resolves every font through `--font-body` and
+     `--font-display`. Re-pointing those two tokens here — this file loads after
+     the legacy cascade — gives the entire site the real typeface without
+     touching a single legacy selector or component. It is the smallest possible
+     change with the largest possible identity effect, and it reverts by
+     deleting two lines. */
+  --font-body: var(--sh-font-text);
+  --font-display: var(--sh-font-display);
+
   /* ---------- Typography · Latin scale (fluid) --------------------------- */
   --sh-t-hero: clamp(3rem, 1.6rem + 6.4vw, 7rem);
   --sh-t-display: clamp(2.2rem, 1.4rem + 3.6vw, 4.4rem);
