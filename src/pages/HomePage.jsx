@@ -1,89 +1,67 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import CinematicHero from '../components/experience/CinematicHero';
-import Chapter from '../components/experience/Chapter';
-import SpecBlock from '../components/experience/SpecBlock';
-import Stamp from '../components/experience/Stamp';
 import ProductCard from '../components/shop/ProductCard';
 import { useLanguage } from '../context/LanguageContext';
 import { useCommerce } from '../context/CommerceContext';
+import { useCatalog } from '../context/CatalogContext';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useDeviceCapability } from '../hooks/useDeviceCapability';
 import { SITE } from '../config';
 import { shippingConfig } from '../config/shipping';
-import { useCatalog } from '../context/CatalogContext';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
-import '../styles/home.css';
+import '../styles/journey.css';
 
 /*
- * GROUNDWORK «خَطّ الأرض» — the production homepage.
+ * THE JOURNEY — the homepage as a sequence of full-viewport chapters.
  *
- * Every figure on this page is read from the repository: `config/shipping.js`,
- * `data/customization.js`, `config.js` and the live catalogue. No product,
- * price, stock level, athlete, partnership, claim or delivery promise is
- * invented here.
+ * The rejected version was the archetype every store uses: a hero, then
+ * stacked sections, then a footer. Changing its typography did not change what
+ * it was. This is a different structure entirely.
  *
- * Every commercial destination from the previous homepage is preserved:
- * /shop, the five departments, /shop/ready-to-ship, /customize,
- * /teams-wholesale, /shop/footwear, /shop?brand=Shababuna and /lha-store.
+ *   - Seven CHAPTERS, each occupying the full viewport, scroll-snapped.
+ *   - A persistent CHAPTER INDEX on the trailing edge: the reader always knows
+ *     where they are in the sequence and can jump.
+ *   - The FLOOR chapter uses an actual FIBA half-court as the navigation
+ *     surface: the five departments are positioned on the zones they belong to,
+ *     so the layout is basketball geometry rather than a card grid.
+ *   - Products arrive as EXHIBITS inside chapters, not as an undifferentiated
+ *     grid at the bottom of the page.
+ *
+ * Every figure is read from config/shipping.js, data/customization.js,
+ * config.js and the live catalogue. Nothing is invented. Every commercial
+ * destination from the previous homepage is preserved.
+ *
+ * Fallbacks: scroll-snap is progressive (the page reads as normal sections
+ * without it), the court is inline SVG so there is no media to fail, Tier C
+ * devices drop the court, and reduced motion disables snapping and all
+ * transitions.
  */
 
 const libya = shippingConfig.libya;
 
-const DEPARTMENTS = [
-  {
-    to: '/shop/clothing',
-    image: '/images/catalog/apparel.svg',
-    zone: { en: 'The key', ar: 'منطقة الرمية' },
-    title: { en: 'Clothing', ar: 'الملابس' },
-    copy: {
-      en: 'Gamewear, training, lifestyle and performance.',
-      ar: 'ملابس اللعب والتمرين واللايف ستايل والأداء.',
-    },
-  },
-  {
-    to: '/shop/footwear',
-    image: '/images/catalog/shoe.svg',
-    zone: { en: 'The baseline', ar: 'خط القاعدة' },
-    title: { en: 'Footwear', ar: 'الأحذية' },
-    copy: {
-      en: 'In-court and off-court basketball footwear.',
-      ar: 'أحذية كرة السلة داخل الملعب وخارجه.',
-    },
-  },
+/** The five departments, placed on the court zone each belongs to. */
+const FLOOR = [
+  { to: '/shop/clothing', zone: 'key', n: '01', name: { en: 'Clothing', ar: 'الملابس' } },
+  { to: '/shop/footwear', zone: 'baseline', n: '02', name: { en: 'Footwear', ar: 'الأحذية' } },
   {
     to: '/shop/accessories',
-    image: '/images/catalog/accessories.svg',
-    zone: { en: 'The corner', ar: 'الزاوية' },
-    title: { en: 'Accessories', ar: 'الإكسسوارات' },
-    copy: {
-      en: 'Bags, sleeves, supports and training essentials.',
-      ar: 'حقائب وسليفس ودعامات وأساسيات التدريب.',
-    },
+    zone: 'corner',
+    n: '03',
+    name: { en: 'Accessories', ar: 'الإكسسوارات' },
   },
   {
     to: '/shop/basketballs',
-    image: '/images/catalog/ball.svg',
-    zone: { en: 'The centre circle', ar: 'دائرة المنتصف' },
-    title: { en: 'Basketballs', ar: 'كرات السلة' },
-    copy: {
-      en: 'Retail by the piece and wholesale from six.',
-      ar: 'بالقطعة وبالجملة ابتداءً من ست كرات.',
-    },
+    zone: 'centre',
+    n: '04',
+    name: { en: 'Basketballs', ar: 'كرات السلة' },
   },
-  {
-    to: '/shop/equipment',
-    image: '/images/catalog/equipment.svg',
-    zone: { en: 'The arc', ar: 'القوس' },
-    title: { en: 'Equipment', ar: 'المعدات' },
-    copy: {
-      en: 'Hoops, backboards, shot clocks and court supply.',
-      ar: 'سلات وبوردات وساعات 24 ثانية وتجهيز ملاعب.',
-    },
-  },
+  { to: '/shop/equipment', zone: 'arc', n: '05', name: { en: 'Equipment', ar: 'المعدات' } },
 ];
 
 const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
 
-/** A numeric range, bidi-isolated so `24–72` can never render as `72–24` in Arabic. */
+/** Numeric ranges are bidi-isolated so `24–72` cannot render as `72–24`. */
 function Range({ from, to, unit }) {
   return (
     <>
@@ -95,29 +73,18 @@ function Range({ from, to, unit }) {
   );
 }
 
-/** A minimum-order figure, isolated for the same reason. */
-function Minimum({ count, unit }) {
+function CourtPlan() {
   return (
-    <>
-      <span className="gw-isolate-ltr">{count}</span> {unit}
-    </>
-  );
-}
-
-function SectionHead({ label, title, id, to, linkLabel }) {
-  return (
-    <div className="gw-section-head">
-      <div className="gw-stack gw-stack--tight">
-        <p className="gw-spec">{label}</p>
-        <h2 id={id} className="gw-display">
-          {title}
-        </h2>
-      </div>
-      <Link className="gw-btn gw-btn--ghost gw-extends" to={to}>
-        {linkLabel}
-        <span className="gw-rule-extend" aria-hidden="true" />
-      </Link>
-    </div>
+    <svg className="gw-floor-court" viewBox="0 0 1500 1400" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="1496" height="1396" stroke="currentColor" strokeWidth="3" />
+      <rect x="505" y="0" width="490" height="580" stroke="currentColor" strokeWidth="3" />
+      <circle cx="750" cy="580" r="180" stroke="currentColor" strokeWidth="3" />
+      <circle cx="750" cy="157" r="22" stroke="currentColor" strokeWidth="3" />
+      <path d="M90 0V299" stroke="currentColor" strokeWidth="3" />
+      <path d="M1410 0V299" stroke="currentColor" strokeWidth="3" />
+      <path d="M90 299A675 675 0 0 0 1410 299" stroke="currentColor" strokeWidth="3" />
+      <circle cx="750" cy="1400" r="180" stroke="currentColor" strokeWidth="3" />
+    </svg>
   );
 }
 
@@ -125,85 +92,43 @@ export default function HomePage() {
   const { pick } = useLanguage();
   const { countryCode } = useCommerce();
   const { products, readyToShipProducts, featuredProducts } = useCatalog();
+  const reduced = useReducedMotion();
+  const capability = useDeviceCapability();
   const isLibya = countryCode === 'LY';
-  const ready = readyToShipProducts().slice(0, 4);
-  const featured = featuredProducts().slice(0, 4);
-  const shoes = products.filter((product) => product.category === 'footwear').slice(0, 4);
 
-  const deliverySpec = [
-    {
-      label: pick({ en: 'Ready to Ship · Libya', ar: 'تسليم فوري · ليبيا' }),
-      value: (
-        <Range
-          from={libya.readyDelivery.minHours}
-          to={libya.readyDelivery.maxHours}
-          unit={pick({ en: 'hours', ar: 'ساعة' })}
-        />
-      ),
-    },
-    {
-      label: pick({ en: 'Standard · Libya', ar: 'عادي · ليبيا' }),
-      value: (
-        <Range
-          from={libya.standardDelivery.minDays}
-          to={libya.standardDelivery.maxDays}
-          unit={pick({ en: 'days', ar: 'يومًا' })}
-        />
-      ),
-    },
-    {
-      label: pick({ en: 'Libya delivery fee', ar: 'رسوم التوصيل داخل ليبيا' }),
-      value: <span className="gw-isolate-ltr">{libya.deliveryFee.amount} LYD</span>,
-    },
-    {
-      label: pick({ en: 'Free delivery from', ar: 'توصيل مجاني ابتداءً من' }),
-      value: <span className="gw-isolate-ltr">{libya.freeThreshold.amount} LYD</span>,
-    },
+  const ready = readyToShipProducts().slice(0, 3);
+  const featured = featuredProducts().slice(0, 3);
+  const shoes = products.filter((product) => product.category === 'footwear').slice(0, 3);
+
+  const chapters = [
+    { id: 'open', label: { en: 'Opening', ar: 'الافتتاح' } },
+    { id: 'floor', label: { en: 'The floor', ar: 'الأرضية' } },
+    ...(isLibya && ready.length ? [{ id: 'stock', label: { en: 'In stock', ar: 'المتوفر' } }] : []),
+    { id: 'workshop', label: { en: 'The workshop', ar: 'الورشة' } },
+    { id: 'roster', label: { en: 'The roster', ar: 'الفريق' } },
+    { id: 'equipment', label: { en: 'Equipment', ar: 'المعدات' } },
+    { id: 'signoff', label: { en: 'Sign-off', ar: 'الختام' } },
   ];
 
-  const customSpec = [
-    {
-      label: pick({ en: 'Custom apparel', ar: 'الملابس المخصصة' }),
-      value: <Minimum count={minimumFor('game-set')} unit={pick({ en: 'pieces', ar: 'قطع' })} />,
-    },
-    {
-      label: pick({ en: 'Custom basketballs', ar: 'الكرات المخصصة' }),
-      value: <Minimum count={minimumFor('basketball')} unit={pick({ en: 'balls', ar: 'كرات' })} />,
-    },
-    {
-      label: pick({ en: 'Hoop padding', ar: 'تغليف السلة' }),
-      value: <Minimum count={minimumFor('hoop-padding')} unit={pick({ en: 'unit', ar: 'وحدة' })} />,
-    },
-    {
-      label: pick({ en: 'Product types', ar: 'أنواع المنتجات' }),
-      value: <span className="gw-figure gw-isolate-ltr">{CUSTOM_PRODUCT_TYPES.length}</span>,
-    },
-  ];
+  const [active, setActive] = useState(chapters[0].id);
+  const scroller = useRef(null);
 
-  const teamSpec = [
-    {
-      label: pick({ en: 'Before production', ar: 'قبل التصنيع' }),
-      value: <span className="gw-figure gw-isolate-ltr">50%</span>,
-    },
-    {
-      label: pick({ en: 'When goods arrive', ar: 'عند وصول البضاعة' }),
-      value: <span className="gw-figure gw-isolate-ltr">50%</span>,
-    },
-    {
-      label: pick({ en: 'Production estimate', ar: 'المدة التقديرية للتصنيع' }),
-      value: (
-        <Range
-          from={shippingConfig.custom.minDays}
-          to={shippingConfig.custom.maxDays}
-          unit={pick({ en: 'days', ar: 'يومًا' })}
-        />
-      ),
-    },
-    {
-      label: pick({ en: 'Shipping', ar: 'الشحن' }),
-      value: pick({ en: 'Worldwide, quoted per destination', ar: 'شحن عالمي، بسعر لكل وجهة' }),
-    },
-  ];
+  // Track the chapter in view so the index can mark it. Falls back silently
+  // where IntersectionObserver is unavailable.
+  useEffect(() => {
+    if (typeof IntersectionObserver !== 'function') return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target?.id) setActive(visible.target.id);
+      },
+      { threshold: [0.4, 0.6] },
+    );
+    document.querySelectorAll('.gw-act').forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, [chapters.length]);
 
   return (
     <>
@@ -213,234 +138,305 @@ export default function HomePage() {
         path="/"
       />
 
-      <CinematicHero />
-
-      {/* THE MEASURE — first dark chapter, bounded by a drawn rule. */}
-      <section
-        className="gw-chapter gw-chapter--strip"
-        aria-label={pick({ en: 'What Shababuna does', ar: 'ما تقوم به شبابنا' })}
+      {/* The chapter index. Real links, so it works with no JavaScript beyond
+          React's own rendering, and it is a nav landmark for screen readers. */}
+      <nav
+        className="gw-acts"
+        aria-label={pick({ en: 'Page chapters', ar: 'فصول الصفحة' })}
+        data-reduced={reduced ? 'on' : 'off'}
       >
-        <div className="gw-container gw-measure-strip">
-          <p className="gw-title gw-measure-claim">
-            {pick({ en: 'Basketball, without compromise.', ar: 'كرة السلة، بدون تنازلات.' })}
-          </p>
-          <ul className="gw-measure-terms">
-            {['Retail', 'Custom', 'Teams', 'Wholesale'].map((term) => (
-              <li key={term} className="gw-spec">
-                {term}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* THE PLAN — five departments as five zones of the court. */}
-      <section id="gw-departments" className="gw-section" aria-labelledby="gw-plan-title">
-        <div className="gw-container gw-stack gw-stack--loose">
-          <SectionHead
-            id="gw-plan-title"
-            label={pick({ en: 'Shop', ar: 'المتجر' })}
-            title={pick({ en: 'Everything basketball needs', ar: 'كل ما تحتاجه كرة السلة' })}
-            to="/shop"
-            linkLabel={pick({ en: 'Shop all', ar: 'تسوّق الكل' })}
-          />
-          <div className="gw-plates gw-department-plates gw-stagger">
-            {DEPARTMENTS.map((department) => (
-              <Link
-                key={department.to}
-                to={department.to}
-                className="gw-plate gw-registered gw-scaled gw-extends gw-department"
+        <ol>
+          {chapters.map((chapter, position) => (
+            <li key={chapter.id}>
+              <a
+                href={`#${chapter.id}`}
+                aria-current={active === chapter.id ? 'true' : undefined}
+                className={active === chapter.id ? 'is-active' : ''}
               >
-                <span className="gw-spec">{pick(department.zone)}</span>
-                <img
-                  className="gw-media gw-media--square"
-                  src={department.image}
-                  alt=""
-                  width="480"
-                  height="480"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="gw-title gw-department-name">{pick(department.title)}</span>
-                <span className="gw-body gw-department-copy">{pick(department.copy)}</span>
-                <span className="gw-rule-extend" aria-hidden="true" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+                <span className="gw-acts-num" aria-hidden="true">
+                  {String(position).padStart(2, '0')}
+                </span>
+                <span className="gw-acts-label">{pick(chapter.label)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
 
-      {/* IN STOCK — Libya only, exactly as before. */}
-      {isLibya && ready.length > 0 && (
-        <section className="gw-section gw-section--inset" aria-labelledby="gw-ready-title">
-          <div className="gw-container gw-stack gw-stack--loose">
-            <SectionHead
-              id="gw-ready-title"
-              label={pick({ en: 'Libya only', ar: 'داخل ليبيا' })}
-              title={pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-              to="/shop/ready-to-ship"
-              linkLabel={pick({ en: 'View all', ar: 'عرض الكل' })}
-            />
-            <Stamp tone="verified">
-              {pick({ en: 'Verified stock in Libya', ar: 'مخزون موثّق داخل ليبيا' })}
-            </Stamp>
-            <div className="gw-ready-grid">
-              <div className="product-grid product-grid--airy">
+      <div
+        className="gw-journey"
+        ref={scroller}
+        data-snap={reduced ? 'off' : 'on'}
+        data-capability={capability}
+      >
+        {/* ── 00 OPENING ───────────────────────────────────────────────── */}
+        <section id="open" className="gw-act gw-act--open" aria-labelledby="gw-open-title">
+          <div className="gw-open-court" aria-hidden="true">
+            <CourtPlan />
+          </div>
+          <div className="gw-act-inner gw-open-inner">
+            <p className="gw-spec gw-open-kicker">
+              {pick({ en: 'Shababuna · Basketball supply', ar: 'شبابنا · تجهيز كرة السلة' })}
+            </p>
+            <h1 id="gw-open-title" className="gw-open-title">
+              <span>{pick({ en: 'Built', ar: 'نبني' })}</span>
+              <span className="gw-open-title-out">
+                {pick({ en: 'Different.', ar: 'مختلفين.' })}
+              </span>
+            </h1>
+            <p className="gw-open-lede">
+              {pick({
+                en: 'Basketball retail, custom manufacturing, club supply and wholesale — built in one global platform.',
+                ar: 'متجر كرة سلة وتصنيع مخصص وتجهيز أندية وجملة — ضمن منصة عالمية واحدة.',
+              })}
+            </p>
+            <div className="gw-open-paths">
+              <Link className="gw-path gw-path--primary" to="/shop">
+                <span className="gw-path-num" aria-hidden="true">
+                  01
+                </span>
+                <span>{pick({ en: 'Shop', ar: 'تسوّق' })}</span>
+              </Link>
+              <Link className="gw-path" to="/customize">
+                <span className="gw-path-num" aria-hidden="true">
+                  02
+                </span>
+                <span>{pick({ en: 'Customize', ar: 'صمّم' })}</span>
+              </Link>
+              <Link className="gw-path" to="/teams-wholesale">
+                <span className="gw-path-num" aria-hidden="true">
+                  03
+                </span>
+                <span>{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</span>
+              </Link>
+            </div>
+            <p className="gw-spec gw-open-place">{pick(SITE.address)}</p>
+          </div>
+        </section>
+
+        {/* ── 01 THE FLOOR — departments placed on court geometry ───────── */}
+        <section id="floor" className="gw-act gw-act--floor" aria-labelledby="gw-floor-title">
+          <div className="gw-act-inner">
+            <header className="gw-act-head">
+              <p className="gw-spec">{pick({ en: '01 · The floor', ar: '٠١ · الأرضية' })}</p>
+              <h2 id="gw-floor-title" className="gw-act-title">
+                {pick({ en: 'Everything basketball needs', ar: 'كل ما تحتاجه كرة السلة' })}
+              </h2>
+            </header>
+            <div className="gw-floor">
+              <CourtPlan />
+              {FLOOR.map((zone) => (
+                <Link key={zone.to} to={zone.to} className="gw-floor-zone" data-zone={zone.zone}>
+                  <span className="gw-floor-num" aria-hidden="true">
+                    {zone.n}
+                  </span>
+                  <span className="gw-floor-name">{pick(zone.name)}</span>
+                </Link>
+              ))}
+            </div>
+            <Link className="gw-act-out" to="/shop">
+              {pick({ en: 'Shop all', ar: 'تسوّق الكل' })} →
+            </Link>
+          </div>
+        </section>
+
+        {/* ── 02 IN STOCK — Libya only, unchanged condition ─────────────── */}
+        {isLibya && ready.length > 0 && (
+          <section id="stock" className="gw-act gw-act--stock" aria-labelledby="gw-stock-title">
+            <div className="gw-act-inner">
+              <header className="gw-act-head">
+                <p className="gw-spec">{pick({ en: '02 · Libya only', ar: '٠٢ · داخل ليبيا' })}</p>
+                <h2 id="gw-stock-title" className="gw-act-title">
+                  {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                </h2>
+                <p className="gw-act-figure">
+                  <span className="gw-figure">
+                    <Range
+                      from={libya.readyDelivery.minHours}
+                      to={libya.readyDelivery.maxHours}
+                      unit={pick({ en: 'hours', ar: 'ساعة' })}
+                    />
+                  </span>
+                </p>
+              </header>
+              <div className="gw-exhibit">
                 {ready.map((product, index) => (
                   <ProductCard key={product.id} product={product} eager={index < 2} />
                 ))}
               </div>
-              <div className="gw-plate gw-registered">
-                <SpecBlock
-                  caption={pick({ en: 'Delivery specification', ar: 'مواصفات التوصيل' })}
-                  captionVisible
-                  rows={deliverySpec}
-                />
-              </div>
+              <Link className="gw-act-out" to="/shop/ready-to-ship">
+                {pick({ en: 'View all', ar: 'عرض الكل' })} →
+              </Link>
+            </div>
+          </section>
+        )}
+
+        {/* ── 03 THE WORKSHOP ──────────────────────────────────────────── */}
+        <section
+          id="workshop"
+          className="gw-act gw-act--workshop"
+          aria-labelledby="gw-workshop-title"
+        >
+          <div className="gw-act-inner gw-workshop-inner">
+            <div>
+              <p className="gw-spec">{pick({ en: '03 · The workshop', ar: '٠٣ · الورشة' })}</p>
+              <h2 id="gw-workshop-title" className="gw-act-title">
+                {pick({ en: 'Design everything.', ar: 'صمّم كل شيء.' })}
+              </h2>
+              <p className="gw-act-body">
+                {pick({
+                  en: 'Game uniforms, practice wear, hoodies, pants, bags, sleeves, basketballs and branded equipment — specified, proofed and produced.',
+                  ar: 'أطقم لعب وتمرين وهوديز وسراويل وحقائب وسليفس وكرات ومعدات بشعارك — بمواصفات وبروفة وتصنيع.',
+                })}
+              </p>
+              <dl className="gw-minimums">
+                <div>
+                  <dt>{pick({ en: 'Apparel', ar: 'الملابس' })}</dt>
+                  <dd className="gw-isolate-ltr">{minimumFor('game-set')}</dd>
+                </div>
+                <div>
+                  <dt>{pick({ en: 'Basketballs', ar: 'الكرات' })}</dt>
+                  <dd className="gw-isolate-ltr">{minimumFor('basketball')}</dd>
+                </div>
+                <div>
+                  <dt>{pick({ en: 'Hoop padding', ar: 'تغليف السلة' })}</dt>
+                  <dd className="gw-isolate-ltr">{minimumFor('hoop-padding')}</dd>
+                </div>
+                <div>
+                  <dt>{pick({ en: 'Product types', ar: 'أنواع المنتجات' })}</dt>
+                  <dd className="gw-isolate-ltr">{CUSTOM_PRODUCT_TYPES.length}</dd>
+                </div>
+              </dl>
+              <Link className="gw-path gw-path--primary" to="/customize">
+                <span>{pick({ en: 'Open Design Studio', ar: 'افتح استوديو التصميم' })}</span>
+              </Link>
+            </div>
+            <div className="gw-workshop-plate">
+              <img
+                src="/images/catalog/jersey.svg"
+                alt={pick({
+                  en: 'Shababuna custom jersey production drawing',
+                  ar: 'رسم إنتاج سيريا شبابنا المخصصة',
+                })}
+                width="480"
+                height="480"
+                loading="lazy"
+                decoding="async"
+              />
+              <p className="gw-spec">{pick({ en: 'Production drawing', ar: 'رسم الإنتاج' })}</p>
             </div>
           </div>
         </section>
-      )}
 
-      {/* THE WORKSHOP — Customize, drawn as a tech pack. */}
-      <section className="gw-section" aria-labelledby="gw-workshop-title">
-        <div className="gw-container gw-split">
-          <div className="gw-plate gw-plate--field gw-registered gw-workshop-plate">
-            <p className="gw-spec">{pick({ en: 'Production drawing', ar: 'رسم الإنتاج' })}</p>
+        {/* ── 04 THE ROSTER ────────────────────────────────────────────── */}
+        <section id="roster" className="gw-act gw-act--roster" aria-labelledby="gw-roster-title">
+          <div className="gw-act-inner">
+            <header className="gw-act-head">
+              <p className="gw-spec">
+                {pick({ en: '04 · Teams & Wholesale', ar: '٠٤ · الأندية والجملة' })}
+              </p>
+              <h2 id="gw-roster-title" className="gw-act-title">
+                {pick({ en: 'One order. The whole organization.', ar: 'طلب واحد. المؤسسة كاملة.' })}
+              </h2>
+            </header>
+            <ol className="gw-stages">
+              {[
+                { en: 'Roster', ar: 'القائمة' },
+                { en: 'Design', ar: 'التصميم' },
+                { en: 'Quote', ar: 'عرض السعر' },
+                { en: 'Proof', ar: 'البروفة' },
+                { en: 'Production', ar: 'التصنيع' },
+                { en: 'Delivery', ar: 'التسليم' },
+              ].map((stage, position) => (
+                <li key={stage.en}>
+                  <span className="gw-stages-num" aria-hidden="true">
+                    {String(position + 1).padStart(2, '0')}
+                  </span>
+                  <span>{pick(stage)}</span>
+                </li>
+              ))}
+            </ol>
+            <dl className="gw-minimums gw-minimums--inverse">
+              <div>
+                <dt>{pick({ en: 'Before production', ar: 'قبل التصنيع' })}</dt>
+                <dd>50%</dd>
+              </div>
+              <div>
+                <dt>{pick({ en: 'On arrival', ar: 'عند الوصول' })}</dt>
+                <dd>50%</dd>
+              </div>
+              <div>
+                <dt>{pick({ en: 'Production', ar: 'التصنيع' })}</dt>
+                <dd className="gw-isolate-ltr">
+                  {shippingConfig.custom.minDays}–{shippingConfig.custom.maxDays}
+                </dd>
+              </div>
+            </dl>
+            <Link className="gw-path gw-path--primary" to="/teams-wholesale">
+              <span>{pick({ en: 'Build a team order', ar: 'جهّز طلب فريق' })}</span>
+            </Link>
+          </div>
+        </section>
+
+        {/* ── 05 EQUIPMENT ─────────────────────────────────────────────── */}
+        <section
+          id="equipment"
+          className="gw-act gw-act--equipment"
+          aria-labelledby="gw-equipment-title"
+        >
+          <div className="gw-act-inner">
+            <header className="gw-act-head">
+              <p className="gw-spec">{pick({ en: '05 · On the floor', ar: '٠٥ · على الأرض' })}</p>
+              <h2 id="gw-equipment-title" className="gw-act-title">
+                {pick({ en: 'In-court. Off-court.', ar: 'داخل الملعب. خارجه.' })}
+              </h2>
+            </header>
+            <div className="gw-exhibit">
+              {(shoes.length ? shoes : featured).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            <Link className="gw-act-out" to="/shop/footwear">
+              {pick({ en: 'Shop footwear', ar: 'تسوّق الأحذية' })} →
+            </Link>
+          </div>
+        </section>
+
+        {/* ── 06 SIGN-OFF ──────────────────────────────────────────────── */}
+        <section id="signoff" className="gw-act gw-act--signoff" aria-labelledby="gw-signoff-title">
+          <div className="gw-act-inner gw-signoff-inner">
             <img
-              className="gw-media gw-media--square gw-workshop-art"
-              src="/images/catalog/jersey.svg"
-              alt={pick({
-                en: 'Shababuna custom jersey production drawing',
-                ar: 'رسم إنتاج سيريا شبابنا المخصصة',
-              })}
-              width="480"
-              height="480"
+              className="gw-signoff-mark"
+              src="/brand/lha-wordmark-white.svg"
+              alt="Libya Hoops Academy"
+              width="320"
+              height="96"
               loading="lazy"
               decoding="async"
             />
-            <p className="gw-leader gw-spec">
-              <span>{pick({ en: 'Front · Back · Side', ar: 'أمام · خلف · جانب' })}</span>
+            <p className="gw-spec">
+              {pick({ en: '06 · Official LHA store', ar: '٠٦ · متجر LHA الرسمي' })}
             </p>
-          </div>
-          <div className="gw-stack gw-stack--loose">
-            <p className="gw-spec">{pick({ en: 'Customize', ar: 'التصميم المخصص' })}</p>
-            <h2 id="gw-workshop-title" className="gw-display">
-              {pick({ en: 'Design everything.', ar: 'صمّم كل شيء.' })}
+            <h2 id="gw-signoff-title" className="gw-act-title">
+              {pick({ en: 'All LHA clothing and accessories.', ar: 'جميع ملابس وإكسسوارات LHA.' })}
             </h2>
-            <p className="gw-body">
-              {pick({
-                en: 'Game uniforms, practice wear, hoodies, pants, bags, sleeves, basketballs and branded equipment — specified, proofed and produced.',
-                ar: 'أطقم لعب وتمرين وهوديز وسراويل وحقائب وسليفس وكرات ومعدات بشعارك — بمواصفات وبروفة وتصنيع.',
-              })}
-            </p>
-            <SpecBlock
-              caption={pick({ en: 'Minimum order', ar: 'الحد الأدنى للطلب' })}
-              rows={customSpec}
-            />
-            <Link className="gw-btn gw-btn--primary" to="/customize">
-              {pick({ en: 'Open Design Studio', ar: 'افتح استوديو التصميم' })}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* THE ROSTER — second dark chapter. */}
-      <Chapter
-        label={pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
-        title={pick({
-          en: 'One order. The whole organization.',
-          ar: 'طلب واحد. المؤسسة كاملة.',
-        })}
-      >
-        <p className="gw-body">
-          {pick({
-            en: 'Uniforms, staff wear, travel, bags, basketballs and equipment — with design approval, staged payment and production tracking.',
-            ar: 'أطقم وملابس طاقم وسفر وحقائب وكرات ومعدات — مع اعتماد التصميم والدفع المرحلي وتتبع التصنيع.',
-          })}
-        </p>
-        <SpecBlock
-          caption={pick({ en: 'Commercial terms', ar: 'الشروط التجارية' })}
-          captionVisible
-          rows={teamSpec}
-        />
-        <Link className="gw-btn gw-btn--primary" to="/teams-wholesale">
-          {pick({ en: 'Build a team order', ar: 'جهّز طلب فريق' })}
-        </Link>
-      </Chapter>
-
-      {/* FOOTWEAR — in-court above the sideline, off-court below. */}
-      {shoes.length > 0 && (
-        <section className="gw-section" aria-labelledby="gw-footwear-title">
-          <div className="gw-container gw-stack gw-stack--loose">
-            <SectionHead
-              id="gw-footwear-title"
-              label={pick({ en: 'Footwear', ar: 'الأحذية' })}
-              title={pick({ en: 'In-court. Off-court.', ar: 'داخل الملعب. خارجه.' })}
-              to="/shop/footwear"
-              linkLabel={pick({ en: 'Shop footwear', ar: 'تسوّق الأحذية' })}
-            />
-            <div className="product-grid product-grid--airy">
-              {shoes.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* SHABABUNA-BUILT — the manufacturer's own line, on maple ground. */}
-      {featured.length > 0 && (
-        <section className="gw-section gw-section--maple" aria-labelledby="gw-built-title">
-          <div className="gw-container gw-stack gw-stack--loose">
-            <SectionHead
-              id="gw-built-title"
-              label="Shababuna"
-              title={pick({ en: 'Built Different products', ar: 'منتجات BUILT DIFFERENT' })}
-              to="/shop?brand=Shababuna"
-              linkLabel={pick({ en: 'Shop Shababuna', ar: 'تسوّق شبابنا' })}
-            />
-            <div className="product-grid product-grid--airy">
-              {featured.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* LHA — a licensed partner section, framed by a drawn rule. */}
-      <section className="gw-chapter gw-lha-band" aria-labelledby="gw-lha-title">
-        <div className="gw-container gw-lha-inner">
-          <img
-            className="gw-lha-mark"
-            src="/brand/lha-wordmark-white.svg"
-            alt="Libya Hoops Academy"
-            width="320"
-            height="96"
-            loading="lazy"
-            decoding="async"
-          />
-          <div className="gw-stack gw-stack--tight">
-            <p className="gw-spec">{pick({ en: 'Official LHA store', ar: 'متجر LHA الرسمي' })}</p>
-            <h2 id="gw-lha-title" className="gw-title">
-              {pick({
-                en: 'All LHA clothing and accessories.',
-                ar: 'جميع ملابس وإكسسوارات LHA.',
-              })}
-            </h2>
-            <p className="gw-body">
+            <p className="gw-act-body">
               {pick({
                 en: 'Same products and prices, inside the Shababuna account, cart and delivery system.',
                 ar: 'نفس المنتجات والأسعار داخل حساب وسلة ونظام توصيل شبابنا.',
               })}
             </p>
+            <div className="gw-open-paths">
+              <Link className="gw-path gw-path--primary" to="/lha-store">
+                <span>{pick({ en: 'Enter LHA Store', ar: 'ادخل متجر LHA' })}</span>
+              </Link>
+              <Link className="gw-path" to="/shop?brand=Shababuna">
+                <span>{pick({ en: 'Shop Shababuna', ar: 'تسوّق شبابنا' })}</span>
+              </Link>
+            </div>
           </div>
-          <Link className="gw-btn gw-btn--primary" to="/lha-store">
-            {pick({ en: 'Enter LHA Store', ar: 'ادخل متجر LHA' })}
-          </Link>
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }
