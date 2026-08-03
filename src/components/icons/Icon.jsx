@@ -86,6 +86,81 @@ const paths = {
       <path d="M7 8v4M10 8v2M13 8v4M16 8v2" />
     </>
   ),
+  /* ── Navigation set ────────────────────────────────────────────────────
+     Added because the rail and the mobile command bar were asking for icons
+     that did not exist — `Icon name="home"` was silently rendering an empty
+     <svg>, and the rail fell back to a bare index number instead.
+
+     One system, one grammar: a 24px box, 1.9 stroke, round caps and joins,
+     built from the same court vocabulary the rest of the site uses — arcs,
+     baselines, keys and panels — so navigation reads as one family rather than
+     a borrowed icon pack. Nothing pictorial enough to be mistaken for a mark. */
+
+  /* A backboard over a baseline. */
+  home: (
+    <>
+      <path d="M4 10.5 12 4l8 6.5" />
+      <path d="M6 9.6V20h12V9.6" />
+      <path d="M10 20v-4.2h4V20" />
+    </>
+  ),
+  /* The key and the arc above it — the shop floor. */
+  shop: (
+    <>
+      <path d="M8.5 4h7v9h-7z" />
+      <path d="M6 20a6 6 0 0 1 12 0" />
+      <path d="M4 20h16" />
+    </>
+  ),
+  /* A panel being drawn on: the studio. */
+  customize: (
+    <>
+      <path d="M4 5.5h11v13H4z" />
+      <path d="M4 9.5h11" />
+      <path d="m17 5 3 3-6.5 6.5L10 15l.5-3.5Z" />
+    </>
+  ),
+  /* Three figures on a bench line: the roster. */
+  teams: (
+    <>
+      <circle cx="7" cy="8" r="2.4" />
+      <circle cx="17" cy="8" r="2.4" />
+      <circle cx="12" cy="6.5" r="2.4" />
+      <path d="M3.5 18a3.5 3.5 0 0 1 7 0" />
+      <path d="M13.5 18a3.5 3.5 0 0 1 7 0" />
+      <path d="M3 21h18" />
+    </>
+  ),
+  /* A shopfront awning over an opening: the partner store. */
+  store: (
+    <>
+      <path d="M4 9.5h16l-1.2-4.2a1 1 0 0 0-1-.8H6.2a1 1 0 0 0-1 .8L4 9.5Z" />
+      <path d="M5.5 9.5V20h13V9.5" />
+      <path d="M10 20v-5.5h4V20" />
+    </>
+  ),
+  /* Stacked plates: completed work. */
+  work: (
+    <>
+      <path d="M3.5 8.5 12 4l8.5 4.5L12 13 3.5 8.5Z" />
+      <path d="m3.5 12.5 8.5 4.5 8.5-4.5" />
+      <path d="m3.5 16.5 8.5 4.5 8.5-4.5" />
+    </>
+  ),
+  /* The centre circle and its line: the organisation. */
+  about: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 3.5v17" />
+      <path d="M6 8.5a8.5 8.5 0 0 0 12 0" />
+    </>
+  ),
+  /* Fallback so a missing key is visibly wrong in review rather than invisible. */
+  grid: (
+    <>
+      <path d="M4 4.5h6.5V11H4zM13.5 4.5H20V11h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 24, strokeWidth = 1.9, className = '' }) {

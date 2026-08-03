@@ -1,11 +1,13 @@
+/* `icon` names resolve against src/components/icons/Icon.jsx. The rail shows the
+   icon when collapsed and the label when open, so every entry needs one. */
 export const mainNav = [
-  { to: '/', key: 'home' },
-  { to: '/shop', key: 'shop', mega: true },
-  { to: '/customize', key: 'customize' },
-  { to: '/teams-wholesale', key: 'teamsWholesale' },
-  { to: '/lha-store', key: 'lhaStore' },
-  { to: '/our-work', key: 'ourWork' },
-  { to: '/about', key: 'about' },
+  { to: '/', key: 'home', icon: 'home' },
+  { to: '/shop', key: 'shop', mega: true, icon: 'shop' },
+  { to: '/customize', key: 'customize', icon: 'customize' },
+  { to: '/teams-wholesale', key: 'teamsWholesale', icon: 'teams' },
+  { to: '/lha-store', key: 'lhaStore', icon: 'store' },
+  { to: '/our-work', key: 'ourWork', icon: 'work' },
+  { to: '/about', key: 'about', icon: 'about' },
 ];
 
 export const megaMenu = {

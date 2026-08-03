@@ -164,18 +164,7 @@
   font-size: 0.8125rem;
 }
 
-.gw-rail-index {
-  position: absolute;
-  inset-inline-start: 0;
-  inline-size: var(--gw-rail-w);
-  text-align: center;
-  font-size: 0.5625rem;
-  font-variant-numeric: tabular-nums;
-  /* No opacity here: stacking it on --sh-night-ink-70 dropped the index below
-     4.5:1. The token is already solved for this ground. */
-  color: var(--sh-night-ink-70);
-}
-
+.gw-rail-link svg,
 .gw-rail-tool svg {
   position: absolute;
   inset-inline-start: 0;

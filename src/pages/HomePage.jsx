@@ -42,21 +42,19 @@ const libya = shippingConfig.libya;
 
 /** The five departments, placed on the court zone each belongs to. */
 const FLOOR = [
-  { to: '/shop/clothing', zone: 'key', n: '01', name: { en: 'Clothing', ar: 'الملابس' } },
-  { to: '/shop/footwear', zone: 'baseline', n: '02', name: { en: 'Footwear', ar: 'الأحذية' } },
+  { to: '/shop/clothing', zone: 'key', name: { en: 'Clothing', ar: 'الملابس' } },
+  { to: '/shop/footwear', zone: 'baseline', name: { en: 'Footwear', ar: 'الأحذية' } },
   {
     to: '/shop/accessories',
     zone: 'corner',
-    n: '03',
     name: { en: 'Accessories', ar: 'الإكسسوارات' },
   },
   {
     to: '/shop/basketballs',
     zone: 'centre',
-    n: '04',
     name: { en: 'Basketballs', ar: 'كرات السلة' },
   },
-  { to: '/shop/equipment', zone: 'arc', n: '05', name: { en: 'Equipment', ar: 'المعدات' } },
+  { to: '/shop/equipment', zone: 'arc', name: { en: 'Equipment', ar: 'المعدات' } },
 ];
 
 const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
@@ -111,6 +109,10 @@ export default function HomePage() {
   ];
 
   const [active, setActive] = useState(chapters[0].id);
+  /* Which chapters are dark. The index sits over whatever is in view, so it
+     needs to know the ground to invert against — otherwise it needs an opaque
+     plate, and a plate full of ticks reads as a debug widget. */
+  const DARK_ACTS = new Set(['open', 'roster', 'signoff']);
   const scroller = useRef(null);
 
   // Track the chapter in view so the index can mark it. Falls back silently
@@ -144,18 +146,17 @@ export default function HomePage() {
         className="gw-acts"
         aria-label={pick({ en: 'Page chapters', ar: 'فصول الصفحة' })}
         data-reduced={reduced ? 'on' : 'off'}
+        data-tone={DARK_ACTS.has(active) ? 'night' : 'day'}
       >
         <ol>
-          {chapters.map((chapter, position) => (
+          {chapters.map((chapter) => (
             <li key={chapter.id}>
               <a
                 href={`#${chapter.id}`}
                 aria-current={active === chapter.id ? 'true' : undefined}
                 className={active === chapter.id ? 'is-active' : ''}
               >
-                <span className="gw-acts-num" aria-hidden="true">
-                  {String(position).padStart(2, '0')}
-                </span>
+                <span className="gw-acts-tick" aria-hidden="true" />
                 <span className="gw-acts-label">{pick(chapter.label)}</span>
               </a>
             </li>
@@ -171,9 +172,31 @@ export default function HomePage() {
       >
         {/* ── 00 OPENING ───────────────────────────────────────────────── */}
         <section id="open" className="gw-act gw-act--open" aria-labelledby="gw-open-title">
-          <div className="gw-open-court" aria-hidden="true">
-            <CourtPlan />
-          </div>
+          {/* Atmosphere, not an empty dark screen. Original generated artwork —
+              an arena shaft of light across a hardwood arc. Two crops so mobile
+              gets a composition made for it rather than a cropped desktop one.
+              Decorative, so it carries an empty alt and is hidden from AT. */}
+          <picture className="gw-open-atmos">
+            <source
+              media="(min-width: 900px)"
+              type="image/webp"
+              srcSet="/media/atmosphere/arena-wide-1024.webp 1024w, /media/atmosphere/arena-wide-1600.webp 1600w, /media/atmosphere/arena-wide-2048.webp 2048w"
+              sizes="100vw"
+            />
+            <source
+              type="image/webp"
+              srcSet="/media/atmosphere/arena-tall-640.webp 640w, /media/atmosphere/arena-tall-900.webp 900w, /media/atmosphere/arena-tall-1200.webp 1200w"
+              sizes="100vw"
+            />
+            <img
+              src="/media/atmosphere/arena-wide-1600.webp"
+              alt=""
+              width="1600"
+              height="1067"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
           <div className="gw-act-inner gw-open-inner">
             <p className="gw-spec gw-open-kicker">
               {pick({ en: 'Shababuna · Basketball supply', ar: 'شبابنا · تجهيز كرة السلة' })}
@@ -192,21 +215,12 @@ export default function HomePage() {
             </p>
             <div className="gw-open-paths">
               <Link className="gw-path gw-path--primary" to="/shop">
-                <span className="gw-path-num" aria-hidden="true">
-                  01
-                </span>
                 <span>{pick({ en: 'Shop', ar: 'تسوّق' })}</span>
               </Link>
               <Link className="gw-path" to="/customize">
-                <span className="gw-path-num" aria-hidden="true">
-                  02
-                </span>
                 <span>{pick({ en: 'Customize', ar: 'صمّم' })}</span>
               </Link>
               <Link className="gw-path" to="/teams-wholesale">
-                <span className="gw-path-num" aria-hidden="true">
-                  03
-                </span>
                 <span>{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</span>
               </Link>
             </div>
@@ -218,7 +232,7 @@ export default function HomePage() {
         <section id="floor" className="gw-act gw-act--floor" aria-labelledby="gw-floor-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: '01 · The floor', ar: '٠١ · الأرضية' })}</p>
+              <p className="gw-spec">{pick({ en: 'The floor', ar: 'الأرضية' })}</p>
               <h2 id="gw-floor-title" className="gw-act-title">
                 {pick({ en: 'Everything basketball needs', ar: 'كل ما تحتاجه كرة السلة' })}
               </h2>
@@ -227,10 +241,11 @@ export default function HomePage() {
               <CourtPlan />
               {FLOOR.map((zone) => (
                 <Link key={zone.to} to={zone.to} className="gw-floor-zone" data-zone={zone.zone}>
-                  <span className="gw-floor-num" aria-hidden="true">
-                    {zone.n}
-                  </span>
                   <span className="gw-floor-name">{pick(zone.name)}</span>
+                  {/* A count is information; an index number was not. */}
+                  <span className="gw-floor-count gw-isolate-ltr">
+                    {products.filter((item) => item.category === zone.to.split('/').pop()).length}
+                  </span>
                 </Link>
               ))}
             </div>
@@ -245,7 +260,7 @@ export default function HomePage() {
           <section id="stock" className="gw-act gw-act--stock" aria-labelledby="gw-stock-title">
             <div className="gw-act-inner">
               <header className="gw-act-head">
-                <p className="gw-spec">{pick({ en: '02 · Libya only', ar: '٠٢ · داخل ليبيا' })}</p>
+                <p className="gw-spec">{pick({ en: 'Libya only', ar: 'داخل ليبيا' })}</p>
                 <h2 id="gw-stock-title" className="gw-act-title">
                   {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
                 </h2>
@@ -279,7 +294,7 @@ export default function HomePage() {
         >
           <div className="gw-act-inner gw-workshop-inner">
             <div>
-              <p className="gw-spec">{pick({ en: '03 · The workshop', ar: '٠٣ · الورشة' })}</p>
+              <p className="gw-spec">{pick({ en: 'The workshop', ar: 'الورشة' })}</p>
               <h2 id="gw-workshop-title" className="gw-act-title">
                 {pick({ en: 'Design everything.', ar: 'صمّم كل شيء.' })}
               </h2>
@@ -332,9 +347,7 @@ export default function HomePage() {
         <section id="roster" className="gw-act gw-act--roster" aria-labelledby="gw-roster-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">
-                {pick({ en: '04 · Teams & Wholesale', ar: '٠٤ · الأندية والجملة' })}
-              </p>
+              <p className="gw-spec">{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</p>
               <h2 id="gw-roster-title" className="gw-act-title">
                 {pick({ en: 'One order. The whole organization.', ar: 'طلب واحد. المؤسسة كاملة.' })}
               </h2>
@@ -386,7 +399,7 @@ export default function HomePage() {
         >
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: '05 · On the floor', ar: '٠٥ · على الأرض' })}</p>
+              <p className="gw-spec">{pick({ en: 'On the floor', ar: 'على الأرض' })}</p>
               <h2 id="gw-equipment-title" className="gw-act-title">
                 {pick({ en: 'In-court. Off-court.', ar: 'داخل الملعب. خارجه.' })}
               </h2>
@@ -414,9 +427,7 @@ export default function HomePage() {
               loading="lazy"
               decoding="async"
             />
-            <p className="gw-spec">
-              {pick({ en: '06 · Official LHA store', ar: '٠٦ · متجر LHA الرسمي' })}
-            </p>
+            <p className="gw-spec">{pick({ en: 'Official LHA store', ar: 'متجر LHA الرسمي' })}</p>
             <h2 id="gw-signoff-title" className="gw-act-title">
               {pick({ en: 'All LHA clothing and accessories.', ar: 'جميع ملابس وإكسسوارات LHA.' })}
             </h2>

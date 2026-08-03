@@ -126,7 +126,7 @@ export default function Header() {
         </Link>
 
         <nav className="gw-rail-nav" aria-label={t.a11y.mainNav}>
-          {mainNav.map((item, position) =>
+          {mainNav.map((item) =>
             item.mega ? (
               <div
                 key={item.to}
@@ -143,18 +143,14 @@ export default function Header() {
                   aria-haspopup="true"
                   aria-expanded={megaOpen}
                 >
-                  <span className="gw-rail-index" aria-hidden="true">
-                    {idx(position)}
-                  </span>
+                  <Icon name={item.icon || 'grid'} />
                   <span className="gw-rail-label">{navLabel(item)}</span>
                 </NavLink>
               </div>
             ) : (
               <div key={item.to} className="gw-rail-entry">
                 <NavLink to={item.to} end={item.to === '/'} className="gw-rail-link">
-                  <span className="gw-rail-index" aria-hidden="true">
-                    {idx(position)}
-                  </span>
+                  <Icon name={item.icon || 'grid'} />
                   <span className="gw-rail-label">{navLabel(item)}</span>
                 </NavLink>
               </div>
