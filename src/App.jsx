@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import BuildMarker from './components/dev/BuildMarker';
 import Home from './pages/HomePage';
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/layout/Header';
@@ -56,49 +57,49 @@ export default function App() {
         <AppErrorBoundary resetKey={location.key || location.pathname} scope="route_render">
           <RouteExperience>
             <Suspense fallback={<LoadingScreen />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/shop/:category" element={<Shop />} />
-              <Route path="/shop/:category/:subcategory" element={<Shop />} />
-              <Route path="/products/:slug" element={<Product />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/checkout/success" element={<CheckoutStatus status="success" />} />
-              <Route path="/checkout/cancelled" element={<CheckoutStatus status="cancelled" />} />
-              <Route path="/customize" element={<Customize />} />
-              <Route path="/special-request" element={<SpecialRequest />} />
-              <Route path="/teams-wholesale" element={<TeamsWholesale />} />
-              <Route path="/team-locker/:slug" element={<TeamLocker />} />
-              <Route path="/design-share/:token" element={<DesignShare />} />
-              <Route path="/lha-store" element={<LhaStore />} />
-              <Route path="/our-work" element={<OurWork />} />
-              <Route path="/programs/*" element={<Navigate to="/lha-store" replace />} />
-              <Route path="/events/*" element={<Navigate to="/lha-store" replace />} />
-              <Route path="/online-training/*" element={<Navigate to="/lha-store" replace />} />
-              <Route path="/coaches/*" element={<Navigate to="/about" replace />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/help" element={<Help />} />
-              <Route path="/operations/*" element={<Operations />} />
-              <Route path="/size-guide" element={<SizeGuide />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/order-tracking" element={<OrderTracking />} />
-              <Route path="/order-tracking/:orderNumber" element={<OrderDetail />} />
-              <Route path="/compare" element={<Compare />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/orders" element={<Navigate to="/account?section=orders" replace />} />
-              <Route path="/offline" element={<Offline />} />
-              <Route path="/lab/home" element={<LabHome />} />
-              <Route path="/privacy-policy" element={<Legal docKey="privacy-policy" />} />
-              <Route path="/terms" element={<Legal docKey="terms" />} />
-              <Route path="/cookies" element={<Legal docKey="cookies" />} />
-              <Route path="/shipping-returns" element={<Legal docKey="shipping-returns" />} />
-              <Route path="/refund-policy" element={<Legal docKey="refund-policy" />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/shop/:category" element={<Shop />} />
+                <Route path="/shop/:category/:subcategory" element={<Shop />} />
+                <Route path="/products/:slug" element={<Product />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout/success" element={<CheckoutStatus status="success" />} />
+                <Route path="/checkout/cancelled" element={<CheckoutStatus status="cancelled" />} />
+                <Route path="/customize" element={<Customize />} />
+                <Route path="/special-request" element={<SpecialRequest />} />
+                <Route path="/teams-wholesale" element={<TeamsWholesale />} />
+                <Route path="/team-locker/:slug" element={<TeamLocker />} />
+                <Route path="/design-share/:token" element={<DesignShare />} />
+                <Route path="/lha-store" element={<LhaStore />} />
+                <Route path="/our-work" element={<OurWork />} />
+                <Route path="/programs/*" element={<Navigate to="/lha-store" replace />} />
+                <Route path="/events/*" element={<Navigate to="/lha-store" replace />} />
+                <Route path="/online-training/*" element={<Navigate to="/lha-store" replace />} />
+                <Route path="/coaches/*" element={<Navigate to="/about" replace />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/help" element={<Help />} />
+                <Route path="/operations/*" element={<Operations />} />
+                <Route path="/size-guide" element={<SizeGuide />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/order-tracking" element={<OrderTracking />} />
+                <Route path="/order-tracking/:orderNumber" element={<OrderDetail />} />
+                <Route path="/compare" element={<Compare />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/orders" element={<Navigate to="/account?section=orders" replace />} />
+                <Route path="/offline" element={<Offline />} />
+                <Route path="/lab/home" element={<LabHome />} />
+                <Route path="/privacy-policy" element={<Legal docKey="privacy-policy" />} />
+                <Route path="/terms" element={<Legal docKey="terms" />} />
+                <Route path="/cookies" element={<Legal docKey="cookies" />} />
+                <Route path="/shipping-returns" element={<Legal docKey="shipping-returns" />} />
+                <Route path="/refund-policy" element={<Legal docKey="refund-policy" />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </Suspense>
           </RouteExperience>
         </AppErrorBoundary>
@@ -108,6 +109,7 @@ export default function App() {
       <CookieBanner />
       <PwaPrompt />
       <CurrencyWelcome />
+      <BuildMarker />
     </>
   );
 }

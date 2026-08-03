@@ -31,6 +31,8 @@ const BRIDGE_LAYERS = [
   'composition.css',
   'account.css',
   'command.css',
+  'rail.css',
+  'buildmarker.css',
 ];
 const SCOPED_LAYERS = [
   'typography.css',

@@ -1,0 +1,649 @@
+/* ==========================================================================
+   SHABABUNA — THE RAIL
+   --------------------------------------------------------------------------
+   A different frame, not a restyled header.
+
+   Desktop: a persistent vertical rail on the inline-start edge. It expands on
+   hover or focus. Content takes the whole viewport height beside it, which is
+   what makes full-bleed cinematic chapters possible.
+
+   Mobile: no top bar at all. A bottom command bar in thumb reach, and the
+   index as a full-screen chapter.
+
+   Mirrors automatically: every edge here is logical, so in Arabic the rail
+   sits on the right and content shifts left with no override.
+   ========================================================================== */
+
+:root {
+  --gw-rail-w: 76px;
+  --gw-rail-w-open: 244px;
+  --gw-bar-h: 66px;
+}
+
+/* ---------- Document offset -----------------------------------------------
+   The shell is fixed, so the document is inset rather than pushed. */
+
+@media (min-width: 1000px) {
+  body {
+    padding-inline-start: var(--gw-rail-w);
+  }
+}
+
+@media (max-width: 999px) {
+  body {
+    padding-block-end: calc(var(--gw-bar-h) + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------- The rail -------------------------------------------------------- */
+
+.gw-rail {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .gw-rail {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 900;
+    inline-size: var(--gw-rail-w);
+    display: flex;
+    flex-direction: column;
+    background: var(--sh-night);
+    color: var(--sh-night-ink);
+    border-inline-end: 1px solid var(--sh-rule-inverse-strong);
+    overflow: hidden;
+    transition: inline-size var(--sh-d-3) var(--sh-e-draw);
+  }
+
+  .gw-rail:hover,
+  .gw-rail:focus-within {
+    inline-size: var(--gw-rail-w-open);
+    box-shadow: var(--sh-lift);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-rail {
+    transition: none;
+  }
+}
+
+/* The wordmark reads bottom-to-top along the rail. */
+.gw-rail-mark {
+  flex: none;
+  block-size: 168px;
+  display: grid;
+  place-items: center;
+  border-block-end: 1px solid var(--sh-rule-inverse-strong);
+  text-decoration: none;
+  color: var(--sh-night-ink);
+}
+
+.gw-rail-mark-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--sh-font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-stretch: 88%;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---------- Vertical numbered navigation ------------------------------------ */
+
+.gw-rail-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--sh-s-3);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.gw-rail-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.gw-rail-entry {
+  display: flex;
+}
+
+.gw-rail-link,
+.gw-rail-tool {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sh-s-3);
+  inline-size: 100%;
+  min-block-size: 46px;
+  padding-inline: 26px;
+  border: 0;
+  background: transparent;
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-rail-link,
+[lang='ar'] .gw-rail-tool {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.gw-rail-index {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: var(--gw-rail-w);
+  text-align: center;
+  font-size: 0.5625rem;
+  font-variant-numeric: tabular-nums;
+  /* No opacity here: stacking it on --sh-night-ink-70 dropped the index below
+     4.5:1. The token is already solved for this ground. */
+  color: var(--sh-night-ink-70);
+}
+
+.gw-rail-tool svg {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: var(--gw-rail-w);
+  block-size: 18px;
+}
+
+/* Labels only exist once the rail is open. */
+.gw-rail-label {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    transform var(--sh-d-2) var(--sh-e-draw);
+}
+
+[dir='rtl'] .gw-rail-label {
+  transform: translateX(6px);
+}
+
+.gw-rail:hover .gw-rail-label,
+.gw-rail:focus-within .gw-rail-label {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-rail-label {
+    transition: none;
+  }
+}
+
+.gw-rail-link:hover,
+.gw-rail-tool:hover {
+  color: var(--sh-night-ink);
+  background: var(--sh-night-2);
+}
+
+/* The active mark is a bar on the leading edge of the rail. */
+.gw-rail-link.active {
+  color: var(--sh-night-ink);
+}
+
+.gw-rail-link.active::before {
+  content: '';
+  position: absolute;
+  inset-block: 8px;
+  inset-inline-start: 0;
+  inline-size: 3px;
+  background: var(--sh-night-ink);
+}
+
+.gw-rail-instruments {
+  flex: none;
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+  padding-block: var(--sh-s-2);
+}
+
+.gw-rail-tally {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 40px;
+  min-inline-size: 15px;
+  block-size: 15px;
+  padding-inline: 3px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--sh-night-ink);
+  color: var(--sh-night);
+  font-size: 0.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-rail-locale {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--sh-s-3) 18px;
+  border-block-start: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-rail-lang {
+  flex: none;
+  inline-size: 40px;
+  min-block-size: 34px;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-night-ink);
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gw-rail-locale .currency-selector {
+  opacity: 0;
+  transition: opacity var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-rail:hover .gw-rail-locale .currency-selector,
+.gw-rail:focus-within .gw-rail-locale .currency-selector {
+  opacity: 1;
+}
+
+.gw-rail-notice {
+  flex: none;
+  max-block-size: 0;
+  overflow: hidden;
+  transition: max-block-size var(--sh-d-3) var(--sh-e-draw);
+}
+
+.gw-rail:hover .gw-rail-notice,
+.gw-rail:focus-within .gw-rail-notice {
+  max-block-size: 220px;
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-rail :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: -3px;
+}
+
+/* ---------- Mega panel: full height, beside the rail ------------------------ */
+
+.gw-megapanel {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: var(--gw-rail-w-open);
+  inset-inline-end: 0;
+  z-index: 890;
+  background: var(--sh-night-2);
+  color: var(--sh-night-ink);
+  overflow-y: auto;
+  border-inline-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-megapanel[hidden] {
+  display: none;
+}
+
+@media (max-width: 999px) {
+  .gw-megapanel {
+    display: none;
+  }
+}
+
+.gw-megapanel-inner {
+  display: grid;
+  gap: var(--sh-s-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  padding: clamp(40px, 6vw, 96px) clamp(24px, 4vw, 72px);
+  max-inline-size: 1100px;
+}
+
+.gw-megapanel-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gw-megapanel-col .gw-spec {
+  margin: 0 0 var(--sh-s-3);
+  color: var(--sh-night-ink-70);
+}
+
+.gw-megapanel-link {
+  min-block-size: var(--sh-target-min);
+  display: flex;
+  align-items: center;
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+
+.gw-megapanel-link:hover {
+  color: var(--sh-night-ink);
+}
+
+.gw-megapanel-link--lead {
+  font-family: var(--sh-font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .gw-megapanel-link--lead {
+  font-family: var(--sh-font-arabic);
+}
+
+/* ---------- Mobile command bar ---------------------------------------------- */
+
+.gw-command-bar {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 900;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--sh-night);
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+  padding-block-end: env(safe-area-inset-bottom);
+}
+
+@media (min-width: 1000px) {
+  .gw-command-bar {
+    display: none;
+  }
+}
+
+.gw-command-key {
+  position: relative;
+  min-block-size: var(--gw-bar-h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 0;
+  background: transparent;
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-command-key {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.625rem;
+}
+
+.gw-command-key svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+.gw-command-key:hover,
+.gw-command-key:focus-visible {
+  color: var(--sh-night-ink);
+}
+
+/* The index key is the primary action and is marked as such. */
+.gw-command-key--primary {
+  color: var(--sh-night);
+  background: var(--sh-night-ink);
+}
+
+.gw-command-key .gw-rail-tally {
+  inset-block-start: 6px;
+  inset-inline-start: 50%;
+  margin-inline-start: 4px;
+}
+
+.gw-command-bar :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: -3px;
+}
+
+/* ---------- Scrim + full-screen index ---------------------------------------- */
+
+.gw-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  background: var(--sh-scrim);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    visibility 0s var(--sh-d-2);
+}
+
+.gw-scrim.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    visibility 0s 0s;
+}
+
+.gw-index {
+  position: fixed;
+  inset: 0;
+  z-index: 960;
+  display: flex;
+  flex-direction: column;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    transform var(--sh-d-2) var(--sh-e-draw),
+    visibility 0s var(--sh-d-2);
+}
+
+.gw-index.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    transform var(--sh-d-2) var(--sh-e-draw),
+    visibility 0s 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-index,
+  .gw-scrim {
+    transition-duration: 0s;
+  }
+
+  .gw-index {
+    transform: none;
+  }
+}
+
+.gw-index-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sh-s-4);
+  border-block-end: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-index-head .gw-spec {
+  margin: 0;
+  color: var(--sh-night-ink-70);
+}
+
+.gw-index-close {
+  inline-size: var(--sh-target);
+  block-size: var(--sh-target);
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-night-ink);
+  cursor: pointer;
+}
+
+.gw-index-body {
+  flex: 1;
+  padding: var(--sh-s-4);
+}
+
+.gw-index-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  inline-size: 100%;
+  min-block-size: 58px;
+  border: 0;
+  border-block-end: 1px solid var(--sh-rule-inverse);
+  background: transparent;
+  color: var(--sh-night-ink);
+  text-decoration: none;
+  cursor: pointer;
+  text-align: start;
+}
+
+.gw-index-num {
+  flex: none;
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-night-ink-70);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-index-label {
+  flex: 1;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.5rem, 1.1rem + 2.4vw, 2.1rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 1.05;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-index-label {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.3rem, 1rem + 1.9vw, 1.75rem);
+  line-height: 1.4;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-index-link--toggle .rotated {
+  transform: rotate(180deg);
+}
+
+.gw-index-sub {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sh-s-2) 0 var(--sh-s-3) var(--sh-s-5);
+  border-inline-start: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-index-sublink,
+.gw-index-minor a {
+  min-block-size: var(--sh-target);
+  display: flex;
+  align-items: center;
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+}
+
+.gw-index-sublink:hover,
+.gw-index-minor a:hover {
+  color: var(--sh-night-ink);
+}
+
+.gw-index-minor {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 var(--sh-s-4);
+  margin-block-start: var(--sh-s-4);
+  padding-block-start: var(--sh-s-3);
+  border-block-start: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-index-account {
+  margin-block-start: var(--sh-s-5);
+  padding: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gw-index-account .gw-spec {
+  margin: 0 0 4px;
+  color: var(--sh-night-ink-70);
+}
+
+.gw-index-account a,
+.gw-index-account button {
+  min-block-size: var(--sh-target-min);
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--sh-night-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  text-align: start;
+}
+
+.gw-index-foot {
+  display: flex;
+  gap: var(--sh-s-3);
+  padding: var(--sh-s-4);
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-index-foot > * {
+  flex: 1;
+}
+
+.gw-index-lang {
+  min-block-size: var(--sh-target);
+  inline-size: 100%;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-night-ink);
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gw-index :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 2px;
+}

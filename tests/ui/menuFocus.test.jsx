@@ -23,6 +23,7 @@ vi.mock('../../src/context/LanguageContext', () => ({
     pick: (value) =>
       value && typeof value === 'object' ? (value[activeLanguage] ?? value.en) : value,
     t: {
+      common: { search: 'Search' },
       nav: { home: 'Home', shop: 'Shop' },
       a11y: {
         mainNav: 'Main navigation',
@@ -65,15 +66,17 @@ const renderHeader = () =>
   );
 
 const trigger = () => screen.getByRole('button', { name: 'Open menu' });
-const drawer = () => document.querySelector('.gw-drawer');
+// The shell moved from a side drawer to a full-screen index opened from the
+// bottom command bar. Same behaviour contract, different architecture.
+const drawer = () => document.querySelector('.gw-index');
 
 /** jsdom runs rAF, but the restore is one frame out, so waitFor is required. */
 const expectFocusReturned = async () => {
   await waitFor(() => expect(document.activeElement).toBe(trigger()));
 };
 
-describe('mobile menu focus management', () => {
-  test('opening moves focus into the drawer', async () => {
+describe('mobile index focus management', () => {
+  test('opening moves focus into the index', async () => {
     activeLanguage = 'en';
     renderHeader();
     fireEvent.click(trigger());
