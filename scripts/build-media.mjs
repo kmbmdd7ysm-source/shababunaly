@@ -105,11 +105,14 @@ for (const asset of ASSETS) {
         canvas.height = height;
         const context = canvas.getContext('2d');
         context.drawImage(image, 0, 0, w, height);
-        const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/webp', quality));
-        const buffer = new Uint8Array(await blob.arrayBuffer());
-        let binary = '';
-        for (const byte of buffer) binary += String.fromCharCode(byte);
-        return { base64: btoa(binary), width: w, height, type: blob.type };
+        /*
+         * toDataURL is synchronous and returns the encoded bytes directly.
+         * The toBlob callback route needed type gymnastics to satisfy
+         * typecheck for no benefit at this scale.
+         */
+        const url = canvas.toDataURL('image/webp', quality);
+        const [header, base64] = url.split(',');
+        return { type: header.slice(5).split(';')[0], base64, width: w, height };
       },
       { src: dataUrl, w: width, quality: QUALITY },
     );
