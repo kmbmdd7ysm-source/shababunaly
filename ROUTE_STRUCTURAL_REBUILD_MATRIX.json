@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:46:56.323Z",
+  "generatedAt": "2026-08-03T16:50:01.417Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 32,
+    "fully-rebuilt": 34,
     "partially-rebuilt": 0,
-    "not-rebuilt": 4,
+    "not-rebuilt": 2,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 25,
+    "fully-rebuilt": 27,
     "partially-rebuilt": 0,
-    "not-rebuilt": 4
+    "not-rebuilt": 2
   },
   "routes": [
     {
@@ -173,29 +173,29 @@
       "component": "SpecialRequest",
       "file": "src/pages/SpecialRequestPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\""
+      "linesAdded": 362,
+      "linesRemoved": 41,
+      "compositionMarkers": [
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/teams-wholesale",
       "component": "TeamsWholesale",
       "file": "src/pages/TeamsWholesalePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 489,
+      "linesRemoved": 57,
+      "compositionMarkers": [
+        "RouteMasthead"
+      ],
       "legacyWrappers": [
-        "PageHero",
         "section className=\"section\"",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/team-locker/:slug",

@@ -1256,3 +1256,139 @@
   letter-spacing: var(--sh-tr-ar);
   text-transform: none;
 }
+
+/* ---------- B2B lifecycle band ---------------------------------------------------
+   The order lifecycle as a numbered sequence on a dark chapter, so the
+   commercial spine of a team order is legible at a glance. */
+
+.gw-lifecycle {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  padding-block: clamp(36px, 5vw, 72px);
+}
+
+.gw-lifecycle-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+  display: grid;
+  gap: var(--sh-s-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  counter-reset: gw-stage;
+}
+
+.gw-lifecycle-inner > article {
+  counter-increment: gw-stage;
+  position: relative;
+  border-inline-start: 1px solid var(--sh-rule-inverse-strong);
+  padding-inline-start: var(--sh-s-4);
+}
+
+.gw-lifecycle-inner > article > span {
+  display: block;
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-night-ink-70);
+  font-variant-numeric: tabular-nums;
+  margin-block-end: var(--sh-s-2);
+}
+
+.gw-lifecycle-inner > article h3 {
+  margin: 0 0 6px;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .gw-lifecycle-inner > article h3 {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-lifecycle-inner > article p {
+  margin: 0;
+  color: var(--sh-night-ink-70);
+  font-size: var(--sh-t-small);
+  line-height: 1.55;
+}
+
+.gw-lifecycle :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 2px;
+}
+
+/* ---------- Special request ------------------------------------------------------- */
+
+.gw-request {
+  padding-block: clamp(32px, 5vw, 64px) clamp(48px, 7vw, 96px);
+}
+
+.gw-request-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .gw-request-inner {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  }
+}
+
+/* The how-it-works panel stays dark - its copy was written for a dark ground -
+   and becomes an ordered, numbered explanation rather than a bare list. */
+.gw-request .special-request-info {
+  position: sticky;
+  inset-block-start: calc(72px + var(--sh-s-4));
+}
+
+@media (max-width: 959px) {
+  .gw-request .special-request-info {
+    position: static;
+  }
+}
+
+.gw-request .special-request-info ol {
+  counter-reset: gw-req;
+  list-style: none;
+  margin: var(--sh-s-3) 0;
+  padding: 0;
+}
+
+.gw-request .special-request-info li {
+  counter-increment: gw-req;
+  display: flex;
+  gap: var(--sh-s-3);
+  padding-block: var(--sh-s-2);
+  border-block-end: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-request .special-request-info li::before {
+  content: counter(gw-req, decimal-leading-zero);
+  flex: none;
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-night-ink-70);
+  font-variant-numeric: tabular-nums;
+  padding-block-start: 4px;
+}
+
+.gw-request .special-request-form {
+  border: 1px solid var(--sh-rule-strong);
+  border-block-start: 3px solid var(--sh-ink);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: clamp(20px, 3vw, 36px);
+}
