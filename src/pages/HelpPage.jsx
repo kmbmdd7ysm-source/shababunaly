@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import PageHero from '../components/common/PageHero';
+import RouteMasthead from '../components/composition/RouteMasthead';
+import '../styles/composition.css';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { normalizeSearchText } from '../utils/search';
@@ -174,16 +175,18 @@ export default function HelpPage() {
         })}
         path="/help"
       />
-      <PageHero
-        label={pick({ en: 'Support', ar: 'الدعم' })}
-        title={pick({ en: 'Get Help', ar: 'احصل على المساعدة' })}
-        description={pick({
-          en: 'Find clear answers and the right next step.',
-          ar: 'اعثر على إجابات واضحة والخطوة المناسبة التالية.',
+      <RouteMasthead
+        eyebrow={pick({ en: 'Help centre', ar: 'مركز المساعدة' })}
+        title={pick({ en: 'Find an answer', ar: 'اعثر على إجابة' })}
+        lede={pick({
+          en: 'Search the help topics, or go straight to the page that governs the rule you need.',
+          ar: 'ابحث في مواضيع المساعدة، أو انتقل مباشرة إلى الصفحة التي تحكم القاعدة التي تحتاجها.',
         })}
+        trail={[{ label: pick({ en: 'Help', ar: 'المساعدة' }) }]}
+        figure={{ value: HELP_TOPICS.length, label: pick({ en: 'topics', ar: 'مواضيع' }) }}
       />
-      <section className="section help-page">
-        <div className="container narrow">
+      <section className="gw-desk gw-help">
+        <div className="gw-desk-inner">
           <div className="help-search">
             <label htmlFor="help-search-input">
               {pick({ en: 'What can we help you with?', ar: 'كيف يمكننا مساعدتك؟' })}

@@ -9,13 +9,13 @@ that is the precise failure this ledger exists to expose.
 
 | Status | Count |
 | --- | ---: |
-| Fully rebuilt | **29** |
-| Partially rebuilt | **0** |
-| Not rebuilt | **7** |
+| Fully rebuilt | **30** |
+| Partially rebuilt | **1** |
+| Not rebuilt | **5** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 22 rebuilt, 0 partial, 7 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 23 rebuilt, 1 partial, 5 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
@@ -40,9 +40,9 @@ Distinct page components: **29** — 22 rebuilt, 0 partial, 7 legacy. One compon
 | `/events/*` | Navigate | public | +0/-0 | — | redirect |
 | `/online-training/*` | Navigate | public | +0/-0 | — | redirect |
 | `/coaches/*` | Navigate | public | +0/-0 | — | redirect |
-| `/contact` | Contact | public | +0/-0 | — | LEGACY |
+| `/contact` | Contact | public | +206/-31 | RouteMasthead | **REBUILT** |
 | `/faq` | Faq | public | +56/-27 | gw-terminal, RouteMasthead, Dossier | **REBUILT** |
-| `/help` | Help | public | +0/-0 | — | LEGACY |
+| `/help` | Help | public | +12/-9 | RouteMasthead | _partial_ |
 | `/operations/*` | Operations | staff | +0/-0 | — | LEGACY |
 | `/size-guide` | SizeGuide | public | +48/-34 | RouteMasthead, Dossier | **REBUILT** |
 | `/search` | Search | public | +191/-25 | gw-catalogue, gw-console, gw-terminal | **REBUILT** |

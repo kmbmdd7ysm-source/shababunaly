@@ -1018,3 +1018,125 @@
   flex-direction: column;
   gap: var(--sh-s-3);
 }
+
+/* ---------- Contact -----------------------------------------------------------------
+   The form and the direct-contact plate side by side, so a visitor who would
+   rather phone than write is not made to scroll past a form to find out how. */
+
+.gw-contact {
+  padding-block: clamp(32px, 5vw, 64px) clamp(48px, 7vw, 96px);
+}
+
+.gw-contact-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .gw-contact-inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  }
+}
+
+.gw-contact .contact-form-wrap {
+  border: 1px solid var(--sh-rule-strong);
+  border-block-start: 3px solid var(--sh-ink);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: clamp(20px, 3vw, 36px);
+}
+
+.gw-contact .contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+}
+
+.gw-contact .contact-info {
+  padding: clamp(20px, 3vw, 32px);
+}
+
+@media (min-width: 900px) {
+  .gw-contact .contact-info {
+    position: sticky;
+    inset-block-start: calc(72px + var(--sh-s-4));
+  }
+}
+
+.gw-contact .contact-info ul {
+  list-style: none;
+  margin: var(--sh-s-3) 0 0;
+  padding: 0;
+}
+
+.gw-contact .contact-info li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-block: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-contact .contact-info li:last-child {
+  border-block-end: 0;
+}
+
+/* ---------- Help ---------------------------------------------------------------------- */
+
+.gw-help .help-search {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-4);
+  margin-block-end: var(--sh-s-4);
+}
+
+.gw-help .search-input-wrap input {
+  inline-size: 100%;
+  min-block-size: var(--sh-target);
+  padding-inline: 12px;
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  font-size: 1rem;
+}
+
+.gw-help .help-account-callout {
+  border-inline-start: 3px solid var(--sh-ink);
+  padding: var(--sh-s-4);
+  background: var(--sh-chalk-2);
+  border-radius: var(--sh-r-1);
+  margin-block-end: var(--sh-s-5);
+}
+
+.gw-help .help-result-count {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+  padding-block-end: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  margin-block-end: var(--sh-s-4);
+}
+
+[lang='ar'] .gw-help .help-result-count {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-help .button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-3);
+  margin-block-start: var(--sh-s-3);
+}

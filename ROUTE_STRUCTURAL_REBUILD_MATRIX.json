@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:39:34.010Z",
+  "generatedAt": "2026-08-03T16:42:23.358Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 29,
-    "partially-rebuilt": 0,
-    "not-rebuilt": 7,
+    "fully-rebuilt": 30,
+    "partially-rebuilt": 1,
+    "not-rebuilt": 5,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 22,
-    "partially-rebuilt": 0,
-    "not-rebuilt": 7
+    "fully-rebuilt": 23,
+    "partially-rebuilt": 1,
+    "not-rebuilt": 5
   },
   "routes": [
     {
@@ -299,14 +299,15 @@
       "component": "Contact",
       "file": "src/pages/ContactPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 206,
+      "linesRemoved": 31,
+      "compositionMarkers": [
+        "RouteMasthead"
+      ],
       "legacyWrappers": [
-        "PageHero",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/faq",
@@ -330,13 +331,13 @@
       "component": "Help",
       "file": "src/pages/HelpPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero"
+      "linesAdded": 12,
+      "linesRemoved": 9,
+      "compositionMarkers": [
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "partially-rebuilt"
     },
     {
       "route": "/operations/*",
