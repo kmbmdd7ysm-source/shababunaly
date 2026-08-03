@@ -9,13 +9,18 @@ import QuantitySelector from '../components/common/QuantitySelector';
 import EmptyState from '../components/common/EmptyState';
 import '../styles/ledger.css';
 import { useCatalog } from '../context/CatalogContext';
+import { categories } from '../data/categories';
 import Icon from '../components/icons/Icon';
 
 export default function CartPage() {
-  const { getProduct } = useCatalog();
+  const { getProduct, products } = useCatalog();
   const { t, pick, lang } = useLanguage();
-  const { format, usdToLydRate } = useCommerce();
+  const { format, usdToLydRate, countryCode } = useCommerce();
   const { items, updateQuantity, removeItem, subtotal, hasPhysical } = useCart();
+
+  // Ready-to-ship is a Libya-only department; the empty-bag gates honour the
+  // same rule the catalogue does.
+  const isLibya = countryCode === 'LY';
 
   const freeShipping = getLibyaFreeShippingProgress(subtotal, usdToLydRate);
   const showFreeShip = hasPhysical;
@@ -47,12 +52,37 @@ export default function CartPage() {
           </div>
 
           {items.length === 0 ? (
+            /* An empty bag was a small dashed box adrift in a tall white field
+               with the footer crowding in — a dead end at the exact moment the
+               visitor is most likely to leave. It is now a departure board:
+               the statement, then every department as a numbered way back into
+               the catalogue with its live count. Same copy, same primary
+               action, but the screen does something. */
             <div className="gw-ledger-empty">
-              <EmptyState
-                message={t.cart.empty}
-                hint={t.cart.emptyHint}
-                action={{ label: t.cart.startShopping, to: '/shop' }}
-              />
+              <div className="gw-ledger-empty-say">
+                <p className="gw-ledger-empty-line">{t.cart.empty}</p>
+                <p className="gw-ledger-empty-hint">{t.cart.emptyHint}</p>
+                <Link to="/shop" className="gw-btn gw-btn--primary">
+                  {t.cart.startShopping}
+                </Link>
+              </div>
+              <ul className="gw-ledger-gates">
+                {categories
+                  .filter((entry) => isLibya || entry.slug !== 'ready-to-ship')
+                  .map((entry, position) => (
+                    <li key={entry.slug}>
+                      <Link to={`/shop/${entry.slug}`}>
+                        <span className="gw-ledger-gate-num" aria-hidden="true">
+                          {String(position + 1).padStart(2, '0')}
+                        </span>
+                        <span className="gw-ledger-gate-name">{pick(entry.name)}</span>
+                        <span className="gw-ledger-gate-count gw-isolate-ltr">
+                          {products.filter((item) => item.category === entry.slug).length}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
             </div>
           ) : (
             <div className="gw-ledger-body">

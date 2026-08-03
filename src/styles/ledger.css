@@ -371,3 +371,97 @@
     padding: var(--sh-s-4);
   }
 }
+
+/* ---------- The empty bag as a departure board -------------------------------
+   An empty bag used to be a small dashed box adrift in a tall white field with
+   the footer crowding in — a dead end at the exact moment a visitor is most
+   likely to leave. It is now a way back in. */
+
+.gw-ledger-empty {
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  min-block-size: 56svh;
+  padding-block: clamp(32px, 6vh, 72px);
+}
+
+@media (min-width: 900px) {
+  .gw-ledger-empty {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.gw-ledger-empty-line {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3.2rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 1;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-ledger-empty-line {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.3;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-ledger-empty-hint {
+  margin: var(--sh-s-3) 0 var(--sh-s-4);
+  max-inline-size: 40ch;
+  color: var(--sh-ink-70);
+}
+
+.gw-ledger-gates {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--sh-rule-strong);
+}
+
+.gw-ledger-gates a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  min-block-size: var(--sh-target);
+  padding-block: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  color: var(--sh-ink);
+  text-decoration: none;
+}
+
+.gw-ledger-gates a:hover {
+  border-block-end-color: var(--sh-ink);
+}
+
+.gw-ledger-gate-num,
+.gw-ledger-gate-count {
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-ledger-gate-name {
+  font-family: var(--sh-font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-stretch: 96%;
+  text-transform: uppercase;
+  letter-spacing: var(--sh-tr-title);
+}
+
+[lang='ar'] .gw-ledger-gate-name {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  text-transform: none;
+  letter-spacing: var(--sh-tr-ar);
+}
