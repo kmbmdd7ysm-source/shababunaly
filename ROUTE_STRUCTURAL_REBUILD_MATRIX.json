@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T09:04:01.021Z",
+  "generatedAt": "2026-08-03T09:04:35.857Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 15,
-    "partially-rebuilt": 3,
+    "fully-rebuilt": 18,
+    "partially-rebuilt": 0,
     "not-rebuilt": 18,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 9,
-    "partially-rebuilt": 3,
+    "fully-rebuilt": 12,
+    "partially-rebuilt": 0,
     "not-rebuilt": 17
   },
   "routes": [
@@ -311,8 +311,8 @@
       "component": "Faq",
       "file": "src/pages/FaqPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 56,
+      "linesRemoved": 27,
       "compositionMarkers": [
         "gw-terminal",
         "RouteMasthead",
@@ -321,7 +321,7 @@
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "partially-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/help",
@@ -352,8 +352,8 @@
       "component": "SizeGuide",
       "file": "src/pages/SizeGuidePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 48,
+      "linesRemoved": 34,
       "compositionMarkers": [
         "RouteMasthead",
         "Dossier"
@@ -361,7 +361,7 @@
       "legacyWrappers": [
         "PageHero"
       ],
-      "status": "partially-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/search",
@@ -462,13 +462,13 @@
       "component": "Offline",
       "file": "src/pages/OfflinePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 39,
+      "linesRemoved": 3,
       "compositionMarkers": [
         "gw-terminal"
       ],
       "legacyWrappers": [],
-      "status": "partially-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/lab/home",
