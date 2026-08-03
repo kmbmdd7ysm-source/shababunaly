@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
 import StudioStage from '../components/custom/StudioStage';
 import ProductionDesignEditor from '../components/custom/ProductionDesignEditor';
