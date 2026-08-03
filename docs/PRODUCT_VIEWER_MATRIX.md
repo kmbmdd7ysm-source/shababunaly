@@ -8,12 +8,12 @@ and a single image is never presented as a rotation.
 | --- | --- | ---: |
 | **A** | Real-time 3D — verified optimised model | **0** |
 | **B** | True 360 spinset — ≥ 24 real frames | **0** |
-| **C** | Premium multi-angle — ≥ 2 verified images | **1** |
-| **D** | Asset-blocked — one image or placeholder art | **68** |
+| **C** | Premium multi-angle — ≥ 2 verified images | **23** |
+| **D** | Asset-blocked — one image or placeholder art | **46** |
 
 Level D is two different problems with very different costs:
 
-- **24** products have exactly one *real* photograph. They need additional angles only.
+- **2** products have exactly one *real* photograph. They need additional angles only.
 - **44** products have no photography at all and are showing purpose-built concept artwork.
   They need a first shoot before any viewer tier is possible.
 
@@ -67,30 +67,30 @@ Target distribution once assets land: **34** at Level A, **35** at Level B.
 | s064 | Basketball Ball Cart | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
 | s066 | Professional Court Padding Set | equipment | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
 | s065 | Electric Ball Pump Kit | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p014 | LHA Win Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p015 | LHA Troops Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p016 | LHA Hoopers Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p017 | LHA Hoopers Long Sleeve | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
+| lha-p014 | LHA Win Tee | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p015 | LHA Troops Tee | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p016 | LHA Hoopers Tee | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p017 | LHA Hoopers Long Sleeve | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
 | lha-p018 | LHA Court Shorts | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p019 | LHA Icon Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p020 | LHA Academy Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p021 | LHA Pro Tank | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p022 | LHA Pro Logo Tank | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p023 | LHA Pro Long Sleeve | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p024 | LHA Pro Tights | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p025 | LHA Pro One-Leg Tights | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p026 | LHA Pro Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p027 | LHA Elite Pack | accessories | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p028 | LHA Academy Pack | accessories | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p030 | LHA Pro Shorts | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p031 | LHA Court Socks | accessories | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
+| lha-p019 | LHA Icon Tee | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p020 | LHA Academy Tee | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p021 | LHA Pro Tank | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p022 | LHA Pro Logo Tank | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p023 | LHA Pro Long Sleeve | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p024 | LHA Pro Tights | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p025 | LHA Pro One-Leg Tights | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p026 | LHA Pro Tee | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p027 | LHA Elite Pack | accessories | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p028 | LHA Academy Pack | accessories | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p030 | LHA Pro Shorts | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p031 | LHA Court Socks | accessories | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
 | lha-p029 | LHA Own The Game Fleece Set | clothing | 4 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
-| lha-p032 | LHA Own The Game Tee | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p033 | LHA Own The Game Sleeveless Top | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p034 | LHA Own The Game Zip Hoodie | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p035 | LHA Own The Game Crewneck | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p036 | LHA Own The Game Fleece Shorts | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| lha-p037 | LHA Own The Game Pullover Hoodie | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
+| lha-p032 | LHA Own The Game Tee | clothing | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p033 | LHA Own The Game Sleeveless Top | clothing | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p034 | LHA Own The Game Zip Hoodie | clothing | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p035 | LHA Own The Game Crewneck | clothing | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p036 | LHA Own The Game Fleece Shorts | clothing | 2 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
+| lha-p037 | LHA Own The Game Pullover Hoodie | clothing | 3 | 0 | **C** | B | 24 more turntable frames for a true 360 | medium — turntable rig session, 24–36 frames, optimisation | P6 — spin capture |
 | lha-p038 | LHA Own The Game Fleece Joggers | clothing | 1 | 0 | **D** | B | only one verified image | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
 
 ## What unlocks each tier

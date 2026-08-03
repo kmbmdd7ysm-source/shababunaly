@@ -36,6 +36,37 @@ describe('product-viewing tier resolution', () => {
     expect(resolveProductViewer(placeholderOnly)).toMatchObject({ tier: 'D', placeholder: true });
   });
 
+  test('colour-variant photographs count as verified angles', () => {
+    // Regression: the product page renders one selectable angle per colour, so
+    // ignoring colours here made the tier note claim "One verified photograph"
+    // on a page visibly showing two.
+    const twoColours = {
+      ...base,
+      image: '/images/products/tee-black.webp',
+      colors: [
+        { key: 'black', image: '/images/products/tee-black.webp' },
+        { key: 'white', image: '/images/products/tee-white.webp' },
+      ],
+    };
+    expect(verifiedImages(twoColours)).toEqual([
+      '/images/products/tee-black.webp',
+      '/images/products/tee-white.webp',
+    ]);
+    expect(resolveProductViewer(twoColours).tier).toBe('C');
+
+    // A single colour that merely repeats the main image is still one image.
+    const oneColour = {
+      ...base,
+      image: '/images/products/tee-black.webp',
+      colors: [{ key: 'black', image: '/images/products/tee-black.webp' }],
+    };
+    expect(resolveProductViewer(oneColour).tier).toBe('D');
+
+    // A colour entry without an image must not throw or inflate the count.
+    const noImage = { ...base, image: '/a.webp', colors: [{ key: 'black' }, null] };
+    expect(verifiedImages(noImage)).toEqual(['/a.webp']);
+  });
+
   test('duplicate images are collapsed and missing input is tolerated', () => {
     expect(verifiedImages()).toEqual([]);
     expect(spinFrames()).toEqual([]);

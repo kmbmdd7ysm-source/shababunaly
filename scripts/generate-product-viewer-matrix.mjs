@@ -21,7 +21,17 @@ const placeholder = (src) => String(src || '').startsWith('/images/catalog/');
 
 /** Every distinct, verified (non-placeholder) image a product owns. */
 function realImages(product) {
-  const all = [product.image, product.hoverImage, ...(product.gallery || [])].filter(Boolean);
+  // Same rule as the runtime resolver in src/utils/productViewerTier.js:
+  // colour variants carry their own verified photographs and count as angles.
+  const colourImages = (product.colors || [])
+    .map((colour) => colour && colour.image)
+    .filter(Boolean);
+  const all = [
+    product.image,
+    product.hoverImage,
+    ...colourImages,
+    ...(product.gallery || []),
+  ].filter(Boolean);
   return [...new Set(all)].filter((src) => !placeholder(src));
 }
 

@@ -28,7 +28,16 @@ export const isPlaceholderMedia = (src) => String(src || '').startsWith('/images
 export function verifiedImages(product) {
   const source = product || {};
   const gallery = Array.isArray(source.gallery) ? source.gallery : [];
-  const all = [source.image, source.hoverImage, ...gallery].filter(Boolean).map(String);
+  // Colour variants carry their own photographs, and the product page already
+  // renders them as selectable angles. Omitting them here made the tier note
+  // claim "One verified photograph" on a page showing two, which is precisely
+  // the misrepresentation this module exists to prevent.
+  const colourImages = Array.isArray(source.colors)
+    ? source.colors.map((colour) => colour && colour.image).filter(Boolean)
+    : [];
+  const all = [source.image, source.hoverImage, ...colourImages, ...gallery]
+    .filter(Boolean)
+    .map(String);
   const unique = [];
   for (const src of all) {
     if (!unique.includes(src) && !isPlaceholderMedia(src)) unique.push(src);
