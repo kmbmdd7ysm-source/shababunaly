@@ -1,9 +1,11 @@
 import Icon from '../icons/Icon';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { onPwaEvent, promptInstall, applyPwaUpdate, isStandalone } from '../../utils/registerPwa';
 export default function PwaPrompt() {
   const { pick } = useLanguage();
+  // Guards against any possibility of a reload loop.
+  const reloadedRef = useRef(false);
   const [install, setInstall] = useState(false),
     [update, setUpdate] = useState(false),
     [online, setOnline] = useState(navigator.onLine);
@@ -12,8 +14,15 @@ export default function PwaPrompt() {
       onPwaEvent((e) => {
         if (e.type === 'install-available') setInstall(true);
         if (e.type === 'update-ready') setUpdate(true);
-        if (e.type === 'controller-changed' && !document.querySelector('form :focus'))
+        // Only a deliberate update may reload, and only once. A `first-control`
+        // event means the worker simply took over an already-correct page, so
+        // reloading would discard cart, Customize and form state for nothing.
+        if (e.type === 'controller-changed' && e.reason === 'update') {
+          if (document.querySelector('form :focus')) return;
+          if (reloadedRef.current) return;
+          reloadedRef.current = true;
           location.reload();
+        }
       }),
     [],
   );
@@ -41,7 +50,10 @@ export default function PwaPrompt() {
       {install && !isStandalone() && (
         <div className="pwa-banner">
           <span>
-            {pick({ en: 'Install Shababuna for faster access.', ar: 'ثبّت تطبيق شبابنا للوصول بشكل أسرع.' })}
+            {pick({
+              en: 'Install Shababuna for faster access.',
+              ar: 'ثبّت تطبيق شبابنا للوصول بشكل أسرع.',
+            })}
           </span>
           <button
             onClick={async () => {
