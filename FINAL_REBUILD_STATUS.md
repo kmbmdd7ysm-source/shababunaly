@@ -10,10 +10,10 @@ produced mechanically from the real router by `scripts/generate-route-ledger.mjs
 
 ## The honest number
 
-> **15 of 29 page components structurally rebuilt.**
-> **22 of 36 real routes** (5 further routes are `<Navigate>` redirects with no page).
+> **19 of 29 page components structurally rebuilt.**
+> **26 of 36 real routes** (5 further routes are `<Navigate>` redirects with no page).
 
-**This project is not finished.** 14 page components still carry their original
+**This project is not finished.** 10 page components still carry their original
 composition.
 
 ## How "rebuilt" is decided — mechanically, not by self-report
@@ -55,12 +55,9 @@ the detector hardened.
 | `OfflinePage`        | `/offline`        | terminal state                                                                                                  |
 | `LabHomePage`        | `/lab/home`       | prototype (Phase 1)                                                                                             |
 
-## Not rebuilt (14 components)
+## Not rebuilt (10 components)
 
-`AccountPage` · `TeamsWholesalePage` · `SpecialRequestPage` · `TeamLockerPage` ·
-`DesignSharePage` · `LhaStorePage` · `OurWorkPage` · `ContactPage` ·
-`HelpPage` · `SearchPage` · `ComparePage` · `OrderTrackingPage` ·
-`OrderDetailPage` · `OperationsPage`
+`AccountPage` · `ContactPage` · `DesignSharePage` · `HelpPage` · `OperationsPage` · `OrderDetailPage` · `OrderTrackingPage` · `SpecialRequestPage` · `TeamLockerPage` · `TeamsWholesalePage`
 
 These carry correct typography, surfaces, spacing, tokens and accessibility from
 the bridge layers, and **all pass axe with zero violations** — but their section
@@ -98,12 +95,23 @@ Phase 4, but the page composition around it is original.
 
 ## Defects found and fixed while rebuilding
 
-1. **Focus never returned to the menu trigger** — hiding a panel blurs its
-   focused child and the browser resets to `<body>` in the same style recalc.
-   Deferred to `requestAnimationFrame`. Present on `main`.
-2. **`PwaPrompt` reloads on the SW's first `controllerchange`** — on the
-   visitor's very first pointerdown. Proven pre-existing by building `main`.
-   Not changed (service-worker behaviour); the review harness neutralises it.
+1. **Focus never returned to the menu trigger** — **FIXED.** Hiding a panel
+   blurs its focused child and the browser resets to `<body>` in the same style
+   recalc, so the synchronous `focus()` was always overwritten. Deferred to the
+   next frame. **7 regression tests** cover Escape, the close button, the scrim,
+   the trap wrapping at both ends, `aria-hidden`, and Arabic. Verified in a real
+   browser in both locales.
+2. **`PwaPrompt` reloaded on the SW's first `controllerchange`** — **FIXED at
+   the root cause.** `controllerchange` fires both when a worker first claims an
+   uncontrolled page and when a genuine update replaces the active one; the code
+   treated them identically, so the visitor's first tap reloaded the page and
+   discarded cart, Customize and form state. Now the event is classified using
+   whether a controller existed at registration **and** whether the swap was
+   deliberately requested through `applyPwaUpdate()`. Reload happens only on
+   `reason === 'update'`, at most once (ref-guarded), and never while a form
+   field has focus — a loop is structurally impossible. **8 regression tests.**
+   Verified in a real browser with the **live service worker, unstubbed**: first
+   tap no longer reloads, in both locales.
 3. **A release gate was broken by formatting and I pushed through it.**
    Prettier wrapped the `paymentPlan` ternary, breaking
    `run-core-smoke-tests.mjs`. I saw `verify:source=1` and committed anyway.
