@@ -364,327 +364,370 @@ export default function AccountPage() {
     return (
       <>
         <Seo title="Account" path="/account" noindex />
-        {/* THE GATE — authentication is a single focused task, so it gets a
-            centred plate on a measured ground rather than a full page section
-            wrapping a container. Nothing competes with the form. */}
-        <section className="gw-gate">
-          <form className="gw-gate-form" onSubmit={submit} noValidate>
-            <p className="gw-spec">SHABABUNA ACCOUNT</p>
-            <h1 className="gw-gate-title">
-              {pick({
-                en:
-                  mode === 'signup'
-                    ? 'Create account'
-                    : mode === 'reset'
-                      ? 'Reset password'
-                      : mode === 'reset-password'
-                        ? 'Choose a new password'
-                        : 'Sign in',
-                ar:
-                  mode === 'signup'
-                    ? 'إنشاء حساب'
-                    : mode === 'reset'
-                      ? 'إعادة تعيين كلمة المرور'
-                      : mode === 'reset-password'
-                        ? 'اختر كلمة مرور جديدة'
-                        : 'تسجيل الدخول',
+        {/* THE GATE — a two-panel entrance, not a card adrift in a field.
+            The previous version floated a small plate in the middle of an empty
+            page with the footer crowding in underneath it: the most important
+            single-task screen on the site read as the least considered.
+
+            The gate now fills the viewport. A night panel carries the identity
+            and states plainly what an account is FOR — read from the same
+            capability list the account itself exposes, so it makes no promise
+            the product does not keep. The form panel holds nothing but the
+            task. */}
+        <div className="gw-gatewall">
+          <aside className="gw-gatewall-identity">
+            <img
+              className="gw-gatewall-mark"
+              src={pick({
+                en: '/brand/shababuna-full-en-white.png',
+                ar: '/brand/shababuna-full-ar-white.png',
               })}
-            </h1>
-            {!auth.configured && (
-              <p className="form-notice">
+              alt=""
+              width="240"
+              height="64"
+              loading="eager"
+              decoding="async"
+            />
+            <p className="gw-spec">{pick({ en: 'Built different.', ar: 'مختلفون.' })}</p>
+            <ol className="gw-gatewall-list">
+              {[
+                { en: 'Orders, tracking and delivery status', ar: 'الطلبات والتتبع وحالة التسليم' },
+                {
+                  en: 'Saved designs and approved proofs',
+                  ar: 'التصاميم المحفوظة والبروفات المعتمدة',
+                },
+                {
+                  en: 'Returns, refunds and payment status',
+                  ar: 'المرتجعات والاستردادات وحالة الدفع',
+                },
+                { en: 'Team and organization access', ar: 'الوصول إلى الفريق والمؤسسة' },
+              ].map((item, position) => (
+                <li key={item.en}>
+                  <span aria-hidden="true">{String(position + 1).padStart(2, '0')}</span>
+                  {pick(item)}
+                </li>
+              ))}
+            </ol>
+          </aside>
+          <section className="gw-gate">
+            <form className="gw-gate-form" onSubmit={submit} noValidate>
+              <p className="gw-spec">SHABABUNA ACCOUNT</p>
+              <h1 className="gw-gate-title">
                 {pick({
-                  en: 'Cloud accounts require Supabase configuration. Guest shopping remains available.',
-                  ar: 'تحتاج الحسابات السحابية إلى إعداد Supabase. يظل التسوق كضيف متاحًا.',
-                })}
-              </p>
-            )}
-            {mode === 'signup' && (
-              <>
-                <fieldset className="account-type-choice">
-                  <legend>{pick({ en: 'Choose account type', ar: 'اختر نوع الحساب' })}</legend>
-                  <div className="account-type-choice-grid">
-                    <button
-                      type="button"
-                      className={accountType === 'customer' ? 'active' : ''}
-                      aria-pressed={accountType === 'customer'}
-                      onClick={() => {
-                        setAccountType('customer');
-                        setMsg('');
-                      }}
-                    >
-                      <strong>{pick({ en: 'Personal account', ar: 'حساب فردي' })}</strong>
-                      <span>
-                        {pick({
-                          en: 'Shop products, save favorites and track orders.',
-                          ar: 'تسوق المنتجات واحفظ المفضلة وتابع الطلبات.',
-                        })}
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      className={accountType === 'organization' ? 'active' : ''}
-                      aria-pressed={accountType === 'organization'}
-                      onClick={() => {
-                        setAccountType('organization');
-                        setMsg('');
-                      }}
-                    >
-                      <strong>
-                        {pick({ en: 'Team & business account', ar: 'حساب فريق أو مؤسسة' })}
-                      </strong>
-                      <span>
-                        {pick({
-                          en: 'For clubs, academies, federations, wholesale and distributors.',
-                          ar: 'للأندية والأكاديميات والاتحادات والجملة والموزعين.',
-                        })}
-                      </span>
-                    </button>
-                  </div>
-                </fieldset>
-                {accountType === 'organization' && (
-                  <div className="organization-signup-fields">
-                    <label>
-                      {pick({ en: 'Organization name', ar: 'اسم المؤسسة' })}
-                      <input
-                        ref={organizationRef}
-                        autoComplete="organization"
-                        required
-                        value={organizationName}
-                        onChange={(event) => setOrganizationName(event.target.value)}
-                      />
-                    </label>
-                    <label>
-                      {pick({ en: 'Organization type', ar: 'نوع المؤسسة' })}
-                      <select
-                        value={organizationType}
-                        onChange={(event) => setOrganizationType(event.target.value)}
-                      >
-                        {ORGANIZATION_TYPES.map((item) => (
-                          <option key={item.value} value={item.value}>
-                            {pick({ en: item.en, ar: item.ar })}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  </div>
-                )}
-                <label>
-                  {pick({ en: 'Full name', ar: 'الاسم الكامل' })}
-                  <input
-                    ref={nameRef}
-                    autoComplete="name"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                  />
-                </label>
-                <label>
-                  {pick({ en: 'Profile photo (optional)', ar: 'الصورة الشخصية (اختيارية)' })}
-                  <input
-                    ref={photoRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const f = e.target.files?.[0];
-                      if (!f) return;
-                      const result = await validateProfileImage(f);
-                      if (!result.valid) {
-                        const message =
-                          result.reason === 'signature'
-                            ? pick({
-                                en: 'This file is not a valid image.',
-                                ar: 'هذا الملف ليس صورة صالحة.',
-                              })
-                            : pick({
-                                en: 'Choose a JPG, PNG, or WebP image.',
-                                ar: 'اختر صورة بصيغة JPG أو PNG أو WebP.',
-                              });
-                        setMsg(message);
-                        e.target.value = '';
-                        focusField(photoRef);
-                        return;
-                      }
-                      if (photoPreview) URL.revokeObjectURL(photoPreview);
-                      setPhotoPreview(URL.createObjectURL(f));
-                      setMsg('');
-                    }}
-                  />
-                </label>
-                {photoPreview && (
-                  <div className="profile-photo-preview">
-                    <img
-                      src={photoPreview}
-                      alt={pick({ en: 'Profile preview', ar: 'معاينة الصورة الشخصية' })}
-                      width="320"
-                      height="320"
-                      decoding="async"
-                    />
-                    <button type="button" onClick={clearPhotoPreview}>
-                      {pick({ en: 'Remove', ar: 'إزالة' })}
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-            {mode !== 'reset-password' && (
-              <label>
-                {pick({ en: 'Email', ar: 'البريد الإلكتروني' })}
-                <input
-                  ref={emailRef}
-                  type="email"
-                  dir="ltr"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </label>
-            )}
-            {mode !== 'reset' && (
-              <label>
-                {pick({ en: 'Password', ar: 'كلمة المرور' })}
-                <span className="password-field">
-                  <input
-                    ref={passwordRef}
-                    type={show ? 'text' : 'password'}
-                    dir="ltr"
-                    minLength="8"
-                    autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShow((v) => !v)}
-                    aria-label={pick(
-                      show
-                        ? { en: 'Hide password', ar: 'إخفاء كلمة المرور' }
-                        : { en: 'Show password', ar: 'إظهار كلمة المرور' },
-                    )}
-                  >
-                    {pick(show ? { en: 'Hide', ar: 'إخفاء' } : { en: 'Show', ar: 'إظهار' })}
-                  </button>
-                </span>
-              </label>
-            )}
-            {mode === 'signup' && (
-              <label>
-                {pick({ en: 'Confirm new password', ar: 'تأكيد كلمة المرور الجديدة' })}
-                <input
-                  ref={confirmRef}
-                  type={show ? 'text' : 'password'}
-                  dir="ltr"
-                  autoComplete="new-password"
-                  required
-                  minLength="8"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </label>
-            )}
-            <button className="btn-primary" type="submit" disabled={busy || !auth.configured}>
-              {busy
-                ? pick({ en: 'Please wait…', ar: 'يرجى الانتظار…' })
-                : pick(
+                  en:
                     mode === 'signup'
-                      ? { en: 'Create Account', ar: 'إنشاء الحساب' }
-                      : { en: 'Continue', ar: 'متابعة' },
-                  )}
-            </button>
-            {msg && (
-              <p id="account-error-summary" role="alert" aria-live="assertive">
-                {msg}
-              </p>
-            )}
-            {verificationEmail && auth.cloudConfigured && !auth.user && (
-              <div className="account-verification-panel" role="status" aria-live="polite">
-                <strong>{pick({ en: 'Verify your email', ar: 'أكد بريدك الإلكتروني' })}</strong>
-                <p>
+                      ? 'Create account'
+                      : mode === 'reset'
+                        ? 'Reset password'
+                        : mode === 'reset-password'
+                          ? 'Choose a new password'
+                          : 'Sign in',
+                  ar:
+                    mode === 'signup'
+                      ? 'إنشاء حساب'
+                      : mode === 'reset'
+                        ? 'إعادة تعيين كلمة المرور'
+                        : mode === 'reset-password'
+                          ? 'اختر كلمة مرور جديدة'
+                          : 'تسجيل الدخول',
+                })}
+              </h1>
+              {!auth.configured && (
+                <p className="form-notice">
                   {pick({
-                    en: `We sent a verification link to ${verificationEmail}. Open it, then you can sign in on any device.`,
-                    ar: `أرسلنا رابط التأكيد إلى ${verificationEmail}. افتحه وبعدها تقدر تسجل الدخول من أي جهاز.`,
+                    en: 'Cloud accounts require Supabase configuration. Guest shopping remains available.',
+                    ar: 'تحتاج الحسابات السحابية إلى إعداد Supabase. يظل التسوق كضيف متاحًا.',
                   })}
                 </p>
-                <div className="account-verification-actions">
+              )}
+              {mode === 'signup' && (
+                <>
+                  <fieldset className="account-type-choice">
+                    <legend>{pick({ en: 'Choose account type', ar: 'اختر نوع الحساب' })}</legend>
+                    <div className="account-type-choice-grid">
+                      <button
+                        type="button"
+                        className={accountType === 'customer' ? 'active' : ''}
+                        aria-pressed={accountType === 'customer'}
+                        onClick={() => {
+                          setAccountType('customer');
+                          setMsg('');
+                        }}
+                      >
+                        <strong>{pick({ en: 'Personal account', ar: 'حساب فردي' })}</strong>
+                        <span>
+                          {pick({
+                            en: 'Shop products, save favorites and track orders.',
+                            ar: 'تسوق المنتجات واحفظ المفضلة وتابع الطلبات.',
+                          })}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        className={accountType === 'organization' ? 'active' : ''}
+                        aria-pressed={accountType === 'organization'}
+                        onClick={() => {
+                          setAccountType('organization');
+                          setMsg('');
+                        }}
+                      >
+                        <strong>
+                          {pick({ en: 'Team & business account', ar: 'حساب فريق أو مؤسسة' })}
+                        </strong>
+                        <span>
+                          {pick({
+                            en: 'For clubs, academies, federations, wholesale and distributors.',
+                            ar: 'للأندية والأكاديميات والاتحادات والجملة والموزعين.',
+                          })}
+                        </span>
+                      </button>
+                    </div>
+                  </fieldset>
+                  {accountType === 'organization' && (
+                    <div className="organization-signup-fields">
+                      <label>
+                        {pick({ en: 'Organization name', ar: 'اسم المؤسسة' })}
+                        <input
+                          ref={organizationRef}
+                          autoComplete="organization"
+                          required
+                          value={organizationName}
+                          onChange={(event) => setOrganizationName(event.target.value)}
+                        />
+                      </label>
+                      <label>
+                        {pick({ en: 'Organization type', ar: 'نوع المؤسسة' })}
+                        <select
+                          value={organizationType}
+                          onChange={(event) => setOrganizationType(event.target.value)}
+                        >
+                          {ORGANIZATION_TYPES.map((item) => (
+                            <option key={item.value} value={item.value}>
+                              {pick({ en: item.en, ar: item.ar })}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
+                  )}
+                  <label>
+                    {pick({ en: 'Full name', ar: 'الاسم الكامل' })}
+                    <input
+                      ref={nameRef}
+                      autoComplete="name"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    {pick({ en: 'Profile photo (optional)', ar: 'الصورة الشخصية (اختيارية)' })}
+                    <input
+                      ref={photoRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (!f) return;
+                        const result = await validateProfileImage(f);
+                        if (!result.valid) {
+                          const message =
+                            result.reason === 'signature'
+                              ? pick({
+                                  en: 'This file is not a valid image.',
+                                  ar: 'هذا الملف ليس صورة صالحة.',
+                                })
+                              : pick({
+                                  en: 'Choose a JPG, PNG, or WebP image.',
+                                  ar: 'اختر صورة بصيغة JPG أو PNG أو WebP.',
+                                });
+                          setMsg(message);
+                          e.target.value = '';
+                          focusField(photoRef);
+                          return;
+                        }
+                        if (photoPreview) URL.revokeObjectURL(photoPreview);
+                        setPhotoPreview(URL.createObjectURL(f));
+                        setMsg('');
+                      }}
+                    />
+                  </label>
+                  {photoPreview && (
+                    <div className="profile-photo-preview">
+                      <img
+                        src={photoPreview}
+                        alt={pick({ en: 'Profile preview', ar: 'معاينة الصورة الشخصية' })}
+                        width="320"
+                        height="320"
+                        decoding="async"
+                      />
+                      <button type="button" onClick={clearPhotoPreview}>
+                        {pick({ en: 'Remove', ar: 'إزالة' })}
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+              {mode !== 'reset-password' && (
+                <label>
+                  {pick({ en: 'Email', ar: 'البريد الإلكتروني' })}
+                  <input
+                    ref={emailRef}
+                    type="email"
+                    dir="ltr"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </label>
+              )}
+              {mode !== 'reset' && (
+                <label>
+                  {pick({ en: 'Password', ar: 'كلمة المرور' })}
+                  <span className="password-field">
+                    <input
+                      ref={passwordRef}
+                      type={show ? 'text' : 'password'}
+                      dir="ltr"
+                      minLength="8"
+                      autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShow((v) => !v)}
+                      aria-label={pick(
+                        show
+                          ? { en: 'Hide password', ar: 'إخفاء كلمة المرور' }
+                          : { en: 'Show password', ar: 'إظهار كلمة المرور' },
+                      )}
+                    >
+                      {pick(show ? { en: 'Hide', ar: 'إخفاء' } : { en: 'Show', ar: 'إظهار' })}
+                    </button>
+                  </span>
+                </label>
+              )}
+              {mode === 'signup' && (
+                <label>
+                  {pick({ en: 'Confirm new password', ar: 'تأكيد كلمة المرور الجديدة' })}
+                  <input
+                    ref={confirmRef}
+                    type={show ? 'text' : 'password'}
+                    dir="ltr"
+                    autoComplete="new-password"
+                    required
+                    minLength="8"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </label>
+              )}
+              <button className="btn-primary" type="submit" disabled={busy || !auth.configured}>
+                {busy
+                  ? pick({ en: 'Please wait…', ar: 'يرجى الانتظار…' })
+                  : pick(
+                      mode === 'signup'
+                        ? { en: 'Create Account', ar: 'إنشاء الحساب' }
+                        : { en: 'Continue', ar: 'متابعة' },
+                    )}
+              </button>
+              {msg && (
+                <p id="account-error-summary" role="alert" aria-live="assertive">
+                  {msg}
+                </p>
+              )}
+              {verificationEmail && auth.cloudConfigured && !auth.user && (
+                <div className="account-verification-panel" role="status" aria-live="polite">
+                  <strong>{pick({ en: 'Verify your email', ar: 'أكد بريدك الإلكتروني' })}</strong>
+                  <p>
+                    {pick({
+                      en: `We sent a verification link to ${verificationEmail}. Open it, then you can sign in on any device.`,
+                      ar: `أرسلنا رابط التأكيد إلى ${verificationEmail}. افتحه وبعدها تقدر تسجل الدخول من أي جهاز.`,
+                    })}
+                  </p>
+                  <div className="account-verification-actions">
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      disabled={busy}
+                      onClick={async () => {
+                        setBusy(true);
+                        try {
+                          const result = await auth.resendVerification(verificationEmail);
+                          if (result?.error) throw result.error;
+                          setMsg(
+                            pick({
+                              en: 'Verification email sent again. Check your inbox and spam folder.',
+                              ar: 'تم إرسال رابط التأكيد من جديد. راجع الوارد والرسائل غير المرغوب فيها.',
+                            }),
+                          );
+                        } catch (error) {
+                          setMsg(errorText(error, lang));
+                        } finally {
+                          setBusy(false);
+                        }
+                      }}
+                    >
+                      {pick({ en: 'Resend verification', ar: 'إعادة إرسال التأكيد' })}
+                    </button>
+                    <button
+                      type="button"
+                      className="account-verification-signin"
+                      onClick={() => {
+                        setMode('signin');
+                        setEmail(verificationEmail);
+                        setPassword('');
+                      }}
+                    >
+                      {pick({ en: 'Go to sign in', ar: 'الذهاب لتسجيل الدخول' })}
+                    </button>
+                  </div>
+                </div>
+              )}
+              <div className="account-switch">
+                {mode !== 'signin' && (
                   <button
                     type="button"
-                    className="btn-secondary"
-                    disabled={busy}
-                    onClick={async () => {
-                      setBusy(true);
-                      try {
-                        const result = await auth.resendVerification(verificationEmail);
-                        if (result?.error) throw result.error;
-                        setMsg(
-                          pick({
-                            en: 'Verification email sent again. Check your inbox and spam folder.',
-                            ar: 'تم إرسال رابط التأكيد من جديد. راجع الوارد والرسائل غير المرغوب فيها.',
-                          }),
-                        );
-                      } catch (error) {
-                        setMsg(errorText(error, lang));
-                      } finally {
-                        setBusy(false);
-                      }
-                    }}
-                  >
-                    {pick({ en: 'Resend verification', ar: 'إعادة إرسال التأكيد' })}
-                  </button>
-                  <button
-                    type="button"
-                    className="account-verification-signin"
                     onClick={() => {
                       setMode('signin');
-                      setEmail(verificationEmail);
-                      setPassword('');
+                      setVerificationEmail('');
+                      setMsg('');
                     }}
                   >
-                    {pick({ en: 'Go to sign in', ar: 'الذهاب لتسجيل الدخول' })}
+                    {pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}
                   </button>
-                </div>
+                )}
+                {mode !== 'signup' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode('signup');
+                      setVerificationEmail('');
+                      setMsg('');
+                    }}
+                  >
+                    {pick({ en: 'Create account', ar: 'إنشاء حساب' })}
+                  </button>
+                )}
+                {mode === 'signin' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode('reset');
+                      setVerificationEmail('');
+                      setMsg('');
+                    }}
+                  >
+                    {pick({ en: 'Forgot password?', ar: 'نسيت كلمة المرور؟' })}
+                  </button>
+                )}
               </div>
-            )}
-            <div className="account-switch">
-              {mode !== 'signin' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('signin');
-                    setVerificationEmail('');
-                    setMsg('');
-                  }}
-                >
-                  {pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}
-                </button>
-              )}
-              {mode !== 'signup' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('signup');
-                    setVerificationEmail('');
-                    setMsg('');
-                  }}
-                >
-                  {pick({ en: 'Create account', ar: 'إنشاء حساب' })}
-                </button>
-              )}
-              {mode === 'signin' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode('reset');
-                    setVerificationEmail('');
-                    setMsg('');
-                  }}
-                >
-                  {pick({ en: 'Forgot password?', ar: 'نسيت كلمة المرور؟' })}
-                </button>
-              )}
-            </div>
-          </form>
-        </section>
+            </form>
+          </section>
+        </div>
       </>
     );
   const save = async (e) => {

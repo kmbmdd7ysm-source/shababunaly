@@ -545,3 +545,93 @@
     inline-size: 100%;
   }
 }
+
+/* ==========================================================================
+   THE GATEWALL — authentication as an entrance, not a card adrift
+   --------------------------------------------------------------------------
+   The previous gate floated a small plate in the middle of an empty page with
+   the footer crowding in underneath. It fills the viewport now: a night
+   identity panel stating what an account is for, and a form panel holding
+   nothing but the task.
+   ========================================================================== */
+
+.gw-gatewall {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-block-size: 100svh;
+  background: var(--sh-chalk);
+}
+
+@media (min-width: 900px) {
+  .gw-gatewall {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+}
+
+.gw-gatewall-identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sh-s-4);
+  padding: clamp(32px, 6vw, 80px);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+.gw-gatewall-mark {
+  inline-size: clamp(150px, 18vw, 230px);
+  block-size: auto;
+}
+
+.gw-gatewall-identity .gw-spec {
+  margin: 0;
+  color: var(--sh-night-ink-70);
+}
+
+.gw-gatewall-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-gatewall-list li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  padding-block: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule-inverse);
+  color: var(--sh-night-ink);
+}
+
+.gw-gatewall-list li span {
+  flex: none;
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-night-ink-70);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The gate itself no longer needs a card: the panel IS the frame. */
+.gw-gatewall .gw-gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(32px, 6vw, 80px) clamp(20px, 4vw, 64px);
+  min-block-size: auto;
+  background: transparent;
+}
+
+.gw-gatewall .gw-gate-form {
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.gw-gatewall .gw-gate-title {
+  font-size: clamp(1.8rem, 1.3rem + 2vw, 2.8rem);
+}
