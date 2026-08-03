@@ -279,78 +279,85 @@ export default function ProductPage() {
           overlaid specification, and the angle register beneath it.
           ================================================================ */}
       <section className="gw-stage" aria-labelledby="gw-product-title">
-        <div className="gw-stage-inner">
-          <div className="gw-stage-meta">
-            <div className="gw-stage-trail">
-              <Breadcrumbs items={crumbs} />
-            </div>
-            <p className="gw-spec gw-stage-origin">
-              {product.brand}
-              {sub ? ` · ${pick(sub.name)}` : ''}
-            </p>
-            <h1 id="gw-product-title" className="gw-stage-title">
-              {pick(product.name)}
-            </h1>
-            <p className="gw-spec gw-stage-sku">
-              {t.product.sku}:{' '}
-              <span className="gw-isolate-ltr">{matchedVariant?.sku || product.sku}</span>
-            </p>
-            {stageBadges.length > 0 && (
-              <div className="gw-stage-badges">
-                {stageBadges.map((badge) => (
-                  <span key={badge.key}>{badge.node}</span>
-                ))}
-              </div>
-            )}
-          </div>
+        {/* The viewer is the stage, not a column of it. It fills the section
+            edge to edge; identity, trail and the angle register are overlaid on
+            top of it. Nothing sits beside it competing for the same width. */}
+        <div className="gw-stage-canvas">
+          <button
+            type="button"
+            className="gw-stage-frame"
+            onClick={() => setLightboxOpen(true)}
+            aria-label={pick({ en: 'View full screen', ar: 'عرض بملء الشاشة' })}
+          >
+            <SmartImage
+              src={gallery[activeImg]}
+              alt={pick(product.alt)}
+              eager
+              className="gw-stage-image"
+            />
+            <span className="gw-stage-zoom">
+              <Icon name="search" />
+              {pick({ en: 'Full screen', ar: 'ملء الشاشة' })}
+            </span>
+          </button>
 
-          <div className="gw-stage-view">
-            <button
-              type="button"
-              className="gw-stage-frame"
-              onClick={() => setLightboxOpen(true)}
-              aria-label={pick({ en: 'View full screen', ar: 'عرض بملء الشاشة' })}
+          {/* The angle register runs vertically down the trailing edge of the
+              stage — an instrument on the viewer, not a thumbnail strip
+              underneath a photograph. */}
+          {gallery.length > 1 && (
+            <div
+              className="gw-stage-angles"
+              role="tablist"
+              aria-label={pick({ en: 'Product angles', ar: 'زوايا المنتج' })}
             >
-              <SmartImage
-                src={gallery[activeImg]}
-                alt={pick(product.alt)}
-                eager
-                className="gw-stage-image"
-              />
-              <span className="gw-stage-zoom">
-                <Icon name="search" />
-                {pick({ en: 'Full screen', ar: 'ملء الشاشة' })}
-              </span>
-            </button>
+              {gallery.map((src, index) => (
+                <button
+                  key={src}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeImg === index}
+                  className={`gw-angle${activeImg === index ? ' is-active' : ''}`}
+                  onClick={() => setActiveImg(index)}
+                  aria-label={`${pick(product.name)} ${index + 1}`}
+                >
+                  <SmartImage src={src} alt="" />
+                  <span className="gw-angle-index" aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
-            {/* The angle register: the viewer control is part of the page
-                architecture, not a strip of thumbnails under a photo. */}
-            {gallery.length > 1 && (
-              <div
-                className="gw-angle-register"
-                role="tablist"
-                aria-label={pick({ en: 'Product angles', ar: 'زوايا المنتج' })}
-              >
-                {gallery.map((src, index) => (
-                  <button
-                    key={src}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeImg === index}
-                    className={`gw-angle${activeImg === index ? ' is-active' : ''}`}
-                    onClick={() => setActiveImg(index)}
-                    aria-label={`${pick(product.name)} ${index + 1}`}
-                  >
-                    <SmartImage src={src} alt="" />
-                    <span className="gw-angle-index" aria-hidden="true">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-            <ViewingTierNote product={product} />
+        {/* Identity, overlaid on the stage at the leading foot. */}
+        <div className="gw-stage-overlay">
+          <div className="gw-stage-trail">
+            <Breadcrumbs items={crumbs} />
           </div>
+          <p className="gw-spec gw-stage-origin">
+            {product.brand}
+            {sub ? ` \u00b7 ${pick(sub.name)}` : ''}
+          </p>
+          <h1 id="gw-product-title" className="gw-stage-title">
+            {pick(product.name)}
+          </h1>
+          <p className="gw-spec gw-stage-sku">
+            {t.product.sku}:{' '}
+            <span className="gw-isolate-ltr">{matchedVariant?.sku || product.sku}</span>
+          </p>
+          {stageBadges.length > 0 && (
+            <div className="gw-stage-badges">
+              {stageBadges.map((badge) => (
+                <span key={badge.key}>{badge.node}</span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* The honest tier disclosure sits on the stage it describes. */}
+        <div className="gw-stage-tier">
+          <ViewingTierNote product={product} />
         </div>
       </section>
 

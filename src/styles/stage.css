@@ -21,21 +21,7 @@
   padding-block: clamp(20px, 3vw, 36px) clamp(32px, 5vw, 64px);
 }
 
-.gw-stage-inner {
-  max-inline-size: var(--sh-container);
-  margin-inline: auto;
-  padding-inline: clamp(16px, 3vw, 48px);
-  display: grid;
-  gap: var(--sh-s-5);
-  grid-template-columns: minmax(0, 1fr);
-}
-
 @media (min-width: 1000px) {
-  .gw-stage-inner {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--sh-s-7);
-    align-items: center;
-  }
 }
 
 .gw-stage-trail {
@@ -170,13 +156,6 @@
 }
 
 /* The angle register: numbered, part of the architecture. */
-.gw-angle-register {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sh-s-2);
-  margin-block-start: var(--sh-s-3);
-}
-
 .gw-angle {
   position: relative;
   inline-size: 64px;
@@ -515,4 +494,296 @@
   .gw-deck-inner {
     gap: var(--sh-s-5);
   }
+}
+
+/* ==========================================================================
+   THE STAGE, REBUILT — the viewer IS the section
+   --------------------------------------------------------------------------
+   Previously the stage was a two-column grid: identity in one track, gallery in
+   the other. That is the conventional product layout mirrored, not replaced.
+
+   Now the viewer fills the section edge to edge and everything else is overlaid
+   on it. Nothing sits beside the product competing for the same width.
+   ========================================================================== */
+
+.gw-stage {
+  position: relative;
+  min-block-size: 92svh;
+  display: flex;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow: hidden;
+}
+
+@media (max-width: 899px) {
+  .gw-stage {
+    min-block-size: auto;
+    flex-direction: column;
+  }
+}
+
+.gw-stage-canvas {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 0;
+}
+
+.gw-stage-frame {
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 60svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 6vh, 80px) clamp(20px, 6vw, 140px) clamp(150px, 26vh, 260px);
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+/* The canvas is a row on desktop so the angle register can float on the
+   trailing edge. On mobile the register drops below the product, so the canvas
+   has to stack — otherwise the thumbnails sit BESIDE the image and push it
+   off centre. */
+@media (max-width: 899px) {
+  .gw-stage-canvas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gw-stage-frame {
+    min-block-size: 54svh;
+    padding: clamp(56px, 10vw, 88px) var(--sh-s-4) var(--sh-s-5);
+  }
+}
+
+.gw-stage-image,
+.gw-stage-frame img {
+  max-inline-size: 100%;
+  max-block-size: 58svh;
+  inline-size: auto;
+  block-size: auto;
+  object-fit: contain;
+}
+
+.gw-stage-zoom {
+  position: absolute;
+  inset-block-end: clamp(16px, 3vh, 32px);
+  inset-inline-end: clamp(16px, 3vw, 32px);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: var(--sh-target-min);
+  padding-inline: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-night-2);
+  color: var(--sh-night-ink);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-stage-zoom {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-stage-zoom svg {
+  inline-size: 14px;
+  block-size: 14px;
+}
+
+/* The angle register: a vertical instrument on the trailing edge. */
+.gw-stage-angles {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: clamp(12px, 2vw, 28px);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+  z-index: 3;
+}
+
+@media (max-width: 899px) {
+  .gw-stage-angles {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 var(--sh-s-4) var(--sh-s-4);
+    scrollbar-width: none;
+  }
+
+  .gw-stage-angles::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.gw-angle {
+  position: relative;
+  flex: none;
+  inline-size: 64px;
+  block-size: 64px;
+  padding: 4px;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-night-2);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.gw-angle img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.gw-angle.is-active {
+  border-color: var(--sh-night-ink);
+  border-width: 2px;
+}
+
+.gw-angle-index {
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 4px;
+  font-family: var(--sh-font-display);
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--sh-night-ink-70);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Identity, overlaid at the leading foot of the stage.
+
+   An overlay on top of arbitrary product photography cannot rely on the
+   section's ground for contrast: a white-background shot sits directly behind
+   the title. The overlay therefore carries its own scrim, and the frame
+   reserves foot room so the product is not covered either. */
+.gw-stage-canvas::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: clamp(180px, 34%, 340px);
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--sh-night) 26%, transparent);
+}
+
+@media (max-width: 899px) {
+  .gw-stage-canvas::after {
+    display: none;
+  }
+}
+
+.gw-stage-overlay {
+  position: absolute;
+  inset-block-end: clamp(20px, 4vh, 56px);
+  inset-inline-start: clamp(20px, 4vw, 72px);
+  z-index: 4;
+  max-inline-size: min(46ch, 46vw);
+  pointer-events: none;
+}
+
+.gw-stage-overlay a,
+.gw-stage-overlay button {
+  pointer-events: auto;
+}
+
+@media (max-width: 899px) {
+  .gw-stage-overlay {
+    position: static;
+    max-inline-size: none;
+    padding: 0 var(--sh-s-4) var(--sh-s-5);
+  }
+}
+
+.gw-stage-trail {
+  margin-block-end: var(--sh-s-3);
+}
+
+.gw-stage-trail .breadcrumbs,
+.gw-stage-trail .breadcrumbs a,
+.gw-stage-trail .breadcrumbs span {
+  color: var(--sh-night-ink-70);
+}
+
+/* The crumbs render as 21px blocks in a flex row, which is under the 24px
+   WCAG 2.2 target minimum. They are not inline in a sentence, so the exemption
+   does not apply — give them the height. */
+.gw-stage-trail .breadcrumbs a,
+.gw-stage-trail .breadcrumbs span {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--sh-target-min);
+}
+
+.gw-stage-trail .breadcrumbs a:hover {
+  color: var(--sh-night-ink);
+}
+
+.gw-stage-origin {
+  margin: 0 0 var(--sh-s-2);
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(2rem, 1.2rem + 3.4vw, 4rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 0.94;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-stage-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.6rem, 1.1rem + 2.4vw, 3rem);
+  line-height: 1.28;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-stage-sku {
+  margin: var(--sh-s-2) 0 0;
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-2);
+  margin-block-start: var(--sh-s-3);
+}
+
+/* The honest tier disclosure sits on the stage it describes. */
+.gw-stage-tier {
+  position: absolute;
+  inset-block-start: clamp(16px, 3vh, 32px);
+  inset-inline-start: clamp(20px, 4vw, 72px);
+  z-index: 4;
+}
+
+@media (max-width: 899px) {
+  .gw-stage-tier {
+    position: static;
+    padding: 0 var(--sh-s-4) var(--sh-s-4);
+  }
+}
+
+.gw-stage :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
 }
