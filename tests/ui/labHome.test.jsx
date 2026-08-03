@@ -11,7 +11,8 @@ vi.mock('../../src/context/LanguageContext', () => ({
   }),
 }));
 
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { within } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import LabHomePage from '../../src/pages/LabHomePage';

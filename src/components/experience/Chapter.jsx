@@ -12,7 +12,7 @@ import { useId } from 'react';
  * @param {{
  *   label?: string,
  *   title?: string,
- *   children?: import('react').ReactNode,
+ *   children?: any,
  *   titleClassName?: string,
  * }} props
  */

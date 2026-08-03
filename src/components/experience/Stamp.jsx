@@ -7,7 +7,7 @@ const TONES = ['neutral', 'verified', 'alert', 'warn', 'signal'];
  * label text always states the meaning in words, so the stamp survives
  * greyscale, forced-colors and screen readers.
  *
- * @param {{ children: import('react').ReactNode, tone?: string, dot?: boolean }} props
+ * @param {{ children: any, tone?: string, dot?: boolean }} props
  */
 export default function Stamp({ children, tone = 'neutral', dot = true }) {
   const safeTone = TONES.includes(tone) ? tone : 'neutral';

@@ -149,10 +149,11 @@ const PAIRS = [
 
 const audited = [];
 for (const [mode, palette] of PALETTES) {
-  for (const [fg, bg, minimum] of PAIRS) {
-    const a = tokenFrom(palette, fg, mode);
-    const b = tokenFrom(palette, bg, mode);
+  for (const [fg, bg, rawMinimum] of PAIRS) {
+    const a = tokenFrom(palette, String(fg), mode);
+    const b = tokenFrom(palette, String(bg), mode);
     if (!a || !b) continue;
+    const minimum = Number(rawMinimum);
     const ratio = contrast(a, b);
     audited.push({ mode, fg, bg, ratio: Number(ratio.toFixed(2)), minimum });
     if (ratio < minimum) {

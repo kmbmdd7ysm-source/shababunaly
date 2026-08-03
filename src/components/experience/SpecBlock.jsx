@@ -8,7 +8,7 @@
  *
  * @param {{
  *   caption: string,
- *   rows: Array<{ label: string, value: import('react').ReactNode }>,
+ *   rows: Array<{ label: string, value: any }>,
  *   captionVisible?: boolean,
  * }} props
  */
