@@ -405,3 +405,231 @@
 .gw-panel--field {
   background: var(--sh-chalk-2);
 }
+
+/* ---------- Terminal outcome mark ------------------------------------------------ */
+
+.gw-terminal-mark {
+  display: grid;
+  place-items: center;
+  inline-size: 64px;
+  block-size: 64px;
+  margin-inline: auto;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.gw-terminal-mark.is-ok {
+  color: var(--sh-verified);
+}
+
+.gw-terminal-mark.is-warn {
+  color: var(--sh-maple);
+}
+
+.gw-terminal-ref {
+  margin: 0 0 var(--sh-s-4);
+  font-variant-numeric: tabular-nums;
+  color: var(--sh-ink-70);
+}
+
+/* ---------- Notice ---------------------------------------------------------------- */
+
+.gw-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-strong);
+  border-inline-start-width: 3px;
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  margin-block-end: var(--sh-s-5);
+}
+
+.gw-notice p {
+  margin: 4px 0 0;
+  color: var(--sh-ink-70);
+  font-size: var(--sh-t-small);
+}
+
+/* A catalogue body with no filter rail spans the full measure. */
+.gw-catalogue-inner--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ---------- About: manifesto, principles, reach ------------------------------------ */
+
+.gw-manifesto {
+  padding-block: clamp(40px, 6vw, 88px);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-manifesto-inner,
+.gw-principles-inner,
+.gw-reach-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.gw-manifesto .gw-spec {
+  margin: 0 0 var(--sh-s-3);
+  color: var(--sh-ink-50);
+}
+
+.gw-manifesto-claim {
+  margin: 0 0 var(--sh-s-4);
+  max-inline-size: 20ch;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.8rem, 1.2rem + 3vw, 3.4rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 1.02;
+  letter-spacing: var(--sh-tr-display);
+}
+
+[lang='ar'] .gw-manifesto-claim {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.5rem, 1.1rem + 2.2vw, 2.6rem);
+  line-height: 1.32;
+  letter-spacing: var(--sh-tr-ar);
+  max-inline-size: 24ch;
+}
+
+.gw-manifesto-body {
+  margin: 0;
+  max-inline-size: 62ch;
+  color: var(--sh-ink-70);
+  font-size: clamp(1rem, 0.96rem + 0.3vw, 1.15rem);
+  line-height: 1.62;
+}
+
+.gw-principles {
+  padding-block: clamp(32px, 5vw, 64px);
+  background: var(--sh-chalk-2);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-principles-inner {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+
+.gw-principle {
+  border-inline-start: 2px solid var(--sh-ink);
+  padding-inline-start: var(--sh-s-4);
+}
+
+.gw-principle-index {
+  display: block;
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+  margin-block-end: var(--sh-s-2);
+}
+
+.gw-principle-title {
+  margin: 0 0 6px;
+  font-family: var(--sh-font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-stretch: 98%;
+  letter-spacing: var(--sh-tr-title);
+}
+
+[lang='ar'] .gw-principle-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+}
+
+.gw-principle-body {
+  margin: 0;
+  color: var(--sh-ink-70);
+  font-size: var(--sh-t-small);
+  line-height: 1.55;
+}
+
+.gw-reach {
+  padding-block: clamp(40px, 6vw, 88px);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+.gw-reach-inner {
+  display: grid;
+  gap: var(--sh-s-6);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .gw-reach-inner {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: var(--sh-s-7);
+  }
+}
+
+.gw-reach .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+  color: var(--sh-night-ink-70);
+}
+
+.gw-reach-title {
+  margin: 0 0 var(--sh-s-3);
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.5rem, 1.1rem + 2vw, 2.6rem);
+  font-weight: 800;
+  font-stretch: 102%;
+  line-height: 1.04;
+  letter-spacing: var(--sh-tr-display);
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .gw-reach-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.32;
+  letter-spacing: var(--sh-tr-ar);
+}
+
+.gw-reach-body {
+  margin: 0 0 var(--sh-s-5);
+  max-inline-size: 54ch;
+  color: var(--sh-night-ink-70);
+}
+
+/* The reserved media slot is drawn as reserved, not dressed as content. */
+.gw-reach-slot {
+  border: 1px dashed var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  padding: var(--sh-s-6) var(--sh-s-5);
+  min-block-size: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sh-s-2);
+}
+
+.gw-reach-slot .gw-spec {
+  color: var(--sh-night-ink-70);
+  margin: 0;
+}
+
+.gw-reach-slot p {
+  margin: 0;
+  color: var(--sh-night-ink-70);
+  font-size: var(--sh-t-small);
+}
+
+.gw-reach :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 2px;
+}

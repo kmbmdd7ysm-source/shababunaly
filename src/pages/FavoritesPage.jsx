@@ -5,6 +5,8 @@ import { useUserData } from '../context/UserDataContext';
 import { useCatalog } from '../context/CatalogContext';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
+import RouteMasthead from '../components/composition/RouteMasthead';
+import '../styles/catalogue.css';
 
 export default function FavoritesPage() {
   const { products } = useCatalog();
@@ -17,15 +19,17 @@ export default function FavoritesPage() {
   return (
     <>
       <Seo title={pick({ en: 'Favorites', ar: 'المفضلة' })} path="/favorites" />
-      <section className="section favorites-page">
-        <div className="container">
-          <p className="section-label">SHABABUNA</p>
-          <div className="page-title-row">
-            <h1>{pick({ en: 'Favorites', ar: 'المفضلة' })}</h1>
-            <span aria-live="polite">{savedCount}</span>
-          </div>
+      <RouteMasthead
+        eyebrow="Shababuna"
+        title={pick({ en: 'Favorites', ar: 'المفضلة' })}
+        trail={[{ label: pick({ en: 'Favorites', ar: 'المفضلة' }) }]}
+        figure={{ value: savedCount, label: pick({ en: 'saved', ar: 'محفوظ' }) }}
+      />
+
+      <div className="gw-catalogue">
+        <div className="gw-catalogue-inner gw-catalogue-inner--full">
           {(userData?.status === 'error' || userData?.status === 'offline') && (
-            <div className="sync-warning" role="status" aria-live="polite">
+            <div className="gw-notice" role="status" aria-live="polite">
               <div>
                 <strong>
                   {pick(
@@ -45,7 +49,7 @@ export default function FavoritesPage() {
                 </p>
               </div>
               <button
-                className="btn-secondary"
+                className="gw-btn gw-btn--secondary"
                 type="button"
                 onClick={() => userData.retrySync?.()}
               >
@@ -53,27 +57,29 @@ export default function FavoritesPage() {
               </button>
             </div>
           )}
+
+          <span className="sr-only" aria-live="polite">
+            {savedCount}
+          </span>
+
           {userData?.status === 'syncing' && !savedCount ? (
-            <div className="empty-state" role="status">
-              <h2>{pick({ en: 'Loading saved items…', ar: 'جارٍ تحميل العناصر المحفوظة…' })}</h2>
+            <div className="gw-terminal-inner" role="status">
+              <h2 className="gw-terminal-title">
+                {pick({ en: 'Loading saved items…', ar: 'جارٍ تحميل العناصر المحفوظة…' })}
+              </h2>
             </div>
           ) : savedCount ? (
-            <>
-              {savedProducts.length > 0 && (
-                <div className="product-grid">
-                  {savedProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              )}
-
-            </>
+            <div className="gw-catalogue-grid">
+              {savedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           ) : userData?.status === 'error' || userData?.status === 'offline' ? (
-            <div className="empty-state">
-              <h2>
+            <div className="gw-terminal-inner">
+              <h2 className="gw-terminal-title">
                 {pick({ en: 'No local favorites are available', ar: 'لا توجد مفضلات محلية متاحة' })}
               </h2>
-              <p>
+              <p className="gw-terminal-copy">
                 {pick({
                   en: 'Retry when your connection is available.',
                   ar: 'أعد المحاولة عند توفر الاتصال.',
@@ -81,21 +87,25 @@ export default function FavoritesPage() {
               </p>
             </div>
           ) : (
-            <div className="empty-state">
-              <h2>{pick({ en: 'No saved items yet', ar: 'لا توجد عناصر محفوظة بعد' })}</h2>
-              <p>
+            <div className="gw-terminal-inner">
+              <h2 className="gw-terminal-title">
+                {pick({ en: 'No saved items yet', ar: 'لا توجد عناصر محفوظة بعد' })}
+              </h2>
+              <p className="gw-terminal-copy">
                 {pick({
                   en: 'Save products with the heart icon and they will appear here.',
                   ar: 'احفظ المنتجات باستخدام رمز القلب وستظهر هنا.',
                 })}
               </p>
-              <Link className="btn-primary" to="/shop">
-                {pick({ en: 'Browse shop', ar: 'تصفح المتجر' })}
-              </Link>
+              <div className="gw-terminal-actions">
+                <Link className="gw-btn gw-btn--primary" to="/shop">
+                  {pick({ en: 'Browse shop', ar: 'تصفح المتجر' })}
+                </Link>
+              </div>
             </div>
           )}
         </div>
-      </section>
+      </div>
     </>
   );
 }

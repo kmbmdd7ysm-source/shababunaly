@@ -107,7 +107,9 @@ export default function ComparePage() {
                                   return;
                                 }
                                 if (action.type === 'quote') {
-                                  navigate(`/teams-wholesale?product=${encodeURIComponent(p.slug)}#quote`);
+                                  navigate(
+                                    `/teams-wholesale?product=${encodeURIComponent(p.slug)}#quote`,
+                                  );
                                   return;
                                 }
                                 const v = action.variant;
@@ -121,7 +123,8 @@ export default function ComparePage() {
                                   image: p.image,
                                   price: Number(v.unitPrice ?? p.price),
                                   retailPrice: Number(v.unitPrice ?? p.price),
-                                  wholesalePrice: Number(v.wholesalePrice ?? p.wholesalePrice ?? 0) || null,
+                                  wholesalePrice:
+                                    Number(v.wholesalePrice ?? p.wholesalePrice ?? 0) || null,
                                   size: v.size,
                                   color: v.color,
                                   sku: v.sku,

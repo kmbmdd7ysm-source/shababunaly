@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import Seo from '../components/common/Seo';
 import Icon from '../components/icons/Icon';
+import '../styles/composition.css';
 
 export default function CheckoutStatusPage({ status = 'success' }) {
   const { t } = useLanguage();
@@ -26,26 +27,32 @@ export default function CheckoutStatusPage({ status = 'success' }) {
         path={`/checkout/${success ? 'success' : 'cancelled'}`}
         noindex
       />
-      <section className="section status-page">
-        <div className="container status-inner">
-          <div className={`status-mark ${success ? 'ok' : 'warn'}`} aria-hidden="true">
+      {/* The provider return, rebuilt as a TERMINAL receipt: the outcome mark
+          at scale, a measured rule, the reference bidi-isolated, and the routes
+          onward as one cluster rather than two stacked full-width buttons. */}
+      <section className="gw-terminal" data-outcome={success ? 'ok' : 'warn'}>
+        <div className="gw-terminal-inner">
+          <span className={`gw-terminal-mark${success ? ' is-ok' : ' is-warn'}`} aria-hidden="true">
             <Icon name={success ? 'check' : 'alert'} size={34} strokeWidth={2.2} />
-          </div>
-          <h1 className="display-title">
+          </span>
+          <span className="gw-terminal-rule" aria-hidden="true" />
+          <h1 className="gw-terminal-title">
             {success ? t.checkoutStatus.successTitle : t.checkoutStatus.cancelledTitle}
           </h1>
-          <p>{success ? t.checkoutStatus.successText : t.checkoutStatus.cancelledText}</p>
+          <p className="gw-terminal-copy">
+            {success ? t.checkoutStatus.successText : t.checkoutStatus.cancelledText}
+          </p>
           {success && ref && (
-            <p className="order-ref">
-              {t.checkoutStatus.orderRef}: <strong>{ref}</strong>
+            <p className="gw-terminal-ref">
+              {t.checkoutStatus.orderRef}: <strong className="gw-isolate-ltr">{ref}</strong>
             </p>
           )}
-          <div className="hero-actions">
-            <Link to="/shop" className="btn-primary block">
+          <div className="gw-terminal-actions">
+            <Link to="/shop" className="gw-btn gw-btn--primary">
               {t.checkoutStatus.backShop}
             </Link>
             {!success && (
-              <Link to="/cart" className="btn-secondary block">
+              <Link to="/cart" className="gw-btn gw-btn--secondary">
                 {t.checkoutStatus.viewBag}
               </Link>
             )}

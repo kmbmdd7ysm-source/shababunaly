@@ -39,7 +39,10 @@ export default function OrderTrackingPage() {
       return;
     }
     setLookup({ state: 'loading', order: null, error: null });
-    if (!turnstileToken) { setLookup({ state: 'captcha-required', order: null, error: null }); return; }
+    if (!turnstileToken) {
+      setLookup({ state: 'captcha-required', order: null, error: null });
+      return;
+    }
     const result = await lookupGuestOrder(orderNumber, email, turnstileToken);
     setLookup(result);
     if (result.order && result.accessToken) {
@@ -166,7 +169,10 @@ export default function OrderTrackingPage() {
             </form>
             {lookup.state === 'captcha-required' && (
               <div className="notice notice--info" role="alert">
-                {pick({ en: 'Complete the security check before looking up the order.', ar: 'أكمل فحص الأمان قبل البحث عن الطلب.' })}
+                {pick({
+                  en: 'Complete the security check before looking up the order.',
+                  ar: 'أكمل فحص الأمان قبل البحث عن الطلب.',
+                })}
               </div>
             )}
             {lookup.state === 'invalid' && (

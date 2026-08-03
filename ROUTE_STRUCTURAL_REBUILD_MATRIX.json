@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T09:04:35.857Z",
+  "generatedAt": "2026-08-03T09:09:14.961Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 18,
-    "partially-rebuilt": 0,
-    "not-rebuilt": 18,
+    "fully-rebuilt": 22,
+    "partially-rebuilt": 11,
+    "not-rebuilt": 3,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 12,
-    "partially-rebuilt": 0,
-    "not-rebuilt": 17
+    "fully-rebuilt": 15,
+    "partially-rebuilt": 11,
+    "not-rebuilt": 3
   },
   "routes": [
     {
@@ -36,15 +36,15 @@
       "component": "About",
       "file": "src/pages/AboutPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "PageHero",
-        "section className=\"section\"",
-        "className=\"container\""
+      "linesAdded": 140,
+      "linesRemoved": 14,
+      "compositionMarkers": [
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [
+        "PageHero"
+      ],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/shop",
@@ -131,22 +131,26 @@
       "component": "CheckoutStatus",
       "file": "src/pages/CheckoutStatusPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 18,
+      "linesRemoved": 11,
+      "compositionMarkers": [
+        "gw-terminal"
+      ],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/checkout/cancelled",
       "component": "CheckoutStatus",
       "file": "src/pages/CheckoutStatusPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 18,
+      "linesRemoved": 11,
+      "compositionMarkers": [
+        "gw-terminal"
+      ],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/customize",
@@ -169,84 +173,84 @@
       "component": "SpecialRequest",
       "file": "src/pages/SpecialRequestPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 358,
+      "linesRemoved": 40,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
         "section className=\"section\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/teams-wholesale",
       "component": "TeamsWholesale",
       "file": "src/pages/TeamsWholesalePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 473,
+      "linesRemoved": 56,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
         "section className=\"section\"",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/team-locker/:slug",
       "component": "TeamLocker",
       "file": "src/pages/TeamLockerPage.jsx",
       "access": "team",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 88,
+      "linesRemoved": 9,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
         "section className=\"section\"",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/design-share/:token",
       "component": "DesignShare",
       "file": "src/pages/DesignSharePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 232,
+      "linesRemoved": 20,
       "compositionMarkers": [],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/lha-store",
       "component": "LhaStore",
       "file": "src/pages/LhaStorePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 47,
+      "linesRemoved": 6,
       "compositionMarkers": [],
       "legacyWrappers": [
         "section className=\"section\"",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/our-work",
       "component": "OurWork",
       "file": "src/pages/OurWorkPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 37,
+      "linesRemoved": 9,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
         "section className=\"section\"",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/programs/*",
@@ -297,14 +301,14 @@
       "component": "Contact",
       "file": "src/pages/ContactPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 202,
+      "linesRemoved": 30,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/faq",
@@ -341,11 +345,11 @@
       "component": "Operations",
       "file": "src/pages/OperationsPage.jsx",
       "access": "staff",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 52,
+      "linesRemoved": 24,
       "compositionMarkers": [],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/size-guide",
@@ -368,22 +372,22 @@
       "component": "Search",
       "file": "src/pages/SearchPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 159,
+      "linesRemoved": 23,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
         "section className=\"section\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/order-tracking",
       "component": "OrderTracking",
       "file": "src/pages/OrderTrackingPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 8,
+      "linesRemoved": 2,
       "compositionMarkers": [],
       "legacyWrappers": [
         "PageHero",
@@ -397,21 +401,21 @@
       "component": "OrderDetail",
       "file": "src/pages/OrderDetailPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 212,
+      "linesRemoved": 44,
       "compositionMarkers": [],
       "legacyWrappers": [
         "section className=\"section\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/compare",
       "component": "Compare",
       "file": "src/pages/ComparePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 5,
+      "linesRemoved": 2,
       "compositionMarkers": [],
       "legacyWrappers": [
         "section className=\"section\"",
@@ -424,27 +428,29 @@
       "component": "Favorites",
       "file": "src/pages/FavoritesPage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
-      "legacyWrappers": [
-        "className=\"container\""
+      "linesAdded": 41,
+      "linesRemoved": 31,
+      "compositionMarkers": [
+        "gw-catalogue",
+        "gw-terminal",
+        "RouteMasthead"
       ],
-      "status": "not-rebuilt"
+      "legacyWrappers": [],
+      "status": "fully-rebuilt"
     },
     {
       "route": "/account",
       "component": "Account",
       "file": "src/pages/AccountPage.jsx",
       "access": "customer",
-      "linesAdded": 0,
-      "linesRemoved": 0,
+      "linesAdded": 106,
+      "linesRemoved": 14,
       "compositionMarkers": [],
       "legacyWrappers": [
         "section className=\"section\"",
         "className=\"container\""
       ],
-      "status": "not-rebuilt"
+      "status": "partially-rebuilt"
     },
     {
       "route": "/orders",
