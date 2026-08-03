@@ -25,8 +25,8 @@
   --sh-chalk-3: #e4e0d7; /* inset / field */
   --sh-ink: #0b0b0c; /* the line and the type */
   --sh-ink-70: #4a4a4c;
-  --sh-ink-50: #6f6f72;
-  --sh-ink-35: #818184;
+  --sh-ink-50: #5f5f62;
+  --sh-ink-35: #7b7b7d;
 
   /* Hairlines are the most-used colour in the whole system. */
   --sh-rule: rgba(11, 11, 12, 0.12);
@@ -34,11 +34,11 @@
   --sh-rule-inverse: rgba(247, 245, 240, 0.22);
   --sh-rule-inverse-strong: rgba(247, 245, 240, 0.44);
 
-  --sh-maple: #965b25; /* material warmth — court floor (text-safe) */
+  --sh-maple: #8a5422; /* material warmth — court floor (text-safe) */
   --sh-maple-tint: #f3e6d4;
 
   /* ---------- Colour · semantics ---------------------------------------- */
-  --sh-verified: #0f773d; /* RESERVED: verified Ready-to-Ship inventory only */
+  --sh-verified: #0e6f39; /* RESERVED: verified Ready-to-Ship inventory only */
   --sh-signal: #2440c4; /* interactive / focus / selected — never decorative */
   --sh-signal-on-dark: #687bd6; /* the same role, re-solved for the dark chapter */
   --sh-alert: #a4290b;

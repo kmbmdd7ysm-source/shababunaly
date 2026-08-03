@@ -49,52 +49,118 @@ export const contrast = (a, b) => {
   return (hi + 0.05) / (lo + 0.05);
 };
 
-const tokenSource = read(TOKENS);
-const tokens = Object.fromEntries(
-  [...strip(tokenSource).matchAll(/(--sh-[a-z0-9-]+)\s*:\s*(#[0-9a-f]{6})\s*;/gi)].map((m) => [
-    m[1],
-    m[2].toLowerCase(),
-  ]),
-);
-const token = (name) => {
-  const value = tokens[name];
-  if (!value) failures.push(`Token ${name} is missing or is not a 6-digit hex in ${TOKENS}`);
+const tokenSource = strip(read(TOKENS));
+
+// Remove balanced at-rule blocks so the BASE palette is read from `:root`
+// alone. Reading the whole file let the `prefers-contrast: more` overrides
+// shadow the base values, which silently disarmed the contrast audit.
+function withoutAtRules(css) {
+  let out = '';
+  let index = 0;
+  while (index < css.length) {
+    const at = css.indexOf('@', index);
+    if (at === -1) return out + css.slice(index);
+    const open = css.indexOf('{', at);
+    if (open === -1) return out + css.slice(index);
+    out += css.slice(index, at);
+    let depth = 1;
+    let cursor = open + 1;
+    while (cursor < css.length && depth > 0) {
+      if (css[cursor] === '{') depth += 1;
+      if (css[cursor] === '}') depth -= 1;
+      cursor += 1;
+    }
+    index = cursor;
+  }
+  return out;
+}
+
+function blockAfter(css, marker) {
+  const at = css.indexOf(marker);
+  if (at === -1) return '';
+  const open = css.indexOf('{', at);
+  let depth = 1;
+  let cursor = open + 1;
+  while (cursor < css.length && depth > 0) {
+    if (css[cursor] === '{') depth += 1;
+    if (css[cursor] === '}') depth -= 1;
+    cursor += 1;
+  }
+  return css.slice(open, cursor);
+}
+
+const readPalette = (css) =>
+  Object.fromEntries(
+    [...css.matchAll(/(--sh-[a-z0-9-]+)\s*:\s*(#[0-9a-f]{6})\s*;/gi)].map((m) => [
+      m[1],
+      m[2].toLowerCase(),
+    ]),
+  );
+
+const basePalette = readPalette(withoutAtRules(tokenSource));
+// The high-contrast palette must clear the same bars: it is a real rendering
+// mode, not a decoration.
+const contrastPalette = {
+  ...basePalette,
+  ...readPalette(blockAfter(tokenSource, '@media (prefers-contrast: more)')),
+};
+
+const PALETTES = [
+  ['default', basePalette],
+  ['prefers-contrast', contrastPalette],
+];
+
+const tokenFrom = (palette, name, mode) => {
+  const value = palette[name];
+  if (!value)
+    failures.push(`Token ${name} is missing or is not a 6-digit hex in ${TOKENS} (${mode})`);
   return value;
 };
 
-// text >= 4.5:1, non-text/UI >= 3:1 (WCAG 2.2 AA, 1.4.3 and 1.4.11)
+// Every foreground is checked against EVERY surface it can legitimately land
+// on, not against a hand-picked shortlist. The first pass of this system only
+// audited against the lightest surface and shipped four failures that axe then
+// found on the darker ones, so the matrix is generated rather than curated.
+const LIGHT_SURFACES = ['--sh-chalk', '--sh-chalk-2', '--sh-chalk-3', '--sh-maple-tint'];
+const DARK_SURFACES = ['--sh-night', '--sh-night-2'];
+// text >= 4.5:1 (WCAG 1.4.3), non-text/UI >= 3:1 (1.4.11)
+const LIGHT_FOREGROUNDS = [
+  ['--sh-ink', 4.5],
+  ['--sh-ink-70', 4.5],
+  ['--sh-ink-50', 4.5],
+  ['--sh-ink-35', 3],
+  ['--sh-signal', 4.5],
+  ['--sh-verified', 4.5],
+  ['--sh-alert', 4.5],
+  ['--sh-warn', 4.5],
+  ['--sh-maple', 4.5],
+];
+const DARK_FOREGROUNDS = [
+  ['--sh-night-ink', 4.5],
+  ['--sh-night-ink-70', 4.5],
+  ['--sh-sodium', 4.5],
+  ['--sh-moon', 4.5],
+  ['--sh-signal-on-dark', 3],
+];
 const PAIRS = [
-  ['--sh-ink', '--sh-chalk', 4.5],
-  ['--sh-ink-70', '--sh-chalk', 4.5],
-  ['--sh-ink-50', '--sh-chalk', 4.5],
-  ['--sh-ink-35', '--sh-chalk', 3],
-  ['--sh-signal', '--sh-chalk', 4.5],
-  ['--sh-verified', '--sh-chalk', 4.5],
-  ['--sh-alert', '--sh-chalk', 4.5],
-  ['--sh-warn', '--sh-chalk', 4.5],
-  ['--sh-maple', '--sh-chalk', 4.5],
-  ['--sh-ink', '--sh-chalk-2', 4.5],
-  ['--sh-ink', '--sh-chalk-3', 4.5],
-  ['--sh-ink', '--sh-maple-tint', 4.5],
-  ['--sh-verified', '--sh-maple-tint', 4.5],
-  ['--sh-night-ink', '--sh-night', 4.5],
-  ['--sh-night-ink-70', '--sh-night', 4.5],
-  ['--sh-night-ink', '--sh-night-2', 4.5],
-  ['--sh-sodium', '--sh-night', 4.5],
-  ['--sh-moon', '--sh-night', 4.5],
-  ['--sh-signal-on-dark', '--sh-night', 3],
-  ['--sh-signal-on-dark', '--sh-night-2', 3],
+  ...LIGHT_FOREGROUNDS.flatMap(([fg, min]) => LIGHT_SURFACES.map((bg) => [fg, bg, min])),
+  ...DARK_FOREGROUNDS.flatMap(([fg, min]) => DARK_SURFACES.map((bg) => [fg, bg, min])),
 ];
 
 const audited = [];
-for (const [fg, bg, minimum] of PAIRS) {
-  const a = token(fg);
-  const b = token(bg);
-  if (!a || !b) continue;
-  const ratio = contrast(a, b);
-  audited.push({ fg, bg, ratio: Number(ratio.toFixed(2)), minimum });
-  if (ratio < minimum)
-    failures.push(`Contrast ${fg} on ${bg} is ${ratio.toFixed(2)}:1; WCAG needs ${minimum}:1`);
+for (const [mode, palette] of PALETTES) {
+  for (const [fg, bg, minimum] of PAIRS) {
+    const a = tokenFrom(palette, fg, mode);
+    const b = tokenFrom(palette, bg, mode);
+    if (!a || !b) continue;
+    const ratio = contrast(a, b);
+    audited.push({ mode, fg, bg, ratio: Number(ratio.toFixed(2)), minimum });
+    if (ratio < minimum) {
+      failures.push(
+        `Contrast ${fg} on ${bg} is ${ratio.toFixed(2)}:1 in ${mode}; WCAG needs ${minimum}:1`,
+      );
+    }
+  }
 }
 
 /* --------------------------------------------------------------- scoping -- */
@@ -224,7 +290,7 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Design tokens passed: ${audited.length} colour pairs meet WCAG contrast, ` +
+  `Design tokens passed: ${audited.length} colour pairs meet WCAG contrast across ${PALETTES.length} palettes, ` +
     `${SCOPED_LAYERS.length} applied layers stay inside ${SCOPE}, ` +
     `${GLOBAL_LAYERS.length} global layers declare custom properties only, ` +
     'and no scoped layer uses a raw colour or a physical left/right property.',
