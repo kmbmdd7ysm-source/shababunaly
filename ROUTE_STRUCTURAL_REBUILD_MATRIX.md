@@ -9,18 +9,18 @@ that is the precise failure this ledger exists to expose.
 
 | Status | Count |
 | --- | ---: |
-| Fully rebuilt | **34** |
+| Fully rebuilt | **36** |
 | Partially rebuilt | **0** |
-| Not rebuilt | **2** |
+| Not rebuilt | **0** |
 | Redirect (no page) | 5 |
 | **Total routes** | **41** |
 
-Distinct page components: **29** — 27 rebuilt, 0 partial, 2 legacy. One component can serve several routes, so both counts are tracked.
+Distinct page components: **29** — 29 rebuilt, 0 partial, 0 legacy. One component can serve several routes, so both counts are tracked.
 
 | Route | Component | Access | JSX +/- | Composition | Status |
 | --- | --- | --- | ---: | --- | --- |
 | `/` | Home | public | +422/-24 | gw-section, Chapter, SpecBlock | **REBUILT** |
-| `/about` | About | public | +140/-14 | RouteMasthead | **REBUILT** |
+| `/about` | About | public | +140/-14 | gw-manifesto, gw-principles, RouteMasthead | **REBUILT** |
 | `/shop` | Shop | public | +431/-101 | gw-catalogue | **REBUILT** |
 | `/shop/:category` | Shop | public | +431/-101 | gw-catalogue | **REBUILT** |
 | `/shop/:category/:subcategory` | Shop | public | +431/-101 | gw-catalogue | **REBUILT** |
@@ -29,28 +29,28 @@ Distinct page components: **29** — 27 rebuilt, 0 partial, 2 legacy. One compon
 | `/checkout` | Checkout | public | +910/-166 | gw-checkout | **REBUILT** |
 | `/checkout/success` | CheckoutStatus | public | +18/-11 | gw-terminal | **REBUILT** |
 | `/checkout/cancelled` | CheckoutStatus | public | +18/-11 | gw-terminal | **REBUILT** |
-| `/customize` | Customize | public | +981/-129 | StudioStage | **REBUILT** |
-| `/special-request` | SpecialRequest | public | +362/-41 | RouteMasthead | **REBUILT** |
-| `/teams-wholesale` | TeamsWholesale | public | +489/-57 | RouteMasthead | **REBUILT** |
+| `/customize` | Customize | public | +992/-132 | gw-studio, RouteMasthead, StudioStage | **REBUILT** |
+| `/special-request` | SpecialRequest | public | +362/-41 | gw-request, RouteMasthead | **REBUILT** |
+| `/teams-wholesale` | TeamsWholesale | public | +489/-57 | gw-lifecycle, RouteMasthead | **REBUILT** |
 | `/team-locker/:slug` | TeamLocker | team | +108/-10 | gw-catalogue, gw-terminal, RouteMasthead | **REBUILT** |
-| `/design-share/:token` | DesignShare | public | +0/-0 | — | LEGACY |
+| `/design-share/:token` | DesignShare | public | +234/-21 | gw-terminal, gw-review | **REBUILT** |
 | `/lha-store` | LhaStore | public | +67/-6 | gw-catalogue, RouteMasthead | **REBUILT** |
-| `/our-work` | OurWork | public | +78/-30 | RouteMasthead | **REBUILT** |
+| `/our-work` | OurWork | public | +78/-30 | gw-principles, RouteMasthead | **REBUILT** |
 | `/programs/*` | Navigate | public | +0/-0 | — | redirect |
 | `/events/*` | Navigate | public | +0/-0 | — | redirect |
 | `/online-training/*` | Navigate | public | +0/-0 | — | redirect |
 | `/coaches/*` | Navigate | public | +0/-0 | — | redirect |
-| `/contact` | Contact | public | +206/-31 | RouteMasthead | **REBUILT** |
+| `/contact` | Contact | public | +206/-31 | gw-contact, RouteMasthead | **REBUILT** |
 | `/faq` | Faq | public | +56/-27 | gw-terminal, RouteMasthead, Dossier | **REBUILT** |
-| `/help` | Help | public | +30/-20 | RouteMasthead | **REBUILT** |
-| `/operations/*` | Operations | staff | +0/-0 | — | LEGACY |
+| `/help` | Help | public | +30/-20 | gw-desk, gw-helpindex, RouteMasthead | **REBUILT** |
+| `/operations/*` | Operations | staff | +75/-24 | gw-command | **REBUILT** |
 | `/size-guide` | SizeGuide | public | +48/-34 | RouteMasthead, Dossier | **REBUILT** |
 | `/search` | Search | public | +191/-25 | gw-catalogue, gw-console, gw-terminal | **REBUILT** |
-| `/order-tracking` | OrderTracking | public | +23/-12 | RouteMasthead | **REBUILT** |
-| `/order-tracking/:orderNumber` | OrderDetail | public | +221/-48 | RouteMasthead | **REBUILT** |
-| `/compare` | Compare | public | +26/-18 | gw-terminal, RouteMasthead | **REBUILT** |
+| `/order-tracking` | OrderTracking | public | +23/-12 | gw-desk, RouteMasthead | **REBUILT** |
+| `/order-tracking/:orderNumber` | OrderDetail | public | +221/-48 | gw-desk, RouteMasthead | **REBUILT** |
+| `/compare` | Compare | public | +26/-18 | gw-terminal, gw-matrix, RouteMasthead | **REBUILT** |
 | `/favorites` | Favorites | public | +41/-31 | gw-catalogue, gw-terminal, RouteMasthead | **REBUILT** |
-| `/account` | Account | customer | +142/-34 | gw-account | **REBUILT** |
+| `/account` | Account | customer | +142/-34 | gw-account, gw-gate | **REBUILT** |
 | `/orders` | Navigate | customer | +0/-0 | — | redirect |
 | `/offline` | Offline | public | +39/-3 | gw-terminal | **REBUILT** |
 | `/lab/home` | LabHome | public | +405/-0 | gw-hero, gw-section, Chapter, SpecBlock | **REBUILT** |

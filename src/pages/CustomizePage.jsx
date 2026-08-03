@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import PageHero from '../components/common/PageHero';
+import RouteMasthead from '../components/composition/RouteMasthead';
+import '../styles/composition.css';
 import StudioStage from '../components/custom/StudioStage';
 import ProductionDesignEditor from '../components/custom/ProductionDesignEditor';
 import CountrySelect from '../components/common/CountrySelect';
@@ -526,17 +527,24 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
         description="Professional online basketball uniform and team-product design studio by Shababuna."
         path="/customize"
       />
-      <PageHero
-        label="SHABABUNA DESIGN STUDIO"
+      <RouteMasthead
+        eyebrow="Shababuna design studio"
         title={pick({ en: 'Customize Everything', ar: 'صمّم كل شيء' })}
-        description={pick({
+        lede={pick({
           en: 'Build the concept online, upload your identity, add the roster and send one production-ready quote request.',
           ar: 'جهّز الفكرة داخل الموقع، وارفع الهوية، وأضف قائمة الفريق، ثم أرسل طلب عرض سعر جاهزًا لمراجعة الإنتاج.',
         })}
+        trail={[{ label: pick({ en: 'Customize', ar: 'التصميم المخصص' }) }]}
+        figure={{
+          value: CUSTOM_PRODUCT_TYPES.length,
+          label: pick({ en: 'product types', ar: 'أنواع منتجات' }),
+        }}
       />
 
-      <section className="section custom-studio-v2">
-        <div className="container">
+      {/* The studio workspace: the design stage and its controls, framed as a
+          working surface rather than a marketing section. */}
+      <section className="gw-studio-route">
+        <div className="gw-studio-route-inner">
           {lockedDesign && (
             <div className="notice notice--info studio-lock-notice" role="status">
               <strong>

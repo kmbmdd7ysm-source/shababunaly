@@ -30,6 +30,7 @@ const BRIDGE_LAYERS = [
   'checkout.css',
   'composition.css',
   'account.css',
+  'command.css',
 ];
 const SCOPED_LAYERS = [
   'typography.css',

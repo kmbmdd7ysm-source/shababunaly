@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import PageHero from '../components/common/PageHero';
+import '../styles/command.css';
 import OperationsControlCenter from '../components/operations/OperationsControlCenter';
 import BusinessIntelligencePanel from '../components/operations/BusinessIntelligencePanel';
 import { useLanguage } from '../context/LanguageContext';
@@ -186,16 +186,22 @@ export default function OperationsPage() {
   return (
     <>
       <Seo title="Operations" path="/operations" noindex />
-      <PageHero
-        label={`STAFF · ${getStaffRole(auth.user).toUpperCase()}`}
-        title={pick({ en: 'Commerce Operations', ar: 'عمليات المتجر' })}
-        description={pick({
-          en: 'Orders, payments, shipping, inventory, quotes and design approvals in one controlled workspace.',
-          ar: 'الطلبات والمدفوعات والشحن والمخزون والعروض واعتمادات التصميم في منصة واحدة محكمة.',
-        })}
-      />
-      <section className="section operations-page">
-        <div className="container">
+      {/* A module header, not a marketing hero. Dense, chalk-toned, and
+          carrying the operator's role so it is never ambiguous. */}
+      <header className="gw-modulehead">
+        <p className="gw-spec">{`STAFF · ${getStaffRole(auth.user).toUpperCase()}`}</p>
+        <h1 className="gw-modulehead-title">
+          {pick({ en: 'Commerce Operations', ar: 'عمليات المتجر' })}
+        </h1>
+        <p className="gw-modulehead-lede">
+          {pick({
+            en: 'Orders, payments, shipping, inventory, quotes and design approvals in one controlled workspace.',
+            ar: 'الطلبات والمدفوعات والشحن والمخزون والعروض واعتمادات التصميم في منصة واحدة محكمة.',
+          })}
+        </p>
+      </header>
+      <section className="operations-page">
+        <div>
           <div className="operations-toolbar">
             <Stat
               label={pick({ en: 'Shipping quotes', ar: 'طلبات تسعير الشحن' })}

@@ -34,6 +34,17 @@ const REBUILT_MARKERS = [
   'gw-terminal',
   'gw-routehead',
   'gw-panelgrid',
+  'gw-command',
+  'gw-desk',
+  'gw-review',
+  'gw-gate',
+  'gw-contact',
+  'gw-request',
+  'gw-lifecycle',
+  'gw-manifesto',
+  'gw-principles',
+  'gw-matrix',
+  'gw-helpindex',
 ];
 
 /**

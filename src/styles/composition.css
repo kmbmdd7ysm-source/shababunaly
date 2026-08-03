@@ -1392,3 +1392,100 @@
   background: var(--sh-chalk);
   padding: clamp(20px, 3vw, 36px);
 }
+
+/* ---------- Secure design review ---------------------------------------------------
+   A private expiring link, so the page states that fact before anything else. */
+
+.gw-review {
+  max-inline-size: 64rem;
+  margin-inline: auto;
+  padding: clamp(24px, 4vw, 56px) clamp(16px, 3vw, 48px) clamp(48px, 7vw, 96px);
+}
+
+.gw-review-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--sh-s-4);
+  padding-block-end: var(--sh-s-4);
+  border-block-end: 2px solid var(--sh-ink);
+  margin-block-end: var(--sh-s-5);
+}
+
+.gw-review-head h1 {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.5rem, 1.2rem + 1.6vw, 2.3rem);
+  font-weight: 800;
+  font-stretch: 102%;
+  line-height: 1.04;
+  letter-spacing: var(--sh-tr-title);
+}
+
+[lang='ar'] .gw-review-head h1 {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.32;
+  letter-spacing: var(--sh-tr-ar);
+}
+
+.gw-review-head .secure-review-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--sh-maple);
+  border-radius: 2px;
+  color: var(--sh-maple);
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-review-head .secure-review-badge {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-review .design-share-comments,
+.gw-review .design-share-decision {
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+  margin-block-start: var(--sh-s-4);
+}
+
+.gw-review .design-share-decision {
+  border-block-start: 3px solid var(--sh-ink);
+}
+
+.gw-review .design-share-comments article {
+  padding-block: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-review .design-share-comments article:last-child {
+  border-block-end: 0;
+}
+
+.gw-review-invalid {
+  padding-block: clamp(48px, 9vw, 120px);
+}
+
+/* ---------- Customize route frame ---------------------------------------------------
+   A working surface for the studio, not a marketing section. */
+
+.gw-studio-route {
+  padding-block: clamp(24px, 4vw, 48px) clamp(48px, 7vw, 96px);
+}
+
+.gw-studio-route-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}

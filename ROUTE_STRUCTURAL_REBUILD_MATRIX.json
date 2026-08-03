@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T16:50:01.417Z",
+  "generatedAt": "2026-08-03T16:57:32.237Z",
   "baselineRef": "main",
   "totalRoutes": 41,
   "counts": {
-    "fully-rebuilt": 34,
+    "fully-rebuilt": 36,
     "partially-rebuilt": 0,
-    "not-rebuilt": 2,
+    "not-rebuilt": 0,
     "redirect": 5
   },
   "distinctPageComponents": 29,
   "pageComponentCounts": {
-    "fully-rebuilt": 27,
+    "fully-rebuilt": 29,
     "partially-rebuilt": 0,
-    "not-rebuilt": 2
+    "not-rebuilt": 0
   },
   "routes": [
     {
@@ -39,6 +39,8 @@
       "linesAdded": 140,
       "linesRemoved": 14,
       "compositionMarkers": [
+        "gw-manifesto",
+        "gw-principles",
         "RouteMasthead"
       ],
       "legacyWrappers": [
@@ -157,15 +159,14 @@
       "component": "Customize",
       "file": "src/pages/CustomizePage.jsx",
       "access": "public",
-      "linesAdded": 981,
-      "linesRemoved": 129,
+      "linesAdded": 992,
+      "linesRemoved": 132,
       "compositionMarkers": [
+        "gw-studio",
+        "RouteMasthead",
         "StudioStage"
       ],
-      "legacyWrappers": [
-        "PageHero",
-        "className=\"container\""
-      ],
+      "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
     {
@@ -176,6 +177,7 @@
       "linesAdded": 362,
       "linesRemoved": 41,
       "compositionMarkers": [
+        "gw-request",
         "RouteMasthead"
       ],
       "legacyWrappers": [],
@@ -189,6 +191,7 @@
       "linesAdded": 489,
       "linesRemoved": 57,
       "compositionMarkers": [
+        "gw-lifecycle",
         "RouteMasthead"
       ],
       "legacyWrappers": [
@@ -217,11 +220,14 @@
       "component": "DesignShare",
       "file": "src/pages/DesignSharePage.jsx",
       "access": "public",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 234,
+      "linesRemoved": 21,
+      "compositionMarkers": [
+        "gw-terminal",
+        "gw-review"
+      ],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/lha-store",
@@ -245,6 +251,7 @@
       "linesAdded": 78,
       "linesRemoved": 30,
       "compositionMarkers": [
+        "gw-principles",
         "RouteMasthead"
       ],
       "legacyWrappers": [],
@@ -302,6 +309,7 @@
       "linesAdded": 206,
       "linesRemoved": 31,
       "compositionMarkers": [
+        "gw-contact",
         "RouteMasthead"
       ],
       "legacyWrappers": [
@@ -334,6 +342,8 @@
       "linesAdded": 30,
       "linesRemoved": 20,
       "compositionMarkers": [
+        "gw-desk",
+        "gw-helpindex",
         "RouteMasthead"
       ],
       "legacyWrappers": [],
@@ -344,11 +354,13 @@
       "component": "Operations",
       "file": "src/pages/OperationsPage.jsx",
       "access": "staff",
-      "linesAdded": 0,
-      "linesRemoved": 0,
-      "compositionMarkers": [],
+      "linesAdded": 75,
+      "linesRemoved": 24,
+      "compositionMarkers": [
+        "gw-command"
+      ],
       "legacyWrappers": [],
-      "status": "not-rebuilt"
+      "status": "fully-rebuilt"
     },
     {
       "route": "/size-guide",
@@ -389,6 +401,7 @@
       "linesAdded": 23,
       "linesRemoved": 12,
       "compositionMarkers": [
+        "gw-desk",
         "RouteMasthead"
       ],
       "legacyWrappers": [],
@@ -402,6 +415,7 @@
       "linesAdded": 221,
       "linesRemoved": 48,
       "compositionMarkers": [
+        "gw-desk",
         "RouteMasthead"
       ],
       "legacyWrappers": [],
@@ -416,6 +430,7 @@
       "linesRemoved": 18,
       "compositionMarkers": [
         "gw-terminal",
+        "gw-matrix",
         "RouteMasthead"
       ],
       "legacyWrappers": [],
@@ -444,7 +459,8 @@
       "linesAdded": 142,
       "linesRemoved": 34,
       "compositionMarkers": [
-        "gw-account"
+        "gw-account",
+        "gw-gate"
       ],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
