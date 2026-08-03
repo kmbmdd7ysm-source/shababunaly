@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T02:41:45.410Z",
+  "generatedAt": "2026-08-03T17:49:48.055Z",
   "minimumSpinFrames": 24,
   "totalProducts": 69,
   "currentTierCounts": {
     "A": 0,
     "B": 0,
-    "C": 1,
-    "D": 68
+    "C": 23,
+    "D": 46
   },
   "targetTierCounts": {
     "A": 34,
     "B": 35
   },
   "levelDBreakdown": {
-    "oneVerifiedPhotograph": 24,
+    "oneVerifiedPhotograph": 2,
     "placeholderConceptArtOnly": 44
   },
   "modelsManifestPresent": false,
@@ -1126,21 +1126,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p015",
@@ -1149,21 +1149,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p016",
@@ -1172,21 +1172,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p017",
@@ -1195,21 +1195,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p018",
@@ -1241,21 +1241,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p020",
@@ -1264,21 +1264,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p021",
@@ -1287,21 +1287,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p022",
@@ -1310,21 +1310,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p023",
@@ -1333,21 +1333,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p024",
@@ -1356,21 +1356,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p025",
@@ -1379,21 +1379,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p026",
@@ -1402,21 +1402,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p027",
@@ -1425,21 +1425,21 @@
       "category": "accessories",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p028",
@@ -1448,21 +1448,21 @@
       "category": "accessories",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p030",
@@ -1471,21 +1471,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p031",
@@ -1494,21 +1494,21 @@
       "category": "accessories",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p029",
@@ -1540,21 +1540,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p033",
@@ -1563,21 +1563,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p034",
@@ -1586,21 +1586,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p035",
@@ -1609,21 +1609,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p036",
@@ -1632,21 +1632,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 2,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p037",
@@ -1655,21 +1655,21 @@
       "category": "clothing",
       "brand": "LHA",
       "customizable": false,
-      "assetCount": 1,
+      "assetCount": 3,
       "placeholderMedia": false,
       "spinFrames": 0,
-      "currentTier": "D",
+      "currentTier": "C",
       "targetTier": "B",
       "missingAssets": [
-        "only one verified image"
+        "24 more turntable frames for a true 360"
       ],
       "requiredPhotography": [
-        "front, back, side and one macro detail on a chalk-white sweep"
+        "turntable sequence, 24–36 frames at 1200 px"
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
-      "performanceImpact": "existing single image, no additional payload",
-      "recommendedPhase": "P5 — photography intake"
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
     },
     {
       "id": "lha-p038",
