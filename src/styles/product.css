@@ -1,0 +1,118 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK product viewer
+   --------------------------------------------------------------------------
+   Presentation for the tiered product viewer. Logical properties only, so the
+   control row and the stage mirror correctly in Arabic with no override.
+   ========================================================================== */
+
+.gw-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-3);
+}
+
+.gw-viewer-stage {
+  position: relative;
+  display: block;
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  overflow: hidden;
+}
+
+/* A scale tick on the leading edge: the object is being measured, not staged. */
+.gw-viewer-stage::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--sh-s-4);
+  inset-inline-start: 0;
+  inline-size: 1px;
+  z-index: 1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--sh-rule-strong) 0 1px,
+    transparent 1px 12px
+  );
+}
+
+.gw-viewer-image {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  display: block;
+}
+
+.gw-viewer-note {
+  color: var(--sh-ink-50);
+}
+
+.gw-viewer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-2);
+}
+
+.gw-viewer-tab {
+  min-block-size: var(--sh-target-min);
+  min-inline-size: var(--sh-target-min);
+  padding-inline: var(--sh-s-3);
+  padding-block: 6px;
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-ink-70);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--sh-d-1) var(--sh-e-draw),
+    color var(--sh-d-1) var(--sh-e-draw);
+}
+
+[lang='ar'] .gw-viewer-tab {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.gw-viewer-tab:hover {
+  border-color: var(--sh-rule-strong);
+  color: var(--sh-ink);
+}
+
+/* Selection is never colour alone: the active tab also gains a solid rule. */
+.gw-viewer-tab.is-active {
+  border-color: var(--sh-ink);
+  color: var(--sh-ink);
+  box-shadow: inset 0 -2px 0 var(--sh-ink);
+}
+
+/* A true turntable can have 24-36 frames; the control row becomes a scrubber
+   strip rather than a wall of buttons. */
+.gw-viewer[data-tier='B'] .gw-viewer-controls {
+  gap: 2px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+}
+
+.gw-viewer[data-tier='B'] .gw-viewer-tab {
+  flex: 0 0 auto;
+  font-size: 0;
+  inline-size: 10px;
+  min-inline-size: 10px;
+  padding-inline: 0;
+  block-size: var(--sh-target-min);
+}
+
+.gw-viewer[data-tier='B'] .gw-viewer-tab.is-active {
+  background: var(--sh-ink);
+}

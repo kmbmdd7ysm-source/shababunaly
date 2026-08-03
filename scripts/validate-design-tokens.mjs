@@ -18,6 +18,7 @@ const SCOPED_LAYERS = [
   'layout.css',
   'lab-home.css',
   'home.css',
+  'product.css',
 ];
 
 const failures = [];
