@@ -36,6 +36,7 @@ import './styles/layout.css';
 // The shell bridge loads last so it can migrate the legacy chrome onto the new
 // system in place, without needing `!important` to win.
 import './styles/shell.css';
+import './styles/catalog.css';
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,
 // so importing App above the stylesheets placed every page-level sheet it
