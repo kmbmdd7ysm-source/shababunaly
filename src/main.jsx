@@ -13,6 +13,7 @@ import { CatalogProvider } from './context/CatalogContext';
 import App from './App';
 import { installGlobalErrorMonitoring } from './services/telemetry';
 import ProductionReadinessGate from './components/security/ProductionReadinessGate';
+import { STORAGE_KEYS } from './config';
 import './styles/global.css';
 import './styles/premium.css';
 import './styles/account-sync.css';
@@ -31,6 +32,38 @@ import './styles/tokens.css';
 import './styles/fonts.css';
 
 installGlobalErrorMonitoring();
+
+// Apply document language and direction BEFORE React's first paint.
+//
+// `LanguageProvider` reads the stored language synchronously and renders Arabic
+// text immediately, but it can only touch `document.documentElement` from an
+// effect, which runs after the browser has already painted. The document
+// therefore painted as `dir="ltr"` and flipped to `rtl` a frame later. That
+// flip changes the resolved `transform` on the closed off-canvas menu, which
+// carries `transition: transform .3s`, so a 460x1000 px panel animated straight
+// across the viewport — measured as 0.517 CLS on the Arabic homepage against a
+// 0.05 gate, while English measured 0.000.
+//
+// Setting the attributes here costs one synchronous localStorage read and
+// removes the flip entirely. `LanguageProvider` still owns every later change.
+(() => {
+  let stored = 'en';
+  try {
+    stored = localStorage.getItem(STORAGE_KEYS.language) === 'ar' ? 'ar' : 'en';
+  } catch {
+    stored = 'en';
+  }
+  const dir = stored === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = stored;
+  document.documentElement.dir = dir;
+  // `body` and `#root` matter as much as `html` here. The existing cascade
+  // carries `body[dir='rtl'] { direction: ltr !important }` and then restores
+  // the real direction with `#root[dir='rtl'] { direction: rtl }`, so RTL does
+  // not actually engage until `#root` carries the attribute. Setting only
+  // `html` left the header laying out LTR for a frame and then mirroring.
+  document.body.dir = dir;
+  document.getElementById('root')?.setAttribute('dir', dir);
+})();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

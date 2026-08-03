@@ -660,7 +660,19 @@ strong {
   display: flex;
   flex-direction: column;
   transform: translateX(-105%);
-  transition: transform 0.3s var(--ease);
+  /* The closed panel is hidden, not merely translated off-screen.
+     Root cause of a 0.517 CLS on the Arabic homepage: this panel stayed
+     `visible` while closed, so it participated in paint and moved when the
+     document direction resolved — 380x1000 px of shifting content, against a
+     0.05 gate, while English measured 0.000. Hiding it removes the shift and
+     also takes the closed menu's links out of the tab order, which the
+     `aria-hidden` attribute alone was not doing.
+     `visibility` is delayed by the transform duration so the close animation
+     still plays out before the panel disappears. */
+  visibility: hidden;
+  transition:
+    transform 0.3s var(--ease),
+    visibility 0s 0.3s;
   box-shadow: var(--shadow-lg);
 }
 [dir='rtl'] .mobile-menu {
@@ -668,6 +680,10 @@ strong {
 }
 .mobile-menu.open {
   transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform 0.3s var(--ease),
+    visibility 0s 0s;
 }
 .mobile-menu-head {
   display: flex;
