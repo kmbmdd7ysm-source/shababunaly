@@ -21,17 +21,39 @@
 }
 
 /* ---------- Document offset -----------------------------------------------
-   The shell is fixed, so the document is inset rather than pushed. */
+   The shell is fixed, so the document is inset rather than pushed.
+
+   The offset goes on #root, NOT on body, for two reasons found by measuring:
+
+     1. Legacy CSS forces `body` to `direction: ltr` even in Arabic (the app's
+        real direction lives on #root). A logical `padding-inline-start` on body
+        therefore resolves to the LEFT in Arabic while the fixed rail — which is
+        inside #root and genuinely RTL — sits on the RIGHT. The document ran
+        underneath the rail in Arabic.
+     2. Later `body` rules in global.css were zeroing the padding outright, so
+        it was not reliably applying at all.
+
+   #root carries the correct direction and an id beats those rules. The rail is
+   position:fixed, so padding on #root does not move it. */
 
 @media (min-width: 1000px) {
-  body {
-    padding-inline-start: var(--gw-rail-w);
+  /* The `!important` here is not decoration. global.css carries a legacy RTL
+     hack — `#root[dir='rtl'] { padding: 0 !important }` — added long before
+     this shell existed to neutralise padding that broke the old Arabic layout.
+     It silently ate the rail offset, so in Arabic the whole document ran
+     underneath the rail while English looked correct. Matching its weight is
+     the only way to reclaim the space without deleting a rule that other
+     untouched RTL surfaces may still depend on. */
+  #root,
+  #root[dir='rtl'] {
+    padding-inline-start: var(--gw-rail-w) !important;
   }
 }
 
 @media (max-width: 999px) {
-  body {
-    padding-block-end: calc(var(--gw-bar-h) + env(safe-area-inset-bottom));
+  #root,
+  #root[dir='rtl'] {
+    padding-block-end: calc(var(--gw-bar-h) + env(safe-area-inset-bottom)) !important;
   }
 }
 
