@@ -1,0 +1,212 @@
+/* ==========================================================================
+   SHABABUNA — THE SPINE
+   --------------------------------------------------------------------------
+   For routes whose subject is a SEQUENCE rather than a set of topics.
+
+   A B2B order is a lifecycle. The page should be that lifecycle: a sticky
+   numbered index down the leading edge and every block of content attached to
+   the stage it belongs to — not a masthead followed by stacked marketing
+   sections that happen to mention the same steps.
+   ========================================================================== */
+
+.gw-spine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--sh-chalk);
+}
+
+@media (min-width: 1000px) {
+  .gw-spine {
+    grid-template-columns: minmax(230px, 262px) minmax(0, 1fr);
+  }
+}
+
+/* ---------- The index ------------------------------------------------------- */
+
+.gw-spine-index {
+  position: sticky;
+  inset-block-start: 0;
+  align-self: start;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+  padding: clamp(20px, 3vw, 40px);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+@media (min-width: 1000px) {
+  .gw-spine-index {
+    min-block-size: 100svh;
+  }
+}
+
+.gw-spine-index .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+  color: var(--sh-night-ink-70);
+}
+
+.gw-spine-index ol {
+  list-style: none;
+  margin: 0 0 var(--sh-s-4);
+  padding: 0;
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-spine-index li a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  min-block-size: var(--sh-target);
+  border-block-end: 1px solid var(--sh-rule-inverse);
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-spine-index li a {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.875rem;
+}
+
+.gw-spine-index li a:hover {
+  color: var(--sh-night-ink);
+}
+
+.gw-spine-index li a span {
+  font-size: 0.5625rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-spine-index .gw-btn {
+  inline-size: 100%;
+  justify-content: center;
+}
+
+.gw-spine-index :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+/* ---------- The body -------------------------------------------------------- */
+
+.gw-spine-body {
+  min-inline-size: 0;
+}
+
+.gw-spine-head {
+  padding: clamp(28px, 5vh, 64px) clamp(20px, 4vw, 64px);
+  border-block-end: 1px solid var(--sh-rule-strong);
+}
+
+.gw-spine-head .gw-spec {
+  margin: var(--sh-s-3) 0 var(--sh-s-2);
+}
+
+.gw-spine-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(2rem, 1.3rem + 3.2vw, 3.8rem);
+  font-weight: 800;
+  font-stretch: 106%;
+  line-height: 0.96;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-spine-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.3;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-spine-lede {
+  margin: var(--sh-s-3) 0 0;
+  max-inline-size: 58ch;
+  color: var(--sh-ink-70);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* ---------- A stage --------------------------------------------------------- */
+
+.gw-stage-block {
+  position: relative;
+  padding-block: clamp(28px, 5vh, 56px);
+  border-block-end: 1px solid var(--sh-rule);
+  scroll-margin-block-start: var(--sh-s-4);
+}
+
+.gw-stage-block > .container {
+  padding-inline: clamp(20px, 4vw, 64px);
+  max-inline-size: none;
+}
+
+.gw-stage-mark {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  margin: 0 0 var(--sh-s-4);
+  padding-inline: clamp(20px, 4vw, 64px);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .gw-stage-mark {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-stage-mark span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--sh-ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.gw-stage-block--dark {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  border-block-end-color: var(--sh-rule-inverse-strong);
+}
+
+.gw-stage-block--dark .gw-stage-mark {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-block--dark .gw-stage-mark span {
+  color: var(--sh-night-ink);
+}
+
+.gw-stage-block--dark :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+.gw-stage-block--muted {
+  background: var(--sh-chalk-2);
+}
+
+.gw-stage-block:last-of-type {
+  border-block-end: 0;
+}
+
+/* The lifecycle band sits inside the quote stage as a drawn strip. */
+.gw-stage-block--dark .gw-lifecycle {
+  padding-inline: clamp(20px, 4vw, 64px);
+}
