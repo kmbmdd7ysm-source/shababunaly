@@ -14,7 +14,7 @@ const GLOBAL_LAYERS = ['tokens.css', 'fonts.css'];
 // The Phase 2A shell bridge is allowed to target legacy shell class names —
 // that is its entire purpose — but it is still held to tokens-only colours and
 // logical-properties-only layout.
-const BRIDGE_LAYERS = ['shell.css', 'catalog.css', 'studio.css'];
+const BRIDGE_LAYERS = ['shell.css', 'catalog.css', 'studio.css', 'workspace.css'];
 const SCOPED_LAYERS = [
   'typography.css',
   'motion.css',
@@ -165,6 +165,30 @@ for (const [mode, palette] of PALETTES) {
       failures.push(
         `Contrast ${fg} on ${bg} is ${ratio.toFixed(2)}:1 in ${mode}; WCAG needs ${minimum}:1`,
       );
+    }
+  }
+}
+
+/* ------------------------------------------------------- undefined tokens -- */
+
+// A `var(--sh-...)` reference to a token that was never declared fails
+// silently and takes its whole declaration with it. This phase shipped a
+// `var(--sh-alarm)` typo that quietly dropped an error colour, so every
+// reference is now checked against the declared set.
+{
+  const declared = new Set();
+  for (const file of ['tokens.css', ...GLOBAL_LAYERS]) {
+    for (const match of read(`${STYLES}/${file}`).matchAll(/(--sh-[a-z0-9-]+)\s*:/gi)) {
+      declared.add(match[1]);
+    }
+  }
+  for (const file of [...SCOPED_LAYERS, ...BRIDGE_LAYERS]) {
+    const css = read(`${STYLES}/${file}`);
+    for (const match of css.matchAll(/var\(\s*(--sh-[a-z0-9-]+)/gi)) {
+      // A reference with its own fallback is deliberate, not a typo.
+      if (!declared.has(match[1])) {
+        failures.push(`${file}: var(${match[1]}) is not a declared token`);
+      }
     }
   }
 }

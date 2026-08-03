@@ -1,0 +1,400 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK team, B2B and workspace surfaces (Phase 5)
+   --------------------------------------------------------------------------
+   Bridge layer for Teams & Wholesale, Team Locker, Special Requests and Our
+   Work. Same contract as shell.css and catalog.css: it targets the existing
+   class names deliberately so that quote logic, file-upload security, access
+   control and production tracking are not touched.
+
+   These routes are professional rather than cinematic. The expression is
+   measured: drawn plates, specification rows, and a clear commercial spine.
+   ========================================================================== */
+
+/* ---------- Shared section rhythm ----------------------------------------- */
+
+.section-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--sh-s-4);
+  padding-block-end: var(--sh-s-4);
+  border-block-end: 1px solid var(--sh-rule);
+  margin-block-end: var(--sh-s-6);
+}
+
+.section-label {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .section-label {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.section-title {
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.65rem, 1.2rem + 1.9vw, 2.9rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 1.04;
+  letter-spacing: var(--sh-tr-display);
+}
+
+[lang='ar'] .section-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.45rem, 1.1rem + 1.5vw, 2.35rem);
+  line-height: 1.34;
+  letter-spacing: var(--sh-tr-ar);
+}
+
+.section--dark .section-label {
+  color: var(--sh-night-ink-70);
+}
+
+/* ---------- Plates -------------------------------------------------------
+   Every card on these routes is a drawn plate rather than a floated box. */
+
+.department-card,
+.quote-rule-card,
+.capability-grid > *,
+.package-grid > *,
+.account-capabilities {
+  background: var(--sh-chalk);
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  padding: var(--sh-s-5);
+}
+
+/* `.process-grid` steps and `.special-request-info` carry light copy - #ffffff
+   list items, #999999 step numbers, #cacaca labels - because they have always
+   been dark panels. Re-grounding them to chalk inverted them and produced
+   white-on-chalk at 1.08:1. They stay dark, which is also the stronger read for
+   an information panel and for the commercial spine. */
+.process-grid > *,
+.special-request-info {
+  background: var(--sh-night-2);
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  padding: var(--sh-s-5);
+  color: var(--sh-night-ink);
+}
+
+.process-grid > * .section-label,
+.special-request-info .section-label {
+  color: var(--sh-night-ink-70);
+}
+
+/* The dark information panel keeps its headings light too; the legacy heading
+   colour is #050505 and produced 1.12:1 on the night ground. */
+.special-request-info h2,
+.special-request-info h3,
+.special-request-info h4,
+.special-request-info strong,
+.process-grid > * h3,
+.process-grid > * h4 {
+  color: var(--sh-night-ink);
+}
+
+/* Step numbers carry #999999 from the legacy sheet, which was legible on the
+   dark grounds they used to sit on and measures 2.61:1 on chalk. Inside a light
+   plate they take the ink scale instead. */
+.package-grid > * span,
+.capability-grid > * span,
+.department-card span,
+.quote-rule-card span {
+  color: var(--sh-ink-50);
+}
+
+.process-grid > * span,
+.process-grid > * p,
+.special-request-info li,
+.special-request-info p {
+  color: var(--sh-night-ink);
+}
+
+.section--muted .department-card,
+.section--muted .quote-rule-card,
+.section--muted .capability-grid > *,
+.section--muted .package-grid > * {
+  background: var(--sh-chalk);
+}
+
+/* Inside a dark chapter the plate keeps its drawn frame but takes the night
+   surface. Giving every plate a chalk ground put light legacy copy onto a light
+   plate on /teams-wholesale and /special-request - the same mistake the footer
+   status made, so it is fixed once, here, for every plate. */
+.section--dark .department-card,
+.section--dark .quote-rule-card,
+.section--dark .capability-grid > *,
+.section--dark .package-grid > *,
+.section--dark .account-capabilities {
+  background: var(--sh-night-2);
+  border-color: var(--sh-rule-inverse-strong);
+  color: var(--sh-night-ink);
+}
+
+.section--dark .quote-rule-card::before,
+.section--dark .process-grid > *::before {
+  background: var(--sh-night-ink);
+}
+
+.section--dark .process-grid > * h3,
+.section--dark .process-grid > * h4,
+.section--dark .department-card h3,
+.section--dark .department-card h4 {
+  color: var(--sh-night-ink);
+}
+
+/* A leading-edge tick marks each plate as a measured item, and mirrors in
+   Arabic because it is placed with a logical property. */
+.quote-rule-card,
+.process-grid > * {
+  position: relative;
+  padding-inline-start: calc(var(--sh-s-5) + 10px);
+}
+
+.quote-rule-card::before,
+.process-grid > *::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--sh-s-5);
+  inset-inline-start: 0;
+  inline-size: 2px;
+  background: var(--sh-ink);
+}
+
+.capability-grid,
+.package-grid,
+.process-grid,
+.department-grid {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+/* ---------- The commercial spine ------------------------------------------
+   Lifecycle steps read as a numbered sequence, not as decorative chips. */
+
+.process-grid > * h3,
+.process-grid > * h4 {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink);
+}
+
+[lang='ar'] .process-grid > * h3,
+[lang='ar'] .process-grid > * h4 {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Quote and request forms ---------------------------------------
+   Restrained by intent: these are commercial instruments, not showpieces. */
+
+.quote-layout,
+.special-request-layout {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .quote-layout,
+  .special-request-layout {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+.quote-form,
+.special-request-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field > span {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+}
+
+[lang='ar'] .field > span {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.field input,
+.field select,
+.field textarea,
+.quote-form input,
+.quote-form select,
+.quote-form textarea,
+.special-request-form input,
+.special-request-form select,
+.special-request-form textarea {
+  min-block-size: var(--sh-target);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  padding: 10px 12px;
+  font-family: var(--sh-font-text);
+  font-size: 1rem;
+}
+
+[lang='ar'] .field input,
+[lang='ar'] .field select,
+[lang='ar'] .field textarea {
+  font-family: var(--sh-font-arabic);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  border-color: var(--sh-ink);
+}
+
+.field-row {
+  display: grid;
+  gap: var(--sh-s-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.checkbox-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target-min);
+}
+
+.custom-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px dashed var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  padding: var(--sh-s-4);
+  background: var(--sh-chalk-2);
+}
+
+.form-status {
+  border-inline-start: 3px solid var(--sh-ink);
+  padding: var(--sh-s-3) var(--sh-s-4);
+  background: var(--sh-chalk-2);
+  border-radius: var(--sh-r-1);
+  color: var(--sh-ink);
+}
+
+.form-status--error {
+  border-inline-start-color: var(--sh-alert);
+  color: var(--sh-alert);
+}
+
+/* The upload hint carried #777 from the legacy sheet, which fails on the
+   chalk-2 plate this layer puts behind it. */
+.custom-upload small {
+  color: var(--sh-ink-70);
+}
+
+/* The footer is a dark chapter and its copy is deliberately light, enforced
+   with `!important` by the legacy sheet. Putting a chalk plate behind that copy
+   produced white-on-light at 1.3:1 on every route with a newsletter form. The
+   status keeps its rule and its meaning inside the footer, but not the plate. */
+.site-footer .form-status {
+  background: transparent;
+  border-inline-start-color: var(--sh-night-ink-70);
+}
+
+.site-footer .form-status--error {
+  border-inline-start-color: var(--sh-alert-on-dark);
+}
+
+/* ---------- Team Locker ---------------------------------------------------- */
+
+.workspace-empty {
+  border: 1px dashed var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  padding: var(--sh-s-7) var(--sh-s-5);
+  text-align: center;
+}
+
+/* ---------- Special Request ------------------------------------------------ */
+
+.special-reference {
+  font-family: var(--sh-font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--sh-tr-spec);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.special-request-success {
+  border: 1px solid var(--sh-verified);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+}
+
+/* ---------- Our Work -------------------------------------------------------
+   A showcase built only from verified repository content. Where a project has
+   no final photography the plate says so rather than staging a placeholder as
+   if it were work that exists. */
+
+.service-intro {
+  max-inline-size: 62ch;
+}
+
+.service-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-3);
+  margin-block-start: var(--sh-s-4);
+}
+
+/* ---------- Mobile --------------------------------------------------------- */
+
+@media (max-width: 699px) {
+  .quote-form,
+  .special-request-form,
+  .department-card,
+  .quote-rule-card,
+  .special-request-info {
+    padding: var(--sh-s-4);
+  }
+
+  .section-heading-row {
+    flex-direction: column;
+    align-items: start;
+    margin-block-end: var(--sh-s-5);
+  }
+}

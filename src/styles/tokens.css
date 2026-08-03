@@ -41,6 +41,7 @@
   --sh-verified: #0e6f39; /* RESERVED: verified Ready-to-Ship inventory only */
   --sh-signal: #2440c4; /* interactive / focus / selected — never decorative */
   --sh-signal-on-dark: #687bd6; /* the same role, re-solved for the dark chapter */
+  --sh-alert-on-dark: #e8735a; /* the alert role, re-solved for the dark chapter */
   --sh-alert: #a4290b;
   --sh-warn: #7a4708;
 

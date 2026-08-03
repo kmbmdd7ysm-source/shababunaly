@@ -151,7 +151,7 @@
 }
 
 .gw-studio-artboard {
-  transition: transform var(--sh-d-4) var(--sh-e-arc);
+  transition: transform var(--sh-d-4) var(--sh-e-draw);
   transform-style: preserve-3d;
 }
 
