@@ -91,7 +91,9 @@ for (const asset of ASSETS) {
     process.exitCode = 1;
     continue;
   }
-  const dataUrl = `data:image/png;base64,${fs.readFileSync(source).toString('base64')}`;
+  // Read straight to base64; typecheck resolves readFileSync's Buffer overload
+  // to string and then rejects the encoding argument on .toString().
+  const dataUrl = `data:image/png;base64,${fs.readFileSync(source, 'base64')}`;
 
   for (const width of asset.widths) {
     const encoded = await page.evaluate(
