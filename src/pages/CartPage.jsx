@@ -6,7 +6,6 @@ import { getLibyaFreeShippingProgress, SHIPPING_MESSAGES } from '../config/shipp
 import Seo from '../components/common/Seo';
 import SmartImage from '../components/common/SmartImage';
 import QuantitySelector from '../components/common/QuantitySelector';
-import EmptyState from '../components/common/EmptyState';
 import '../styles/ledger.css';
 import { useCatalog } from '../context/CatalogContext';
 import { categories } from '../data/categories';
