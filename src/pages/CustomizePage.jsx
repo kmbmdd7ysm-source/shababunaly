@@ -654,30 +654,38 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
             )}
 
             {step === 'design' && (
-              <section aria-labelledby="custom-design-title">
-                <p className="section-label">02 — DESIGN</p>
-                <div className="studio-section-heading">
+              <section className="gw-toolbench" aria-labelledby="custom-design-title">
+                <header className="gw-toolbench-head">
                   <div>
-                    <h2 id="custom-design-title" className="section-title">
+                    <p className="gw-spec">
+                      {pick({ en: 'Design laboratory', ar: 'مختبر التصميم' })}
+                    </p>
+                    <h2 id="custom-design-title" className="gw-toolbench-title">
                       {pick({ en: 'Build the visual direction', ar: 'ابنِ الاتجاه البصري' })}
                     </h2>
-                    <p>
+                    <p className="gw-toolbench-lede">
                       {pick({
-                        en: 'Use the production editor to position artwork across front, back and side views. Shababuna still sends a final manufacturing proof for approval.',
-                        ar: 'استخدم محرر الإنتاج لتحديد مواقع العناصر في الأمام والخلف والجانب. ترسل شبابنا بروفة تصنيع نهائية للاعتماد قبل الإنتاج.',
+                        en: 'Controls sit beside the stage. Position artwork across front, back and side views. A final manufacturing proof is still required before production.',
+                        ar: 'أدوات التحكم بجانب المسرح. ضع العناصر عبر الأمام والخلف والجانب. ما زالت بروفة التصنيع النهائية مطلوبة قبل الإنتاج.',
                       })}
                     </p>
                   </div>
                   <button
-                    className="btn-secondary"
+                    className="gw-btn gw-btn--secondary"
                     type="button"
                     onClick={saveDraft}
                     disabled={busy}
                   >
                     {pick({ en: 'Save Design', ar: 'حفظ التصميم' })}
                   </button>
-                </div>
-                <div className="design-control-grid">
+                </header>
+                <p className="gw-toolbench-accuracy" role="status">
+                  {pick({
+                    en: 'Customer concept preview — not factory-accurate until CAD patterns and approvals are supplied.',
+                    ar: 'معاينة مفهوم العميل — ليست دقيقة للمصنع حتى تتوفر نماذج CAD والاعتمادات.',
+                  })}
+                </p>
+                <div className="gw-toolbench-grid design-control-grid">
                   <label>
                     <span>{pick({ en: 'Product', ar: 'المنتج' })}</span>
                     <select
@@ -974,21 +982,23 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
             )}
 
             {step === 'roster' && (
-              <section aria-labelledby="custom-roster-title">
-                <p className="section-label">03 — ROSTER</p>
-                <div className="studio-section-heading">
+              <section className="gw-roster-desk" aria-labelledby="custom-roster-title">
+                <header className="gw-toolbench-head">
                   <div>
-                    <h2 id="custom-roster-title" className="section-title">
+                    <p className="gw-spec">
+                      {pick({ en: 'Roster workspace', ar: 'مساحة القائمة' })}
+                    </p>
+                    <h2 id="custom-roster-title" className="gw-toolbench-title">
                       {pick({ en: 'Names, numbers and sizes', ar: 'الأسماء والأرقام والمقاسات' })}
                     </h2>
-                    <p>
+                    <p className="gw-toolbench-lede">
                       {pick({
-                        en: 'Duplicate numbers and incomplete rows are flagged automatically.',
-                        ar: 'يتم اكتشاف الأرقام المكررة والصفوف الناقصة تلقائيًا.',
+                        en: 'Duplicate numbers and incomplete rows are flagged automatically. Arabic and English names are supported in the same roster.',
+                        ar: 'يتم اكتشاف الأرقام المكررة والصفوف الناقصة تلقائيًا. الأسماء العربية والإنجليزية مدعومة في القائمة نفسها.',
                       })}
                     </p>
                   </div>
-                  <div className="roster-actions">
+                  <div className="gw-roster-actions roster-actions">
                     <label className="btn-secondary file-button">
                       {pick({ en: 'Import CSV/XLSX', ar: 'استيراد CSV/XLSX' })}
                       <input
@@ -1005,7 +1015,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                       {pick({ en: 'Template', ar: 'النموذج' })}
                     </button>
                   </div>
-                </div>
+                </header>
                 <div className="roster-table-wrap">
                   <table className="roster-table">
                     <thead>

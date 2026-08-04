@@ -714,3 +714,98 @@
     background-image: url('/media/atmosphere/product-stage-900.webp');
   }
 }
+
+/* ---------- Toolbench + roster desk ----------------------------------------- */
+
+.gw-toolbench,
+.gw-roster-desk {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+}
+
+.gw-toolbench-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sh-s-4);
+  padding-block-end: var(--sh-s-4);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-toolbench-head .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+}
+
+.gw-toolbench-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.2rem);
+  font-weight: 800;
+  font-stretch: 102%;
+  line-height: 1;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-toolbench-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  line-height: 1.3;
+}
+
+.gw-toolbench-lede {
+  margin: var(--sh-s-3) 0 0;
+  max-inline-size: 52ch;
+  color: var(--sh-ink-70);
+  line-height: 1.55;
+}
+
+.gw-toolbench-accuracy {
+  margin: 0;
+  padding: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-strong);
+  border-inline-start: 3px solid var(--sh-alert);
+  background: var(--sh-chalk-2);
+  color: var(--sh-ink);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.gw-toolbench-grid {
+  display: grid;
+  gap: var(--sh-s-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+}
+
+.gw-roster-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-2);
+}
+
+.gw-roster-desk .roster-table-wrap {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  overflow: auto;
+  background: var(--sh-chalk);
+}
+
+/* Mobile studio: tools become a bottom sheet under a sticky stage. */
+@media (max-width: 1099px) {
+  .gw-lab-dock {
+    padding-block-end: calc(var(--sh-s-6) + env(safe-area-inset-bottom));
+  }
+
+  .gw-toolbench-head,
+  .gw-roster-desk .gw-toolbench-head {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 5;
+    background: var(--sh-chalk);
+    padding-block-start: var(--sh-s-2);
+  }
+}
