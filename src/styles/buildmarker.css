@@ -75,3 +75,10 @@
   margin: 0;
   overflow-wrap: anywhere;
 }
+
+/* The badge is dev chrome and must never sit on top of real content. It was
+   landing on the navigation overlay's footer text. The overlay is a modal, so
+   the badge simply steps aside while it is open. */
+body:has(.gw-nav.is-open) .gw-buildmark {
+  display: none;
+}

@@ -68,15 +68,21 @@ const renderHeader = () =>
 const trigger = () => screen.getByRole('button', { name: 'Open menu' });
 // The shell moved from a side drawer to a full-screen index opened from the
 // bottom command bar. Same behaviour contract, different architecture.
-const drawer = () => document.querySelector('.gw-index');
+/*
+ * The shell moved from a side drawer to a full-screen navigation overlay opened
+ * from a floating header. The behaviour contract under test is unchanged —
+ * focus moves in, Tab is trapped and wraps, Escape closes, focus returns to the
+ * trigger — only the selectors and the trigger's label changed.
+ */
+const drawer = () => document.querySelector('.gw-nav');
 
 /** jsdom runs rAF, but the restore is one frame out, so waitFor is required. */
 const expectFocusReturned = async () => {
   await waitFor(() => expect(document.activeElement).toBe(trigger()));
 };
 
-describe('mobile index focus management', () => {
-  test('opening moves focus into the index', async () => {
+describe('navigation overlay focus management', () => {
+  test('opening moves focus into the overlay', async () => {
     activeLanguage = 'en';
     renderHeader();
     fireEvent.click(trigger());
@@ -107,13 +113,15 @@ describe('mobile index focus management', () => {
     await expectFocusReturned();
   });
 
-  test('clicking the scrim returns focus to the trigger', async () => {
+  test('the close control returns focus to the trigger', async () => {
+    // The full-screen overlay is opaque, so there is no scrim to click past —
+    // the explicit Close control is the only dismissal besides Escape.
     activeLanguage = 'en';
     renderHeader();
     fireEvent.click(trigger());
     await waitFor(() => expect(drawer().contains(document.activeElement)).toBe(true));
 
-    fireEvent.click(document.querySelector('.gw-scrim'));
+    fireEvent.click(screen.getByRole('button', { name: 'Close menu' }));
 
     await expectFocusReturned();
   });

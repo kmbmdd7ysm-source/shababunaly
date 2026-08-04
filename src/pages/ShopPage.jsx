@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { useCommerce } from '../context/CommerceContext';
 import Seo from '../components/common/Seo';
 import Breadcrumbs from '../components/common/Breadcrumbs';
@@ -305,7 +306,12 @@ export default function ShopPage() {
   // The entrance only stands when nothing has been narrowed yet. The moment a
   // visitor filters, sorts or picks a department they are working, not
   // arriving, and the gateway would be in the way.
-  const showEntrance = !category && !sub && activeTokens.length === 0 && sort === 'featured';
+  const showEntranceValue = !category && !sub && activeTokens.length === 0 && sort === 'featured';
+
+  const showEntrance = showEntranceValue;
+  // The entrance is a full-bleed dark composition; the working header is light,
+  // so the declaration has to follow the state rather than the route.
+  useCinematicOpening(showEntrance);
 
   return (
     <>

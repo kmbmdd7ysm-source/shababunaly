@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
 import { useLanguage } from '../context/LanguageContext';
+import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { useCommerce } from '../context/CommerceContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useReducedMotion } from '../hooks/useReducedMotion';
@@ -90,6 +91,9 @@ export default function HomePage() {
   const { pick } = useLanguage();
   const { countryCode } = useCommerce();
   const { products, readyToShipProducts, featuredProducts } = useCatalog();
+  // Full-bleed dark opening: the header floats over it, transparent.
+  useCinematicOpening();
+
   const reduced = useReducedMotion();
   const capability = useDeviceCapability();
   const isLibya = countryCode === 'LY';

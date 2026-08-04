@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { useCommerce } from '../context/CommerceContext';
 import { useCart, cartKey } from '../context/CartContext';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
@@ -71,6 +72,9 @@ export default function ProductPage() {
   /* Verified photography and a concept plate need different stage treatments:
      a photograph shot on white should read as a print laid on the stage, a
      transparent plate should read as a drawing floating in the light. */
+  // Full-bleed dark opening: the header floats over it, transparent.
+  useCinematicOpening();
+
   const viewerTier = resolveProductViewer(product).tier;
 
   const gallery = useMemo(() => {

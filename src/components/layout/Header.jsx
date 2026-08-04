@@ -12,38 +12,42 @@ import { lockDocumentScroll } from '../../utils/scrollLock';
 import { mainNav, megaMenu } from '../../data/navigation';
 import AnnouncementBar from './AnnouncementBar';
 import CurrencySelector from '../common/CurrencySelector';
-
 import Icon from '../icons/Icon';
-import '../../styles/rail.css';
+import '../../styles/shell.nav.css';
 
 const SearchOverlay = lazy(() => import('./SearchOverlay'));
 
 /*
- * THE RAIL — a different frame, not a restyled header.
+ * THE SHELL — a floating header over a cinematic navigation overlay.
  *
- * Every previous version of this was the same archetype every commerce site
- * uses: a horizontal bar across the top, mark on one side, links in the middle,
- * icons on the other. Changing its type and rules did not change what it *is*.
+ * The previous shell was a permanent 76px vertical rail carrying a rotated
+ * wordmark and a stack of icons. It was rejected, correctly: the wordmark was
+ * cramped into a column too narrow to read, the icon stack collided with its
+ * own labels, and a fixed rail on the inline-start edge dominated every page it
+ * framed. On mobile the bottom command bar had no brand on it at all and its
+ * labels collided with anything pinned to the lower edge.
  *
- * This replaces the archetype:
+ * This replaces the archetype rather than resizing it:
  *
- *   DESKTOP  a persistent VERTICAL rail on the inline-start edge. The wordmark
- *            reads bottom-to-top along it, navigation is a vertical numbered
- *            column, and the instruments stack at the foot. The rail expands on
- *            hover or focus to reveal labels. Content gets the entire viewport
- *            height beside it — which is what makes full-bleed cinematic
- *            chapters possible at all.
+ *   DESKTOP  a FLOATING HEADER that begins transparent over a cinematic
+ *            opening and condenses into a solid bar once you scroll past it.
+ *            The wordmark sits at readable size. Primary destinations sit
+ *            inline. Utilities are a compact cluster. Nothing is permanently
+ *            occupying an edge of the viewport, so full-bleed compositions
+ *            stay full-bleed.
  *
- *   MOBILE   no top bar. A BOTTOM COMMAND BAR within thumb reach carries the
- *            five things a phone user actually touches, and the index opens as
- *            a full-screen chapter.
+ *   OVERLAY  the full catalogue opens as a CINEMATIC FULL-SCREEN OVERLAY —
+ *            departments at display scale, the whole shop tree beside them, and
+ *            the account state at the foot. Navigation becomes a moment rather
+ *            than a dropdown.
  *
- *   ANNOUNCEMENT  no longer a strip pushing the page down. It docks into the
- *            rail on desktop and above the command bar on mobile.
+ *   MOBILE   designed on its own terms, not compressed from desktop. A slim
+ *            floating bar carries the brand, search, bag and the menu trigger;
+ *            everything else lives in the overlay at thumb-reachable size.
  *
- * Behaviour is carried over exactly: mega hover intent and its timer, the lazy
- * search overlay, cart drawer, all three analytics events, route-change close,
- * scroll lock, focus trap, Escape, and focus return to the trigger.
+ * Behaviour carried over exactly: the lazy search overlay, cart drawer, all
+ * three analytics events, route-change close, scroll lock, focus trap, Escape,
+ * and the rAF focus restore to the trigger.
  */
 export default function Header() {
   const { t, pick, lang, setLang } = useLanguage();
@@ -57,44 +61,70 @@ export default function Header() {
     (item) => isLibya || item.key !== 'readyToShip',
   );
   const location = useLocation();
-  const [indexOpen, setIndexOpen] = useState(false);
-  const [mobileShopOpen, setMobileShopOpen] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const searchButton = useRef(null);
-  const menuButton = useRef(null),
-    menuPanel = useRef(null),
-    megaTimer = useRef(null);
 
+  const [navOpen, setNavOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [condensed, setCondensed] = useState(true);
+
+  const searchButton = useRef(null);
+  const menuButton = useRef(null);
+  const navPanel = useRef(null);
+
+  useEffect(() => setNavOpen(false), [location.pathname]);
+
+  /*
+   * The header is transparent only where a route has declared a full-bleed dark
+   * opening (see hooks/useCinematicOpening). Its ink is light, so over a light
+   * page a transparent header would be invisible — solid is the safe default
+   * and the exception has to be earned. rAF-throttled so scrolling stays cheap.
+   */
   useEffect(() => {
-    setIndexOpen(false);
-    setMegaOpen(false);
+    let frame = 0;
+    const evaluate = () => {
+      const cinematic = document.documentElement.dataset.cinematicOpen === 'yes';
+      setCondensed(!cinematic || window.scrollY > 24);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        evaluate();
+      });
+    };
+    // The route paints after this effect, so re-read on the next frame too.
+    evaluate();
+    const settle = requestAnimationFrame(evaluate);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(settle);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!indexOpen) return undefined;
+    if (!navOpen) return undefined;
     const unlock = lockDocumentScroll();
     const focusable = () => [
-      ...menuPanel.current.querySelectorAll('a[href],button:not([disabled]),select'),
+      ...navPanel.current.querySelectorAll('a[href],button:not([disabled]),select'),
     ];
     focusable()[0]?.focus();
-    const key = (e) => {
-      if (e.key === 'Escape') {
-        setIndexOpen(false);
+    const key = (event) => {
+      if (event.key === 'Escape') {
+        setNavOpen(false);
         return;
       }
-      if (e.key === 'Tab') {
-        const f = focusable();
-        if (!f.length) return;
-        const first = f[0],
-          last = f.at(-1);
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
+      if (event.key !== 'Tab') return;
+      const items = focusable();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
     document.addEventListener('keydown', key);
@@ -102,9 +132,11 @@ export default function Header() {
       document.removeEventListener('keydown', key);
       unlock();
       const trigger = menuButton.current;
+      // The panel is still visible on this tick; focus lands nowhere unless we
+      // wait for it to be hidden.
       requestAnimationFrame(() => trigger?.focus());
     };
-  }, [indexOpen]);
+  }, [navOpen]);
 
   const toggleLang = () => {
     const next = lang === 'en' ? 'ar' : 'en';
@@ -112,310 +144,226 @@ export default function Header() {
     trackEvent('language_change', { language: next });
   };
   const navLabel = (item) => t.nav[item.key] || pick(item.label || { en: item.key, ar: item.key });
-  const close = () => setIndexOpen(false);
-  const idx = (n) => String(n + 1).padStart(2, '0');
+  const close = () => setNavOpen(false);
+
+  const wordmark = pick({
+    en: '/brand/shababuna-wordmark-white.png',
+    ar: '/brand/shababuna-wordmark-ar-white.png',
+  });
+  const wordmarkDark = pick({
+    en: '/brand/shababuna-wordmark-black.png',
+    ar: '/brand/shababuna-wordmark-ar-black.png',
+  });
 
   return (
     <>
-      {/* ── DESKTOP: the vertical rail ─────────────────────────────────── */}
-      <div className="gw-rail" data-mega={megaOpen ? 'open' : 'closed'}>
-        <Link to="/" className="gw-rail-mark" aria-label={SITE.name}>
-          <span className="gw-rail-mark-text" aria-hidden="true">
-            SHABABUNA
-          </span>
-        </Link>
+      {/*
+       * Announcement and header are ONE fixed stack. Rendered as siblings the
+       * static announcement sat in flow while the fixed header covered it, so
+       * the two overlapped on every route. Stacking them also means one
+       * measured height for the content offset instead of two guesses.
+       */}
+      <div className="gw-shell">
+        <AnnouncementBar />
 
-        <nav className="gw-rail-nav" aria-label={t.a11y.mainNav}>
-          {mainNav.map((item) =>
-            item.mega ? (
-              <div
-                key={item.to}
-                className="gw-rail-entry"
-                onMouseEnter={() => {
-                  clearTimeout(megaTimer.current);
-                  setMegaOpen(true);
-                }}
-                onMouseLeave={() => (megaTimer.current = setTimeout(() => setMegaOpen(false), 140))}
+        <header className="gw-head" data-condensed={condensed ? 'yes' : 'no'}>
+          <div className="gw-head-inner">
+            <Link to="/" className="gw-head-brand" aria-label={SITE.name}>
+              {/* Two files rather than a CSS filter: the wordmark is a raster, and
+                  inverting it produces grey mush against both grounds. */}
+              <img className="gw-head-brand-light" src={wordmark} alt="" width="168" height="42" />
+              <img
+                className="gw-head-brand-dark"
+                src={wordmarkDark}
+                alt=""
+                width="168"
+                height="42"
+              />
+            </Link>
+
+            <nav className="gw-head-nav" aria-label={t.a11y.mainNav}>
+              {mainNav
+                .filter((item) => item.key !== 'home')
+                .map((item) => (
+                  <NavLink key={item.to} to={item.to} className="gw-head-link">
+                    {navLabel(item)}
+                  </NavLink>
+                ))}
+            </nav>
+
+            <div className="gw-head-tools">
+              <button
+                ref={searchButton}
+                className="gw-tool"
+                onClick={() => setSearchOpen(true)}
+                aria-label={t.a11y.openSearch}
               >
-                <NavLink
-                  to={item.to}
-                  className="gw-rail-link"
-                  aria-haspopup="true"
-                  aria-expanded={megaOpen}
-                >
-                  <Icon name={item.icon || 'grid'} />
-                  <span className="gw-rail-label">{navLabel(item)}</span>
-                </NavLink>
-              </div>
-            ) : (
-              <div key={item.to} className="gw-rail-entry">
-                <NavLink to={item.to} end={item.to === '/'} className="gw-rail-link">
-                  <Icon name={item.icon || 'grid'} />
-                  <span className="gw-rail-label">{navLabel(item)}</span>
-                </NavLink>
-              </div>
-            ),
-          )}
-        </nav>
+                <Icon name="search" />
+              </button>
+              <Link
+                className="gw-tool gw-tool--wide"
+                to="/favorites"
+                aria-label={pick({
+                  en: `Favorites, ${wishlist.ids.length} items`,
+                  ar: `المفضلة، ${wishlist.ids.length}`,
+                })}
+              >
+                <Icon name="heart" />
+              </Link>
+              <Link
+                className="gw-tool gw-tool--wide"
+                to="/compare"
+                aria-label={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
+              >
+                <Icon name="compare" />
+                {compare.count > 0 && <b className="gw-tally">{compare.count}</b>}
+              </Link>
+              <Link
+                className="gw-tool gw-tool--wide"
+                to="/account"
+                aria-label={pick({ en: 'Account', ar: 'الحساب' })}
+                onClick={() => trackEvent('account_header_click')}
+              >
+                <Icon name="user" />
+              </Link>
+              <button
+                className="gw-tool"
+                onClick={() => {
+                  trackEvent('bag_header_click');
+                  openDrawer();
+                }}
+                aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
+              >
+                <Icon name="bag" />
+                {count > 0 && <b className="gw-tally">{count}</b>}
+              </button>
 
-        <div className="gw-rail-instruments">
-          <button
-            className="gw-rail-tool"
-            ref={searchButton}
-            onClick={() => setSearchOpen(true)}
-            aria-label={t.a11y.openSearch}
-          >
-            <Icon name="search" />
-            <span className="gw-rail-label">{t.common.search}</span>
-          </button>
-          <Link
-            className="gw-rail-tool"
-            to="/favorites"
-            aria-label={pick({
-              en: `Favorites, ${wishlist.ids.length} items`,
-              ar: `المفضلة، ${wishlist.ids.length}`,
-            })}
-          >
-            <Icon name="heart" />
-            <span className="gw-rail-label">{pick({ en: 'Favorites', ar: 'المفضلة' })}</span>
-          </Link>
-          <Link
-            className="gw-rail-tool"
-            to="/compare"
-            aria-label={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
-          >
-            <Icon name="compare" />
-            <span className="gw-rail-label">{pick({ en: 'Compare', ar: 'المقارنة' })}</span>
-            {compare.count > 0 && <b className="gw-rail-tally">{compare.count}</b>}
-          </Link>
-          <Link
-            className="gw-rail-tool"
-            to="/account"
-            aria-label={pick({ en: 'Account', ar: 'الحساب' })}
-          >
-            <Icon name="user" />
-            <span className="gw-rail-label">{pick({ en: 'Account', ar: 'الحساب' })}</span>
-          </Link>
-          <button
-            className="gw-rail-tool"
-            onClick={() => {
-              trackEvent('bag_header_click');
-              openDrawer();
-            }}
-            aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
-          >
-            <Icon name="bag" />
-            <span className="gw-rail-label">{pick({ en: 'Bag', ar: 'الحقيبة' })}</span>
-            {count > 0 && <b className="gw-rail-tally">{count}</b>}
-          </button>
-
-          <div className="gw-rail-locale">
-            <button className="gw-rail-lang" onClick={toggleLang}>
-              {lang === 'en' ? 'ع' : 'EN'}
-            </button>
-            <CurrencySelector compact />
+              <button
+                ref={menuButton}
+                className="gw-menu-key"
+                onClick={() => {
+                  setSearchOpen(false);
+                  setNavOpen(true);
+                }}
+                aria-expanded={navOpen}
+                aria-controls="gw-nav-overlay"
+                aria-label={t.a11y.openMenu}
+              >
+                <span className="gw-menu-key-bars" aria-hidden="true">
+                  <i />
+                  <i />
+                </span>
+                <span className="gw-menu-key-word">{pick({ en: 'Menu', ar: 'القائمة' })}</span>
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* The announcement docks into the rail instead of pushing the page down. */}
-        <div className="gw-rail-notice">
-          <AnnouncementBar />
-        </div>
+        </header>
       </div>
 
-      {/* The mega plate opens as a full-height panel beside the rail. */}
-      <div className="gw-megapanel" hidden={!megaOpen}>
-        <div className="gw-megapanel-inner">
-          <div className="gw-megapanel-col">
-            <p className="gw-spec">{pick({ en: 'Departments', ar: 'الأقسام' })}</p>
-            {featuredShopLinks.map((l) => (
-              <Link key={l.to} to={l.to} className="gw-megapanel-link gw-megapanel-link--lead">
-                {t.nav[l.key]}
-              </Link>
+      {/* ── THE OVERLAY ────────────────────────────────────────────────── */}
+      <div
+        ref={navPanel}
+        id="gw-nav-overlay"
+        className={`gw-nav${navOpen ? ' is-open' : ''}`}
+        aria-hidden={!navOpen}
+      >
+        <div className="gw-nav-bar">
+          <Link to="/" className="gw-nav-brand" onClick={close} aria-label={SITE.name}>
+            <img src={wordmark} alt="" width="168" height="42" />
+          </Link>
+          <button className="gw-nav-close" onClick={close} aria-label={t.a11y.closeMenu}>
+            <Icon name="close" />
+            <span>{pick({ en: 'Close', ar: 'إغلاق' })}</span>
+          </button>
+        </div>
+
+        <nav className="gw-nav-body" aria-label={t.a11y.mobileNav}>
+          <div className="gw-nav-primary">
+            {mainNav.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
+                onClick={close}
+                className="gw-nav-major"
+              >
+                <Icon name={item.icon || 'grid'} />
+                <span>{navLabel(item)}</span>
+              </NavLink>
             ))}
           </div>
-          {megaMenu.columns.map((col) => (
-            <div className="gw-megapanel-col" key={pick(col.title)}>
-              <p className="gw-spec">{pick(col.title)}</p>
-              {col.links.map((l) => (
-                <Link key={l.to} to={l.to} className="gw-megapanel-link">
-                  {pick(l.label)}
+
+          <div className="gw-nav-tree">
+            <div className="gw-nav-col">
+              <p className="gw-spec">{pick({ en: 'Departments', ar: 'الأقسام' })}</p>
+              {featuredShopLinks.map((link) => (
+                <Link key={link.to} to={link.to} onClick={close} className="gw-nav-minor">
+                  {t.nav[link.key]}
                 </Link>
               ))}
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── MOBILE: bottom command bar, within thumb reach ─────────────── */}
-      <div className="gw-command-bar">
-        <Link to="/" className="gw-command-key" aria-label={SITE.name}>
-          <Icon name="home" />
-          <span>{t.nav.home}</span>
-        </Link>
-        <button
-          className="gw-command-key"
-          onClick={() => setSearchOpen(true)}
-          aria-label={t.a11y.openSearch}
-        >
-          <Icon name="search" />
-          <span>{t.common.search}</span>
-        </button>
-        <button
-          ref={menuButton}
-          className="gw-command-key gw-command-key--primary"
-          onClick={() => {
-            setSearchOpen(false);
-            setIndexOpen(true);
-          }}
-          aria-expanded={indexOpen}
-          aria-controls="mobile-menu"
-          aria-label={t.a11y.openMenu}
-        >
-          <Icon name="menu" />
-          <span>{pick({ en: 'Index', ar: 'الفهرس' })}</span>
-        </button>
-        <button
-          className="gw-command-key"
-          onClick={() => {
-            trackEvent('bag_header_click');
-            openDrawer();
-          }}
-          aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
-        >
-          <Icon name="bag" />
-          <span>{pick({ en: 'Bag', ar: 'الحقيبة' })}</span>
-          {count > 0 && <b className="gw-rail-tally">{count}</b>}
-        </button>
-        <Link
-          className="gw-command-key"
-          to="/account"
-          aria-label={pick({ en: 'Account', ar: 'الحساب' })}
-          onClick={() => trackEvent('account_header_click')}
-        >
-          <Icon name="user" />
-          <span>{pick({ en: 'Account', ar: 'الحساب' })}</span>
-        </Link>
-      </div>
-
-      <div
-        className={`gw-scrim${indexOpen ? ' is-open' : ''}`}
-        onClick={close}
-        aria-hidden="true"
-      />
-
-      {/* The index: a full-screen chapter, not a side drawer. */}
-      <nav
-        ref={menuPanel}
-        id="mobile-menu"
-        className={`gw-index${indexOpen ? ' is-open' : ''}`}
-        aria-label={t.a11y.mobileNav}
-        aria-hidden={!indexOpen}
-      >
-        <div className="gw-index-head">
-          <p className="gw-spec">{pick({ en: 'Index', ar: 'الفهرس' })}</p>
-          <button className="gw-index-close" onClick={close} aria-label={t.a11y.closeMenu}>
-            <Icon name="close" />
-          </button>
-        </div>
-
-        <div className="gw-index-body">
-          {mainNav.map((item, position) =>
-            item.mega ? (
-              <div key={item.to}>
-                <button
-                  className="gw-index-link gw-index-link--toggle"
-                  aria-expanded={mobileShopOpen}
-                  onClick={() => setMobileShopOpen((v) => !v)}
-                >
-                  <span className="gw-index-num" aria-hidden="true">
-                    {idx(position)}
-                  </span>
-                  <span className="gw-index-label">{navLabel(item)}</span>
-                  <Icon name="chevron" className={mobileShopOpen ? 'rotated' : ''} />
-                </button>
-                {mobileShopOpen && (
-                  <div className="gw-index-sub">
-                    {featuredShopLinks.map((l) => (
-                      <NavLink key={l.to} to={l.to} onClick={close} className="gw-index-sublink">
-                        {t.nav[l.key]}
-                      </NavLink>
-                    ))}
-                    {megaMenu.columns
-                      .flatMap((col) => col.links)
-                      .map((l) => (
-                        <NavLink key={l.to} to={l.to} onClick={close} className="gw-index-sublink">
-                          {pick(l.label)}
-                        </NavLink>
-                      ))}
-                  </div>
-                )}
+            {megaMenu.columns.map((column) => (
+              <div className="gw-nav-col" key={pick(column.title)}>
+                <p className="gw-spec">{pick(column.title)}</p>
+                {column.links.map((link) => (
+                  <Link key={link.to} to={link.to} onClick={close} className="gw-nav-minor">
+                    {pick(link.label)}
+                  </Link>
+                ))}
               </div>
-            ) : (
-              <NavLink key={item.to} to={item.to} onClick={close} className="gw-index-link">
-                <span className="gw-index-num" aria-hidden="true">
-                  {idx(position)}
-                </span>
-                <span className="gw-index-label">{navLabel(item)}</span>
-              </NavLink>
-            ),
-          )}
-
-          <div className="gw-index-minor">
-            <NavLink to="/favorites" onClick={close}>
-              {pick({
-                en: `Favorites (${wishlist.ids.length})`,
-                ar: `المفضلة (${wishlist.ids.length})`,
-              })}
-            </NavLink>
-            <NavLink to="/compare" onClick={close}>
-              {pick({ en: `Compare (${compare.count})`, ar: `المقارنة (${compare.count})` })}
-            </NavLink>
-            <NavLink to="/order-tracking" onClick={close}>
-              {pick({ en: 'Track order', ar: 'تتبع الطلب' })}
-            </NavLink>
-            <NavLink to="/help" onClick={close}>
-              {pick({ en: 'Help', ar: 'المساعدة' })}
-            </NavLink>
+            ))}
+            <div className="gw-nav-col">
+              <p className="gw-spec">{pick({ en: 'Your account', ar: 'حسابك' })}</p>
+              <Link to="/favorites" onClick={close} className="gw-nav-minor">
+                {pick({ en: 'Favorites', ar: 'المفضلة' })} ({wishlist.ids.length})
+              </Link>
+              <Link to="/compare" onClick={close} className="gw-nav-minor">
+                {pick({ en: 'Compare', ar: 'المقارنة' })} ({compare.count})
+              </Link>
+              <Link to="/order-tracking" onClick={close} className="gw-nav-minor">
+                {pick({ en: 'Track order', ar: 'تتبع الطلب' })}
+              </Link>
+              <Link to="/help" onClick={close} className="gw-nav-minor">
+                {pick({ en: 'Help', ar: 'المساعدة' })}
+              </Link>
+              {auth.user ? (
+                <>
+                  <Link to="/account" onClick={close} className="gw-nav-minor">
+                    {pick({ en: 'View account', ar: 'عرض الحساب' })}
+                  </Link>
+                  <button
+                    type="button"
+                    className="gw-nav-minor gw-nav-minor--button"
+                    onClick={async () => {
+                      await auth.signOut();
+                      close();
+                    }}
+                  >
+                    {pick({ en: 'Sign out', ar: 'تسجيل الخروج' })}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/account" onClick={close} className="gw-nav-minor">
+                    {pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}
+                  </Link>
+                  <Link to="/account?mode=signup" onClick={close} className="gw-nav-minor">
+                    {pick({ en: 'Create account', ar: 'إنشاء حساب' })}
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
+        </nav>
 
-          {auth.user ? (
-            <div className="gw-index-account">
-              <p className="gw-spec">{pick({ en: 'Signed in', ar: 'مسجّل الدخول' })}</p>
-              <span>{auth.user.user_metadata?.display_name || auth.user.email}</span>
-              <Link to="/account" onClick={close}>
-                {pick({ en: 'View Account', ar: 'عرض الحساب' })}
-              </Link>
-              <button
-                type="button"
-                onClick={async () => {
-                  await auth.signOut();
-                  close();
-                }}
-              >
-                {pick({ en: 'Sign Out', ar: 'تسجيل الخروج' })}
-              </button>
-            </div>
-          ) : (
-            <div className="gw-index-account">
-              <p className="gw-spec">{pick({ en: 'Account', ar: 'الحساب' })}</p>
-              <Link to="/account?mode=signup" onClick={close}>
-                {pick({ en: 'Join Us', ar: 'انضم إلينا' })}
-              </Link>
-              <Link to="/account" onClick={close}>
-                {pick({ en: 'Sign In', ar: 'تسجيل الدخول' })}
-              </Link>
-            </div>
-          )}
-        </div>
-
-        <div className="gw-index-foot">
+        <div className="gw-nav-foot">
           <CurrencySelector />
-          <button className="gw-index-lang" onClick={toggleLang}>
+          <button className="gw-nav-lang" onClick={toggleLang}>
             {lang === 'en' ? 'العربية' : 'English'}
           </button>
+          <p className="gw-spec gw-nav-place">{pick(SITE.address)}</p>
         </div>
-      </nav>
+      </div>
 
       {searchOpen && (
         <Suspense fallback={null}>
