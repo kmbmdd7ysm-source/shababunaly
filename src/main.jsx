@@ -124,6 +124,26 @@ if (typeof window !== 'undefined') {
     clearTimeout(backgroundTimer);
     window.removeEventListener('pointerdown', startBackgroundTasks);
     window.removeEventListener('keydown', startBackgroundTasks);
+    /*
+     * A review build never registers a service worker.
+     *
+     * The preview was confirmed serving an old build. The cause was the
+     * worker, not the server: navigation is network-first with a fallback to
+     * whatever HTML the ACTIVE worker has cached, and over a tunnelled origin
+     * a slow response tripped that fallback — so a reviewer saw a previous
+     * build while the server was serving the current one. A new worker also
+     * only takes over once every tab has closed, so an old one can keep
+     * control across several visits.
+     *
+     * That behaviour is correct for real users on flaky connections and is
+     * fixed properly in public/sw.js. But a review origin must be incapable of
+     * showing anything except the build it is serving, so it opts out
+     * entirely and actively removes any worker a previous session installed.
+     */
+    if (import.meta.env.VITE_SHOW_BUILD_MARKER) {
+      import('./utils/unregisterPwa').then((mod) => mod.purgeServiceWorkers()).catch(() => {});
+      return;
+    }
     import('./utils/registerPwa').then((pwa) => pwa.registerPwa()).catch(() => {});
   };
 

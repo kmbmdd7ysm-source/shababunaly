@@ -9,7 +9,7 @@ const PAGES = `${VERSION}-pages`;
 const CURRENT_CACHES = new Set([STATIC, MEDIA, PAGES]);
 const CORE = [
   '/', '/offline', '/favicon.svg', '/favicon.png', '/site.webmanifest',
-  '/brand/shababuna-mark-black.png', '/brand/shababuna-mark-white.png',
+  '/brand/shababuna-monogram.svg',
   '/brand/shababuna-wordmark-black.png', '/brand/shababuna-wordmark-white.png',
   '/media/hero/shababuna-hero-poster.webp', '/media/hero/shababuna-hero-poster-mobile.webp',
 ];
@@ -54,8 +54,19 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       const cache = await caches.open(PAGES);
       try {
+        /*
+         * 4.5s was too aggressive. A navigation that merely takes a while —
+         * a slow connection, a tunnelled review origin — was treated as
+         * offline, and the fallback served whatever HTML this worker had
+         * cached. That is precisely how a visitor ends up looking at an old
+         * build of the site while the server is serving the new one.
+         *
+         * The cache fallback exists for being OFFLINE, not for being slow, so
+         * the timeout now has to be long enough that reaching it really does
+         * mean the network is unusable.
+         */
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 4500);
+        const timer = setTimeout(() => controller.abort(), 15000);
         try {
           const response = await fetch(request, { signal: controller.signal });
           if (response.ok && !PRIVATE.test(url.pathname)) await cache.put(request, response.clone());
