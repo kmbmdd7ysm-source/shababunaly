@@ -53,13 +53,55 @@ const server = http.createServer((request, response) => {
     return;
   }
 
+  /*
+   * A review origin must never be able to answer with anything but the build it
+   * is serving. `no-store` alone was not enough: the previous preview was found
+   * showing an old build because a SERVICE WORKER was answering navigations
+   * from its own cache, entirely bypassing these headers.
+   *
+   * Belt and braces now:
+   *   - the review build no longer registers a worker and actively purges any
+   *     it finds (src/utils/unregisterPwa.js);
+   *   - /sw.js is answered with a self-destructing worker rather than the real
+   *     one, so a browser that somehow still asks for it is cleaned up;
+   *   - Clear-Site-Data on the kill-switch drops storage and caches too.
+   */
   const send = (file, status = 200) => {
     response.writeHead(status, {
       'Content-Type': MIME[path.extname(file)] || 'application/octet-stream',
-      'Cache-Control': 'no-store',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+      Pragma: 'no-cache',
+      Expires: '0',
     });
     fs.createReadStream(file).pipe(response);
   };
+
+  /*
+   * Kill-switch worker. Any client still holding a registration for this origin
+   * fetches /sw.js on update check; serving this instead of the real worker
+   * makes it uninstall itself and drop every cache it created.
+   */
+  if (url === '/sw.js') {
+    response.writeHead(200, {
+      'Content-Type': 'application/javascript; charset=utf-8',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+      'Clear-Site-Data': '"cache", "storage"',
+    });
+    response.end(
+      [
+        '// Review origin: self-destructing worker. Not the production worker.',
+        "self.addEventListener('install', () => self.skipWaiting());",
+        "self.addEventListener('activate', (event) => {",
+        '  event.waitUntil((async () => {',
+        '    for (const key of await caches.keys()) await caches.delete(key);',
+        '    await self.registration.unregister();',
+        "    for (const client of await self.clients.matchAll({ type: 'window' })) client.navigate(client.url);",
+        '  })());',
+        '});',
+      ].join('\n'),
+    );
+    return;
+  }
 
   const direct = path.join(ROOT, url);
   // 1. exact file
