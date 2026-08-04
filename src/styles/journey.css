@@ -869,3 +869,169 @@
 .gw-journey[data-capability='c'] .gw-floor-zone {
   animation: none;
 }
+
+/* ---------- THE GAME -------------------------------------------------------- */
+
+.gw-act--game {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow: hidden;
+}
+
+.gw-act--game .gw-spec,
+.gw-act--game .gw-act-body {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-act--game :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+.gw-game-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gw-game-atmos img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  opacity: 0.42;
+}
+
+.gw-act--game::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    var(--sh-night) 28%,
+    color-mix(in srgb, var(--sh-night) 78%, transparent) 62%,
+    color-mix(in srgb, var(--sh-night) 40%, transparent) 100%
+  );
+}
+
+.gw-game-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.gw-game-pillars {
+  list-style: none;
+  margin: clamp(28px, 5vh, 56px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  background: var(--sh-rule-inverse-strong);
+  border: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-game-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+  min-block-size: 160px;
+  padding: clamp(18px, 2.5vw, 28px);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  text-decoration: none;
+  transition: background-color var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-game-pillar:hover {
+  background: var(--sh-night-2);
+}
+
+.gw-game-pillar-name {
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.1rem, 0.95rem + 0.8vw, 1.5rem);
+  font-weight: 800;
+  font-stretch: 96%;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-game-pillar-name {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-game-pillar-copy {
+  color: var(--sh-night-ink-70);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  max-inline-size: 32ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-game-pillar {
+    transition: none;
+  }
+}
+
+/* ---------- THE BRAND ------------------------------------------------------- */
+
+.gw-act--brand {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+.gw-act--brand .gw-spec,
+.gw-act--brand .gw-act-body {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-act--brand :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+.gw-brand-facts {
+  margin: clamp(24px, 4vh, 48px) 0 0;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-brand-facts > div {
+  padding: var(--sh-s-4) var(--sh-s-4) var(--sh-s-4) 0;
+  border-block-end: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-brand-facts dt {
+  margin: 0 0 6px;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-night-ink-70);
+}
+
+[lang='ar'] .gw-brand-facts dt {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-brand-facts dd {
+  margin: 0;
+  max-inline-size: 36ch;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--sh-night-ink);
+}
+
+.gw-act--brand .gw-open-paths {
+  margin-block-start: clamp(24px, 4vh, 40px);
+}

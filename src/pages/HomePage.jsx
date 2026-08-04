@@ -42,6 +42,43 @@ import '../styles/journey.css';
 const libya = shippingConfig.libya;
 
 /** The five departments, placed on the court zone each belongs to. */
+
+/** Verified destinations only. Culture chapter, not invented claims. */
+const GAME = [
+  {
+    to: '/shop/clothing',
+    label: { en: 'Gamewear', ar: 'ملابس اللعب' },
+    copy: {
+      en: 'Jerseys, shorts, full sets and practice wear built for the court.',
+      ar: 'سيريات وشورتات وأطقم كاملة وملابس تمرين مبنية للملعب.',
+    },
+  },
+  {
+    to: '/shop/footwear',
+    label: { en: 'On and off court', ar: 'داخل الملعب وخارجه' },
+    copy: {
+      en: 'Performance footwear and off-court pairs from the live catalogue.',
+      ar: 'أحذية أداء وأزواج خارج الملعب من الكتالوج الحالي.',
+    },
+  },
+  {
+    to: '/shop/basketballs',
+    label: { en: 'The ball', ar: 'الكرة' },
+    copy: {
+      en: 'Match and training basketballs — stock and custom where supported.',
+      ar: 'كرات مباراة وتدريب — بالمخزون والمخصص عند التوفر.',
+    },
+  },
+  {
+    to: '/shop/equipment',
+    label: { en: 'Training systems', ar: 'منظومات التدريب' },
+    copy: {
+      en: 'Hoops, padding, bags and accessories for clubs and academies.',
+      ar: 'سلات وتغليف وحقائب وإكسسوارات للأندية والأكاديميات.',
+    },
+  },
+];
+
 const FLOOR = [
   { to: '/shop/clothing', zone: 'key', name: { en: 'Clothing', ar: 'الملابس' } },
   { to: '/shop/footwear', zone: 'baseline', name: { en: 'Footwear', ar: 'الأحذية' } },
@@ -104,11 +141,13 @@ export default function HomePage() {
 
   const chapters = [
     { id: 'open', label: { en: 'Opening', ar: 'الافتتاح' } },
+    { id: 'game', label: { en: 'The game', ar: 'اللعبة' } },
     { id: 'floor', label: { en: 'The floor', ar: 'الأرضية' } },
     ...(isLibya && ready.length ? [{ id: 'stock', label: { en: 'In stock', ar: 'المتوفر' } }] : []),
     { id: 'workshop', label: { en: 'The workshop', ar: 'الورشة' } },
     { id: 'roster', label: { en: 'The roster', ar: 'الفريق' } },
     { id: 'equipment', label: { en: 'Equipment', ar: 'المعدات' } },
+    { id: 'brand', label: { en: 'The brand', ar: 'العلامة' } },
     { id: 'signoff', label: { en: 'Sign-off', ar: 'الختام' } },
   ];
 
@@ -116,7 +155,7 @@ export default function HomePage() {
   /* Which chapters are dark. The index sits over whatever is in view, so it
      needs to know the ground to invert against — otherwise it needs an opaque
      plate, and a plate full of ticks reads as a debug widget. */
-  const DARK_ACTS = new Set(['open', 'roster', 'signoff']);
+  const DARK_ACTS = new Set(['open', 'game', 'roster', 'brand', 'signoff']);
   const scroller = useRef(null);
 
   // Track the chapter in view so the index can mark it. Falls back silently
@@ -232,7 +271,53 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── 01 THE FLOOR — departments placed on court geometry ───────── */}
+        {/* ── THE GAME — culture and performance, court atmosphere ──────── */}
+        <section id="game" className="gw-act gw-act--game" aria-labelledby="gw-game-title">
+          <picture className="gw-game-atmos" aria-hidden="true">
+            <source
+              type="image/webp"
+              srcSet="/media/atmosphere/court-overhead-1024.webp 1024w, /media/atmosphere/court-overhead-1600.webp 1600w"
+              sizes="100vw"
+            />
+            <img
+              src="/media/atmosphere/court-overhead-1600.webp"
+              alt=""
+              width="1600"
+              height="1067"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <div className="gw-act-inner gw-game-inner">
+            <header className="gw-act-head">
+              <p className="gw-spec">{pick({ en: 'The game', ar: 'اللعبة' })}</p>
+              <h2 id="gw-game-title" className="gw-act-title">
+                {pick({
+                  en: 'Built for how basketball actually moves.',
+                  ar: 'مبني على طريقة حركة كرة السلة.',
+                })}
+              </h2>
+              <p className="gw-act-body">
+                {pick({
+                  en: 'Apparel, footwear, balls and training equipment — introduced as chapters of the game, not as a flat grid of SKUs.',
+                  ar: 'ملابس وأحذية وكرات ومعدات تدريب — تُقدَّم كفصول من اللعبة لا كشبكة مسطحة من المنتجات.',
+                })}
+              </p>
+            </header>
+            <ul className="gw-game-pillars">
+              {GAME.map((pillar) => (
+                <li key={pillar.to}>
+                  <Link to={pillar.to} className="gw-game-pillar">
+                    <span className="gw-game-pillar-name">{pick(pillar.label)}</span>
+                    <span className="gw-game-pillar-copy">{pick(pillar.copy)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* ── THE FLOOR — departments placed on court geometry ───────── */}
         <section id="floor" className="gw-act gw-act--floor" aria-labelledby="gw-floor-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
@@ -419,7 +504,70 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── 06 SIGN-OFF ──────────────────────────────────────────────── */}
+        {/* ── THE BRAND — verified facts only, no invented claims ─────────── */}
+        <section id="brand" className="gw-act gw-act--brand" aria-labelledby="gw-brand-title">
+          <div className="gw-act-inner gw-brand-inner">
+            <header className="gw-act-head">
+              <p className="gw-spec">{pick({ en: 'Shababuna', ar: 'شبابنا' })}</p>
+              <h2 id="gw-brand-title" className="gw-act-title">
+                {pick({
+                  en: 'More than a basketball store.',
+                  ar: 'أكثر من متجر كرة سلة.',
+                })}
+              </h2>
+              <p className="gw-act-body">
+                {pick({
+                  en: 'A basketball commerce and supply platform built in Tripoli for players, clubs, academies, federations and distributors — retail, custom manufacturing, team supply and wholesale under one system.',
+                  ar: 'منصة تجارة وتجهيز كرة سلة بُنيت في طرابلس للاعبين والأندية والأكاديميات والاتحادات والموزعين — تجزئة وتصنيع مخصص وتجهيز فرق وجملة ضمن نظام واحد.',
+                })}
+              </p>
+            </header>
+            <dl className="gw-brand-facts">
+              <div>
+                <dt>{pick({ en: 'Base', ar: 'المقر' })}</dt>
+                <dd>{pick(SITE.address)}</dd>
+              </div>
+              <div>
+                <dt>{pick({ en: 'Reach', ar: 'التغطية' })}</dt>
+                <dd>
+                  {pick({
+                    en: 'Libya local delivery, cash and bank-card options, and ready-to-ship inventory. International customers receive USD pricing with destination shipping confirmed before payment.',
+                    ar: 'توصيل محلي داخل ليبيا مع نقد وبطاقات بنكية ومخزون تسليم فوري. العملاء الدوليون يتلقون تسعيرًا بالدولار مع اعتماد شحن الوجهة قبل الدفع.',
+                  })}
+                </dd>
+              </div>
+              <div>
+                <dt>{pick({ en: 'Custom apparel', ar: 'الملابس المخصصة' })}</dt>
+                <dd>
+                  {pick({
+                    en: 'Custom apparel manufacturing in the United States, proofed before production.',
+                    ar: 'تصنيع الملابس المخصصة في الولايات المتحدة بعد اعتماد البروفة.',
+                  })}
+                </dd>
+              </div>
+              <div>
+                <dt>{pick({ en: 'Catalogue', ar: 'الكتالوج' })}</dt>
+                <dd className="gw-isolate-ltr">
+                  {products.length}{' '}
+                  {pick({
+                    en: 'live products across retail and custom paths',
+                    ar: 'منتجًا حيًّا عبر مسارات التجزئة والتخصيص',
+                  })}
+                </dd>
+              </div>
+            </dl>
+            <div className="gw-open-paths">
+              <Link className="gw-path gw-path--primary" to="/about">
+                <span>{pick({ en: 'About Shababuna', ar: 'عن شبابنا' })}</span>
+              </Link>
+              <Link className="gw-path" to="/our-work">
+                <span>{pick({ en: 'Our Work', ar: 'أعمالنا' })}</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SIGN-OFF ─────────────────────────────────────────────────── */}
         <section id="signoff" className="gw-act gw-act--signoff" aria-labelledby="gw-signoff-title">
           <div className="gw-act-inner gw-signoff-inner">
             <img
