@@ -450,9 +450,21 @@
   overflow: hidden;
 }
 
+/*
+ * Below the two-column breakpoint the stage stacks above the dock. Capping it
+ * at 46svh clipped the artboard and cut the camera controls clean off — clearly
+ * visible at 834px. The stage keeps its own height here and stops being sticky:
+ * a sticky element that is taller than the space it is pinned into just eats
+ * the viewport.
+ */
 @media (max-width: 1099px) {
+  .gw-lab-stage {
+    position: static;
+  }
+
   .gw-lab-stage-inner {
-    max-block-size: 46svh;
+    max-block-size: none;
+    padding-block: var(--sh-s-4);
   }
 }
 
