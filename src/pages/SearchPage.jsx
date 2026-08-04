@@ -43,7 +43,7 @@ export default function SearchPage() {
       {/* A QUERY CONSOLE, not a hero with a box under it. The field is the
           subject of the page: full measure, display scale, with the result
           count as a live figure beside it. */}
-      <section className="gw-console" aria-labelledby="gw-search-title">
+      <section className="gw-console gw-search-desk" aria-labelledby="gw-search-title">
         <div className="gw-console-inner">
           <p className="gw-spec">{pick({ en: 'Search', ar: 'البحث' })}</p>
           <h1 id="gw-search-title" className="gw-console-title">

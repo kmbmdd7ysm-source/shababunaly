@@ -81,7 +81,7 @@ export default function ContactPage() {
       <div className="container">
         <Breadcrumbs items={[{ label: pick({ en: 'Contact', ar: 'تواصل معنا' }) }]} />
       </div>
-      <section className="gw-contact">
+      <section className="gw-contact gw-contact-desk">
         <div className="gw-contact-inner">
           <div className="contact-form-wrap">
             {status === 'success' ? (

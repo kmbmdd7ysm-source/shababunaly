@@ -3,6 +3,7 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getStaffRole, isStaffUser } from '../services/operations';
+import Icon from '../components/icons/Icon';
 import '../styles/command.css';
 
 const Dashboard = lazy(() => import('./OperationsDashboardPage'));
@@ -30,6 +31,21 @@ const links = [
   'users',
   'settings',
 ];
+
+/* Icons identify modules; bare indices did not. Fall back to grid. */
+const MODULE_ICONS = {
+  dashboard: 'grid',
+  orders: 'orders',
+  payments: 'bag',
+  b2b: 'teams',
+  shipping: 'store',
+  catalog: 'shop',
+  inventory: 'work',
+  media: 'grid',
+  security: 'alert',
+  users: 'user',
+  settings: 'help',
+};
 export default function OperationsPage() {
   const auth = useAuth();
   const { pick } = useLanguage();
@@ -57,11 +73,9 @@ export default function OperationsPage() {
           className="gw-command-modules"
           aria-label={pick({ en: 'Operations modules', ar: 'أقسام العمليات' })}
         >
-          {links.map((name, position) => (
+          {links.map((name) => (
             <NavLink key={name} to={`/operations/${name}`} className="gw-command-module">
-              <span className="gw-command-module-index" aria-hidden="true">
-                {String(position + 1).padStart(2, '0')}
-              </span>
+              <Icon name={MODULE_ICONS[name] || 'grid'} />
               <span>{name === 'b2b' ? 'B2B' : name[0].toUpperCase() + name.slice(1)}</span>
             </NavLink>
           ))}

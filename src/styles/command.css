@@ -230,3 +230,15 @@
   color: var(--sh-ink-70);
   font-size: var(--sh-t-small);
 }
+
+.gw-command-module svg {
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  opacity: 0.75;
+}
+
+.gw-command-module.active svg,
+.gw-command-module:hover svg {
+  opacity: 1;
+}
