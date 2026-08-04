@@ -772,3 +772,100 @@
     justify-content: space-between;
   }
 }
+
+/* ==========================================================================
+   THE JOURNEY — MOTION
+   --------------------------------------------------------------------------
+   Scroll-linked, off the main thread, and authored so the FINISHED state is the
+   default. Everything below is layered on only where `animation-timeline` is
+   supported and motion is not reduced, so a browser without it — or a reader
+   who asked for stillness — sees a complete page rather than a broken one.
+
+   Nothing here hijacks scrolling, blocks input, or delays navigation.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The opening's atmosphere drifts and settles as the reader leaves it,
+       giving the photograph depth against the type in front of it. Transform
+       and opacity only, so it stays on the compositor. */
+    .gw-open-atmos img {
+      animation: gw-atmos-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* Type rises out of the ground it sits on. */
+    .gw-act-head,
+    .gw-open-kicker,
+    .gw-open-title,
+    .gw-open-lede,
+    .gw-open-paths,
+    .gw-open-place {
+      animation: gw-act-rise var(--sh-d-4) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 24%;
+    }
+
+    /* A chapter's contents arrive just after its heading rather than with it,
+       which reads as a camera settling rather than everything snapping in. */
+    .gw-exhibit > *,
+    .gw-floor-zone,
+    .gw-stages li,
+    .gw-minimums > div {
+      animation: gw-act-rise var(--sh-d-3) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 30%;
+    }
+
+    /* The court plan draws itself in as the floor chapter arrives. */
+    .gw-floor .gw-floor-court path,
+    .gw-floor .gw-floor-court circle,
+    .gw-floor .gw-floor-court rect {
+      animation: gw-court-draw var(--sh-d-4) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 46%;
+    }
+  }
+}
+
+@keyframes gw-atmos-drift {
+  from {
+    transform: scale(1.08) translate3d(0, -1.5%, 0);
+  }
+  to {
+    transform: scale(1) translate3d(0, 1.5%, 0);
+  }
+}
+
+@keyframes gw-act-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stroke-dash draw. Authored so the finished state is a fully drawn line. */
+@keyframes gw-court-draw {
+  from {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+  }
+  to {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Tier C devices get the finished composition with no scroll choreography at
+   all: the budget is better spent on the photograph than on animating it. */
+.gw-journey[data-capability='c'] .gw-open-atmos img,
+.gw-journey[data-capability='c'] .gw-act-head,
+.gw-journey[data-capability='c'] .gw-exhibit > *,
+.gw-journey[data-capability='c'] .gw-floor-zone {
+  animation: none;
+}
