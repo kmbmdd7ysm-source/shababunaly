@@ -27,6 +27,7 @@ import { useWishlist } from '../hooks/useWishlist';
 import Icon from '../components/icons/Icon';
 import PurchaseActions from '../components/shop/PurchaseActions';
 import ViewingTierNote from '../components/product/ViewingTierNote';
+import ProductViewer from '../components/product/ProductViewer';
 import '../styles/stage.css';
 import '../styles/catalogue.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
@@ -293,51 +294,23 @@ export default function ProductPage() {
             edge to edge; identity, trail and the angle register are overlaid on
             top of it. Nothing sits beside it competing for the same width. */}
         <div className="gw-stage-canvas" data-tier={viewerTier}>
+          {/*
+            The adaptive ProductViewer is the stage. Levels A/B/C/D are chosen
+            by verified assets — never by inventing a spin from one photograph.
+            Full-screen remains available for the current gallery frame.
+          */}
+          <div className="gw-stage-viewer">
+            <ProductViewer product={product} eager />
+          </div>
           <button
             type="button"
-            className="gw-stage-frame"
+            className="gw-stage-zoom"
             onClick={() => setLightboxOpen(true)}
             aria-label={pick({ en: 'View full screen', ar: 'عرض بملء الشاشة' })}
           >
-            <SmartImage
-              src={gallery[activeImg]}
-              alt={pick(product.alt)}
-              eager
-              className="gw-stage-image"
-            />
-            <span className="gw-stage-zoom">
-              <Icon name="search" />
-              {pick({ en: 'Full screen', ar: 'ملء الشاشة' })}
-            </span>
+            <Icon name="search" />
+            {pick({ en: 'Full screen', ar: 'ملء الشاشة' })}
           </button>
-
-          {/* The angle register runs vertically down the trailing edge of the
-              stage — an instrument on the viewer, not a thumbnail strip
-              underneath a photograph. */}
-          {gallery.length > 1 && (
-            <div
-              className="gw-stage-angles"
-              role="tablist"
-              aria-label={pick({ en: 'Product angles', ar: 'زوايا المنتج' })}
-            >
-              {gallery.map((src, index) => (
-                <button
-                  key={src}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeImg === index}
-                  className={`gw-angle${activeImg === index ? ' is-active' : ''}`}
-                  onClick={() => setActiveImg(index)}
-                  aria-label={`${pick(product.name)} ${index + 1}`}
-                >
-                  <SmartImage src={src} alt="" />
-                  <span className="gw-angle-index" aria-hidden="true">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Identity, overlaid on the stage at the leading foot. */}

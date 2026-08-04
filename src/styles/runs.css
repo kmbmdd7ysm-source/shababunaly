@@ -669,3 +669,8 @@
 .gw-world-headband .gw-spec {
   margin: 0 0 var(--sh-s-2);
 }
+
+.gw-world-headband .breadcrumbs a,
+.gw-world-headband .breadcrumbs span {
+  color: var(--sh-ink-70);
+}

@@ -863,3 +863,45 @@
   border-radius: var(--sh-r-1);
   box-shadow: var(--sh-lift);
 }
+
+/* ProductViewer owns the media; the stage supplies the cinematic frame. */
+.gw-stage-viewer {
+  position: relative;
+  z-index: 2;
+  inline-size: min(100%, 720px);
+  margin-inline: auto;
+  padding: clamp(48px, 8vh, 96px) clamp(20px, 4vw, 48px) clamp(140px, 22vh, 220px);
+}
+
+.gw-stage-viewer .gw-viewer {
+  background: transparent;
+}
+
+.gw-stage-viewer .gw-viewer-stage {
+  background: transparent;
+  border: 0;
+  min-block-size: min(58svh, 560px);
+}
+
+.gw-stage-viewer .gw-viewer-note {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-stage-viewer .gw-viewer-tab {
+  color: var(--sh-night-ink-70);
+  border-color: var(--sh-rule-inverse-strong);
+  background: transparent;
+}
+
+.gw-stage-viewer .gw-viewer-tab.is-active {
+  color: var(--sh-night);
+  background: var(--sh-night-ink);
+  border-color: var(--sh-night-ink);
+}
+
+.gw-stage-canvas > .gw-stage-zoom {
+  position: absolute;
+  inset-block-end: clamp(16px, 3vh, 32px);
+  inset-inline-end: clamp(16px, 3vw, 32px);
+  z-index: 5;
+}
