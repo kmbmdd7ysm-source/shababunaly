@@ -27,7 +27,7 @@ export default function ShopPage() {
   const navigate = useNavigate();
   const { t, pick } = useLanguage();
   const { countryCode } = useCommerce();
-  const { products } = useCatalog();
+  const { products, featuredProducts } = useCatalog();
   const isLibya = countryCode === 'LY';
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerRef = useRef(null);
@@ -306,6 +306,8 @@ export default function ShopPage() {
   // The entrance only stands when nothing has been narrowed yet. The moment a
   // visitor filters, sorts or picks a department they are working, not
   // arriving, and the gateway would be in the way.
+  const featured = featuredProducts().slice(0, 4);
+
   const showEntranceValue = !category && !sub && activeTokens.length === 0 && sort === 'featured';
 
   const showEntrance = showEntranceValue;
@@ -323,6 +325,21 @@ export default function ShopPage() {
           doorway that answers "where do I go" before any grid appears. */}
       {showEntrance && (
         <section className="gw-entrance" aria-labelledby="gw-catalogue-title">
+          <picture className="gw-entrance-atmos" aria-hidden="true">
+            <source
+              type="image/webp"
+              srcSet="/media/atmosphere/fabric-macro-900.webp 900w, /media/atmosphere/fabric-macro-1400.webp 1400w"
+              sizes="100vw"
+            />
+            <img
+              src="/media/atmosphere/fabric-macro-1400.webp"
+              alt=""
+              width="1400"
+              height="933"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
           <div className="gw-entrance-inner">
             <div className="gw-entrance-lede">
               <Breadcrumbs items={crumbs} />
@@ -355,16 +372,48 @@ export default function ShopPage() {
         </section>
       )}
 
+      {/* Editorial featured stage — only on arrival, before any filter narrows the set. */}
+      {showEntrance && featured.length > 0 && (
+        <section className="gw-world" aria-labelledby="gw-featured-title">
+          <div className="gw-world-inner">
+            <header className="gw-world-head">
+              <p className="gw-spec">{pick({ en: 'Featured', ar: 'مختارات' })}</p>
+              <h2 id="gw-featured-title" className="gw-world-title">
+                {pick({ en: 'On the floor now', ar: 'على الأرض الآن' })}
+              </h2>
+            </header>
+            <div className="gw-world-stage">
+              <ProductPlinth product={featured[0]} index={0} eager />
+            </div>
+            {featured.length > 1 && (
+              <div className="gw-world-rail">
+                {featured.slice(1).map((product, index) => (
+                  <ProductCard key={product.id} product={product} eager={index < 2} />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ── THE HEADER ──────────────────────────────────────────────────
           Only when working. It carries the department name and the count. */}
       {!showEntrance && (
-        <section className="gw-cat-head" aria-labelledby="gw-catalogue-title">
+        <section
+          className="gw-world-headband"
+          aria-labelledby="gw-catalogue-title"
+          data-dept={category || 'all'}
+        >
           <div className="gw-cat-head-inner">
             <Breadcrumbs items={crumbs} />
             <div className="gw-cat-head-row">
-              <h1 id="gw-catalogue-title" className="gw-cat-title">
-                {heading}
-              </h1>
+              <div>
+                <p className="gw-spec">{pick({ en: 'Department', ar: 'القسم' })}</p>
+                <h1 id="gw-catalogue-title" className="gw-cat-title">
+                  {heading}
+                </h1>
+                {description && <p className="gw-world-lede">{description}</p>}
+              </div>
               <p className="gw-cat-count">
                 <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
                 <span className="gw-spec">

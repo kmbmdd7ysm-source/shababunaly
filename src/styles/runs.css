@@ -559,3 +559,113 @@
   max-inline-size: 46ch;
   color: var(--sh-ink-70);
 }
+
+/* ---------- Entrance atmosphere + editorial world -------------------------- */
+
+.gw-entrance {
+  position: relative;
+  overflow: hidden;
+}
+
+.gw-entrance-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gw-entrance-atmos img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.28;
+}
+
+.gw-entrance::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    var(--sh-night) 34%,
+    color-mix(in srgb, var(--sh-night) 82%, transparent) 70%,
+    color-mix(in srgb, var(--sh-night) 48%, transparent) 100%
+  );
+}
+
+.gw-entrance-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.gw-world {
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  padding-block: clamp(40px, 7vh, 88px);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-world-inner {
+  max-inline-size: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 72px);
+}
+
+.gw-world-head {
+  margin-block-end: clamp(24px, 4vh, 48px);
+}
+
+.gw-world-head .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+}
+
+.gw-world-title {
+  margin: 0;
+  max-inline-size: 18ch;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.8rem, 1.2rem + 2.4vw, 3.2rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 0.98;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-world-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  line-height: 1.3;
+}
+
+.gw-world-stage {
+  margin-block-end: clamp(24px, 4vh, 40px);
+}
+
+.gw-world-rail {
+  display: grid;
+  gap: var(--sh-s-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.gw-world-headband {
+  background: var(--sh-chalk-2);
+  color: var(--sh-ink);
+  border-block-end: 1px solid var(--sh-rule);
+  padding-block: clamp(28px, 5vh, 56px);
+}
+
+.gw-world-lede {
+  margin: var(--sh-s-3) 0 0;
+  max-inline-size: 52ch;
+  color: var(--sh-ink-70);
+  line-height: 1.55;
+}
+
+.gw-world-headband .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+}
