@@ -4,6 +4,7 @@ import Seo from '../components/common/Seo';
 import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/catalogue.css';
 import '../styles/composition.css';
+import '../styles/workspace.css';
 import ProductCard from '../components/shop/ProductCard';
 import { useAuth } from '../context/AuthContext';
 import { useCatalog } from '../context/CatalogContext';
@@ -74,8 +75,17 @@ export default function TeamLockerPage() {
         }
       />
 
-      <div className="gw-catalogue">
-        <div className="gw-catalogue-inner gw-catalogue-inner--full">
+      <section
+        className="gw-vault"
+        aria-label={pick({ en: 'Published products', ar: 'المنتجات المنشورة' })}
+      >
+        <div className="gw-vault-inner">
+          <p className="gw-spec gw-vault-seal">
+            {pick({
+              en: 'Authorized members only · not indexed',
+              ar: 'للأعضاء المصرح لهم فقط · غير مفهرس',
+            })}
+          </p>
           {state.loading ? (
             <p className="gw-locker-status" role="status">
               {pick({ en: 'Loading team store…', ar: 'جاري تحميل متجر الفريق…' })}
@@ -112,7 +122,7 @@ export default function TeamLockerPage() {
             </div>
           )}
         </div>
-      </div>
+      </section>
     </>
   );
 }

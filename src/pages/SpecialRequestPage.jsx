@@ -132,38 +132,49 @@ export default function SpecialRequestPage() {
           ar: 'شارك رابط المنتج أو صورته. يراجع فريق العمليات التوفر والسعر والشحن ومدة الوصول قبل أي دفع.',
         })}
         trail={[{ label: pick({ en: 'Special Request', ar: 'طلب خاص' }) }]}
-        figure={{ value: 4, label: pick({ en: 'steps', ar: 'خطوات' }) }}
       />
       <section className="gw-request">
         <div className="gw-request-inner">
-          <aside className="special-request-info">
-            <p className="section-label">HOW IT WORKS</p>
-            <h2>
+          <aside className="special-request-info gw-request-rail">
+            <p className="gw-spec">{pick({ en: 'How it works', ar: 'كيف يعمل' })}</p>
+            <h2 className="gw-request-rail-title">
               {pick({
                 en: 'A verified quote, not a blind checkout',
                 ar: 'عرض موثق، وليس دفعًا عشوائيًا',
               })}
             </h2>
-            <ol>
+            <ol className="gw-request-steps">
               <li>
+                <span className="gw-request-step-num" aria-hidden="true">
+                  01
+                </span>
                 {pick({
                   en: 'Send one product link or image.',
                   ar: 'أرسل رابط منتج واحدًا أو صورة.',
                 })}
               </li>
               <li>
+                <span className="gw-request-step-num" aria-hidden="true">
+                  02
+                </span>
                 {pick({
                   en: 'We verify the exact item and supplier.',
                   ar: 'نتحقق من المنتج والمورد.',
                 })}
               </li>
               <li>
+                <span className="gw-request-step-num" aria-hidden="true">
+                  03
+                </span>
                 {pick({
                   en: 'You receive price, shipping and timing.',
                   ar: 'يصلك السعر والشحن والمدة.',
                 })}
               </li>
               <li>
+                <span className="gw-request-step-num" aria-hidden="true">
+                  04
+                </span>
                 {pick({
                   en: 'Accept or reject from your account.',
                   ar: 'اقبل العرض أو ارفضه من حسابك.',

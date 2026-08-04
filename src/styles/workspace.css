@@ -398,3 +398,60 @@
     margin-block-end: var(--sh-s-5);
   }
 }
+
+.gw-vault {
+  background: var(--sh-chalk);
+  padding-block: clamp(32px, 5vh, 72px);
+}
+
+.gw-vault-inner {
+  max-inline-size: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 72px);
+}
+
+.gw-vault-seal {
+  margin: 0 0 var(--sh-s-4);
+  color: var(--sh-ink-50);
+}
+
+.gw-request-rail-title {
+  margin: 0 0 var(--sh-s-4);
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-request-rail-title {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-request-steps {
+  list-style: none;
+  margin: 0 0 var(--sh-s-4);
+  padding: 0;
+  border-block-start: 1px solid currentColor;
+}
+
+.gw-request-steps li {
+  display: flex;
+  gap: var(--sh-s-3);
+  align-items: baseline;
+  min-block-size: var(--sh-target);
+  padding-block: var(--sh-s-3);
+  border-block-end: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+}
+
+.gw-request-step-num {
+  flex: none;
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
