@@ -1,9 +1,15 @@
 /* Build marker — review builds only. Deliberately unobtrusive but always
    reachable, so a reviewer can confirm the served commit at any moment. */
 .gw-buildmark {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   position: fixed;
+  /* Trailing edge, not leading: on the homepage the primary calls to action
+     sit at the lower-leading corner and the badge was sitting on top of them
+     in every screenshot. */
   inset-block-end: 12px;
-  inset-inline-start: 12px;
+  inset-inline-end: 12px;
   z-index: 2000;
   font-family: var(--sh-font-display);
   font-variant-numeric: tabular-nums;
@@ -23,7 +29,8 @@
   font-weight: 700;
   letter-spacing: var(--sh-tr-spec);
   cursor: pointer;
-  opacity: 0.62;
+  opacity: 0.86;
+  white-space: nowrap;
 }
 
 .gw-buildmark-toggle:hover,
@@ -40,6 +47,7 @@
 
 .gw-buildmark-panel {
   margin: 8px 0 0;
+  margin-inline-start: auto;
   padding: 12px;
   max-inline-size: min(92vw, 30rem);
   border: 1px solid var(--sh-rule-inverse-strong);

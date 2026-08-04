@@ -26,7 +26,7 @@ const BUILD = {
 };
 
 export default function BuildMarker() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [dist, setDist] = useState('loading…');
   const [builtAt, setBuiltAt] = useState(BUILD.at);
 
