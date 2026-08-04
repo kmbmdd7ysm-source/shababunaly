@@ -28,6 +28,7 @@ const BUILD = {
 export default function BuildMarker() {
   const [open, setOpen] = useState(true);
   const [dist, setDist] = useState('loading…');
+  const [builtAt, setBuiltAt] = useState(BUILD.at);
 
   useEffect(() => {
     document.documentElement.dataset.buildSha = BUILD.sha;
@@ -40,6 +41,18 @@ export default function BuildMarker() {
         const value = String(info.distHash || 'unknown');
         setDist(value);
         BUILD.dist = value;
+        /*
+         * Take the timestamp from build-info.json too. VITE_BUILD_TIME is
+         * stamped when the vite config loads, provenance is written after the
+         * bundle is hashed, and the two differed by a couple of seconds — two
+         * "build timestamps" on one page is exactly the kind of small
+         * inconsistency that makes a reviewer distrust the whole badge.
+         * build-info.json is the single authority.
+         */
+        if (info.builtAt) {
+          BUILD.at = String(info.builtAt);
+          setBuiltAt(String(info.builtAt));
+        }
         globalThis.__SHABABUNA_BUILD__ = { ...BUILD, dist: value };
         document.documentElement.dataset.buildDist = value;
       })
@@ -71,7 +84,7 @@ export default function BuildMarker() {
           </div>
           <div>
             <dt>Built</dt>
-            <dd>{BUILD.at}</dd>
+            <dd>{builtAt}</dd>
           </div>
           <div>
             <dt>Dist</dt>
