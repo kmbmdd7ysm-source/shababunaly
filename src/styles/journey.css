@@ -429,7 +429,7 @@
   min-block-size: var(--sh-target-lg);
   padding-inline: var(--sh-s-5);
   border: 1px solid currentColor;
-  border-radius: var(--sh-r-1);
+  border-radius: 999px;
   text-decoration: none;
   color: inherit;
   font-family: var(--sh-font-display);
@@ -1034,4 +1034,9 @@
 
 .gw-act--brand .gw-open-paths {
   margin-block-start: clamp(24px, 4vh, 40px);
+}
+
+.gw-floor-zone[data-zone='ready'] {
+  inset-block-start: 28%;
+  inset-inline-start: 8%;
 }

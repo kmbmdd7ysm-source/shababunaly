@@ -504,3 +504,102 @@
     padding: var(--sh-s-4);
   }
 }
+
+/* Open editorial product cards — circular actions, no rectangular chrome. */
+.product-card {
+  border: 0 !important;
+  background: transparent;
+  box-shadow: none !important;
+}
+
+.product-card-media {
+  border: 0 !important;
+  border-radius: var(--sh-r-1);
+  overflow: hidden;
+  position: relative;
+}
+
+.gw-card-action,
+.gw-quick-add {
+  position: absolute;
+  z-index: 3;
+  inline-size: var(--sh-target);
+  block-size: var(--sh-target);
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sh-chalk) 92%, transparent);
+  color: var(--sh-ink);
+  cursor: pointer;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--sh-ink) 12%, transparent);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity var(--sh-d-2, 220ms) ease,
+    transform var(--sh-d-2, 220ms) ease,
+    background-color var(--sh-d-2, 220ms) ease;
+}
+
+.product-card:hover .gw-card-action,
+.product-card:focus-within .gw-card-action,
+.product-card:hover .gw-quick-add,
+.product-card:focus-within .gw-quick-add {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none) {
+  .gw-card-action,
+  .gw-quick-add {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.gw-card-action--wish {
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+}
+
+.gw-card-action--compare {
+  inset-block-start: 12px;
+  inset-inline-end: calc(12px + var(--sh-target) + 8px);
+}
+
+.gw-quick-add {
+  inset-block-end: 12px;
+  inset-inline-end: 12px;
+  inline-size: auto;
+  min-inline-size: var(--sh-target);
+  padding-inline: 14px;
+  gap: 8px;
+  grid-auto-flow: column;
+}
+
+.gw-quick-add-label {
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-quick-add-label {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.gw-card-action.is-active,
+.gw-quick-add:hover {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-card-action,
+  .gw-quick-add {
+    transition: none;
+  }
+}

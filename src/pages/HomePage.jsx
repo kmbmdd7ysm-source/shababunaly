@@ -80,6 +80,12 @@ const GAME = [
 ];
 
 const FLOOR = [
+  {
+    to: '/shop/ready-to-ship',
+    zone: 'ready',
+    name: { en: 'Ready to Ship', ar: 'تسليم فوري' },
+    libyaOnly: true,
+  },
   { to: '/shop/clothing', zone: 'key', name: { en: 'Clothing', ar: 'الملابس' } },
   { to: '/shop/footwear', zone: 'baseline', name: { en: 'Footwear', ar: 'الأحذية' } },
   {
@@ -260,6 +266,11 @@ export default function HomePage() {
               <Link className="gw-path gw-path--primary" to="/shop">
                 <span>{pick({ en: 'Shop', ar: 'تسوّق' })}</span>
               </Link>
+              {isLibya && (
+                <Link className="gw-path" to="/shop/ready-to-ship">
+                  <span>{pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}</span>
+                </Link>
+              )}
               <Link className="gw-path" to="/customize">
                 <span>{pick({ en: 'Customize', ar: 'صمّم' })}</span>
               </Link>
@@ -328,7 +339,7 @@ export default function HomePage() {
             </header>
             <div className="gw-floor">
               <CourtPlan />
-              {FLOOR.map((zone) => (
+              {FLOOR.filter((zone) => !zone.libyaOnly || isLibya).map((zone) => (
                 <Link key={zone.to} to={zone.to} className="gw-floor-zone" data-zone={zone.zone}>
                   <span className="gw-floor-name">{pick(zone.name)}</span>
                   {/* A count is information; an index number was not. */}

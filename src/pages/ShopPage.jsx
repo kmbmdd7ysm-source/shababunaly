@@ -360,17 +360,31 @@ export default function ShopPage() {
               </p>
             </div>
             <ul className="gw-entrance-gates">
-              {departments.map((item) => (
-                <li key={item.slug}>
-                  <Link to={`/shop/${item.slug}`} className="gw-gate">
-                    <span className="gw-gate-name">{pick(item.name)}</span>
+              {isLibya && (
+                <li>
+                  <Link to="/shop/ready-to-ship" className="gw-gate gw-gate--ready">
+                    <span className="gw-gate-name">
+                      {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                    </span>
                     <span className="gw-gate-count gw-isolate-ltr">
-                      {products.filter((entry) => entry.category === item.slug).length ||
-                        baseProducts.length}
+                      {products.filter((entry) => entry.readyToShip).length}
                     </span>
                   </Link>
                 </li>
-              ))}
+              )}
+              {departments
+                .filter((item) => item.slug !== 'ready-to-ship')
+                .map((item) => (
+                  <li key={item.slug}>
+                    <Link to={`/shop/${item.slug}`} className="gw-gate">
+                      <span className="gw-gate-name">{pick(item.name)}</span>
+                      <span className="gw-gate-count gw-isolate-ltr">
+                        {products.filter((entry) => entry.category === item.slug).length ||
+                          baseProducts.length}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
         </section>
@@ -503,6 +517,11 @@ export default function ShopPage() {
           </nav>
 
           <div className="gw-console-tools">
+            {isLibya && category !== 'ready-to-ship' && (
+              <Link to="/shop/ready-to-ship" className="gw-console-ready">
+                {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+              </Link>
+            )}
             <button
               ref={triggerRef}
               type="button"

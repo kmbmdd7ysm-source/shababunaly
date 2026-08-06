@@ -32,6 +32,7 @@ const BRIDGE_LAYERS = [
   'account.css',
   'command.css',
   'shell.nav.css',
+  'sysbanner.css',
   'journey.css',
   'runs.css',
   'spine.css',

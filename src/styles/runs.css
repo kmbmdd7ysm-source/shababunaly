@@ -694,3 +694,31 @@
   gap: var(--sh-s-4);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
 }
+
+.gw-gate--ready .gw-gate-name {
+  color: var(--sh-verified);
+}
+
+.gw-console-ready {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-4);
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sh-verified) 16%, transparent);
+  color: var(--sh-ink);
+  text-decoration: none;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+[lang='ar'] .gw-console-ready {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}

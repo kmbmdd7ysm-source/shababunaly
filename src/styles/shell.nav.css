@@ -43,10 +43,28 @@
   z-index: 800;
 }
 
-[data-cinematic-open='yes'] .gw-shell {
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline: 0;
+/* Cinematic openings stay under a STICKY shell. Fixed positioning covered the
+   system banner and announcement. The opening pulls under the shell instead. */
+[data-cinematic-open='yes'] .route-shell {
+  margin-block-start: calc(-1 * var(--gw-head-h));
+}
+
+@media (max-width: 899px) {
+  [data-cinematic-open='yes'] .route-shell {
+    margin-block-start: calc(-1 * var(--gw-head-h-sm));
+  }
+}
+
+[data-cinematic-open='yes'] .gw-act--open,
+[data-cinematic-open='yes'] .gw-entrance {
+  padding-block-start: calc(var(--gw-head-h) + clamp(24px, 4vh, 48px));
+}
+
+@media (max-width: 899px) {
+  [data-cinematic-open='yes'] .gw-act--open,
+  [data-cinematic-open='yes'] .gw-entrance {
+    padding-block-start: calc(var(--gw-head-h-sm) + clamp(20px, 4vh, 36px));
+  }
 }
 
 .gw-head {
@@ -171,6 +189,7 @@
   display: grid;
   place-items: center;
   border: 0;
+  border-radius: 999px;
   background: transparent;
   color: var(--sh-night-ink-70);
   cursor: pointer;
@@ -179,6 +198,7 @@
 
 .gw-tool:hover {
   color: var(--sh-night-ink);
+  background: color-mix(in srgb, var(--sh-night-ink) 10%, transparent);
 }
 
 .gw-tool svg {
@@ -219,10 +239,10 @@
   gap: 10px;
   min-block-size: var(--sh-target);
   margin-inline-start: var(--sh-s-2);
-  padding-inline: var(--sh-s-3);
-  border: 1px solid var(--sh-rule-inverse-strong);
-  border-radius: var(--sh-r-1);
-  background: transparent;
+  padding-inline: var(--sh-s-4);
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sh-night-ink) 12%, transparent);
   color: var(--sh-night-ink);
   cursor: pointer;
   font-family: var(--sh-font-display);

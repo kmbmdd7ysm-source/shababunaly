@@ -1,0 +1,173 @@
+/* System / readiness banner — document flow, never an absolute overlay. */
+
+.gw-sysbanner {
+  display: grid;
+  grid-template-rows: 0fr;
+  background: var(--sh-night-2);
+  color: var(--sh-night-ink);
+  border-block-end: 1px solid transparent;
+  transition:
+    grid-template-rows 280ms var(--sh-e-draw),
+    border-color 280ms var(--sh-e-draw);
+  overflow: hidden;
+}
+
+.gw-sysbanner[data-open='yes'] {
+  grid-template-rows: 1fr;
+  border-block-end-color: var(--sh-rule-inverse-strong));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-sysbanner {
+    transition: none;
+  }
+}
+
+.gw-sysbanner-inner {
+  min-block-size: 0;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sh-s-3);
+  padding-inline: clamp(16px, 3vw, 48px);
+  padding-block: 0;
+}
+
+.gw-sysbanner[data-open='yes'] .gw-sysbanner-inner {
+  padding-block: 10px;
+}
+
+.gw-sysbanner-copy {
+  margin: 0;
+  flex: 1 1 16rem;
+  max-inline-size: 70ch;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  text-align: start;
+}
+
+.gw-sysbanner-dismiss {
+  flex: none;
+  position: relative;
+  min-inline-size: var(--sh-target);
+  min-block-size: var(--sh-target);
+  margin: 0;
+  padding-inline: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--sh-night-ink);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+[lang='ar'] .gw-sysbanner-dismiss {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.gw-sysbanner-dismiss:hover,
+.gw-sysbanner-dismiss:focus-visible {
+  color: var(--sh-signal-on-dark);
+}
+
+.gw-sysbanner :focus-visible {
+  outline: 2px solid var(--sh-signal-on-dark);
+  outline-offset: 2px;
+}
+
+/* Merchandising announcement — same flow contract as the system banner. */
+
+.gw-announce {
+  display: grid;
+  grid-template-rows: 0fr;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  border-block-end: 1px solid transparent;
+  transition:
+    grid-template-rows 280ms var(--sh-e-draw),
+    border-color 280ms var(--sh-e-draw);
+  overflow: hidden;
+}
+
+.gw-announce[data-open='yes'] {
+  grid-template-rows: 1fr;
+  border-block-end-color: var(--sh-rule-inverse-strong));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-announce {
+    transition: none;
+  }
+}
+
+.gw-announce-inner {
+  min-block-size: 0;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 16px;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.gw-announce[data-open='yes'] .gw-announce-inner {
+  padding-block: 8px;
+}
+
+.gw-announce-link {
+  flex: 1 1 12rem;
+  max-inline-size: 72ch;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.gw-announce-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[lang='ar'] .gw-announce-link {
+  letter-spacing: 0;
+}
+
+.gw-announce-dismiss {
+  flex: none;
+  min-inline-size: var(--sh-target);
+  min-block-size: var(--sh-target);
+  border: 0;
+  background: transparent;
+  color: var(--sh-night-ink-70));
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+[lang='ar'] .gw-announce-dismiss {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.gw-announce-dismiss:hover {
+  color: var(--sh-night-ink);
+}

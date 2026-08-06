@@ -465,3 +465,58 @@
   text-transform: none;
   letter-spacing: var(--sh-tr-ar);
 }
+
+.gw-empty-orb {
+  color: var(--sh-ink-50);
+  margin-block-end: var(--sh-s-4);
+}
+
+.gw-empty-orb svg {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gw-empty-orb svg {
+    animation: gw-ball-spin 18s linear infinite;
+  }
+}
+
+@keyframes gw-ball-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gw-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-3);
+  margin-block-start: var(--sh-s-4);
+}
+
+.gw-btn {
+  border-radius: 999px !important;
+}
+
+.gw-btn--ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--sh-target-lg, 48px);
+  padding-inline: var(--sh-s-5);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-btn--ghost {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}

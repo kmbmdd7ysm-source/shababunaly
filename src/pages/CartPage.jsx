@@ -59,11 +59,36 @@ export default function CartPage() {
                action, but the screen does something. */
             <div className="gw-ledger-empty">
               <div className="gw-ledger-empty-say">
+                <div className="gw-empty-orb" aria-hidden="true">
+                  <svg viewBox="0 0 120 120" width="120" height="120" fill="none">
+                    <circle cx="60" cy="60" r="52" stroke="currentColor" strokeWidth="2.5" />
+                    <path
+                      d="M60 8c18 16 28 34 28 52s-10 36-28 52"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                    <path
+                      d="M60 8c-18 16-28 34-28 52s10 36 28 52"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                    <path d="M12 48c30 8 66 8 96 0" stroke="currentColor" strokeWidth="2" />
+                    <path d="M12 72c30-8 66-8 96 0" stroke="currentColor" strokeWidth="2" />
+                  </svg>
+                </div>
+
                 <p className="gw-ledger-empty-line">{t.cart.empty}</p>
                 <p className="gw-ledger-empty-hint">{t.cart.emptyHint}</p>
-                <Link to="/shop" className="gw-btn gw-btn--primary">
-                  {t.cart.startShopping}
-                </Link>
+                <div className="gw-empty-actions">
+                  <Link to="/shop" className="gw-btn gw-btn--primary">
+                    {t.cart.startShopping}
+                  </Link>
+                  {isLibya && (
+                    <Link to="/shop/ready-to-ship" className="gw-btn gw-btn--ghost">
+                      {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                    </Link>
+                  )}
+                </div>
               </div>
               <ul className="gw-ledger-gates">
                 {categories

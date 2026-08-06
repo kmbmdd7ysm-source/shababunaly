@@ -63,17 +63,21 @@ export default function ProductCard({ product, eager = false, displayColor = nul
       purchaseMode: 'retail',
       readyToShip: product.readyToShip === true && variant.readyToShip !== false,
       customizable: product.customizable === true,
-      madeInUSA: product.madeInUSA === true && product.claimVerified === true && Boolean(product.claimEvidenceReference),
+      madeInUSA:
+        product.madeInUSA === true &&
+        product.claimVerified === true &&
+        Boolean(product.claimEvidenceReference),
       largeEquipment: product.largeEquipment === true,
       deliveryProfile: product.readyToShip ? 'ready' : 'standard',
     });
   };
 
-  const actionLabel = action.type === 'choose-options'
-    ? pick({ en: 'Choose options', ar: 'اختر الخيارات' })
-    : action.type === 'quote'
-      ? pick({ en: 'Request price', ar: 'اطلب السعر' })
-      : t.common.quickAdd;
+  const actionLabel =
+    action.type === 'choose-options'
+      ? pick({ en: 'Choose options', ar: 'اختر الخيارات' })
+      : action.type === 'quote'
+        ? pick({ en: 'Request price', ar: 'اطلب السعر' })
+        : t.common.quickAdd;
 
   return (
     <article className="product-card" data-product-id={product.id}>
@@ -102,15 +106,22 @@ export default function ProductCard({ product, eager = false, displayColor = nul
         <div className="product-card-badges">
           {comingSoon && <Badge tone="limited">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</Badge>}
           {!comingSoon && soldOut && <Badge tone="sold">{t.badge.soldOut}</Badge>}
-          {!comingSoon && !soldOut && product.readyToShip && countryCode === 'LY' && <span className="ready-badge"><i className="ready-dot" />{pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}</span>}
+          {!comingSoon && !soldOut && product.readyToShip && countryCode === 'LY' && (
+            <span className="ready-badge">
+              <i className="ready-dot" />
+              {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+            </span>
+          )}
           {!comingSoon && !soldOut && onSale && <Badge tone="sale">{t.badge.sale}</Badge>}
           {!comingSoon && !soldOut && product.newArrival && <Badge tone="new">{t.badge.new}</Badge>}
-          {!comingSoon && !soldOut && product.bestSeller && <Badge tone="best">{t.badge.best}</Badge>}
+          {!comingSoon && !soldOut && product.bestSeller && (
+            <Badge tone="best">{t.badge.best}</Badge>
+          )}
           {!comingSoon && !soldOut && low && <Badge tone="limited">{t.badge.limited}</Badge>}
         </div>
         <button
           type="button"
-          className={`wishlist-btn${has(product.id) ? ' active' : ''}`}
+          className={`gw-card-action gw-card-action--wish${has(product.id) ? ' is-active' : ''}`}
           onClick={() => toggle(product.id)}
           aria-pressed={has(product.id)}
           aria-label={has(product.id) ? t.a11y.removeWishlist : t.a11y.addWishlist}
@@ -119,7 +130,7 @@ export default function ProductCard({ product, eager = false, displayColor = nul
         </button>
         <button
           type="button"
-          className={`compare-btn${compare.has(product.id) ? ' active' : ''}`}
+          className={`gw-card-action gw-card-action--compare${compare.has(product.id) ? ' is-active' : ''}`}
           onClick={() => compare.toggle(product.id)}
           aria-pressed={compare.has(product.id)}
           aria-label={pick({ en: 'Compare product', ar: 'قارن المنتج' })}
@@ -127,8 +138,14 @@ export default function ProductCard({ product, eager = false, displayColor = nul
           <Icon name="compare" />
         </button>
         {!comingSoon && !soldOut && action.type !== 'unavailable' && (
-          <button type="button" className="quick-add" onClick={runPrimaryAction}>
-            {actionLabel}
+          <button
+            type="button"
+            className="gw-quick-add"
+            onClick={runPrimaryAction}
+            aria-label={actionLabel}
+          >
+            <Icon name="bag" />
+            <span className="gw-quick-add-label">{actionLabel}</span>
           </button>
         )}
       </div>
@@ -139,7 +156,9 @@ export default function ProductCard({ product, eager = false, displayColor = nul
         </Link>
         <div className="product-card-meta">
           {product.quoteOnly ? (
-            <span className="status-pill">{pick({ en: 'Price by request', ar: 'السعر عند الطلب' })}</span>
+            <span className="status-pill">
+              {pick({ en: 'Price by request', ar: 'السعر عند الطلب' })}
+            </span>
           ) : comingSoon ? (
             <span className="status-pill">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</span>
           ) : (
