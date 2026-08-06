@@ -10,6 +10,7 @@ import Badge from '../common/Badge';
 import { useCompare } from '../../context/CompareContext';
 import Icon from '../icons/Icon';
 import ColorSwatch from '../common/ColorSwatch';
+import '../../styles/product-card.css';
 import { getCompareAction } from '../../utils/productOptions';
 import { getVariantPurchaseLimit } from '../../utils/productEligibility';
 

@@ -25,6 +25,7 @@ const BRIDGE_LAYERS = [
   'masthead.css',
   'colophon.css',
   'catalogue.css',
+  'product-card.css',
   'stage.css',
   'ledger.css',
   'checkout.css',
