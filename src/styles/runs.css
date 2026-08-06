@@ -722,3 +722,44 @@
   letter-spacing: var(--sh-tr-ar);
   text-transform: none;
 }
+
+.gw-world-headband {
+  position: relative;
+  overflow: hidden;
+}
+
+.gw-world-headband-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gw-world-headband-atmos img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+}
+
+.gw-world-headband[data-dept='ready-to-ship'] {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+.gw-world-headband[data-dept='ready-to-ship'] .gw-spec,
+.gw-world-headband[data-dept='ready-to-ship'] .gw-world-lede,
+.gw-world-headband[data-dept='ready-to-ship'] .breadcrumbs a,
+.gw-world-headband[data-dept='ready-to-ship'] .breadcrumbs span {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-world-headband[data-dept='ready-to-ship'] .gw-cat-title,
+.gw-world-headband[data-dept='ready-to-ship'] .gw-figure {
+  color: var(--sh-night-ink);
+}
+
+.gw-world-headband .gw-cat-head-inner {
+  position: relative;
+  z-index: 1;
+}
