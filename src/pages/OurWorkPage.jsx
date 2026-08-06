@@ -61,10 +61,25 @@ export default function OurWorkPage() {
       />
 
       {/* Capabilities as numbered plates rather than four identical cards. */}
-      <section className="gw-principles" aria-labelledby="our-work-capabilities">
+      <section className="gw-principles gw-work-board" aria-labelledby="our-work-capabilities">
+        <picture className="gw-work-atmos" aria-hidden="true">
+          <source
+            type="image/webp"
+            srcSet="/media/atmosphere/court-overhead-1024.webp 1024w, /media/atmosphere/court-overhead-1600.webp 1600w"
+            sizes="100vw"
+          />
+          <img
+            src="/media/atmosphere/court-overhead-1600.webp"
+            alt=""
+            width="1600"
+            height="1067"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
         <div className="gw-principles-inner gw-principles-inner--wide">
           <div className="gw-principles-head">
-            <p className="gw-spec">CAPABILITIES</p>
+            <p className="gw-spec">{pick({ en: 'Capabilities', ar: 'القدرات' })}</p>
             <h2 id="our-work-capabilities" className="gw-principles-title">
               {pick({ en: 'What we build and supply', ar: 'ما نقوم بتصنيعه وتوفيره' })}
             </h2>

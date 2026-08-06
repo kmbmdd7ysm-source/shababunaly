@@ -809,3 +809,41 @@
     padding-block-start: var(--sh-s-2);
   }
 }
+
+.gw-layer-console {
+  margin-block-start: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow: hidden;
+}
+
+.gw-layer-console .production-editor {
+  background: transparent;
+  color: var(--sh-night-ink);
+}
+
+.gw-layer-console .production-editor-toolbar,
+.gw-layer-console .production-editor-sidebar,
+.gw-layer-console .production-editor-panel {
+  border-color: var(--sh-rule-inverse-strong);
+}
+
+.gw-layer-console .production-editor-toolbar button,
+.gw-layer-console .production-editor-sidebar button,
+.gw-layer-console label,
+.gw-layer-console .production-editor-panel {
+  color: var(--sh-night-ink);
+}
+
+.gw-layer-console .production-editor-toolbar button {
+  border-color: var(--sh-rule-inverse-strong);
+  background: transparent;
+}
+
+.gw-layer-console .production-editor-toolbar button.is-active,
+.gw-layer-console .production-editor-toolbar button[aria-pressed='true'] {
+  background: var(--sh-night-ink);
+  color: var(--sh-night);
+}

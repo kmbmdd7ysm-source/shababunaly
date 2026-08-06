@@ -674,3 +674,23 @@
 .gw-world-headband .breadcrumbs span {
   color: var(--sh-ink-70);
 }
+
+.gw-dept-world {
+  background: var(--sh-chalk);
+  border-block-end: 1px solid var(--sh-rule);
+  padding-block: clamp(28px, 5vh, 56px);
+}
+
+.gw-dept-world-inner {
+  max-inline-size: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 72px);
+  display: grid;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.gw-dept-world-rail {
+  display: grid;
+  gap: var(--sh-s-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+}

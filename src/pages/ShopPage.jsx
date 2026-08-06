@@ -296,19 +296,23 @@ export default function ShopPage() {
   // The catalogue reads as a set of RUNS rather than one undifferentiated grid.
   // The lead product of each run gets a plinth; the remainder gets an efficient
   // grid. This is presentation only — `filtered` and its order are untouched.
-  const RUN = 9;
-  const runs = [];
-  for (let index = 0; index < filtered.length; index += RUN) {
-    const slice = filtered.slice(index, index + RUN);
-    runs.push({ lead: slice[0], rest: slice.slice(1), from: index });
-  }
-
   // The entrance only stands when nothing has been narrowed yet. The moment a
   // visitor filters, sorts or picks a department they are working, not
   // arriving, and the gateway would be in the way.
   const featured = featuredProducts().slice(0, 4);
 
   const showEntranceValue = !category && !sub && activeTokens.length === 0 && sort === 'featured';
+
+  const RUN = 9;
+  // When a department world spotlights the lead product, the runs start after it
+  // so the same product is not presented twice in one scroll.
+  const runSource =
+    !showEntranceValue && category && filtered.length > 0 ? filtered.slice(1) : filtered;
+  const runs = [];
+  for (let index = 0; index < runSource.length; index += RUN) {
+    const slice = runSource.slice(index, index + RUN);
+    runs.push({ lead: slice[0], rest: slice.slice(1), from: index });
+  }
 
   const showEntrance = showEntranceValue;
   // The entrance is a full-bleed dark composition; the working header is light,
@@ -451,6 +455,22 @@ export default function ShopPage() {
         </section>
       )}
 
+      {/* Department world stage — editorial lead when browsing a department. */}
+      {!showEntrance && category && filtered.length > 0 && (
+        <section className="gw-dept-world" aria-label={heading}>
+          <div className="gw-dept-world-inner">
+            <ProductPlinth product={filtered[0]} index={0} eager />
+            {filtered.length > 1 && (
+              <div className="gw-dept-world-rail">
+                {filtered.slice(1, 4).map((product) => (
+                  <ProductCard key={`world-${product.id}`} product={product} />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ── THE CONSOLE ─────────────────────────────────────────────────
           The filter sidebar is gone. Every control now lives in one sticky
           instrument strip and filters open as a sheet on ALL viewports, so the
@@ -538,22 +558,24 @@ export default function ShopPage() {
           every nine products so a long catalogue keeps its rhythm. */}
       <div className="gw-runs">
         {filtered.length ? (
-          runs.map((run) => (
-            <section key={run.from} className="gw-run" aria-label={`${heading} ${run.from + 1}`}>
-              <ProductPlinth product={run.lead} index={run.from / RUN} eager={run.from === 0} />
-              {run.rest.length > 0 && (
-                <div className="gw-run-grid">
-                  {run.rest.map((product, position) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      eager={run.from === 0 && position < 3}
-                    />
-                  ))}
-                </div>
-              )}
-            </section>
-          ))
+          runs.length ? (
+            runs.map((run) => (
+              <section key={run.from} className="gw-run" aria-label={`${heading} ${run.from + 1}`}>
+                <ProductPlinth product={run.lead} index={run.from / RUN} eager={run.from === 0} />
+                {run.rest.length > 0 && (
+                  <div className="gw-run-grid">
+                    {run.rest.map((product, position) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        eager={run.from === 0 && position < 3}
+                      />
+                    ))}
+                  </div>
+                )}
+              </section>
+            ))
+          ) : null
         ) : (
           <div className="gw-run">
             <EmptyState

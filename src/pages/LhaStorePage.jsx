@@ -53,6 +53,16 @@ export default function LhaStorePage() {
         />
       </RouteMasthead>
 
+      <section className="gw-partner-world" aria-label="LHA">
+        <div className="gw-partner-world-inner">
+          <p className="gw-spec">
+            {pick({ en: 'Official partner collection', ar: 'مجموعة الشريك الرسمية' })}
+          </p>
+          <h2 className="gw-partner-world-title">
+            {pick({ en: 'All LHA clothing and accessories', ar: 'جميع ملابس وإكسسوارات LHA' })}
+          </h2>
+        </div>
+      </section>
       <div className="gw-catalogue">
         <div className="gw-catalogue-inner gw-catalogue-inner--full">
           <div className="gw-catalogue-bar">

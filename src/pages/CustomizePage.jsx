@@ -861,12 +861,14 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     />
                   </label>
                 </div>
-                <ProductionDesignEditor
-                  design={design}
-                  value={design.studio || createDefaultStudio(design)}
-                  onChange={setStudio}
-                  readOnly={lockedDesign}
-                />
+                <div className="gw-layer-console">
+                  <ProductionDesignEditor
+                    design={design}
+                    value={design.studio || createDefaultStudio(design)}
+                    onChange={setStudio}
+                    readOnly={lockedDesign}
+                  />
+                </div>
                 <div className="production-document-actions">
                   <button
                     type="button"
