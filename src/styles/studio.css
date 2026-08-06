@@ -847,3 +847,78 @@
   background: var(--sh-night-ink);
   color: var(--sh-night);
 }
+
+.gw-family-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sh-s-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.gw-family-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sh-s-2);
+  min-block-size: 160px;
+  padding: clamp(20px, 3vw, 28px);
+  border: 0;
+  border-radius: 28px;
+  background: var(--sh-chalk-2);
+  color: var(--sh-ink);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color var(--sh-d-2) var(--sh-e-draw),
+    transform var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-family-card:hover,
+.gw-family-card.is-active {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+.gw-family-card-name {
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-family-card-name {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-family-card-copy,
+.gw-family-card-kicker {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  opacity: 0.78;
+}
+
+.gw-family-card-kicker {
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+[lang='ar'] .gw-family-card-kicker {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-family-card {
+    transition: none;
+  }
+}

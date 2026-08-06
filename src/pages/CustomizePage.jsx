@@ -46,6 +46,46 @@ const STEPS = [
   { key: 'review', en: 'Review', ar: 'المراجعة' },
 ];
 
+/* High-level families — specific types open after a family is chosen. */
+const PRODUCT_FAMILIES = [
+  {
+    key: 'gamewear',
+    label: { en: 'Gamewear', ar: 'ملابس اللعب' },
+    copy: {
+      en: 'Game sets, jerseys and shorts for match day.',
+      ar: 'أطقم وسيريات وشورتات ليوم المباراة.',
+    },
+    types: ['game-set', 'game-jersey', 'game-shorts'],
+  },
+  {
+    key: 'training',
+    label: { en: 'Training', ar: 'التدريب' },
+    copy: {
+      en: 'Practice sets, shooting shirts and warm-ups.',
+      ar: 'أطقم تمرين وقمصان تسديد وملابس إحماء.',
+    },
+    types: ['practice-set', 'shooting-shirt', 'warmup'],
+  },
+  {
+    key: 'apparel',
+    label: { en: 'Team apparel', ar: 'ملابس الفريق' },
+    copy: {
+      en: 'Hoodies, pants, tracksuits and compression.',
+      ar: 'هوديز وسراويل وبدلات وملابس ضاغطة.',
+    },
+    types: ['hoodie', 'team-pants', 'tracksuit', 'compression', 'tee'],
+  },
+  {
+    key: 'gear',
+    label: { en: 'Bags, balls & equipment', ar: 'حقائب وكرات ومعدات' },
+    copy: {
+      en: 'Team bags, sleeves, basketballs and hoop padding.',
+      ar: 'حقائب وسليفس وكرات وتغليف السلة.',
+    },
+    types: ['bag', 'sleeve', 'basketball', 'hoop-padding'],
+  },
+];
+
 function productTypeFromCatalog(slug, getProduct) {
   const product = slug && typeof getProduct === 'function' ? getProduct(slug) : null;
   if (!product) return null;
@@ -127,6 +167,7 @@ export default function CustomizePage() {
     quantity: initialProduct.minimum,
   });
   const [roster, setRoster] = useState([]);
+  const [productFamily, setProductFamily] = useState(null);
   const [files, setFiles] = useState([]);
   const [contact, setContact] = useState({
     name: '',
@@ -623,33 +664,87 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
 
           <div className="gw-lab-panel">
             {step === 'product' && (
-              <section aria-labelledby="custom-product-title">
-                <p className="section-label">01 — PRODUCT</p>
-                <h2 id="custom-product-title" className="section-title">
-                  {pick({
-                    en: 'Choose what Shababuna will produce',
-                    ar: 'اختر ما ستصنعه شبابنا',
-                  })}
-                </h2>
-                <div className="custom-product-grid">
-                  {CUSTOM_PRODUCT_TYPES.map((item) => (
+              <section className="gw-family-stage" aria-labelledby="custom-product-title">
+                <header className="gw-toolbench-head">
+                  <div>
+                    <p className="gw-spec">
+                      {pick({ en: 'Product laboratory', ar: 'مختبر المنتج' })}
+                    </p>
+                    <h2 id="custom-product-title" className="gw-toolbench-title">
+                      {productFamily
+                        ? pick({ en: 'Choose the product', ar: 'اختر المنتج' })
+                        : pick({
+                            en: 'Choose a product family',
+                            ar: 'اختر عائلة المنتج',
+                          })}
+                    </h2>
+                    <p className="gw-toolbench-lede">
+                      {pick({
+                        en: 'Start with a family, then open a dedicated product into the design stage. Minimums stay exactly as configured.',
+                        ar: 'ابدأ بالعائلة، ثم افتح منتجًا مخصصًا إلى مرحلة التصميم. الحدود الدنيا كما هي مهيأة.',
+                      })}
+                    </p>
+                  </div>
+                  {productFamily && (
                     <button
-                      key={item.key}
                       type="button"
-                      className={design.productType === item.key ? 'active' : ''}
-                      onClick={() => selectProduct(item.key)}
+                      className="gw-btn gw-btn--ghost"
+                      onClick={() => setProductFamily(null)}
                     >
-                      <span>{item.category.replace('-', ' ')}</span>
-                      <strong>{pick(item.label)}</strong>
-                      <small>
-                        {pick({
-                          en: `Minimum ${item.minimum}`,
-                          ar: `الحد الأدنى ${item.minimum}`,
-                        })}
-                      </small>
+                      {pick({ en: 'All families', ar: 'كل العائلات' })}
                     </button>
-                  ))}
-                </div>
+                  )}
+                </header>
+
+                {!productFamily ? (
+                  <ul className="gw-family-grid">
+                    {PRODUCT_FAMILIES.map((family) => (
+                      <li key={family.key}>
+                        <button
+                          type="button"
+                          className="gw-family-card"
+                          onClick={() => setProductFamily(family.key)}
+                        >
+                          <span className="gw-family-card-name">{pick(family.label)}</span>
+                          <span className="gw-family-card-copy">{pick(family.copy)}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ul className="gw-family-grid gw-family-grid--products">
+                    {CUSTOM_PRODUCT_TYPES.filter((item) =>
+                      (
+                        PRODUCT_FAMILIES.find((family) => family.key === productFamily)?.types || []
+                      ).includes(item.key),
+                    ).map((item) => (
+                      <li key={item.key}>
+                        <button
+                          type="button"
+                          className={`gw-family-card${design.productType === item.key ? ' is-active' : ''}`}
+                          onClick={() => {
+                            selectProduct(item.key);
+                            setStep('design');
+                          }}
+                        >
+                          <span className="gw-family-card-kicker">
+                            {pick({
+                              en: `Minimum ${item.minimum}`,
+                              ar: `الحد الأدنى ${item.minimum}`,
+                            })}
+                          </span>
+                          <span className="gw-family-card-name">{pick(item.label)}</span>
+                          <span className="gw-family-card-copy">
+                            {pick({
+                              en: 'Open in the design stage',
+                              ar: 'افتح في مرحلة التصميم',
+                            })}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
             )}
 
