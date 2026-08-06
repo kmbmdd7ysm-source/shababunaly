@@ -64,7 +64,7 @@ const PRODUCT_FAMILIES = [
       en: 'Practice sets, shooting shirts and warm-ups.',
       ar: 'أطقم تمرين وقمصان تسديد وملابس إحماء.',
     },
-    types: ['practice-set', 'shooting-shirt', 'warmup'],
+    types: ['practice-set', 'shooting-shirt'],
   },
   {
     key: 'apparel',
@@ -73,7 +73,7 @@ const PRODUCT_FAMILIES = [
       en: 'Hoodies, pants, tracksuits and compression.',
       ar: 'هوديز وسراويل وبدلات وملابس ضاغطة.',
     },
-    types: ['hoodie', 'team-pants', 'tracksuit', 'compression', 'tee'],
+    types: ['hoodie', 'team-pants', 'tracksuit'],
   },
   {
     key: 'gear',
@@ -82,7 +82,7 @@ const PRODUCT_FAMILIES = [
       en: 'Team bags, sleeves, basketballs and hoop padding.',
       ar: 'حقائب وسليفس وكرات وتغليف السلة.',
     },
-    types: ['bag', 'sleeve', 'basketball', 'hoop-padding'],
+    types: ['team-bag', 'sleeve', 'basketball', 'hoop-padding'],
   },
 ];
 
