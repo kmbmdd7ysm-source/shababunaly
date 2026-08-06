@@ -603,3 +603,11 @@
     transition: none;
   }
 }
+
+
+a.product-card-name {
+  display: inline-flex !important;
+  align-items: center;
+  min-block-size: 24px !important;
+  padding-block: 4px;
+}
