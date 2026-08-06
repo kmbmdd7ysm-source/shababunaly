@@ -4,8 +4,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { getMyOrders, lookupGuestOrder } from '../services/orders';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
+import '../styles/runs.css';
 import OrderCard from '../components/account/OrderCard';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 
@@ -64,17 +64,25 @@ export default function OrderTrackingPage() {
         path="/order-tracking"
         noindex
       />
-      <RouteMasthead
-        eyebrow={t.orderTracking.label}
-        title={t.orderTracking.title}
-        lede={t.orderTracking.sub}
-        trail={[{ label: t.orderTracking.title }]}
-        figure={
-          auth.user && ordersState.orders.length
-            ? { value: ordersState.orders.length, label: pick({ en: 'orders', ar: 'طلب' }) }
-            : null
-        }
-      />
+      <section className="gw-world-headband" aria-labelledby="tracking-title">
+        <div className="gw-cat-head-inner">
+          <p className="gw-spec">{t.orderTracking.label}</p>
+          <div className="gw-cat-head-row">
+            <div>
+              <h1 id="tracking-title" className="gw-cat-title">
+                {t.orderTracking.title}
+              </h1>
+              <p className="gw-world-lede">{t.orderTracking.sub}</p>
+            </div>
+            {auth.user && ordersState.orders.length ? (
+              <p className="gw-cat-count">
+                <span className="gw-figure gw-isolate-ltr">{ordersState.orders.length}</span>
+                <span className="gw-spec">{pick({ en: 'orders', ar: 'طلب' })}</span>
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </section>
       {/* A LOOKUP DESK: a narrow measured column, because tracking is one
           focused task with one answer - not a browsing surface. */}
       <section className="gw-desk">

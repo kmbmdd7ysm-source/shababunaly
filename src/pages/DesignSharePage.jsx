@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
+import '../styles/studio.css';
 import LoadingScreen from '../components/common/LoadingScreen';
 import ProductionDesignEditor from '../components/custom/ProductionDesignEditor';
 import TurnstileWidget from '../components/security/TurnstileWidget';
@@ -135,13 +137,15 @@ export default function DesignSharePage() {
           {pick({ en: 'Private expiring link', ar: 'رابط خاص مؤقت' })}
         </span>
       </header>
-      <ProductionDesignEditor
-        design={record.design}
-        value={record.studio}
-        onChange={() => {}}
-        readOnly
-        onCanvasPoint={(point) => setComment((current) => ({ ...current, ...point }))}
-      />
+      <div className="gw-layer-console gw-share-desk">
+        <ProductionDesignEditor
+          design={record.design}
+          value={record.studio}
+          onChange={() => {}}
+          readOnly
+          onCanvasPoint={(point) => setComment((current) => ({ ...current, ...point }))}
+        />
+      </div>
       {(record.comments || []).length > 0 && (
         <section className="design-share-comments">
           <h2>{pick({ en: 'Review comments', ar: 'تعليقات المراجعة' })}</h2>
