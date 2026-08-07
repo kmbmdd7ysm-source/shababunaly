@@ -1,7 +1,7 @@
 # Continuation checkpoint
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- SHA: `0c2faabadebcc85e57604fa3e549b818254bf15c`
+- SHA: `6ec65d7f2393a5dee12bea27ad1b63ebdab2ab66`
 - Date UTC: 2026-08-07T04:34:49Z
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
@@ -13,7 +13,7 @@
 
 ## Next phase to resume
 
-**Phase 11 continuation** — further Customize/Account/Checkout/Shop/Product/Teams splits  
+**Phase 11 continuation** — wire StudioShell into CustomizePage; extract DesignStep/RosterStep/ReviewStep; Checkout/Shop/Product splits
 Then Phase 13 DB live tests (likely needs Supabase CLI/Docker)  
 14 E2E/a11y/visual/PWA · 15 Arabic human review marker · 16 payment adapter polish · 18 Lighthouse · 19 coverage · 20 audit · 21 release evidence
 
