@@ -31,7 +31,7 @@ import { buildDesignViewSvg, buildProductionPackage, createStoreZip, escapeXml }
 import { parseRosterFile, parseWorksheet, resolveFirstWorksheet, unzipEntries } from '../src/utils/rosterSpreadsheet.js';
 import { createTextPdf, downloadDesignDocuments } from '../src/utils/simplePdf.js';
 import { getSearchSuggestions } from '../src/utils/search.js';
-import { safeInternalReturnPath } from '../src/utils/safeReturnPath.js';
+import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 
 const ENV_KEYS = [
   'NODE_ENV','SITE_URL','SUPABASE_URL','SUPABASE_SERVICE_ROLE_KEY','VITE_SUPABASE_URL','VITE_SUPABASE_ANON_KEY',

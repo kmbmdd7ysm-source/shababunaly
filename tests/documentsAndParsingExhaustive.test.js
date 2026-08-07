@@ -8,7 +8,7 @@ import {
 import { createStoreZip } from '../src/utils/designExports.js';
 import { createTextPdf, downloadBlob, downloadDesignDocuments } from '../src/utils/simplePdf.js';
 import { createDefaultStudio } from '../src/services/designStudio.js';
-import { safeInternalReturnPath } from '../src/utils/safeReturnPath.js';
+import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 import { getSearchSuggestions, searchSite, getSearchFacets, normalizeSearchText, SEARCH_PAGES, POPULAR_SEARCHES } from '../src/utils/search.js';
 
 const originalDocument=globalThis.document;const originalUrl=globalThis.URL;const originalDecompression=globalThis.DecompressionStream;

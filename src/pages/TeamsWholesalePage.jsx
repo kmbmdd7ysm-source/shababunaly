@@ -552,7 +552,7 @@ export default function TeamsWholesalePage() {
                     </span>
                     <textarea
                       required
-                      rows="6"
+                      rows={6}
                       value={form.needs}
                       onChange={(event) => setForm({ ...form, needs: event.target.value })}
                     />

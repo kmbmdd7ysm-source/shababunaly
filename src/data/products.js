@@ -1,5 +1,5 @@
 import { products as sourceLhaProducts } from './lhaProducts.js';
-import { isProductVisible, isReadyToShipEligible } from '../utils/productEligibility.js';
+import { isProductVisible, isReadyToShipEligible } from '../utils/productEligibility.ts';
 
 const C = {
   black: { key: 'black', name: { en: 'Black', ar: 'أسود' }, hex: '#101010' },

@@ -1,10 +1,8 @@
 import { guardPublicPost } from './_request-security.js';
 import { verifyTurnstileToken } from './_turnstile.js';
-export function resolveFormspreeEndpoint() {
-  if (process.env.FORMSPREE_ORDER_ENDPOINT) return process.env.FORMSPREE_ORDER_ENDPOINT;
-  if (process.env.VITE_FORM_ENDPOINT) return process.env.VITE_FORM_ENDPOINT;
-  return '';
-}
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+
+export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.js';
 
 export function sanitize(value, max = 12000) {
   if (value == null) return '';

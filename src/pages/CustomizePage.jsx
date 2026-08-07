@@ -948,7 +948,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   <label className="field">
                     <span>{pick({ en: 'Production notes', ar: 'ملاحظات الإنتاج' })}</span>
                     <textarea
-                      rows="4"
+                      rows={4}
                       value={design.notes}
                       onChange={(event) =>
                         setDesignValue('notes', event.target.value.slice(0, 1200))
@@ -1387,7 +1387,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   <label className="field">
                     <span>{pick({ en: 'Final notes', ar: 'الملاحظات النهائية' })}</span>
                     <textarea
-                      rows="5"
+                      rows={5}
                       value={contact.notes}
                       onChange={(event) => setContact({ ...contact, notes: event.target.value })}
                     />

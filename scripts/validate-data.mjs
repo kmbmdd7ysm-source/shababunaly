@@ -1,5 +1,5 @@
 import { catalogProducts, products, allBrands, lhaStoreProducts, readyToShipProducts } from '../src/data/products.js';
-import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.js';
+import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.ts';
 import { products as sourceLhaProducts } from '../src/data/lhaProducts.js';
 import { categories } from '../src/data/categories.js';
 

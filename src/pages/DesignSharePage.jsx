@@ -175,7 +175,7 @@ export default function DesignSharePage() {
               <span>{pick({ en: 'Name', ar: 'الاسم' })}</span>
               <input
                 value={comment.name}
-                maxLength="120"
+                maxLength={120}
                 onChange={(event) => setComment({ ...comment, name: event.target.value })}
                 required
               />
@@ -185,7 +185,7 @@ export default function DesignSharePage() {
               <input
                 type="email"
                 value={comment.email}
-                maxLength="254"
+                maxLength={254}
                 onChange={(event) => setComment({ ...comment, email: event.target.value })}
               />
             </label>
@@ -226,8 +226,8 @@ export default function DesignSharePage() {
             <textarea
               required
               minLength="2"
-              maxLength="1000"
-              rows="4"
+              maxLength={1000}
+              rows={4}
               value={comment.text}
               onChange={(event) => setComment({ ...comment, text: event.target.value })}
             />
@@ -249,8 +249,8 @@ export default function DesignSharePage() {
               })}
             </span>
             <textarea
-              rows="4"
-              maxLength="2000"
+              rows={4}
+              maxLength={2000}
               value={decisionNote}
               onChange={(event) => setDecisionNote(event.target.value)}
             />

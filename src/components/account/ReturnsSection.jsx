@@ -164,8 +164,8 @@ export default function ReturnsSection({ orders = [] }) {
               </div>;
             })}
           </div>
-          <label><span>{pick({ en: 'Reason', ar: 'السبب' })}</span><input value={reason} maxLength="120" required onChange={(event) => setReason(event.target.value)} /></label>
-          <label><span>{pick({ en: 'Details', ar: 'التفاصيل' })}</span><textarea rows="4" value={details} maxLength="3000" onChange={(event) => setDetails(event.target.value)} /></label>
+          <label><span>{pick({ en: 'Reason', ar: 'السبب' })}</span><input value={reason} maxLength={120} required onChange={(event) => setReason(event.target.value)} /></label>
+          <label><span>{pick({ en: 'Details', ar: 'التفاصيل' })}</span><textarea rows={4} value={details} maxLength={3000} onChange={(event) => setDetails(event.target.value)} /></label>
           <button className="btn-primary" disabled={state.busy === 'create'}>{state.busy === 'create' ? pick({ en: 'Submitting…', ar: 'جاري الإرسال…' }) : pick({ en: 'Submit Return Request', ar: 'إرسال طلب الإرجاع' })}</button>
         </form>
       ) : <div className="notice notice--muted">{pick({ en: 'No delivered retail order is currently eligible for return.', ar: 'لا يوجد حاليًا طلب تجزئة مسلّم مؤهل للإرجاع.' })}</div>}

@@ -1,4 +1,4 @@
-import { isVariantPurchasable } from './productEligibility.js';
+import { isVariantPurchasable } from './productEligibility.ts';
 
 export function getPurchasableVariants(product) {
   return (product?.variants || []).filter((variant) => isVariantPurchasable(product, variant));

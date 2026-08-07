@@ -2,7 +2,7 @@ import { describe, expect, it } from './test-api.js';
 import { catalogProducts, products, lhaStoreProducts } from '../src/data/products.js';
 import { categories } from '../src/data/categories.js';
 import { products as sourceLhaProducts } from '../src/data/lhaProducts.js';
-import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.js';
+import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.ts';
 
 describe('SHABABUNA catalogue', () => {
   it('contains every required shop department', () => {

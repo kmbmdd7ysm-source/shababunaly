@@ -29,7 +29,7 @@ import '../styles/journey.css';
  *   - Products arrive as EXHIBITS inside chapters, not as an undifferentiated
  *     grid at the bottom of the page.
  *
- * Every figure is read from config/shipping.js, data/customization.js,
+ * Every figure is read from config/shipping.ts, data/customization.js,
  * config.js and the live catalogue. Nothing is invented. Every commercial
  * destination from the previous homepage is preserved.
  *

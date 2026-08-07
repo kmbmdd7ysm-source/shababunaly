@@ -4,7 +4,7 @@ import process from 'node:process';
 
 const root = process.cwd();
 const allowed = new Set([
-  path.normalize('src/config/commerce.js'),
+  path.normalize('src/config/commerce.ts'),
   path.normalize('tests/commerce.test.js'),
 ]);
 const patterns = [/USD_TO_LYD\s*=\s*9\b/g, /return\s+9\s*;/g, /fallback\s+9\b/gi];

@@ -280,7 +280,7 @@ export default function SpecialRequestPage() {
               <textarea
                 required
                 minLength="10"
-                rows="6"
+                rows={6}
                 value={form.description}
                 onChange={(e) => set('description', e.target.value)}
               />

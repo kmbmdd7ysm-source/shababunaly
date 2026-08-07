@@ -1,4 +1,4 @@
-import { commerceConfig } from '../config/commerce.js';
+import { commerceConfig } from '../config/commerce.ts';
 
 /** @typedef {{ code: string, postalCodeRequired: boolean, regionRequired: boolean, cashEligible: boolean, shippingAvailable: boolean }} Country */
 

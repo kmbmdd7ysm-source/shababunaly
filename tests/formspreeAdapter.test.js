@@ -11,8 +11,8 @@ afterEach(() => { vi.restoreAllMocks(); delete process.env.FORMSPREE_ORDER_ENDPO
 describe('Formspree server adapter', () => {
 
   it('normalizes every Formspree endpoint and payload helper branch', () => {
-    delete process.env.FORMSPREE_ORDER_ENDPOINT; delete process.env.VITE_FORM_ENDPOINT;
-    expect(resolveFormspreeEndpoint()).toBe('');
+    delete process.env.FORMSPREE_ORDER_ENDPOINT; delete process.env.VITE_FORM_ENDPOINT; delete process.env.FORMSPREE_ENDPOINT;
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mqerbqvd');
     process.env.VITE_FORM_ENDPOINT = 'https://formspree.io/f/vite'; expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/vite');
     process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/server'; expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/server');
     expect(sanitize(undefined)).toBe(''); expect(sanitize(null)).toBe(''); expect(sanitize('a\0b', 2)).toBe('ab');
@@ -22,7 +22,7 @@ describe('Formspree server adapter', () => {
   });
 
   it('accepts a provider 200 response', async () => {
-    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
+    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, status: 200, text: async () => '{"ok":true}' }));
     const res = responseMock(); await handler(request({ request_type: 'contact', reference_id: 'ref-1', customer_email: 'a@example.com', turnstileToken: 'test-pass' }), res);
@@ -30,7 +30,7 @@ describe('Formspree server adapter', () => {
   });
 
   it.each([400, 429, 500])('does not report success when provider returns %s', async (status) => {
-    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
+    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status, text: async () => 'rejected' }));
     const res = responseMock(); await handler(request({ request_type: 'contact', reference_id: `ref-${status}`, turnstileToken: 'test-pass' }), res);
@@ -38,7 +38,7 @@ describe('Formspree server adapter', () => {
   });
 
   it('reports delivery failure on timeout/network rejection', async () => {
-    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
+    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('timeout')));
     const res = responseMock(); await handler(request({ request_type: 'contact', reference_id: 'ref-timeout', turnstileToken: 'test-pass' }), res);

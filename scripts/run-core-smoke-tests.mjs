@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { catalogProducts, products, allBrands, lhaStoreProducts, readyToShipProducts } from '../src/data/products.js';
-import { isProductPurchasable, isProductVisible } from '../src/utils/productEligibility.js';
+import { isProductPurchasable, isProductVisible } from '../src/utils/productEligibility.ts';
 import { CUSTOM_PRODUCT_TYPES, normalizeRoster, parseRosterCsv, rosterToCsv } from '../src/data/customization.js';
 import { ROSTER_FILE_ACCEPT } from '../src/utils/rosterSpreadsheet.js';
 import { buildProductionPackage } from '../src/utils/designExports.js';

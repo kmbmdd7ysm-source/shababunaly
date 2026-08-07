@@ -60,7 +60,7 @@ describe('GROUNDWORK homepage prototype', () => {
     }
     expect(hrefs).not.toContain('/shop/ready-to-ship');
 
-    // 04 IN STOCK — every delivery figure is read from config/shipping.js, and
+    // 04 IN STOCK — every delivery figure is read from config/shipping.ts, and
     // every numeric range is bidi-isolated so it cannot reorder inside Arabic.
     const libya = shippingConfig.libya;
     const delivery = screen.getByRole('table', { name: 'Delivery specification' });

@@ -26,7 +26,7 @@ function configureRequired() {
   process.env.SUPABASE_URL = 'https://project.supabase.co';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-secret';
   process.env.VITE_SUPABASE_ANON_KEY = 'public-anon-key';
-  process.env.VITE_FORM_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
+  process.env.VITE_FORM_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
   process.env.FORMSPREE_DELIVERY_VERIFIED_AT = new Date().toISOString();
   process.env.FORMSPREE_DELIVERY_EVIDENCE_ID = 'submission-verified-123';
   process.env.TURNSTILE_SECRET_KEY = 'turnstile-secret';

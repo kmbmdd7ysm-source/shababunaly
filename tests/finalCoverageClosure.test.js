@@ -1,11 +1,11 @@
 import crypto from 'node:crypto';
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import { ALLOWED_ORDER_STATUSES, presentOrderStatus } from '../src/services/orderStatus.js';
+import { ALLOWED_ORDER_STATUSES, presentOrderStatus } from '../src/services/orderStatus.ts';
 import {
   countries, countryByCode, getAddressRequirements, getCountryName, getLocalizedCountries,
   isCashEligibleCountry, isSupportedCountryCode, normalizeCountryCode, normalizeCountrySearch,
 } from '../src/data/countries.js';
-import { safeInternalReturnPath } from '../src/utils/safeReturnPath.js';
+import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 import {
   flattenText, getSearchFacets, getSearchSuggestions, hit, localizedValues, normalizeSearchText,
   scoreText, searchSite, suggestionCandidates,

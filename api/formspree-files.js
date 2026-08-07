@@ -2,7 +2,8 @@ import { guardPublicPost } from './_request-security.js';
 import { validateEncodedFiles } from './_file-security.js';
 import { verifyTurnstileToken } from './_turnstile.js';
 
-const ENDPOINT = process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT || 'https://formspree.io/f/mvzenjgv';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+const ENDPOINT = resolveFormspreeEndpoint();
 const clean = (value, max = 12000) => String(value ?? '').replace(/\0/g, '').slice(0, max);
 const keyOf = (value) => String(value || '').trim().replace(/[^A-Za-z0-9_.:-]/g, '_').slice(0, 80);
 

@@ -65,7 +65,7 @@ export default function MfaSecurityPanel({ auth, pick }) {
       <h3>{pick({ en: 'Scan and verify', ar: 'امسح الرمز ثم أكّد' })}</h3>
       {enrollment.totp?.qr_code && <img src={enrollment.totp.qr_code} alt={pick({ en: 'Authenticator QR code', ar: 'رمز QR لتطبيق المصادقة' })} width="220" height="220" />}
       <p><code dir="ltr">{enrollment.totp?.secret}</code></p>
-      <label>{pick({ en: 'Six-digit code', ar: 'الرمز المكوّن من 6 أرقام' })}<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength="6" value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} required /></label>
+      <label>{pick({ en: 'Six-digit code', ar: 'الرمز المكوّن من 6 أرقام' })}<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} required /></label>
       <div className="inline-actions"><button className="btn-primary" disabled={busy || code.length !== 6}>{pick({ en: 'Verify and enable', ar: 'تأكيد وتفعيل' })}</button><button type="button" className="btn-secondary" onClick={() => setEnrollment(null)}>{pick({ en: 'Cancel', ar: 'إلغاء' })}</button></div>
     </form>}
     {state.error && <p className="form-status" role="alert">{state.error}</p>}

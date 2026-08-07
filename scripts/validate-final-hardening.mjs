@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { catalogProducts, products, lhaStoreProducts, readyToShipProducts } from '../src/data/products.js';
-import { isProductVisible, isProductPurchasable } from '../src/utils/productEligibility.js';
+import { isProductVisible, isProductPurchasable } from '../src/utils/productEligibility.ts';
 
 const fail = [];
 const read = (file) => {

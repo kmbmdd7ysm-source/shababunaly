@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it, vi } from './test-api.js';
-import { lockDocumentScroll } from '../src/utils/scrollLock.js';
+import { lockDocumentScroll } from '../src/utils/scrollLock.ts';
 
 function classListMock() {
   const values = new Set();

@@ -1,3 +1,12 @@
+type StatusCategory = 'pending' | 'success' | 'warning' | 'error' | 'neutral';
+type Lang = 'en' | 'ar';
+
+interface StatusItem {
+  category: StatusCategory;
+  en: string;
+  ar: string;
+}
+
 const STATUS_MAP = {
   payment: {
     pending: { category: 'pending', en: 'Payment Pending', ar: 'الدفع قيد الانتظار' },
@@ -28,32 +37,31 @@ const STATUS_MAP = {
     fulfilled: { category: 'success', en: 'Fulfilled', ar: 'تم التنفيذ' },
     cancelled: { category: 'error', en: 'Cancelled', ar: 'ملغي' },
   },
-};
+} as const satisfies Record<string, Record<string, StatusItem>>;
 
-/** @param {unknown} kind @param {unknown} value @param {'en'|'ar'} [lang] */
-export function presentOrderStatus(kind, value, lang = 'en') {
+export function presentOrderStatus(kind: unknown, value: unknown, lang: Lang = 'en') {
   const normalized = String(value || '')
     .trim()
     .toLowerCase();
   const normalizedKind = String(kind);
-  /** @type {Record<string, Record<string,{category:string,en:string,ar:string}>>} */
-  const groups = STATUS_MAP;
-  const statusGroup = groups[normalizedKind] || {};
+  const groups = STATUS_MAP as Record<string, Record<string, StatusItem>>;
+  const statusGroup = groups[normalizedKind] ?? {};
   const item = statusGroup[normalized];
-  if (item)
+  if (item) {
     return {
       value: normalized,
       label: item[lang] || item.en,
       category: item.category,
       accessibleLabel: item[lang] || item.en,
-      known: true,
+      known: true as const,
     };
+  }
   return {
     value: normalized || 'unknown',
     label: lang === 'ar' ? 'الحالة غير متاحة' : 'Status unavailable',
-    category: 'neutral',
+    category: 'neutral' as const,
     accessibleLabel: lang === 'ar' ? 'الحالة غير متاحة' : 'Status unavailable',
-    known: false,
+    known: false as const,
   };
 }
 

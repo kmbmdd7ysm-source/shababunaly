@@ -1,13 +1,13 @@
 import './setup.js';
 import { describe, expect, it } from './test-api.js';
-import { ALLOWED_ORDER_STATUSES, presentOrderStatus } from '../src/services/orderStatus.js';
+import { ALLOWED_ORDER_STATUSES, presentOrderStatus } from '../src/services/orderStatus.ts';
 import {
   FULFILLMENT_TYPES,
   cartRequiresPhysicalShipping,
   getCartItemFulfillmentType,
   requiresPhysicalShipping,
-} from '../src/utils/fulfillment.js';
-import { safeInternalReturnPath } from '../src/utils/safeReturnPath.js';
+} from '../src/utils/fulfillment.ts';
+import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 import {
   getSearchFacets,
   getSearchSuggestions,

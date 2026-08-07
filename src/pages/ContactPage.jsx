@@ -149,7 +149,7 @@ export default function ContactPage() {
                 )}
                 <label className="field">
                   <span>{pick({ en: 'How can we help?', ar: 'كيف يمكننا مساعدتك؟' })}</span>
-                  <textarea rows="7" value={form.message} onChange={set('message')} />
+                  <textarea rows={7} value={form.message} onChange={set('message')} />
                   {errors.message && <span className="form-error">{errors.message}</span>}
                 </label>
                 <label className="field-check">

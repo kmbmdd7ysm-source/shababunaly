@@ -19,7 +19,7 @@ export function getProductionReadiness() {
   if (!String(import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim()) missing.push('account_key');
   if (!String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim())
     missing.push('request_verification');
-  if (!validHttps(import.meta.env.VITE_FORM_ENDPOINT || 'https://formspree.io/f/mvzenjgv')) {
+  if (!validHttps(import.meta.env.VITE_FORM_ENDPOINT || 'https://formspree.io/f/mqerbqvd')) {
     missing.push('message_delivery');
   }
   return { ready: missing.length === 0, needsServerCheck: missing.length === 0, missing };

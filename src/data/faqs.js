@@ -17,7 +17,7 @@ export const faqCategories = [
     {q:{en:'Can I pay 50%?',ar:'هل يمكن دفع 50%؟'},a:{en:'For retail cash orders inside Libya, you can choose 50% to confirm or pay in full. Card retail orders are paid in full. Custom, club and wholesale orders use 50% before production and 50% on arrival unless the quote states otherwise.',ar:'في طلبات الأفراد النقدية داخل ليبيا يمكنك اختيار 50% للتأكيد أو الدفع كاملًا. أما طلبات الأفراد بالبطاقة فتُدفع كاملة. وتستخدم طلبات التصميم والأندية والجملة 50% قبل التصنيع و50% عند الوصول ما لم ينص العرض على غير ذلك.'}},
   ]},
   { key:'shipping', title:{en:'Shipping',ar:'الشحن'}, items:[
-    {q:{en:'How much is delivery inside Libya?',ar:'كم سعر التوصيل داخل ليبيا؟'},a:{en:'Standard delivery is 20 LYD and is free when the product subtotal is 500 LYD or more.',ar:'التوصيل العادي 20 د.ل، ويصبح مجانيًا عندما يصل إجمالي المنتجات إلى 500 د.ل أو أكثر.'}},
+    {q:{en:'How much is delivery inside Libya?',ar:'كم سعر التوصيل داخل ليبيا؟'},a:{en:'Standard delivery is 20 LYD and is free when the product subtotal reaches 70 USD (630 LYD at the store rate) or more.',ar:'التوصيل العادي 20 د.ل، ويصبح مجانيًا عندما يصل إجمالي المنتجات إلى 70 دولارًا أمريكيًا (630 د.ل بسعر المتجر) أو أكثر.'}},
     {q:{en:'Do you ship worldwide?',ar:'هل يوجد شحن عالمي؟'},a:{en:'Yes. Each destination has its own price. If a country rate has not been added yet, the order stays pending until Shababuna adds the shipping price and you approve it.',ar:'نعم. لكل وجهة سعرها. وإذا لم تتم إضافة سعر دولة بعد، يبقى الطلب معلقًا حتى تضيف شبابنا تكلفة الشحن وتعتمدها أنت.'}},
   ]},
   { key:'accounts', title:{en:'Accounts & Orders',ar:'الحسابات والطلبات'}, items:[

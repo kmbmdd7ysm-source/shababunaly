@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { catalogProducts, products, readyToShipProducts } from '../src/data/products.js';
-import { isProductVisible } from '../src/utils/productEligibility.js';
+import { isProductVisible } from '../src/utils/productEligibility.ts';
 import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.js';
 
 const failures = [];
@@ -13,7 +13,7 @@ const requireText = (source, value, label = value) => {
 };
 
 const config = requireFile('src/config.js');
-const shipping = requireFile('src/config/shipping.js');
+const shipping = requireFile('src/config/shipping.ts');
 const app = requireFile('src/App.jsx');
 const customize = requireFile('src/pages/CustomizePage.jsx');
 const preview = requireFile('src/components/custom/DesignPreview.jsx');
@@ -63,7 +63,8 @@ requireText(config, "name: 'Shababuna'", 'English brand name');
 requireText(config, "nameAr: 'شبابنا'", 'Arabic brand name');
 requireText(config, "en: 'BUILT DIFFERENT.'", 'brand slogan');
 requireText(shipping, 'amount: 20', '20 LYD Libya delivery fee');
-requireText(shipping, 'amount: 500', '500 LYD free-delivery threshold');
+requireText(shipping, 'LIBYA_FREE_SHIPPING_USD = 70', '70 USD free-delivery threshold');
+requireText(shipping, 'fallbackUsdToLydRate', 'canonical USD to LYD rate reference for 630 LYD display');
 requireText(shipping, 'minHours: 24, maxHours: 72', '24–72 hour ready delivery');
 requireText(shipping, 'minDays: 14, maxDays: 18', '14–18 day standard Libya delivery');
 requireText(shipping, 'minDays: 30, maxDays: 60', '30–60 day custom production');

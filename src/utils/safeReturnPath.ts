@@ -13,11 +13,11 @@ const ALLOWED_PREFIXES = [
   '/events',
   '/coaches',
   '/online-training',
-];
-/** @param {unknown} value @param {string} [fallback] */
-export function safeInternalReturnPath(value, fallback = '') {
+] as const;
+
+export function safeInternalReturnPath(value: unknown, fallback = ''): string {
   if (typeof value !== 'string') return fallback;
-  let decoded;
+  let decoded: string;
   if (value !== value.trim()) return fallback;
   try {
     decoded = decodeURIComponent(value);
@@ -29,9 +29,9 @@ export function safeInternalReturnPath(value, fallback = '') {
     decoded.startsWith('//') ||
     decoded.includes('\\') ||
     [...decoded].some((character) => character.charCodeAt(0) < 32)
-  )
+  ) {
     return fallback;
-  // A single-root-relative path cannot change origin after the checks above.
+  }
   const url = new URL(decoded, 'https://lha.internal');
   const path = `${url.pathname}${url.search}${url.hash}`;
   const allowed = ALLOWED_PREFIXES.some((prefix) =>

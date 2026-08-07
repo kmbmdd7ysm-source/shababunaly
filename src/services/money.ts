@@ -1,17 +1,19 @@
-import { commerceConfig, isSupportedDisplayCurrency } from '../config/commerce.js';
+import { commerceConfig, isSupportedDisplayCurrency } from '../config/commerce.ts';
+import type { Currency } from '../domain/types.ts';
 
 const MINOR_SCALE = 100;
 const BIDI_ISOLATE_START = '\u2068';
 const BIDI_ISOLATE_END = '\u2069';
 
-/** @param {string} currency */
-function assertCurrency(currency) {
+function assertCurrency(currency: string): asserts currency is Currency {
   if (!isSupportedDisplayCurrency(currency)) throw new TypeError('Unsupported currency');
 }
 
 export class Money {
-  /** @param {number} minorUnits @param {string} [currency] */
-  constructor(minorUnits, currency = commerceConfig.baseCurrency) {
+  readonly minorUnits: number;
+  readonly currency: Currency;
+
+  constructor(minorUnits: number, currency: Currency = commerceConfig.baseCurrency) {
     if (!Number.isSafeInteger(minorUnits)) {
       throw new TypeError('Money minorUnits must be a safe integer');
     }
@@ -21,8 +23,7 @@ export class Money {
     Object.freeze(this);
   }
 
-  /** @param {unknown} amount @param {string} [currency] */
-  static fromMajor(amount, currency = commerceConfig.baseCurrency) {
+  static fromMajor(amount: unknown, currency: Currency = commerceConfig.baseCurrency): Money {
     const value = Number(amount);
     if (!Number.isFinite(value)) throw new TypeError('Invalid monetary amount');
     const minorUnits = Math.round(value * MINOR_SCALE);
@@ -30,70 +31,71 @@ export class Money {
     return new Money(minorUnits, currency);
   }
 
-  toMajor() {
+  toMajor(): number {
     return this.minorUnits / MINOR_SCALE;
   }
 
-  /** @param {unknown} other */
-  add(other) {
+  add(other: unknown): Money {
     if (!(other instanceof Money) || other.currency !== this.currency) {
       throw new TypeError('Cannot add money with different currencies');
     }
     return new Money(this.minorUnits + other.minorUnits, this.currency);
   }
 
-  /** @param {unknown} quantity */
-  multiply(quantity) {
+  multiply(quantity: unknown): Money {
     const value = Number(quantity);
     if (!Number.isFinite(value)) throw new TypeError('Invalid quantity');
     return new Money(Math.round(this.minorUnits * value), this.currency);
   }
 
-  /** @param {unknown} percentValue */
-  percent(percentValue) {
+  percent(percentValue: unknown): Money {
     const value = Number(percentValue);
     if (!Number.isFinite(value)) throw new TypeError('Invalid percentage');
     return new Money(Math.round((this.minorUnits * value) / 100), this.currency);
   }
 
-  /** @param {string} targetCurrency @param {unknown} rate */
-  convert(targetCurrency, rate) {
+  convert(targetCurrency: string, rate: unknown): Money {
     assertCurrency(targetCurrency);
     if (targetCurrency === this.currency) return this;
     const validRate = Number(rate);
-    if (!Number.isFinite(validRate) || validRate <= 0)
+    if (!Number.isFinite(validRate) || validRate <= 0) {
       throw new TypeError('Valid exchange rate required');
+    }
     const sourceMajor = this.toMajor();
     const converted = this.currency === 'USD' ? sourceMajor * validRate : sourceMajor / validRate;
     return Money.fromMajor(converted, targetCurrency);
   }
 }
 
-/** @param {unknown} value */
-export function roundLydPrice(value) {
+export function roundLydPrice(value: unknown): number {
   const amount = Number(value);
   if (!Number.isFinite(amount)) return amount;
   const rounded = Math.ceil(amount / 5) * 5;
   return Object.is(rounded, -0) ? 0 : rounded;
 }
 
-/** @param {unknown} amount @param {string} fromCurrency @param {string} toCurrency @param {unknown} rate */
-export function convertPrice(amount, fromCurrency, toCurrency, rate) {
+export function convertPrice(
+  amount: unknown,
+  fromCurrency: string,
+  toCurrency: string,
+  rate: unknown,
+): number {
+  assertCurrency(fromCurrency);
+  assertCurrency(toCurrency);
   const converted = Money.fromMajor(amount, fromCurrency).convert(toCurrency, rate).toMajor();
   return toCurrency === 'LYD' ? roundLydPrice(converted) : converted;
 }
 
-
-/** @param {Array<Money|number>} values @param {string} [currency] */
-export function sumMoney(values, currency = commerceConfig.baseCurrency) {
+export function sumMoney(values: Array<Money | number>, currency: Currency = commerceConfig.baseCurrency): Money {
   assertCurrency(currency);
   let total = new Money(0, currency);
-  for (const value of values) total = total.add(value instanceof Money ? value : Money.fromMajor(value, currency));
+  for (const value of values) {
+    total = total.add(value instanceof Money ? value : Money.fromMajor(value, currency));
+  }
   return total;
 }
 
-/** @param {unknown} amount @param {string} currency @param {'en'|'ar'} [lang] */
-export function formatMoney(amount, currency, lang = 'en') {
+export function formatMoney(amount: unknown, currency: string, lang: 'en' | 'ar' = 'en'): string {
   const value = Number(amount);
   if (!Number.isFinite(value) || !isSupportedDisplayCurrency(currency)) {
     return lang === 'ar' ? 'السعر غير متاح' : 'Price unavailable';
@@ -116,8 +118,11 @@ export function formatMoney(amount, currency, lang = 'en') {
   return lang === 'ar' ? `${BIDI_ISOLATE_START}${rendered} USD${BIDI_ISOLATE_END}` : rendered;
 }
 
-/** @param {unknown} amount @param {string} currency @param {'en'|'ar'} [lang] */
-export function getAccessibleMoneyLabel(amount, currency, lang = 'en') {
+export function getAccessibleMoneyLabel(
+  amount: unknown,
+  currency: string,
+  lang: 'en' | 'ar' = 'en',
+): string {
   const value = Number(amount);
   if (!Number.isFinite(value)) return lang === 'ar' ? 'السعر غير متاح' : 'Price unavailable';
   const displayValue = currency === 'LYD' ? roundLydPrice(value) : value;

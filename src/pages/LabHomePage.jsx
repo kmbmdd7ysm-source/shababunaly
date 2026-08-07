@@ -20,7 +20,7 @@ import '../styles/lab-home.css';
  * additive and reversible: it does not replace `/`, it is `noindex`, it is
  * disallowed in robots.txt, and it is absent from the pre-render route list.
  *
- * Every figure on this page is read from the repository — `config/shipping.js`,
+ * Every figure on this page is read from the repository — `config/shipping.ts`,
  * `data/categories.js`, `data/customization.js` and `config.js`. Nothing is
  * invented: no product, price, stock level, athlete, partnership, claim or
  * delivery promise appears here that the codebase does not already assert.
@@ -47,7 +47,7 @@ const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key
  * inside an Arabic paragraph, because the en dash is a neutral character
  * between two LTR digit runs. That turns a delivery promise into a different
  * delivery promise, so every range is isolated — the same discipline
- * `services/money.js` already applies to currency.
+ * `services/money.ts` already applies to currency.
  */
 function Range({ from, to, unit }) {
   return (

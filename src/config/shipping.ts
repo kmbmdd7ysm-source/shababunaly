@@ -1,11 +1,23 @@
-import { Money, convertPrice } from '../services/money.js';
-import { commerceConfig } from './commerce.js';
+import { Money, convertPrice } from '../services/money.ts';
+import type { Currency, ShippingQuote } from '../domain/types.ts';
+import { commerceConfig } from './commerce.ts';
+
+/**
+ * Libya free shipping threshold is defined in USD (approved commercial rule: 70 USD),
+ * then displayed as the LYD equivalent at the canonical rate (1 USD = 9 LYD → 630 LYD).
+ */
+const LIBYA_FREE_SHIPPING_USD = 70;
 
 export const shippingConfig = Object.freeze({
   libya: Object.freeze({
     countryCode: 'LY',
-    deliveryFee: Object.freeze({ amount: 20, currency: 'LYD' }),
-    freeThreshold: Object.freeze({ amount: 500, currency: 'LYD' }),
+    deliveryFee: Object.freeze({ amount: 20, currency: 'LYD' as const satisfies Currency }),
+    freeThresholdUsd: LIBYA_FREE_SHIPPING_USD,
+    /** Derived display amount at the canonical USD→LYD rate. Not an independent rule. */
+    freeThreshold: Object.freeze({
+      amount: LIBYA_FREE_SHIPPING_USD * commerceConfig.fallbackUsdToLydRate,
+      currency: 'LYD' as const satisfies Currency,
+    }),
     readyDelivery: Object.freeze({ minHours: 24, maxHours: 72 }),
     standardDelivery: Object.freeze({ minDays: 14, maxDays: 18 }),
   }),
@@ -13,14 +25,12 @@ export const shippingConfig = Object.freeze({
   fallback: Object.freeze({ status: 'quote_required' }),
 });
 
-/** @param {unknown} value */
-function safeRate(value) {
+function safeRate(value: unknown): number {
   const rate = Number(value);
   return Number.isFinite(rate) && rate > 0 ? rate : commerceConfig.fallbackUsdToLydRate;
 }
 
-/** @param {unknown} value */
-function safeSubtotal(value) {
+function safeSubtotal(value: unknown): number {
   try {
     return Math.max(0, Money.fromMajor(value ?? 0, 'USD').toMajor());
   } catch {
@@ -28,12 +38,14 @@ function safeSubtotal(value) {
   }
 }
 
-/** @param {unknown} subtotalUsd @param {unknown} [usdToLydRate] */
-export function getLibyaFreeShippingProgress(subtotalUsd, usdToLydRate = commerceConfig.fallbackUsdToLydRate) {
+export function getLibyaFreeShippingProgress(
+  subtotalUsd: unknown,
+  usdToLydRate: unknown = commerceConfig.fallbackUsdToLydRate,
+) {
   const subtotal = safeSubtotal(subtotalUsd);
   const rate = safeRate(usdToLydRate);
-  const thresholdLyd = shippingConfig.libya.freeThreshold.amount;
-  const thresholdUsd = thresholdLyd / rate;
+  const thresholdUsd = LIBYA_FREE_SHIPPING_USD;
+  const thresholdLyd = thresholdUsd * rate;
   const remainingUsd = Math.max(0, thresholdUsd - subtotal);
   return Object.freeze({
     eligible: subtotal + 1e-9 >= thresholdUsd,
@@ -47,14 +59,26 @@ export function getLibyaFreeShippingProgress(subtotalUsd, usdToLydRate = commerc
   });
 }
 
-/**
- * @param {unknown} countryCode
- * @param {{hasPhysical?:boolean,subtotalUsd?:unknown,usdToLydRate?:unknown,customOrder?:boolean,largeEquipment?:boolean,internationalRates?:Record<string,number>}} [options]
- */
+export interface ResolveShippingOptions {
+  hasPhysical?: boolean;
+  subtotalUsd?: unknown;
+  usdToLydRate?: unknown;
+  customOrder?: boolean;
+  largeEquipment?: boolean;
+  internationalRates?: Record<string, number>;
+}
+
 export function resolveShipping(
-  countryCode,
-  { hasPhysical = true, subtotalUsd = 0, usdToLydRate = commerceConfig.fallbackUsdToLydRate, customOrder = false, largeEquipment = false, internationalRates = {} } = {},
-) {
+  countryCode: unknown,
+  {
+    hasPhysical = true,
+    subtotalUsd = 0,
+    usdToLydRate = commerceConfig.fallbackUsdToLydRate,
+    customOrder = false,
+    largeEquipment = false,
+    internationalRates = {},
+  }: ResolveShippingOptions = {},
+): Readonly<ShippingQuote> {
   if (!hasPhysical) {
     return Object.freeze({
       status: 'no_physical_shipping',
@@ -65,7 +89,9 @@ export function resolveShipping(
     });
   }
 
-  const code = String(countryCode || '').trim().toUpperCase();
+  const code = String(countryCode || '')
+    .trim()
+    .toUpperCase();
   if (customOrder || largeEquipment) {
     return Object.freeze({
       status: shippingConfig.fallback.status,
@@ -85,7 +111,7 @@ export function resolveShipping(
         status: 'international_configured',
         countryCode: code,
         amount: configuredRate,
-        currency: 'USD',
+        currency: 'USD' as const,
         canonicalAmount: configuredRate,
         freeShippingEligible: false,
         pendingShippingQuote: false,
@@ -108,9 +134,9 @@ export function resolveShipping(
       status: 'physical_free',
       countryCode: code,
       amount: 0,
-      currency: 'LYD',
+      currency: 'LYD' as const,
       canonicalAmount: 0,
-      discountReason: 'libya_free_shipping_500_lyd',
+      discountReason: 'libya_free_shipping_70_usd',
       freeShippingEligible: true,
     });
   }
@@ -127,10 +153,12 @@ export function resolveShipping(
   });
 }
 
+const freeThresholdLyd = LIBYA_FREE_SHIPPING_USD * commerceConfig.fallbackUsdToLydRate;
+
 export const SHIPPING_MESSAGES = Object.freeze({
   announcement: Object.freeze({
-    en: 'Libya delivery: 20 LYD. Free on orders of 500 LYD or more.',
-    ar: 'التوصيل داخل ليبيا 20 د.ل، ومجاني للطلبات بقيمة 500 د.ل أو أكثر.',
+    en: `Libya delivery: 20 LYD. Free on orders of ${LIBYA_FREE_SHIPPING_USD} USD (${freeThresholdLyd} LYD) or more.`,
+    ar: `التوصيل داخل ليبيا 20 د.ل، ومجاني للطلبات بقيمة ${LIBYA_FREE_SHIPPING_USD} دولار أمريكي (${freeThresholdLyd} د.ل) أو أكثر.`,
   }),
   progress: Object.freeze({
     en: 'away from free delivery in Libya',

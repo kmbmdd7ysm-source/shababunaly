@@ -3,11 +3,17 @@ import { describe, expect, it } from './test-api.js';
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 describe('production completion safeguards', () => {
-  it('typechecks JavaScript and JSX project-wide', async () => {
+  it('enforces strict TypeScript on migrated modules', async () => {
     const config = JSON.parse(await read('tsconfig.json'));
-    expect(config.compilerOptions.checkJs).toBe(true);
-    expect(config.include).toContain('src/**/*.jsx');
-    expect(config.include).toContain('api/**/*.js');
+    expect(config.compilerOptions.strict).toBe(true);
+    expect(config.compilerOptions.noImplicitAny).toBe(true);
+    expect(config.compilerOptions.strictNullChecks).toBe(true);
+    expect(config.compilerOptions.useUnknownInCatchVariables).toBe(true);
+    expect(config.compilerOptions.noUncheckedIndexedAccess).toBe(true);
+    expect(config.compilerOptions.exactOptionalPropertyTypes).toBe(true);
+    expect(config.include).toContain('src/**/*.ts');
+    expect(config.include).toContain('src/**/*.tsx');
+    expect(config.include).toContain('api/**/*.ts');
   });
   it('keeps final payment outstanding until verified', async () => {
     const sql = await read('supabase/migrations/20260801010000_shababuna_production_completion.sql');

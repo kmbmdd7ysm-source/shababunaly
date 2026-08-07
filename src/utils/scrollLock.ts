@@ -2,9 +2,8 @@ let activeLocks = 0;
 
 /**
  * Applies a reference-counted, class-based scroll lock without writing inline styles.
- * @returns {() => void}
  */
-export function lockDocumentScroll() {
+export function lockDocumentScroll(): () => void {
   if (typeof document === 'undefined') return () => {};
   activeLocks += 1;
   document.documentElement.classList.add('scroll-locked');

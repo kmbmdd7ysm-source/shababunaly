@@ -1,5 +1,5 @@
 import { describe, expect, it } from './test-api.js';
-import { convertPrice, formatMoney, getAccessibleMoneyLabel, Money, roundLydPrice, sumMoney } from '../src/services/money.js';
+import { convertPrice, formatMoney, getAccessibleMoneyLabel, Money, roundLydPrice, sumMoney } from '../src/services/money.ts';
 
 describe('currency conversion', () => {
   it('stores canonical USD and converts using rate 9', () => {
