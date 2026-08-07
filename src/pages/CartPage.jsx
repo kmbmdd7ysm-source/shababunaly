@@ -84,22 +84,15 @@ export default function CartPage() {
                   <Link to="/shop" className="gw-btn gw-btn--primary">
                     {t.cart.startShopping}
                   </Link>
-                  {isLibya && (
-                    <Link to="/shop/ready-to-ship" className="gw-btn gw-btn--ghost">
-                      {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-                    </Link>
-                  )}
+                  <Link to="/shop/ready-to-ship" className="gw-btn gw-btn--ghost">
+                    {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                  </Link>
                 </div>
               </div>
               <ul className="gw-ledger-gates">
-                {categories
-                  .filter((entry) => isLibya || entry.slug !== 'ready-to-ship')
-                  .map((entry, position) => (
+                {categories.map((entry) => (
                     <li key={entry.slug}>
                       <Link to={`/shop/${entry.slug}`}>
-                        <span className="gw-ledger-gate-num" aria-hidden="true">
-                          {String(position + 1).padStart(2, '0')}
-                        </span>
                         <span className="gw-ledger-gate-name">{pick(entry.name)}</span>
                         <span className="gw-ledger-gate-count gw-isolate-ltr">
                           {products.filter((item) => item.category === entry.slug).length}

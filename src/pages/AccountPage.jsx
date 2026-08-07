@@ -905,7 +905,7 @@ export default function AccountPage() {
               className="gw-account-register"
               aria-label={pick({ en: 'Account sections', ar: 'أقسام الحساب' })}
             >
-              {Object.entries(t).map(([k, v], position) => (
+              {Object.entries(t).map(([k, v]) => (
                 <button
                   key={k}
                   type="button"
@@ -913,29 +913,26 @@ export default function AccountPage() {
                   aria-current={section === k ? 'page' : undefined}
                   onClick={() => selectSection(k)}
                 >
-                  <span className="gw-account-tab-index" aria-hidden="true">
-                    {String(position + 1).padStart(2, '0')}
-                  </span>
                   <span>{v}</span>
                 </button>
               ))}
             </nav>
             <div className="gw-account-panel">
               {section === 'overview' && (
-                <div className="account-grid">
-                  <article>
+                <div className="gw-account-summary">
+                  <article className="gw-account-summary-card">
                     <h2>{pick({ en: 'Cart', ar: 'السلة' })}</h2>
                     <strong>{cart.count}</strong>
                   </article>
-                  <article>
+                  <article className="gw-account-summary-card">
                     <h2>{pick({ en: 'Wishlist', ar: 'المفضلة' })}</h2>
                     <strong>{data.wishlist.length}</strong>
                   </article>
-                  <article>
+                  <article className="gw-account-summary-card">
                     <h2>{pick({ en: 'Comparisons', ar: 'المقارنات' })}</h2>
                     <strong>{compare.count}</strong>
                   </article>
-                  <article>
+                  <article className="gw-account-summary-card">
                     <h2>{pick({ en: 'Orders', ar: 'الطلبات' })}</h2>
                     <strong>{ordersState.orders.length}</strong>
                     <Link to="/order-tracking">

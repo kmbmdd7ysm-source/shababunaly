@@ -243,59 +243,56 @@ export default function TeamsWholesalePage() {
           </header>
 
           <section id="stage-build" className="gw-stage-block" aria-labelledby="stage-build-t">
-            <p className="gw-stage-mark">
-              <span aria-hidden="true">01</span> {pick({ en: 'Build', ar: 'جهّز' })}
-            </p>
+            <p className="gw-stage-mark">{pick({ en: 'Build', ar: 'جهّز' })}</p>
             <div className="container">
-              <div className="service-intro">
+              <div className="gw-teams-intro">
                 <div>
-                  <p className="section-label">CUSTOM IS BUILT IN</p>
-                  <h2 className="section-title">
+                  <p className="gw-spec">{pick({ en: 'Custom is built in', ar: 'التخصيص جزء من النظام' })}</p>
+                  <h2 id="stage-build-t" className="gw-teams-title">
                     {pick({
                       en: 'Every team order can be customized',
                       ar: 'كل طلب فريق يمكن تخصيصه',
                     })}
                   </h2>
-                  <p className="lead">
+                  <p className="gw-teams-lede">
                     {pick({
                       en: 'Custom products are made in production quantities: apparel from 10 pieces, custom basketballs from 6 and hoop systems from one unit.',
                       ar: 'المنتجات المخصصة تُصنع بكميات إنتاج: الملابس من 10 قطع، والكرات المخصصة من 6، ومنظومات السلات من وحدة واحدة.',
                     })}
                   </p>
                 </div>
-                <div className="service-intro-actions">
-                  <Link to="/customize" className="btn-primary">
+                <div className="gw-teams-actions">
+                  <Link to="/customize" className="gw-btn gw-btn--primary">
                     {pick({ en: 'Open Design Studio', ar: 'افتح استوديو التصميم' })}
                   </Link>
                   {auth.user && (
-                    <Link to="/account?section=workspace" className="btn-secondary">
+                    <Link to="/account?section=workspace" className="gw-btn gw-btn--ghost">
                       {pick({ en: 'Organization Workspace', ar: 'منصة المؤسسة' })}
                     </Link>
                   )}
-                  <Link to="/special-request" className="inline-link">
+                  <Link to="/special-request" className="gw-btn gw-btn--ghost">
                     {pick({ en: 'Need an unlisted product?', ar: 'تحتاج منتجًا غير موجود؟' })}
                   </Link>
                 </div>
               </div>
-              <div className="package-grid">
-                {packages.map((item, index) => (
-                  <article key={item.key}>
-                    <span>0{index + 1}</span>
-                    <h3>{pick(item.title)}</h3>
-                    <p>{pick(item.copy)}</p>
+              <ul className="gw-package-rail">
+                {packages.map((item) => (
+                  <li key={item.key}>
                     <button
                       type="button"
-                      className="inline-link"
+                      className={`gw-package-card${form.packageKey === item.key ? ' is-active' : ''}`}
                       onClick={() => {
                         setForm((current) => ({ ...current, packageKey: item.key }));
                         document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth' });
                       }}
                     >
-                      {pick({ en: 'Select package', ar: 'اختر الباقة' })} →
+                      <h3>{pick(item.title)}</h3>
+                      <p>{pick(item.copy)}</p>
+                      <span>{pick({ en: 'Select package', ar: 'اختر الباقة' })}</span>
                     </button>
-                  </article>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </section>
 
@@ -304,8 +301,7 @@ export default function TeamsWholesalePage() {
             className="gw-stage-block gw-stage-block--dark"
             aria-label={pick({ en: 'Quote and approval', ar: 'عرض السعر والاعتماد' })}
           >
-            <p className="gw-stage-mark">
-              <span aria-hidden="true">02</span> {pick({ en: 'Quote', ar: 'عرض السعر' })}
+            <p className="gw-stage-mark">{pick({ en: 'Quote', ar: 'عرض السعر' })}
             </p>
             <div className="gw-lifecycle">
               <div className="gw-lifecycle-inner">
@@ -357,8 +353,7 @@ export default function TeamsWholesalePage() {
           </section>
 
           <section id="stage-approve" className="gw-stage-block" aria-labelledby="stage-approve-t">
-            <p className="gw-stage-mark">
-              <span aria-hidden="true">03</span> {pick({ en: 'Approve', ar: 'الاعتماد' })}
+            <p className="gw-stage-mark">{pick({ en: 'Approve', ar: 'الاعتماد' })}
             </p>
             <div className="container account-capabilities">
               <div>
@@ -398,8 +393,7 @@ export default function TeamsWholesalePage() {
           </section>
 
           <section id="stage-produce" className="gw-stage-block gw-stage-block--muted">
-            <p className="gw-stage-mark">
-              <span aria-hidden="true">04</span>{' '}
+            <p className="gw-stage-mark">{' '}
               {pick({ en: 'Produce & complete', ar: 'التصنيع والإكمال' })}
             </p>
             <div id="quote">

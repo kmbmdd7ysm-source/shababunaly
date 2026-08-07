@@ -85,7 +85,6 @@ const FLOOR = [
     to: '/shop/ready-to-ship',
     zone: 'ready',
     name: { en: 'Ready to Ship', ar: 'تسليم فوري' },
-    libyaOnly: true,
   },
   { to: '/shop/clothing', zone: 'key', name: { en: 'Clothing', ar: 'الملابس' } },
   { to: '/shop/footwear', zone: 'baseline', name: { en: 'Footwear', ar: 'الأحذية' } },
@@ -150,7 +149,7 @@ export default function HomePage() {
     { id: 'open', label: { en: 'Opening', ar: 'الافتتاح' } },
     { id: 'game', label: { en: 'The game', ar: 'اللعبة' } },
     { id: 'floor', label: { en: 'The floor', ar: 'الأرضية' } },
-    ...(isLibya && ready.length ? [{ id: 'stock', label: { en: 'In stock', ar: 'المتوفر' } }] : []),
+    { id: 'stock', label: { en: 'Ready to Ship', ar: 'تسليم فوري' } },
     { id: 'workshop', label: { en: 'The workshop', ar: 'الورشة' } },
     { id: 'roster', label: { en: 'The roster', ar: 'الفريق' } },
     { id: 'equipment', label: { en: 'Equipment', ar: 'المعدات' } },
@@ -267,11 +266,9 @@ export default function HomePage() {
               <Link className="gw-path gw-path--primary" to="/shop">
                 <span>{pick({ en: 'Shop', ar: 'تسوّق' })}</span>
               </Link>
-              {isLibya && (
-                <Link className="gw-path" to="/shop/ready-to-ship">
-                  <span>{pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}</span>
-                </Link>
-              )}
+              <Link className="gw-path" to="/shop/ready-to-ship">
+                <span>{pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}</span>
+              </Link>
               <Link className="gw-path" to="/customize">
                 <span>{pick({ en: 'Customize', ar: 'صمّم' })}</span>
               </Link>
@@ -340,7 +337,7 @@ export default function HomePage() {
             </header>
             <div className="gw-floor">
               <CourtPlan />
-              {FLOOR.filter((zone) => !zone.libyaOnly || isLibya).map((zone) => (
+              {FLOOR.map((zone) => (
                 <Link key={zone.to} to={zone.to} className="gw-floor-zone" data-zone={zone.zone}>
                   <span className="gw-floor-name">{pick(zone.name)}</span>
                   {/* A count is information; an index number was not. */}
@@ -356,16 +353,20 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── 02 IN STOCK — Libya only, unchanged condition ─────────────── */}
-        {isLibya && ready.length > 0 && (
-          <section id="stock" className="gw-act gw-act--stock" aria-labelledby="gw-stock-title">
-            <div className="gw-act-inner">
-              <header className="gw-act-head">
-                <p className="gw-spec">{pick({ en: 'Libya only', ar: 'داخل ليبيا' })}</p>
-                <h2 id="gw-stock-title" className="gw-act-title">
-                  {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-                </h2>
-                <p className="gw-act-figure">
+        <section id="stock" className="gw-act gw-act--stock" aria-labelledby="gw-stock-title">
+          <div className="gw-act-inner">
+            <header className="gw-act-head">
+              <p className="gw-spec">
+                {pick({
+                  en: isLibya ? 'Held in Libya' : 'Inventory in Libya',
+                  ar: isLibya ? 'مخزون في ليبيا' : 'المخزون في ليبيا',
+                })}
+              </p>
+              <h2 id="gw-stock-title" className="gw-act-title">
+                {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+              </h2>
+              <p className="gw-act-figure">
+                {ready.length > 0 ? (
                   <span className="gw-figure">
                     <Range
                       from={libya.readyDelivery.minHours}
@@ -373,19 +374,28 @@ export default function HomePage() {
                       unit={pick({ en: 'hours', ar: 'ساعة' })}
                     />
                   </span>
-                </p>
-              </header>
+                ) : (
+                  <span className="gw-act-lede">
+                    {pick({
+                      en: 'Verified ready inventory will appear here when warehouse stock is confirmed. No stock is invented.',
+                      ar: 'يظهر المخزون الجاهز هنا عند توثيقه من المستودع. لا نختلق كميات.',
+                    })}
+                  </span>
+                )}
+              </p>
+            </header>
+            {ready.length > 0 && (
               <div className="gw-exhibit">
                 {ready.map((product, index) => (
                   <ProductCard key={product.id} product={product} eager={index < 2} />
                 ))}
               </div>
-              <Link className="gw-act-out" to="/shop/ready-to-ship">
-                {pick({ en: 'View all', ar: 'عرض الكل' })} →
-              </Link>
-            </div>
-          </section>
-        )}
+            )}
+            <Link className="gw-act-out" to="/shop/ready-to-ship">
+              {pick({ en: 'Open Ready to Ship', ar: 'افتح التسليم الفوري' })}
+            </Link>
+          </div>
+        </section>
 
         {/* ── 03 THE WORKSHOP ──────────────────────────────────────────── */}
         <section

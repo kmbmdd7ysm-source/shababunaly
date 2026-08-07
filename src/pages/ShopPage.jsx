@@ -47,13 +47,13 @@ export default function ShopPage() {
       priceMin: params.get('min') || '',
       priceMax: params.get('max') || '',
       inStock: params.get('instock') === '1',
-      readyOnly: isLibya && (params.get('ready') === '1' || category === 'ready-to-ship'),
+      readyOnly: params.get('ready') === '1' || category === 'ready-to-ship',
       newOnly: params.get('new') === '1',
       bestOnly: params.get('best') === '1',
       customizableOnly: params.get('custom') === '1',
       q: params.get('q') || '',
     }),
-    [category, subcategory, params, isLibya],
+    [category, subcategory, params],
   );
   const sort = params.get('sort') || 'featured';
 
@@ -112,12 +112,18 @@ export default function ShopPage() {
   const baseProducts = useMemo(
     () =>
       products.filter((product) => {
-        if (category === 'ready-to-ship') return isLibya && product.readyToShip;
+        if (category === 'ready-to-ship') {
+          return (
+            product.readyToShip === true &&
+            product.inventoryVerified === true &&
+            product.inventoryTracking === true
+          );
+        }
         if (category && product.category !== category) return false;
         if (subcategory && product.subcategory !== subcategory) return false;
         return true;
       }),
-    [category, subcategory, isLibya],
+    [category, subcategory],
   );
 
   const filtered = useMemo(() => {
@@ -137,8 +143,18 @@ export default function ShopPage() {
         return false;
       if (min != null && product.price < min) return false;
       if (max != null && product.price > max) return false;
-      if (filters.inStock && product.availability !== 'in-stock') return false;
-      if (filters.readyOnly && !product.readyToShip) return false;
+      if (
+        filters.inStock &&
+        !(product.inventoryVerified === true && product.inventoryTracking === true && Number(product.stock) > 0)
+      ) {
+        return false;
+      }
+      if (
+        filters.readyOnly &&
+        !(product.readyToShip === true && product.inventoryVerified === true && product.inventoryTracking === true)
+      ) {
+        return false;
+      }
       if (filters.newOnly && !product.newArrival) return false;
       if (filters.bestOnly && !product.bestSeller) return false;
       if (filters.customizableOnly && !product.customizable) return false;
@@ -166,8 +182,7 @@ export default function ShopPage() {
   }, [baseProducts, filters, pick, sort]);
 
   useEffect(() => {
-    if (!isLibya && category === 'ready-to-ship') navigate('/shop', { replace: true });
-  }, [category, isLibya, navigate]);
+  }, [category, navigate]);
 
   useEffect(() => {
     if (!drawerOpen) return undefined;
@@ -231,7 +246,7 @@ export default function ShopPage() {
       ? [
           {
             key: 'instock',
-            label: pick({ en: 'In stock', ar: 'متوفر' }),
+            label: pick({ en: 'Verified stock', ar: 'مخزون موثّق' }),
             clear: () => onChange({ inStock: false }),
           },
         ]
@@ -292,7 +307,7 @@ export default function ShopPage() {
       : []),
   ];
 
-  const departments = categories.filter((item) => isLibya || item.slug !== 'ready-to-ship');
+  const departments = categories;
 
   // The catalogue reads as a set of RUNS rather than one undifferentiated grid.
   // The lead product of each run gets a plinth; the remainder gets an efficient
@@ -361,18 +376,23 @@ export default function ShopPage() {
               </p>
             </div>
             <ul className="gw-entrance-gates">
-              {isLibya && (
-                <li>
-                  <Link to="/shop/ready-to-ship" className="gw-gate gw-gate--ready">
-                    <span className="gw-gate-name">
-                      {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-                    </span>
-                    <span className="gw-gate-count gw-isolate-ltr">
-                      {products.filter((entry) => entry.readyToShip).length}
-                    </span>
-                  </Link>
-                </li>
-              )}
+              <li>
+                <Link to="/shop/ready-to-ship" className="gw-gate gw-gate--ready">
+                  <span className="gw-gate-name">
+                    {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                  </span>
+                  <span className="gw-gate-count gw-isolate-ltr">
+                    {
+                      products.filter(
+                        (entry) =>
+                          entry.readyToShip === true &&
+                          entry.inventoryVerified === true &&
+                          entry.inventoryTracking === true,
+                      ).length
+                    }
+                  </span>
+                </Link>
+              </li>
               {departments
                 .filter((item) => item.slug !== 'ready-to-ship')
                 .map((item) => (
@@ -470,6 +490,17 @@ export default function ShopPage() {
         </section>
       )}
 
+      {!showEntrance && category === 'ready-to-ship' && !isLibya && (
+        <aside className="gw-ready-note" role="note">
+          <p>
+            {pick({
+              en: 'Ready-to-Ship inventory is held in Libya. International delivery requires confirmation of shipping before the order is fulfilled.',
+              ar: 'مخزون التسليم الفوري موجود في ليبيا. الشحن الدولي يتطلب تأكيد تكلفة التوصيل قبل تنفيذ الطلب.',
+            })}
+          </p>
+        </aside>
+      )}
+
       {/* Department world stage — editorial lead when browsing a department. */}
       {!showEntrance && category && filtered.length > 0 && (
         <section className="gw-dept-world" aria-label={heading}>
@@ -518,7 +549,7 @@ export default function ShopPage() {
           </nav>
 
           <div className="gw-console-tools">
-            {isLibya && category !== 'ready-to-ship' && (
+            {category !== 'ready-to-ship' && (
               <Link to="/shop/ready-to-ship" className="gw-console-ready">
                 {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
               </Link>

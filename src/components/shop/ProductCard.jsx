@@ -13,19 +13,22 @@ import ColorSwatch from '../common/ColorSwatch';
 import '../../styles/product-card.css';
 import { getCompareAction } from '../../utils/productOptions';
 import { getVariantPurchaseLimit } from '../../utils/productEligibility';
+import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability.ts';
 
 export default function ProductCard({ product, eager = false, displayColor = null }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, lang } = useLanguage();
   const { addItem } = useCart();
   const { countryCode } = useCommerce();
   const { isLowStock } = useCatalog();
   const { has, toggle } = useWishlist();
   const compare = useCompare();
   const navigate = useNavigate();
-  const comingSoon = product.available === false || product.comingSoon === true;
-  const soldOut = product.availability === 'sold-out';
+  const availability = resolveAvailabilityState(product, { countryCode });
+  const comingSoon = availability === 'COMING_SOON';
+  const soldOut = availability === 'OUT_OF_STOCK';
   const onSale = product.compareAt && product.compareAt > product.price;
-  const low = isLowStock(product);
+  const low = isLowStock(product) && product.inventoryVerified === true;
+  const availabilityCopy = availabilityLabel(availability, lang === 'ar' ? 'ar' : 'en');
   const to = `/products/${product.slug}${displayColor ? `?color=${displayColor}` : ''}`;
   const cardColor = product.colors.find((c) => c.key === displayColor);
   const cardImage = cardColor?.image || product.image;
@@ -105,14 +108,22 @@ export default function ProductCard({ product, eager = false, displayColor = nul
           )}
         </Link>
         <div className="product-card-badges">
-          {comingSoon && <Badge tone="limited">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</Badge>}
-          {!comingSoon && soldOut && <Badge tone="sold">{t.badge.soldOut}</Badge>}
-          {!comingSoon && !soldOut && product.readyToShip && countryCode === 'LY' && (
+          {comingSoon && <Badge tone="limited">{availabilityCopy.label}</Badge>}
+          {!comingSoon && soldOut && <Badge tone="sold">{availabilityCopy.label}</Badge>}
+          {!comingSoon && !soldOut && availability === 'READY_TO_SHIP' && (
             <span className="ready-badge">
               <i className="ready-dot" />
-              {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+              {availabilityCopy.label}
             </span>
           )}
+          {!comingSoon &&
+            !soldOut &&
+            availability !== 'READY_TO_SHIP' &&
+            (availability === 'QUOTE_ONLY' ||
+              availability === 'MADE_TO_ORDER' ||
+              availability === 'SUPPLIER_ORDER') && (
+              <Badge tone="limited">{availabilityCopy.label}</Badge>
+            )}
           {!comingSoon && !soldOut && onSale && <Badge tone="sale">{t.badge.sale}</Badge>}
           {!comingSoon && !soldOut && product.newArrival && <Badge tone="new">{t.badge.new}</Badge>}
           {!comingSoon && !soldOut && product.bestSeller && (

@@ -699,6 +699,20 @@
   color: var(--sh-verified);
 }
 
+.gw-ready-note {
+  margin: 0;
+  padding: var(--sh-s-4) clamp(16px, 3vw, 48px);
+  background: color-mix(in srgb, var(--sh-ink) 5%, var(--sh-chalk));
+}
+
+.gw-ready-note p {
+  margin: 0 auto;
+  max-inline-size: 70ch;
+  color: var(--sh-ink-70);
+  line-height: 1.5;
+  font-size: 0.9375rem;
+}
+
 .gw-console-ready {
   display: inline-flex;
   align-items: center;

@@ -268,3 +268,100 @@
 .gw-stage-block--dark .gw-lifecycle {
   padding-inline: clamp(20px, 4vw, 64px);
 }
+
+/* Soft package selection — not a bordered box grid. */
+.gw-teams-intro {
+  display: grid;
+  gap: var(--sh-s-5);
+  margin-block-end: var(--sh-s-6);
+}
+
+@media (min-width: 900px) {
+  .gw-teams-intro {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: end;
+  }
+}
+
+.gw-teams-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+[lang='ar'] .gw-teams-title {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+}
+
+.gw-teams-lede {
+  margin: var(--sh-s-3) 0 0;
+  max-inline-size: 48ch;
+  color: var(--sh-ink-70);
+  line-height: 1.55;
+}
+
+.gw-teams-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-3);
+}
+
+.gw-package-rail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sh-s-3);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.gw-package-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-3);
+  inline-size: 100%;
+  min-block-size: 100%;
+  padding: var(--sh-s-5);
+  border: 0;
+  border-radius: var(--sh-r-3, 1.25rem);
+  background: color-mix(in srgb, var(--sh-ink) 4%, var(--sh-chalk));
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color 180ms var(--sh-e-draw, ease),
+    transform 180ms var(--sh-e-draw, ease);
+}
+
+.gw-package-card:hover {
+  background: color-mix(in srgb, var(--sh-ink) 8%, var(--sh-chalk));
+  transform: translateY(-2px);
+}
+
+.gw-package-card.is-active {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+.gw-package-card h3 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.gw-package-card p {
+  margin: 0;
+  flex: 1;
+  color: inherit;
+  opacity: 0.8;
+  line-height: 1.45;
+}
+
+.gw-package-card span {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

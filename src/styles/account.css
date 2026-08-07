@@ -195,40 +195,34 @@
 }
 
 .gw-account-tab {
-  display: flex;
-  align-items: baseline;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: var(--sh-s-2);
   min-block-size: var(--sh-target);
-  padding-inline: var(--sh-s-3);
+  padding-inline: 1rem;
   border: 0;
-  border-radius: var(--sh-r-1);
-  background: transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sh-ink) 6%, transparent);
   color: var(--sh-ink-70);
   cursor: pointer;
   white-space: nowrap;
-  text-align: start;
+  text-align: center;
   font-family: var(--sh-font-display);
-  font-size: var(--sh-t-spec);
+  font-size: 0.8125rem;
   font-weight: 700;
-  letter-spacing: var(--sh-tr-spec);
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-transform: none;
 }
 
 [lang='ar'] .gw-account-tab {
   font-family: var(--sh-font-arabic);
   letter-spacing: var(--sh-tr-ar);
-  text-transform: none;
   font-size: 0.875rem;
 }
 
-.gw-account-tab-index {
-  font-size: 0.5625rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--sh-ink-50);
-}
-
 .gw-account-tab:hover {
-  background: var(--sh-chalk-2);
+  background: color-mix(in srgb, var(--sh-ink) 12%, transparent);
   color: var(--sh-ink);
 }
 
@@ -237,9 +231,34 @@
   color: var(--sh-chalk);
 }
 
-.gw-account-tab.is-active .gw-account-tab-index {
-  color: var(--sh-chalk);
-  opacity: 0.7;
+.gw-account-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--sh-s-3);
+}
+
+.gw-account-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+  padding: var(--sh-s-4);
+  border: 0;
+  border-radius: var(--sh-r-3, 1.25rem);
+  background: color-mix(in srgb, var(--sh-ink) 4%, var(--sh-chalk));
+}
+
+.gw-account-summary-card h2 {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--sh-ink-70);
+}
+
+.gw-account-summary-card strong {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .gw-account-panel {
