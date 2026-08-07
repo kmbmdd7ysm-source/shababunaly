@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { normalizeSearchText } from '../utils/search';
 import Icon from '../components/icons/Icon';
+import '../styles/content.css';
 
 const HELP_TOPICS = [
   {

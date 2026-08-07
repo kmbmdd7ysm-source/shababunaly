@@ -38,6 +38,7 @@ import { downloadBlob, downloadDesignDocuments } from '../utils/simplePdf';
 import { parseRosterFile, ROSTER_FILE_ACCEPT } from '../utils/rosterSpreadsheet';
 import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
+import '../styles/studio.css';
 
 const STEPS = [
   { key: 'product', en: 'Product', ar: 'المنتج' },

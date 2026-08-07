@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo';
 import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
+import '../styles/content.css';
 
 /*
  * About, rebuilt as a MANIFESTO in numbered movements.

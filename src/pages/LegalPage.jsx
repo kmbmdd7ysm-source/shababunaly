@@ -5,6 +5,7 @@ import RouteMasthead from '../components/composition/RouteMasthead';
 import Dossier from '../components/composition/Dossier';
 import { getLegal } from '../data/legal';
 import NotFoundPage from './NotFoundPage';
+import '../styles/content.css';
 
 /*
  * Legal documents, rebuilt as a DOSSIER.

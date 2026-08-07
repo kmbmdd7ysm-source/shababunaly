@@ -17,6 +17,7 @@ import { categories, getCategory, getSubcategory } from '../data/categories';
 import { lockDocumentScroll } from '../utils/scrollLock';
 import '../styles/catalogue.css';
 import '../styles/runs.css';
+import '../styles/catalog.css';
 
 const numberOrNull = (value) =>
   value === '' || value == null || Number.isNaN(Number(value)) ? null : Number(value);

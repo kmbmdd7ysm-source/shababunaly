@@ -10,6 +10,7 @@ import '../styles/ledger.css';
 import { useCatalog } from '../context/CatalogContext';
 import { categories } from '../data/categories';
 import Icon from '../components/icons/Icon';
+import '../styles/transact.css';
 
 export default function CartPage() {
   const { getProduct, products } = useCatalog();

@@ -12,6 +12,7 @@ import { SITE } from '../config';
 import { shippingConfig } from '../config/shipping';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
 import '../styles/journey.css';
+import '../styles/home.css';
 
 /*
  * THE JOURNEY — the homepage as a sequence of full-viewport chapters.

@@ -5,6 +5,7 @@ import Dossier from '../components/composition/Dossier';
 import Accordion from '../components/common/Accordion';
 import EmptyState from '../components/common/EmptyState';
 import { faqCategories } from '../data/faqs';
+import '../styles/content.css';
 
 /*
  * FAQ, rebuilt as a DOSSIER.

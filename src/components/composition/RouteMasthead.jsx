@@ -1,5 +1,6 @@
 import Breadcrumbs from '../common/Breadcrumbs';
 import '../../styles/composition.css';
+import '../../styles/masthead.css';
 
 /*
  * The route masthead — the structural replacement for `PageHero`.

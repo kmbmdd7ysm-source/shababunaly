@@ -1,14 +1,14 @@
 {
   "status": "passed",
-  "generatedAt": "2026-08-07T04:19:38.955Z",
-  "buildId": "01fd85e0f775fd080b3c8ab7444f614fe4e1c870",
-  "javascriptBytes": 1260875,
-  "cssBytes": 408652,
+  "generatedAt": "2026-08-07T04:21:51.764Z",
+  "buildId": "c8e98905123b09a33c5046d9f15cd4a67c0bc324",
+  "javascriptBytes": 1261964,
+  "cssBytes": 423110,
   "largestJavaScriptChunks": [
     {
-      "path": "assets/index-CvOTN-Ip.js",
-      "bytes": 242067,
-      "sha256": "df335c40e5541956e767186fedbcffbcaa107bde790c17b6c312c877ffb52a22"
+      "path": "assets/index-Cfon01Kk.js",
+      "bytes": 242247,
+      "sha256": "c601d2666720047b1bd1a42cd15e1ec0963a825bb5ac5e5e4040d7d87c19d0cc"
     },
     {
       "path": "assets/index-D3DOuwuQ.js",
@@ -21,54 +21,54 @@
       "sha256": "ecea42efb03244923bc7ea990210d626f2dc48e651cbef3b8bbd30e28980e193"
     },
     {
-      "path": "assets/AccountPage-Ca0dO8g0.js",
-      "bytes": 94083,
-      "sha256": "74a91b4964575297610ad62302a1bde7b65a6bee05cb6354d44b51c5ee80b921"
+      "path": "assets/AccountPage-C5TxQw7N.js",
+      "bytes": 94146,
+      "sha256": "b91404f6383d913496ed0775bc58c1c605293edc0085868a99fe7a56c4361513"
     },
     {
-      "path": "assets/OperationsDashboardPage-Clrt5qTP.js",
+      "path": "assets/OperationsDashboardPage-CH-Q2nc2.js",
       "bytes": 87900,
-      "sha256": "0b78b774679ab50bfc8ab2aa9b6a3d620d96610354b81d8362a86e5b681916a2"
+      "sha256": "92c68763bc55e36b9f9733044ac7ebaf063e719fa079b403f9a3ab720593d69e"
     },
     {
-      "path": "assets/CustomizePage-B_aHLsxy.js",
+      "path": "assets/CustomizePage-BxWb56RT.js",
       "bytes": 71327,
-      "sha256": "ba845535fe5a8a4bcdc579aecade607cca868bddc7215529ce64cdd477ebda84"
+      "sha256": "3d1eea32cf675a53dab542072a93efa8fdb2480f1a3038887330015d6e28e2ff"
     },
     {
-      "path": "assets/OperationsPage-D_5phRvl.js",
+      "path": "assets/OperationsPage-ZUMib_pL.js",
       "bytes": 31177,
-      "sha256": "294ea83bcf07eada8e67f2c59fef980a0896b08b902137e86b5aba67f10cca21"
+      "sha256": "91b39bf14f0c867611c90835914ad59c214f93ea1517fd3c7c11a6c0b965b337"
     },
     {
-      "path": "assets/CheckoutPage-DVm1ArkJ.js",
-      "bytes": 24304,
-      "sha256": "3374ef716a148d5f56a032c2246d2cac51106f934fd5d80839d709b1572a41a4"
+      "path": "assets/CheckoutPage-y_e5fN_m.js",
+      "bytes": 24335,
+      "sha256": "8820f67943e4bf2cd1f951f7a62ed6a52a0bb2446cd50d4a5cf1c11341e52291"
     },
     {
-      "path": "assets/ProductionDesignEditor-5Yhr8AfT.js",
+      "path": "assets/ProductionDesignEditor-CscTNYUC.js",
       "bytes": 24118,
-      "sha256": "6f7d026aec8feef4453a558b120272e76b7b9c1d61d5c5b14fd4102c2c4f3773"
+      "sha256": "2cd541fbc4aedc38ef1cb17f4689037ffa9318d24c09c0e649c906ceac14cca1"
     },
     {
-      "path": "assets/ProductPage-BMI5_w23.js",
-      "bytes": 23866,
-      "sha256": "9507386eb9f18ebc5b400b11f7e61435257be632ed52875770d60556d720382e"
+      "path": "assets/ProductPage-BYZnMvUA.js",
+      "bytes": 23896,
+      "sha256": "ecc044cc88ea61018cba9aa08446bc135f055046756b46133b7eb5e45d4f08ce"
     },
     {
-      "path": "assets/ShopPage-cL-KSdzl.js",
-      "bytes": 21651,
-      "sha256": "d7680f22e156073c9d0ba6313130d64ee6dde02ba4e65755faa99662a2ae48ab"
+      "path": "assets/ShopPage-BbvZ3rki.js",
+      "bytes": 21681,
+      "sha256": "cf10a6287491b568b0049fcab07dbe1226ed9e9fb32855623900ebf281aeb379"
     },
     {
-      "path": "assets/TeamsWholesalePage-DGXbjB2I.js",
+      "path": "assets/TeamsWholesalePage-MNwwrr9N.js",
       "bytes": 17438,
-      "sha256": "381946c234bc968cf044aa44491860f47a1eab4c7aeb61cb43faad212ca680c2"
+      "sha256": "8cd7eb828029a1e2304e31c0392dce443c45f7c647374d01f570e71248f3389e"
     },
     {
-      "path": "assets/LegalPage-CSILBRvF.js",
-      "bytes": 17090,
-      "sha256": "d6cea6953feb82fa22bf0e5f1a355bba3ba44a973de2fc30411a24709f773841"
+      "path": "assets/LegalPage-B-odnx_N.js",
+      "bytes": 17151,
+      "sha256": "62856e3d9a2a553d694bf157ebafcb7508df5adf59ab392985cbd4ea5f8fda72"
     },
     {
       "path": "assets/helmet-Dc---unz.js",
@@ -76,35 +76,35 @@
       "sha256": "e8cfd98a1fcad50be69d9ba2afff3f219eac6bd5aa566dbc26dcb8b4300e455b"
     },
     {
-      "path": "assets/orders-BEwQ_Fqj.js",
+      "path": "assets/orders-Y9eoVJq0.js",
       "bytes": 13932,
-      "sha256": "235229887832371a61fa219ebcf6f8d1dd89599211bc7fbb109194e2994aab7e"
+      "sha256": "7295e757eb42cb793e92ee400f4c899f01aa5f00767ef183eeef5f17dd7cbb76"
     },
     {
-      "path": "assets/LabHomePage-CkskgZ8x.js",
+      "path": "assets/LabHomePage-COwK243V.js",
       "bytes": 12601,
-      "sha256": "466a2c0bb38ce2177f78d978ef3c3688d26da797953b5d3d052fff0fc5d3c863"
+      "sha256": "0747db51a71f2527dc550f0da580e45d0267a3f5dcc64818187c8e85183e8a3f"
     },
     {
-      "path": "assets/HelpPage-D1PiUY04.js",
-      "bytes": 11547,
-      "sha256": "61ec844ac2e7063b77e94b27736879c83c30c3697f4f42aac6e78a514ea18d71"
+      "path": "assets/HelpPage-BvuDCIcd.js",
+      "bytes": 11608,
+      "sha256": "b091875919af755474c5663aeaa0b16f20671194189ce40cbeb46b233ef830b6"
     },
     {
-      "path": "assets/SpecialRequestPage-Bxf9sHrS.js",
-      "bytes": 11476,
-      "sha256": "9a81089e21480a5b52db51928158292e2c8470b008602f5c36f33aebf9f2cccc"
+      "path": "assets/SpecialRequestPage-svH0Xu3C.js",
+      "bytes": 11507,
+      "sha256": "9c97b57904ce830e14868a864b40a8b17e7a7d5bf1fadcd9c23a4cde8bfa9deb"
     },
     {
-      "path": "assets/b2b-B0Ro0uPk.js",
+      "path": "assets/b2b-DeGpnruA.js",
       "bytes": 10674,
-      "sha256": "2796f741f357fa32b83ea022384d2d0fd24fc624362441bec7bbf7423d624331"
+      "sha256": "dc081a722e88c4b4e01e1c14b00587702dbd2dfa27635737075c44905705fe32"
     },
     {
-      "path": "assets/OrderDetailPage-BED1oZfQ.js",
-      "bytes": 8982,
-      "sha256": "9d1b45215d9121766c75ed5a66dafeb390da3a02546eb6af52a8fd050df4fbca"
+      "path": "assets/OrderDetailPage-ciN8Bq5u.js",
+      "bytes": 9013,
+      "sha256": "ce397d8c5a7b68a754874042564140c3f339e3647b3ae94e779179c0edc87e7a"
     }
   ],
-  "assetCount": 329
+  "assetCount": 334
 }

@@ -5,6 +5,7 @@ import RouteMasthead from '../components/composition/RouteMasthead';
 import { useCatalog } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
 import '../styles/catalogue.css';
+import '../styles/catalog.css';
 
 /*
  * The LHA store, rebuilt onto the shared catalogue architecture.

@@ -14,7 +14,7 @@
 
 .gw-sysbanner[data-open='yes'] {
   grid-template-rows: 1fr;
-  border-block-end-color: var(--sh-rule-inverse-strong));
+  border-block-end-color: var(--sh-rule-inverse-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -100,7 +100,7 @@
 
 .gw-announce[data-open='yes'] {
   grid-template-rows: 1fr;
-  border-block-end-color: var(--sh-rule-inverse-strong));
+  border-block-end-color: var(--sh-rule-inverse-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -151,7 +151,7 @@
   min-block-size: var(--sh-target);
   border: 0;
   background: transparent;
-  color: var(--sh-night-ink-70));
+  color: var(--sh-night-ink-70);
   cursor: pointer;
   font-family: var(--sh-font-display);
   font-size: 0.6875rem;

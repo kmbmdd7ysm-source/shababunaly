@@ -6619,33 +6619,32 @@ html[dir='rtl'] .site-header {
   }
 }
 
-/* Final RTL viewport fix: keep Safari's viewport LTR while the application content remains RTL. */
+/*
+ * RTL uses the document dir attribute. Do NOT force html/body to LTR —
+ * that was the root cause of broken Arabic layout and required a JS
+ * workaround to stamp dir onto #root. Logical CSS + dir="rtl" is enough.
+ */
 html {
-  direction: ltr !important;
   width: 100%;
   max-width: 100%;
   margin: 0;
   padding: 0;
   background: #fff;
+  overflow-x: clip;
 }
-body[dir='rtl'] {
-  direction: ltr !important;
+body {
   width: 100%;
   max-width: 100%;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: clip;
 }
-#root[dir='rtl'] {
-  direction: rtl;
+#root {
   position: relative;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 #root[dir='rtl'] .site-shell,
 #root[dir='rtl'] main,

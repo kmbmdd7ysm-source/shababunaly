@@ -24,6 +24,7 @@ import '../styles/checkout.css';
 import { sendFormspree } from '../services/formspree';
 import { listAddresses } from '../services/account/addressService';
 import { reportClientError } from '../services/telemetry';
+import '../styles/transact.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CHECKOUT_KEY = 'shababuna-checkout-idempotency';

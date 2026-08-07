@@ -7,6 +7,7 @@ import { searchSite, getSearchFacets } from '../utils/search';
 import { useCatalog } from '../context/CatalogContext';
 import '../styles/catalogue.css';
 import '../styles/composition.css';
+import '../styles/catalog.css';
 
 export default function SearchPage() {
   const { t, pick } = useLanguage();

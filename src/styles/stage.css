@@ -21,9 +21,6 @@
   padding-block: clamp(20px, 3vw, 36px) clamp(32px, 5vw, 64px);
 }
 
-@media (min-width: 1000px) {
-}
-
 .gw-stage-trail {
   margin-block-end: var(--sh-s-4);
 }

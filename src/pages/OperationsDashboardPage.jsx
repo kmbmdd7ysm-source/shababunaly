@@ -38,6 +38,7 @@ import {
   EnterpriseOperationsPanel,
   InventoryCsvManager,
 } from '../components/operations/OperationsEnterpriseModules';
+import '../styles/operations.css';
 
 export default function OperationsPage() {
   const { pick, lang } = useLanguage();

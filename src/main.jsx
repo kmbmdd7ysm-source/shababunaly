@@ -13,34 +13,23 @@ import { CatalogProvider } from './context/CatalogContext';
 import { installGlobalErrorMonitoring } from './services/telemetry';
 import ProductionReadinessGate from './components/security/ProductionReadinessGate';
 import { STORAGE_KEYS } from './config';
+/*
+ * CSS architecture (Phase 4):
+ * 1. Legacy cascade still required for unmigrated selectors (global/premium/shababuna).
+ * 2. Token + foundation layers are global.
+ * 3. Route/domain sheets load with the routes that need them (not in this entry).
+ */
 import './styles/global.css';
 import './styles/premium.css';
-import './styles/account-sync.css';
 import './styles/shababuna.css';
-// GROUNDWORK foundation. Loaded after the existing cascade so that where
-// specificity ties the new system wins, and namespaced (`--sh-*` tokens,
-// `Shababuna *` font families) so that nothing it declares can reach a
-// selector the current site actually uses.
-//
-// Only the two genuinely global layers live in the entry bundle: the token
-// contract and the @font-face declarations. The layers that emit *applied*
-// rules (typography classes, motion, geometry, layout) are imported by the
-// components that use them, so Vite splits them into route chunks and the
-// entry CSS does not carry rules no current route renders.
 import './styles/tokens.css';
 import './styles/fonts.css';
 import './styles/typography.css';
 import './styles/motion.css';
 import './styles/geometry.css';
 import './styles/layout.css';
-// The shell bridge loads last so it can migrate the legacy chrome onto the new
-// system in place, without needing `!important` to win.
 import './styles/shell.css';
-import './styles/catalog.css';
-import './styles/workspace.css';
-import './styles/content.css';
-import './styles/transact.css';
-import './styles/operations.css';
+/* shell.nav / colophon / masthead load with Header, Footer, and route shells. */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,
 // so importing App above the stylesheets placed every page-level sheet it
@@ -78,13 +67,9 @@ installGlobalErrorMonitoring();
   const dir = stored === 'ar' ? 'rtl' : 'ltr';
   document.documentElement.lang = stored;
   document.documentElement.dir = dir;
-  // `body` and `#root` matter as much as `html` here. The existing cascade
-  // carries `body[dir='rtl'] { direction: ltr !important }` and then restores
-  // the real direction with `#root[dir='rtl'] { direction: rtl }`, so RTL does
-  // not actually engage until `#root` carries the attribute. Setting only
-  // `html` left the header laying out LTR for a frame and then mirroring.
+  // Keep body in sync for any legacy selectors that still read body[dir].
+  // Direction itself comes from the document attribute — not a CSS LTR force.
   document.body.dir = dir;
-  document.getElementById('root')?.setAttribute('dir', dir);
 })();
 
 createRoot(document.getElementById('root')).render(

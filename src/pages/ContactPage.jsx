@@ -8,6 +8,7 @@ import '../styles/composition.css';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import { sendFormspree } from '../services/formspree';
 import TurnstileWidget from '../components/security/TurnstileWidget';
+import '../styles/content.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const types = [

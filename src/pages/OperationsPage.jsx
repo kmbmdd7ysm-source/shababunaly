@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { getStaffRole, isStaffUser } from '../services/operations';
 import Icon from '../components/icons/Icon';
 import '../styles/command.css';
+import '../styles/operations.css';
 
 const Dashboard = lazy(() => import('./OperationsDashboardPage'));
 const Orders = lazy(() => import('../components/operations/sections/OrdersSection'));

@@ -25,6 +25,9 @@ import {
   listPrivacyExports,
   requestPrivacyExport,
 } from '../services/privacy';
+import '../styles/transact.css';
+import '../styles/account-sync.css';
+import '../styles/workspace.css';
 
 const ACCOUNT_SECTIONS = [
   'overview',

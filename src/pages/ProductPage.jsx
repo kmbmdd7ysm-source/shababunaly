@@ -31,6 +31,7 @@ import ProductViewer from '../components/product/ProductViewer';
 import '../styles/stage.css';
 import '../styles/catalogue.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
+import '../styles/catalog.css';
 
 export default function ProductPage() {
   const { slug } = useParams();
