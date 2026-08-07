@@ -1,3 +1,4 @@
+import ProductMasterFields from './control/ProductMasterFields';
 import { useEffect, useMemo, useState } from 'react';
 import { getLocalizedCountries } from '../../data/countries';
 import {
@@ -69,3 +70,5 @@ export function HeroContentManager({ row, pick, saving, run }) {
 }
 
 
+
+export { ProductMasterFields };

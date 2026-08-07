@@ -7,6 +7,8 @@ import {
   allSizes as staticSizes,
 } from '../data/products';
 import { getSupabase } from '../services/supabase';
+import { getRelatedProducts } from '../utils/relatedProducts.ts';
+import { isReadyToShipEligible } from '../utils/productEligibility.ts';
 
 const CatalogContext = createContext(null);
 const REFRESH_MS = 5 * 60 * 1000;
@@ -196,14 +198,20 @@ export function CatalogProvider({ children }) {
       featuredProducts: () => products.filter((product) => product.featured && !product.legacyLha),
       newArrivals: () => products.filter((product) => product.newArrival && !product.legacyLha),
       bestSellers: () => products.filter((product) => product.bestSeller && !product.legacyLha),
-      readyToShipProducts: () => products.filter((product) => product.readyToShip && product.stock > 0),
+      readyToShipProducts: () => products.filter((product) => isReadyToShipEligible(product, 'LY')),
       lhaStoreProducts: () => products.filter((product) => product.storefronts?.includes('lha')),
-      productsByCategory: (category) => category === 'ready-to-ship'
-        ? products.filter((product) => product.readyToShip && product.stock > 0)
-        : products.filter((product) => product.category === category),
-      productsBySubcategory: (category, subcategory) => products.filter((product) => product.category === category && product.subcategory === subcategory),
-      relatedProducts: (item, limit = 4) => products.filter((product) => product.id !== item?.id && (product.category === item?.category || product.brand === item?.brand)).slice(0, limit),
-      isLowStock: (product) => Boolean(product?.inventoryTracking) && product.availability === 'in-stock' && product.stock > 0 && product.stock <= product.lowStockThreshold,
+      productsByCategory: (category) =>
+        category === 'ready-to-ship'
+          ? products.filter((product) => isReadyToShipEligible(product, 'LY'))
+          : products.filter((product) => product.category === category),
+      productsBySubcategory: (category, subcategory) =>
+        products.filter((product) => product.category === category && product.subcategory === subcategory),
+      relatedProducts: (item, limit = 4) => getRelatedProducts(item, products, limit),
+      isLowStock: (product) =>
+        Boolean(product?.inventoryTracking) &&
+        product.inventoryVerified === true &&
+        Number(product.stock) > 0 &&
+        Number(product.stock) <= Number(product.lowStockThreshold || 0),
       allColors: colors.length ? colors : staticColors,
       allSizes: unique(products.flatMap((product) => product.sizes || [])).length ? unique(products.flatMap((product) => product.sizes || [])) : staticSizes,
       allBrands: brands.length ? brands : staticBrands,

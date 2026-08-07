@@ -226,7 +226,7 @@ describe('100% data, studio and document branch closure', {concurrency:false}, (
     expect(normalizeLhaCatalogProduct({...base,comingSoon:true,available:true,variants:[{stock:0}],inventoryVerified:true})).toMatchObject({status:'active',comingSoon:false,availability:'in-stock'});
     expect(getProduct('missing')).toBe(undefined); expect(getProductById('missing')).toBe(undefined);
     featuredProducts(); newArrivals(); bestSellers(); readyToShipProducts(); lhaStoreProducts(); productsByCategory('ready-to-ship'); productsByCategory('clothing'); productsBySubcategory('clothing','x'); relatedProducts(null,1); relatedProducts(catalogProducts[0],1);
-    expect(isLowStock({inventoryTracking:true,availability:'in-stock',stock:1,lowStockThreshold:2})).toBe(true); expect(isLowStock({inventoryTracking:false})).toBe(false);
+    expect(isLowStock({inventoryTracking:true,inventoryVerified:true,stock:1,lowStockThreshold:2})).toBe(true); expect(isLowStock({inventoryTracking:false})).toBe(false);
     expect(compareBrands('ZZZ','AAA')).toBeGreaterThan(0); expect(compareBrands('ZZZ','Nike')).toBeGreaterThan(0); expect(compareBrands('Nike','ZZZ')).toBeLessThan(0); expect(compareBrands(BRAND_PRIORITY[0],BRAND_PRIORITY[1])).toBeLessThan(0);
   });
 

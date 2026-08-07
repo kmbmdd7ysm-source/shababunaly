@@ -1,5 +1,6 @@
 import { products as sourceLhaProducts } from './lhaProducts.js';
 import { isProductVisible, isReadyToShipEligible } from '../utils/productEligibility.ts';
+import { getRelatedProducts } from '../utils/relatedProducts.ts';
 
 const C = {
   black: { key: 'black', name: { en: 'Black', ar: 'أسود' }, hex: '#101010' },
@@ -256,8 +257,12 @@ export const readyToShipProducts = () => products.filter((p) => isReadyToShipEli
 export const lhaStoreProducts = () => products.filter((p) => p.storefronts?.includes('lha'));
 export const productsByCategory = (cat) => cat === 'ready-to-ship' ? readyToShipProducts() : products.filter((p) => p.category === cat);
 export const productsBySubcategory = (cat, sub) => products.filter((p) => p.category === cat && p.subcategory === sub);
-export const relatedProducts = (item, limit = 4) => products.filter((p) => p.id !== item?.id && (p.category === item?.category || p.brand === item?.brand)).slice(0, limit);
-export const isLowStock = (p) => Boolean(p.inventoryTracking) && p.availability === 'in-stock' && p.stock > 0 && p.stock <= p.lowStockThreshold;
+export const relatedProducts = (item, limit = 4) => getRelatedProducts(item, products, limit);
+export const isLowStock = (p) =>
+  Boolean(p.inventoryTracking) &&
+  p.inventoryVerified === true &&
+  Number(p.stock) > 0 &&
+  Number(p.stock) <= Number(p.lowStockThreshold || 0);
 export const collectColors = (catalog = products) => Array.from(new Map(catalog.flatMap((p) => p.colors || []).map((c) => [c.key, c])).values());
 export const collectSizes = (catalog = products) => Array.from(new Set(catalog.flatMap((p) => p.sizes || [])));
 export const allColors = collectColors();
