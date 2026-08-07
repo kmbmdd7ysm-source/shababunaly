@@ -16,13 +16,19 @@ describe('forms and media readiness', () => {
   });
 
   it('ships the approved brand derivatives', () => {
+    // Quarantined NBA-Logoman-derived mark PNGs must never be reintroduced.
+    // The interim typographic monogram + verified script wordmarks are canonical.
     for (const file of [
-      'public/brand/shababuna-mark-black.png',
-      'public/brand/shababuna-mark-white.png',
+      'public/brand/shababuna-monogram.svg',
       'public/brand/shababuna-wordmark-black.png',
       'public/brand/shababuna-wordmark-white.png',
       'public/brand/shababuna-wordmark-ar-black.png',
       'public/brand/shababuna-wordmark-ar-white.png',
+      'public/brand/shababuna-social.png',
     ]) expect(fs.existsSync(file)).toBe(true);
+    for (const quarantined of [
+      'public/brand/shababuna-mark-black.png',
+      'public/brand/shababuna-mark-white.png',
+    ]) expect(fs.existsSync(quarantined)).toBe(false);
   });
 });

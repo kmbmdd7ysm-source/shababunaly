@@ -220,7 +220,10 @@ describe('absolute pure-module branch coverage', {concurrency:false}, () => {
 
   it('executes Supabase runtime aliases, fallback signal, dynamic import and auth null branches', async () => {
     const originalAbort=globalThis.AbortSignal;vi.stubGlobal('AbortSignal',{});vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,headers:{get:()=>null},json:async()=>({})}));expect(await getSupabase()).toBe(null);vi.restoreAllMocks();if(originalAbort)vi.stubGlobal('AbortSignal',originalAbort);
-    __resetSupabaseForTests();__setSupabaseBuildEnvForTests({VITE_SUPABASE_URL:'https://x.supabase.co',VITE_SUPABASE_ANON_KEY:'k'.repeat(30)});await expectAsyncReject(getSupabase());
+    // When build env is valid, a rejected dynamic import / client factory must surface as rejection.
+    __resetSupabaseForTests();__setSupabaseBuildEnvForTests({VITE_SUPABASE_URL:'https://x.supabase.co',VITE_SUPABASE_ANON_KEY:'k'.repeat(30)});
+    __setSupabaseClientFactoryForTests(async()=>{throw new Error('supabase-client-import-failed');});
+    await expectAsyncReject(getSupabase());
     __resetSupabaseForTests();__setSupabaseBuildEnvForTests(null);__setSupabaseClientFactoryForTests(null);
     const originalLocation=globalThis.location;const originalHistory=globalThis.history;const originalDocument=globalThis.document;
     vi.stubGlobal('location',{href:'https://shop.example/account#access_token=a&refresh_token=b',origin:'https://shop.example'});vi.stubGlobal('history',{replaceState:()=>{}});vi.stubGlobal('document',{title:null});

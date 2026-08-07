@@ -3,7 +3,16 @@ import { describe, expect, test, vi } from 'vitest';
 vi.mock('../../src/context/LanguageContext', () => ({
   useLanguage: () => ({
     pick: ({ en }) => en,
-    t: { common: { close: 'Close', results: 'No results' }, a11y: { quantity: 'Quantity', decrease: 'Decrease', increase: 'Increase' } },
+    t: {
+      common: { close: 'Close', results: 'No results' },
+      nav: { home: 'Home' },
+      a11y: {
+        quantity: 'Quantity',
+        decrease: 'Decrease',
+        increase: 'Increase',
+        breadcrumb: 'Breadcrumb',
+      },
+    },
   }),
 }));
 import { fireEvent, render, screen } from '@testing-library/react';
