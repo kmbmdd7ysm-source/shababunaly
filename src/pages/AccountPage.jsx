@@ -20,6 +20,7 @@ import OrganizationWorkspace from '../components/account/OrganizationWorkspace';
 import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import MfaSecurityPanel from '../components/account/MfaSecurityPanel';
+import AccountRegister from '../components/account/AccountRegister';
 import {
   downloadPrivacyExport,
   listPrivacyExports,
@@ -901,22 +902,7 @@ export default function AccountPage() {
             </button>
           </div>
           <div className="gw-account-body">
-            <nav
-              className="gw-account-register"
-              aria-label={pick({ en: 'Account sections', ar: 'أقسام الحساب' })}
-            >
-              {Object.entries(t).map(([k, v]) => (
-                <button
-                  key={k}
-                  type="button"
-                  className={`gw-account-tab${section === k ? ' is-active' : ''}`}
-                  aria-current={section === k ? 'page' : undefined}
-                  onClick={() => selectSection(k)}
-                >
-                  <span>{v}</span>
-                </button>
-              ))}
-            </nav>
+            <AccountRegister sections={t} section={section} selectSection={selectSection} />
             <div className="gw-account-panel">
               {section === 'overview' && (
                 <div className="gw-account-summary">
