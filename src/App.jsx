@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import BuildMarker from './components/dev/BuildMarker';
 import Home from './pages/HomePage';
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
-import Header from './components/layout/Header';
+import GlobalChrome from './components/layout/GlobalChrome';
 import DeferredFooter from './components/layout/DeferredFooter';
 import CookieBanner from './components/layout/CookieBanner';
 import DeferredCartDrawer from './components/layout/DeferredCartDrawer';
@@ -52,7 +52,7 @@ export default function App() {
     <>
       <ViewportGuard />
       <ScrollToTop />
-      <Header />
+      <GlobalChrome />
       <main id="main-content">
         <AppErrorBoundary resetKey={location.key || location.pathname} scope="route_render">
           <RouteExperience>

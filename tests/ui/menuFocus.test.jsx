@@ -56,12 +56,12 @@ vi.mock('../../src/components/common/CurrencySelector', () => ({
 import { fireEvent, render, screen } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
-import Header from '../../src/components/layout/Header';
+import MainHeader from '../../src/components/layout/MainHeader';
 
 const renderHeader = () =>
   render(
     <MemoryRouter>
-      <Header />
+      <MainHeader />
     </MemoryRouter>,
   );
 

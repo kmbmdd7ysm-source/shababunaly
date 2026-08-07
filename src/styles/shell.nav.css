@@ -37,10 +37,28 @@
  * Only a declared cinematic opening switches it to fixed, so the composition
  * can run underneath it.
  */
+/*
+ * GlobalChrome sticky stack — readiness + announcement + header share one
+ * sticky ancestor so dismiss collapses never leave a stale top offset.
+ */
+.gw-chrome {
+  position: relative;
+  z-index: 800;
+}
+
+.gw-chrome-sticky,
 .gw-shell {
   position: sticky;
   inset-block-start: 0;
   z-index: 800;
+  background: color-mix(in srgb, var(--sh-chalk, #f7f5f0) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.gw-chrome-sticky:has(.gw-head[data-condensed='no']),
+.gw-shell:has(.gw-head[data-condensed='no']) {
+  background: transparent;
+  backdrop-filter: none;
 }
 
 /* Cinematic openings stay under a STICKY shell. Fixed positioning covered the

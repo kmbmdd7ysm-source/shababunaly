@@ -124,8 +124,10 @@ const designExports = read('src/utils/designExports.js');
 for (const token of ['buildProductionPackage','artwork/${view}.svg','manifest.json','roster.csv']) has(designExports, token, `production export ${token}`);
 const readiness = read('api/readiness.js');
 for (const token of ['requiredEnvironment','optionalCapabilities','MALWARE_SCAN_API_URL','Cache-Control']) has(readiness, token, `readiness API ${token}`);
-const readinessGate = read('src/components/security/ProductionReadinessGate.jsx');
+const readinessGate = read('src/context/ReadinessContext.jsx');
 for (const token of ['/api/readiness', "credentials: 'same-origin'", 'localReadiness']) has(readinessGate, token, `production readiness gate ${token}`);
+const chrome = read('src/components/layout/GlobalChrome.jsx');
+for (const token of ['ReadinessBanner', 'AnnouncementBar', 'MainHeader']) has(chrome, token, `global chrome ${token}`);
 
 try {
   assert.equal(catalogProducts.length, 69);
