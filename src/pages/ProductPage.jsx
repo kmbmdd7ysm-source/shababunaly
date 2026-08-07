@@ -27,7 +27,7 @@ import { useWishlist } from '../hooks/useWishlist';
 import Icon from '../components/icons/Icon';
 import PurchaseActions from '../components/shop/PurchaseActions';
 import ViewingTierNote from '../components/product/ViewingTierNote';
-import ProductViewer from '../components/product/ProductViewer';
+import ProductMediaViewer from '../components/product/ProductMediaViewer';
 import '../styles/stage.css';
 import '../styles/catalogue.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
@@ -301,7 +301,7 @@ export default function ProductPage() {
             Full-screen remains available for the current gallery frame.
           */}
           <div className="gw-stage-viewer">
-            <ProductViewer product={product} eager />
+            <ProductMediaViewer product={product} eager />
           </div>
           <button
             type="button"

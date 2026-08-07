@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
+/* step/dir captured via refs so pointer listeners register once */
 import DesignPreview from './DesignPreview';
 import { useLanguage } from '../../context/LanguageContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
@@ -82,9 +83,13 @@ export default function StudioStage({ design, preflight = null }) {
     0,
     VIEWS.findIndex((entry) => entry.key === view),
   );
+  const indexRef = useRef(index);
+  const dirRef = useRef(dir);
+  indexRef.current = index;
+  dirRef.current = dir;
 
   const step = (delta) => {
-    const next = (index + delta + VIEWS.length) % VIEWS.length;
+    const next = (indexRef.current + delta + VIEWS.length) % VIEWS.length;
     setView(VIEWS[next].key);
   };
 
@@ -110,32 +115,36 @@ export default function StudioStage({ design, preflight = null }) {
 
   // Pointer and touch drag step through the same preset ring the buttons use,
   // so gesture and keyboard can never disagree about the current view.
+  // Named handlers + exact cleanup; listeners added once (refs hold dir/index).
   useEffect(() => {
-    // The stage element is rendered unconditionally, so by the time an effect
-    // runs the ref is always attached. No null guard here, because a guard that
-    // can never fire is untestable dead code rather than safety.
-    const node = /** @type {HTMLElement} */ (stage.current);
+    const node = /** @type {HTMLElement | null} */ (stage.current);
+    if (!node) return undefined;
     let origin = null;
-    const down = (event) => {
+    const handlePointerDown = (event) => {
       origin = event.clientX;
     };
-    const up = (event) => {
+    const handlePointerUp = (event) => {
       if (origin == null) return;
       const travel = event.clientX - origin;
       origin = null;
-      const delta = resolveSwipe(travel, dir);
-      if (delta !== 0) step(delta);
+      const delta = resolveSwipe(travel, dirRef.current);
+      if (delta !== 0) {
+        const next = (indexRef.current + delta + VIEWS.length) % VIEWS.length;
+        setView(VIEWS[next].key);
+      }
     };
-    node.addEventListener('pointerdown', down);
-    node.addEventListener('pointerup', up);
-    node.addEventListener('pointercancel', () => {
+    const handlePointerCancel = () => {
       origin = null;
-    });
-    return () => {
-      node.removeEventListener('pointerdown', down);
-      node.removeEventListener('pointerup', up);
     };
-  });
+    node.addEventListener('pointerdown', handlePointerDown);
+    node.addEventListener('pointerup', handlePointerUp);
+    node.addEventListener('pointercancel', handlePointerCancel);
+    return () => {
+      node.removeEventListener('pointerdown', handlePointerDown);
+      node.removeEventListener('pointerup', handlePointerUp);
+      node.removeEventListener('pointercancel', handlePointerCancel);
+    };
+  }, []);
 
   // Accuracy is read, never asserted. `runProductionPreflight` owns the truth.
   const status = preflight?.status || 'preflight_passed_pending_factory_proof';
