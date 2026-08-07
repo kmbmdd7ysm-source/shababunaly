@@ -44,6 +44,10 @@ const DesignShare = lazy(() => import('./pages/DesignSharePage'));
 // Isolated design-direction prototype. Additive, noindex, robots-disallowed and
 // absent from the pre-render route list. Removing it is one line plus two files.
 const LabHome = lazy(() => import('./pages/LabHomePage'));
+const Programs = lazy(() => import('./pages/ProgramsPage'));
+const Events = lazy(() => import('./pages/EventsPage'));
+const OnlineTraining = lazy(() => import('./pages/OnlineTrainingPage'));
+const Coaches = lazy(() => import('./pages/CoachesPage'));
 
 export default function App() {
   usePageTracking();
@@ -75,10 +79,10 @@ export default function App() {
                 <Route path="/design-share/:token" element={<DesignShare />} />
                 <Route path="/lha-store" element={<LhaStore />} />
                 <Route path="/our-work" element={<OurWork />} />
-                <Route path="/programs/*" element={<Navigate to="/lha-store" replace />} />
-                <Route path="/events/*" element={<Navigate to="/lha-store" replace />} />
-                <Route path="/online-training/*" element={<Navigate to="/lha-store" replace />} />
-                <Route path="/coaches/*" element={<Navigate to="/about" replace />} />
+                <Route path="/programs/*" element={<Programs />} />
+                <Route path="/events/*" element={<Events />} />
+                <Route path="/online-training/*" element={<OnlineTraining />} />
+                <Route path="/coaches/*" element={<Coaches />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/help" element={<Help />} />
@@ -92,7 +96,7 @@ export default function App() {
                 <Route path="/account" element={<Account />} />
                 <Route path="/orders" element={<Navigate to="/account?section=orders" replace />} />
                 <Route path="/offline" element={<Offline />} />
-                <Route path="/lab/home" element={<LabHome />} />
+                {import.meta.env.DEV ? <Route path="/lab/home" element={<LabHome />} /> : null}
                 <Route path="/privacy-policy" element={<Legal docKey="privacy-policy" />} />
                 <Route path="/terms" element={<Legal docKey="terms" />} />
                 <Route path="/cookies" element={<Legal docKey="cookies" />} />

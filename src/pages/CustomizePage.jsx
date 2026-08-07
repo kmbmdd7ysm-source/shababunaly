@@ -39,52 +39,13 @@ import { parseRosterFile, ROSTER_FILE_ACCEPT } from '../utils/rosterSpreadsheet'
 import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
 import '../styles/studio.css';
+import ProductStep from '../components/custom/studio/ProductStep';
 
 const STEPS = [
   { key: 'product', en: 'Product', ar: 'المنتج' },
   { key: 'design', en: 'Design', ar: 'التصميم' },
   { key: 'roster', en: 'Roster', ar: 'قائمة الفريق' },
   { key: 'review', en: 'Review', ar: 'المراجعة' },
-];
-
-/* High-level families — specific types open after a family is chosen. */
-const PRODUCT_FAMILIES = [
-  {
-    key: 'gamewear',
-    label: { en: 'Gamewear', ar: 'ملابس اللعب' },
-    copy: {
-      en: 'Game sets, jerseys and shorts for match day.',
-      ar: 'أطقم وسيريات وشورتات ليوم المباراة.',
-    },
-    types: ['game-set', 'game-jersey', 'game-shorts'],
-  },
-  {
-    key: 'training',
-    label: { en: 'Training', ar: 'التدريب' },
-    copy: {
-      en: 'Practice sets, shooting shirts and warm-ups.',
-      ar: 'أطقم تمرين وقمصان تسديد وملابس إحماء.',
-    },
-    types: ['practice-set', 'shooting-shirt'],
-  },
-  {
-    key: 'apparel',
-    label: { en: 'Team apparel', ar: 'ملابس الفريق' },
-    copy: {
-      en: 'Hoodies, pants, tracksuits and compression.',
-      ar: 'هوديز وسراويل وبدلات وملابس ضاغطة.',
-    },
-    types: ['hoodie', 'team-pants', 'tracksuit'],
-  },
-  {
-    key: 'gear',
-    label: { en: 'Bags, balls & equipment', ar: 'حقائب وكرات ومعدات' },
-    copy: {
-      en: 'Team bags, sleeves, basketballs and hoop padding.',
-      ar: 'حقائب وسليفس وكرات وتغليف السلة.',
-    },
-    types: ['team-bag', 'sleeve', 'basketball', 'hoop-padding'],
-  },
 ];
 
 function productTypeFromCatalog(slug, getProduct) {
@@ -665,88 +626,14 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
 
           <div className="gw-lab-panel">
             {step === 'product' && (
-              <section className="gw-family-stage" aria-labelledby="custom-product-title">
-                <header className="gw-toolbench-head">
-                  <div>
-                    <p className="gw-spec">
-                      {pick({ en: 'Product laboratory', ar: 'مختبر المنتج' })}
-                    </p>
-                    <h2 id="custom-product-title" className="gw-toolbench-title">
-                      {productFamily
-                        ? pick({ en: 'Choose the product', ar: 'اختر المنتج' })
-                        : pick({
-                            en: 'Choose a product family',
-                            ar: 'اختر عائلة المنتج',
-                          })}
-                    </h2>
-                    <p className="gw-toolbench-lede">
-                      {pick({
-                        en: 'Start with a family, then open a dedicated product into the design stage. Minimums stay exactly as configured.',
-                        ar: 'ابدأ بالعائلة، ثم افتح منتجًا مخصصًا إلى مرحلة التصميم. الحدود الدنيا كما هي مهيأة.',
-                      })}
-                    </p>
-                  </div>
-                  {productFamily && (
-                    <button
-                      type="button"
-                      className="gw-btn gw-btn--ghost"
-                      onClick={() => setProductFamily(null)}
-                    >
-                      {pick({ en: 'All families', ar: 'كل العائلات' })}
-                    </button>
-                  )}
-                </header>
-
-                {!productFamily ? (
-                  <ul className="gw-family-grid">
-                    {PRODUCT_FAMILIES.map((family) => (
-                      <li key={family.key}>
-                        <button
-                          type="button"
-                          className="gw-family-card"
-                          onClick={() => setProductFamily(family.key)}
-                        >
-                          <span className="gw-family-card-name">{pick(family.label)}</span>
-                          <span className="gw-family-card-copy">{pick(family.copy)}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <ul className="gw-family-grid gw-family-grid--products">
-                    {CUSTOM_PRODUCT_TYPES.filter((item) =>
-                      (
-                        PRODUCT_FAMILIES.find((family) => family.key === productFamily)?.types || []
-                      ).includes(item.key),
-                    ).map((item) => (
-                      <li key={item.key}>
-                        <button
-                          type="button"
-                          className={`gw-family-card${design.productType === item.key ? ' is-active' : ''}`}
-                          onClick={() => {
-                            selectProduct(item.key);
-                            setStep('design');
-                          }}
-                        >
-                          <span className="gw-family-card-kicker">
-                            {pick({
-                              en: `Minimum ${item.minimum}`,
-                              ar: `الحد الأدنى ${item.minimum}`,
-                            })}
-                          </span>
-                          <span className="gw-family-card-name">{pick(item.label)}</span>
-                          <span className="gw-family-card-copy">
-                            {pick({
-                              en: 'Open in the design stage',
-                              ar: 'افتح في مرحلة التصميم',
-                            })}
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </section>
+              <ProductStep
+                pick={pick}
+                productFamily={productFamily}
+                setProductFamily={setProductFamily}
+                design={design}
+                selectProduct={selectProduct}
+                setStep={setStep}
+              />
             )}
 
             {step === 'design' && (
