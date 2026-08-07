@@ -1,11 +1,13 @@
 # Continuation checkpoint
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- SHA: `ca6043f8c08eaa90f25079342b276607411f6c8d`
+- SHA: `c1cd76fc074748ee7b31e6a4482ac7a0fb350526`
 - Date UTC: 2026-08-07T04:34:49Z
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phases completed (code-side, gated)
+
++ Phase 14 journey smoke (partial) · Phase 13 DB BLOCKED · Phase 15 Arabic technical QA marker
 
 0 Baseline · 1 Brand/tests · 2 Toolchain · 3 TypeScript core + shipping/Formspree · 4 CSS/RTL · 5 GlobalChrome · 6–7 Structural UI + Ready-to-Ship honesty · 8 Product master · 9–10 Media engines + StudioStage fix · 11 ProductStep extract · 12 Factory contracts · 17 Dedicated routes + lab gated
 
