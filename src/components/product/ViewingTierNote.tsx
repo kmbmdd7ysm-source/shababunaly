@@ -1,27 +1,15 @@
 import { useLanguage } from '../../context/LanguageContext';
-import { resolveProductViewer } from '../../utils/productViewerTier';
+import { resolveProductViewer } from '../../utils/productViewerTier.ts';
 
 /*
  * States, in the interface, what a product's imagery actually is.
- *
- * This is the visible half of the product-viewing tier system. A customer
- * deciding whether to buy a 400 LYD uniform deserves to know whether they are
- * looking at a measured 360 capture or a single photograph, and the site is
- * never allowed to imply more than the assets support.
- *
- *   A  real-time 3D          "Interactive 3D model"
- *   B  true photographic 360 "360 photographed turntable"
- *   C  multi-angle           "N photographed angles - not a 360 model"
- *   D  asset-blocked         "One photograph" / "Illustration, photography pending"
- *
- * Rendered in the DOM as text, so it survives with images, scripting and
- * motion all switched off.
  */
 
-/**
- * @param {{ product: any }} props
- */
-export default function ViewingTierNote({ product }) {
+export default function ViewingTierNote({
+  product,
+}: {
+  product?: Record<string, unknown> | null;
+}) {
   const { pick } = useLanguage();
   const { tier, images, frames, placeholder } = resolveProductViewer(product);
 
@@ -39,8 +27,6 @@ export default function ViewingTierNote({ product }) {
         ar: `${images.length} زوايا مصوَّرة — ليست نموذجًا ٣٦٠°`,
       };
     }
-    // Level D splits: a real photograph is not the same as placeholder artwork,
-    // and saying so is the difference between restraint and misrepresentation.
     if (placeholder) {
       return {
         en: 'Illustration — product photography pending',
