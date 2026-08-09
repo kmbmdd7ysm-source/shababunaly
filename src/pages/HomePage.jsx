@@ -193,9 +193,10 @@ export default function HomePage() {
           React's own rendering, and it is a nav landmark for screen readers. */}
       <nav
         className="gw-acts"
-        aria-label={pick({ en: 'Page chapters', ar: 'فصول الصفحة' })}
+        aria-label={pick({ en: 'On this page', ar: 'في هذه الصفحة' })}
         data-reduced={reduced ? 'on' : 'off'}
         data-tone={DARK_ACTS.has(active) ? 'night' : 'day'}
+        data-commerce="true"
       >
         <ol>
           {chapters.map((chapter) => (
@@ -247,8 +248,8 @@ export default function HomePage() {
             />
           </picture>
           <div className="gw-act-inner gw-open-inner">
-            <p className="gw-spec gw-open-kicker">
-              {pick({ en: 'Shababuna · Basketball supply', ar: 'شبابنا · تجهيز كرة السلة' })}
+            <p className="gw-open-kicker">
+              {pick({ en: 'Basketball commerce', ar: 'تجارة كرة السلة' })}
             </p>
             <h1 id="gw-open-title" className="gw-open-title">
               <span>{pick({ en: 'Built', ar: 'نبني' })}</span>
@@ -258,8 +259,8 @@ export default function HomePage() {
             </h1>
             <p className="gw-open-lede">
               {pick({
-                en: 'Basketball retail, custom manufacturing, club supply and wholesale — built in one global platform.',
-                ar: 'متجر كرة سلة وتصنيع مخصص وتجهيز أندية وجملة — ضمن منصة عالمية واحدة.',
+                en: 'Shop ready gear, customize teamwear, and run wholesale club orders — basketball retail with manufacturing built in.',
+                ar: 'تسوّق تجهيزات جاهزة، وصمّم ملابس الفرق، وأدر طلبات الجملة للأندية — تجارة كرة سلة بصناعة مدمجة.',
               })}
             </p>
             <div className="gw-open-paths">
@@ -405,9 +406,9 @@ export default function HomePage() {
         >
           <div className="gw-act-inner gw-workshop-inner">
             <div>
-              <p className="gw-spec">{pick({ en: 'The workshop', ar: 'الورشة' })}</p>
+              <p className="gw-open-kicker">{pick({ en: 'Customize', ar: 'خصّص' })}</p>
               <h2 id="gw-workshop-title" className="gw-act-title">
-                {pick({ en: 'Design everything.', ar: 'صمّم كل شيء.' })}
+                {pick({ en: 'Design your kit.', ar: 'صمّم طقمك.' })}
               </h2>
               <p className="gw-act-body">
                 {pick({
@@ -449,7 +450,7 @@ export default function HomePage() {
                 loading="lazy"
                 decoding="async"
               />
-              <p className="gw-spec">{pick({ en: 'Production drawing', ar: 'رسم الإنتاج' })}</p>
+              <p className="gw-open-kicker">{pick({ en: 'Concept preview', ar: 'معاينة المفهوم' })}</p>
             </div>
           </div>
         </section>
@@ -463,7 +464,7 @@ export default function HomePage() {
                 {pick({ en: 'One order. The whole organization.', ar: 'طلب واحد. المؤسسة كاملة.' })}
               </h2>
             </header>
-            <ol className="gw-stages">
+            <ol className="gw-stages gw-stages--plain">
               {[
                 { en: 'Roster', ar: 'القائمة' },
                 { en: 'Design', ar: 'التصميم' },
@@ -471,11 +472,8 @@ export default function HomePage() {
                 { en: 'Proof', ar: 'البروفة' },
                 { en: 'Production', ar: 'التصنيع' },
                 { en: 'Delivery', ar: 'التسليم' },
-              ].map((stage, position) => (
+              ].map((stage) => (
                 <li key={stage.en}>
-                  <span className="gw-stages-num" aria-hidden="true">
-                    {String(position + 1).padStart(2, '0')}
-                  </span>
                   <span>{pick(stage)}</span>
                 </li>
               ))}
