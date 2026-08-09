@@ -1,13 +1,25 @@
 # Continuation checkpoint
 
-- SHA: `28b89c975b7d1c8ff0acb0bad7cd3b281785f633`
-- TypeScript: **55.98%** (145/259)
+- SHA: `336abfee0f483750154df6481142caedc3d8d38a`
+- TypeScript: **56.76%** (147/259)
 - CSS: global 5657L / !important 238 (was 7252/348)
-- premium !important 53 · shababuna 0
-- Footer · Home · Product cards · CSS passes · many pages TS
+- premium !important 53 · shababuna !important 0
 
-## Remaining large JSX
-Account · Customize · Checkout · Shop · Product · Teams · OpsDashboard · Auth/UserData/Catalog contexts
+## Completed this continuation stretch
+- designStudio · productionPreflight · supabase · Commerce/Cart/contexts
+- CSS unused cull + safe !important strip
+- Footer commerce rebuild · Homepage rebalance · Product card borderless
+- Many pages to TSX (content, Favorites, About, OurWork, TeamLocker, Ops, LHA, AnnouncementBar)
+
+## Exact next
+1. AuthContext / UserDataContext / CatalogContext full migration
+2. Account / Customize / Checkout / Shop / Product / Teams pages
+3. Customize 3D + media engines verification
+4. Phases H–Z evidence + release verdict
 
 ## Next command
-Continue TypeScript on remaining pages/services; then Shop/Customize visual systems
+```bash
+cd /workspace && git rev-parse HEAD
+# Migrate AuthContext.jsx carefully OR CatalogContext.jsx
+npm run typecheck && npm run lint && npm run test:node
+```
