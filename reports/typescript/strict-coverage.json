@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T01:59:52.790554+00:00",
-  "commitSha": "60a42b9e3729efc96258fea30a0b7b47b1ce6b28",
-  "sourceFiles": 262,
-  "strictFiles": 34,
-  "strictCoveragePercent": 12.98,
-  "legacyFileCount": 228,
-  "note": "Phase 3 IN PROGRESS. Not complete. Continue migrating services/contexts/pages."
+  "generatedAt": "2026-08-09T02:01:09.010960+00:00",
+  "commitSha": "b99b4cc8c6f2249fc3c51b2463ea959a77e58d01",
+  "sourceFiles": 259,
+  "strictFiles": 36,
+  "strictCoveragePercent": 13.9,
+  "legacyFileCount": 223,
+  "note": "Executable .ts/.tsx only \u2014 .d.ts ambient declarations excluded from coverage numerator/denominator."
 }

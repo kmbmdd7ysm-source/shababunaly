@@ -8,13 +8,13 @@ const walk = (directory) => {
     const absolute = join(directory, name);
     const info = statSync(absolute);
     if (info.isDirectory()) walk(absolute);
-    else if (/\.(?:js|jsx|ts|tsx)$/.test(name))
+    else if (/\.(?:js|jsx|ts|tsx)$/.test(name) && !name.endsWith('.d.ts'))
       sourceFiles.push(relative(root, absolute).replaceAll('\\', '/'));
   }
 };
 for (const directory of ['src', 'api']) walk(directory);
 
-const strictFiles = sourceFiles.filter((file) => /\.(?:ts|tsx)$/.test(file));
+const strictFiles = sourceFiles.filter((file) => /\.(?:ts|tsx)$/.test(file) && !file.endsWith('.d.ts'));
 const legacy = sourceFiles.filter((file) => !strictFiles.includes(file));
 const violations = [];
 for (const file of strictFiles) {
