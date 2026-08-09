@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function EmptyState({ message = '', hint = '', action = null }: {
-  message?: string;
-  hint?: string;
-  action?: { to?: string; label?: string; onClick?: () => void } | null;
-}) {
+export default function EmptyState({ message = '', hint = '', action = null }) {
   const { t } = useLanguage();
   return (
     <div className="empty-state" role="status">
