@@ -1,19 +1,16 @@
 # Continuation checkpoint
 
-- Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `c07ddc77fa3cf331835b3b3205b17b5d64da4cb3`
-- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
+- SHA: `8fd341e137ba77b9e26d4dbd3a7c6970b8f1587e`
+- Branch: cursor/shababuna-redesign-master-plan-dc14
+- TypeScript: **49.03%** (127/259)
 
-## Phase A / 3 — TypeScript
+## Done recently
+designStudio, productionPreflight, supabase, returns/privacy/publicQuotes, core contexts (Language/Cookie/Compare/Readiness/Cart)
 
-**47.88%** (124/259 executable)
-
-Completed: designStudio, productionPreflight, supabase, Language/Cookie/Compare/Readiness/Cart, many pages/components.
-
-Next contexts: Catalog (ambient for now), Commerce, Auth, UserData.
-
-Then Phase B CSS demolition.
+## Next
+1. specialRequests.ts
+2. CommerceContext / AuthContext / UserDataContext / CatalogContext
+3. Remaining pages → Phase B CSS
 
 ## Next command
-
-Migrate CommerceContext.jsx → .tsx
+Migrate specialRequests.js then CommerceContext.jsx
