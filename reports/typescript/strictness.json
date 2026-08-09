@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T23:12:59.320Z",
-  "sourceFiles": 275,
-  "strictFiles": 261,
-  "strictCoveragePercent": 94.91,
+  "generatedAt": "2026-08-09T23:14:50.734Z",
+  "sourceFiles": 276,
+  "strictFiles": 262,
+  "strictCoveragePercent": 94.93,
   "legacyFiles": [
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/operations/OperationsCommerceModules.jsx",
