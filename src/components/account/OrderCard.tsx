@@ -1,11 +1,33 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { presentOrderStatus } from '../../services/orderStatus';
+import { presentOrderStatus } from '../../services/orderStatus.ts';
 
-export default function OrderCard({ order, compact = false }) {
+type OrderLike = {
+  orderNumber: string;
+  createdAt: string;
+  orderStatus?: string;
+  paymentStatus?: string;
+  syncState?: string;
+  displayTotal?: number;
+  total?: number;
+  displayCurrency?: string;
+  items?: Array<{ id?: string; sku?: string; quantity?: number; name?: string }>;
+};
+
+export default function OrderCard({
+  order,
+  compact = false,
+}: {
+  order: OrderLike;
+  compact?: boolean;
+}) {
   const { pick, lang } = useLanguage();
-  const orderStatus = presentOrderStatus('order', order.orderStatus, lang);
-  const paymentStatus = presentOrderStatus('payment', order.paymentStatus, lang);
+  const orderStatus = presentOrderStatus('order', order.orderStatus, lang === 'ar' ? 'ar' : 'en');
+  const paymentStatus = presentOrderStatus(
+    'payment',
+    order.paymentStatus,
+    lang === 'ar' ? 'ar' : 'en',
+  );
   return (
     <article className={`order-card${compact ? ' order-card--compact' : ''}`}>
       <div className="order-card-head">
@@ -43,13 +65,13 @@ export default function OrderCard({ order, compact = false }) {
         <div>
           <dt>{pick({ en: 'Total', ar: 'الإجمالي' })}</dt>
           <dd>
-            {(order.displayTotal ?? order.total).toFixed(2)} {order.displayCurrency}
+            {(order.displayTotal ?? order.total ?? 0).toFixed(2)} {order.displayCurrency}
           </dd>
         </div>
       </dl>
       {!compact && (
         <ul>
-          {order.items.map((item, index) => (
+          {(order.items || []).map((item, index) => (
             <li key={`${item.id || item.sku}-${index}`}>
               {item.quantity} × {item.name}
             </li>
