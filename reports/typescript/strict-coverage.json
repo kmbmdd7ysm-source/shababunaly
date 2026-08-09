@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T01:51:43.842027Z",
-  "commitSha": "af3b282071e8b167c87dfb4b3eeb013a55107729",
+  "generatedAt": "2026-08-09T01:53:10.771374+00:00",
+  "commitSha": "59b87bd48efd90e0da81c6dbd082ad1096e38751",
   "sourceFiles": 259,
-  "strictFiles": 18,
-  "strictCoveragePercent": 6.95,
-  "legacyFileCount": 241,
+  "strictFiles": 20,
+  "strictCoveragePercent": 7.72,
+  "legacyFileCount": 239,
   "note": "Phase 3 in progress \u2014 not project-wide yet."
 }
