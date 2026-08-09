@@ -237,15 +237,17 @@ export function CommerceProvider({ children }: { children?: ReactNode }) {
         return;
       }
       setPreferenceStatus('syncing');
-      cloudTimer.current = setTimeout(async () => {
-        try {
-          const existing = ((await fetchProfile(userId)) as Record<string, unknown> | null) || {};
-          await upsertProfile(userId, { ...existing, ...patch });
-          clearPendingCommercePreference(userId);
-          setPreferenceStatus('synced');
-        } catch {
-          setPreferenceStatus(globalThis.navigator?.onLine === false ? 'offline' : 'error');
-        }
+      cloudTimer.current = setTimeout(() => {
+        void (async () => {
+          try {
+            const existing = ((await fetchProfile(userId)) as Record<string, unknown> | null) || {};
+            await upsertProfile(userId, { ...existing, ...patch });
+            clearPendingCommercePreference(userId);
+            setPreferenceStatus('synced');
+          } catch {
+            setPreferenceStatus(globalThis.navigator?.onLine === false ? 'offline' : 'error');
+          }
+        })();
       }, CLOUD_DEBOUNCE_MS);
     },
     [userId],
