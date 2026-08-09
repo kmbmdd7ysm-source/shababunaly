@@ -72,7 +72,7 @@ export default function FavoritesPage(): ReactElement {
                 type="button"
                 onClick={() => {
                   const retry = userData.retrySync;
-                  if (typeof retry === 'function') retry();
+                  if (typeof retry === 'function') void retry();
                 }}
               >
                 {pick({ en: 'Retry', ar: 'إعادة المحاولة' })}
