@@ -1,14 +1,13 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:37:32.425Z",
+  "generatedAt": "2026-08-09T22:38:02.749Z",
   "sourceFiles": 269,
-  "strictFiles": 245,
-  "strictCoveragePercent": 91.08,
+  "strictFiles": 246,
+  "strictCoveragePercent": 91.45,
   "legacyFiles": [
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
-    "src/components/operations/BusinessIntelligencePanel.jsx",
     "src/components/operations/OperationsCommerceModules.jsx",
     "src/components/operations/OperationsEnterpriseModules.jsx",
     "src/components/operations/OperationsMasterData.jsx",

@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { getSupabase } from '../../services/supabase';
 
@@ -17,10 +18,18 @@ const EMPTY = {
   stocked_variants: 0,
   refunds: 0,
 };
-const number = (value) => (Number.isFinite(Number(value)) ? Number(value) : 0);
+const number = (value: unknown) => (Number.isFinite(Number(value)) ? Number(value) : 0);
 
-export default function BusinessIntelligencePanel({ pick }) {
-  const [state, setState] = useState({ loading: true, data: EMPTY, error: '' });
+export default function BusinessIntelligencePanel({
+  pick,
+}: {
+  pick: (value: string | { en?: string; ar?: string }) => string;
+}): ReactElement {
+  const [state, setState] = useState<{
+    loading: boolean;
+    data: Record<string, unknown>;
+    error: string;
+  }>({ loading: true, data: EMPTY, error: '' });
   useEffect(() => {
     let active = true;
     (async () => {
@@ -38,7 +47,7 @@ export default function BusinessIntelligencePanel({ pick }) {
           setState({
             loading: false,
             data: EMPTY,
-            error: error?.message || 'analytics_unavailable',
+            error: (error instanceof Error ? error.message : '') || 'analytics_unavailable',
           });
       }
     })();
