@@ -1,30 +1,30 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `3fd0222c8984cd07e7b8d63be672eb6abd862491` (update after next commit)
+- SHA: `ea9c0487a0ace61d225cb69fc7d19ed02a6e157f`
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
-- TypeScript: **87.73%** (236/269)
+- TypeScript: **88.10%** (237/269)
 - CSS: global !important **74** · premium 37 · legacy deferred
 
 ## Completed
-- ALL pages TSX · App/main · ProductCard · Icon · SearchOverlay · CinematicHero · AddressesSection
-- Checkout stages modularized
-- CSS passes 7–8 !important reduction
-- Production build green after entry migration
+- ALL pages TSX · App/main · ProductCard · Icon · SearchOverlay · CinematicHero
+- AddressesSection · SpecialRequestsSection
+- Checkout stages · CSS passes 7–8
+- Build green after entry migration; localhost routes 200
 
 ## Exact next unfinished
-1. `src/components/account/MfaSecurityPanel.jsx` (ambient exists — careful rewrite)
-2. ReturnsSection · SpecialRequestsSection · OrganizationWorkspace
-3. Studio: StudioStage · DesignPreview · ProductionDesignEditor
-4. Ops modules (control/* · Operations*Modules)
-5. Remaining src JS services/data/utils
-6. Phase 2 CSS ownership extinction to delete legacy globals
-7. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence
+1. **ReturnsSection.tsx** (returns.ts already typed)
+2. MfaSecurityPanel.jsx · OrganizationWorkspace.jsx
+3. Studio JSX (StudioStage · DesignPreview · ProductionDesignEditor)
+4. Ops modules JSX
+5. Remaining src JS (orders/operations/b2b/products/translations/utils)
+6. Phase 2 CSS ownership extinction
+7. Phases 5–35 + final SHA evidence
 
 ## Next command
 ```bash
-cd /workspace && git rev-parse HEAD
-# Careful MFA or ReturnsSection.tsx with returns service types first
+cd /workspace
+# Migrate ReturnsSection.tsx using src/services/returns.ts
 npm run typecheck
 ```
 
