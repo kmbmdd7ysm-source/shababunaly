@@ -1,9 +1,10 @@
 {
-  "status": "migration_required",
-  "generatedAt": "2026-08-09T01:50:32.902Z",
-  "sourceFiles": 259,
+  "generatedAt": "2026-08-09T01:50:59.916Z",
+  "commitSha": "552fe8135d7df5d870f02372adce4c9ea32457b4",
+  "sourceFiles": 258,
   "strictFiles": 17,
-  "strictCoveragePercent": 6.56,
+  "strictCoveragePercent": 6.59,
+  "legacyFileCount": 241,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -193,7 +194,6 @@
     "src/services/telemetry.js",
     "src/utils/analytics.js",
     "src/utils/designExports.js",
-    "src/utils/productOptions.js",
     "src/utils/profileImage.js",
     "src/utils/recommendations.js",
     "src/utils/registerPwa.js",
@@ -248,16 +248,5 @@
     "api/signatures/provider.js",
     "api/special-request.js"
   ],
-  "violations": [],
-  "compilerGuarantees": {
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "useUnknownInCatchVariables": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true,
-    "skipLibCheck": false
-  },
-  "note": "Strict coverage counts TypeScript source files under src/ and api/. Remaining .js/.jsx files are migrated progressively; npm run typecheck checks all .ts/.tsx under full strictness."
+  "note": "Strict coverage counts .ts/.tsx under src+api. Migration ongoing; not project-wide yet."
 }
