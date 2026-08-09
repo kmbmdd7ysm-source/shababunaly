@@ -382,6 +382,11 @@ export default function ProductPage(): ReactElement {
                 ))}
             </div>
           )}
+          <a className="gw-stage-commit" href="#product-deck">
+            {purchasable
+              ? pick({ en: 'Configure & buy', ar: 'اختر الخيارات واشترِ' })
+              : pick({ en: 'View details', ar: 'عرض التفاصيل' })}
+          </a>
         </div>
 
         {/* The honest tier disclosure sits on the stage it describes. */}
@@ -395,7 +400,7 @@ export default function ProductPage(): ReactElement {
           Commerce controls as an instrument deck on a light ground, with
           the specification beside them rather than hidden in an accordion.
           ================================================================ */}
-      <section className="gw-deck">
+      <section className="gw-deck" id="product-deck">
         <div className="gw-deck-inner">
           <div className="gw-deck-buy">
             <div className="gw-deck-price">

@@ -87,6 +87,37 @@
   color: var(--sh-night-ink);
 }
 
+.gw-stage-commit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: var(--sh-s-5);
+  min-block-size: var(--sh-target);
+  padding-inline: 1.25rem;
+  border: 1px solid var(--sh-night-ink);
+  border-radius: 999px;
+  color: var(--sh-night);
+  background: var(--sh-night-ink);
+  font-family: var(--sh-font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.gw-stage-commit:hover,
+.gw-stage-commit:focus-visible {
+  background: transparent;
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .gw-stage-commit {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 /* The frame: a drawn plate on the chalk ground the product was shot on, with
    a measurement tick on its leading edge. */
 .gw-stage-frame {
@@ -505,7 +536,7 @@
 
 .gw-stage {
   position: relative;
-  min-block-size: 92svh;
+  min-block-size: 84svh;
   display: flex;
   background: var(--sh-night);
   color: var(--sh-night-ink);
