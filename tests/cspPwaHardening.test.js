@@ -67,7 +67,7 @@ describe('CSP and PWA hardening', { concurrency: false }, () => {
       '../src/pages/CartPage.tsx',
       '../src/components/layout/CartDrawer.tsx',
       '../src/components/custom/ProductionDesignEditor.jsx',
-      '../src/components/media/MediaLightbox.tsx',
+      '../src/components/media/MediaLightbox.jsx',
       '../src/components/common/SmartImage.tsx',
     ];
     for (const file of sourceFiles) {
