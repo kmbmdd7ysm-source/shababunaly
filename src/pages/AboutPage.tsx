@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo';
@@ -54,7 +55,7 @@ const pillars = [
   },
 ];
 
-export default function AboutPage() {
+export default function AboutPage(): ReactElement {
   const { pick } = useLanguage();
   return (
     <>

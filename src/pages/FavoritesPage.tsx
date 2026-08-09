@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useWishlist } from '../hooks/useWishlist';
@@ -11,14 +12,18 @@ import '../styles/catalogue.css';
 import '../styles/runs.css';
 import '../styles/ledger.css';
 
-export default function FavoritesPage() {
+export default function FavoritesPage(): ReactElement {
   const { products } = useCatalog();
   const { pick } = useLanguage();
   const { ids } = useWishlist();
   const userData = useUserData();
   const { countryCode } = useCommerce();
   const isLibya = countryCode === 'LY';
-  const savedProducts = ids.map((id) => products.find((p) => p.id === id)).filter(Boolean);
+  const savedProducts = ids
+    .map((id) => products.find((p) => p.id === id))
+    .filter((product): product is Record<string, unknown> & { id: string } =>
+      Boolean(product && typeof product === 'object' && 'id' in product),
+    );
   const savedCount = savedProducts.length;
   const departments = categories.filter((item) => isLibya || item.slug !== 'ready-to-ship');
 
@@ -65,7 +70,10 @@ export default function FavoritesPage() {
               <button
                 className="gw-btn gw-btn--secondary"
                 type="button"
-                onClick={() => userData.retrySync?.()}
+                onClick={() => {
+                  const retry = userData.retrySync;
+                  if (typeof retry === 'function') retry();
+                }}
               >
                 {pick({ en: 'Retry', ar: 'إعادة المحاولة' })}
               </button>
@@ -85,7 +93,7 @@ export default function FavoritesPage() {
           ) : savedCount ? (
             <div className="gw-catalogue-grid">
               {savedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={String(product.id)} product={product} />
               ))}
             </div>
           ) : (
