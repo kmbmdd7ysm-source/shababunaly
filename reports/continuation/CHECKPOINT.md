@@ -1,18 +1,24 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `b99f006a9c15cf5a1a34cead058745d7033ca044`
+- SHA: `5eb4831078a77c9fc5a7e95c67ef3b661ead37c5`
 - TypeScript: **93.31%** (251/269)
-- Remaining JSX (**7**):
-  - OrganizationWorkspace.jsx
-  - DesignPreview.jsx · ProductionDesignEditor.jsx
-  - OperationsCommerceModules.jsx · OperationsEnterpriseModules.jsx · OperationsMasterData.jsx
-  - Realtime3DEngine.jsx (ambient — model-viewer)
+- CSS: global !important **68** (pass 9) · premium 37 · legacy deferred
+- Build: green (95 prerendered pages)
+- Remaining JSX (**7**): OrganizationWorkspace, DesignPreview, ProductionDesignEditor, OperationsCommerceModules, OperationsEnterpriseModules, OperationsMasterData, Realtime3DEngine
 
-## Exact next
-1. OperationsMasterData.tsx
-2. OperationsEnterpriseModules · OperationsCommerceModules
+## Exact next unfinished
+1. **OperationsEnterpriseModules.tsx** (or DesignPreview.tsx)
+2. OperationsCommerceModules · OperationsMasterData
 3. DesignPreview · ProductionDesignEditor · OrganizationWorkspace
-4. Remaining src JS · Phase 2 CSS · Phases 5–35 · final SHA evidence
+4. Remaining src JS (11)
+5. Phase 2 CSS ownership extinction (delete/relocate legacy globals)
+6. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence
 
-All ops control/* modules now TSX except none remaining under control/.
-Hero slots preserved. No fabricate. Do not restart.
+## Next command
+```bash
+cd /workspace
+# Migrate OperationsEnterpriseModules.tsx with wide props typing
+npm run typecheck
+```
+
+Do not restart. Hero slots preserved. No fabricated data.
