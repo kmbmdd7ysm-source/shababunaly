@@ -1,3 +1,4 @@
+import type { ReactElement, FormEvent, ChangeEvent } from 'react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -20,7 +21,7 @@ const types = [
   ['partnership', { en: 'Partnership', ar: 'شراكة' }],
 ];
 
-export default function ContactPage() {
+export default function ContactPage(): ReactElement {
   const { pick, lang } = useLanguage();
   const [params] = useSearchParams();
   const [form, setForm] = useState({
@@ -35,12 +36,15 @@ export default function ContactPage() {
   });
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState('idle');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [turnstileToken, setTurnstileToken] = useState('');
-  const set = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
-  const submit = async (event) => {
+  const set =
+    (key: keyof typeof form) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setForm((current) => ({ ...current, [key]: event.target.value }));
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const next = {};
+    const next: Record<string, string> = {};
     if (!form.name.trim()) next.name = pick({ en: 'Required', ar: 'مطلوب' });
     if (!EMAIL_RE.test(form.email))
       next.email = pick({ en: 'Enter a valid email', ar: 'أدخل بريدًا صحيحًا' });
@@ -96,13 +100,13 @@ export default function ContactPage() {
                 </p>
               </div>
             ) : (
-              <form className="contact-form" onSubmit={submit} noValidate>
+              <form className="contact-form" onSubmit={(e) => { void submit(e); }} noValidate>
                 <label className="field">
                   <span>{pick({ en: 'Inquiry type', ar: 'نوع الاستفسار' })}</span>
                   <select value={form.type} onChange={set('type')}>
                     {types.map(([key, label]) => (
-                      <option key={key} value={key}>
-                        {pick(label)}
+                      <option key={String(key)} value={String(key)}>
+                        {pick(label as { en: string; ar: string })}
                       </option>
                     ))}
                   </select>
