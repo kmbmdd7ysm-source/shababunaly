@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-08-09T20:53:52.024781+00:00",
+  "phase": "B-pass6-safe-size-important-strip",
+  "after": {
+    "global.css": {
+      "before": 173,
+      "after": 127,
+      "removed": 46
+    },
+    "premium.css": {
+      "before": 41,
+      "after": 37,
+      "removed": 4
+    }
+  }
+}

@@ -3539,8 +3539,8 @@ html.search-modal-open body {
 }
 
 .size-pill {
-  width: 100% !important;
-  min-width: 0 !important;
+  width: 100%;
+  min-width: 0;
   min-height: 58px;
   border-radius: 4px !important;
   background: #fff;
@@ -4192,7 +4192,7 @@ canvas {
 .header-inner .brand-logo--header {
   display: block;
   width: 48px !important;
-  height: auto !important;
+  height: auto;
   max-height: 44px;
   object-fit: contain;
   object-position: left center;
@@ -4265,7 +4265,7 @@ canvas {
     align-items: center;
     justify-content: flex-start;
   }.header-inner .brand-logo--header {
-    width: auto !important;
+    width: auto;
     height: 46px !important;
     max-width: 58px !important;
     max-height: 46px !important;
@@ -4346,8 +4346,8 @@ html,
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: start;
   column-gap: 0.75rem;
-  width: 100% !important;
-  max-width: 100% !important;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -4361,7 +4361,7 @@ html,
 
 .contact-form .contact-consent span {
   grid-column: 2;
-  width: auto !important;
+  width: auto;
   min-width: 0;
   max-width: 100%;
   white-space: normal;
@@ -4388,8 +4388,8 @@ html[dir='rtl'] .contact-form .contact-consent span {
   .contact-form select,
   .contact-form textarea,
   .contact-form button {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -4472,9 +4472,9 @@ html[dir='rtl'] .hero-media {
 html,
 body,
 #root {
-  inline-size: 100% !important;
-  max-inline-size: 100% !important;
-  min-inline-size: 0 !important;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
   overflow-x:hidden;
   overscroll-behavior-x: none;
 }
@@ -4509,7 +4509,7 @@ html,
   inset-inline: 0 !important;
   inset-block: auto 0 !important;
   z-index: 1;
-  width: 100% !important;
+  width: 100%;
   max-width: 430px !important;
   height: min(86dvh, 760px) !important;
   max-height: calc(100dvh - env(safe-area-inset-top)) !important;
@@ -4546,8 +4546,8 @@ html[dir='rtl'] body,
 html[dir='rtl'] #root,
 html[dir='rtl'] .site-shell,
 html[dir='rtl'] main {
-  inline-size: 100% !important;
-  max-inline-size: 100% !important;
+  inline-size: 100%;
+  max-inline-size: 100%;
   margin-inline: 0 !important;
   overflow-x:hidden;
 }
@@ -4558,8 +4558,8 @@ html[dir='rtl'] .page-hero,
 html[dir='rtl'] .announcement-bar,
 html[dir='rtl'] .site-header {
   inset-inline: auto !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  width: 100%;
+  max-width: 100%;
 }
 
 /*
@@ -4604,8 +4604,8 @@ body {
   right: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  width: 100%;
+  max-width: 100%;
   transform: none;
 }
 
@@ -4671,8 +4671,8 @@ html,
   #root,
   .site-shell,
   #main-content {
-    inline-size: 100% !important;
-    max-inline-size: 100% !important;
+    inline-size: 100%;
+    max-inline-size: 100%;
     margin-inline: 0 !important;
   }body,
   #root,
@@ -4699,8 +4699,8 @@ html,
     .media-lightbox
   ) {
     inset-inline: 0 !important;
-    inline-size: 100% !important;
-    max-inline-size: 100% !important;
+    inline-size: 100%;
+    max-inline-size: 100%;
   }/* Long user/order content wraps rather than widening the page. */:where(.order-number, .order-card, .order-detail, .account-page, .contact-section) {
     overflow-wrap: anywhere;
     word-break: normal;
@@ -4714,8 +4714,8 @@ html,
 #root[dir='rtl'] #main-content {
   inset-inline: 0 !important;
   translate: none !important;
-  inline-size: 100% !important;
-  max-inline-size: 100% !important;
+  inline-size: 100%;
+  max-inline-size: 100%;
 }
 
 /* Product photography must remain on a pure white studio surface. */
@@ -4751,10 +4751,10 @@ html,
 
 .lightbox-stage img {
   display:block;
-  width: auto !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit:contain;
   transform-origin: center;
 }
@@ -4770,7 +4770,7 @@ html,
 .contact-info .section-title {
     font-size: clamp(1.65rem, 2.7vw, 3rem) !important;
     line-height: 1;
-    max-width: 100% !important;
+    max-width: 100%;
     overflow-wrap: anywhere !important;
   }
 }
@@ -4779,7 +4779,7 @@ html,
 .media-lightbox {
     padding: 76px 8px 52px !important;
   }.lightbox-stage {
-    width: 100% !important;
+    width: 100%;
     height: calc(100dvh - 140px) !important;
   }.lightbox-nav {
     display:none;
@@ -4795,7 +4795,7 @@ html,
   display:flex;
   align-items:center;
   justify-content:center;
-  width: 100vw !important;
+  width: 100vw;
   height: 100dvh !important;
   padding: 64px 64px 56px !important;
   background: #fff;
@@ -4804,8 +4804,8 @@ html,
 }
 
 .media-lightbox .lightbox-stage {
-  width: 100% !important;
-  height: 100% !important;
+  width: 100%;
+  height: 100%;
   max-width: 1200px !important;
   display:flex;
   align-items:center;
@@ -4817,10 +4817,10 @@ html,
 
 .media-lightbox .lightbox-stage img {
   display:block;
-  width: auto !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit:contain;
   transform-origin: center !important;
 }
@@ -4847,11 +4847,11 @@ html,
 .media-lightbox {
     padding: calc(64px + env(safe-area-inset-top)) 8px calc(44px + env(safe-area-inset-bottom)) !important;
   }.media-lightbox .lightbox-stage {
-    width: 100% !important;
-    height: 100% !important;
+    width: 100%;
+    height: 100%;
   }.media-lightbox .lightbox-stage img {
-    max-width: 100% !important;
-    max-height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
   }.media-lightbox .lightbox-nav {
     display:none;
   }
@@ -4887,10 +4887,10 @@ html,
 .program-card-media > .smart-img,
 .training-card-media > .smart-img {
   display:block;
-  width: 100% !important;
-  height: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
   opacity: 1;
   visibility:visible;
   object-fit:cover;
