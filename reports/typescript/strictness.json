@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T20:52:03.116Z",
+  "generatedAt": "2026-08-09T20:53:51.985Z",
   "sourceFiles": 266,
-  "strictFiles": 207,
-  "strictCoveragePercent": 77.82,
+  "strictFiles": 208,
+  "strictCoveragePercent": 78.2,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -15,7 +15,6 @@
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
     "src/components/custom/StudioStage.jsx",
-    "src/components/errors/AppErrorBoundary.jsx",
     "src/components/experience/CinematicHero.jsx",
     "src/components/icons/Icon.jsx",
     "src/components/layout/CartDrawer.jsx",

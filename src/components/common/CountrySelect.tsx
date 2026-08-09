@@ -1,9 +1,17 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactElement,
+} from 'react';
 import { getCountryName, getLocalizedCountries, normalizeCountryCode } from '../../data/countries';
 import { useLanguage } from '../../context/LanguageContext';
 import Icon from '../icons/Icon';
 
-function normalizeSearch(value) {
+function normalizeSearch(value: unknown): string {
   return String(value || '')
     .normalize('NFKD')
     .replace(/[\u064B-\u065F\u0670]/g, '')
@@ -14,6 +22,15 @@ function normalizeSearch(value) {
     .trim();
 }
 
+type CountryOption = {
+  code: string;
+  name: string;
+  postalCodeRequired?: boolean;
+  regionRequired?: boolean;
+  cashEligible?: boolean;
+  shippingAvailable?: boolean;
+};
+
 export default function CountrySelect({
   value,
   onChange,
@@ -21,9 +38,18 @@ export default function CountrySelect({
   name = 'country',
   required = false,
   disabled = false,
-  'aria-describedby': describedBy = undefined,
-  'aria-invalid': invalid = undefined,
-}) {
+  'aria-describedby': describedBy,
+  'aria-invalid': invalid,
+}: {
+  value?: string;
+  onChange: (code: string) => void;
+  id?: string;
+  name?: string;
+  required?: boolean;
+  disabled?: boolean;
+  'aria-describedby'?: string;
+  'aria-invalid'?: boolean | 'true' | 'false';
+}): ReactElement {
   const { lang, pick } = useLanguage();
   const generatedId = useId();
   const controlId = id || `country-${generatedId}`;
@@ -35,10 +61,10 @@ export default function CountrySelect({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
-  const rootRef = useRef(null);
-  const triggerRef = useRef(null);
-  const inputRef = useRef(null);
-  const optionRefs = useRef([]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
 
   const filtered = useMemo(() => {
     const term = normalizeSearch(query);
@@ -76,10 +102,11 @@ export default function CountrySelect({
 
   useEffect(() => {
     if (!open) return undefined;
-    const onPointerDown = (event) => {
-      if (!rootRef.current?.contains(event.target)) close(false);
+    const onPointerDown = (event: MouseEvent) => {
+      if (!(event.target instanceof Node) || !rootRef.current?.contains(event.target))
+        close(false);
     };
-    const onKeyDown = (event) => {
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
         close();
@@ -97,12 +124,12 @@ export default function CountrySelect({
     optionRefs.current[activeIndex]?.scrollIntoView?.({ block: 'nearest' });
   }, [activeIndex]);
 
-  const choose = (country) => {
+  const choose = (country: CountryOption) => {
     onChange(country.code);
     close();
   };
 
-  const onSearchKeyDown = (event) => {
+  const onSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (!filtered.length) return;
     if (event.key === 'ArrowDown') {
       event.preventDefault();
@@ -121,7 +148,8 @@ export default function CountrySelect({
       const exactCode = filtered.find(
         (country) => country.code.toLowerCase() === normalizeSearch(query),
       );
-      choose(exactCode || filtered[activeIndex] || filtered[0]);
+      const next = exactCode || filtered[activeIndex] || filtered[0];
+      if (next) choose(next);
     }
   };
 
@@ -194,7 +222,7 @@ export default function CountrySelect({
               <li
                 key={country.code}
                 id={`${controlId}-option-${country.code}`}
-                ref={(node) => {
+                ref={(node: HTMLLIElement | null) => {
                   optionRefs.current[index] = node;
                 }}
                 role="option"
