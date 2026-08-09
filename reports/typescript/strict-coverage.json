@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T19:02:02.458390+00:00",
-  "commitSha": "697763fc413a3aa656b4a448f8bd0900c22cec07",
+  "generatedAt": "2026-08-09T19:03:36.934544+00:00",
+  "commitSha": "197b1fc58114ed4b9b306587ea6eb363c619b393",
   "sourceFiles": 259,
-  "strictFiles": 172,
-  "strictCoveragePercent": 66.41,
+  "strictFiles": 173,
+  "strictCoveragePercent": 66.8,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,

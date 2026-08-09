@@ -1,17 +1,26 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `697763fc413a3aa656b4a448f8bd0900c22cec07`
-- TypeScript: **66.41%** (172/259)
-- CSS: global 5070L / !important 173 (was 7252/348)
+- SHA: `197b1fc58114ed4b9b306587ea6eb363c619b393`
+- Branch: `cursor/shababuna-redesign-master-plan-dc14`
+- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
+- TypeScript: **66.8%** (173/259)
 
-## Phase 1 status
-Core contexts DONE. Many APIs/components/pages migrated. ~87 executable files remain in audit scope.
+## Verified DONE this run
+- CatalogContext.tsx · UserDataContext.tsx
+- CartPage · HelpPage · SmartImage · Modal · Newsletter · Dossier · PwaPrompt
+- CSS passes 3–4 · foundation.css in main · global !important 173 (was 348)
+- APIs: private-file · retention-worker · formspree-files · create-special-request-session (+ earlier)
 
-## Exact next
-1. Remaining large pages: Account, Customize, Checkout, Shop, Product, Teams, OpsDashboard, Help, Contact, Search, Compare
-2. Remaining APIs (~20)
-3. Phase 2: unload legacy CSS from main.jsx
-4. Phases 3–35
+## Exact next unfinished
+1. Phase 1 continue — Account/Customize/Checkout/Shop/Product/Teams/OrderTracking/Contact/Search/Compare + remaining APIs
+2. Phase 2 — unload global/premium/shababuna from main.jsx after rule relocation
+3. Phases 3–35 per FINAL CONTINUOUS COMPLETION COMMAND
 
 ## Next command
-Continue large page TypeScript migration / CSS extinction
+```bash
+cd /workspace && git rev-parse HEAD
+# Next: modularize/migrate CheckoutPage or ShopPage; continue CSS extinction
+npm run typecheck && npm run lint && npm run test:node
+```
+
+Do not restart from Phase 0. Hero slots preserved. No fabricated data.
