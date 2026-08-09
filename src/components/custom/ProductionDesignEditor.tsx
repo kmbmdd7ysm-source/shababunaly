@@ -1,3 +1,6 @@
+import type { PointerEvent as ReactPointerEvent, ReactElement } from 'react';
+import { asDesign, type DesignView } from './designView';
+import type { DesignLayer } from '../../services/designStudio';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { getCustomProductType } from '../../data/customization';
@@ -24,8 +27,8 @@ const FONT_STACK = {
   modern: 'Inter, system-ui, sans-serif',
 };
 
-function ProductBase({ design, view }) {
-  const product = getCustomProductType(design.productType);
+function ProductBase({ design, view }: { design: DesignView; view: string }): ReactElement {
+  const product = getCustomProductType(String(design.productType || ''));
   const preview = product.preview;
   const side = view === 'side';
   const suffix = `${String(design.productType || 'custom').replace(/[^a-z0-9-]/gi, '')}-${view}`;
@@ -264,16 +267,26 @@ function ProductBase({ design, view }) {
     </svg>
   );
 }
-function LayerNode({ layer, selected, onSelect, onPatch }) {
-  const node = useRef(null);
-  const start = useRef(null);
-  const onPointerDown = (event) => {
+function LayerNode({
+  layer,
+  selected,
+  onSelect,
+  onPatch,
+}: {
+  layer: DesignLayer;
+  selected: boolean;
+  onSelect: (id?: string) => void;
+  onPatch: (patch: Partial<DesignLayer>) => void;
+}): ReactElement | null {
+  const node = useRef<SVGGElement | null>(null);
+  const start = useRef<{ px: number; py: number; x: number; y: number } | null>(null);
+  const onPointerDown = (event: ReactPointerEvent<SVGGElement>) => {
     onSelect(layer.id);
     if (layer.locked) return;
     event.currentTarget.setPointerCapture?.(event.pointerId);
     start.current = { px: event.clientX, py: event.clientY, x: layer.x, y: layer.y };
   };
-  const onPointerMove = (event) => {
+  const onPointerMove = (event: ReactPointerEvent<SVGGElement>) => {
     if (!start.current || layer.locked) return;
     const bounds = node.current?.ownerSVGElement?.getBoundingClientRect();
     if (!bounds?.width || !bounds?.height) return;
@@ -297,14 +310,15 @@ function LayerNode({ layer, selected, onSelect, onPatch }) {
   const fontSize =
     layer.type === 'number' ? Math.max(44, width * 0.82) : Math.max(18, width * 0.23);
   const height = layer.type === 'logo' ? width : Math.max(34, fontSize * 1.25);
-  const fontFamily = FONT_STACK[layer.font] || FONT_STACK.block;
+  const fontFamily =
+    FONT_STACK[String(layer.font || 'block') as keyof typeof FONT_STACK] || FONT_STACK.block;
   return (
     <g
       ref={node}
       className={`production-layer production-layer--${layer.type}${selected ? ' selected' : ''}${layer.locked ? ' locked' : ''}`}
       transform={`translate(${x} ${y}) rotate(${layer.rotation})`}
       role="button"
-      tabIndex="0"
+      tabIndex={0}
       aria-label={layer.label}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -336,7 +350,6 @@ function LayerNode({ layer, selected, onSelect, onPatch }) {
           width={width}
           height={height}
           preserveAspectRatio="xMidYMid meet"
-          draggable="false"
         />
       ) : (
         <text
@@ -358,12 +371,19 @@ function LayerNode({ layer, selected, onSelect, onPatch }) {
 }
 
 export default function ProductionDesignEditor({
-  design,
+  design: designInput,
   value,
   onChange,
   readOnly = false,
   onCanvasPoint = null,
-}) {
+}: {
+  design?: unknown;
+  value?: unknown;
+  onChange?: (studio: unknown) => void;
+  readOnly?: boolean;
+  onCanvasPoint?: ((point: { view?: string; x?: number; y?: number }) => void) | null;
+}): ReactElement {
+  const design = asDesign(designInput);
   const { pick } = useLanguage();
   // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   const initial = useMemo(() => normalizeStudio(value || createDefaultStudio(design), design), []);
@@ -408,14 +428,14 @@ export default function ProductionDesignEditor({
         return { ...layer, content: design.sponsorName || layer.content, color: design.accent };
       return layer;
     });
-    if (design.logoPreview && !synced.some((layer) => layer.type === 'logo'))
-      synced.push(
-        addDesignLayer(
-          { ...current, layers: synced },
-          { type: 'logo', label: 'Team logo', content: design.logoPreview, width: 20 },
-          design,
-        ).layers.at(-1),
-      );
+    if (design.logoPreview && !synced.some((layer) => layer.type === 'logo')) {
+      const logoLayer = addDesignLayer(
+        { ...current, layers: synced },
+        { type: 'logo', label: 'Team logo', content: design.logoPreview, width: 20 },
+        design,
+      ).layers.at(-1);
+      if (logoLayer) synced.push(logoLayer);
+    }
     setHistory((old) => pushHistory(old, normalizeStudio({ ...current, layers: synced }, design)));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [
@@ -429,17 +449,18 @@ export default function ProductionDesignEditor({
     design.font,
   ]);
 
-  const commit = (next) => setHistory((old) => pushHistory(old, normalizeStudio(next, design)));
-  const patchLayer = (patch) => {
+  const commit = (next: typeof studio) =>
+    setHistory((old) => pushHistory(old, normalizeStudio(next, design)));
+  const patchLayer = (patch: Partial<DesignLayer>) => {
     if (!selectedId || readOnly) return;
     commit(updateDesignLayer(studio, selectedId, patch, design));
   };
-  const setView = (view) => {
-    const next = { ...studio, activeView: view };
+  const setView = (view: string) => {
+    const next = { ...studio, activeView: view as typeof studio.activeView };
     commit(next);
     setSelectedId(next.layers.find((layer) => layer.view === view)?.id || null);
   };
-  const add = (type) => {
+  const add = (type: string) => {
     const content =
       type === 'number'
         ? design.number || '00'
@@ -470,18 +491,26 @@ export default function ProductionDesignEditor({
       design,
     );
     commit(next);
-    setSelectedId(next.layers.at(-1)?.id || null);
+    setSelectedId(next.layers.at(-1)?.id ?? null);
   };
-  const selectCanvasPoint = (event) => {
-    if (event.target.closest?.('.production-layer, .production-comment-pin')) return;
+  const selectCanvasPoint = (event: {
+    target: EventTarget | null;
+    currentTarget: EventTarget & { getBoundingClientRect: () => DOMRect };
+    clientX?: number;
+    clientY?: number;
+  }) => {
+    const target = event.target as HTMLElement;
+    if (target.closest?.('.production-layer, .production-comment-pin')) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
+    const clientX = event.clientX ?? bounds.left + bounds.width / 2;
+    const clientY = event.clientY ?? bounds.top + bounds.height / 2;
     const point = {
       x: Number(
-        Math.min(100, Math.max(0, ((event.clientX - bounds.left) / bounds.width) * 100)).toFixed(2),
+        Math.min(100, Math.max(0, ((clientX - bounds.left) / bounds.width) * 100)).toFixed(2),
       ),
       y: Number(
-        Math.min(100, Math.max(0, ((event.clientY - bounds.top) / bounds.height) * 100)).toFixed(2),
+        Math.min(100, Math.max(0, ((clientY - bounds.top) / bounds.height) * 100)).toFixed(2),
       ),
     };
     setCommentPoint(point);
@@ -575,7 +604,7 @@ export default function ProductionDesignEditor({
                   key={layer.id}
                   layer={layer}
                   selected={layer.id === selectedId}
-                  onSelect={setSelectedId}
+                  onSelect={(id) => setSelectedId(id || null)}
                   onPatch={(patch) => commit(updateDesignLayer(studio, layer.id, patch, design))}
                 />
               ))}
@@ -587,7 +616,7 @@ export default function ProductionDesignEditor({
                     className="production-comment-pin"
                     transform={`translate(${comment.x * 6} ${comment.y * 7.2})`}
                     role="button"
-                    tabIndex="0"
+                    tabIndex={0}
                     onClick={() =>
                       !readOnly && commit(resolveDesignComment(studio, comment.id, design))
                     }
@@ -692,7 +721,7 @@ export default function ProductionDesignEditor({
                     max="97"
                     step=".1"
                     value={selected.x}
-                    onChange={(event) => patchLayer({ x: event.target.value })}
+                    onChange={(event) => patchLayer({ x: Number(event.target.value) })}
                     disabled={readOnly || selected.locked}
                   />
                 </label>
@@ -704,7 +733,7 @@ export default function ProductionDesignEditor({
                     max="97"
                     step=".1"
                     value={selected.y}
-                    onChange={(event) => patchLayer({ y: event.target.value })}
+                    onChange={(event) => patchLayer({ y: Number(event.target.value) })}
                     disabled={readOnly || selected.locked}
                   />
                 </label>
@@ -718,7 +747,7 @@ export default function ProductionDesignEditor({
                   min="5"
                   max="90"
                   value={selected.width}
-                  onChange={(event) => patchLayer({ width: event.target.value })}
+                  onChange={(event) => patchLayer({ width: Number(event.target.value) })}
                   disabled={readOnly || selected.locked}
                 />
               </label>
@@ -731,7 +760,7 @@ export default function ProductionDesignEditor({
                   min="-180"
                   max="180"
                   value={selected.rotation}
-                  onChange={(event) => patchLayer({ rotation: event.target.value })}
+                  onChange={(event) => patchLayer({ rotation: Number(event.target.value) })}
                   disabled={readOnly || selected.locked}
                 />
               </label>
@@ -784,7 +813,7 @@ export default function ProductionDesignEditor({
                   onClick={() => {
                     const next = duplicateDesignLayer(studio, selected.id, design);
                     commit(next);
-                    setSelectedId(next.layers.at(-1)?.id);
+                    setSelectedId(next.layers.at(-1)?.id ?? null);
                   }}
                   disabled={readOnly}
                 >
