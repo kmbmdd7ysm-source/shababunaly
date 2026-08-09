@@ -59,7 +59,7 @@ describe('production completion safeguards', () => {
       expect(await read(path)).toContain('TurnstileWidget');
     }
     const scanner = await read('api/malware-scan-worker.js');
-    const privateFile = await read('api/private-file.js');
+    const privateFile = await read('api/private-file.ts');
     expect(scanner).toContain('MALWARE_SCAN');
     expect(privateFile).toContain('quarantine_status');
     expect(privateFile).toContain('file_not_cleared');

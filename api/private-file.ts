@@ -5,13 +5,13 @@ import {
   supabaseAdminRequest,
 } from './_supabase-admin.ts';
 
-const clean = (value, max = 1000) =>
+const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
 const STAFF_ROLES = new Set(['super_admin', 'admin', 'operations', 'sales']);
 
-async function signedStorageUrl(bucket, path) {
+async function signedStorageUrl(bucket: string, path: string) {
   const { base, serviceKey } = getSupabaseAdminConfig();
   const encodedPath = String(path).split('/').map(encodeURIComponent).join('/');
   const response = await fetch(
@@ -32,8 +32,10 @@ async function signedStorageUrl(bucket, path) {
   return `${base}/storage/v1${data.signedURL}`;
 }
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
+type ApiReq = { method?: string; query?: Record<string, string | string[] | undefined>; headers: Record<string, string | string[] | undefined> };
+type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown } };
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
   res.setHeader('Cache-Control', 'no-store, private');
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -85,7 +87,11 @@ export default async function handler(req, res) {
       name: asset.original_name,
       mime: asset.mime_type,
     });
-  } catch (error) {
-    return res.status(503).json({ ok: false, error: clean(error?.message || error, 160) });
+  } catch (error: unknown) {
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return res.status(503).json({ ok: false, error: clean(message || error, 160) });
   }
 }
