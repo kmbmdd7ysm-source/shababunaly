@@ -1,41 +1,36 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `d718eeba4797bcab9c0a3caf0b8ef91ef1a80fcd`
+- Full SHA: `5e1d9e5ad0fd4cd91c97a5329ddf924cdad9f5c9`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
 
 | # | Phase | Status |
 | --- | --- | --- |
-| 0 | Freeze starting state | **PASS** |
-| 1 | Clean toolchain / npm ci | **PASS** |
-| 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **42.86%** (111/259 executable) |
-| 4 | Destroy legacy CSS debt | NOT STARTED |
-| 5 | 500 LYD → 630/70 customer text | **PASS** |
-| 6–25 | Remaining | NOT STARTED / PARTIAL |
+| 0–2,5 | Toolchain / provenance / shipping | **PASS** |
+| 3 / A | TypeScript migration | **IN PROGRESS** — **45.95%** (119/259) |
+| B–Z | CSS + visual + product + QA | PENDING |
 
-## Milestones this run
+## Recently completed (do not redo)
 
-- Executable TS: ~5.8% → **42.86%**
-- All `api/_` helpers TypeScript
-- RR ambient shim · Product media engines · GlobalChrome · Ops stubs · Shop/Account components
+- designStudio.ts
+- productionPreflight.ts
+- supabase.ts
+- Language/Cookie/Compare/Readiness/Cart contexts
 
-## Exact next (Phase 3)
+## Exact next
 
-1. Port `src/services/designStudio.js` → `.ts`
-2. Port `productionPreflight.js` → `.ts`
-3. Port `supabase.js` + Auth/Commerce/Catalog contexts
-4. Remain in Phase 3 until project-wide or exclusions documented
+1. CatalogContext.tsx
+2. CommerceContext.tsx
+3. AuthContext.tsx
+4. UserDataContext.tsx
+5. Remaining pages/services → Phase B CSS demolition
 
 ## Next command
 
 ```bash
 cd /workspace && git rev-parse HEAD
-# Finish designStudio.ts
+# Migrate CatalogContext.jsx → .tsx
 npm run typecheck && npm run test:node && npm run lint
 ```
-
-## Do not restart from Phase 0
-Resume Phase 3 only.
