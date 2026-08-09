@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useCart, cartKey } from '../../context/CartContext';
@@ -11,6 +12,7 @@ import Badge from '../common/Badge';
 import { useCompare } from '../../context/CompareContext';
 import Icon from '../icons/Icon';
 import ColorSwatch from '../common/ColorSwatch';
+import QuickAddSheet from './QuickAddSheet';
 import '../../styles/product-card.css';
 import { getCompareAction } from '../../utils/productOptions';
 import { getVariantPurchaseLimit } from '../../utils/productEligibility';
@@ -46,6 +48,8 @@ export default function ProductCard({
   const { has, toggle } = useWishlist();
   const compare = useCompare();
   const navigate = useNavigate();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [addState, setAddState] = useState<'idle' | 'adding' | 'added'>('idle');
   const availability = resolveAvailabilityState(p as never, { countryCode });
   const comingSoon = availability === 'COMING_SOON';
   const soldOut = availability === 'OUT_OF_STOCK';
@@ -64,12 +68,13 @@ export default function ProductCard({
       return;
     }
     if (action.type === 'choose-options') {
-      navigate(to);
+      setSheetOpen(true);
       return;
     }
     const variant = action.variant;
     if (!variant) return;
     const unitPrice = Number(variant.unitPrice ?? p.price);
+    setAddState('adding');
     addItem({
       key: cartKey('product', String(p.id || ''), `${variant.color}-${variant.size}-retail`),
       type: 'product',
@@ -97,6 +102,10 @@ export default function ProductCard({
       largeEquipment: p.largeEquipment === true,
       deliveryProfile: p.readyToShip ? 'ready' : 'standard',
     } as never);
+    window.setTimeout(() => {
+      setAddState('added');
+      window.setTimeout(() => setAddState('idle'), 900);
+    }, 160);
   };
 
   const actionLabel =
@@ -177,15 +186,23 @@ export default function ProductCard({
         {!comingSoon && !soldOut && action.type !== 'unavailable' && (
           <button
             type="button"
-            className="gw-quick-add"
+            className={`gw-quick-add${addState === 'added' ? ' is-added' : ''}`}
             onClick={runPrimaryAction}
             aria-label={actionLabel}
+            disabled={addState === 'adding'}
           >
-            <Icon name="bag" />
-            <span className="gw-quick-add-label">{actionLabel}</span>
+            <Icon name={addState === 'added' ? 'check' : 'bag'} />
+            <span className="gw-quick-add-label">
+              {addState === 'adding'
+                ? pick({ en: 'Adding…', ar: 'جاري الإضافة…' })
+                : addState === 'added'
+                  ? pick({ en: 'Added', ar: 'تمت الإضافة' })
+                  : actionLabel}
+            </span>
           </button>
         )}
       </div>
+      <QuickAddSheet product={p} open={sheetOpen} onClose={() => setSheetOpen(false)} />
       <div className="product-card-body">
         <span className="product-card-brand">{String(p.brand || '')}</span>
         <Link to={to} className="product-card-name">
