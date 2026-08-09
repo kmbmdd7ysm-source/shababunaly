@@ -1,6 +1,8 @@
-import { getSupabase } from './supabase';
+import { getSupabase } from './supabase.js';
 
-export async function fetchSiteContent(contentKey) {
+export async function fetchSiteContent(
+  contentKey: string,
+): Promise<Record<string, unknown> | null> {
   const client = await getSupabase();
   if (!client) return null;
   const { data, error } = await client
@@ -10,5 +12,6 @@ export async function fetchSiteContent(contentKey) {
     .eq('public_read', true)
     .maybeSingle();
   if (error) throw error;
-  return data?.content_value && typeof data.content_value === 'object' ? data.content_value : null;
+  const value = data?.content_value;
+  return value && typeof value === 'object' ? (value as Record<string, unknown>) : null;
 }
