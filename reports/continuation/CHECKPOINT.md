@@ -1,26 +1,31 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `880db975f8466417b3a5029aad07b193a7507745`
+- SHA: `3fd0222c8984cd07e7b8d63be672eb6abd862491` (update after next commit)
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 - TypeScript: **87.73%** (236/269)
+- CSS: global !important **74** · premium 37 · legacy deferred
 
-## Completed this resume
-- All pages → TSX (Checkout through OpsDashboard)
-- App/main entry TSX; ProductCard; Icon; SearchOverlay; CinematicHero; AddressesSection
-- CSS pass 7: global !important 127→91; legacy CSS deferred
-- Production build verified green after entry migration
+## Completed
+- ALL pages TSX · App/main · ProductCard · Icon · SearchOverlay · CinematicHero · AddressesSection
+- Checkout stages modularized
+- CSS passes 7–8 !important reduction
+- Production build green after entry migration
 
 ## Exact next unfinished
-1. Remaining JSX (~20): MfaSecurityPanel, Returns/SpecialRequests, OrganizationWorkspace, Studio (DesignPreview/ProductionDesignEditor/StudioStage), Ops modules
-2. Remaining src JS (~11): orders, operations, b2b, products, translations, utils
-3. Phase 2 CSS ownership extinction (global still 91 !important)
-4. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence
+1. `src/components/account/MfaSecurityPanel.jsx` (ambient exists — careful rewrite)
+2. ReturnsSection · SpecialRequestsSection · OrganizationWorkspace
+3. Studio: StudioStage · DesignPreview · ProductionDesignEditor
+4. Ops modules (control/* · Operations*Modules)
+5. Remaining src JS services/data/utils
+6. Phase 2 CSS ownership extinction to delete legacy globals
+7. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence
 
 ## Next command
 ```bash
-# Migrate MfaSecurityPanel.tsx then SpecialRequestsSection.tsx
-npm run typecheck && npx eslint src/components/account/MfaSecurityPanel.tsx
+cd /workspace && git rev-parse HEAD
+# Careful MFA or ReturnsSection.tsx with returns service types first
+npm run typecheck
 ```
 
 Do not restart. Hero slots preserved. No fabricated data.
