@@ -51,7 +51,8 @@ export default function Filters({
   const toggleArray = (field: string, value: string) => {
     const current = Array.isArray(filters[field]) ? (filters[field] as string[]) : [];
     const set = new Set(current);
-    set.has(value) ? set.delete(value) : set.add(value);
+    if (set.has(value)) set.delete(value);
+    else set.add(value);
     onChange({ [field]: [...set] });
   };
 
