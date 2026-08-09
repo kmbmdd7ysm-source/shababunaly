@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T02:04:26.457174+00:00",
-  "commitSha": "cc868cf65532d1838ccba297763b13ae1795605e",
+  "generatedAt": "2026-08-09T02:05:19.301129+00:00",
+  "commitSha": "949d72ca0c5de9b3d8a1f12e46ff6833f7709c12",
   "sourceFiles": 259,
-  "strictFiles": 38,
-  "strictCoveragePercent": 14.67,
-  "legacyFileCount": 221,
-  "note": "Phase 3 IN PROGRESS \u2014 executable .ts/.tsx only."
+  "strictFiles": 39,
+  "strictCoveragePercent": 15.06,
+  "legacyFileCount": 220,
+  "note": "Phase 3 IN PROGRESS."
 }
