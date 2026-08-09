@@ -71,7 +71,7 @@ import {
   completeAuthRedirect,
   getSupabase,
   getSupabaseConfigStatus,
-} from '../src/services/supabase.js';
+} from '../src/services/supabase.ts';
 import { getAddressRequirements, countryByCode } from '../src/data/countries.ts';
 import {
   buildDesignViewSvg,

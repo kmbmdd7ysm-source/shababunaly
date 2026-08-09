@@ -62,7 +62,7 @@ import {
   completeAuthRedirect,
   getSupabase,
   getSupabaseConfigStatus,
-} from '../src/services/supabase.js';
+} from '../src/services/supabase.ts';
 import {
   columnIndex,
   decodeXml,

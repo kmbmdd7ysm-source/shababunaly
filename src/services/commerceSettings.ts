@@ -1,4 +1,4 @@
-import { getSupabase } from './supabase.js';
+import { getSupabase } from './supabase.ts';
 
 export function validateUsdToLydRate(value: unknown): number {
   const rate = Number(value);

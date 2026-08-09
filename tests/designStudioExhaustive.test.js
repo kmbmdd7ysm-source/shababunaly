@@ -29,7 +29,7 @@ import {
   completeAuthRedirect,
   getSupabase,
   getSupabaseConfigStatus,
-} from '../src/services/supabase.js';
+} from '../src/services/supabase.ts';
 
 const originalLocation = globalThis.location;
 const originalHistory = globalThis.history;

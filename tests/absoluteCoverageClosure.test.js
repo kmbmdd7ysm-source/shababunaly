@@ -36,7 +36,7 @@ import {
   __setSupabaseClientFactoryForTests,
   getSupabase,
   completeAuthRedirect,
-} from '../src/services/supabase.js';
+} from '../src/services/supabase.ts';
 import { productShape, buildDesignViewSvg } from '../src/utils/designExports.js';
 import {
   parseRosterFile,

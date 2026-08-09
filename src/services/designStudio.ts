@@ -1,4 +1,4 @@
-import { getSupabase } from './supabase.js';
+import { getSupabase } from './supabase.ts';
 
 export type DesignView = 'front' | 'back' | 'side';
 export type LayerType = 'text' | 'number' | 'logo' | 'sponsor' | 'badge';

@@ -1,2268 +1,2250 @@
 TAP version 13
-# (node:129483) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132739) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: absolute API branch coverage
     # Subtest: executes every trusted checkout validation, lookup and provider branch
     ok 1 - executes every trusted checkout validation, lookup and provider branch
       ---
-      duration_ms: 5.384502
+      duration_ms: 5.085921
       ...
     # Subtest: executes every public design-share guard, address and error mapping branch
     ok 2 - executes every public design-share guard, address and error mapping branch
       ---
-      duration_ms: 1.661329
+      duration_ms: 1.408393
       ...
     # Subtest: executes Formspree endpoint, guard, address and non-Error failure branches
     ok 3 - executes Formspree endpoint, guard, address and non-Error failure branches
       ---
-      duration_ms: 0.725707
+      duration_ms: 0.764375
       ...
     # Subtest: executes guest-order token, no-email, guard and trusted-store failure branches
     ok 4 - executes guest-order token, no-email, guard and trusted-store failure branches
       ---
-      duration_ms: 2.044801
+      duration_ms: 2.06244
       ...
     # Subtest: executes quote wrapper/default/data-shape/membership/guard and failure branches
     ok 5 - executes quote wrapper/default/data-shape/membership/guard and failure branches
       ---
-      duration_ms: 2.059479
+      duration_ms: 1.976377
       ...
     # Subtest: executes payment-recovery guard, amount fallbacks, status fallbacks and non-Error failure
     ok 6 - executes payment-recovery guard, amount fallbacks, status fallbacks and non-Error failure
       ---
-      duration_ms: 2.218046
+      duration_ms: 1.477635
       ...
     # Subtest: executes special-request body, file-count, upload and non-Error failure branches
     ok 7 - executes special-request body, file-count, upload and non-Error failure branches
       ---
-      duration_ms: 3.184984
+      duration_ms: 3.524152
       ...
     1..7
 ok 1 - absolute API branch coverage
   ---
-  duration_ms: 18.116835
+  duration_ms: 17.079811
   type: 'suite'
   ...
 # Subtest: absolute pure-module branch coverage
     # Subtest: executes roster delimiter, fallback field and escaping branches
     ok 1 - executes roster delimiter, fallback field and escaping branches
       ---
-      duration_ms: 0.838883
+      duration_ms: 0.933013
       ...
     # Subtest: executes catalog inventory, brand, availability and selector fallback branches
     ok 2 - executes catalog inventory, brand, availability and selector fallback branches
       ---
-      duration_ms: 0.829942
+      duration_ms: 0.850825
       ...
     # Subtest: executes design-studio defaults, no-op, history, error and share fallbacks
     ok 3 - executes design-studio defaults, no-op, history, error and share fallbacks
       ---
-      duration_ms: 13.119286
+      duration_ms: 15.895002
       ...
     # Subtest: executes Supabase runtime aliases, fallback signal, dynamic import and auth null branches
     ok 4 - executes Supabase runtime aliases, fallback signal, dynamic import and auth null branches
       ---
-      duration_ms: 0.662656
+      duration_ms: 0.670979
       ...
     # Subtest: executes every production artwork shape, layer and document branch
     ok 5 - executes every production artwork shape, layer and document branch
       ---
-      duration_ms: 3.977082
+      duration_ms: 3.958573
       ...
     # Subtest: executes spreadsheet malformed, fallback, shared-string and file-type branches
     ok 6 - executes spreadsheet malformed, fallback, shared-string and file-type branches
       ---
-      duration_ms: 1.17311
+      duration_ms: 1.250473
       ...
     1..6
 ok 2 - absolute pure-module branch coverage
   ---
-  duration_ms: 20.875351
+  duration_ms: 23.837646
   type: 'suite'
   ...
 # Subtest: teams, wholesale and operations architecture
     # Subtest: creates the full B2B data model with RLS
     ok 1 - creates the full B2B data model with RLS
       ---
-      duration_ms: 0.806978
+      duration_ms: 0.797726
       ...
     # Subtest: uses staff-only RPCs for commercial mutations
     ok 2 - uses staff-only RPCs for commercial mutations
       ---
-      duration_ms: 0.213053
+      duration_ms: 0.606916
       ...
     # Subtest: supports customer design and quote approval through guarded RPCs
     ok 3 - supports customer design and quote approval through guarded RPCs
       ---
-      duration_ms: 0.098671
+      duration_ms: 0.120509
       ...
     # Subtest: keeps staff operations out of public navigation but exposes a guarded route
     ok 4 - keeps staff operations out of public navigation but exposes a guarded route
       ---
-      duration_ms: 6.066076
+      duration_ms: 6.251152
       ...
     1..4
 ok 3 - teams, wholesale and operations architecture
   ---
-  duration_ms: 7.918829
+  duration_ms: 8.504057
   type: 'suite'
   ...
-# (node:129485) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132741) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: SHABABUNA catalogue
     # Subtest: contains every required shop department
     ok 1 - contains every required shop department
       ---
-      duration_ms: 0.597027
+      duration_ms: 0.673308
       ...
     # Subtest: keeps product names English in both interfaces while descriptions are bilingual
     ok 2 - keeps product names English in both interfaces while descriptions are bilingual
       ---
-      duration_ms: 5.401485
+      duration_ms: 5.289342
       ...
     # Subtest: publishes every catalogue brand with safe supplier-order handling
     ok 3 - publishes every catalogue brand with safe supplier-order handling
       ---
-      duration_ms: 0.266701
+      duration_ms: 0.251529
       ...
     # Subtest: preserves product-specific wholesale minimums on customizable manufacturing products
     ok 4 - preserves product-specific wholesale minimums on customizable manufacturing products
       ---
-      duration_ms: 0.430707
+      duration_ms: 0.355085
       ...
     # Subtest: never exposes an unverified manufacturing claim
     ok 5 - never exposes an unverified manufacturing claim
       ---
-      duration_ms: 6.350382
+      duration_ms: 14.938201
       ...
     # Subtest: copies the entire LHA shop with unchanged retail prices
     ok 6 - copies the entire LHA shop with unchanged retail prices
       ---
-      duration_ms: 0.321124
+      duration_ms: 0.369373
       ...
     1..6
 ok 4 - SHABABUNA catalogue
   ---
-  duration_ms: 14.08269
+  duration_ms: 22.630416
   type: 'suite'
   ...
-# (node:129492) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132747) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: trusted checkout session API
     # Subtest: rejects methods, oversized bodies and malformed references before provider access
     ok 1 - rejects methods, oversized bodies and malformed references before provider access
       ---
-      duration_ms: 1.406726
+      duration_ms: 1.457282
       ...
     # Subtest: fails closed when payment or trusted order storage is unavailable
     ok 2 - fails closed when payment or trusted order storage is unavailable
       ---
-      duration_ms: 0.646918
+      duration_ms: 0.695232
       ...
     # Subtest: returns trusted lookup errors and never trusts browser totals
     ok 3 - returns trusted lookup errors and never trusts browser totals
       ---
-      duration_ms: 0.861335
+      duration_ms: 0.889286
       ...
     # Subtest: blocks every non-payable order state and customer mismatch
     ok 4 - blocks every non-payable order state and customer mismatch
       ---
-      duration_ms: 1.654196
+      duration_ms: 1.257701
       ...
     # Subtest: creates a provider session from the server-trusted amount and immutable identity
     ok 5 - creates a provider session from the server-trusted amount and immutable identity
       ---
-      duration_ms: 1.307909
+      duration_ms: 1.363143
       ...
     # Subtest: supports the configured Libyan card adapter and maps provider failures safely
     ok 6 - supports the configured Libyan card adapter and maps provider failures safely
       ---
-      duration_ms: 2.280429
+      duration_ms: 1.448895
       ...
     1..6
 ok 5 - trusted checkout session API
   ---
-  duration_ms: 8.979765
+  duration_ms: 7.851106
   type: 'suite'
   ...
-# (node:129527) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132783) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: order status presentation
     # Subtest: presents every declared status in English and Arabic
     ok 1 - presents every declared status in English and Arabic
       ---
-      duration_ms: 1.28534
+      duration_ms: 1.025594
       ...
     # Subtest: normalizes known values and fails safely for unknown values
     ok 2 - normalizes known values and fails safely for unknown values
       ---
-      duration_ms: 0.161717
+      duration_ms: 0.146624
       ...
     1..2
 ok 6 - order status presentation
   ---
-  duration_ms: 2.096164
+  duration_ms: 1.797025
   type: 'suite'
   ...
 # Subtest: fulfillment classification
     # Subtest: honors supported explicit fulfillment values
     ok 1 - honors supported explicit fulfillment values
       ---
-      duration_ms: 0.224596
+      duration_ms: 0.217844
       ...
     # Subtest: maps legacy item types and defaults unknown items to physical
     ok 2 - maps legacy item types and defaults unknown items to physical
       ---
-      duration_ms: 0.094541
+      duration_ms: 0.093358
       ...
     # Subtest: requires shipping only when at least one physical line exists
     ok 3 - requires shipping only when at least one physical line exists
       ---
-      duration_ms: 0.154655
+      duration_ms: 0.155271
       ...
     1..3
 ok 7 - fulfillment classification
   ---
-  duration_ms: 0.601441
+  duration_ms: 0.597882
   type: 'suite'
   ...
 # Subtest: safe internal navigation
     # Subtest: accepts only allow-listed local routes including query and hash values
     ok 1 - accepts only allow-listed local routes including query and hash values
       ---
-      duration_ms: 0.397305
+      duration_ms: 0.399588
       ...
     # Subtest: rejects open redirects, encoded tricks, credentials and control characters
     ok 2 - rejects open redirects, encoded tricks, credentials and control characters
       ---
-      duration_ms: 0.253573
+      duration_ms: 0.253725
       ...
     1..2
 ok 8 - safe internal navigation
   ---
-  duration_ms: 0.794281
+  duration_ms: 0.796163
   type: 'suite'
   ...
 # Subtest: site search
     # Subtest: normalizes punctuation, Arabic marks and repeated whitespace
     ok 1 - normalizes punctuation, Arabic marks and repeated whitespace
       ---
-      duration_ms: 1.652164
+      duration_ms: 1.621791
       ...
     # Subtest: ranks exact and prefix suggestions deterministically without duplicates
     ok 2 - ranks exact and prefix suggestions deterministically without duplicates
       ---
-      duration_ms: 1.434789
+      duration_ms: 1.412056
       ...
     # Subtest: filters products and pages by type, color and brand
     ok 3 - filters products and pages by type, color and brand
       ---
-      duration_ms: 0.920817
+      duration_ms: 3.185401
       ...
     # Subtest: builds stable unique facets
     ok 4 - builds stable unique facets
       ---
-      duration_ms: 0.251536
+      duration_ms: 1.982278
       ...
     1..4
 ok 9 - site search
   ---
-  duration_ms: 4.469841
+  duration_ms: 8.406952
   type: 'suite'
   ...
-# (node:129538) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132794) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: 100% API and security branch closure
     # Subtest: closes guest-token, template and request-security fallbacks
     ok 1 - closes guest-token, template and request-security fallbacks
       ---
-      duration_ms: 3.67195
+      duration_ms: 3.59404
       ...
     # Subtest: closes guest order access privacy and fallback branches
     ok 2 - closes guest order access privacy and fallback branches
       ---
-      duration_ms: 2.544452
+      duration_ms: 2.308503
       ...
     # Subtest: closes quote intake body/default/membership/insert branches
     ok 3 - closes quote intake body/default/membership/insert branches
       ---
-      duration_ms: 2.788499
+      duration_ms: 2.765601
       ...
     # Subtest: closes payment recovery amount, auth, expiry and provider branches
     ok 4 - closes payment recovery amount, auth, expiry and provider branches
       ---
-      duration_ms: 3.42092
+      duration_ms: 2.988329
       ...
     # Subtest: closes special-request URL, scanner, files, insert and error branches
     ok 5 - closes special-request URL, scanner, files, insert and error branches
       ---
-      duration_ms: 3.498244
+      duration_ms: 2.896031
       ...
     # Subtest: closes Formspree endpoint, payload, guard, provider and thrown branches
     ok 6 - closes Formspree endpoint, payload, guard, provider and thrown branches
       ---
-      duration_ms: 1.228857
+      duration_ms: 1.171018
       ...
     # Subtest: closes trusted checkout and design-share API remaining branches
     ok 7 - closes trusted checkout and design-share API remaining branches
       ---
-      duration_ms: 1.527321
+      duration_ms: 1.406126
       ...
     1..7
 ok 10 - 100% API and security branch closure
   ---
-  duration_ms: 19.434678
+  duration_ms: 17.842103
   type: 'suite'
   ...
 # Subtest: 100% data, studio and document branch closure
     # Subtest: executes every catalog normalization and selector branch
     ok 1 - executes every catalog normalization and selector branch
       ---
-      duration_ms: 6.19946
+      duration_ms: 6.212792
       ...
     # Subtest: executes every customization roster fallback
     ok 2 - executes every customization roster fallback
       ---
-      duration_ms: 0.405267
+      duration_ms: 0.412476
       ...
     # Subtest: executes every design studio branch and cloud operation path
     ok 3 - executes every design studio branch and cloud operation path
       ---
-      duration_ms: 2.221513
+      duration_ms: 2.139409
       ...
     # Subtest: executes every Supabase runtime, client and auth callback branch
     ok 4 - executes every Supabase runtime, client and auth callback branch
       ---
-      duration_ms: 1.210693
+      duration_ms: 1.440579
       ...
     # Subtest: executes archive, spreadsheet, PDF, search and navigation branches
     ok 5 - executes archive, spreadsheet, PDF, search and navigation branches
       ---
-      duration_ms: 10.751267
+      duration_ms: 11.789978
       ...
     1..5
 ok 11 - 100% data, studio and document branch closure
   ---
-  duration_ms: 21.018034
+  duration_ms: 22.235761
   type: 'suite'
   ...
-# (node:129545) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132805) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: CSP and PWA hardening
     # Subtest: uses a reference-counted class scroll lock without inline style mutation
     ok 1 - uses a reference-counted class scroll lock without inline style mutation
       ---
-      duration_ms: 0.658647
+      duration_ms: 0.653073
       ...
     # Subtest: forbids inline style attributes and authorizes only declared analytics origins
     ok 2 - forbids inline style attributes and authorizes only declared analytics origins
       ---
-      duration_ms: 8.122708
+      duration_ms: 17.526312
       ...
     # Subtest: keeps sensitive routes network-only and revisions caches by build id
     ok 3 - keeps sensitive routes network-only and revisions caches by build id
       ---
-      duration_ms: 0.731425
+      duration_ms: 3.680763
       ...
     # Subtest: contains no React inline style props or direct style mutations
     ok 4 - contains no React inline style props or direct style mutations
       ---
-      duration_ms: 2.142417
+      duration_ms: 4.836074
       ...
     1..4
 ok 12 - CSP and PWA hardening
   ---
-  duration_ms: 12.399898
+  duration_ms: 27.451487
   type: 'suite'
   ...
-# (node:129556) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132816) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: custom manufacturing studio
     # Subtest: enforces product-specific minimums
     ok 1 - enforces product-specific minimums
       ---
-      duration_ms: 0.507343
+      duration_ms: 0.55888
       ...
     # Subtest: supports a purpose-built preview for every custom product
     ok 2 - supports a purpose-built preview for every custom product
       ---
-      duration_ms: 0.162487
+      duration_ms: 0.173596
       ...
     # Subtest: detects duplicate numbers and missing fields
     ok 3 - detects duplicate numbers and missing fields
       ---
-      duration_ms: 0.636786
+      duration_ms: 0.66376
       ...
     # Subtest: round-trips a roster through CSV without losing essential fields
     ok 4 - round-trips a roster through CSV without losing essential fields
       ---
-      duration_ms: 0.50729
+      duration_ms: 0.512643
       ...
     1..4
 ok 13 - custom manufacturing studio
   ---
-  duration_ms: 2.457168
+  duration_ms: 2.571415
   type: 'suite'
   ...
-# (node:129571) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132822) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: taxonomy and geography exhaustive
     # Subtest: finds every category and handles missing taxonomy safely
     ok 1 - finds every category and handles missing taxonomy safely
       ---
-      duration_ms: 0.636363
+      duration_ms: 0.665225
       ...
     # Subtest: normalizes, localizes and searches every country branch
     ok 2 - normalizes, localizes and searches every country branch
       ---
-      duration_ms: 14.490368
+      duration_ms: 14.847725
       ...
     1..2
 ok 14 - taxonomy and geography exhaustive
   ---
-  duration_ms: 15.759711
+  duration_ms: 16.135468
   type: 'suite'
   ...
 # Subtest: customization data exhaustive
     # Subtest: uses known types and safe fallback
     ok 1 - uses known types and safe fallback
       ---
-      duration_ms: 0.260239
+      duration_ms: 0.271537
       ...
     # Subtest: normalizes roster fields, errors, duplicate numbers and filters empty rows
     ok 2 - normalizes roster fields, errors, duplicate numbers and filters empty rows
       ---
-      duration_ms: 0.520763
+      duration_ms: 0.55098
       ...
     # Subtest: parses header/no-header, comma/semicolon, BOM, Arabic and empty CSVs
     ok 3 - parses header/no-header, comma/semicolon, BOM, Arabic and empty CSVs
       ---
-      duration_ms: 1.117527
+      duration_ms: 1.114717
       ...
     # Subtest: serializes a stable escaped roster CSV
     ok 4 - serializes a stable escaped roster CSV
       ---
-      duration_ms: 0.243237
+      duration_ms: 0.238608
       ...
     1..4
 ok 15 - customization data exhaustive
   ---
-  duration_ms: 2.367826
+  duration_ms: 2.385747
   type: 'suite'
   ...
 # Subtest: LHA catalog normalizer and selectors exhaustive
     # Subtest: normalizes missing/default and verified inventory variants
     ok 1 - normalizes missing/default and verified inventory variants
       ---
-      duration_ms: 0.340249
+      duration_ms: 0.304533
       ...
     # Subtest: covers archived, coming soon, digital and sold-out states and metadata overrides
     ok 2 - covers archived, coming soon, digital and sold-out states and metadata overrides
       ---
-      duration_ms: 0.244703
+      duration_ms: 0.23581
       ...
     # Subtest: executes all raw LHA selectors and stock checks
     ok 3 - executes all raw LHA selectors and stock checks
       ---
-      duration_ms: 0.351644
+      duration_ms: 0.344782
       ...
     1..3
 ok 16 - LHA catalog normalizer and selectors exhaustive
   ---
-  duration_ms: 1.109463
+  duration_ms: 1.048795
   type: 'suite'
   ...
 # Subtest: global catalog normalizer and selectors exhaustive
     # Subtest: covers every trusted-stock source and unverified inventory behavior
     ok 1 - covers every trusted-stock source and unverified inventory behavior
       ---
-      duration_ms: 0.221453
+      duration_ms: 0.220798
       ...
     # Subtest: normalizes default, active, draft, coming, sold, ready and verified claims
     ok 2 - normalizes default, active, draft, coming, sold, ready and verified claims
       ---
-      duration_ms: 1.597763
+      duration_ms: 1.548185
       ...
     # Subtest: executes all global catalog selectors and ordering
     ok 3 - executes all global catalog selectors and ordering
       ---
-      duration_ms: 0.844448
+      duration_ms: 0.816927
       ...
     1..3
 ok 17 - global catalog normalizer and selectors exhaustive
   ---
-  duration_ms: 2.756496
+  duration_ms: 2.675297
   type: 'suite'
   ...
-# (node:129582) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132838) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: production artwork exports
     # Subtest: creates dedicated vector artwork for every custom product and view
     ok 1 - creates dedicated vector artwork for every custom product and view
       ---
-      duration_ms: 2.595068
+      duration_ms: 3.927994
       ...
     # Subtest: uses a safe jersey fallback for an unknown production preview
     ok 2 - uses a safe jersey fallback for an unknown production preview
       ---
-      duration_ms: 0.102896
+      duration_ms: 0.108715
       ...
     # Subtest: packages SVG views, manifest and roster into a valid ZIP
     ok 3 - packages SVG views, manifest and roster into a valid ZIP
       ---
-      duration_ms: 5.625408
+      duration_ms: 3.57434
       ...
     # Subtest: creates multi-page proof and tech-pack PDFs
     ok 4 - creates multi-page proof and tech-pack PDFs
       ---
-      duration_ms: 7.73044
+      duration_ms: 7.083187
       ...
     1..4
 ok 18 - production artwork exports
   ---
-  duration_ms: 16.866936
+  duration_ms: 16.117865
   type: 'suite'
   ...
-# (node:129593) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132849) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: secure design share API
     # Subtest: loads a sanitized shared design through the server boundary
     ok 1 - loads a sanitized shared design through the server boundary
       ---
-      duration_ms: 2.786578
+      duration_ms: 5.812698
       ...
     # Subtest: adds a pinned comment with Turnstile and rate limiting
     ok 2 - adds a pinned comment with Turnstile and rate limiting
       ---
-      duration_ms: 0.712996
+      duration_ms: 0.539069
       ...
     # Subtest: approves a proof and requires a note for change requests
     ok 3 - approves a proof and requires a note for change requests
       ---
-      duration_ms: 0.573215
+      duration_ms: 0.37177
       ...
     # Subtest: rejects invalid tokens, methods, comments and missing captcha
     ok 4 - rejects invalid tokens, methods, comments and missing captcha
       ---
-      duration_ms: 0.462689
+      duration_ms: 0.427034
       ...
     1..4
 ok 19 - secure design share API
   ---
-  duration_ms: 5.272614
+  duration_ms: 9.078982
   type: 'suite'
   ...
 # Subtest: secure design sharing
     # Subtest: exposes a real expiring share route and page
     ok 1 - exposes a real expiring share route and page
       ---
-      duration_ms: 6.635835
+      duration_ms: 4.033872
       ...
     # Subtest: hashes tokens and gives anon only guarded RPC access
     ok 2 - hashes tokens and gives anon only guarded RPC access
       ---
-      duration_ms: 1.021268
+      duration_ms: 1.169181
       ...
     1..2
 ok 20 - secure design sharing
   ---
-  duration_ms: 8.310788
+  duration_ms: 5.843136
   type: 'suite'
   ...
-# (node:129615) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132871) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: production design studio state
     # Subtest: creates editable front and back production layers
     ok 1 - creates editable front and back production layers
       ---
-      duration_ms: 1.057062
+      duration_ms: 1.332486
       ...
     # Subtest: clamps unsafe layer coordinates and supports layer operations
     ok 2 - clamps unsafe layer coordinates and supports layer operations
       ---
-      duration_ms: 1.047786
+      duration_ms: 1.010273
       ...
     # Subtest: maintains bounded undo and redo history
     ok 3 - maintains bounded undo and redo history
       ---
-      duration_ms: 0.337926
+      duration_ms: 0.284948
       ...
     # Subtest: pins review comments to a named view
     ok 4 - pins review comments to a named view
       ---
-      duration_ms: 6.394876
+      duration_ms: 1.294058
       ...
     1..4
 ok 21 - production design studio state
   ---
-  duration_ms: 9.605962
+  duration_ms: 4.687372
   type: 'suite'
   ...
-# (node:129621) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132882) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: design studio pure runtime exhaustive
     # Subtest: creates all default layers and normalizes hostile values
     ok 1 - creates all default layers and normalizes hostile values
       ---
-      duration_ms: 5.35653
+      duration_ms: 4.98091
       ...
     # Subtest: adds, edits, duplicates, moves and removes every layer type
     ok 2 - adds, edits, duplicates, moves and removes every layer type
       ---
-      duration_ms: 1.807809
+      duration_ms: 1.415878
       ...
     # Subtest: manages comments, history limits and production metadata
     ok 3 - manages comments, history limits and production metadata
       ---
-      duration_ms: 0.713255
+      duration_ms: 0.59764
       ...
     1..3
 ok 22 - design studio pure runtime exhaustive
   ---
-  duration_ms: 8.554999
+  duration_ms: 7.644105
   type: 'suite'
   ...
 # Subtest: Supabase client and auth redirect runtime exhaustive
     # Subtest: reports no config, invalid content and timeout/error sources
     ok 1 - reports no config, invalid content and timeout/error sources
       ---
-      duration_ms: 1.069711
+      duration_ms: 7.296355
       ...
     # Subtest: creates a client directly from build-time aliases without a runtime request
     ok 2 - creates a client directly from build-time aliases without a runtime request
       ---
-      duration_ms: 0.43947
+      duration_ms: 0.483669
       ...
     # Subtest: creates and caches a client from valid runtime aliases
     ok 3 - creates and caches a client from valid runtime aliases
       ---
-      duration_ms: 0.422556
+      duration_ms: 0.534759
       ...
     # Subtest: creates confirm/recovery redirect URLs
     ok 4 - creates confirm/recovery redirect URLs
       ---
-      duration_ms: 0.24814
+      duration_ms: 0.279118
       ...
     # Subtest: handles callback errors, implicit sessions, PKCE codes, OTP and no-op callbacks
     ok 5 - handles callback errors, implicit sessions, PKCE codes, OTP and no-op callbacks
       ---
-      duration_ms: 0.942258
+      duration_ms: 1.018051
       ...
     1..5
 ok 23 - Supabase client and auth redirect runtime exhaustive
   ---
-  duration_ms: 3.459685
+  duration_ms: 9.985868
   type: 'suite'
   ...
 # Subtest: design studio cloud/share operations exhaustive
     # Subtest: autosaves only trusted cloud designs and maps database errors
     ok 1 - autosaves only trusted cloud designs and maps database errors
       ---
-      duration_ms: 1.845381
+      duration_ms: 2.280176
       ...
     # Subtest: creates secure shares with clamped expiry and validates tokens
     ok 2 - creates secure shares with clamped expiry and validates tokens
       ---
-      duration_ms: 0.617212
+      duration_ms: 0.610684
       ...
     # Subtest: loads, comments and approves shared designs through the protected API
     ok 3 - loads, comments and approves shared designs through the protected API
       ---
-      duration_ms: 0.725813
+      duration_ms: 0.639327
       ...
     1..3
 ok 24 - design studio cloud/share operations exhaustive
   ---
-  duration_ms: 3.315444
+  duration_ms: 3.653697
   type: 'suite'
   ...
-# (node:129628) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132893) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: XLSX parser internals exhaustive
     # Subtest: decodes XML entities, columns, rows and CSV escaping
     ok 1 - decodes XML entities, columns, rows and CSV escaping
       ---
-      duration_ms: 2.492106
+      duration_ms: 2.550651
       ...
     # Subtest: inflates deflate streams and fails when the runtime does not support them
     ok 2 - inflates deflate streams and fails when the runtime does not support them
       ---
-      duration_ms: 20.781829
+      duration_ms: 21.183792
       ...
     # Subtest: reads stored and deflated ZIP entries and rejects every corrupt structure
     ok 3 - reads stored and deflated ZIP entries and rejects every corrupt structure
       ---
-      duration_ms: 4.037871
+      duration_ms: 3.490359
       ...
     # Subtest: resolves workbook relationships and worksheet fallback paths
     ok 4 - resolves workbook relationships and worksheet fallback paths
       ---
-      duration_ms: 1.437478
+      duration_ms: 1.47399
       ...
     # Subtest: parses shared-string and inline XLSX files and rejects invalid workbooks
     ok 5 - parses shared-string and inline XLSX files and rejects invalid workbooks
       ---
-      duration_ms: 2.270197
+      duration_ms: 2.172062
       ...
     # Subtest: routes CSV/XLSX file types and applies size/type protection
     ok 6 - routes CSV/XLSX file types and applies size/type protection
       ---
-      duration_ms: 1.351026
+      duration_ms: 0.869979
       ...
     1..6
 ok 25 - XLSX parser internals exhaustive
   ---
-  duration_ms: 33.201438
+  duration_ms: 32.492636
   type: 'suite'
   ...
 # Subtest: PDF/document generation exhaustive
     # Subtest: creates multi-page text PDFs with escaped metadata, strings and table rows
     ok 1 - creates multi-page text PDFs with escaped metadata, strings and table rows
       ---
-      duration_ms: 0.95184
+      duration_ms: 1.023954
       ...
     # Subtest: creates complete proof and tech documents for no-roster, artwork and long-roster cases
     ok 2 - creates complete proof and tech documents for no-roster, artwork and long-roster cases
       ---
-      duration_ms: 14.151559
+      duration_ms: 12.964544
       ...
     # Subtest: downloads blobs through a temporary safe anchor
     ok 3 - downloads blobs through a temporary safe anchor
       ---
-      duration_ms: 0.373158
+      duration_ms: 0.376498
       ...
     1..3
 ok 26 - PDF/document generation exhaustive
   ---
-  duration_ms: 15.770322
+  duration_ms: 14.586253
   type: 'suite'
   ...
 # Subtest: navigation/search edge coverage
     # Subtest: accepts every allowed prefix shape and rejects every unsafe path class
     ok 1 - accepts every allowed prefix shape and rejects every unsafe path class
       ---
-      duration_ms: 0.465264
+      duration_ms: 0.463049
       ...
     # Subtest: scores exact, full-prefix, word-prefix and substring candidates and reuses cached candidates
     ok 2 - scores exact, full-prefix, word-prefix and substring candidates and reuses cached candidates
       ---
-      duration_ms: 7.618835
+      duration_ms: 5.782383
       ...
     # Subtest: supports every type/color/brand filter branch and limits pages/products independently
     ok 3 - supports every type/color/brand filter branch and limits pages/products independently
       ---
-      duration_ms: 0.628528
+      duration_ms: 0.644369
       ...
     1..3
 ok 27 - navigation/search edge coverage
   ---
-  duration_ms: 8.880973
+  duration_ms: 6.996945
   type: 'suite'
   ...
 # Subtest: enterprise production completion
     # Subtest: uses provider adapters for quotes and special requests
     ok 1 - uses provider adapters for quotes and special requests
       ---
-      duration_ms: 15.108142
+      duration_ms: 24.167608
       ...
     # Subtest: enforces quote total as subtotal plus shipping plus tax less discount
     ok 2 - enforces quote total as subtotal plus shipping plus tax less discount
       ---
-      duration_ms: 2.928199
+      duration_ms: 1.920963
       ...
     # Subtest: generates quote and invoice PDFs in the customer workspace
     ok 3 - generates quote and invoice PDFs in the customer workspace
       ---
-      duration_ms: 0.825894
+      duration_ms: 0.862694
       ...
     # Subtest: quarantines staff media and scans it before use
     ok 4 - quarantines staff media and scans it before use
       ---
-      duration_ms: 0.755149
+      duration_ms: 0.793625
       ...
     # Subtest: provides privacy export and retention workers
     ok 5 - provides privacy export and retention workers
       ---
-      duration_ms: 1.894809
+      duration_ms: 2.687879
       ...
     # Subtest: removes all inline stylesheet permissions with CSP-safe UI primitives
     ok 6 - removes all inline stylesheet permissions with CSP-safe UI primitives
       ---
-      duration_ms: 12.629128
+      duration_ms: 6.20576
       ...
     1..6
 ok 28 - enterprise production completion
   ---
-  duration_ms: 38.063539
+  duration_ms: 37.515618
   type: 'suite'
   ...
 # Subtest: enterprise B2B workflows
     # Subtest: creates contracts, signatures, payment proofs, reorders and team lockers
     ok 1 - creates contracts, signatures, payment proofs, reorders and team lockers
       ---
-      duration_ms: 0.660833
+      duration_ms: 0.68427
       ...
     # Subtest: protects customer enterprise data with membership and owner RLS
     ok 2 - protects customer enterprise data with membership and owner RLS
       ---
-      duration_ms: 0.181604
+      duration_ms: 0.166925
       ...
     # Subtest: uses audited electronic signatures and cumulative payment proof records
     ok 3 - uses audited electronic signatures and cumulative payment proof records
       ---
-      duration_ms: 0.678984
+      duration_ms: 0.100982
       ...
     # Subtest: exposes real customer workspace actions instead of marketing-only cards
     ok 4 - exposes real customer workspace actions instead of marketing-only cards
       ---
-      duration_ms: 0.166476
+      duration_ms: 0.220508
       ...
     # Subtest: provides a guarded team locker route using trusted catalog products
     ok 5 - provides a guarded team locker route using trusted catalog products
       ---
-      duration_ms: 0.167418
+      duration_ms: 0.341757
       ...
     # Subtest: adds staff visibility and actions for enterprise workflow queues
     ok 6 - adds staff visibility and actions for enterprise workflow queues
       ---
-      duration_ms: 0.116854
+      duration_ms: 0.148127
       ...
     # Subtest: uploads private proofs through quarantine APIs and never accepts arbitrary public URLs as proof
     ok 7 - uploads private proofs through quarantine APIs and never accepts arbitrary public URLs as proof
       ---
-      duration_ms: 0.132104
+      duration_ms: 0.159726
       ...
     1..7
 ok 29 - enterprise B2B workflows
   ---
-  duration_ms: 3.340911
+  duration_ms: 7.445158
   ...
-# (node:129665) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132916) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: special-request upload validation
     # Subtest: accepts supported signatures and normalizes names
     ok 1 - accepts supported signatures and normalizes names
       ---
-      duration_ms: 3.626737
+      duration_ms: 1.670967
       ...
     # Subtest: rejects SVG and executable payloads
     ok 2 - rejects SVG and executable payloads
       ---
-      duration_ms: 0.338088
+      duration_ms: 0.318838
       ...
     # Subtest: rejects encoding, extension, signature, declared MIME and role mismatch
     ok 3 - rejects encoding, extension, signature, declared MIME and role mismatch
       ---
-      duration_ms: 0.252262
+      duration_ms: 0.268098
       ...
     # Subtest: enforces individual, count and aggregate limits
     ok 4 - enforces individual, count and aggregate limits
       ---
-      duration_ms: 21.58581
+      duration_ms: 23.527081
       ...
     1..4
 ok 30 - special-request upload validation
   ---
-  duration_ms: 27.560012
+  duration_ms: 29.575569
   type: 'suite'
   ...
 # Subtest: upload validator edge coverage
     # Subtest: uses safe names and default roles while rejecting extensionless uploads
     ok 1 - uses safe names and default roles while rejecting extensionless uploads
       ---
-      duration_ms: 0.335304
+      duration_ms: 0.326068
       ...
     # Subtest: rejects supported extensions with unknown or corrupt signatures
     ok 2 - rejects supported extensions with unknown or corrupt signatures
       ---
-      duration_ms: 0.167686
+      duration_ms: 0.163397
       ...
     # Subtest: accepts a data URL and sanitizes unsafe names
     ok 3 - accepts a data URL and sanitizes unsafe names
       ---
-      duration_ms: 0.212616
+      duration_ms: 0.211918
       ...
     # Subtest: rejects base64 whose length is not divisible by four
     ok 4 - rejects base64 whose length is not divisible by four
       ---
-      duration_ms: 0.19293
+      duration_ms: 8.304981
       ...
     1..4
 ok 31 - upload validator edge coverage
   ---
-  duration_ms: 1.13277
+  duration_ms: 9.261115
   type: 'suite'
   ...
 # Subtest: upload validator complete input variants
     # Subtest: handles non-array inputs and empty declared MIME safely
     ok 1 - handles non-array inputs and empty declared MIME safely
       ---
-      duration_ms: 0.539424
+      duration_ms: 0.640225
       ...
     # Subtest: rejects null base64 and mismatched jpg aliases only when invalid
     ok 2 - rejects null base64 and mismatched jpg aliases only when invalid
       ---
-      duration_ms: 0.248939
+      duration_ms: 0.276126
       ...
     1..2
 ok 32 - upload validator complete input variants
   ---
-  duration_ms: 0.924908
+  duration_ms: 1.13395
   type: 'suite'
   ...
-# (node:129676) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132937) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: remaining special-request branches
     # Subtest: covers object inserts, generated idempotency, authenticated user and object file rows
     ok 1 - covers object inserts, generated idempotency, authenticated user and object file rows
       ---
-      duration_ms: 7.310154
+      duration_ms: 4.196315
       ...
     # Subtest: covers scanner failure, duplicate image, captcha and create-row rejection paths
     ok 2 - covers scanner failure, duplicate image, captcha and create-row rejection paths
       ---
-      duration_ms: 7.887066
+      duration_ms: 1.557706
       ...
     1..2
 ok 33 - remaining special-request branches
   ---
-  duration_ms: 15.826242
+  duration_ms: 7.116217
   type: 'suite'
   ...
 # Subtest: remaining design-studio branches
     # Subtest: covers every fallback and successful/no-op history branch
     ok 1 - covers every fallback and successful/no-op history branch
       ---
-      duration_ms: 1.469181
+      duration_ms: 1.505669
       ...
     # Subtest: covers normalization, mutation and request edge branches exhaustively
     ok 2 - covers normalization, mutation and request edge branches exhaustively
       ---
-      duration_ms: 0.925071
+      duration_ms: 0.979733
       ...
     # Subtest: covers cloud autosave, share and shared-design fallbacks
     ok 3 - covers cloud autosave, share and shared-design fallbacks
       ---
-      duration_ms: 1.064666
+      duration_ms: 1.064066
       ...
     1..3
 ok 34 - remaining design-studio branches
   ---
-  duration_ms: 3.646967
+  duration_ms: 3.734029
   type: 'suite'
   ...
 # Subtest: remaining production-artwork branches
     # Subtest: renders every shape in front and side orientations plus every layer type
     ok 1 - renders every shape in front and side orientations plus every layer type
       ---
-      duration_ms: 0.665523
+      duration_ms: 0.704409
       ...
     1..1
 ok 35 - remaining production-artwork branches
   ---
-  duration_ms: 0.795129
+  duration_ms: 0.840097
   type: 'suite'
   ...
 # Subtest: remaining spreadsheet branches
     # Subtest: covers holes, missing shared strings, absolute relationships and file defaults
     ok 1 - covers holes, missing shared strings, absolute relationships and file defaults
       ---
-      duration_ms: 6.523575
+      duration_ms: 3.649569
       ...
     1..1
 ok 36 - remaining spreadsheet branches
   ---
-  duration_ms: 6.613593
+  duration_ms: 3.739664
   type: 'suite'
   ...
-# (node:129692) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132948) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: coverage closure for localization and navigation
     # Subtest: covers every order status language and unknown branch
     ok 1 - covers every order status language and unknown branch
       ---
-      duration_ms: 1.091625
+      duration_ms: 1.05432
       ...
     # Subtest: covers country fallbacks, localization failure and mutable map fallback
     ok 2 - covers country fallbacks, localization failure and mutable map fallback
       ---
-      duration_ms: 15.596261
+      duration_ms: 11.460509
       ...
     # Subtest: covers every safe-return path decision
     ok 3 - covers every safe-return path decision
       ---
-      duration_ms: 0.431103
+      duration_ms: 0.433575
       ...
     1..3
 ok 37 - coverage closure for localization and navigation
   ---
-  duration_ms: 17.801781
+  duration_ms: 13.570103
   type: 'suite'
   ...
 # Subtest: coverage closure for search and production exports
     # Subtest: covers all text scoring, candidate, cache, dedupe, filters and facets branches
     ok 1 - covers all text scoring, candidate, cache, dedupe, filters and facets branches
       ---
-      duration_ms: 3.231897
+      duration_ms: 3.040342
       ...
     # Subtest: covers every product silhouette, XML, zip and manifest branch
     ok 2 - covers every product silhouette, XML, zip and manifest branch
       ---
-      duration_ms: 7.988705
+      duration_ms: 7.967213
       ...
     1..2
 ok 38 - coverage closure for search and production exports
   ---
-  duration_ms: 11.425325
+  duration_ms: 11.193509
   type: 'suite'
   ...
 # Subtest: coverage closure for signed guest access and payment
     # Subtest: covers CRON fallback, default TTL and every signed payload rejection
     ok 1 - covers CRON fallback, default TTL and every signed payload rejection
       ---
-      duration_ms: 1.582164
+      duration_ms: 1.48183
       ...
     # Subtest: covers trusted checkout idempotency lookup, defaults and provider errors
     ok 2 - covers trusted checkout idempotency lookup, defaults and provider errors
       ---
-      duration_ms: 1.883002
+      duration_ms: 1.917327
       ...
     1..2
 ok 39 - coverage closure for signed guest access and payment
   ---
-  duration_ms: 3.651508
+  duration_ms: 3.56237
   type: 'suite'
   ...
 # Subtest: coverage closure for design-share API
     # Subtest: covers token arrays, missing designs and all action branches
     ok 1 - covers token arrays, missing designs and all action branches
       ---
-      duration_ms: 1.384806
+      duration_ms: 1.409676
       ...
     # Subtest: maps not-found and generic RPC failures safely
     ok 2 - maps not-found and generic RPC failures safely
       ---
-      duration_ms: 0.534387
+      duration_ms: 0.516457
       ...
     1..2
 ok 40 - coverage closure for design-share API
   ---
-  duration_ms: 2.014411
+  duration_ms: 2.022364
   type: 'suite'
   ...
 # Subtest: coverage closure for readiness, scanner and notifications
     # Subtest: evaluates every required, optional and feature-readiness state
     ok 1 - evaluates every required, optional and feature-readiness state
       ---
-      duration_ms: 1.36514
+      duration_ms: 1.196557
       ...
     # Subtest: fails file uploads closed in production while allowing URL-only intake
     ok 2 - fails file uploads closed in production while allowing URL-only intake
       ---
-      duration_ms: 0.855118
+      duration_ms: 0.824693
       ...
     # Subtest: builds versioned bilingual notification templates and all fallbacks
     ok 3 - builds versioned bilingual notification templates and all fallbacks
       ---
-      duration_ms: 0.341336
+      duration_ms: 0.270696
       ...
     1..3
 ok 41 - coverage closure for readiness, scanner and notifications
   ---
-  duration_ms: 2.670272
+  duration_ms: 2.387068
   type: 'suite'
   ...
 # Subtest: coverage closure for Supabase runtime and documents
     # Subtest: covers build config aliases, client caching and every auth redirect branch
     ok 1 - covers build config aliases, client caching and every auth redirect branch
       ---
-      duration_ms: 1.369894
+      duration_ms: 1.105685
       ...
     # Subtest: covers spreadsheet XML, ZIP and file-dispatch fallbacks
     ok 2 - covers spreadsheet XML, ZIP and file-dispatch fallbacks
       ---
-      duration_ms: 1.839127
+      duration_ms: 2.373094
       ...
     # Subtest: covers remaining PDF primitive, pagination and fallback branches
     ok 3 - covers remaining PDF primitive, pagination and fallback branches
       ---
-      duration_ms: 2.079903
+      duration_ms: 1.992233
       ...
     1..3
 ok 42 - coverage closure for Supabase runtime and documents
   ---
-  duration_ms: 5.797506
+  duration_ms: 6.788952
   type: 'suite'
   ...
-# (node:129703) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132959) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: forms and media readiness
     # Subtest: uses the approved Formspree endpoint as the only application fallback
     ok 1 - uses the approved Formspree endpoint as the only application fallback
       ---
-      duration_ms: 6.159981
+      duration_ms: 5.872037
       ...
     # Subtest: has a valid public media file for every product
     ok 2 - has a valid public media file for every product
       ---
-      duration_ms: 0.43423
+      duration_ms: 0.656407
       ...
     # Subtest: ships the approved brand derivatives
     ok 3 - ships the approved brand derivatives
       ---
-      duration_ms: 0.149449
+      duration_ms: 0.166147
       ...
     1..3
 ok 43 - forms and media readiness
   ---
-  duration_ms: 7.475289
+  duration_ms: 7.383618
   type: 'suite'
   ...
-# (node:129714) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132970) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: Formspree server adapter
     # Subtest: normalizes every Formspree endpoint and payload helper branch
     ok 1 - normalizes every Formspree endpoint and payload helper branch
       ---
-      duration_ms: 5.438669
+      duration_ms: 2.118932
       ...
     # Subtest: accepts a provider 200 response
     ok 2 - accepts a provider 200 response
       ---
-      duration_ms: 3.985336
+      duration_ms: 1.186214
       ...
     # Subtest: does not report success when provider returns 400
     ok 3 - does not report success when provider returns 400
       ---
-      duration_ms: 0.381444
+      duration_ms: 0.391427
       ...
     # Subtest: does not report success when provider returns 429
     ok 4 - does not report success when provider returns 429
       ---
-      duration_ms: 0.278897
+      duration_ms: 0.381028
       ...
     # Subtest: does not report success when provider returns 500
     ok 5 - does not report success when provider returns 500
       ---
-      duration_ms: 0.38459
+      duration_ms: 0.373613
       ...
     # Subtest: reports delivery failure on timeout/network rejection
     ok 6 - reports delivery failure on timeout/network rejection
       ---
-      duration_ms: 0.349278
+      duration_ms: 0.363064
       ...
     1..6
 ok 44 - Formspree server adapter
   ---
-  duration_ms: 11.534541
+  duration_ms: 6.539793
   type: 'suite'
   ...
-# (node:129725) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:132981) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: Formspree public gateway exhaustive
     # Subtest: enforces method and rejects unsafe configuration
     ok 1 - enforces method and rejects unsafe configuration
       ---
-      duration_ms: 1.387746
+      duration_ms: 2.306074
       ...
     # Subtest: fails captcha before contacting Formspree
     ok 2 - fails captcha before contacting Formspree
       ---
-      duration_ms: 0.440281
+      duration_ms: 0.353739
       ...
     # Subtest: sanitizes keys and scalar/object/null values, removes captcha and caps entries
     ok 3 - sanitizes keys and scalar/object/null values, removes captcha and caps entries
       ---
-      duration_ms: 1.547342
+      duration_ms: 1.511435
       ...
     # Subtest: maps upstream rejections and transport failures without exposing stack traces
     ok 4 - maps upstream rejections and transport failures without exposing stack traces
       ---
-      duration_ms: 0.59671
+      duration_ms: 0.597348
       ...
     1..4
 ok 45 - Formspree public gateway exhaustive
   ---
-  duration_ms: 5.632088
+  duration_ms: 5.552033
   type: 'suite'
   ...
 # Subtest: fulfillment consistency
     # Subtest: does not turn every customizable retail product into a 30–60 day custom order
     ok 1 - does not turn every customizable retail product into a 30–60 day custom order
       ---
-      duration_ms: 6.311677
+      duration_ms: 6.839898
       ...
     # Subtest: keeps international shipping pending until a staff quote is added
     ok 2 - keeps international shipping pending until a staff quote is added
       ---
-      duration_ms: 1.178865
+      duration_ms: 1.376902
       ...
     # Subtest: requires full electronic payment while preserving staged cash/custom rules
     ok 3 - requires full electronic payment while preserving staged cash/custom rules
       ---
-      duration_ms: 0.189147
+      duration_ms: 0.255951
       ...
     1..3
 ok 46 - fulfillment consistency
   ---
-  duration_ms: 8.322174
+  duration_ms: 9.13636
   type: 'suite'
   ...
-# (node:129742) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133003) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: worldwide geography
     # Subtest: supports Libya and global ISO destinations
     ok 1 - supports Libya and global ISO destinations
       ---
-      duration_ms: 0.529725
+      duration_ms: 0.514602
       ...
     # Subtest: restricts cash to Libya
     ok 2 - restricts cash to Libya
       ---
-      duration_ms: 0.107214
+      duration_ms: 0.109797
       ...
     # Subtest: does not require a postal code in Libya
     ok 3 - does not require a postal code in Libya
       ---
-      duration_ms: 0.127131
+      duration_ms: 0.12953
       ...
     1..3
 ok 47 - worldwide geography
   ---
-  duration_ms: 1.406801
+  duration_ms: 1.35846
   type: 'suite'
   ...
-# (node:129749) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133009) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: business events cover sanitization, hashing, failures and production salt enforcement
 ok 48 - business events cover sanitization, hashing, failures and production salt enforcement
   ---
-  duration_ms: 13.92146
+  duration_ms: 16.978773
   ...
 # Subtest: malware internals cover download, scanner forms, delete and expiry failure branches
 ok 49 - malware internals cover download, scanner forms, delete and expiry failure branches
   ---
-  duration_ms: 3.833411
+  duration_ms: 4.022601
   ...
 # Subtest: worker handlers cover retry exhaustion, null rows and top-level failures
 ok 50 - worker handlers cover retry exhaustion, null rows and top-level failures
   ---
-  duration_ms: 3.550522
+  duration_ms: 3.664501
   ...
 # Subtest: media internals cover object defaults, storage errors, timeout and provider response aliases
 ok 51 - media internals cover object defaults, storage errors, timeout and provider response aliases
   ---
-  duration_ms: 7.059773
+  duration_ms: 7.92656
   ...
 # Subtest: signature adapter covers aliases, malformed JSON, missing fields, statuses and fallback header
 ok 52 - signature adapter covers aliases, malformed JSON, missing fields, statuses and fallback header
   ---
-  duration_ms: 1.851326
+  duration_ms: 2.468727
   ...
 # Subtest: production preflight parses JPEG/WebP and rejects every incomplete factory/vector evidence branch
 ok 53 - production preflight parses JPEG/WebP and rejects every incomplete factory/vector evidence branch
   ---
-  duration_ms: 3.861501
+  duration_ms: 2.378492
   ...
 # Subtest: closes remaining business, readiness, provider and small utility branches
 ok 54 - closes remaining business, readiness, provider and small utility branches
   ---
-  duration_ms: 4.977923
+  duration_ms: 5.02374
   ...
 # Subtest: closes all malware worker defensive branches without publishing unsafe files
 ok 55 - closes all malware worker defensive branches without publishing unsafe files
   ---
-  duration_ms: 4.201396
+  duration_ms: 5.808293
   ...
 # Subtest: closes all media worker defensive branches and method guards
 ok 56 - closes all media worker defensive branches and method guards
   ---
-  duration_ms: 3.546272
+  duration_ms: 6.97601
   ...
 # Subtest: closes production preflight raster/vector and factory evidence branches
 ok 57 - closes production preflight raster/vector and factory evidence branches
   ---
-  duration_ms: 1.909844
+  duration_ms: 0.969693
   ...
 # Subtest: closes final design-share, worker and preflight branch aliases
 ok 58 - closes final design-share, worker and preflight branch aliases
   ---
-  duration_ms: 9.760688
+  duration_ms: 16.018345
   ...
-# (node:129769) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133010) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: malware worker deletes infected files, expires stale quarantine and keeps clean files
 ok 59 - malware worker deletes infected files, expires stale quarantine and keeps clean files
   ---
-  duration_ms: 19.736161
+  duration_ms: 17.217512
   ...
 # Subtest: malware worker fails closed on scanner timeout and records a bounded retry
 ok 60 - malware worker fails closed on scanner timeout and records a bounded retry
   ---
-  duration_ms: 6.956957
+  duration_ms: 9.997654
   ...
 # Subtest: malware worker rejects unauthorised and unsupported calls before touching storage
 ok 61 - malware worker rejects unauthorised and unsupported calls before touching storage
   ---
-  duration_ms: 0.256522
+  duration_ms: 0.247678
   ...
 # Subtest: media worker deletes infected objects and records scanner evidence
 ok 62 - media worker deletes infected objects and records scanner evidence
   ---
-  duration_ms: 1.341798
+  duration_ms: 1.26617
   ...
 # Subtest: media worker records provider errors and expiry deletion failures without publishing files
 ok 63 - media worker records provider errors and expiry deletion failures without publishing files
   ---
-  duration_ms: 2.227629
+  duration_ms: 1.803544
   ...
-# (node:129775) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133026) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: currency conversion
     # Subtest: stores canonical USD and converts using rate 9
     ok 1 - stores canonical USD and converts using rate 9
       ---
-      duration_ms: 0.681541
+      duration_ms: 0.64901
       ...
     # Subtest: rounds displayed LYD prices and handles invalid display values
     ok 2 - rounds displayed LYD prices and handles invalid display values
       ---
-      duration_ms: 11.358987
+      duration_ms: 9.554315
       ...
     # Subtest: uses integer minor units for arithmetic, sums and percentages
     ok 3 - uses integer minor units for arithmetic, sums and percentages
       ---
-      duration_ms: 0.264888
+      duration_ms: 0.257426
       ...
     # Subtest: rejects invalid amounts, quantities, rates and currencies
     ok 4 - rejects invalid amounts, quantities, rates and currencies
       ---
-      duration_ms: 0.293839
+      duration_ms: 0.290351
       ...
     # Subtest: builds accessible labels in both languages and currencies
     ok 5 - builds accessible labels in both languages and currencies
       ---
-      duration_ms: 0.363958
+      duration_ms: 0.331835
       ...
     1..5
 ok 64 - currency conversion
   ---
-  duration_ms: 13.616988
+  duration_ms: 11.724042
   type: 'suite'
   ...
 # Subtest: money edge coverage
     # Subtest: supports zero, negative arithmetic and exact language fallbacks
     ok 1 - supports zero, negative arithmetic and exact language fallbacks
       ---
-      duration_ms: 0.225283
+      duration_ms: 0.221547
       ...
     # Subtest: rejects unsupported target currencies before conversion
     ok 2 - rejects unsupported target currencies before conversion
       ---
-      duration_ms: 0.886598
+      duration_ms: 1.037996
       ...
     1..2
 ok 65 - money edge coverage
   ---
-  duration_ms: 1.352299
+  duration_ms: 1.498192
   type: 'suite'
   ...
 # Subtest: money Arabic LYD rendering
     # Subtest: renders the Arabic dinar label
     ok 1 - renders the Arabic dinar label
       ---
-      duration_ms: 0.259495
+      duration_ms: 0.265205
       ...
     1..1
 ok 66 - money Arabic LYD rendering
   ---
-  duration_ms: 0.363621
+  duration_ms: 0.367177
   type: 'suite'
   ...
-# (node:129791) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133047) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: brand and navigation
     # Subtest: uses the approved brand identity and contact data
     ok 1 - uses the approved brand identity and contact data
       ---
-      duration_ms: 0.470557
+      duration_ms: 0.567385
       ...
     # Subtest: keeps the requested minimal main navigation
     ok 2 - keeps the requested minimal main navigation
       ---
-      duration_ms: 0.45824
+      duration_ms: 0.452533
       ...
     # Subtest: supports both personal and team/business registration paths
     ok 3 - supports both personal and team/business registration paths
       ---
-      duration_ms: 0.629625
+      duration_ms: 1.260049
       ...
     1..3
 ok 67 - brand and navigation
   ---
-  duration_ms: 2.207737
+  duration_ms: 6.630964
   type: 'suite'
   ...
 # Subtest: operations control center
     # Subtest: provides audited notification retry and security resolution
     ok 1 - provides audited notification retry and security resolution
       ---
-      duration_ms: 5.534329
+      duration_ms: 3.784111
       ...
     # Subtest: blocks public media until a clean malware verdict
     ok 2 - blocks public media until a clean malware verdict
       ---
-      duration_ms: 1.200903
+      duration_ms: 1.993453
       ...
     # Subtest: enforces a shipment state machine and queues customer notifications
     ok 3 - enforces a shipment state machine and queues customer notifications
       ---
-      duration_ms: 1.427103
+      duration_ms: 1.597546
       ...
     # Subtest: adds collections, coupons, taxes, billing and fulfillment operations UI
     ok 4 - adds collections, coupons, taxes, billing and fulfillment operations UI
       ---
-      duration_ms: 1.16203
+      duration_ms: 1.443881
       ...
     # Subtest: creates only safe draft products and audited draft variants
     ok 5 - creates only safe draft products and audited draft variants
       ---
-      duration_ms: 1.736703
+      duration_ms: 1.004166
       ...
     # Subtest: supports atomic inventory CSV preview, apply and rollback
     ok 6 - supports atomic inventory CSV preview, apply and rollback
       ---
-      duration_ms: 1.182312
+      duration_ms: 1.182087
       ...
     1..6
 ok 68 - operations control center
   ---
-  duration_ms: 13.292871
+  duration_ms: 12.004631
   type: 'suite'
   ...
 # Subtest: payment adapters
     # Subtest: verifies hex and base64 HMAC safely
     ok 1 - verifies hex and base64 HMAC safely
       ---
-      duration_ms: 1.26951
+      duration_ms: 1.279448
       ...
     # Subtest: normalizes payment and refund events in minor and major units
     ok 2 - normalizes payment and refund events in minor and major units
       ---
-      duration_ms: 0.538704
+      duration_ms: 0.574576
       ...
     # Subtest: reports capabilities and creates a hosted session
     ok 3 - reports capabilities and creates a hosted session
       ---
-      duration_ms: 1.181065
+      duration_ms: 1.175405
       ...
     # Subtest: retrieves a payment and creates a refund
     ok 4 - retrieves a payment and creates a refund
       ---
-      duration_ms: 1.668175
+      duration_ms: 1.313592
       ...
     # Subtest: verifies provider-specific webhooks and maps errors
     ok 5 - verifies provider-specific webhooks and maps errors
       ---
-      duration_ms: 0.544063
+      duration_ms: 0.564695
       ...
     # Subtest: rejects missing configuration, invalid redirects, provider errors and invalid refunds
     ok 6 - rejects missing configuration, invalid redirects, provider errors and invalid refunds
       ---
-      duration_ms: 0.487569
+      duration_ms: 0.486556
       ...
     1..6
 ok 69 - payment adapters
   ---
-  duration_ms: 6.521501
+  duration_ms: 6.621348
   type: 'suite'
   ...
 # Subtest: payment adapter edge coverage
     # Subtest: normalizes provider payload aliases and explicit minor amounts
     ok 1 - normalizes provider payload aliases and explicit minor amounts
       ---
-      duration_ms: 0.217393
+      duration_ms: 0.22191
       ...
     # Subtest: reports partial capabilities and supports signature header fallbacks
     ok 2 - reports partial capabilities and supports signature header fallbacks
       ---
-      duration_ms: 0.379835
+      duration_ms: 0.335404
       ...
     # Subtest: maps empty, malformed, client and server provider responses
     ok 3 - maps empty, malformed, client and server provider responses
       ---
-      duration_ms: 0.606622
+      duration_ms: 0.604519
       ...
     # Subtest: requires HTTPS endpoints and provider secrets independently
     ok 4 - requires HTTPS endpoints and provider secrets independently
       ---
-      duration_ms: 0.242935
+      duration_ms: 0.243659
       ...
     # Subtest: supports major-unit normalization, URL template encoding and response fallbacks
     ok 5 - supports major-unit normalization, URL template encoding and response fallbacks
       ---
-      duration_ms: 0.383672
+      duration_ms: 0.349423
       ...
     # Subtest: validates every refund input and maps default errors
     ok 6 - validates every refund input and maps default errors
       ---
-      duration_ms: 0.234293
+      duration_ms: 0.228403
       ...
     1..6
 ok 70 - payment adapter edge coverage
   ---
-  duration_ms: 2.279457
+  duration_ms: 2.190211
   type: 'suite'
   ...
 # Subtest: payment adapter complete branches
     # Subtest: uses configured provider fallback names and alternate response fields
     ok 1 - uses configured provider fallback names and alternate response fields
       ---
-      duration_ms: 0.296301
+      duration_ms: 0.29796
       ...
     # Subtest: captures text-read failures, provider error aliases and fetch failures
     ok 2 - captures text-read failures, provider error aliases and fetch failures
       ---
-      duration_ms: 0.306365
+      duration_ms: 0.303026
       ...
     # Subtest: executes real abort timeout and custom timeout configuration
     ok 3 - executes real abort timeout and custom timeout configuration
       ---
-      duration_ms: 8.600287
+      duration_ms: 12.066309
       ...
     # Subtest: covers missing metadata, transaction and currency fallbacks
     ok 4 - covers missing metadata, transaction and currency fallbacks
       ---
-      duration_ms: 0.154299
+      duration_ms: 0.159962
       ...
     1..4
 ok 71 - payment adapter complete branches
   ---
-  duration_ms: 9.473093
+  duration_ms: 12.936487
   type: 'suite'
   ...
 # Subtest: payment adapter final branch matrix
     # Subtest: covers empty payload and all refund amount aliases
     ok 1 - covers empty payload and all refund amount aliases
       ---
-      duration_ms: 0.323681
+      duration_ms: 0.30837
       ...
     # Subtest: rejects missing secrets after valid retrieve and refund endpoint checks
     ok 2 - rejects missing secrets after valid retrieve and refund endpoint checks
       ---
-      duration_ms: 1.30355
+      duration_ms: 0.151941
       ...
     # Subtest: uses configured retrieve and refund timeouts
     ok 3 - uses configured retrieve and refund timeouts
       ---
-      duration_ms: 0.335218
+      duration_ms: 0.282596
       ...
     1..3
 ok 72 - payment adapter final branch matrix
   ---
-  duration_ms: 2.052874
+  duration_ms: 0.812316
   type: 'suite'
   ...
 # Subtest: performance architecture
     # Subtest: uses responsive preloaded hero posters and defers video
     ok 1 - uses responsive preloaded hero posters and defers video
       ---
-      duration_ms: 0.762332
+      duration_ms: 0.788953
       ...
     # Subtest: keeps critical hero posters tiny
     ok 2 - keeps critical hero posters tiny
       ---
-      duration_ms: 1.41649
+      duration_ms: 1.034199
       ...
     # Subtest: enforces repeated-run median Lighthouse score and metric gates
     ok 3 - enforces repeated-run median Lighthouse score and metric gates
       ---
-      duration_ms: 0.244356
+      duration_ms: 0.260846
       ...
     1..3
 ok 73 - performance architecture
   ---
-  duration_ms: 3.099029
+  duration_ms: 2.743725
   type: 'suite'
   ...
-# (node:129829) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: product publishing eligibility
     # Subtest: validates real media, price and SKU
     ok 1 - validates real media, price and SKU
       ---
-      duration_ms: 0.912147
+      duration_ms: 0.815766
       ...
     # Subtest: allows clearly labelled placeholder media but blocks unverified inventory
     ok 2 - allows clearly labelled placeholder media but blocks unverified inventory
       ---
-      duration_ms: 0.379575
+      duration_ms: 0.301507
       ...
     # Subtest: supports active and safe coming-soon visibility
     ok 3 - supports active and safe coming-soon visibility
       ---
-      duration_ms: 0.1208
+      duration_ms: 0.173506
       ...
     # Subtest: requires a purchasable variant
     ok 4 - requires a purchasable variant
       ---
-      duration_ms: 0.223769
+      duration_ms: 0.217868
       ...
     # Subtest: requires verified Libya inventory for Ready to Ship
     ok 5 - requires verified Libya inventory for Ready to Ship
       ---
-      duration_ms: 0.172266
+      duration_ms: 0.195081
       ...
     # Subtest: reports every publishing issue including unverified claims
     ok 6 - reports every publishing issue including unverified claims
       ---
-      duration_ms: 5.251556
+      duration_ms: 5.545103
       ...
     1..6
 ok 74 - product publishing eligibility
   ---
-  duration_ms: 7.705571
+  duration_ms: 7.928564
   type: 'suite'
   ...
 # Subtest: product eligibility edge coverage
     # Subtest: rejects missing products, unavailable variants and every unsafe inventory source
     ok 1 - rejects missing products, unavailable variants and every unsafe inventory source
       ---
-      duration_ms: 0.190282
+      duration_ms: 0.189853
       ...
     # Subtest: handles coming soon media and status issue combinations exactly
     ok 2 - handles coming soon media and status issue combinations exactly
       ---
-      duration_ms: 0.262044
+      duration_ms: 0.260967
       ...
     # Subtest: supports product-level stock only when variants are absent
     ok 3 - supports product-level stock only when variants are absent
       ---
-      duration_ms: 0.19112
+      duration_ms: 0.159759
       ...
     1..3
 ok 75 - product eligibility edge coverage
   ---
-  duration_ms: 0.907901
+  duration_ms: 0.871251
   type: 'suite'
   ...
 # Subtest: product eligibility complete branches
     # Subtest: computes safe purchase limits for tracked and supplier-order variants
     ok 1 - computes safe purchase limits for tracked and supplier-order variants
       ---
-      duration_ms: 0.149245
+      duration_ms: 0.14027
       ...
     # Subtest: handles empty media status, non-string SKU and untracked availability
     ok 2 - handles empty media status, non-string SKU and untracked availability
       ---
-      duration_ms: 0.065037
+      duration_ms: 0.07224
       ...
     # Subtest: handles null location and variant arrays with mixed stock
     ok 3 - handles null location and variant arrays with mixed stock
       ---
-      duration_ms: 0.071279
+      duration_ms: 0.066154
       ...
     1..3
 ok 76 - product eligibility complete branches
   ---
-  duration_ms: 0.357469
+  duration_ms: 0.345785
   type: 'suite'
   ...
 # Subtest: product inventory source fallback
     # Subtest: allows an empty non-blocked source when all other publishing requirements pass
     ok 1 - allows an empty non-blocked source when all other publishing requirements pass
       ---
-      duration_ms: 0.049243
+      duration_ms: 0.049153
       ...
     1..1
 ok 77 - product inventory source fallback
   ---
-  duration_ms: 0.081445
+  duration_ms: 0.080284
   type: 'suite'
   ...
 # Subtest: product eligibility final branch closure
     # Subtest: covers placeholder fallback media and each publish rejection independently
     ok 1 - covers placeholder fallback media and each publish rejection independently
       ---
-      duration_ms: 0.076967
+      duration_ms: 0.075666
       ...
     # Subtest: covers inactive variants and ready-to-ship short circuits
     ok 2 - covers inactive variants and ready-to-ship short circuits
       ---
-      duration_ms: 0.075805
+      duration_ms: 0.077887
       ...
     1..2
 ok 78 - product eligibility final branch closure
   ---
-  duration_ms: 0.232949
+  duration_ms: 0.230873
   type: 'suite'
   ...
 # Subtest: production completion safeguards
     # Subtest: enforces strict TypeScript on migrated modules
     ok 1 - enforces strict TypeScript on migrated modules
       ---
-      duration_ms: 6.725033
+      duration_ms: 4.854631
       ...
     # Subtest: keeps final payment outstanding until verified
     ok 2 - keeps final payment outstanding until verified
       ---
-      duration_ms: 1.712701
+      duration_ms: 2.581682
       ...
     # Subtest: prevents cumulative duplicate returns
     ok 3 - prevents cumulative duplicate returns
       ---
-      duration_ms: 0.813875
+      duration_ms: 0.76766
       ...
     # Subtest: requires AAL2 for trusted staff operations
     ok 4 - requires AAL2 for trusted staff operations
       ---
-      duration_ms: 0.860691
+      duration_ms: 0.659039
       ...
     # Subtest: provides real retrieve/refund adapter paths instead of 501 placeholders
     ok 5 - provides real retrieve/refund adapter paths instead of 501 placeholders
       ---
-      duration_ms: 5.83819
+      duration_ms: 5.636727
       ...
     # Subtest: protects public forms with Turnstile and file scanning architecture
     ok 6 - protects public forms with Turnstile and file scanning architecture
       ---
-      duration_ms: 2.505453
+      duration_ms: 2.868548
       ...
     1..6
 ok 79 - production completion safeguards
   ---
-  duration_ms: 19.342344
+  duration_ms: 18.244471
   type: 'suite'
   ...
-# (node:129857) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133108) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: production preflight and manufacturing specifications
     # Subtest: provides a complete immutable generic template for every custom product
     ok 1 - provides a complete immutable generic template for every custom product
       ---
-      duration_ms: 0.591976
+      duration_ms: 0.509314
       ...
     # Subtest: converts validated print colors to RGB, CMYK and CSV without inventing a spot color
     ok 2 - converts validated print colors to RGB, CMYK and CSV without inventing a spot color
       ---
-      duration_ms: 1.366831
+      duration_ms: 1.353818
       ...
     # Subtest: passes quote preflight while requiring real factory proof before manufacturing
     ok 3 - passes quote preflight while requiring real factory proof before manufacturing
       ---
-      duration_ms: 4.562558
+      duration_ms: 3.358608
       ...
     # Subtest: blocks invalid quantity, colors, artwork, roster and empty text layers
     ok 4 - blocks invalid quantity, colors, artwork, roster and empty text layers
       ---
-      duration_ms: 0.611748
+      duration_ms: 0.600072
       ...
     # Subtest: flags unsafe placement and raster assets with measurable print requirements
     ok 5 - flags unsafe placement and raster assets with measurable print requirements
       ---
-      duration_ms: 1.950809
+      duration_ms: 0.464057
       ...
     # Subtest: handles accessory products without applying roster blockers and uses defaults safely
     ok 6 - handles accessory products without applying roster blockers and uses defaults safely
       ---
-      duration_ms: 0.334325
+      duration_ms: 0.304519
       ...
     1..6
 ok 80 - production preflight and manufacturing specifications
   ---
-  duration_ms: 14.308646
+  duration_ms: 7.298143
   type: 'suite'
   ...
-# (node:129863) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133124) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: guest order token cryptography
     # Subtest: normalizes identifiers and creates a bounded authenticated token
     ok 1 - normalizes identifiers and creates a bounded authenticated token
       ---
-      duration_ms: 1.748418
+      duration_ms: 1.778641
       ...
     # Subtest: rejects invalid configuration, identities, signatures, payloads, expiry and mismatches
     ok 2 - rejects invalid configuration, identities, signatures, payloads, expiry and mismatches
       ---
-      duration_ms: 0.647168
+      duration_ms: 0.700374
       ...
     1..2
 ok 81 - guest order token cryptography
   ---
-  duration_ms: 3.005942
+  duration_ms: 3.118584
   type: 'suite'
   ...
 # Subtest: public quote intake API
     # Subtest: rejects methods, captcha and every validation class
     ok 1 - rejects methods, captcha and every validation class
       ---
-      duration_ms: 1.598041
+      duration_ms: 1.579337
       ...
     # Subtest: returns a duplicate without inserting and creates a normalized guest quote otherwise
     ok 2 - returns a duplicate without inserting and creates a normalized guest quote otherwise
       ---
-      duration_ms: 2.102249
+      duration_ms: 2.253983
       ...
     # Subtest: verifies authenticated organization membership and fails closed on insert errors
     ok 3 - verifies authenticated organization membership and fails closed on insert errors
       ---
-      duration_ms: 1.148046
+      duration_ms: 1.090644
       ...
     1..3
 ok 82 - public quote intake API
   ---
-  duration_ms: 5.065727
+  duration_ms: 5.14493
   type: 'suite'
   ...
 # Subtest: guest order access and payment recovery APIs
     # Subtest: returns privacy-preserving empty results and grants token access after captcha/email match
     ok 1 - returns privacy-preserving empty results and grants token access after captcha/email match
       ---
-      duration_ms: 1.043865
+      duration_ms: 1.754845
       ...
     # Subtest: fails captcha and trusted storage safely
     ok 2 - fails captcha and trusted storage safely
       ---
-      duration_ms: 0.427855
+      duration_ms: 0.470061
       ...
     # Subtest: authorizes account and guest payment retries and enforces every payable rule
     ok 3 - authorizes account and guest payment retries and enforces every payable rule
       ---
-      duration_ms: 2.355096
+      duration_ms: 2.498069
       ...
     1..3
 ok 83 - guest order access and payment recovery APIs
   ---
-  duration_ms: 3.986834
+  duration_ms: 4.888751
   type: 'suite'
   ...
-# (node:129874) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133130) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: production readiness endpoint
     # Subtest: fails closed without required production services and never exposes secret values
     ok 1 - fails closed without required production services and never exposes secret values
       ---
-      duration_ms: 7.323102
+      duration_ms: 10.713374
       ...
     # Subtest: reports ready only when every required environment contract is satisfied
     ok 2 - reports ready only when every required environment contract is satisfied
       ---
-      duration_ms: 0.854608
+      duration_ms: 0.795905
       ...
     # Subtest: reports optional capabilities without making them production blockers
     ok 3 - reports optional capabilities without making them production blockers
       ---
-      duration_ms: 0.377383
+      duration_ms: 0.387452
       ...
     # Subtest: supports HEAD health checks and rejects unsupported methods
     ok 4 - supports HEAD health checks and rejects unsupported methods
       ---
-      duration_ms: 0.368444
+      duration_ms: 0.367289
       ...
     # Subtest: verifies live Supabase and form connectivity and fails safely
     ok 5 - verifies live Supabase and form connectivity and fails safely
       ---
-      duration_ms: 1.728901
+      duration_ms: 1.773503
       ...
     # Subtest: covers disabled connectivity and every environment fallback
     ok 6 - covers disabled connectivity and every environment fallback
       ---
-      duration_ms: 0.50048
+      duration_ms: 0.52802
       ...
     1..6
 ok 84 - production readiness endpoint
   ---
-  duration_ms: 11.836693
+  duration_ms: 15.265199
   type: 'suite'
   ...
 # Subtest: release infrastructure hardening
     # Subtest: enforces real 100 percent runtime coverage for lines, branches and functions
     ok 1 - enforces real 100 percent runtime coverage for lines, branches and functions
       ---
-      duration_ms: 1.241926
+      duration_ms: 1.228489
       ...
     # Subtest: uses Supabase CLI setup and executable pgTAP database assertions in CI
     ok 2 - uses Supabase CLI setup and executable pgTAP database assertions in CI
       ---
-      duration_ms: 2.997178
+      duration_ms: 1.233784
       ...
     # Subtest: ships generic factory specifications and fail-closed production preflight artifacts
-    not ok 3 - ships generic factory specifications and fail-closed production preflight artifacts
+    ok 3 - ships generic factory specifications and fail-closed production preflight artifacts
       ---
-      duration_ms: 0.211335
-      location: '/workspace/tests/releaseInfrastructure.test.js:47:3'
-      failureType: 'testCodeFailure'
-      error: "ENOENT: no such file or directory, open '/workspace/src/services/productionPreflight.js'"
-      code: 'ENOENT'
-      stack: |-
-        readFileSync (node:fs:442:20)
-        read (file:///workspace/tests/releaseInfrastructure.test.js:5:24)
-        TestContext.<anonymous> (file:///workspace/tests/releaseInfrastructure.test.js:48:23)
-        Test.runInAsyncScope (node:async_hooks:211:14)
-        Test.run (node:internal/test_runner/test:979:25)
-        Suite.processPendingSubtests (node:internal/test_runner/test:677:18)
-        Test.postRun (node:internal/test_runner/test:1090:19)
-        Test.run (node:internal/test_runner/test:1018:12)
-        async Suite.processPendingSubtests (node:internal/test_runner/test:677:7)
+      duration_ms: 0.429309
       ...
     1..3
-not ok 85 - release infrastructure hardening
+ok 85 - release infrastructure hardening
   ---
-  duration_ms: 5.164723
+  duration_ms: 3.626766
   type: 'suite'
-  location: '/workspace/tests/releaseInfrastructure.test.js:7:1'
-  failureType: 'subtestsFailed'
-  error: '1 subtest failed'
-  code: 'ERR_TEST_FAILURE'
   ...
 # Subtest: executable RLS role matrix
     # Subtest: tests two unrelated customers and organization membership against real rows
     ok 1 - tests two unrelated customers and organization membership against real rows
       ---
-      duration_ms: 0.484141
+      duration_ms: 0.478834
       ...
     # Subtest: tests anonymous, AAL1, AAL2 and service-role boundaries
     ok 2 - tests anonymous, AAL1, AAL2 and service-role boundaries
       ---
-      duration_ms: 0.142472
+      duration_ms: 0.140494
       ...
     1..2
 ok 86 - executable RLS role matrix
   ---
-  duration_ms: 1.195677
+  duration_ms: 1.183756
   type: 'suite'
   ...
-# (node:129907) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133168) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: roster spreadsheet import
     # Subtest: imports XLSX rows without a third-party spreadsheet runtime
     ok 1 - imports XLSX rows without a third-party spreadsheet runtime
       ---
-      duration_ms: 3.516367
+      duration_ms: 3.344734
       ...
     # Subtest: imports CSV and rejects unsupported files
     ok 2 - imports CSV and rejects unsupported files
       ---
-      duration_ms: 0.561979
+      duration_ms: 1.67687
       ...
     1..2
 ok 87 - roster spreadsheet import
   ---
-  duration_ms: 4.680605
+  duration_ms: 5.664588
   type: 'suite'
   ...
 # Subtest: trusted checkout architecture
     # Subtest: saves the trusted order before creating a hosted payment session
     ok 1 - saves the trusted order before creating a hosted payment session
       ---
-      duration_ms: 1.818946
+      duration_ms: 1.418043
       ...
     # Subtest: reloads the trusted Supabase order on the server
     ok 2 - reloads the trusted Supabase order on the server
       ---
-      duration_ms: 10.432594
+      duration_ms: 6.51704
       ...
     # Subtest: enforces shipping, wholesale and staged payment in SQL
     ok 3 - enforces shipping, wholesale and staged payment in SQL
       ---
-      duration_ms: 0.212574
+      duration_ms: 0.21802
       ...
     1..3
 ok 88 - trusted checkout architecture
   ---
-  duration_ms: 13.233611
+  duration_ms: 8.921545
   type: 'suite'
   ...
-# (node:129920) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133176) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: request security helpers exhaustive
     # Subtest: sets every API hardening header
     ok 1 - sets every API hardening header
       ---
-      duration_ms: 0.786082
+      duration_ms: 0.872594
       ...
     # Subtest: rejects bad origins, oversized requests and quietly consumes honeypots
     ok 2 - rejects bad origins, oversized requests and quietly consumes honeypots
       ---
-      duration_ms: 0.841331
+      duration_ms: 0.954776
       ...
     # Subtest: uses durable limits for allow and deny decisions
     ok 3 - uses durable limits for allow and deny decisions
       ---
-      duration_ms: 0.516935
+      duration_ms: 0.503946
       ...
     # Subtest: fails closed in production when durable protection is unavailable
     ok 4 - fails closed in production when durable protection is unavailable
       ---
-      duration_ms: 0.330134
+      duration_ms: 0.32267
       ...
     # Subtest: uses and exhausts the development fallback bucket
     ok 5 - uses and exhausts the development fallback bucket
       ---
-      duration_ms: 0.375734
+      duration_ms: 0.368067
       ...
     # Subtest: compares bearer credentials in constant-time-compatible form
     ok 6 - compares bearer credentials in constant-time-compatible form
       ---
-      duration_ms: 0.276327
+      duration_ms: 0.306907
       ...
     1..6
 ok 89 - request security helpers exhaustive
   ---
-  duration_ms: 3.831318
+  duration_ms: 4.013257
   type: 'suite'
   ...
 # Subtest: Supabase REST helpers exhaustive
     # Subtest: validates admin configuration
     ok 1 - validates admin configuration
       ---
-      duration_ms: 0.77283
+      duration_ms: 0.667951
       ...
     # Subtest: handles JSON, text, empty, binary and upstream errors for admin requests
     ok 2 - handles JSON, text, empty, binary and upstream errors for admin requests
       ---
-      duration_ms: 0.476534
+      duration_ms: 0.499253
       ...
     # Subtest: resolves valid users and safely handles missing, denied, invalid and failed auth
     ok 3 - resolves valid users and safely handles missing, denied, invalid and failed auth
       ---
-      duration_ms: 0.942086
+      duration_ms: 0.930074
       ...
     # Subtest: performs user-scoped requests with all response forms
     ok 4 - performs user-scoped requests with all response forms
       ---
-      duration_ms: 0.461119
+      duration_ms: 1.19755
       ...
     1..4
 ok 90 - Supabase REST helpers exhaustive
   ---
-  duration_ms: 3.519799
+  duration_ms: 3.512161
   type: 'suite'
   ...
 # Subtest: Turnstile and payment registry exhaustive
     # Subtest: covers test mode, missing configuration and all remote responses
     ok 1 - covers test mode, missing configuration and all remote responses
       ---
-      duration_ms: 2.202748
+      duration_ms: 0.993705
       ...
     # Subtest: normalizes adapter IDs and reports only configured methods
     ok 2 - normalizes adapter IDs and reports only configured methods
       ---
-      duration_ms: 0.196512
+      duration_ms: 0.195465
       ...
     1..2
 ok 91 - Turnstile and payment registry exhaustive
   ---
-  duration_ms: 2.467035
+  duration_ms: 1.256393
   type: 'suite'
   ...
-# (node:129935) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133191) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: shipping rules
     # Subtest: uses 20 LYD inside Libya below the 70 USD free threshold
     ok 1 - uses 20 LYD inside Libya below the 70 USD free threshold
       ---
-      duration_ms: 0.839092
+      duration_ms: 0.855631
       ...
     # Subtest: unlocks free delivery at 70 USD (630 LYD at the canonical rate)
     ok 2 - unlocks free delivery at 70 USD (630 LYD at the canonical rate)
       ---
-      duration_ms: 0.158781
+      duration_ms: 0.17446
       ...
     # Subtest: applies paid shipping at 629 LYD equivalent and frees at 630/631 LYD
     ok 3 - applies paid shipping at 629 LYD equivalent and frees at 630/631 LYD
       ---
-      duration_ms: 0.223119
+      duration_ms: 0.230522
       ...
     # Subtest: safely handles invalid rate and subtotal
     ok 4 - safely handles invalid rate and subtotal
       ---
-      duration_ms: 0.100931
+      duration_ms: 0.108464
       ...
     # Subtest: does not charge shipping for digital-only carts
     ok 5 - does not charge shipping for digital-only carts
       ---
-      duration_ms: 0.927526
+      duration_ms: 0.087236
       ...
     # Subtest: requires quotes for custom and large equipment
     ok 6 - requires quotes for custom and large equipment
       ---
-      duration_ms: 0.141871
+      duration_ms: 1.13845
       ...
     # Subtest: uses configured international shipping including free rates
     ok 7 - uses configured international shipping including free rates
       ---
-      duration_ms: 0.276362
+      duration_ms: 0.219319
       ...
     # Subtest: exposes promised delivery ranges and bilingual messages
     ok 8 - exposes promised delivery ranges and bilingual messages
       ---
-      duration_ms: 0.587232
+      duration_ms: 0.606851
       ...
     1..8
 ok 92 - shipping rules
   ---
-  duration_ms: 4.134364
+  duration_ms: 4.365511
   type: 'suite'
   ...
 # Subtest: shipping edge coverage
     # Subtest: normalizes empty and lowercase countries and invalid international rates
     ok 1 - normalizes empty and lowercase countries and invalid international rates
       ---
-      duration_ms: 0.241569
+      duration_ms: 0.323653
       ...
     # Subtest: uses fallback rates for NaN, negative and missing exchange values
     ok 2 - uses fallback rates for NaN, negative and missing exchange values
       ---
-      duration_ms: 0.207276
+      duration_ms: 0.263655
       ...
     # Subtest: clamps negative and huge subtotals and default options
     ok 3 - clamps negative and huge subtotals and default options
       ---
-      duration_ms: 0.077749
+      duration_ms: 0.085158
       ...
     1..3
 ok 93 - shipping edge coverage
   ---
-  duration_ms: 0.647296
+  duration_ms: 0.811924
   type: 'suite'
   ...
 # Subtest: shipping nullish subtotal branch
     # Subtest: treats a null subtotal as zero
     ok 1 - treats a null subtotal as zero
       ---
-      duration_ms: 0.054511
+      duration_ms: 0.059547
       ...
     1..1
 ok 94 - shipping nullish subtotal branch
   ---
-  duration_ms: 0.087825
+  duration_ms: 0.111291
   type: 'suite'
   ...
 # Subtest: loads a named HTTPS signature provider and supports the base API URL fallback
 ok 95 - loads a named HTTPS signature provider and supports the base API URL fallback
   ---
-  duration_ms: 0.933352
+  duration_ms: 0.896404
   ...
 # Subtest: rejects unnamed, generic, incomplete and non-HTTPS provider configuration
 ok 96 - rejects unnamed, generic, incomplete and non-HTTPS provider configuration
   ---
-  duration_ms: 0.4678
+  duration_ms: 0.461328
   ...
 # Subtest: creates a signature envelope with idempotency and rejects malformed provider responses
 ok 97 - creates a signature envelope with idempotency and rejects malformed provider responses
   ---
-  duration_ms: 15.161123
+  duration_ms: 21.963732
   ...
 # Subtest: aborts an unresponsive signature provider using the configured timeout
 ok 98 - aborts an unresponsive signature provider using the configured timeout
   ---
-  duration_ms: 7.419833
+  duration_ms: 5.183752
   ...
 # Subtest: verifies HMAC webhooks with a configurable header and rejects malformed signatures
 ok 99 - verifies HMAC webhooks with a configurable header and rejects malformed signatures
   ---
-  duration_ms: 1.617585
+  duration_ms: 0.795676
   ...
 # Subtest: normalizes provider lifecycle events and preserves required signature evidence
 ok 100 - normalizes provider lifecycle events and preserves required signature evidence
   ---
-  duration_ms: 0.337562
+  duration_ms: 0.307323
   ...
 # Subtest: simple PDF renderer branch-complete behavior
     # Subtest: escapes primitive values and renders every low-level primitive branch
     ok 1 - escapes primitive values and renders every low-level primitive branch
       ---
-      duration_ms: 2.198514
+      duration_ms: 2.103276
       ...
     # Subtest: builds raw PDFs with default and supplied metadata
     ok 2 - builds raw PDFs with default and supplied metadata
       ---
-      duration_ms: 1.700692
+      duration_ms: 0.643738
       ...
     # Subtest: covers text document pagination, empty sections and every row shape
     ok 3 - covers text document pagination, empty sections and every row shape
       ---
-      duration_ms: 0.668946
+      duration_ms: 0.653982
       ...
     # Subtest: renders cover, artwork and tables with every fallback and optional column
     ok 4 - renders cover, artwork and tables with every fallback and optional column
       ---
-      duration_ms: 7.501991
+      duration_ms: 6.056235
       ...
     # Subtest: creates documents from empty/full projects and all roster/layer fallbacks
     ok 5 - creates documents from empty/full projects and all roster/layer fallbacks
       ---
-      duration_ms: 6.947763
+      duration_ms: 6.936154
       ...
     1..5
 ok 101 - simple PDF renderer branch-complete behavior
   ---
-  duration_ms: 19.746136
+  duration_ms: 17.140728
   type: 'suite'
   ...
-# (node:129973) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (node:133224) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: special request API
     # Subtest: creates an idempotent URL request with trusted normalized fields
     ok 1 - creates an idempotent URL request with trusted normalized fields
       ---
-      duration_ms: 3.158012
+      duration_ms: 3.028791
       ...
     # Subtest: uploads one verified product image to private quarantine storage
     ok 2 - uploads one verified product image to private quarantine storage
       ---
-      duration_ms: 0.906469
+      duration_ms: 0.858615
       ...
     # Subtest: reuses an idempotently uploaded quarantine object after a storage conflict
     ok 3 - reuses an idempotently uploaded quarantine object after a storage conflict
       ---
-      duration_ms: 0.523653
+      duration_ms: 0.538428
       ...
     # Subtest: rejects unsafe or incomplete customer input without touching commerce data
     ok 4 - rejects unsafe or incomplete customer input without touching commerce data
       ---
-      duration_ms: 1.069503
+      duration_ms: 1.074126
       ...
     # Subtest: enforces method, origin, size and captcha protections
     ok 5 - enforces method, origin, size and captcha protections
       ---
-      duration_ms: 0.440019
+      duration_ms: 0.436706
       ...
     # Subtest: fails closed when the trusted database row cannot be created
     ok 6 - fails closed when the trusted database row cannot be created
       ---
-      duration_ms: 0.725187
+      duration_ms: 0.721076
       ...
     1..6
 ok 102 - special request API
   ---
-  duration_ms: 7.541083
+  duration_ms: 7.352965
   type: 'suite'
   ...
 # Subtest: special request production architecture
     # Subtest: uses idempotent database creation and private quarantine storage
     ok 1 - uses idempotent database creation and private quarantine storage
       ---
-      duration_ms: 0.52141
+      duration_ms: 0.486749
       ...
     # Subtest: supports customer decisions and protected staff updates
     ok 2 - supports customer decisions and protected staff updates
       ---
-      duration_ms: 0.18405
+      duration_ms: 0.172445
       ...
     1..2
 ok 103 - special request production architecture
   ---
-  duration_ms: 2.161919
+  duration_ms: 2.035041
   type: 'suite'
   ...
 1..103
 # tests 323
 # suites 80
-# pass 322
-# fail 1
+# pass 323
+# fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1357.051908
+# duration_ms 1335.520399

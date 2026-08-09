@@ -1,4 +1,4 @@
-import { getSupabase } from './supabase.js';
+import { getSupabase } from './supabase.ts';
 
 async function authHeader(): Promise<Record<string, string>> {
   const client = await getSupabase();

@@ -24,7 +24,7 @@ import {
   __resetSupabaseForTests,
   __setSupabaseBuildEnvForTests,
   __setSupabaseClientFactoryForTests,
-} from '../src/services/supabase.js';
+} from '../src/services/supabase.ts';
 import { productShape, buildDesignViewSvg, createStoreZip } from '../src/utils/designExports.js';
 import {
   parseWorksheet,
