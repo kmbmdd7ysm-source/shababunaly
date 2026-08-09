@@ -4,15 +4,7 @@ import { Link } from 'react-router-dom';
  * Shared Customize studio chrome — step rail + dual-pane lab layout.
  * Steps keep their own state in CustomizePage / future step modules.
  */
-export default function StudioShell({
- pick, steps, step, setStep, stage, children 
-}: {
-  pick: (value: { en?: string; ar?: string } | string) => string;
-  steps: Array<{ id: string; label?: string; [key: string]: unknown }>;
-  step: string;
-  children?: import('react').ReactNode;
-  [key: string]: unknown;
-}) {
+export default function StudioShell({ pick, steps, step, setStep, stage, children }) {
   return (
     <div className="gw-lab">
       <nav
