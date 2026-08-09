@@ -1,3 +1,4 @@
+export const DESIGN_VIEWS: readonly string[];
 /** Ambient types for designStudio.js until full migration. No broad any. */
 export function normalizeStudio(input: unknown): Record<string, unknown>;
 export function createDefaultStudio(input?: unknown): Record<string, unknown>;
