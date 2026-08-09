@@ -1,6 +1,6 @@
-import { lazy, Suspense, useEffect, useId, useState } from 'react';
+import { lazy, Suspense, useEffect, useId, useState, type KeyboardEvent } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { resolveProductViewer } from '../../utils/productViewerTier';
+import { resolveProductViewer } from '../../utils/productViewerTier.ts';
 import MultiAngleEngine from './engines/MultiAngleEngine';
 import Spin360Engine from './engines/Spin360Engine';
 import StaticMediaEngine from './engines/StaticMediaEngine';
@@ -18,7 +18,13 @@ const Realtime3DEngine = lazy(() => import('./engines/Realtime3DEngine'));
  *
  * Labels stay honest: no fake 3D, no padded 360 from one frame.
  */
-export default function ProductMediaViewer({ product, eager = false }) {
+export default function ProductMediaViewer({
+  product,
+  eager = false,
+}: {
+  product?: Record<string, unknown> | null;
+  eager?: boolean;
+}) {
   const { pick, dir } = useLanguage();
   const { tier, images, frames, model } = resolveProductViewer(product);
   const sources = frames.length > 0 ? frames : images;
@@ -30,12 +36,12 @@ export default function ProductMediaViewer({ product, eager = false }) {
   }, [product?.id]);
 
   const count = sources.length;
-  const step = (delta) => {
+  const step = (delta: number) => {
     if (count < 2) return;
     setIndex((value) => (value + delta + count) % count);
   };
 
-  const onKeyDown = (event) => {
+  const onKeyDown = (event: KeyboardEvent) => {
     const forward = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
     const back = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     if (event.key === forward) {
@@ -60,8 +66,13 @@ export default function ProductMediaViewer({ product, eager = false }) {
             })
           : pick({ en: 'Single verified photograph', ar: 'صورة موثّقة واحدة' });
 
-  const alt = pick(product?.alt || { en: 'Product', ar: 'منتج' });
-  const fallback = sources[0] || product?.image;
+  const alt = pick(
+    (product?.alt as { en?: string; ar?: string } | undefined) || {
+      en: 'Product',
+      ar: 'منتج',
+    },
+  );
+  const fallback = sources[0] || String(product?.image || '');
 
   return (
     <div className="gw-viewer" data-tier={tier} data-engine="ProductMediaViewer">
@@ -114,7 +125,11 @@ export default function ProductMediaViewer({ product, eager = false }) {
           aria-describedby={`${listId}-note`}
           tabIndex={-1}
         >
-          <StaticMediaEngine src={fallback} alt={alt} eager={eager} />
+          <StaticMediaEngine
+            {...(fallback ? { src: fallback } : {})}
+            alt={alt}
+            {...(eager ? { eager } : {})}
+          />
         </div>
       )}
 
