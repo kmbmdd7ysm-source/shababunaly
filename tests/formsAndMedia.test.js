@@ -6,7 +6,7 @@ describe('forms and media readiness', () => {
   it('uses the approved Formspree endpoint as the only application fallback', () => {
     const integrations = fs.readFileSync('src/config/integrations.ts', 'utf8');
     const serverEndpoint = fs.readFileSync('api/_formspree-endpoint.ts', 'utf8');
-    const browser = fs.readFileSync('src/services/formspree.js', 'utf8');
+    const browser = fs.readFileSync('src/services/formspree.ts', 'utf8');
     expect(integrations).toContain('https://formspree.io/f/mqerbqvd');
     expect(serverEndpoint).toContain('https://formspree.io/f/mqerbqvd');
     expect(integrations).not.toContain('mvzenjgv');

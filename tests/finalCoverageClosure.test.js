@@ -23,7 +23,7 @@ import {
   scoreText,
   searchSite,
   suggestionCandidates,
-} from '../src/utils/search.js';
+} from '../src/utils/search.ts';
 import {
   buildDesignViewSvg,
   buildProductionPackage,

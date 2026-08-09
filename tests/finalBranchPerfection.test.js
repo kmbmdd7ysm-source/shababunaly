@@ -19,7 +19,7 @@ import {
   autosaveDesignStudio,
   createSecureDesignShare,
   loadSharedDesign,
-} from '../src/services/designStudio.js';
+} from '../src/services/designStudio.ts';
 import {
   __resetSupabaseForTests,
   __setSupabaseBuildEnvForTests,

@@ -18,7 +18,7 @@ import {
   runProductionPreflight,
 } from '../src/services/productionPreflight.js';
 import { DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.ts';
-import { createDefaultStudio } from '../src/services/designStudio.js';
+import { createDefaultStudio } from '../src/services/designStudio.ts';
 
 const originalFetch = globalThis.fetch;
 const trackedEnv = [

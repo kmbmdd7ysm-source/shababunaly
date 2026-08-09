@@ -16,7 +16,7 @@ import {
 } from '../src/utils/rosterSpreadsheet.js';
 import { createStoreZip } from '../src/utils/designExports.js';
 import { createTextPdf, downloadBlob, downloadDesignDocuments } from '../src/utils/simplePdf.js';
-import { createDefaultStudio } from '../src/services/designStudio.js';
+import { createDefaultStudio } from '../src/services/designStudio.ts';
 import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 import {
   getSearchSuggestions,
@@ -25,7 +25,7 @@ import {
   normalizeSearchText,
   SEARCH_PAGES,
   POPULAR_SEARCHES,
-} from '../src/utils/search.js';
+} from '../src/utils/search.ts';
 
 const originalDocument = globalThis.document;
 const originalUrl = globalThis.URL;

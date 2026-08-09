@@ -1,7 +1,7 @@
 import './setup.js';
 import { describe, expect, it } from './test-api.js';
 import { CUSTOM_PRODUCT_TYPES, DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.ts';
-import { createDefaultStudio } from '../src/services/designStudio.js';
+import { createDefaultStudio } from '../src/services/designStudio.ts';
 import {
   buildDesignViewSvg,
   buildProductionPackage,

@@ -62,7 +62,7 @@ import {
   loadSharedDesign,
   addSharedDesignComment,
   respondToSharedDesign,
-} from '../src/services/designStudio.js';
+} from '../src/services/designStudio.ts';
 import {
   __resetSupabaseForTests,
   __setSupabaseBuildEnvForTests,
@@ -86,7 +86,7 @@ import {
   unzipEntries,
 } from '../src/utils/rosterSpreadsheet.js';
 import { createTextPdf, downloadDesignDocuments } from '../src/utils/simplePdf.js';
-import { getSearchSuggestions } from '../src/utils/search.js';
+import { getSearchSuggestions } from '../src/utils/search.ts';
 import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 
 const ENV_KEYS = [

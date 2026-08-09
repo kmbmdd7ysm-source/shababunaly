@@ -13,7 +13,7 @@ import {
   removeDesignLayer,
   undoHistory,
   updateDesignLayer,
-} from '../src/services/designStudio.js';
+} from '../src/services/designStudio.ts';
 
 const design = {
   teamName: 'AL ITTIHAD',

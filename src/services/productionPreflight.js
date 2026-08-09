@@ -3,7 +3,7 @@ import {
   getCustomProductType,
   normalizeRoster,
 } from '../data/customization.ts';
-import { normalizeStudio } from './designStudio.js';
+import { normalizeStudio } from './designStudio.ts';
 
 const MM_PER_INCH = 25.4;
 const HEX = /^#[0-9a-f]{6}$/i;

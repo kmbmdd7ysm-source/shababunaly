@@ -13,7 +13,7 @@ import {
   getSearchSuggestions,
   normalizeSearchText,
   searchSite,
-} from '../src/utils/search.js';
+} from '../src/utils/search.ts';
 
 describe('order status presentation', () => {
   it('presents every declared status in English and Arabic', () => {

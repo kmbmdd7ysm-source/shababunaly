@@ -38,7 +38,7 @@ test.describe('operations control center', () => {
 
   test('adds collections, coupons, taxes, billing and fulfillment operations UI', async () => {
     const page = [
-      await read('src/components/operations/OperationsControlCenter.jsx'),
+      await read('src/components/operations/OperationsControlCenter.tsx'),
       await read('src/components/operations/control/MerchandisingManager.jsx'),
       await read('src/components/operations/control/ProcurementAndBilling.jsx'),
       await read('src/components/operations/control/FulfillmentManager.jsx'),
@@ -54,7 +54,7 @@ test.describe('operations control center', () => {
   test('creates only safe draft products and audited draft variants', async () => {
     const sql = await read('supabase/migrations/20260801024000_shababuna_catalog_crud.sql');
     const ui = [
-      await read('src/components/operations/OperationsControlCenter.jsx'),
+      await read('src/components/operations/OperationsControlCenter.tsx'),
       await read('src/components/operations/control/CatalogDraftManager.jsx'),
     ].join('\n');
     assert.match(sql, /staff_create_catalog_product_draft/);

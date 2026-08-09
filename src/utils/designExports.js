@@ -1,5 +1,5 @@
 import { getCustomProductType, rosterToCsv } from '../data/customization.ts';
-import { DESIGN_VIEWS, normalizeStudio } from '../services/designStudio.js';
+import { DESIGN_VIEWS, normalizeStudio } from '../services/designStudio.ts';
 import {
   buildColorSpecificationsCsv,
   getFactoryTemplateSpec,
