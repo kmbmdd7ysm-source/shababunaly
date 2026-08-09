@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactElement } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { OPTIMIZED_IMAGES } from '../../data/generatedOptimizedImages';
+import { OPTIMIZED_IMAGES } from '../../data/generatedOptimizedImages.js';
 
 const MEDIA_VERSION = '20260729-performance-final';
 
-function ratioClass(width, height) {
+function ratioClass(width: number, height: number): string {
   const ratio = Number(width) / Math.max(1, Number(height));
   if (ratio >= 1.7) return 'ratio-16-9';
   if (ratio >= 1.4) return 'ratio-3-2';
@@ -12,16 +12,16 @@ function ratioClass(width, height) {
   return 'ratio-1-1';
 }
 
-const withVersion = (src) => {
+const withVersion = (src: string): string => {
   if (!src || /^(data:|blob:|https?:)/i.test(src)) return src;
   const separator = src.includes('?') ? '&' : '?';
   return `${src}${separator}v=${MEDIA_VERSION}`;
 };
 
-const optimizedPath = (src) => {
+const optimizedPath = (src: string): string => {
   if (!src || /^(data:|blob:|https?:)/i.test(src)) return src;
   const [path, query = ''] = src.split('?');
-  const optimized = OPTIMIZED_IMAGES[path];
+  const optimized = (OPTIMIZED_IMAGES as Record<string, string>)[path || ''];
   if (!optimized) return src;
   return query ? `${optimized}?${query}` : optimized;
 };
@@ -34,11 +34,20 @@ export default function SmartImage({
   eager = false,
   className = '',
   sizes = '100vw',
-}) {
+}: {
+  src?: string | null;
+  alt?: string;
+  width?: number;
+  height?: number;
+  eager?: boolean;
+  className?: string;
+  sizes?: string;
+}): ReactElement {
   const { pick } = useLanguage();
   const candidates = useMemo(() => {
-    const optimized = optimizedPath(src);
-    return optimized && optimized !== src ? [optimized, src] : [src];
+    const source = String(src || '');
+    const optimized = optimizedPath(source);
+    return optimized && optimized !== source ? [optimized, source] : [source];
   }, [src]);
   const [candidateIndex, setCandidateIndex] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -79,7 +88,7 @@ export default function SmartImage({
       loading={eager ? 'eager' : 'lazy'}
       fetchPriority={eager ? 'high' : 'auto'}
       decoding="async"
-      draggable="false"
+      draggable={false}
       onError={() => {
         if (candidateIndex < candidates.length - 1) setCandidateIndex((value) => value + 1);
         else setFailed(true);
