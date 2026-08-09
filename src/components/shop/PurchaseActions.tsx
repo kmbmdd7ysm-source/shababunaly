@@ -13,6 +13,17 @@ export default function PurchaseActions({
   adding = false,
   favorite,
   onFavorite,
+}: {
+  quantity: number;
+  onQuantityChange?: (n: number) => void;
+  min?: number;
+  max?: number;
+  showQuantity?: boolean;
+  onAdd?: () => void;
+  addDisabled?: boolean;
+  adding?: boolean;
+  favorite?: boolean;
+  onFavorite?: () => void;
 }) {
   const { pick } = useLanguage();
   return (
