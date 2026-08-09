@@ -189,8 +189,11 @@ a.product-card-name {
   box-shadow: inset 0 0 0 1px var(--sh-ink);
 }
 .gw-quick-sheet-sizes .size-pill {
+  width: auto;
+  flex: 0 0 auto;
   min-inline-size: var(--sh-target);
   min-block-size: var(--sh-target);
+  min-height: var(--sh-target);
   padding-inline: 0.85rem;
   border: 1px solid var(--sh-rule);
   border-radius: 999px;
