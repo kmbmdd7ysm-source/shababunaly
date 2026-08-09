@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:10:29.311Z",
+  "generatedAt": "2026-08-09T02:13:25.733Z",
   "sourceFiles": 259,
-  "strictFiles": 46,
-  "strictCoveragePercent": 17.76,
+  "strictFiles": 48,
+  "strictCoveragePercent": 18.53,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -116,7 +116,6 @@
     "src/data/footerSocial.jsx",
     "src/data/generatedOptimizedImages.js",
     "src/data/lhaProducts.js",
-    "src/data/productFamilies.js",
     "src/data/products.js",
     "src/data/translations.js",
     "src/hooks/usePageTracking.js",
@@ -160,7 +159,6 @@
     "src/services/designStudio.js",
     "src/services/operations.js",
     "src/services/orders.js",
-    "src/services/paymentRecovery.js",
     "src/services/privacy.js",
     "src/services/productionPreflight.js",
     "src/services/publicQuotes.js",
