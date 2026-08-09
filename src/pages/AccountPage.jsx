@@ -9,7 +9,6 @@ import { useCommerce } from '../context/CommerceContext';
 import Seo from '../components/common/Seo';
 import '../styles/account.css';
 import AddressesSection from '../components/account/AddressesSection';
-import CurrencySelector from '../components/common/CurrencySelector';
 import Avatar from '../components/common/Avatar';
 import { errorText, mapError } from '../utils/errors';
 import { createProfileImageDataUrl, validateProfileImage } from '../utils/profileImage';
@@ -22,6 +21,9 @@ import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
 import SecuritySection from './account/SecuritySection';
 import OrdersSection from './account/OrdersSection';
+import ProfileSection from './account/ProfileSection';
+import PreferencesSection from './account/PreferencesSection';
+import { ORGANIZATION_TYPES } from './account/accountConstants';
 import '../styles/transact.css';
 import '../styles/account-sync.css';
 import '../styles/workspace.css';
@@ -43,14 +45,6 @@ const clean = (s) =>
     .replace(/[<>]/g, '')
     .trim()
     .slice(0, 100);
-const ORGANIZATION_TYPES = [
-  { value: 'club', en: 'Club', ar: 'نادي' },
-  { value: 'academy', en: 'Academy', ar: 'أكاديمية' },
-  { value: 'federation', en: 'Federation', ar: 'اتحاد' },
-  { value: 'school_university', en: 'School / University', ar: 'مدرسة / جامعة' },
-  { value: 'wholesale', en: 'Wholesale buyer', ar: 'عميل جملة' },
-  { value: 'distributor', en: 'Distributor', ar: 'موزع' },
-];
 export default function AccountPage() {
   const { pick, lang } = useLanguage(),
     auth = useAuth(),
@@ -915,195 +909,21 @@ export default function AccountPage() {
               {section === 'returns' && <ReturnsSection orders={ordersState.orders} />}
               {section === 'special-requests' && <SpecialRequestsSection />}
               {section === 'profile' && (
-                <form onSubmit={save} className="account-form">
-                  <div className="account-identity-card">
-                    <label>
-                      {pick({ en: 'Account email', ar: 'البريد الإلكتروني للحساب' })}
-                      <input
-                        type="email"
-                        value={accountEmail}
-                        onChange={(event) => setAccountEmail(event.target.value)}
-                        dir="ltr"
-                        autoComplete="email"
-                      />
-                    </label>
-                    <div className="verification-row">
-                      <strong>
-                        {auth.user.email_confirmed_at || auth.user.confirmed_at
-                          ? pick({ en: 'Email verified', ar: 'البريد الإلكتروني موثّق' })
-                          : pick({ en: 'Email not verified', ar: 'البريد الإلكتروني غير موثّق' })}
-                      </strong>
-                      {!auth.user.email_confirmed_at && !auth.user.confirmed_at && (
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          disabled={busy || !auth.cloudConfigured}
-                          onClick={async () => {
-                            setBusy(true);
-                            try {
-                              const result = await auth.resendVerification(auth.user.email);
-                              if (result?.error) throw result.error;
-                              setMsg(
-                                pick({
-                                  en: 'Verification email sent. Check your inbox and spam folder.',
-                                  ar: 'تم إرسال رسالة التحقق. راجع صندوق الوارد والرسائل غير المرغوب فيها.',
-                                }),
-                              );
-                            } catch (error) {
-                              setMsg(errorText(error, lang));
-                            } finally {
-                              setBusy(false);
-                            }
-                          }}
-                        >
-                          {pick({ en: 'Verify email', ar: 'توثيق البريد' })}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  <fieldset className="account-type-choice account-type-choice--profile">
-                    <legend>{pick({ en: 'Account type', ar: 'نوع الحساب' })}</legend>
-                    <div className="account-type-choice-grid">
-                      <button
-                        type="button"
-                        className={profile.accountType !== 'organization' ? 'active' : ''}
-                        aria-pressed={profile.accountType !== 'organization'}
-                        onClick={() =>
-                          setProfile({
-                            ...profile,
-                            accountType: 'customer',
-                            organizationName: '',
-                            organizationType: '',
-                          })
-                        }
-                      >
-                        <strong>{pick({ en: 'Personal', ar: 'فردي' })}</strong>
-                      </button>
-                      <button
-                        type="button"
-                        className={profile.accountType === 'organization' ? 'active' : ''}
-                        aria-pressed={profile.accountType === 'organization'}
-                        onClick={() =>
-                          setProfile({
-                            ...profile,
-                            accountType: 'organization',
-                            organizationType: profile.organizationType || 'club',
-                          })
-                        }
-                      >
-                        <strong>{pick({ en: 'Team / Business', ar: 'فريق / مؤسسة' })}</strong>
-                      </button>
-                    </div>
-                  </fieldset>
-                  {profile.accountType === 'organization' && (
-                    <div className="organization-signup-fields">
-                      <label>
-                        {pick({ en: 'Organization name', ar: 'اسم المؤسسة' })}
-                        <input
-                          required
-                          autoComplete="organization"
-                          value={profile.organizationName}
-                          onChange={(event) =>
-                            setProfile({ ...profile, organizationName: event.target.value })
-                          }
-                        />
-                      </label>
-                      <label>
-                        {pick({ en: 'Organization type', ar: 'نوع المؤسسة' })}
-                        <select
-                          value={profile.organizationType || 'club'}
-                          onChange={(event) =>
-                            setProfile({ ...profile, organizationType: event.target.value })
-                          }
-                        >
-                          {ORGANIZATION_TYPES.map((item) => (
-                            <option key={item.value} value={item.value}>
-                              {pick({ en: item.en, ar: item.ar })}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    </div>
-                  )}
-                  <label>
-                    {pick({ en: 'First name', ar: 'الاسم الأول' })}
-                    <input
-                      value={profile.firstName}
-                      onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                    />
-                  </label>
-                  <label>
-                    {pick({ en: 'Last name', ar: 'اسم العائلة' })}
-                    <input
-                      value={profile.lastName}
-                      onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-                    />
-                  </label>
-                  <label>
-                    {pick({ en: 'Display name', ar: 'الاسم الظاهر' })}
-                    <input
-                      value={profile.displayName}
-                      onChange={(e) => setProfile({ ...profile, displayName: e.target.value })}
-                    />
-                  </label>
-                  <label>
-                    {pick({ en: 'Phone number', ar: 'رقم الهاتف' })}
-                    <input
-                      type="tel"
-                      dir="ltr"
-                      autoComplete="tel"
-                      value={profile.phone}
-                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                    />
-                  </label>
-                  {profile.avatarUrl && (
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      disabled={busy}
-                      onClick={async () => {
-                        setBusy(true);
-                        try {
-                          const nextProfile = { ...profile, avatarUrl: '', avatar_url: null };
-                          const [profileResult, metadataResult] = await Promise.allSettled([
-                            data.saveProfile(nextProfile),
-                            auth.updateMetadata({ avatar_url: null }),
-                          ]);
-                          if (
-                            profileResult.status === 'rejected' &&
-                            metadataResult.status === 'rejected'
-                          ) {
-                            throw profileResult.reason || metadataResult.reason;
-                          }
-                          if (
-                            metadataResult.status === 'fulfilled' &&
-                            metadataResult.value?.error &&
-                            profileResult.status === 'rejected'
-                          ) {
-                            throw metadataResult.value.error;
-                          }
-                          clearPhotoPreview();
-                          setProfile((current) => ({ ...current, avatarUrl: '' }));
-                          setMsg(
-                            pick({
-                              en: 'Profile photo removed on every device.',
-                              ar: 'تمت إزالة الصورة الشخصية من جميع الأجهزة.',
-                            }),
-                          );
-                        } catch (error) {
-                          setMsg(errorText(error, lang));
-                        } finally {
-                          setBusy(false);
-                        }
-                      }}
-                    >
-                      {pick({ en: 'Remove profile photo', ar: 'إزالة الصورة الشخصية' })}
-                    </button>
-                  )}
-                  <button className="btn-primary" disabled={busy}>
-                    {pick({ en: 'Save profile', ar: 'حفظ الملف الشخصي' })}
-                  </button>
-                </form>
+                <ProfileSection
+                  pick={pick}
+                  lang={lang}
+                  auth={auth}
+                  profile={profile}
+                  setProfile={setProfile}
+                  accountEmail={accountEmail}
+                  setAccountEmail={setAccountEmail}
+                  busy={busy}
+                  setBusy={setBusy}
+                  setMsg={setMsg}
+                  save={save}
+                  clearPhotoPreview={clearPhotoPreview}
+                  data={data}
+                />
               )}
               {section === 'saved' && (
                 <div>
@@ -1120,64 +940,14 @@ export default function AccountPage() {
                 <AddressesSection userId={auth.user.id} pick={pick} language={lang} />
               )}{' '}
               {section === 'preferences' && (
-                <form onSubmit={save} className="account-form">
-                  <div className="account-preference-row">
-                    <div>
-                      <strong>{pick({ en: 'Display currency', ar: 'عملة العرض' })}</strong>
-                      <p>
-                        {pick({
-                          en: 'Saved locally and synchronized with your account when online.',
-                          ar: 'تُحفظ محليًا وتتم مزامنتها مع حسابك عند توفر الاتصال.',
-                        })}
-                      </p>
-                    </div>
-                    <CurrencySelector />
-                    <span role="status" aria-live="polite">
-                      {commerce.preferenceStatus === 'synced'
-                        ? pick({ en: 'Synced', ar: 'تمت المزامنة' })
-                        : commerce.preferenceStatus === 'syncing'
-                          ? pick({ en: 'Synchronizing…', ar: 'جارٍ المزامنة…' })
-                          : commerce.preferenceStatus === 'offline'
-                            ? pick({ en: 'Saved locally — offline', ar: 'محفوظ محليًا — غير متصل' })
-                            : commerce.preferenceStatus === 'error'
-                              ? pick({
-                                  en: 'Saved locally — sync pending',
-                                  ar: 'محفوظ محليًا — المزامنة معلقة',
-                                })
-                              : pick({ en: 'Saved locally', ar: 'محفوظ محليًا' })}
-                    </span>
-                  </div>
-                  <label>
-                    {pick({ en: 'Preferred size', ar: 'المقاس المفضل' })}
-                    <input
-                      value={profile.preferredSize}
-                      onChange={(e) => setProfile({ ...profile, preferredSize: e.target.value })}
-                    />
-                  </label>
-                  <label className="check-row">
-                    <input
-                      type="checkbox"
-                      checked={profile.marketingConsent}
-                      onChange={(e) =>
-                        setProfile({ ...profile, marketingConsent: e.target.checked })
-                      }
-                    />
-                    {pick({
-                      en: 'Receive academy and product updates',
-                      ar: 'استلام تحديثات الأكاديمية والمنتجات',
-                    })}
-                  </label>
-                  <button className="btn-primary">
-                    {pick({ en: 'Save preferences', ar: 'حفظ التفضيلات' })}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={data.clearPersonalization}
-                  >
-                    {pick({ en: 'Clear personalization history', ar: 'مسح سجل التخصيص' })}
-                  </button>
-                </form>
+                <PreferencesSection
+                  pick={pick}
+                  profile={profile}
+                  setProfile={setProfile}
+                  save={save}
+                  commerce={commerce}
+                  data={data}
+                />
               )}
               {section === 'security' && <SecuritySection auth={auth} pick={pick} lang={lang} />}
               {msg && (
