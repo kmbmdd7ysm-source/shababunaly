@@ -13,7 +13,11 @@ export async function share({
 }): Promise<boolean> {
   trackEvent('share', { method, title });
   if (method === 'native' && navigator.share) {
-    await navigator.share({ title, text, url });
+    const data: ShareData = {};
+    if (title) data.title = title;
+    if (text) data.text = text;
+    if (url) data.url = url;
+    await navigator.share(data);
     return true;
   }
   if (method === 'copy' && url) {
