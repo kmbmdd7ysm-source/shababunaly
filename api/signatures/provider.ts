@@ -1,31 +1,45 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
-const clean = (value, max = 4000) =>
+type SignatureConfig = {
+  provider: string;
+  createUrl: string;
+  apiKey: string;
+  webhookSecret: string;
+  schemaVersion: string;
+  docsUrl: string;
+  sandboxUrl: string;
+};
+
+const clean = (value: unknown, max = 4000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
-const optional = (name) => clean(process.env[name]);
-const required = (name) => {
+
+const optional = (name: string): string => clean(process.env[name]);
+
+const required = (name: string): string => {
   const value = optional(name);
   if (!value) throw Object.assign(new Error(`${name.toLowerCase()}_missing`), { status: 503 });
   return value;
 };
-const safeJson = async (response) => {
+
+const safeJson = async (response: Response): Promise<Record<string, unknown>> => {
   const text = await response.text();
   try {
-    return text ? JSON.parse(text) : {};
+    return text ? (JSON.parse(text) as Record<string, unknown>) : {};
   } catch {
     return { raw: text.slice(0, 1000) };
   }
 };
-const normalizeUrl = (value) => {
+
+const normalizeUrl = (value: string): string => {
   const url = new URL(value);
   if (url.protocol !== 'https:')
     throw Object.assign(new Error('signature_https_required'), { status: 503 });
   return url.toString();
 };
 
-export function getSignatureProviderConfig() {
+export function getSignatureProviderConfig(): SignatureConfig {
   const provider = required('SIGNATURE_PROVIDER').toLowerCase();
   if (/generic|adapter|http|test/i.test(provider))
     throw Object.assign(new Error('named_signature_provider_required'), { status: 503 });
@@ -42,7 +56,7 @@ export function getSignatureProviderConfig() {
   };
 }
 
-export async function createSignatureEnvelope(payload) {
+export async function createSignatureEnvelope(payload: Record<string, unknown>) {
   const config = getSignatureProviderConfig();
   const controller = new AbortController();
   const timer = setTimeout(
@@ -58,7 +72,7 @@ export async function createSignatureEnvelope(payload) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${config.apiKey}`,
-        'Idempotency-Key': payload.idempotencyKey,
+        'Idempotency-Key': String(payload.idempotencyKey || ''),
         'X-SHABABUNA-Signature-Schema': config.schemaVersion,
       },
       body: JSON.stringify(payload),
@@ -97,25 +111,35 @@ export async function createSignatureEnvelope(payload) {
   }
 }
 
-export function verifySignatureWebhook(rawBody, headers) {
+export function verifySignatureWebhook(
+  rawBody: string | Buffer,
+  headers: Record<string, string | string[] | undefined>,
+): boolean {
   const { webhookSecret } = getSignatureProviderConfig();
   const headerName = clean(
     process.env.SIGNATURE_WEBHOOK_HEADER || 'x-signature',
     100,
   ).toLowerCase();
-  const received = clean(headers[headerName] || headers['x-shababuna-signature'], 1000).replace(
-    /^sha256=/i,
-    '',
-  );
+  const headerValue = headers[headerName] || headers['x-shababuna-signature'];
+  const received = clean(
+    Array.isArray(headerValue) ? headerValue[0] : headerValue,
+    1000,
+  ).replace(/^sha256=/i, '');
   if (!/^[0-9a-f]{64}$/i.test(received)) return false;
   const expected = createHmac('sha256', webhookSecret).update(rawBody).digest('hex');
   return timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(received, 'hex'));
 }
 
-export function normalizeSignatureEvent(payload) {
-  const event = payload?.event || payload?.data || payload || {};
+export function normalizeSignatureEvent(payload: unknown): Record<string, unknown> {
+  const root = payload && typeof payload === 'object' ? (payload as Record<string, unknown>) : {};
+  const eventSource =
+    (root.event && typeof root.event === 'object'
+      ? (root.event as Record<string, unknown>)
+      : null) ||
+    (root.data && typeof root.data === 'object' ? (root.data as Record<string, unknown>) : null) ||
+    root;
   const providerStatus = clean(
-    event.status || event.eventStatus || event.event_type || event.type,
+    eventSource.status || eventSource.eventStatus || eventSource.event_type || eventSource.type,
     80,
   ).toLowerCase();
   const statusMap = new Map([
@@ -137,46 +161,64 @@ export function normalizeSignatureEvent(payload) {
   ]);
   const status = statusMap.get(providerStatus);
   if (!status) throw Object.assign(new Error('unsupported_signature_event'), { status: 400 });
-  const evidence = event.evidence || event.documents || {};
+  const evidence =
+    (eventSource.evidence && typeof eventSource.evidence === 'object'
+      ? (eventSource.evidence as Record<string, unknown>)
+      : null) ||
+    (eventSource.documents && typeof eventSource.documents === 'object'
+      ? (eventSource.documents as Record<string, unknown>)
+      : {});
   return {
-    eventId: clean(event.eventId || event.event_id || payload?.eventId || payload?.event_id, 300),
+    eventId: clean(
+      eventSource.eventId || eventSource.event_id || root.eventId || root.event_id,
+      300,
+    ),
     envelopeId: clean(
-      event.envelopeId ||
-        event.envelope_id ||
-        event.signatureRequestId ||
-        event.signature_request_id,
+      eventSource.envelopeId ||
+        eventSource.envelope_id ||
+        eventSource.signatureRequestId ||
+        eventSource.signature_request_id,
       300,
     ),
     status,
-    eventAt: event.eventAt || event.event_at || event.timestamp || new Date().toISOString(),
+    eventAt:
+      eventSource.eventAt ||
+      eventSource.event_at ||
+      eventSource.timestamp ||
+      new Date().toISOString(),
     signedDocumentUrl:
       clean(
-        evidence.signedDocumentUrl || evidence.signed_document_url || event.signedDocumentUrl,
+        evidence.signedDocumentUrl ||
+          evidence.signed_document_url ||
+          eventSource.signedDocumentUrl,
         2000,
       ) || null,
     signedDocumentSha256:
       clean(
         evidence.signedDocumentSha256 ||
           evidence.signed_document_sha256 ||
-          event.signedDocumentSha256,
+          eventSource.signedDocumentSha256,
         64,
       ).toLowerCase() || null,
     auditCertificateUrl:
       clean(
-        evidence.auditCertificateUrl || evidence.audit_certificate_url || event.auditCertificateUrl,
+        evidence.auditCertificateUrl ||
+          evidence.audit_certificate_url ||
+          eventSource.auditCertificateUrl,
         2000,
       ) || null,
     auditCertificateSha256:
       clean(
         evidence.auditCertificateSha256 ||
           evidence.audit_certificate_sha256 ||
-          event.auditCertificateSha256,
+          eventSource.auditCertificateSha256,
         64,
       ).toLowerCase() || null,
-    identityVerification: event.identityVerification || event.identity_verification || {},
+    identityVerification:
+      eventSource.identityVerification || eventSource.identity_verification || {},
     providerMetadata: {
       rawStatus: providerStatus,
-      schemaVersion: clean(payload?.schemaVersion || payload?.schema_version, 80),
+      schemaVersion: clean(root.schemaVersion || root.schema_version, 80),
     },
   };
 }

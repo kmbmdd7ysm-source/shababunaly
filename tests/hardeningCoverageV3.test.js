@@ -9,7 +9,7 @@ import {
   getSignatureProviderConfig,
   normalizeSignatureEvent,
   verifySignatureWebhook,
-} from '../api/signatures/provider.js';
+} from '../api/signatures/provider.ts';
 import {
   buildColorSpecifications,
   deltaE76,

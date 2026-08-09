@@ -4,7 +4,7 @@ import {
   getSignatureProviderConfig,
   normalizeSignatureEvent,
   verifySignatureWebhook,
-} from './signatures/provider.js';
+} from './signatures/provider.ts';
 import { verifyAndStoreSignatureEvidence } from './signatures/evidence.js';
 
 export const config = { api: { bodyParser: false } };

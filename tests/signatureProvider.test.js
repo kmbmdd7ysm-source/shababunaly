@@ -6,7 +6,7 @@ import {
   getSignatureProviderConfig,
   normalizeSignatureEvent,
   verifySignatureWebhook,
-} from '../api/signatures/provider.js';
+} from '../api/signatures/provider.ts';
 
 const KEYS = [
   'SIGNATURE_PROVIDER',
