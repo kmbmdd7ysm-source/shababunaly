@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T19:11:00.550Z",
+  "generatedAt": "2026-08-09T19:11:57.097Z",
   "sourceFiles": 259,
-  "strictFiles": 179,
-  "strictCoveragePercent": 69.11,
+  "strictFiles": 180,
+  "strictCoveragePercent": 69.5,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -70,7 +70,6 @@
     "src/utils/simplePdf.js",
     "api/admin-media-upload.js",
     "api/admin-users.js",
-    "api/contract-sign.js",
     "api/malware-scan-worker.js",
     "api/media-scan-worker.js",
     "api/notification-worker.js",

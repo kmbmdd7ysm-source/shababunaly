@@ -70,7 +70,7 @@ const paymentReady =
   paymentChecks.some((item) => item.ready) &&
   paymentChecks.filter((item) => item.enabled).every((item) => item.ready);
 const codeChecks = {
-  externalEnvelopeApi: existsSync('api/signature-envelope.js'),
+  externalEnvelopeApi: existsSync('api/signature-envelope.ts'),
   signatureWebhook: existsSync('api/signature-webhook.js'),
   externalSignatureMigration: existsSync(
     'supabase/migrations/20260802002000_external_signature_provider.sql',
