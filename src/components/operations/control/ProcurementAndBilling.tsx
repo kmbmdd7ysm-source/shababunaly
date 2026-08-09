@@ -1,8 +1,23 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { upsertOperationalEntity } from '../../../services/operations';
 import { FinancialInputs, OperationalRow, isoOrNull } from './shared';
 
-export default function ProcurementAndBilling({ state, pick, saving, run }) {
+export default function ProcurementAndBilling({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+  [key: string]: unknown;
+}): ReactElement {
+  const s = (state || {}) as Record<string, unknown>;
+  const rows = (key: string) =>
+    Array.isArray(s[key]) ? (s[key] as Array<Record<string, unknown>>) : [];
   const [po, setPo] = useState({
     po_number: '',
     supplier_id: '',
@@ -28,7 +43,7 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
     amount_paid: 0,
     due_at: '',
   });
-  const numeric = (row) => ({
+  const numeric = (row: Record<string, unknown>) => ({
     ...row,
     subtotal: Number(row.subtotal),
     shipping_total: Number(row.shipping_total),
@@ -67,9 +82,9 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
             required
           >
             <option value="">—</option>
-            {state.suppliers.map((row) => (
-              <option key={row.id} value={row.id}>
-                {row.name}
+            {rows('suppliers').map((row: Record<string, unknown>) => (
+              <option key={String(row.id)} value={String(row.id || '')}>
+                {String(row.name || '')}
               </option>
             ))}
           </select>
@@ -89,7 +104,10 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
               <option key={item}>{item}</option>
             ))}
           </select>
-          <FinancialInputs row={po} setRow={setPo} />
+          <FinancialInputs
+            row={po as unknown as Record<string, unknown>}
+            setRow={(next) => setPo({ ...po, ...next } as typeof po)}
+          />
           <button className="btn-primary compact" disabled={saving === 'purchase-order'}>
             {pick({ en: 'Save PO', ar: 'حفظ أمر الشراء' })}
           </button>
@@ -125,9 +143,9 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
             }
           >
             <option value="">{pick({ en: 'Order (optional)', ar: 'طلب (اختياري)' })}</option>
-            {state.orders.map((row) => (
-              <option key={row.id} value={row.id}>
-                {row.order_number}
+            {rows('orders').map((row: Record<string, unknown>) => (
+              <option key={String(row.id)} value={String(row.id || '')}>
+                {String(row.order_number || '')}
               </option>
             ))}
           </select>
@@ -138,9 +156,9 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
             }
           >
             <option value="">{pick({ en: 'Quote (optional)', ar: 'عرض سعر (اختياري)' })}</option>
-            {state.quotes.map((row) => (
-              <option key={row.id} value={row.id}>
-                {row.id}
+            {rows('quotes').map((row: Record<string, unknown>) => (
+              <option key={String(row.id)} value={String(row.id || '')}>
+                {String(row.quote_number || row.id || '')}
               </option>
             ))}
           </select>
@@ -158,7 +176,10 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
               <option key={item}>{item}</option>
             ))}
           </select>
-          <FinancialInputs row={invoice} setRow={setInvoice} />
+          <FinancialInputs
+            row={invoice as unknown as Record<string, unknown>}
+            setRow={(next) => setInvoice({ ...invoice, ...next } as typeof invoice)}
+          />
           <input
             type="date"
             value={invoice.due_at}
@@ -174,9 +195,9 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
           {pick({ en: 'Recent invoices & purchase orders', ar: 'أحدث الفواتير وأوامر الشراء' })}
         </summary>
         <div className="workspace-list">
-          {state.invoices.map((row) => (
+          {rows('invoices').map((row: Record<string, unknown>) => (
             <OperationalRow
-              key={row.id}
+              key={String(row.id)}
               table="invoices"
               row={row}
               label={`${row.invoice_number} · ${row.status} · ${Number(row.total || 0).toFixed(2)} ${row.currency}`}
@@ -185,9 +206,9 @@ export default function ProcurementAndBilling({ state, pick, saving, run }) {
               pick={pick}
             />
           ))}
-          {state.purchaseOrders.map((row) => (
+          {rows('purchaseOrders').map((row: Record<string, unknown>) => (
             <OperationalRow
-              key={row.id}
+              key={String(row.id)}
               table="purchase_orders"
               row={row}
               label={`${row.po_number} · ${row.status} · ${Number(row.total || 0).toFixed(2)} ${row.currency}`}

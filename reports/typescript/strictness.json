@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:41:10.985Z",
+  "generatedAt": "2026-08-09T22:42:26.104Z",
   "sourceFiles": 269,
-  "strictFiles": 249,
-  "strictCoveragePercent": 92.57,
+  "strictFiles": 251,
+  "strictCoveragePercent": 93.31,
   "legacyFiles": [
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/custom/DesignPreview.jsx",
@@ -11,8 +11,6 @@
     "src/components/operations/OperationsCommerceModules.jsx",
     "src/components/operations/OperationsEnterpriseModules.jsx",
     "src/components/operations/OperationsMasterData.jsx",
-    "src/components/operations/control/CatalogDraftManager.jsx",
-    "src/components/operations/control/ProcurementAndBilling.jsx",
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/data/generatedOptimizedImages.js",
     "src/data/lhaProducts.js",

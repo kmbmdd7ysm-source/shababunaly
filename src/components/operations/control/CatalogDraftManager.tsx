@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import {
   addCatalogVariantDraft,
@@ -5,7 +6,21 @@ import {
   createCatalogProductDraft,
 } from '../../../services/operations';
 
-export default function CatalogDraftManager({ state, pick, saving, run }) {
+export default function CatalogDraftManager({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+  [key: string]: unknown;
+}): ReactElement {
+  const s = (state || {}) as Record<string, unknown>;
+  const rows = (key: string) =>
+    Array.isArray(s[key]) ? (s[key] as Array<Record<string, unknown>>) : [];
   const [product, setProduct] = useState({
     productId: '',
     slug: '',
@@ -23,7 +38,9 @@ export default function CatalogDraftManager({ state, pick, saving, run }) {
     currency: 'USD',
   });
   const [variant, setVariant] = useState({ productId: '', sku: '', color: 'black', size: 'OS' });
-  const productIds = [...new Set(state.catalog.map((row) => row.product_id))];
+  const productIds = [
+    ...new Set(rows('catalog').map((row: Record<string, unknown>) => row.product_id)),
+  ].map((id: unknown) => String(id));
   return (
     <section className="operations-subsection">
       <h3>{pick({ en: 'Safe product & variant creation', ar: 'إنشاء آمن للمنتجات والخيارات' })}</h3>
@@ -157,8 +174,8 @@ export default function CatalogDraftManager({ state, pick, saving, run }) {
           >
             <option value="">{pick({ en: 'Select product', ar: 'اختر المنتج' })}</option>
             {productIds.map((id) => (
-              <option key={id} value={id}>
-                {id}
+              <option key={String(id)} value={String(id)}>
+                {String(id)}
               </option>
             ))}
           </select>
@@ -187,15 +204,15 @@ export default function CatalogDraftManager({ state, pick, saving, run }) {
         <summary>{pick({ en: 'Archive catalog products', ar: 'أرشفة منتجات الكتالوج' })}</summary>
         <div className="workspace-list">
           {productIds.slice(0, 200).map((id) => (
-            <article key={id}>
-              <strong>{id}</strong>
+            <article key={String(id)}>
+              <strong>{String(id)}</strong>
               <button
                 type="button"
                 className="btn-text danger"
-                disabled={saving === `archive-${id}`}
+                disabled={saving === `archive-${String(id)}`}
                 onClick={() =>
                   run(
-                    `archive-${id}`,
+                    `archive-${String(id)}`,
                     () => archiveCatalogProduct(id),
                     pick({ en: 'Product archived.', ar: 'تمت أرشفة المنتج.' }),
                   )

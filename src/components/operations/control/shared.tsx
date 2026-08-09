@@ -26,7 +26,7 @@ export function FinancialInputs({
   setRow,
 }: {
   row: Record<string, unknown>;
-  setRow: (next: Record<string, unknown>) => void;
+  setRow: (next: Record<string, unknown>) => void | unknown;
 }): ReactElement {
   return (
     <div className="operations-form-grid">
