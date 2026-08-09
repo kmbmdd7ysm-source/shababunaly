@@ -3,7 +3,7 @@ import { describe, expect, it } from './test-api.js';
 
 describe('fulfillment consistency', () => {
   it('does not turn every customizable retail product into a 30–60 day custom order', () => {
-    const source = readFileSync('src/pages/ProductPage.jsx', 'utf8');
+    const source = readFileSync('src/pages/ProductPage.tsx', 'utf8');
     expect(source).toContain("purchaseMode === 'wholesale'");
     expect(source).not.toContain('product.customizable ? shippingConfig.custom');
   });

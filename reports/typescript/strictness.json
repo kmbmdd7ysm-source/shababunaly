@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T21:07:31.798Z",
-  "sourceFiles": 266,
-  "strictFiles": 213,
-  "strictCoveragePercent": 80.08,
+  "generatedAt": "2026-08-09T21:13:27.528Z",
+  "sourceFiles": 267,
+  "strictFiles": 214,
+  "strictCoveragePercent": 80.15,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
