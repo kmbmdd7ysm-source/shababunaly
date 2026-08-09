@@ -26,7 +26,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "react-router-dom": ["types/react-router-dom-shim.d.ts"],
+      "react-router": ["types/react-router-dom-shim.d.ts"]
+    }
   },
   "include": ["types/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "api/**/*.ts"],
   "exclude": [

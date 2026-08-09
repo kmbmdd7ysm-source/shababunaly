@@ -1,7 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function AccountOverview({ cartCount, wishlistCount, compareCount, ordersCount }) {
+export default function AccountOverview({
+  cartCount,
+  wishlistCount,
+  compareCount,
+  ordersCount,
+}: {
+  cartCount: number;
+  wishlistCount: number;
+  compareCount: number;
+  ordersCount: number;
+}) {
   const { pick } = useLanguage();
   return (
     <div className="gw-account-summary">
