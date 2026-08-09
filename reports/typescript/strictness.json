@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:21:38.336Z",
+  "generatedAt": "2026-08-09T02:22:06.708Z",
   "sourceFiles": 259,
-  "strictFiles": 68,
-  "strictCoveragePercent": 26.25,
+  "strictFiles": 69,
+  "strictCoveragePercent": 26.64,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -159,7 +159,6 @@
     "api/_file-security.js",
     "api/_notification-templates.js",
     "api/_request-security.js",
-    "api/_supabase-admin.js",
     "api/admin-media-upload.js",
     "api/admin-users.js",
     "api/client-error.js",
