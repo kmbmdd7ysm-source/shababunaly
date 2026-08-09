@@ -1,14 +1,13 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:27:29.679Z",
+  "generatedAt": "2026-08-09T22:29:29.887Z",
   "sourceFiles": 269,
-  "strictFiles": 236,
-  "strictCoveragePercent": 87.73,
+  "strictFiles": 237,
+  "strictCoveragePercent": 88.1,
   "legacyFiles": [
     "src/components/account/MfaSecurityPanel.jsx",
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/account/ReturnsSection.jsx",
-    "src/components/account/SpecialRequestsSection.jsx",
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
     "src/components/custom/StudioStage.jsx",

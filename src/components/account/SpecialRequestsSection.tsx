@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -21,7 +22,7 @@ const statusLabels = {
   closed: { en: 'Closed', ar: 'مغلق' },
 };
 
-function money(value, currency) {
+function money(value: unknown, currency?: string): string {
   if (value == null) return '—';
   try {
     return new Intl.NumberFormat('en-US', {
@@ -33,44 +34,67 @@ function money(value, currency) {
   }
 }
 
-export default function SpecialRequestsSection() {
+export default function SpecialRequestsSection(): ReactElement {
   const { pick } = useLanguage();
-  const [state, setState] = useState({ loading: true, rows: [], error: '' });
+  const [state, setState] = useState<{
+    loading: boolean;
+    rows: Array<Record<string, unknown>>;
+    error: string;
+  }>({ loading: true, rows: [], error: '' });
   const [busy, setBusy] = useState('');
-  const [note, setNote] = useState({});
+  const [note, setNote] = useState<Record<string, string>>({});
   const load = useCallback(async () => {
     setState((current) => ({ ...current, loading: true, error: '' }));
     try {
-      setState({ loading: false, rows: await getMySpecialRequests(), error: '' });
+      const rows = await getMySpecialRequests();
+      setState({
+        loading: false,
+        rows: (Array.isArray(rows) ? rows : []).map((row) => row as Record<string, unknown>),
+        error: '',
+      });
     } catch (error) {
-      setState({ loading: false, rows: [], error: error?.message || 'requests_unavailable' });
+      setState({
+        loading: false,
+        rows: [],
+        error: (error instanceof Error ? error.message : '') || 'requests_unavailable',
+      });
     }
   }, []);
   useEffect(() => {
-    load();
+    void load();
   }, [load]);
 
-  const pay = async (row, paymentMethod) => {
-    setBusy(row.id);
+  const pay = async (row: Record<string, unknown>, paymentMethod: string) => {
+    setBusy(String(row.id || ''));
     try {
       await startSpecialRequestPayment({
-        requestNumber: row.request_number,
-        customerEmail: row.customer_email,
+        requestNumber: String(row.request_number || ''),
+        customerEmail: String(row.customer_email || ''),
         paymentMethod,
       });
     } catch (error) {
-      setState((current) => ({ ...current, error: error?.message || 'payment_unavailable' }));
+      setState((current) => ({
+        ...current,
+        error: (error instanceof Error ? error.message : '') || 'payment_unavailable',
+      }));
       setBusy('');
     }
   };
 
-  const respond = async (row, decision) => {
-    setBusy(row.id);
+  const respond = async (row: Record<string, unknown>, decision: string) => {
+    setBusy(String(row.id || ''));
     try {
-      await respondToSpecialRequest(row.id, decision, note[row.id] || '');
+      await respondToSpecialRequest(
+        String(row.id || ''),
+        decision,
+        note[String(row.id || '')] || '',
+      );
       await load();
     } catch (error) {
-      setState((current) => ({ ...current, error: error?.message || 'response_failed' }));
+      setState((current) => ({
+        ...current,
+        error: (error instanceof Error ? error.message : '') || 'response_failed',
+      }));
     } finally {
       setBusy('');
     }
@@ -118,47 +142,54 @@ export default function SpecialRequestsSection() {
         </div>
       ) : (
         <div className="special-request-account-grid">
-          {state.rows.map((row) => {
+          {state.rows.map((row: Record<string, unknown>) => {
             const canRespond =
-              ['quoted', 'awaiting_customer'].includes(row.status) &&
-              (!row.quote_expires_at || new Date(row.quote_expires_at) > new Date());
+              ['quoted', 'awaiting_customer'].includes(String(row.status || '')) &&
+              (!row.quote_expires_at || new Date(String(row.quote_expires_at)) > new Date());
             return (
-              <article className="special-request-account-card" key={row.id}>
+              <article className="special-request-account-card" key={String(row.id ?? '')}>
                 <div className="special-request-card-head">
-                  <strong>{row.request_number}</strong>
+                  <strong>{String(row.request_number ?? '')}</strong>
                   <span>
-                    {pick(statusLabels[row.status] || { en: row.status, ar: row.status })}
+                    {pick(
+                      (statusLabels as Record<string, { en: string; ar: string }>)[
+                        String(row.status || '')
+                      ] || {
+                        en: String(row.status || ''),
+                        ar: String(row.status || ''),
+                      },
+                    )}
                   </span>
                 </div>
-                <p>{row.description}</p>
+                <p>{String(row.description ?? '')}</p>
                 <dl>
                   <div>
                     <dt>{pick({ en: 'Quantity', ar: 'الكمية' })}</dt>
-                    <dd>{row.desired_quantity}</dd>
+                    <dd>{String(row.desired_quantity ?? '')}</dd>
                   </div>
                   <div>
                     <dt>{pick({ en: 'Created', ar: 'تاريخ الإنشاء' })}</dt>
-                    <dd>{new Date(row.created_at).toLocaleDateString()}</dd>
+                    <dd>{new Date(String(row.created_at || Date.now())).toLocaleDateString()}</dd>
                   </div>
                   {row.quote_total != null && (
                     <div>
                       <dt>{pick({ en: 'Quote total', ar: 'إجمالي العرض' })}</dt>
-                      <dd>{money(row.quote_total, row.currency)}</dd>
+                      <dd>{money(row.quote_total, String(row.currency || 'USD'))}</dd>
                     </div>
                   )}
-                  {row.estimated_arrival_days && (
+                  {Boolean(row.estimated_arrival_days) && (
                     <div>
                       <dt>{pick({ en: 'Estimated arrival', ar: 'الوصول التقديري' })}</dt>
                       <dd>
-                        {row.estimated_arrival_days} {pick({ en: 'days', ar: 'يومًا' })}
+                        {String(row.estimated_arrival_days)} {pick({ en: 'days', ar: 'يومًا' })}
                       </dd>
                     </div>
                   )}
                 </dl>
-                {row.staff_notes && (
+                {Boolean(row.staff_notes) && (
                   <div className="special-request-note">
                     <strong>{pick({ en: 'Operations note', ar: 'ملاحظة العمليات' })}</strong>
-                    <p>{row.staff_notes}</p>
+                    <p>{String(row.staff_notes || '')}</p>
                   </div>
                 )}
                 {canRespond && (
@@ -169,24 +200,31 @@ export default function SpecialRequestsSection() {
                       </span>
                       <textarea
                         rows={2}
-                        value={note[row.id] || ''}
+                        value={note[String(row.id || '')] || ''}
                         onChange={(event) =>
-                          setNote((current) => ({ ...current, [row.id]: event.target.value }))
+                          setNote((current) => ({
+                            ...current,
+                            [String(row.id || '')]: event.target.value,
+                          }))
                         }
                       />
                     </label>
                     <div>
                       <button
                         className="btn-primary compact"
-                        disabled={busy === row.id}
-                        onClick={() => respond(row, 'accepted')}
+                        disabled={busy === String(row.id || '')}
+                        onClick={() => {
+                          void respond(row, 'accepted');
+                        }}
                       >
                         {pick({ en: 'Accept quote', ar: 'قبول العرض' })}
                       </button>
                       <button
                         className="btn-secondary compact"
-                        disabled={busy === row.id}
-                        onClick={() => respond(row, 'rejected')}
+                        disabled={busy === String(row.id || '')}
+                        onClick={() => {
+                          void respond(row, 'rejected');
+                        }}
                       >
                         {pick({ en: 'Reject', ar: 'رفض' })}
                       </button>
@@ -199,8 +237,10 @@ export default function SpecialRequestsSection() {
                       <button
                         type="button"
                         className="btn-primary compact"
-                        disabled={busy === row.id}
-                        onClick={() => pay(row, 'online_card')}
+                        disabled={busy === String(row.id || '')}
+                        onClick={() => {
+                          void pay(row, 'online_card');
+                        }}
                       >
                         {pick({ en: 'Pay securely by card', ar: 'الدفع الآمن بالبطاقة' })}
                       </button>
@@ -209,18 +249,20 @@ export default function SpecialRequestsSection() {
                       <button
                         type="button"
                         className="btn-secondary compact"
-                        disabled={busy === row.id}
-                        onClick={() => pay(row, 'libyan_bank_card')}
+                        disabled={busy === String(row.id || '')}
+                        onClick={() => {
+                          void pay(row, 'libyan_bank_card');
+                        }}
                       >
                         {pick({ en: 'Libyan bank card', ar: 'بطاقة مصرفية ليبية' })}
                       </button>
                     )}
                     {!isPaymentMethodConfigured('online_card') &&
                       !isPaymentMethodConfigured('libyan_bank_card') &&
-                      row.payment_url && (
+                      Boolean(row.payment_url) && (
                         <a
                           className="btn-primary compact"
-                          href={row.payment_url}
+                          href={String(row.payment_url || '')}
                           rel="noopener noreferrer"
                         >
                           {pick({ en: 'Open secure payment', ar: 'فتح الدفع الآمن' })}
