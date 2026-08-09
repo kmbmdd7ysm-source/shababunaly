@@ -708,7 +708,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   <button
                     className="gw-btn gw-btn--secondary"
                     type="button"
-                    onClick={saveDraft}
+                    onClick={() => { void saveDraft(); }}
                     disabled={busy}
                   >
                     {pick({ en: 'Save Design', ar: 'حفظ التصميم' })}
@@ -966,7 +966,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     type="button"
                     className="btn-secondary"
                     disabled={!savedId || !auth.user?.id}
-                    onClick={async () => {
+                    onClick={() => { void (async () => {
                       try {
                         const url = await createSecureDesignShare(
                           String(savedId || ''),
@@ -989,7 +989,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                           }),
                         );
                       }
-                    }}
+                    })(); }}
                   >
                     {pick({ en: 'Secure Share Link', ar: 'رابط مشاركة آمن' })}
                   </button>
@@ -1052,7 +1052,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                       <input
                         type="file"
                         accept={ROSTER_FILE_ACCEPT}
-                        onChange={(event) => importRoster(event.target.files?.[0])}
+                        onChange={(event) => { void importRoster(event.target.files?.[0]); }}
                       />
                     </label>
                     <button
@@ -1243,7 +1243,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     </ul>
                   )}
                 </div>
-                <form className="quote-form studio-review-form" onSubmit={submit}>
+                <form className="quote-form studio-review-form" onSubmit={(event) => { void submit(event); }}>
                   <div className="field-row">
                     <label className="field">
                       <span>{pick({ en: 'Name', ar: 'الاسم' })}</span>
@@ -1379,7 +1379,8 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                 type="button"
                 className="btn-secondary"
                 disabled={busy}
-                onClick={async () => {
+                onClick={() => { void (async () => {
+                  if (!pendingSubmission) return;
                   setBusy(true);
                   const current = pendingSubmission;
                   const delivered = await deliverQuoteEmail({
@@ -1401,7 +1402,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                         }),
                   );
                   setBusy(false);
-                }}
+                })(); }}
               >
                 {pick({ en: 'Retry email notification', ar: 'إعادة محاولة إشعار البريد' })}
               </button>
