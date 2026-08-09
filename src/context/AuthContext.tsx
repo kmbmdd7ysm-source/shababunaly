@@ -1,35 +1,65 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
+import type { Session, User } from '@supabase/supabase-js';
 import {
   authRedirectUrl,
   completeAuthRedirect,
   getSupabase,
   getSupabaseConfigStatus,
-} from '../services/supabase';
-import { reportClientError } from '../services/telemetry';
+} from '../services/supabase.ts';
+import { reportClientError } from '../services/telemetry.ts';
 
-const C = createContext(null);
+type LocalAccount = {
+  id: string;
+  email: string;
+  passwordHash: string;
+  emailConfirmedAt?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
+export type AuthUser = User | (Record<string, unknown> & { id: string; email?: string });
+export type AuthContextValue = {
+  user: AuthUser | null;
+  session: Session | Record<string, unknown> | null;
+  loading: boolean;
+  cloudConfigured: boolean;
+  configStatus: ReturnType<typeof getSupabaseConfigStatus>;
+  [key: string]: unknown;
+};
+
+const C = createContext<AuthContextValue | null>(null);
 const LOCAL_ACCOUNTS_KEY = 'shababuna-local-accounts-v1';
 const LOCAL_SESSION_KEY = 'shababuna-local-session-v1';
 const allowLocalAuth =
   import.meta.env.DEV || ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
 
-const readJson = (key, fallback) => {
+const readJson = (key: string, fallback: unknown = null): unknown => {
   try {
     return JSON.parse(localStorage.getItem(key) || '') || fallback;
   } catch {
     return fallback;
   }
 };
-const writeJson = (key, value) => localStorage.setItem(key, JSON.stringify(value));
-const localUser = (record) => ({
-  id: record.id,
-  email: record.email,
-  email_confirmed_at: record.emailConfirmedAt || null,
-  confirmed_at: record.emailConfirmedAt || null,
-  user_metadata: record.metadata || {},
-  app_metadata: { provider: 'local' },
-});
-const normalizeEmail = (email) =>
+const writeJson = (key: string, value: unknown): void => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+const localUser = (record: LocalAccount): AuthUser =>
+  ({
+    id: record.id,
+    email: record.email,
+    email_confirmed_at: record.emailConfirmedAt || null,
+    confirmed_at: record.emailConfirmedAt || null,
+    user_metadata: record.metadata || {},
+    app_metadata: { provider: 'local' },
+  }) as AuthUser;
+const normalizeEmail = (email: unknown): string =>
   String(email || '')
     .trim()
     .toLowerCase();
@@ -37,8 +67,12 @@ const cloudError = () =>
   new Error(
     'Account service is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Vercel Environment Variables.',
   );
-const isTransientAuthError = (error) => {
-  const message = String(error?.message || error || '').toLowerCase();
+const isTransientAuthError = (error: unknown): boolean => {
+  const message = String(
+    (error && typeof error === 'object' && 'message' in error
+      ? (error as { message?: unknown }).message
+      : error) || '',
+  ).toLowerCase();
   return (
     message.includes('network') ||
     message.includes('fetch') ||
@@ -47,29 +81,33 @@ const isTransientAuthError = (error) => {
   );
 };
 
-async function hashPassword(value) {
+async function hashPassword(value: string): Promise<string> {
   const bytes = new TextEncoder().encode(value);
   const digest = await crypto.subtle.digest('SHA-256', bytes);
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [session, setSession] = useState(null);
+export function AuthProvider({ children }: { children?: ReactNode }) {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [session, setSession] = useState<Session | Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [cloudConfigured, setCloudConfigured] = useState(false);
   const [configStatus, setConfigStatus] = useState(getSupabaseConfigStatus());
 
   useEffect(() => {
-    let sub;
+    let sub: { unsubscribe: () => void } | undefined;
     let alive = true;
     let started = false;
 
+    const onBootstrapEvent = () => {
+      void startBootstrap();
+    };
+
     const removeBootstrapListeners = () => {
-      globalThis.removeEventListener?.('pointerdown', startBootstrap);
-      globalThis.removeEventListener?.('touchstart', startBootstrap);
-      globalThis.removeEventListener?.('keydown', startBootstrap);
-      globalThis.removeEventListener?.('lha:auth-needed', startBootstrap);
+      globalThis.removeEventListener?.('pointerdown', onBootstrapEvent);
+      globalThis.removeEventListener?.('touchstart', onBootstrapEvent);
+      globalThis.removeEventListener?.('keydown', onBootstrapEvent);
+      globalThis.removeEventListener?.('lha:auth-needed', onBootstrapEvent);
     };
 
     async function startBootstrap() {
@@ -84,7 +122,7 @@ export function AuthProvider({ children }) {
 
         if (!s) {
           if (allowLocalAuth) {
-            const saved = readJson(LOCAL_SESSION_KEY, null);
+            const saved = readJson(LOCAL_SESSION_KEY, null) as { user?: AuthUser } | null;
             if (saved?.user) {
               setSession(saved);
               setUser(saved.user);
@@ -141,10 +179,10 @@ export function AuthProvider({ children }) {
       // starts it before any account navigation can complete.
       setLoading(false);
       const options = { once: true, passive: true };
-      globalThis.addEventListener?.('pointerdown', startBootstrap, options);
-      globalThis.addEventListener?.('touchstart', startBootstrap, options);
-      globalThis.addEventListener?.('keydown', startBootstrap, { once: true });
-      globalThis.addEventListener?.('lha:auth-needed', startBootstrap, { once: true });
+      globalThis.addEventListener?.('pointerdown', onBootstrapEvent, options);
+      globalThis.addEventListener?.('touchstart', onBootstrapEvent, options);
+      globalThis.addEventListener?.('keydown', onBootstrapEvent, { once: true });
+      globalThis.addEventListener?.('lha:auth-needed', onBootstrapEvent, { once: true });
     }
 
     return () => {
@@ -156,9 +194,9 @@ export function AuthProvider({ children }) {
 
   const client = useCallback(async () => await getSupabase(), []);
 
-  const localSignUp = useCallback(async (email, password, metadata = {}) => {
+  const localSignUp = useCallback(async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
     const normalized = normalizeEmail(email);
-    const accounts = readJson(LOCAL_ACCOUNTS_KEY, []);
+    const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
     if (accounts.some((item) => item.email === normalized)) {
       return { data: null, error: new Error('An account with this email already exists.') };
     }
@@ -178,10 +216,10 @@ export function AuthProvider({ children }) {
     return { data: { user: nextUser, session: nextSession }, error: null };
   }, []);
 
-  const localSignIn = useCallback(async (email, password) => {
+  const localSignIn = useCallback(async (email: string, password: string) => {
     const normalized = normalizeEmail(email);
-    const accounts = readJson(LOCAL_ACCOUNTS_KEY, []);
-    const record = accounts.find((item) => item.email === normalized);
+    const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
+    const record = accounts.find((item: LocalAccount) => item.email === normalized);
     if (!record || record.passwordHash !== (await hashPassword(password))) {
       return { data: null, error: new Error('Invalid email or password.') };
     }
@@ -201,14 +239,14 @@ export function AuthProvider({ children }) {
       configured: cloudConfigured || allowLocalAuth,
       cloudConfigured,
       configStatus,
-      signIn: async (email, password) => {
+      signIn: async (email: string, password: string) => {
         const s = await client();
         if (!s && !allowLocalAuth) return { data: null, error: cloudError() };
         return s
           ? s.auth.signInWithPassword({ email: normalizeEmail(email), password })
           : localSignIn(email, password);
       },
-      signUp: async (email, password, metadata = {}) => {
+      signUp: async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
         const s = await client();
         if (!s && !allowLocalAuth) return { data: null, error: cloudError() };
         if (!s) return localSignUp(email, password, metadata);
@@ -282,7 +320,7 @@ export function AuthProvider({ children }) {
         }
         return lastResult;
       },
-      resendVerification: async (email) => {
+      resendVerification: async (email: string) => {
         const s = await client();
         if (!s) {
           return allowLocalAuth ? { data: {}, error: null } : { data: null, error: cloudError() };
@@ -293,27 +331,34 @@ export function AuthProvider({ children }) {
           options: { emailRedirectTo: authRedirectUrl('confirm') },
         });
       },
-      updateMetadata: async (metadata = {}) => {
+      updateMetadata: async (metadata: Record<string, unknown> = {}) => {
         const s = await client();
         if (s) return s.auth.updateUser({ data: metadata });
         if (!allowLocalAuth) return { data: null, error: cloudError() };
         if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const accounts = readJson(LOCAL_ACCOUNTS_KEY, []);
-        let updatedRecord = null;
+        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
+        let updatedRecord: LocalAccount | null = null;
         const updated = accounts.map((item) => {
           if (item.email !== user.email) return item;
           updatedRecord = { ...item, metadata: { ...(item.metadata || {}), ...metadata } };
           return updatedRecord;
         });
         writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        const nextUser = localUser(updatedRecord || { email: user.email, metadata });
+        const nextUser = localUser(
+          updatedRecord || {
+            id: String(user.id || `local-${user.email}`),
+            email: String(user.email),
+            passwordHash: '',
+            metadata,
+          },
+        );
         const nextSession = { ...(session || {}), user: nextUser };
         writeJson(LOCAL_SESSION_KEY, nextSession);
         setUser(nextUser);
         setSession(nextSession);
         return { data: { user: nextUser }, error: null };
       },
-      reset: async (email) => {
+      reset: async (email: string) => {
         const s = await client();
         if (s) {
           return s.auth.resetPasswordForEmail(normalizeEmail(email), {
@@ -321,19 +366,19 @@ export function AuthProvider({ children }) {
           });
         }
         if (!allowLocalAuth) return { data: null, error: cloudError() };
-        const exists = readJson(LOCAL_ACCOUNTS_KEY, []).some(
+        const exists = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).some(
           (item) => item.email === normalizeEmail(email),
         );
         return exists
           ? { data: {}, error: null }
           : { data: null, error: new Error('No account was found for this email.') };
       },
-      updatePassword: async (password) => {
+      updatePassword: async (password: string) => {
         const s = await client();
         if (s) return s.auth.updateUser({ password });
         if (!allowLocalAuth) return { data: null, error: cloudError() };
         if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const accounts = readJson(LOCAL_ACCOUNTS_KEY, []);
+        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
         const updated = await Promise.all(
           accounts.map(async (item) =>
             item.email === user.email
@@ -344,23 +389,24 @@ export function AuthProvider({ children }) {
         writeJson(LOCAL_ACCOUNTS_KEY, updated);
         return { data: { user }, error: null };
       },
-      updateEmail: async (email) => {
+      updateEmail: async (email: string) => {
         const s = await client();
         if (s) return s.auth.updateUser({ email: normalizeEmail(email) });
         if (!allowLocalAuth) return { data: null, error: cloudError() };
         if (!user?.email) return { data: null, error: new Error('Sign in first.') };
         const normalized = normalizeEmail(email);
-        const accounts = readJson(LOCAL_ACCOUNTS_KEY, []);
+        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
         if (accounts.some((item) => item.email === normalized && item.email !== user.email)) {
           return { data: null, error: new Error('An account with this email already exists.') };
         }
-        let updatedRecord = null;
+        let updatedRecord: LocalAccount | null = null;
         const updated = accounts.map((item) => {
           if (item.email !== user.email) return item;
           updatedRecord = { ...item, email: normalized, emailConfirmedAt: null };
           return updatedRecord;
         });
         writeJson(LOCAL_ACCOUNTS_KEY, updated);
+        if (!updatedRecord) return { data: null, error: new Error('Account not found.') };
         const nextUser = localUser(updatedRecord);
         const nextSession = { ...(session || {}), user: nextUser };
         writeJson(LOCAL_SESSION_KEY, nextSession);
@@ -368,9 +414,12 @@ export function AuthProvider({ children }) {
         setSession(nextSession);
         return { data: { user: nextUser }, error: null };
       },
-      signOut: async (scope) => {
+      signOut: async (scope?: string) => {
         const s = await client();
-        if (s) return s.auth.signOut(scope ? { scope } : undefined);
+        if (s)
+          return s.auth.signOut(
+            scope ? ({ scope } as { scope: 'global' | 'local' | 'others' }) : undefined,
+          );
         if (!allowLocalAuth) return { error: cloudError() };
         localStorage.removeItem(LOCAL_SESSION_KEY);
         setUser(null);
@@ -388,7 +437,7 @@ export function AuthProvider({ children }) {
         if (!allowLocalAuth) throw cloudError();
         writeJson(
           LOCAL_ACCOUNTS_KEY,
-          readJson(LOCAL_ACCOUNTS_KEY, []).filter((item) => item.email !== user?.email),
+          (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).filter((item) => item.email !== user?.email),
         );
         localStorage.removeItem(LOCAL_SESSION_KEY);
         setUser(null);
@@ -423,7 +472,7 @@ export function AuthProvider({ children }) {
         if (error) throw error;
         return data;
       },
-      verifyMfaTotp: async (factorId, code) => {
+      verifyMfaTotp: async (factorId: string, code: string) => {
         const s = await client();
         if (!s) throw cloudError();
         const { data, error } = await s.auth.mfa.challengeAndVerify({
@@ -439,18 +488,30 @@ export function AuthProvider({ children }) {
         setUser(refreshed.data.user || refreshed.data.session?.user || null);
         return data;
       },
-      unenrollMfaFactor: async (factorId) => {
+      unenrollMfaFactor: async (factorId: string) => {
         const s = await client();
         if (!s) throw cloudError();
         const { data, error } = await s.auth.mfa.unenroll({ factorId });
         if (error) throw error;
         return data;
       },
-    }),
+    }) as AuthContextValue,
     [user, session, loading, cloudConfigured, configStatus, client, localSignIn, localSignUp],
   );
 
   return <C.Provider value={api}>{children}</C.Provider>;
 }
 
-export const useAuth = () => useContext(C);
+export const useAuth = (): AuthContextValue => {
+  const ctx = useContext(C);
+  if (!ctx) {
+    return {
+      user: null,
+      session: null,
+      loading: true,
+      cloudConfigured: false,
+      configStatus: getSupabaseConfigStatus(),
+    };
+  }
+  return ctx;
+};
