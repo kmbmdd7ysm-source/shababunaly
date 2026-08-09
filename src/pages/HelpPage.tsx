@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
@@ -145,7 +146,7 @@ const HELP_TOPICS = [
 
 export { HELP_TOPICS };
 
-export default function HelpPage() {
+export default function HelpPage(): ReactElement {
   const { pick, lang } = useLanguage();
   const auth = useAuth();
   const [query, setQuery] = useState('');
