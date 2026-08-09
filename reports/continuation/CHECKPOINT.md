@@ -1,22 +1,24 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `456f0a497dcb83b0fb5263b9cd4c73c892f1f8ae`
+- SHA: `8c76afe6d10e7d822321eb32100c93e1bed0658d`
 - TypeScript: **94.07%** (254/270)
 - CSS: global !important **68** · premium **36**
 - Remaining JSX (**5**): components/account/OrganizationWorkspace.jsx, components/operations/OperationsCommerceModules.jsx, components/operations/OperationsEnterpriseModules.jsx, components/operations/OperationsMasterData.jsx, components/product/engines/Realtime3DEngine.jsx
 
 ## Exact next unfinished
-1. **OrganizationWorkspace.tsx** with explicit WorkspaceState (arrays typed) — keep nested cards in-file initially
-2. OperationsCommerceModules · OperationsEnterpriseModules · OperationsMasterData  
-3. Remaining src JS · Phase 2 CSS ownership · Phases 5–35 · final SHA evidence
+1. **OrganizationWorkspace.tsx** — start with typed `WorkspaceState` (no file split required)
+2. OperationsCommerceModules · OperationsEnterpriseModules · OperationsMasterData
+3. Remaining src JS (designExports/orders/operations/b2b/products/translations/utils/…)
+4. Phase 2 CSS ownership extinction
+5. Phases 5–35 + final SHA evidence
 
-## Completed this resume (from CheckoutPage ~82%)
-ALL pages · App/main · ProductCard/Icon/Search/Hero · Account Addresses/SpecialRequests/Returns/MFA · StudioStage/DesignPreview/ProductionDesignEditor · ops control/* · BI · SectionView · CSS passes 7–11
+## Completed this resume
+CheckoutPage → ProductionDesignEditor path: pages/entry/account/studio/ops-control/CSS culls. Coverage ~82% → **94%+**.
 
 ## Next command
 ```bash
 cd /workspace && git rev-parse HEAD
-# OrganizationWorkspace.tsx — WorkspaceState first, then nested prop types
+# OrganizationWorkspace.tsx WorkspaceState typing (monolith)
 npm run typecheck
 ```
 
