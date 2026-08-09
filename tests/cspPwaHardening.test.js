@@ -68,7 +68,7 @@ describe('CSP and PWA hardening', { concurrency: false }, () => {
       '../src/components/layout/CartDrawer.jsx',
       '../src/components/custom/ProductionDesignEditor.jsx',
       '../src/components/media/MediaLightbox.jsx',
-      '../src/components/common/SmartImage.jsx',
+      '../src/components/common/SmartImage.tsx',
     ];
     for (const file of sourceFiles) {
       const source = await readFile(new URL(file, import.meta.url), 'utf8');
