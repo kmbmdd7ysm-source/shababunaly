@@ -1,7 +1,7 @@
 import { useCommerce } from '../../context/CommerceContext';
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function CurrencySelector({ compact = false }) {
+export default function CurrencySelector({ compact = false }: { compact?: boolean }) {
   const { currency, setCurrency } = useCommerce();
   const { pick } = useLanguage();
   return (
