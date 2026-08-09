@@ -23,6 +23,7 @@ declare module 'react-router-dom' {
     className?: string | ((args: { isActive: boolean }) => string);
     children?: ReactNode;
     end?: boolean;
+    onClick?: (event?: unknown) => void;
   }>;
 
   export const Navigate: ComponentType<{ to: To; replace?: boolean; state?: unknown }>;

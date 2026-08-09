@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { SITE } from '../../config';
@@ -48,8 +49,10 @@ const SearchOverlay = lazy(() => import('./SearchOverlay'));
  * three analytics events, route-change close, scroll lock, focus trap, Escape,
  * and the rAF focus restore to the trigger.
  */
-export default function MainHeader() {
+export default function MainHeader(): ReactElement {
   const { t, pick, lang, setLang } = useLanguage();
+  const nav = (t.nav || {}) as Record<string, string>;
+  const a11y = (t.a11y || {}) as Record<string, string>;
   const { count, openDrawer } = useCart();
   const compare = useCompare();
   const wishlist = useWishlist();
@@ -57,7 +60,7 @@ export default function MainHeader() {
   const { countryCode } = useCommerce();
   const isLibya = countryCode === 'LY';
   const featuredShopLinks = megaMenu.featured.filter(
-    (item) => isLibya || item.key !== 'readyToShip',
+    (item: { key?: string }) => isLibya || item.key !== 'readyToShip',
   );
   const location = useLocation();
 
@@ -65,9 +68,9 @@ export default function MainHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [condensed, setCondensed] = useState(true);
 
-  const searchButton = useRef(null);
-  const menuButton = useRef(null);
-  const navPanel = useRef(null);
+  const searchButton = useRef<HTMLButtonElement | null>(null);
+  const menuButton = useRef<HTMLButtonElement | null>(null);
+  const navPanel = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => setNavOpen(false), [location.pathname]);
 
@@ -104,11 +107,14 @@ export default function MainHeader() {
   useEffect(() => {
     if (!navOpen) return undefined;
     const unlock = lockDocumentScroll();
-    const focusable = () => [
-      ...navPanel.current.querySelectorAll('a[href],button:not([disabled]),select'),
-    ];
+    const focusable = (): HTMLElement[] =>
+      navPanel.current
+        ? ([
+            ...navPanel.current.querySelectorAll('a[href],button:not([disabled]),select'),
+          ] as HTMLElement[])
+        : [];
     focusable()[0]?.focus();
-    const key = (event) => {
+    const key = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setNavOpen(false);
         return;
@@ -118,6 +124,7 @@ export default function MainHeader() {
       if (!items.length) return;
       const first = items[0];
       const last = items.at(-1);
+      if (!first || !last) return;
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
@@ -142,7 +149,20 @@ export default function MainHeader() {
     setLang(next);
     trackEvent('language_change', { language: next });
   };
-  const navLabel = (item) => t.nav[item.key] || pick(item.label || { en: item.key, ar: item.key });
+  type NavItem = {
+    key?: string;
+    to?: string;
+    label?: { en?: string; ar?: string } | string;
+    icon?: string;
+  };
+  const navLabel = (item: NavItem) =>
+    (item.key && nav[item.key]) ||
+    pick(
+      (typeof item.label === 'object' && item.label) || {
+        en: String(item.key || ''),
+        ar: String(item.key || ''),
+      },
+    );
   const close = () => setNavOpen(false);
 
   const wordmark = pick({
@@ -165,11 +185,11 @@ export default function MainHeader() {
             <img className="gw-head-brand-dark" src={wordmarkDark} alt="" width="168" height="42" />
           </Link>
 
-          <nav className="gw-head-nav" aria-label={t.a11y.mainNav}>
+          <nav className="gw-head-nav" aria-label={a11y.mainNav}>
             {mainNav
               .filter((item) => item.key !== 'home')
-              .map((item) => (
-                <NavLink key={item.to} to={item.to} className="gw-head-link">
+              .map((item: NavItem) => (
+                <NavLink key={String(item.to)} to={String(item.to || '/')} className="gw-head-link">
                   {navLabel(item)}
                 </NavLink>
               ))}
@@ -180,7 +200,7 @@ export default function MainHeader() {
               ref={searchButton}
               className="gw-tool"
               onClick={() => setSearchOpen(true)}
-              aria-label={t.a11y.openSearch}
+              aria-label={a11y.openSearch}
             >
               <Icon name="search" />
             </button>
@@ -216,7 +236,7 @@ export default function MainHeader() {
                 trackEvent('bag_header_click');
                 openDrawer();
               }}
-              aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
+              aria-label={`${a11y.openCart}${count ? `, ${count}` : ''}`}
             >
               <Icon name="bag" />
               {count > 0 && <b className="gw-tally">{count}</b>}
@@ -231,7 +251,7 @@ export default function MainHeader() {
               }}
               aria-expanded={navOpen}
               aria-controls="gw-nav-overlay"
-              aria-label={t.a11y.openMenu}
+              aria-label={a11y.openMenu}
             >
               <span className="gw-menu-key-bars" aria-hidden="true">
                 <i />
@@ -254,18 +274,18 @@ export default function MainHeader() {
           <Link to="/" className="gw-nav-brand" onClick={close} aria-label={SITE.name}>
             <img src={wordmark} alt="" width="168" height="42" />
           </Link>
-          <button className="gw-nav-close" onClick={close} aria-label={t.a11y.closeMenu}>
+          <button className="gw-nav-close" onClick={close} aria-label={a11y.closeMenu}>
             <Icon name="close" />
             <span>{pick({ en: 'Close', ar: 'إغلاق' })}</span>
           </button>
         </div>
 
-        <nav className="gw-nav-body" aria-label={t.a11y.mobileNav}>
+        <nav className="gw-nav-body" aria-label={a11y.mobileNav}>
           <div className="gw-nav-primary">
-            {mainNav.map((item) => (
+            {mainNav.map((item: NavItem) => (
               <NavLink
-                key={item.to}
-                to={item.to}
+                key={String(item.to)}
+                to={String(item.to || '/')}
                 end={item.to === '/'}
                 onClick={close}
                 className="gw-nav-major"
@@ -281,7 +301,7 @@ export default function MainHeader() {
               <p className="gw-spec">{pick({ en: 'Departments', ar: 'الأقسام' })}</p>
               {featuredShopLinks.map((link) => (
                 <Link key={link.to} to={link.to} onClick={close} className="gw-nav-minor">
-                  {t.nav[link.key]}
+                  {nav[link.key]}
                 </Link>
               ))}
             </div>
@@ -318,7 +338,7 @@ export default function MainHeader() {
                     type="button"
                     className="gw-nav-minor gw-nav-minor--button"
                     onClick={async () => {
-                      await auth.signOut();
+                      await void (typeof auth.signOut === 'function' ? auth.signOut() : undefined);
                       close();
                     }}
                   >
