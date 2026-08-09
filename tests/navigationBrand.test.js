@@ -26,7 +26,7 @@ describe('brand and navigation', () => {
   });
 
   it('supports both personal and team/business registration paths', () => {
-    const source = readFileSync(new URL('../src/pages/AccountPage.jsx', import.meta.url), 'utf8');
+    const source = readFileSync(new URL('../src/pages/AccountPage.tsx', import.meta.url), 'utf8');
     expect(source).toContain("accountType === 'customer'");
     expect(source).toContain("accountType === 'organization'");
     expect(source).toContain('organization_name');

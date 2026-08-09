@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement, RefObject } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -44,26 +45,58 @@ const ACCOUNT_SECTIONS = [
   'preferences',
   'security',
 ];
-const clean = (s) =>
+const clean = (s: unknown) =>
   String(s || '')
     .replace(/[<>]/g, '')
     .trim()
     .slice(0, 100);
-export default function AccountPage() {
-  const { pick, lang } = useLanguage(),
-    auth = useAuth(),
-    data = useUserData(),
-    cart = useCart(),
-    compare = useCompare(),
-    commerce = useCommerce();
+export default function AccountPage(): ReactElement {
+  const { pick, lang } = useLanguage();
+  type AuthLike = {
+    user:
+      | (Record<string, unknown> & {
+          id?: string;
+          email?: string;
+          user_metadata?: Record<string, unknown>;
+        })
+      | null;
+    session?: { access_token?: string } | null;
+    loading?: boolean;
+    configured?: boolean;
+    signIn: (email: string, password: string) => Promise<unknown>;
+    signUp: (email: string, password: string, meta?: Record<string, unknown>) => Promise<unknown>;
+    reset: (email: string) => Promise<unknown>;
+    updatePassword: (password: string) => Promise<unknown>;
+    updateEmail: (email: string) => Promise<unknown>;
+    updateMetadata: (meta: Record<string, unknown>) => Promise<unknown>;
+    resendVerification: (email?: string) => Promise<unknown>;
+    signOut: () => Promise<unknown>;
+    cloudConfigured?: boolean;
+    [key: string]: unknown;
+  };
+  type AuthResult = { error?: unknown; data?: { session?: unknown } | null };
+  const auth = useAuth() as unknown as AuthLike;
+  const data = useUserData() as {
+    profile?: Record<string, unknown>;
+    wishlist?: unknown[];
+    recentlyViewed?: unknown[];
+    saveProfile?: (p: Record<string, unknown>) => Promise<unknown>;
+    clearPersonalization?: () => void;
+    [key: string]: unknown;
+  };
+  const cart = useCart();
+  const compare = useCompare();
+  const commerce = useCommerce();
+  const profileData = (data.profile || {}) as Record<string, unknown>;
+  const meta = (auth.user?.user_metadata || {}) as Record<string, unknown>;
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const returnTo = safeInternalReturnPath(params.get('returnTo'), '');
-  const requestedSection = params.get('section');
+  const requestedSection = params.get('section') || '';
   const initialSection = ACCOUNT_SECTIONS.includes(requestedSection)
     ? requestedSection
     : 'overview';
-  const requestedMode = params.get('mode');
+  const requestedMode = params.get('mode') || '';
   const initialMode = ['signin', 'signup', 'reset', 'reset-password'].includes(requestedMode)
     ? requestedMode
     : 'signin';
@@ -78,61 +111,50 @@ export default function AccountPage() {
     [confirmPassword, setConfirmPassword] = useState(''),
     [photoPreview, setPhotoPreview] = useState(''),
     [verificationEmail, setVerificationEmail] = useState(''),
-    [accountEmail, setAccountEmail] = useState(auth.user?.email || ''),
+    [accountEmail, setAccountEmail] = useState(String(auth.user?.email || '')),
     [show, setShow] = useState(false),
     [busy, setBusy] = useState(false),
     [msg, setMsg] = useState(''),
-    [ordersState, setOrdersState] = useState({ state: 'idle', orders: [], error: null }),
-    [profile, setProfile] = useState(() => ({
-      firstName:
-        data?.profile?.first_name ||
-        data?.profile?.firstName ||
-        auth.user?.user_metadata?.first_name ||
-        '',
-      lastName:
-        data?.profile?.last_name ||
-        data?.profile?.lastName ||
-        auth.user?.user_metadata?.last_name ||
-        '',
+    [ordersState, setOrdersState] = useState<{
+      state: string;
+      orders: Array<Record<string, unknown>>;
+      error: unknown;
+    }>({ state: 'idle', orders: [], error: null }),
+    [profile, setProfile] = useState<Record<string, unknown>>(() => ({
+      firstName: profileData.first_name || profileData.firstName || meta.first_name || '',
+      lastName: profileData.last_name || profileData.lastName || meta.last_name || '',
       displayName:
-        data?.profile?.display_name ||
-        data?.profile?.displayName ||
-        auth.user?.user_metadata?.display_name ||
-        auth.user?.user_metadata?.fullName ||
+        profileData.display_name ||
+        profileData.displayName ||
+        meta.display_name ||
+        meta.fullName ||
         '',
       accountType:
-        data?.profile?.account_type ||
-        data?.profile?.accountType ||
-        auth.user?.user_metadata?.account_type ||
-        'customer',
+        profileData.account_type || profileData.accountType || meta.account_type || 'customer',
       organizationName:
-        data?.profile?.organization_name ||
-        data?.profile?.organizationName ||
-        auth.user?.user_metadata?.organization_name ||
+        profileData.organization_name ||
+        profileData.organizationName ||
+        meta.organization_name ||
         '',
       organizationType:
-        data?.profile?.organization_type ||
-        data?.profile?.organizationType ||
-        auth.user?.user_metadata?.organization_type ||
+        profileData.organization_type ||
+        profileData.organizationType ||
+        meta.organization_type ||
         'club',
-      preferredLanguage: data?.profile?.preferred_language || lang,
-      preferredSize: data?.profile?.preferred_size || '',
-      preferredColors: data?.profile?.preferred_colors || [],
-      marketingConsent: Boolean(data?.profile?.marketing_consent),
-      phone: auth.user?.user_metadata?.phone || '',
-      avatarUrl:
-        data?.profile?.avatar_url ||
-        data?.profile?.avatarUrl ||
-        auth.user?.user_metadata?.avatar_url ||
-        '',
+      preferredLanguage: profileData.preferred_language || lang,
+      preferredSize: profileData.preferred_size || '',
+      preferredColors: profileData.preferred_colors || [],
+      marketingConsent: Boolean(profileData.marketing_consent),
+      phone: meta.phone || '',
+      avatarUrl: profileData.avatar_url || profileData.avatarUrl || meta.avatar_url || '',
     }));
-  const nameRef = useRef(null),
-    organizationRef = useRef(null),
-    emailRef = useRef(null),
-    passwordRef = useRef(null),
-    confirmRef = useRef(null),
-    photoRef = useRef(null);
-  const focusField = (ref) =>
+  const nameRef = useRef<HTMLInputElement | null>(null),
+    organizationRef = useRef<HTMLInputElement | null>(null),
+    emailRef = useRef<HTMLInputElement | null>(null),
+    passwordRef = useRef<HTMLInputElement | null>(null),
+    confirmRef = useRef<HTMLInputElement | null>(null),
+    photoRef = useRef<HTMLInputElement | null>(null);
+  const focusField = (ref: RefObject<HTMLInputElement | null> | null | undefined) =>
     requestAnimationFrame(() => {
       const node = ref?.current;
       if (!node) return;
@@ -141,19 +163,18 @@ export default function AccountPage() {
       node.scrollIntoView?.({ block: 'center', behavior: reduced ? 'auto' : 'smooth' });
     });
   useEffect(() => {
-    const nextSection = ACCOUNT_SECTIONS.includes(params.get('section'))
-      ? params.get('section')
-      : 'overview';
+    const sectionParam = params.get('section') || '';
+    const nextSection = ACCOUNT_SECTIONS.includes(sectionParam) ? sectionParam : 'overview';
     setSection(nextSection);
   }, [params]);
   useEffect(() => {
-    const nextMode = params.get('mode');
+    const nextMode = params.get('mode') || '';
     if (['signin', 'signup', 'reset', 'reset-password'].includes(nextMode)) setMode(nextMode);
   }, [params]);
   useEffect(() => {
     if (auth.loading || params.get('verified') !== '1') return;
     setMode('signin');
-    setVerificationEmail(auth.user?.email || '');
+    setVerificationEmail(String(auth.user?.email || ''));
     setMsg(
       auth.user
         ? pick({
@@ -168,55 +189,53 @@ export default function AccountPage() {
     const nextParams = new URLSearchParams(params);
     nextParams.delete('verified');
     nextParams.delete('mode');
-    setParams(nextParams, { replace: true });
+    setParams(nextParams);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, params, pick, setParams]);
   useEffect(() => {
-    if (!auth.user) return;
-    setAccountEmail(auth.user.email || '');
+    const user = auth.user;
+    if (!user) return;
+    const userMeta = (user.user_metadata || {}) as Record<string, unknown>;
+    setAccountEmail(String(user.email || ''));
     setProfile((current) => ({
       ...current,
-      firstName: current.firstName || auth.user.user_metadata?.first_name || '',
-      lastName: current.lastName || auth.user.user_metadata?.last_name || '',
-      displayName:
-        current.displayName ||
-        auth.user.user_metadata?.display_name ||
-        auth.user.user_metadata?.fullName ||
-        '',
+      firstName: current.firstName || userMeta.first_name || '',
+      lastName: current.lastName || userMeta.last_name || '',
+      displayName: current.displayName || userMeta.display_name || userMeta.fullName || '',
       accountType:
-        data?.profile?.account_type ||
-        data?.profile?.accountType ||
-        auth.user.user_metadata?.account_type ||
+        profileData.account_type ||
+        profileData.accountType ||
+        userMeta.account_type ||
         current.accountType ||
         'customer',
       organizationName:
-        data?.profile?.organization_name ||
-        data?.profile?.organizationName ||
-        auth.user.user_metadata?.organization_name ||
+        profileData.organization_name ||
+        profileData.organizationName ||
+        userMeta.organization_name ||
         current.organizationName ||
         '',
       organizationType:
-        data?.profile?.organization_type ||
-        data?.profile?.organizationType ||
-        auth.user.user_metadata?.organization_type ||
+        profileData.organization_type ||
+        profileData.organizationType ||
+        userMeta.organization_type ||
         current.organizationType ||
         'club',
-      phone: auth.user.user_metadata?.phone || current.phone || '',
+      phone: userMeta.phone || current.phone || '',
       avatarUrl:
         current.avatarUrl ||
-        data?.profile?.avatar_url ||
-        data?.profile?.avatarUrl ||
-        auth.user.user_metadata?.avatar_url ||
+        profileData.avatar_url ||
+        profileData.avatarUrl ||
+        userMeta.avatar_url ||
         '',
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id, auth.user?.user_metadata, data?.profile]);
-  const selectSection = (nextSection) => {
+  const selectSection = (nextSection: string) => {
     setSection(nextSection);
     const nextParams = new URLSearchParams(params);
     if (nextSection === 'overview') nextParams.delete('section');
     else nextParams.set('section', nextSection);
-    setParams(nextParams, { replace: true });
+    setParams(nextParams);
   };
   useEffect(
     () => () => {
@@ -230,10 +249,17 @@ export default function AccountPage() {
       ...current,
       state: current.orders.length ? 'retrying' : 'loading',
     }));
-    setOrdersState(await getMyOrders(auth.user.id));
+    const ordersResult = await getMyOrders(String(auth.user.id));
+    setOrdersState({
+      state: String(ordersResult.state || 'error'),
+      orders: Array.isArray(ordersResult.orders)
+        ? (ordersResult.orders as Array<Record<string, unknown>>)
+        : [],
+      error: ordersResult.error ?? null,
+    });
   };
   useEffect(() => {
-    loadOrders();
+    void loadOrders();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
   const clearPhotoPreview = () => {
@@ -261,14 +287,16 @@ export default function AccountPage() {
         {pick({ en: 'Restoring your session…', ar: 'جارٍ استعادة جلستك…' })}
       </div>
     );
-  const submit = async (e) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBusy(true);
     setMsg('');
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const fail = (message, ref) => {
-        const error = new Error(message);
+      const fail = (message: string, ref: RefObject<HTMLInputElement | null>) => {
+        const error = new Error(message) as Error & {
+          fieldRef?: RefObject<HTMLInputElement | null>;
+        };
         error.fieldRef = ref;
         throw error;
       };
@@ -319,9 +347,10 @@ export default function AccountPage() {
       } else if (mode === 'reset') r = await auth.reset(normalizedEmail);
       else if (mode === 'reset-password') r = await auth.updatePassword(password);
       else r = await auth.signIn(normalizedEmail, password);
-      if (r?.error) throw r.error;
+      const authResult = (r || {}) as AuthResult;
+      if (authResult.error) throw authResult.error;
       if (mode === 'reset-password') setMode('signin');
-      if (mode === 'signup' && !r?.data?.session && auth.cloudConfigured) {
+      if (mode === 'signup' && !authResult.data?.session && auth.cloudConfigured) {
         setVerificationEmail(normalizedEmail);
       } else if (mode !== 'signin') {
         setVerificationEmail('');
@@ -351,12 +380,14 @@ export default function AccountPage() {
         }),
       );
       if (returnTo && mode === 'signin') navigate(returnTo, { replace: true });
-      if (returnTo && mode === 'signup' && r?.data?.session) navigate(returnTo, { replace: true });
+      if (returnTo && mode === 'signup' && authResult.data?.session)
+        navigate(returnTo, { replace: true });
     } catch (x) {
       const mapped = mapError(x);
       if (mapped.code === 'auth_unverified') setVerificationEmail(email.trim().toLowerCase());
       setMsg(mapped.message[lang] || mapped.message.en);
-      focusField(x.fieldRef);
+      const fieldRef = (x as { fieldRef?: RefObject<HTMLInputElement | null> }).fieldRef;
+      if (fieldRef) focusField(fieldRef);
     } finally {
       setBusy(false);
     }
@@ -411,7 +442,13 @@ export default function AccountPage() {
             </ol>
           </aside>
           <section className="gw-gate">
-            <form className="gw-gate-form" onSubmit={submit} noValidate>
+            <form
+              className="gw-gate-form"
+              onSubmit={(event) => {
+                void submit(event);
+              }}
+              noValidate
+            >
               <p className="gw-spec">SHABABUNA ACCOUNT</p>
               <h1 className="gw-gate-title">
                 {pick({
@@ -591,7 +628,7 @@ export default function AccountPage() {
                       ref={passwordRef}
                       type={show ? 'text' : 'password'}
                       dir="ltr"
-                      minLength="8"
+                      minLength={8}
                       autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                       required
                       value={password}
@@ -620,7 +657,7 @@ export default function AccountPage() {
                     dir="ltr"
                     autoComplete="new-password"
                     required
-                    minLength="8"
+                    minLength={8}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
@@ -654,22 +691,26 @@ export default function AccountPage() {
                       type="button"
                       className="btn-secondary"
                       disabled={busy}
-                      onClick={async () => {
-                        setBusy(true);
-                        try {
-                          const result = await auth.resendVerification(verificationEmail);
-                          if (result?.error) throw result.error;
-                          setMsg(
-                            pick({
-                              en: 'Verification email sent again. Check your inbox and spam folder.',
-                              ar: 'تم إرسال رابط التأكيد من جديد. راجع الوارد والرسائل غير المرغوب فيها.',
-                            }),
-                          );
-                        } catch (error) {
-                          setMsg(errorText(error, lang));
-                        } finally {
-                          setBusy(false);
-                        }
+                      onClick={() => {
+                        void (async () => {
+                          setBusy(true);
+                          try {
+                            const result = (await auth.resendVerification(
+                              verificationEmail,
+                            )) as AuthResult;
+                            if (result?.error) throw result.error;
+                            setMsg(
+                              pick({
+                                en: 'Verification email sent again. Check your inbox and spam folder.',
+                                ar: 'تم إرسال رابط التأكيد من جديد. راجع الوارد والرسائل غير المرغوب فيها.',
+                              }),
+                            );
+                          } catch (error) {
+                            setMsg(errorText(error, lang));
+                          } finally {
+                            setBusy(false);
+                          }
+                        })();
                       }}
                     >
                       {pick({ en: 'Resend verification', ar: 'إعادة إرسال التأكيد' })}
@@ -731,11 +772,11 @@ export default function AccountPage() {
         </div>
       </>
     );
-  const save = async (e) => {
+  const save = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBusy(true);
     try {
-      await data.saveProfile({
+      await data.saveProfile?.({
         ...profile,
         firstName: clean(profile.firstName),
         lastName: clean(profile.lastName),
@@ -750,7 +791,7 @@ export default function AccountPage() {
       const lastName = clean(profile.lastName);
       const displayName =
         clean(profile.displayName) || [firstName, lastName].filter(Boolean).join(' ');
-      const metadataResult = await auth.updateMetadata({
+      const metadataResult = (await auth.updateMetadata({
         first_name: firstName,
         last_name: lastName,
         display_name: displayName,
@@ -762,11 +803,11 @@ export default function AccountPage() {
         organization_type:
           profile.accountType === 'organization' ? profile.organizationType || 'club' : '',
         avatar_url: profile.avatarUrl || null,
-      });
+      })) as AuthResult;
       if (metadataResult?.error) throw metadataResult.error;
       const normalizedAccountEmail = accountEmail.trim().toLowerCase();
-      if (normalizedAccountEmail && normalizedAccountEmail !== auth.user.email) {
-        const emailResult = await auth.updateEmail(normalizedAccountEmail);
+      if (normalizedAccountEmail && normalizedAccountEmail !== String(auth.user?.email || '')) {
+        const emailResult = (await auth.updateEmail(normalizedAccountEmail)) as AuthResult;
         if (emailResult?.error) throw emailResult.error;
         setMsg(
           pick({
@@ -779,7 +820,8 @@ export default function AccountPage() {
       }
     } catch (x) {
       setMsg(errorText(x, lang));
-      focusField(x.fieldRef);
+      const fieldRef = (x as { fieldRef?: RefObject<HTMLInputElement | null> }).fieldRef;
+      if (fieldRef) focusField(fieldRef);
     } finally {
       setBusy(false);
     }
@@ -797,12 +839,13 @@ export default function AccountPage() {
           <div className="gw-account-identity">
             <label className="gw-account-avatar">
               <Avatar
-                name={
+                name={String(
                   profile.displayName ||
-                  `${profile.firstName} ${profile.lastName}` ||
-                  auth.user.email
-                }
-                src={photoPreview || profile.avatarUrl}
+                    `${String(profile.firstName || '')} ${String(profile.lastName || '')}`.trim() ||
+                    auth.user?.email ||
+                    '',
+                )}
+                src={String(photoPreview || profile.avatarUrl || '')}
                 size="large"
               />
               <span>{pick({ en: 'Change photo', ar: 'تغيير الصورة' })}</span>
@@ -835,8 +878,10 @@ export default function AccountPage() {
 
                     // Save to both durable profile storage and auth metadata. Either source can
                     // restore the avatar on another device, and the UI updates immediately.
+                    const saveProfile = data.saveProfile;
+                    if (!saveProfile) throw new Error('profile_save_unavailable');
                     const [profileResult, metadataResult] = await Promise.allSettled([
-                      data.saveProfile(nextProfile),
+                      saveProfile(nextProfile),
                       auth.updateMetadata({ avatar_url: avatarUrl }),
                     ]);
                     if (
@@ -845,8 +890,11 @@ export default function AccountPage() {
                     ) {
                       throw profileResult.reason || metadataResult.reason;
                     }
-                    if (metadataResult.status === 'fulfilled' && metadataResult.value?.error) {
-                      if (profileResult.status === 'rejected') throw metadataResult.value.error;
+                    if (metadataResult.status === 'fulfilled') {
+                      const metaValue = metadataResult.value as AuthResult;
+                      if (metaValue?.error && profileResult.status === 'rejected') {
+                        throw metaValue.error;
+                      }
                     }
 
                     setProfile((current) => ({ ...current, avatarUrl }));
@@ -861,7 +909,7 @@ export default function AccountPage() {
                     setProfile((current) => ({ ...current, avatarUrl: previousAvatar }));
                     clearPhotoPreview();
                     setMsg(
-                      error?.message === 'invalid_profile_image'
+                      error instanceof Error && error.message === 'invalid_profile_image'
                         ? pick({
                             en: 'Choose a valid photo under 8 MB. JPG, PNG, WebP, HEIC, and HEIF are supported by compatible devices.',
                             ar: 'اختر صورة صالحة أقل من 8 ميجابايت. يدعم الجهاز الصيغ المتوافقة مثل JPG وPNG وWebP وHEIC وHEIF.',
@@ -879,22 +927,26 @@ export default function AccountPage() {
               <p className="gw-spec">SHABABUNA ACCOUNT</p>
               <h1 className="gw-account-title">{pick({ en: 'Your account', ar: 'حسابك' })}</h1>
               <p className="gw-account-meta">
-                <span className="gw-isolate-ltr">{auth.user.email}</span>
-                <span className="gw-account-sync" data-status={data.status}>
-                  {data.status}
+                <span className="gw-isolate-ltr">{String(auth.user?.email || '')}</span>
+                <span className="gw-account-sync" data-status={String(data.status || '')}>
+                  {String(data.status || '')}
                 </span>
               </p>
             </div>
             <button
               className="gw-btn gw-btn--secondary gw-account-signout"
-              onClick={async () => {
-                try {
-                  await data.flush?.();
-                } catch {
-                  /* ignore */
-                }
-                data.clearAuthenticatedState?.();
-                await auth.signOut();
+              onClick={() => {
+                void (async () => {
+                  try {
+                    const flush = data.flush as (() => Promise<unknown>) | undefined;
+                    if (flush) await flush();
+                  } catch {
+                    /* ignore */
+                  }
+                  const clear = data.clearAuthenticatedState as (() => void) | undefined;
+                  clear?.();
+                  await auth.signOut();
+                })();
               }}
             >
               {pick({ en: 'Sign out', ar: 'تسجيل الخروج' })}
@@ -904,11 +956,20 @@ export default function AccountPage() {
             <AccountRegister sections={t} section={section} selectSection={selectSection} />
             <div className="gw-account-panel">
               {section === 'overview' && (
-                <AccountOverview cartCount={cart.count} wishlistCount={data.wishlist.length} compareCount={compare.count} ordersCount={ordersState.orders.length} />
+                <AccountOverview
+                  cartCount={Number(cart.count) || 0}
+                  wishlistCount={(data.wishlist || []).length}
+                  compareCount={Number(compare.count) || 0}
+                  ordersCount={ordersState.orders.length}
+                />
               )}
               {section === 'orders' && (
                 <LazyAccountSection>
-                  <OrdersSection pick={pick} ordersState={ordersState} loadOrders={loadOrders} />
+                  <OrdersSection
+                    pick={pick as never}
+                    ordersState={ordersState as never}
+                    loadOrders={loadOrders}
+                  />
                 </LazyAccountSection>
               )}
               {section === 'workspace' && <OrganizationWorkspace />}
@@ -917,50 +978,54 @@ export default function AccountPage() {
               {section === 'profile' && (
                 <LazyAccountSection>
                   <ProfileSection
-                  pick={pick}
-                  lang={lang}
-                  auth={auth}
-                  profile={profile}
-                  setProfile={setProfile}
-                  accountEmail={accountEmail}
-                  setAccountEmail={setAccountEmail}
-                  busy={busy}
-                  setBusy={setBusy}
-                  setMsg={setMsg}
-                  save={save}
-                  clearPhotoPreview={clearPhotoPreview}
-                  data={data}
-                />
+                    pick={pick as never}
+                    lang={lang}
+                    auth={auth as never}
+                    profile={profile}
+                    setProfile={setProfile}
+                    accountEmail={accountEmail}
+                    setAccountEmail={setAccountEmail}
+                    busy={busy}
+                    setBusy={setBusy}
+                    setMsg={setMsg}
+                    save={save as never}
+                    clearPhotoPreview={clearPhotoPreview}
+                    data={data as never}
+                  />
                 </LazyAccountSection>
               )}
               {section === 'saved' && (
                 <LazyAccountSection>
                   <SavedSection
-                  pick={pick}
-                  wishlistCount={data.wishlist.length}
-                  recentlyViewedCount={data.recentlyViewed.length}
-                  compareCount={compare.count}
-                />
+                    pick={pick as never}
+                    wishlistCount={(data.wishlist || []).length}
+                    recentlyViewedCount={(data.recentlyViewed || []).length}
+                    compareCount={Number(compare.count) || 0}
+                  />
                 </LazyAccountSection>
               )}
               {section === 'addresses' && (
-                <AddressesSection userId={auth.user.id} pick={pick} language={lang} />
+                <AddressesSection
+                  userId={String(auth.user?.id || '')}
+                  pick={pick as never}
+                  language={lang}
+                />
               )}{' '}
               {section === 'preferences' && (
                 <LazyAccountSection>
                   <PreferencesSection
-                  pick={pick}
-                  profile={profile}
-                  setProfile={setProfile}
-                  save={save}
-                  commerce={commerce}
-                  data={data}
-                />
+                    pick={pick as never}
+                    profile={profile}
+                    setProfile={setProfile}
+                    save={save}
+                    commerce={commerce as never}
+                    data={data as never}
+                  />
                 </LazyAccountSection>
               )}
               {section === 'security' && (
                 <LazyAccountSection>
-                  <SecuritySection auth={auth} pick={pick} lang={lang} />
+                  <SecuritySection auth={auth as never} pick={pick as never} lang={lang} />
                 </LazyAccountSection>
               )}
               {msg && (

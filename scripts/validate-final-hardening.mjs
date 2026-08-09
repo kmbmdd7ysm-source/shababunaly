@@ -88,7 +88,7 @@ for (const token of [
   'returnableItems',
 ])
   has(returns, token, `returns UI ${token}`);
-const account = read('src/pages/AccountPage.jsx');
+const account = read('src/pages/AccountPage.tsx');
 for (const token of ["'returns'", '<ReturnsSection orders={ordersState.orders} />'])
   has(account, token, `account returns ${token}`);
 
