@@ -1,14 +1,13 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:46:15.376Z",
+  "generatedAt": "2026-08-09T02:47:16.638Z",
   "sourceFiles": 259,
-  "strictFiles": 108,
-  "strictCoveragePercent": 41.7,
+  "strictFiles": 109,
+  "strictCoveragePercent": 42.08,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
     "src/components/account/MfaSecurityPanel.jsx",
-    "src/components/account/OrderCard.jsx",
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/account/ReturnsSection.jsx",
     "src/components/account/SpecialRequestsSection.jsx",
