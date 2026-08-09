@@ -1,20 +1,14 @@
 # Continuation checkpoint
 
-- SHA: `13adaa5e1bfe51934a586128099a144011043160`
-- TypeScript: **61.78%** (160/259)
+- SHA: `b28d368a950a71f1563bf004a549d4ea62c4f5f1`
+- TypeScript: **62.55%** (162/259)
+- CatalogContext: **DONE**
+- UserDataContext: **DONE**
 - AuthContext: **DONE**
-- CatalogContext: ambient — next careful rewrite (overlayProduct locale/price typing)
-- UserDataContext: ambient — next
+- CSS: global 5657L / !important 238
+
+## Next
+Continue Phase 1 TS (remaining APIs + large pages), then Phase 2 CSS extinction.
 
 ## Next command
-Hand-type CatalogContext.tsx focusing on:
-1. `rowData` / variant rows as `Record<string, unknown>`
-2. locale name/description casts
-3. `Number.isFinite` null guards
-4. Provider value cast to CatalogContextValue
-5. timer as `ReturnType<typeof setTimeout> | number` for DOM/Node
-
-```bash
-cd /workspace && git rev-parse HEAD
-npm run typecheck && npm run lint && npm run test:node
-```
+Migrate remaining api/*.js and large page modules
