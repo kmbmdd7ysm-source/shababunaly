@@ -1,4 +1,4 @@
-import { PRODUCT_FAMILIES } from '../../../data/productFamilies.js';
+import { PRODUCT_FAMILIES } from '../../../data/productFamilies.ts';
 import { CUSTOM_PRODUCT_TYPES } from '../../../data/customization';
 
 export default function ProductStep({
