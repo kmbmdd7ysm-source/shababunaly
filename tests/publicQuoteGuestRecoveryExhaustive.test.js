@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import publicQuoteHandler from '../api/public-quote-request.js';
+import publicQuoteHandler from '../api/public-quote-request.ts';
 import guestAccessHandler from '../api/guest-order-access.ts';
 import retryPaymentHandler from '../api/retry-order-payment.ts';
 import {

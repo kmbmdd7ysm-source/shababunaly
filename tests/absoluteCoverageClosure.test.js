@@ -3,7 +3,7 @@ import createSession from '../api/create-session.ts';
 import designShare from '../api/design-share.ts';
 import formspree, { resolveFormspreeEndpoint } from '../api/formspree.ts';
 import guestOrderAccess from '../api/guest-order-access.ts';
-import publicQuote from '../api/public-quote-request.js';
+import publicQuote from '../api/public-quote-request.ts';
 import retryPayment from '../api/retry-order-payment.ts';
 import specialRequest from '../api/special-request.js';
 import { createGuestOrderToken } from '../api/_guest-order-token.ts';

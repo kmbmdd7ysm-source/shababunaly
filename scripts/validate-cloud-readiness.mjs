@@ -20,7 +20,7 @@ const required = [
   'api/notification-worker.js',
   'api/guest-order-access.ts',
   'api/retry-order-payment.ts',
-  'api/public-quote-request.js',
+  'api/public-quote-request.ts',
   'docs/ORDER_BACKEND_DEPLOYMENT.md',
   'docs/PRODUCTION_ACTIVATION.md',
 ];
