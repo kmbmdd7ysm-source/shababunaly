@@ -29,6 +29,25 @@ describe('shipping rules', () => {
     expect(shippingConfig.libya.freeThresholdUsd).toBe(70);
   });
 
+  it('applies paid shipping at 629 LYD equivalent and frees at 630/631 LYD', () => {
+    const rate = 9;
+    const justBelow = 629 / rate;
+    const atThreshold = 630 / rate;
+    const justAbove = 631 / rate;
+    expect(getLibyaFreeShippingProgress(justBelow, rate).eligible).toBe(false);
+    expect(resolveShipping('LY', { subtotalUsd: justBelow, usdToLydRate: rate }).status).toBe(
+      'physical_paid',
+    );
+    expect(getLibyaFreeShippingProgress(atThreshold, rate).eligible).toBe(true);
+    expect(resolveShipping('LY', { subtotalUsd: atThreshold, usdToLydRate: rate }).status).toBe(
+      'physical_free',
+    );
+    expect(getLibyaFreeShippingProgress(justAbove, rate).eligible).toBe(true);
+    expect(resolveShipping('LY', { subtotalUsd: justAbove, usdToLydRate: rate }).status).toBe(
+      'physical_free',
+    );
+  });
+
   it('safely handles invalid rate and subtotal', () => {
     const progress = getLibyaFreeShippingProgress('bad', /** @type {any} */ (0));
     expect(progress.subtotalUsd).toBe(0);

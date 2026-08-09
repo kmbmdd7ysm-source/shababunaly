@@ -21,7 +21,7 @@ const placeholder = (src) => String(src || '').startsWith('/images/catalog/');
 
 /** Every distinct, verified (non-placeholder) image a product owns. */
 function realImages(product) {
-  // Same rule as the runtime resolver in src/utils/productViewerTier.js:
+  // Same rule as the runtime resolver in src/utils/productViewerTier.ts:
   // colour variants carry their own verified photographs and count as angles.
   const colourImages = (product.colors || [])
     .map((colour) => colour && colour.image)

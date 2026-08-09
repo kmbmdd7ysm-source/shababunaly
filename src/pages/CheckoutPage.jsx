@@ -1121,12 +1121,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
               {isLibya && (
-                <p className="summary-note">
-                  {pick({
-                    en: 'Libya delivery: 20 LYD. Free from 500 LYD.',
-                    ar: 'التوصيل داخل ليبيا 20 د.ل، ومجاني من 500 د.ل.',
-                  })}
-                </p>
+                <p className="summary-note">{SHIPPING_MESSAGES.announcement[lang] || SHIPPING_MESSAGES.announcement.en}</p>
               )}
             </aside>
           </div>
