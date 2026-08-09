@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react';
 import StaticMediaEngine from './StaticMediaEngine';
 
 const VIEW_LABELS = [
@@ -9,6 +10,8 @@ const VIEW_LABELS = [
   { en: 'Extra', ar: 'إضافي ٢' },
 ];
 
+type PickFn = (value: { en?: string; ar?: string } | string) => string;
+
 export default function MultiAngleEngine({
   sources,
   index,
@@ -18,6 +21,15 @@ export default function MultiAngleEngine({
   pick,
   listId,
   onKeyDown,
+}: {
+  sources: string[];
+  index: number;
+  setIndex: (n: number) => void;
+  alt: string;
+  eager?: boolean;
+  pick: PickFn;
+  listId: string;
+  onKeyDown: (event: KeyboardEvent) => void;
 }) {
   const count = sources.length;
   const safeIndex = count > 0 ? Math.min(index, count - 1) : 0;
@@ -33,7 +45,11 @@ export default function MultiAngleEngine({
         tabIndex={count > 1 ? 0 : -1}
         onKeyDown={onKeyDown}
       >
-        <StaticMediaEngine src={current} alt={alt} eager={eager} />
+        <StaticMediaEngine
+          {...(current ? { src: current } : {})}
+          alt={alt}
+          {...(eager ? { eager } : {})}
+        />
       </div>
       {count > 1 && (
         <div

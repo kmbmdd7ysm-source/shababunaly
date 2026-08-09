@@ -1,5 +1,7 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, type PointerEvent, type KeyboardEvent } from 'react';
 import StaticMediaEngine from './StaticMediaEngine';
+
+type PickFn = (value: { en?: string; ar?: string } | string) => string;
 
 /**
  * Verified photographic 360 — requires a real aligned spinset (MIN_SPIN_FRAMES+).
@@ -14,13 +16,23 @@ export default function Spin360Engine({
   pick,
   listId,
   onKeyDown,
+}: {
+  frames: string[];
+  index: number;
+  setIndex: (n: number) => void;
+  alt: string;
+  eager?: boolean;
+  pick: PickFn;
+  listId: string;
+  onKeyDown: (event: KeyboardEvent) => void;
 }) {
   const drag = useRef({ active: false, startX: 0, startIndex: 0 });
   const count = frames.length;
   const safeIndex = count > 0 ? Math.min(index, count - 1) : 0;
+  const current = frames[safeIndex];
 
   const scrub = useCallback(
-    (clientX) => {
+    (clientX: number) => {
       if (!drag.current.active || count < 2) return;
       const delta = clientX - drag.current.startX;
       const steps = Math.round(delta / 8);
@@ -30,12 +42,12 @@ export default function Spin360Engine({
     [count, setIndex],
   );
 
-  const onPointerDown = (event) => {
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     drag.current = { active: true, startX: event.clientX, startIndex: safeIndex };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
-  const onPointerMove = (event) => scrub(event.clientX);
-  const onPointerUp = (event) => {
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => scrub(event.clientX);
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
     drag.current.active = false;
     event.currentTarget.releasePointerCapture?.(event.pointerId);
   };
@@ -54,7 +66,11 @@ export default function Spin360Engine({
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        <StaticMediaEngine src={frames[safeIndex]} alt={alt} eager={eager} />
+        <StaticMediaEngine
+          {...(current ? { src: current } : {})}
+          alt={alt}
+          {...(eager ? { eager } : {})}
+        />
         <p className="gw-viewer-spin-hint" aria-hidden="true">
           {pick({ en: 'Drag to rotate', ar: 'اسحب للتدوير' })}
         </p>
