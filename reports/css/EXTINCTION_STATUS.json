@@ -1,0 +1,19 @@
+{
+  "sha": "4efc77952123aff7edd149500a519a4dd659e9d1",
+  "legacyDeferred": true,
+  "important": {
+    "global": 68,
+    "premium": 37,
+    "shababuna": 0
+  },
+  "next": "Relocate remaining valid rules from global/premium into route/component CSS then delete obsolete selectors",
+  "remainingJsx": [
+    "components/account/OrganizationWorkspace.jsx",
+    "components/custom/DesignPreview.jsx",
+    "components/custom/ProductionDesignEditor.jsx",
+    "components/operations/OperationsCommerceModules.jsx",
+    "components/operations/OperationsEnterpriseModules.jsx",
+    "components/operations/OperationsMasterData.jsx",
+    "components/product/engines/Realtime3DEngine.jsx"
+  ]
+}
