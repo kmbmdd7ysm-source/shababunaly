@@ -889,12 +889,3 @@ export function DesignProofCard({ design, pick, saving, run, accessToken }) {
   );
 }
 
-etails>
-  );
-}
-
-    </button>
-      </td>
-    </tr>
-  );
-}
