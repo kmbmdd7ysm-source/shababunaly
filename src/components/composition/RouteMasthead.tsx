@@ -1,29 +1,10 @@
+import type { ReactNode } from 'react';
 import Breadcrumbs from '../common/Breadcrumbs';
 import '../../styles/composition.css';
 import '../../styles/masthead.css';
 
 /*
  * The route masthead — the structural replacement for `PageHero`.
- *
- * `PageHero` was a banner: a label, a title, a paragraph, centred, with a
- * breadcrumb strip floating underneath it on its own light band.
- *
- * This is the opening of a chapter instead. The trail lives INSIDE the dark
- * ground rather than on a separate strip, the eyebrow can carry an index, the
- * title sets at display scale, and the route's primary figure (a count, a
- * status, a date) sits opposite the title against a rule — so the reader gets
- * the page's single most important number without reading a sentence.
- *
- * @param {{
- *   eyebrow?: any,
- *   index?: string,
- *   title: any,
- *   lede?: any,
- *   figure?: { value: any, label: any },
- *   trail?: Array<{ label: any, to?: string }>,
- *   tone?: 'night' | 'chalk',
- *   children?: any,
- * }} props
  */
 export default function RouteMasthead({
   eyebrow = null,
@@ -34,6 +15,15 @@ export default function RouteMasthead({
   trail = null,
   tone = 'night',
   children = null,
+}: {
+  eyebrow?: ReactNode;
+  index?: ReactNode;
+  title: ReactNode;
+  lede?: ReactNode;
+  figure?: { value: ReactNode; label: ReactNode } | null;
+  trail?: Array<{ label: string; to?: string }> | null;
+  tone?: 'night' | 'chalk' | string;
+  children?: ReactNode;
 }) {
   return (
     <section className="gw-routehead" data-tone={tone}>
