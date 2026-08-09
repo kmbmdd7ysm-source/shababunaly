@@ -30,7 +30,7 @@ describe('enterprise production completion', () => {
   it('quarantines staff media and scans it before use', async () => {
     const upload = await read('api/admin-media-upload.js');
     const scan = await read('api/media-scan-worker.js');
-    expect(upload).toContain("scan_status:'quarantined'");
+    expect(upload).toContain("scan_status: 'quarantined'");
     expect(upload).toContain('requireStaffSession');
     expect(scan).toMatch(/scan_status:\s*infected\s*\?\s*'infected'\s*:\s*'clean'/s);
     expect(scan).toContain('MALWARE_SCAN_API_URL');
