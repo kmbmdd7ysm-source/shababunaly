@@ -14,7 +14,7 @@ export default function ProductMasterFields({
   onChange?: (next: Record<string, unknown>) => void;
 }): ReactElement {
   const { pick } = useLanguage();
-  const master = normalizeProductMaster(product) as Record<string, unknown>;
+  const master = normalizeProductMaster(product) as unknown as Record<string, unknown>;
   const missing = missingMasterFields(master as never);
   const fields: Array<[string, string, string]> = [
     ['supplierSKU', 'Supplier SKU', 'رمز المورد'],

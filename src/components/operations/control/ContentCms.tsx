@@ -10,7 +10,7 @@ export default function ContentCms({
   run,
 }: {
   state: unknown;
-  pick: (value: unknown) => string;
+  pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
   run: (...args: unknown[]) => unknown;
 }): ReactElement {
