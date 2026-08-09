@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { announcementBar } from '../../data/announcements';
@@ -12,7 +13,7 @@ const DISMISS_KEY = 'shababuna-announce-dismissed-v1';
  * Merchandising announcement — in flow inside the sticky shell.
  * Dismiss is kept as text with a 44px hit area; no rectangular chrome.
  */
-export default function AnnouncementBar() {
+export default function AnnouncementBar(): ReactElement | null {
   const { pick, lang } = useLanguage();
   const { countryCode } = useCommerce();
   const [i, setI] = useState(0);
@@ -36,7 +37,8 @@ export default function AnnouncementBar() {
 
   if (!announcementBar.enabled || messages.length === 0) return null;
 
-  const msg = messages[i];
+  const msg = messages[i] ?? messages[0];
+  if (!msg) return null;
   const text =
     msg.type === 'free-shipping'
       ? countryCode === 'LY'
