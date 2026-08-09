@@ -211,7 +211,9 @@ export default function ReturnsSection({
         <button
           type="button"
           className="btn-secondary compact"
-          onClick={load}
+          onClick={() => {
+            void load();
+          }}
           disabled={state.loading}
         >
           {pick({ en: 'Refresh', ar: 'تحديث' })}
