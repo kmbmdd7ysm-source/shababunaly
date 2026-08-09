@@ -103,7 +103,9 @@ export default function OrderTrackingPage(): ReactElement {
                 {['error', 'partial'].includes(ordersState.state) && (
                   <button
                     className="btn-secondary"
-                    onClick={load}
+                    onClick={() => {
+                      void load();
+                    }}
                     disabled={ordersState.state === 'retrying'}
                   >
                     {ordersState.state === 'retrying'
@@ -161,7 +163,13 @@ export default function OrderTrackingPage(): ReactElement {
                 ar: 'استخدم رقم الطلب ونفس البريد المستخدم عند الدفع.',
               })}
             </p>
-            <form className="track-form" onSubmit={submit} noValidate>
+            <form
+              className="track-form"
+              onSubmit={(event) => {
+                void submit(event);
+              }}
+              noValidate
+            >
               <label className="field">
                 <span>{ot.orderNumber}</span>
                 <input
