@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
@@ -9,8 +10,11 @@ import QuantitySelector from '../common/QuantitySelector';
 import Icon from '../icons/Icon';
 import { lockDocumentScroll } from '../../utils/scrollLock';
 
-export default function CartDrawer() {
+export default function CartDrawer(): ReactElement | null {
   const { t, pick, lang } = useLanguage();
+  const cartCopy = (t.cart || {}) as Record<string, string>;
+  const a11y = (t.a11y || {}) as Record<string, string>;
+  const common = (t.common || {}) as Record<string, string>;
   const { format, usdToLydRate } = useCommerce();
   const {
     items,
@@ -22,14 +26,14 @@ export default function CartDrawer() {
     count,
     hasPhysical,
   } = useCart();
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!drawerOpen) return undefined;
     const prev = document.activeElement;
     ref.current?.focus();
-    const onKey = (e) => {
+    const onKey = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') closeDrawer();
     };
     document.addEventListener('keydown', onKey);
@@ -42,8 +46,8 @@ export default function CartDrawer() {
   }, [drawerOpen, closeDrawer]);
 
   const freeShipping = getLibyaFreeShippingProgress(subtotal, usdToLydRate);
-  const typeLabel = (type) =>
-    type === 'training' ? t.cart.digital : type === 'event' ? t.cart.event : '';
+  const typeLabel = (type: unknown): string =>
+    type === 'training' ? cartCopy.digital || '' : type === 'event' ? cartCopy.event || '' : '';
 
   return (
     <>
@@ -55,7 +59,7 @@ export default function CartDrawer() {
         }}
         role="button"
         tabIndex={drawerOpen ? 0 : -1}
-        aria-label={t.common.close}
+        aria-label={common.close}
         aria-hidden={!drawerOpen}
       />
       <aside
@@ -64,14 +68,14 @@ export default function CartDrawer() {
         className={`cart-drawer${drawerOpen ? ' open' : ''}`}
         role="dialog"
         aria-modal="true"
-        aria-label={t.a11y.cartDialog}
+        aria-label={a11y.cartDialog}
         aria-hidden={!drawerOpen}
       >
         <div className="cart-drawer-head">
           <h2>
-            {t.cart.title} {count > 0 && <span className="cart-drawer-count">({count})</span>}
+            {cartCopy.title} {count > 0 && <span className="cart-drawer-count">({count})</span>}
           </h2>
-          <button className="icon-btn" onClick={closeDrawer} aria-label={t.a11y.closeCart}>
+          <button className="icon-btn" onClick={closeDrawer} aria-label={a11y.closeCart}>
             <Icon name="close" />
           </button>
         </div>
@@ -79,10 +83,10 @@ export default function CartDrawer() {
         {items.length === 0 ? (
           <div className="cart-drawer-empty">
             <span aria-hidden="true">🏀</span>
-            <p>{t.cart.empty}</p>
-            <span className="muted">{t.cart.emptyHint}</span>
+            <p>{cartCopy.empty}</p>
+            <span className="muted">{cartCopy.emptyHint}</span>
             <button className="btn-primary" onClick={closeDrawer}>
-              {t.cart.startShopping}
+              {cartCopy.startShopping}
             </button>
           </div>
         ) : (
@@ -130,25 +134,25 @@ export default function CartDrawer() {
               {items.map((item) => (
                 <li key={item.key} className="cart-line">
                   <Link to={item.href || '#'} className="cart-line-media" onClick={closeDrawer}>
-                    <SmartImage src={item.image} alt={pick(item.name)} />
+                    <SmartImage src={String(item.image || '')} alt={pick(item.name as { en?: string; ar?: string })} />
                   </Link>
                   <div className="cart-line-info">
                     <Link to={item.href || '#'} className="cart-line-name" onClick={closeDrawer}>
-                      {pick(item.name)}
+                      {pick(item.name as { en?: string; ar?: string })}
                     </Link>
                     {typeLabel(item.type) && (
                       <span className="cart-line-type">{typeLabel(item.type)}</span>
                     )}
-                    {item.size && item.size !== 'OS' && (
+                    {item.size && item.size !== 'OS' ? (
                       <span className="cart-line-variant">
-                        {t.common.size}: {item.size}
+                        {common.size}: {String(item.size)}
                       </span>
-                    )}
-                    {item.color && (
+                    ) : null}
+                    {item.color ? (
                       <span className="cart-line-variant">
-                        {t.common.color}: {item.color}
+                        {common.color}: {String(item.color)}
                       </span>
-                    )}
+                    ) : null}
                     <div className="cart-line-controls">
                       {item.type === 'product' ? (
                         <QuantitySelector
@@ -161,12 +165,12 @@ export default function CartDrawer() {
                         <span className="cart-line-qty1">×1</span>
                       )}
                       <button className="cart-line-remove" onClick={() => removeItem(item.key)}>
-                        {t.cart.remove}
+                        {cartCopy.remove}
                       </button>
                     </div>
                   </div>
                   <span className="cart-line-price" dir="ltr">
-                    {format(item.price * item.quantity, lang)}
+                    {format(Number(item.price || 0) * Number(item.quantity || 0), lang)}
                   </span>
                 </li>
               ))}
@@ -174,10 +178,10 @@ export default function CartDrawer() {
 
             <div className="cart-drawer-foot">
               <div className="cart-subtotal-row">
-                <span>{t.cart.subtotal}</span>
+                <span>{cartCopy.subtotal}</span>
                 <strong dir="ltr">{format(subtotal, lang)}</strong>
               </div>
-              <p className="cart-shipping-note">{t.cart.shippingCalc}</p>
+              <p className="cart-shipping-note">{cartCopy.shippingCalc}</p>
               <button
                 type="button"
                 className="btn-primary block"
@@ -186,10 +190,10 @@ export default function CartDrawer() {
                   navigate('/checkout');
                 }}
               >
-                {t.cart.checkout}
+                {cartCopy.checkout}
               </button>
               <Link to="/cart" className="btn-secondary block" onClick={closeDrawer}>
-                {t.cart.viewBag}
+                {cartCopy.viewBag}
               </Link>
             </div>
           </>

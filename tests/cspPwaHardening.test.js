@@ -65,7 +65,7 @@ describe('CSP and PWA hardening', { concurrency: false }, () => {
   it('contains no React inline style props or direct style mutations', async () => {
     const sourceFiles = [
       '../src/pages/CartPage.tsx',
-      '../src/components/layout/CartDrawer.jsx',
+      '../src/components/layout/CartDrawer.tsx',
       '../src/components/custom/ProductionDesignEditor.jsx',
       '../src/components/media/MediaLightbox.jsx',
       '../src/components/common/SmartImage.tsx',
