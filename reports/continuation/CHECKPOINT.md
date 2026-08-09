@@ -1,16 +1,17 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `c596d3ab516e5f505f1be93069b3b27fa29e2bec`
-- TypeScript: **67.57%** (175/259)
+- SHA: `e051ba1706d9ed3f5bd75e5020ed153285676f27`
+- TypeScript: **67.95%** (176/259)
+- Remaining: ~20 api/*.js · ~63 src JS/JSX
 - CSS: global 5070L / !important 173 (was 7252/348)
 
-## DONE
-Core contexts · Cart/Help · key components · CSS passes 1–4 · foundation.css · many payment/public APIs including refund
+## Phase status
+1 TS **67.95%** · 2 CSS IN PROGRESS (foundation + culls) · 3–35 PENDING
 
 ## Exact next
-1. Phase 1 — remaining large pages + APIs
-2. Phase 2 — unload legacy CSS from main
+1. Remaining APIs (~20) + large pages (Account/Customize/Checkout/Shop/Product/Teams)
+2. Unload legacy CSS from main.jsx
 3. Phases 3–35
 
 ## Next command
-Migrate create-session.js / start Account modularization
+Migrate retry-order-payment.js / payment-webhook.js; start Account modularization
