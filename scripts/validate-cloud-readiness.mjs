@@ -15,7 +15,7 @@ const required = [
   'scripts/sync-product-catalog.mjs',
   'supabase/generated/product_catalog.sql',
   'api/create-session.js',
-  'api/create-quote-session.js',
+  'api/create-quote-session.ts',
   'api/payment-webhook.js',
   'api/notification-worker.js',
   'api/guest-order-access.ts',

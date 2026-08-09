@@ -156,7 +156,7 @@ for (const token of [
   'apply_verified_payment_event',
 ])
   has(webhook, token, `webhook ${token}`);
-const quoteSession = read('api/create-quote-session.js');
+const quoteSession = read('api/create-quote-session.ts');
 for (const token of [
   'loadQuote',
   'amount_due_now',
