@@ -1,0 +1,1 @@
+Strict TypeScript scope: 15/258 files (5.81%); 0 forbidden suppression/any issue(s). Full migration continues progressively.
