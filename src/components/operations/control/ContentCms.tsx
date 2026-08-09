@@ -1,22 +1,39 @@
+import type { ReactElement } from 'react';
 import { useMemo, useState } from 'react';
 import { updateSiteContent } from '../../../services/operations';
 import { safeJson } from './shared';
 
-export default function ContentCms({ state, pick, saving, run }) {
+type LocalePick = (value: { en: string; ar: string }) => string;
+
+export default function ContentCms({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: { siteContent?: Array<Record<string, unknown>> };
+  pick: LocalePick;
+  saving?: string | boolean;
+  run: (key: string, action: () => Promise<unknown>, success: string) => unknown;
+}): ReactElement {
   const defaults = useMemo(
-    () => ({
-      home_sections: { enabled: false, sections: [] },
-      our_work_projects: { enabled: false, projects: [] },
-      policies: { enabled: false, pages: [] },
-      translation_overrides: { enabled: false, en: {}, ar: {} },
-    }),
+    () =>
+      ({
+        home_sections: { enabled: false, sections: [] },
+        our_work_projects: { enabled: false, projects: [] },
+        policies: { enabled: false, pages: [] },
+        translation_overrides: { enabled: false, en: {}, ar: {} },
+      }) as Record<string, unknown>,
     [],
   );
-  const current = (key) =>
-    state.siteContent.find((row) => row.content_key === key)?.content_value || defaults[key];
+  const current = (contentKey: string) => {
+    const rows = Array.isArray(state.siteContent) ? state.siteContent : [];
+    const hit = rows.find((row) => row.content_key === contentKey);
+    return hit?.content_value || defaults[contentKey];
+  };
   const [key, setKey] = useState('home_sections');
   const [text, setText] = useState(() => JSON.stringify(current('home_sections'), null, 2));
-  const switchKey = (next) => {
+  const switchKey = (next: string) => {
     setKey(next);
     setText(JSON.stringify(current(next), null, 2));
   };
@@ -41,14 +58,14 @@ export default function ContentCms({ state, pick, saving, run }) {
           rows={14}
           value={text}
           onChange={(event) => setText(event.target.value)}
-          spellCheck="false"
+          spellCheck={false}
         />
         <button
           type="button"
           className="btn-primary compact"
           disabled={saving === `content-${key}`}
-          onClick={() =>
-            run(
+          onClick={() => {
+            void run(
               `content-${key}`,
               () =>
                 updateSiteContent({
@@ -57,8 +74,8 @@ export default function ContentCms({ state, pick, saving, run }) {
                   publicRead: true,
                 }),
               pick({ en: 'Content configuration saved.', ar: 'تم حفظ إعداد المحتوى.' }),
-            )
-          }
+            );
+          }}
         >
           {pick({ en: 'Validate & save', ar: 'تحقق واحفظ' })}
         </button>
