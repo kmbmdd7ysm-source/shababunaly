@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
@@ -101,10 +102,21 @@ const FLOOR = [
   { to: '/shop/equipment', zone: 'arc', name: { en: 'Equipment', ar: 'المعدات' } },
 ];
 
-const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
+const minimumFor = (key: string): number => {
+  const match = CUSTOM_PRODUCT_TYPES.find((type) => type.key === key);
+  return Number(match?.minimum || 0);
+};
 
 /** Numeric ranges are bidi-isolated so `24–72` cannot render as `72–24`. */
-function Range({ from, to, unit }) {
+function Range({
+  from,
+  to,
+  unit,
+}: {
+  from: string | number;
+  to: string | number;
+  unit: string;
+}) {
   return (
     <>
       <span className="gw-isolate-ltr">
@@ -130,7 +142,7 @@ function CourtPlan() {
   );
 }
 
-export default function HomePage() {
+export default function HomePage(): ReactElement {
   const { pick } = useLanguage();
   const { countryCode } = useCommerce();
   const { products, readyToShipProducts, featuredProducts } = useCatalog();
@@ -157,12 +169,12 @@ export default function HomePage() {
     { id: 'signoff', label: { en: 'Sign-off', ar: 'الختام' } },
   ];
 
-  const [active, setActive] = useState(chapters[0].id);
+  const [active, setActive] = useState(chapters[0]?.id || 'open');
   /* Which chapters are dark. The index sits over whatever is in view, so it
      needs to know the ground to invert against — otherwise it needs an opaque
      plate, and a plate full of ticks reads as a debug widget. */
   const DARK_ACTS = new Set(['open', 'game', 'roster', 'brand', 'signoff']);
-  const scroller = useRef(null);
+  const scroller = useRef<HTMLDivElement | null>(null);
 
   // Track the chapter in view so the index can mark it. Falls back silently
   // where IntersectionObserver is unavailable.
