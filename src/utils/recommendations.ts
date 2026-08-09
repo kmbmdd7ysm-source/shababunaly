@@ -1,7 +1,24 @@
+interface RecommendProduct {
+  id: string;
+  availability?: string;
+  category?: string;
+  collection?: string;
+  bestSeller?: boolean;
+  newArrival?: boolean;
+  tags?: string[];
+}
+
+interface RecommendOptions {
+  current?: RecommendProduct | null;
+  recent?: string[];
+  wishlist?: string[];
+  cart?: Array<{ id: string }>;
+}
+
 export function recommend(
-  products,
-  { current = null, recent = [], wishlist = [], cart = [] } = {},
-) {
+  products: RecommendProduct[],
+  { current = null, recent = [], wishlist = [], cart = [] }: RecommendOptions = {},
+): RecommendProduct[] {
   const seen = new Set([...(recent || []), ...(wishlist || []), ...(cart || []).map((x) => x.id)]);
   return products
     .filter((p) => p.id !== current?.id && p.availability !== 'sold-out')
