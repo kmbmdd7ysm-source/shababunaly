@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T04:13:01.491Z",
+  "generatedAt": "2026-08-09T04:14:01.738Z",
   "sourceFiles": 259,
-  "strictFiles": 158,
-  "strictCoveragePercent": 61,
+  "strictFiles": 160,
+  "strictCoveragePercent": 61.78,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -19,7 +19,6 @@
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
     "src/components/custom/StudioStage.jsx",
-    "src/components/dev/BuildMarker.jsx",
     "src/components/errors/AppErrorBoundary.jsx",
     "src/components/experience/CinematicHero.jsx",
     "src/components/icons/Icon.jsx",
@@ -48,7 +47,6 @@
     "src/components/shop/ProductCard.jsx",
     "src/context/CatalogContext.jsx",
     "src/context/UserDataContext.jsx",
-    "src/data/footerSocial.jsx",
     "src/data/generatedOptimizedImages.js",
     "src/data/lhaProducts.js",
     "src/data/products.js",
