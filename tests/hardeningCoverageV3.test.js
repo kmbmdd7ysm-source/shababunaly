@@ -548,7 +548,7 @@ test('closes remaining business, readiness, provider and small utility branches'
   const minimal = normalizeSignatureEvent({ status: 'sent' });
   assert.deepEqual(minimal.identityVerification, {});
   assert.throws(() => normalizeSignatureEvent(null), /unsupported_signature_event/);
-  const { getCountryName } = await import('../src/data/countries.js');
+  const { getCountryName } = await import('../src/data/countries.ts');
   const OriginalDisplayNames = Intl.DisplayNames;
   Object.defineProperty(Intl, 'DisplayNames', {
     configurable: true,

@@ -72,7 +72,7 @@ import {
   getSupabase,
   getSupabaseConfigStatus,
 } from '../src/services/supabase.js';
-import { getAddressRequirements, countryByCode } from '../src/data/countries.js';
+import { getAddressRequirements, countryByCode } from '../src/data/countries.ts';
 import {
   buildDesignViewSvg,
   buildProductionPackage,

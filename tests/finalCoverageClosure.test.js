@@ -11,7 +11,7 @@ import {
   isSupportedCountryCode,
   normalizeCountryCode,
   normalizeCountrySearch,
-} from '../src/data/countries.js';
+} from '../src/data/countries.ts';
 import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';
 import {
   flattenText,

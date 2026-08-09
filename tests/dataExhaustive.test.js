@@ -16,7 +16,7 @@ import {
   getAddressRequirements,
   isCashEligibleCountry,
   normalizeCountrySearch,
-} from '../src/data/countries.js';
+} from '../src/data/countries.ts';
 import {
   CUSTOM_PRODUCT_TYPES,
   DEFAULT_CUSTOM_DESIGN,

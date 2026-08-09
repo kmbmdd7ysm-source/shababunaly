@@ -90,24 +90,21 @@ export const countries = Object.freeze(
 
 export const countryByCode = new Map(countries.map((country) => [country.code, country]));
 
-/** @param {unknown} value */
-export function isSupportedCountryCode(value) {
+export function isSupportedCountryCode(value: unknown): value is string {
   return typeof value === 'string' && countryByCode.has(value.toUpperCase());
 }
 
-/**
- * @param {unknown} value
- * @param {string} [fallback]
- */
-export function normalizeCountryCode(value, fallback = commerceConfig.defaultCountryCode) {
+export function normalizeCountryCode(
+  value: unknown,
+  fallback: string = commerceConfig.defaultCountryCode,
+): string {
   const code = String(value || '')
     .trim()
     .toUpperCase();
   return isSupportedCountryCode(code) ? code : fallback;
 }
 
-/** @param {unknown} code @param {string} [lang] @returns {string} */
-export function getCountryName(code, lang = 'en') {
+export function getCountryName(code: unknown, lang = 'en'): string {
   const safeCode = normalizeCountryCode(code);
   try {
     return (
@@ -119,26 +116,22 @@ export function getCountryName(code, lang = 'en') {
   }
 }
 
-/** @param {string} [lang] */
 export function getLocalizedCountries(lang = 'en') {
   return countries
     .map((country) => ({ ...country, name: getCountryName(country.code, lang) }))
     .sort((a, b) => a.name.localeCompare(b.name, lang === 'ar' ? 'ar' : 'en'));
 }
 
-/** @param {unknown} code */
-export function getAddressRequirements(code) {
+export function getAddressRequirements(code: unknown) {
   if (!isSupportedCountryCode(code)) return null;
-  return countryByCode.get(String(code).toUpperCase());
+  return countryByCode.get(String(code).toUpperCase()) ?? null;
 }
 
-/** @param {unknown} code */
-export function isCashEligibleCountry(code) {
+export function isCashEligibleCountry(code: unknown): boolean {
   return isSupportedCountryCode(code) && String(code).toUpperCase() === 'LY';
 }
 
-/** @param {unknown} value */
-export function normalizeCountrySearch(value) {
+export function normalizeCountrySearch(value: unknown): string {
   return String(value || '')
     .normalize('NFKD')
     .replace(/[\u064B-\u065F\u0670]/g, '')
