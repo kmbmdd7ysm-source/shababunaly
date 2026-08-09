@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `82b5553379fb4a51e35205511efa73591910a39c`
+- Full SHA: `e338e8740a47076ae7ed1c45ea9b76b5a85cf6cf`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -21,7 +21,7 @@
 1. Port `src/services/designStudio.js` → `.ts`
 2. Port `productionPreflight.js` → `.ts`
 3. Port `supabase.js` + contexts
-4. Continue page/component TSX
+4. Continue TSX (ProductMediaViewer engines need care around model-viewer types)
 5. Remain in Phase 3 until project-wide or exclusions documented
 
 ## Next command
