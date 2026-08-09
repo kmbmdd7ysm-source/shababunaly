@@ -1,38 +1,38 @@
-# Continuation checkpoint
+# Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `f6bd3c146714b38747bc6e75a6c5c4844282c896`
-- UTC: 2026-08-09
+- Full SHA: `cd35bea0bc126826a6b6e0aafcd6f1130a0a9f7b`
+- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
-## Completed in this final-completion run
+## Phase status
 
-| Phase | Status |
-| --- | --- |
-| 0 Starting state | PASS |
-| 1 Clean npm ci + format/lint/tests green | PASS |
-| 2 Build provenance full-SHA match | PASS |
-| 3 TypeScript migration | IN PROGRESS (~6.59% → continuing) |
-| 5 Checkout 500→630 LYD copy | PASS |
-| 11 model-viewer dependency registered | PASS (partial Tier A) |
+| # | Phase | Status |
+| --- | --- | --- |
+| 0 | Freeze starting state | **PASS** |
+| 1 | Clean toolchain / npm ci | **PASS** |
+| 2 | Build provenance SHA match | **PASS** |
+| 3 | Complete TypeScript migration | **IN PROGRESS** (~6.95% / 18 of 259) |
+| 4 | Destroy legacy CSS debt | NOT STARTED (this run) |
+| 5 | 500 LYD → 630/70 customer text | **PASS** |
+| 6 | Unify release evidence | NOT STARTED |
+| 7 | Modularize Account | **IN PROGRESS** (Register + Overview) |
+| 8–10 | Checkout/Customize/Shop modularize | NOT STARTED |
+| 11 | Product media engine + model-viewer | **PARTIAL** (`@google/model-viewer` installed) |
+| 12–25 | Remaining | NOT STARTED |
 
-## Next exact work
+## Exact next actions
 
-1. Continue Phase 3: migrate `analytics.js`, `search.js`, cart/order services, AuthContext toward TS; raise strict coverage report
-2. Phase 4: CSS Coverage + shrink global.css / remove legacy stack
-3. Phase 6: unify release evidence index
-4. Phases 7–10: finish Account/Checkout/Customize/Shop modularization
-5. Phases 12–25 as commanded
+1. Stay in **Phase 3** until strict TS coverage is project-wide (or every exclusion documented).
+2. Next files: `src/utils/analytics.js` (proper types), `src/utils/search.js`, `src/services/supabase.js` → `.ts`, AuthContext, CartContext.
+3. Refresh `reports/typescript/strict-coverage.json` after each batch.
+4. Gate: `npm run typecheck && npm run test:node && npm run test:ui && npm run build && node scripts/verify-build-provenance.mjs`
 
-## Next commands
+## Next command
 
 ```bash
-cd /workspace
-git rev-parse HEAD
-npm run typecheck && npm run test:node
-# convert src/utils/analytics.js → .ts and AuthContext progressively
+cd /workspace && git rev-parse HEAD
+# Convert src/utils/search.js and src/services/orderStatus already TS — continue AuthContext
 ```
 
-## External blockers unchanged
-
-- Docker/Supabase for DB
-- Real inventory / GLB / 360 / factory CAD / payment credentials / human Arabic
+## Do not restart from Phase 0
+Resume Phase 3 TypeScript migration.
