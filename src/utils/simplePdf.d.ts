@@ -4,5 +4,4 @@ export function downloadDesignDocuments(input?: Record<string, unknown>): {
   tech?: Blob;
   [key: string]: unknown;
 };
-
 export function createTextPdf(input?: Record<string, unknown>): Blob;
