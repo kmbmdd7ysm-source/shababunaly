@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import Chapter from '../components/experience/Chapter';
@@ -38,7 +39,10 @@ const ZONE_LABELS = {
   equipment: { en: 'The arc', ar: 'القوس' },
 };
 
-const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
+const minimumFor = (key: string): number => {
+  const match = CUSTOM_PRODUCT_TYPES.find((type) => type.key === key);
+  return Number(match?.minimum || 0);
+};
 
 /**
  * A numeric range inside prose.
@@ -49,7 +53,15 @@ const minimumFor = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key
  * delivery promise, so every range is isolated — the same discipline
  * `services/money.ts` already applies to currency.
  */
-function Range({ from, to, unit }) {
+function Range({
+  from,
+  to,
+  unit,
+}: {
+  from: string | number;
+  to: string | number;
+  unit: string;
+}) {
   return (
     <>
       <span className="gw-isolate-ltr">
@@ -61,7 +73,7 @@ function Range({ from, to, unit }) {
 }
 
 /** A minimum-order figure inside prose, isolated for the same reason as `Range`. */
-function Minimum({ count, unit }) {
+function Minimum({ count, unit }: { count: string | number; unit: string }) {
   return (
     <>
       <span className="gw-isolate-ltr">{count}</span> {unit}
@@ -97,7 +109,7 @@ function CourtPlan() {
   );
 }
 
-export default function LabHomePage() {
+export default function LabHomePage(): ReactElement {
   const { pick } = useLanguage();
   const capability = useDeviceCapability();
 
@@ -267,7 +279,14 @@ export default function LabHomePage() {
                 to={`/shop/${department.slug}`}
                 className="gw-plate gw-registered gw-scaled gw-extends gw-department"
               >
-                <span className="gw-spec">{pick(ZONE_LABELS[department.slug])}</span>
+                <span className="gw-spec">
+                  {pick(
+                    (ZONE_LABELS as Record<string, { en: string; ar: string }>)[department.slug] || {
+                      en: department.slug,
+                      ar: department.slug,
+                    },
+                  )}
+                </span>
                 <img
                   className="gw-media gw-media--square"
                   src={department.image}

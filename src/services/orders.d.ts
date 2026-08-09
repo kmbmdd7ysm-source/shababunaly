@@ -1,12 +1,26 @@
 export function createIdempotencyKey(): string;
 export function normalizeOrder(order?: unknown): Record<string, unknown>;
-export function readLocalOrders(): unknown[];
+export function readLocalOrders(): { orders: unknown[]; error?: unknown };
 export function writeLocalOrders(orders: unknown[]): void;
-export function createOrder(input: unknown, options?: Record<string, unknown>): Promise<unknown>;
-export function getMyOrders(userId: string): Promise<unknown[]>;
+export function createOrder(
+  input: unknown,
+  options?: Record<string, unknown>,
+): Promise<Record<string, unknown>>;
+export function getMyOrders(userId: string): Promise<{
+  state: string;
+  orders: Array<Record<string, unknown>>;
+  error?: unknown;
+}>;
 export function lookupGuestOrder(
   orderNumber: string,
   email: string,
-  options?: Record<string, unknown>,
-): Promise<Record<string, unknown> | null>;
-export function getOrderDetails(input: Record<string, unknown>): Promise<Record<string, unknown> | null>;
+  turnstileToken?: string,
+  accessToken?: string,
+): Promise<Record<string, unknown>>;
+export function getOrderDetails(input: {
+  orderNumber?: string;
+  userId?: string | null;
+  email?: string;
+  turnstileToken?: string;
+  accessToken?: string;
+}): Promise<Record<string, unknown>>;

@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T20:29:30.445Z",
+  "generatedAt": "2026-08-09T20:32:36.652Z",
   "sourceFiles": 259,
-  "strictFiles": 197,
-  "strictCoveragePercent": 76.06,
+  "strictFiles": 198,
+  "strictCoveragePercent": 76.45,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -47,7 +47,6 @@
     "src/pages/AccountPage.jsx",
     "src/pages/CheckoutPage.jsx",
     "src/pages/ComparePage.jsx",
-    "src/pages/ContactPage.jsx",
     "src/pages/CustomizePage.jsx",
     "src/pages/DesignSharePage.jsx",
     "src/pages/HomePage.jsx",
