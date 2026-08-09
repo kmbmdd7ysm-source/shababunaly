@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T02:27:35.325827+00:00",
-  "commitSha": "dbdd819e1732c1caf7cf724e0c74c867d12ac2a3",
+  "generatedAt": "2026-08-09T02:28:18.973485+00:00",
+  "commitSha": "4b769d7e0f95140b94ba2a6b51e459d467fe3f1f",
   "sourceFiles": 259,
   "strictFiles": 73,
   "strictCoveragePercent": 28.19,
   "legacyFileCount": 186,
-  "note": "Phase 3 IN PROGRESS. All api/_ helpers are TypeScript."
+  "note": "Phase 3 IN PROGRESS. All api/_ helpers typed. Next: designStudio.ts."
 }

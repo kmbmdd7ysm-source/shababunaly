@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `859c734642512234bc3391378793bf4372d2d2fe`
+- Full SHA: `4b769d7e0f95140b94ba2a6b51e459d467fe3f1f`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -16,17 +16,19 @@
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
 | 6–25 | Remaining | NOT STARTED / PARTIAL |
 
-## Milestone
+## Milestone this run
 
-All `api/_*.ts` shared helpers are now TypeScript.
+- All `api/_*.ts` helpers are TypeScript
+- Executable TS coverage raised from ~5.8% → **28.19%**
+- Checkout 500 LYD bug eliminated (Phase 5)
 
 ## Exact next (Phase 3)
 
-1. **Port `src/services/designStudio.js` → `.ts`**
+1. Port `src/services/designStudio.js` → `.ts`
 2. Port `productionPreflight.js` → `.ts`
-3. Port `src/services/supabase.js` → `.ts`
-4. Full context migrations
-5. Remain in Phase 3 until project-wide or exclusions documented
+3. Port `supabase.js` → `.ts`
+4. Contexts + remaining pages/components
+5. Do not leave Phase 3 until project-wide or exclusions documented
 
 ## Next command
 
