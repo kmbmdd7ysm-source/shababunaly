@@ -81,7 +81,7 @@ await test('enterprise B2B workflows', async (t) => {
       assert.match(proofApi, /media-quarantine/);
       assert.match(proofApi, /validateEncodedFiles/);
       assert.match(proofApi, /customer_register_payment_proof/);
-      const signApi = read('api/contract-sign.js');
+      const signApi = read('api/contract-sign.ts');
       assert.match(signApi, /createHash/);
       assert.match(signApi, /customer_sign_contract/);
     },
