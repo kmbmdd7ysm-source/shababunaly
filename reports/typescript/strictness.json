@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:22:23.709Z",
+  "generatedAt": "2026-08-09T22:23:12.445Z",
   "sourceFiles": 269,
-  "strictFiles": 234,
-  "strictCoveragePercent": 86.99,
+  "strictFiles": 235,
+  "strictCoveragePercent": 87.36,
   "legacyFiles": [
     "src/components/account/AddressesSection.jsx",
     "src/components/account/MfaSecurityPanel.jsx",
@@ -13,7 +13,6 @@
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
     "src/components/custom/StudioStage.jsx",
-    "src/components/experience/CinematicHero.jsx",
     "src/components/operations/BusinessIntelligencePanel.jsx",
     "src/components/operations/OperationsCommerceModules.jsx",
     "src/components/operations/OperationsEnterpriseModules.jsx",

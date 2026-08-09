@@ -206,7 +206,7 @@ for (const token of [
   has(checkout, token, `checkout shipping ${token}`);
 const commerceContext = read('src/context/CommerceContext.jsx');
 has(commerceContext, 'fetchPublicShippingRates', 'public country shipping rates');
-const hero = read('src/components/experience/CinematicHero.jsx');
+const hero = read('src/components/experience/CinematicHero.tsx');
 for (const token of ['home_hero', 'mobileVideoUrl', 'useReducedMotion', 'saveData'])
   has(hero, token, `hero runtime ${token}`);
 

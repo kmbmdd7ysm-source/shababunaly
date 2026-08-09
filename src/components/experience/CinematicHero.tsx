@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
@@ -10,7 +11,7 @@ const ENV_DESKTOP_VIDEO = String(import.meta.env.VITE_HERO_VIDEO_URL || '').trim
 const ENV_MOBILE_VIDEO = String(import.meta.env.VITE_HERO_MOBILE_VIDEO_URL || '').trim();
 
 /** Only an https source is ever accepted; `media-src` allows https and nothing else useful. */
-const safeUrl = (value) =>
+const safeUrl = (value: unknown) =>
   /^https:\/\//i.test(String(value || '').trim()) ? String(value).trim() : '';
 
 /**
@@ -33,11 +34,11 @@ const safeUrl = (value) =>
  *   video error       falls back to the poster and never retries
  *   sound             muted always; there is no autoplay audio path at all
  */
-export default function CinematicHero() {
+export default function CinematicHero(): ReactElement {
   const { pick } = useLanguage();
-  const video = useRef(null);
+  const video = useRef<HTMLVideoElement | null>(null);
   const [videoEnabled, setVideoEnabled] = useState(false);
-  const [mediaConfig, setMediaConfig] = useState({
+  const [mediaConfig, setMediaConfig] = useState<Record<string, unknown>>({
     enabled: true,
     desktopVideoUrl: ENV_DESKTOP_VIDEO,
     mobileVideoUrl: ENV_MOBILE_VIDEO,
@@ -130,7 +131,7 @@ export default function CinematicHero() {
             poster="/media/hero/shababuna-hero-poster.webp"
             onError={() => setFailed(true)}
           >
-            <source src={selectedVideo} type="video/mp4" />
+            <source src={String(selectedVideo || '')} type="video/mp4" />
           </video>
         )}
         <span className="gw-hero-wash" />

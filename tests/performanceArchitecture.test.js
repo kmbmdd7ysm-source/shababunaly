@@ -4,7 +4,7 @@ import { describe, expect, it } from './test-api.js';
 describe('performance architecture', () => {
   it('uses responsive preloaded hero posters and defers video', () => {
     const html = readFileSync('index.html', 'utf8');
-    const hero = readFileSync('src/components/experience/CinematicHero.jsx', 'utf8');
+    const hero = readFileSync('src/components/experience/CinematicHero.tsx', 'utf8');
     expect(html).toContain('imagesrcset');
     expect(html).toContain('fetchpriority="high"');
     expect(hero).toContain('preload="none"');
