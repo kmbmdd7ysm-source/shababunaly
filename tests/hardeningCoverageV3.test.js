@@ -17,7 +17,7 @@ import {
   rgbToLab,
   runProductionPreflight,
 } from '../src/services/productionPreflight.js';
-import { DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.js';
+import { DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.ts';
 import { createDefaultStudio } from '../src/services/designStudio.js';
 
 const originalFetch = globalThis.fetch;

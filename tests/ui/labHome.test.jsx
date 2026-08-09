@@ -75,7 +75,7 @@ describe('GROUNDWORK homepage prototype', () => {
     expect(screen.getByText(`${libya.deliveryFee.amount} LYD`)).toBeVisible();
     expect(screen.getByText(`${libya.freeThreshold.amount} LYD`)).toBeVisible();
 
-    // 05 THE WORKSHOP — minimums come from data/customization.js, not prose.
+    // 05 THE WORKSHOP — minimums come from data/customization.ts, not prose.
     const minimum = (key) => CUSTOM_PRODUCT_TYPES.find((type) => type.key === key).minimum;
     const minimums = screen.getByRole('table', { name: 'Minimum order' });
     for (const key of ['game-set', 'basketball', 'hoop-padding']) {

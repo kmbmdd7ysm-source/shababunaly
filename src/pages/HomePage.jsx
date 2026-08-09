@@ -30,7 +30,7 @@ import '../styles/home.css';
  *   - Products arrive as EXHIBITS inside chapters, not as an undifferentiated
  *     grid at the bottom of the page.
  *
- * Every figure is read from config/shipping.ts, data/customization.js,
+ * Every figure is read from config/shipping.ts, data/customization.ts,
  * config.js and the live catalogue. Nothing is invented. Every commercial
  * destination from the previous homepage is preserved.
  *

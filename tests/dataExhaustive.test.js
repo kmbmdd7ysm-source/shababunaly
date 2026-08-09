@@ -24,7 +24,7 @@ import {
   normalizeRoster,
   parseRosterCsv,
   rosterToCsv,
-} from '../src/data/customization.js';
+} from '../src/data/customization.ts';
 import {
   normalizeLhaProduct,
   products as rawLhaProducts,

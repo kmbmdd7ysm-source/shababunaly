@@ -1,4 +1,4 @@
-import { normalizeRoster, parseRosterCsv } from '../data/customization.js';
+import { normalizeRoster, parseRosterCsv } from '../data/customization.ts';
 
 const MAX_SPREADSHEET_BYTES = 8 * 1024 * 1024;
 const textDecoder = new TextDecoder('utf-8');

@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { catalogProducts, products, readyToShipProducts } from '../src/data/products.js';
 import { isProductVisible } from '../src/utils/productEligibility.ts';
-import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.js';
+import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.ts';
 
 const failures = [];
 const requireFile = (file) => {

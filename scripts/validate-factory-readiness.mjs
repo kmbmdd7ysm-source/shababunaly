@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.js';
+import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.ts';
 
 const sha256 = (file) => createHash('sha256').update(readFileSync(file)).digest('hex');
 const validHash = (value) => /^[a-f0-9]{64}$/iu.test(String(value || ''));

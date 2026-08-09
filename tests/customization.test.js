@@ -4,7 +4,7 @@ import {
   normalizeRoster,
   parseRosterCsv,
   rosterToCsv,
-} from '../src/data/customization.js';
+} from '../src/data/customization.ts';
 
 describe('custom manufacturing studio', () => {
   it('enforces product-specific minimums', () => {

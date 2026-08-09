@@ -2,7 +2,7 @@ import {
   CUSTOM_PRODUCT_TYPES,
   getCustomProductType,
   normalizeRoster,
-} from '../data/customization.js';
+} from '../data/customization.ts';
 import { normalizeStudio } from './designStudio.js';
 
 const MM_PER_INCH = 25.4;

@@ -13,7 +13,7 @@ import {
   normalizeRoster,
   parseRosterCsv,
   rosterToCsv,
-} from '../src/data/customization.js';
+} from '../src/data/customization.ts';
 import { ROSTER_FILE_ACCEPT } from '../src/utils/rosterSpreadsheet.js';
 import { buildProductionPackage } from '../src/utils/designExports.js';
 

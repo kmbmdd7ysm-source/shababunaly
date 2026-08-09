@@ -1,10 +1,36 @@
-/**
- * @typedef {{ key: string, category: string, label: {en:string,ar:string}, minimum: number, preview: string, supportsRoster: boolean, madeInUSA: boolean }} CustomProductType
- * @typedef {{ id?: string, name?: string, playerName?: string, jerseyName?: string, printName?: string, number?: string|number, jerseySize?: string, shortsSize?: string, size?: string }} RosterInput
- * @typedef {{ id: string, name: string, jerseyName: string, number: string, jerseySize: string, shortsSize: string, errors: string[] }} RosterRow
- */
-/** @type {readonly CustomProductType[]} */
-export const CUSTOM_PRODUCT_TYPES = Object.freeze([
+export interface CustomProductType {
+  key: string;
+  category: string;
+  label: { en: string; ar: string };
+  minimum: number;
+  preview: string;
+  supportsRoster: boolean;
+  madeInUSA: boolean;
+}
+
+export interface RosterInput {
+  id?: string;
+  name?: string;
+  playerName?: string;
+  jerseyName?: string;
+  printName?: string;
+  number?: string | number;
+  jerseySize?: string;
+  shortsSize?: string;
+  size?: string;
+}
+
+export interface RosterRow {
+  id: string;
+  name: string;
+  jerseyName: string;
+  number: string;
+  jerseySize: string;
+  shortsSize: string;
+  errors: string[];
+}
+
+export const CUSTOM_PRODUCT_TYPES: readonly CustomProductType[] = Object.freeze([
   {
     key: 'game-set',
     category: 'gamewear',
@@ -168,16 +194,15 @@ export const DEFAULT_CUSTOM_DESIGN = Object.freeze({
   notes: '',
 });
 
-/** @param {string} key @returns {CustomProductType} */
-export function getCustomProductType(key) {
-  return (
-    CUSTOM_PRODUCT_TYPES.find((item) => item.key === key) ||
-    /** @type {CustomProductType} */ (CUSTOM_PRODUCT_TYPES[0])
-  );
+export function getCustomProductType(key: string): CustomProductType {
+  const found = CUSTOM_PRODUCT_TYPES.find((item) => item.key === key);
+  const fallback = CUSTOM_PRODUCT_TYPES[0];
+  if (found) return found;
+  if (fallback) return fallback;
+  throw new Error('CUSTOM_PRODUCT_TYPES is empty');
 }
 
-/** @param {RosterInput[]} [rows] @returns {RosterRow[]} */
-export function normalizeRoster(rows = []) {
+export function normalizeRoster(rows: RosterInput[] = []): RosterRow[] {
   const seenNumbers = new Set();
   return rows
     .map((row, index) => {
@@ -217,20 +242,18 @@ export function normalizeRoster(rows = []) {
     .filter((row) => row.name || row.number || row.jerseySize || row.shortsSize);
 }
 
-/** @param {string} [text] @returns {RosterRow[]} */
-export function parseRosterCsv(text = '') {
+export function parseRosterCsv(text = ''): RosterRow[] {
   const lines = String(text)
     .replace(/^\uFEFF/, '')
     .split(/\r?\n/)
     .filter(Boolean);
   if (!lines.length) return [];
-  const firstLine = /** @type {string} */ (lines[0]);
+  const firstLine = lines[0] ?? '';
   const delimiter = firstLine.includes(';') ? ';' : ',';
   const headers = firstLine
     .split(delimiter)
     .map((value) => value.trim().replace(/^"|"$/g, '').toLowerCase());
-  /** @param {...string} keys */
-  const indexOf = (...keys) => headers.findIndex((header) => keys.includes(header));
+  const indexOf = (...keys: string[]) => headers.findIndex((header) => keys.includes(header));
   const nameIndex = indexOf('name', 'player name', 'player', 'الاسم');
   const printIndex = indexOf('jersey name', 'print name', 'name on jersey', 'اسم السيريا');
   const numberIndex = indexOf('number', 'jersey number', '#', 'الرقم');
@@ -259,12 +282,10 @@ export function parseRosterCsv(text = '') {
   );
 }
 
-/** @param {RosterInput[]} [rows] */
-export function rosterToCsv(rows = []) {
+export function rosterToCsv(rows: RosterInput[] = []): string {
   // normalizeRoster guarantees string fields, so no nullable branch is needed
   // in the final serializer.
-  /** @param {unknown} value */
-  const escaped = (value) => `"${String(value).replace(/"/g, '""')}"`;
+  const escaped = (value: unknown) => `"${String(value).replace(/"/g, '""')}"`;
   return [
     ['Player Name', 'Jersey Name', 'Number', 'Jersey Size', 'Shorts Size'].map(escaped).join(','),
     ...normalizeRoster(rows).map((row) =>

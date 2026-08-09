@@ -13,7 +13,7 @@ import {
   readRasterDimensions,
   runProductionPreflight,
 } from '../src/services/productionPreflight.js';
-import { CUSTOM_PRODUCT_TYPES, DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.js';
+import { CUSTOM_PRODUCT_TYPES, DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.ts';
 import { createDefaultStudio } from '../src/services/designStudio.js';
 
 const completeDesign = {

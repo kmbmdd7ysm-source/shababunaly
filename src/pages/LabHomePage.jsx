@@ -21,7 +21,7 @@ import '../styles/lab-home.css';
  * disallowed in robots.txt, and it is absent from the pre-render route list.
  *
  * Every figure on this page is read from the repository — `config/shipping.ts`,
- * `data/categories.ts`, `data/customization.js` and `config.js`. Nothing is
+ * `data/categories.ts`, `data/customization.ts` and `config.js`. Nothing is
  * invented: no product, price, stock level, athlete, partnership, claim or
  * delivery promise appears here that the codebase does not already assert.
  */

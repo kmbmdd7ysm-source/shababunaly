@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T01:54:04.897Z",
+  "generatedAt": "2026-08-09T01:54:34.409Z",
   "sourceFiles": 259,
-  "strictFiles": 25,
-  "strictCoveragePercent": 9.65,
+  "strictFiles": 26,
+  "strictCoveragePercent": 10.04,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -113,7 +113,6 @@
     "src/context/LanguageContext.jsx",
     "src/context/ReadinessContext.jsx",
     "src/context/UserDataContext.jsx",
-    "src/data/countries.js",
     "src/data/customization.js",
     "src/data/faqs.js",
     "src/data/footerSocial.jsx",

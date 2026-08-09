@@ -42,7 +42,7 @@ import {
   BRAND_PRIORITY,
   catalogProducts,
 } from '../src/data/products.js';
-import { CUSTOM_PRODUCT_TYPES, normalizeRoster, rosterToCsv } from '../src/data/customization.js';
+import { CUSTOM_PRODUCT_TYPES, normalizeRoster, rosterToCsv } from '../src/data/customization.ts';
 import {
   normalizeStudio,
   addDesignLayer,
