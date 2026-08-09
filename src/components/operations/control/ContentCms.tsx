@@ -11,11 +11,12 @@ export default function ContentCms({
   saving,
   run,
 }: {
-  state: Record<string, unknown>;
+  state: unknown;
   pick: LocalePick;
   saving?: string | boolean;
   run: (key: string, action: () => Promise<unknown>, success: string) => unknown;
 }): ReactElement {
+  const stateRecord = (state || {}) as Record<string, unknown>;
   const defaults = useMemo(
     () =>
       ({
@@ -27,8 +28,8 @@ export default function ContentCms({
     [],
   );
   const current = (contentKey: string) => {
-    const rows = Array.isArray(state.siteContent)
-      ? (state.siteContent as Array<Record<string, unknown>>)
+    const rows = Array.isArray(stateRecord.siteContent)
+      ? (stateRecord.siteContent as Array<Record<string, unknown>>)
       : [];
     const hit = rows.find((row) => row.content_key === contentKey);
     return hit?.content_value || defaults[contentKey];
