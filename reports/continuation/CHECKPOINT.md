@@ -1,14 +1,15 @@
-# Continuation checkpoint
+# Continuation checkpoint — Final Continuous Completion
 
-- SHA: `b28d368a950a71f1563bf004a549d4ea62c4f5f1`
-- TypeScript: **62.55%** (162/259)
-- CatalogContext: **DONE**
-- UserDataContext: **DONE**
-- AuthContext: **DONE**
-- CSS: global 5657L / !important 238
+- SHA: `aa5595aebf46e0688530728a915929ec8dae2549`
+- TypeScript: **64.48%** (167/259)
+- CatalogContext / UserDataContext / AuthContext: **DONE**
+- CSS pass 1–3: global 5070L / !important 235 (was 7252/348)
+- Footer / Home / cards / SmartImage / Modal / Newsletter / Dossier migrated
 
-## Next
-Continue Phase 1 TS (remaining APIs + large pages), then Phase 2 CSS extinction.
+## Exact next
+1. Continue Phase 1 TS — remaining APIs + large pages (Account/Customize/Checkout/Shop/Product/Teams)
+2. Phase 2 — stop loading legacy CSS from main.jsx (foundation-only entry)
+3. Phases 3–35 per command
 
 ## Next command
-Migrate remaining api/*.js and large page modules
+Migrate remaining large pages / unload legacy CSS ownership
