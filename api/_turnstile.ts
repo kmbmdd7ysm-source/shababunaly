@@ -1,9 +1,9 @@
-const clean = (value, max = 5000) =>
+const clean = (value: unknown, max = 5000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
 
-export async function verifyTurnstileToken(token, remoteIp = '') {
+export async function verifyTurnstileToken(token: unknown, remoteIp = ''): Promise<boolean> {
   const secret = clean(process.env.TURNSTILE_SECRET_KEY, 5000);
   const testMode =
     process.env.NODE_ENV !== 'production' && process.env.TURNSTILE_TEST_MODE === 'true';
@@ -24,7 +24,7 @@ export async function verifyTurnstileToken(token, remoteIp = '') {
       signal,
     });
     if (!response.ok) return false;
-    const result = await response.json();
+    const result = (await response.json()) as { success?: boolean };
     return result.success === true;
   } catch {
     return false;

@@ -1,7 +1,7 @@
 /** Canonical Formspree endpoint — must match src/config/integrations.ts */
 export const FORMSPREE_CANONICAL_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
 
-export function resolveFormspreeEndpoint() {
+export function resolveFormspreeEndpoint(): string {
   const fromOrder = String(process.env.FORMSPREE_ORDER_ENDPOINT || '').trim();
   if (fromOrder) return fromOrder;
   const fromVite = String(

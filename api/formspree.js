@@ -1,8 +1,8 @@
 import { guardPublicPost } from './_request-security.js';
-import { verifyTurnstileToken } from './_turnstile.js';
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+import { verifyTurnstileToken } from './_turnstile.ts';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 
-export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.js';
+export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.ts';
 
 export function sanitize(value, max = 12000) {
   if (value == null) return '';

@@ -1,8 +1,8 @@
 import { guardPublicPost } from './_request-security.js';
 import { validateEncodedFiles } from './_file-security.js';
-import { verifyTurnstileToken } from './_turnstile.js';
+import { verifyTurnstileToken } from './_turnstile.ts';
 
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 const ENDPOINT = resolveFormspreeEndpoint();
 const clean = (value, max = 12000) =>
   String(value ?? '')

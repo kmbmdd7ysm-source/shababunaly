@@ -1,5 +1,5 @@
 import { guardPublicPost, applyApiHeaders } from './_request-security.js';
-import { verifyTurnstileToken } from './_turnstile.js';
+import { verifyTurnstileToken } from './_turnstile.ts';
 import { supabaseAdminRequest } from './_supabase-admin.js';
 import {
   createGuestOrderToken,

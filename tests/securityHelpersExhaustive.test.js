@@ -11,7 +11,7 @@ import {
   supabaseAdminRequest,
   supabaseUserRequest,
 } from '../api/_supabase-admin.js';
-import { verifyTurnstileToken } from '../api/_turnstile.js';
+import { verifyTurnstileToken } from '../api/_turnstile.ts';
 import { configuredPaymentMethods, getPaymentAdapter } from '../api/payments/registry.js';
 
 const ENV = [
