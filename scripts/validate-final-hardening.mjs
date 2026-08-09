@@ -173,7 +173,7 @@ for (const token of [
   'formspree',
 ])
   has(worker.toLowerCase(), token.toLowerCase(), `notification worker ${token}`);
-const adminUsersApi = read('api/admin-users.js');
+const adminUsersApi = read('api/admin-users.ts');
 for (const token of [
   'requireSuperAdmin',
   'app_metadata?.role',

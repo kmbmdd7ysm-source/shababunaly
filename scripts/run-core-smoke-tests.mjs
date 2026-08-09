@@ -144,7 +144,7 @@ const resilience = readFileSync(
   'utf8',
 );
 assert.match(resilience, /variant_snapshot'->>'customizable/);
-const adminApi = readFileSync('api/admin-users.js', 'utf8');
+const adminApi = readFileSync('api/admin-users.ts', 'utf8');
 assert.match(adminApi, /app_metadata\?\.role/);
 assert.doesNotMatch(adminApi, /user_metadata\?\.role|user_metadata\.role/);
 console.info(
