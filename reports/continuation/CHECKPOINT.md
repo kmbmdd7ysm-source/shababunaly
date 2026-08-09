@@ -1,15 +1,28 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `820595a83498396f49c9c5c80187ac909e025aa7`
-- TypeScript: **72.2%** (187/259)
-- Remaining: ~10 api JS · ~62 src JS/JSX
+- SHA: `4568a6470e5c28a975cb0da307076b81fdeae23b`
+- TypeScript: **72.59%** (188/259)
+- Remaining: ~9 api JS · ~62 src JS/JSX
 - CSS: global 5070L / !important 173 (was 7252/348)
 
+## Remaining api JS
+```
+api/admin-media-upload.js
+api/admin-users.js
+api/malware-scan-worker.js
+api/media-scan-worker.js
+api/payment-proof.js
+api/payments/adapters/base.js
+api/signature-webhook.js
+api/signatures/evidence.js
+api/signatures/provider.js
+```
+
 ## Exact next
-1. Remaining APIs (~10): privacy-worker, malware/media-scan, admin-*, signatures/*, payment-proof
-2. Large pages
-3. Phase 2 unload legacy CSS
+1. Remaining APIs above
+2. Large pages Account/Customize/Checkout/Shop/Product/Teams
+3. Phase 2 unload legacy CSS from main.jsx
 4. Phases 3–35
 
 ## Next command
-Migrate privacy-worker.js
+Migrate malware-scan-worker.js / media-scan-worker.js / admin-users.js
