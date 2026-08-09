@@ -1,15 +1,14 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:31:03.581Z",
+  "generatedAt": "2026-08-09T22:32:33.254Z",
   "sourceFiles": 269,
-  "strictFiles": 238,
-  "strictCoveragePercent": 88.48,
+  "strictFiles": 239,
+  "strictCoveragePercent": 88.85,
   "legacyFiles": [
     "src/components/account/MfaSecurityPanel.jsx",
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
-    "src/components/custom/StudioStage.jsx",
     "src/components/operations/BusinessIntelligencePanel.jsx",
     "src/components/operations/OperationsCommerceModules.jsx",
     "src/components/operations/OperationsEnterpriseModules.jsx",
@@ -37,7 +36,13 @@
     "src/utils/rosterSpreadsheet.js",
     "src/utils/simplePdf.js"
   ],
-  "violations": [],
+  "violations": [
+    {
+      "file": "src/components/custom/StudioStage.tsx",
+      "issue": "explicit-any-in-strict-scope",
+      "count": 2
+    }
+  ],
   "compilerGuarantees": {
     "strict": true,
     "noImplicitAny": true,

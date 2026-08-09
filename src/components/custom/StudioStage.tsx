@@ -1,3 +1,4 @@
+import type { KeyboardEvent as ReactKeyboardEvent, ReactElement } from 'react';
 import { useEffect, useId, useRef, useState } from 'react';
 /* step/dir captured via refs so pointer listeners register once */
 import DesignPreview from './DesignPreview';
@@ -56,7 +57,7 @@ export const SWIPE_THRESHOLD = 40;
  * @param {string} dir     'rtl' | 'ltr'
  * @returns {-1|0|1} preset-ring step
  */
-export function resolveSwipe(travel, dir) {
+export function resolveSwipe(travel: number, dir: string): -1 | 0 | 1 {
   if (!Number.isFinite(travel) || Math.abs(travel) < SWIPE_THRESHOLD) return 0;
   const forward = dir === 'rtl' ? travel > 0 : travel < 0;
   return forward ? 1 : -1;
@@ -69,10 +70,16 @@ const ZOOM_STEP = 20;
 /**
  * @param {{ design: any, preflight?: any }} props
  */
-export default function StudioStage({ design, preflight = null }) {
+export default function StudioStage({
+  design,
+  preflight = null,
+}: {
+  design?: unknown;
+  preflight?: Record<string, unknown> | null;
+}): ReactElement {
   const { pick, dir } = useLanguage();
   const reduced = useReducedMotion();
-  const stage = useRef(null);
+  const stage = useRef<HTMLDivElement | null>(null);
   const id = useId().replace(/:/g, '');
   const [view, setView] = useState('front');
   const [lighting, setLighting] = useState('production');
@@ -88,14 +95,15 @@ export default function StudioStage({ design, preflight = null }) {
   indexRef.current = index;
   dirRef.current = dir;
 
-  const step = (delta) => {
+  const step = (delta: number) => {
     const next = (indexRef.current + delta + VIEWS.length) % VIEWS.length;
-    setView(VIEWS[next].key);
+    const entry = VIEWS[next];
+    if (entry) setView(entry.key);
   };
 
   // Arrow keys follow the reading direction, so "forward" is forward for the
   // reader. The garment's own left and right never swap.
-  const onKeyDown = (event) => {
+  const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     const forward = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
     const back = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     if (event.key === forward) {
@@ -117,20 +125,21 @@ export default function StudioStage({ design, preflight = null }) {
   // so gesture and keyboard can never disagree about the current view.
   // Named handlers + exact cleanup; listeners added once (refs hold dir/index).
   useEffect(() => {
-    const node = /** @type {HTMLElement | null} */ (stage.current);
+    const node = /** @type {HTMLElement | null} */ stage.current;
     if (!node) return undefined;
-    let origin = null;
-    const handlePointerDown = (event) => {
+    let origin: number | null = null;
+    const handlePointerDown = (event: PointerEvent) => {
       origin = event.clientX;
     };
-    const handlePointerUp = (event) => {
+    const handlePointerUp = (event: PointerEvent) => {
       if (origin == null) return;
       const travel = event.clientX - origin;
       origin = null;
-      const delta = resolveSwipe(travel, dirRef.current);
+      const delta = resolveSwipe(travel, String(dirRef.current || 'ltr'));
       if (delta !== 0) {
         const next = (indexRef.current + delta + VIEWS.length) % VIEWS.length;
-        setView(VIEWS[next].key);
+        const entry = VIEWS[next];
+        if (entry) setView(entry.key);
       }
     };
     const handlePointerCancel = () => {
@@ -168,7 +177,7 @@ export default function StudioStage({ design, preflight = null }) {
         },
       };
 
-  const current = VIEWS[index];
+  const current = VIEWS[index] || VIEWS[0]!;
 
   return (
     <div
