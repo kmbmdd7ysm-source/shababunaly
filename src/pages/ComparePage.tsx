@@ -16,11 +16,11 @@ import { getVariantPurchaseLimit } from '../utils/productEligibility';
 
 export default function ComparePage(): ReactElement {
   const { products } = useCatalog();
-  const c = useCompare(),
-    { pick } = useLanguage(),
-    { addItem } = useCart(),
-    navigate = useNavigate(),
-      const list = c.ids
+  const c = useCompare();
+  const { pick } = useLanguage();
+  const { addItem } = useCart();
+  const navigate = useNavigate();
+  const list = c.ids
     .map((id) => products.find((p) => p.id === id))
     .filter((p): p is CatalogProduct => Boolean(p));
   type RowFn = (p: CatalogProduct) => unknown;
