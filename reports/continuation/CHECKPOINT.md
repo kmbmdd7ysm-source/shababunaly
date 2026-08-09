@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `5fd0c0e83635f0b4e7abcdd086e6295f05862b89`
+- Full SHA: `fe8463931f4c901e39d722e752b955ec087438bf`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -11,7 +11,7 @@
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
 | 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **16.22%** (42/259 executable) |
+| 3 | Complete TypeScript migration | **IN PROGRESS** — **17.76%** (46/259 executable) |
 | 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
 | 6 | Unify release evidence | NOT STARTED |
@@ -24,20 +24,19 @@
 
 ## Exact next (Phase 3)
 
-1. **`src/services/designStudio.js` → `.ts`**
-2. `src/services/productionPreflight.js` → `.ts`
-3. `src/services/supabase.js` → `.ts`
+1. **Port `src/services/designStudio.js` → `.ts`** with StudioState interface (attempt left ~62 errors — finish typing)
+2. Port `productionPreflight.js` → `.ts`
+3. Port `supabase.js` → `.ts`
 4. Contexts: CommerceContext, CartContext, AuthContext
-5. Refresh coverage JSON
-6. Remain in Phase 3 until project-wide or exclusions documented
+5. Refresh coverage; do not leave Phase 3 until project-wide or exclusions documented
 
 ## Next command
 
 ```bash
 cd /workspace && git rev-parse HEAD
-# Begin designStudio.js TypeScript migration
+# Finish designStudio.ts port
 npm run typecheck && npm run test:node && npm run lint
 ```
 
 ## Do not restart from Phase 0
-Resume Phase 3 TypeScript migration only.
+Resume Phase 3 only.
