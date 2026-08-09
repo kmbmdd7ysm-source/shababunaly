@@ -1,31 +1,28 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `f6159e303cbcf809671b61b6aff0224a0a47309b`
-- Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
-- TypeScript: **93.7%** (253/270)
-- CSS: global !important **68** · premium **36** · legacy deferred · culls 10–11
-- Build: green (verified this run)
-- Remaining JSX (**6**): components/account/OrganizationWorkspace.jsx, components/custom/ProductionDesignEditor.jsx, components/operations/OperationsCommerceModules.jsx, components/operations/OperationsEnterpriseModules.jsx, components/operations/OperationsMasterData.jsx, components/product/engines/Realtime3DEngine.jsx
-
-## Completed this uninterrupted resume (from CheckoutPage)
-- ALL pages TSX · App/main · ProductCard · Icon · SearchOverlay · CinematicHero
-- Account: Addresses · SpecialRequests · Returns · MfaSecurityPanel
-- Studio: StudioStage · DesignPreview (+ designView helper)
-- Ops: all control/* · BI · SectionView
-- CSS passes 7–11
+- SHA: `3eb1497d137e47ff5596d90c522b080f945b5384`
+- TypeScript: **94.07%** (254/270)
+- CSS: global !important **68** · premium **36** · legacy deferred
+- Remaining JSX (**5**): components/account/OrganizationWorkspace.jsx, components/operations/OperationsCommerceModules.jsx, components/operations/OperationsEnterpriseModules.jsx, components/operations/OperationsMasterData.jsx, components/product/engines/Realtime3DEngine.jsx
+- Remaining src JS: 11
 
 ## Exact next unfinished
-1. **ProductionDesignEditor.tsx** (designView ready; finish layer/drag event types)
-2. OperationsCommerceModules · OperationsEnterpriseModules · OperationsMasterData
-3. OrganizationWorkspace.jsx
-4. Remaining src JS (11) · Phase 2 CSS ownership extinction
-5. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence
+1. OrganizationWorkspace.jsx (large) — OR Operations*Modules with dedicated typing pass
+2. Remaining src JS services/data/utils
+3. **Phase 2 CSS ownership**: move remaining valid global/premium rules into route CSS; delete obsolete
+4. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence regeneration
+
+## Completed this resume (from CheckoutPage @ ~82%)
+- ALL pages TSX · App/main · ProductCard/Icon/Search/Hero
+- Account Addresses/SpecialRequests/Returns/MFA
+- Studio StudioStage/DesignPreview/ProductionDesignEditor + designView.ts
+- Ops entire control/* + BI + SectionView
+- CSS passes 7–11
 
 ## Next command
 ```bash
 cd /workspace && git rev-parse HEAD
-# Continue ProductionDesignEditor.tsx using src/components/custom/designView.ts
+# Prefer OrganizationWorkspace modular extract OR Phase 2 rule relocation
 npm run typecheck
 ```
 
