@@ -74,7 +74,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const result = await adapter.refund({
       transactionId: clean(body.transactionId || order.payment_reference, 240),
       amount,
-      currency: order.currency || 'USD',
+      currency: String(order.currency || 'USD'),
       idempotencyKey,
       reason,
       metadata: { orderNumber, returnRequestId, requestedBy: staffUser?.id },

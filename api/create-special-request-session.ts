@@ -1,5 +1,5 @@
 import { getPaymentAdapter } from './payments/registry.ts';
-import { clean } from './payments/adapters/base.js';
+import { clean } from './payments/adapters/base.ts';
 import { guardPublicPost } from './_request-security.ts';
 
 type ApiReq = {
@@ -109,6 +109,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const mapped = adapter.mapError
       ? adapter.mapError(error)
       : { status: 502, code: 'payment_session_failed' };
-    return json(res, Number(mapped.status || 502), { error: mapped.code || mapped.error });
+    return json(res, Number(mapped.status || 502), { error: mapped.code });
   }
 }

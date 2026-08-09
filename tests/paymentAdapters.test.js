@@ -4,7 +4,7 @@ import {
   createHttpAdapter,
   normalizeProviderEvent,
   verifyHmacSha256,
-} from '../api/payments/adapters/base.js';
+} from '../api/payments/adapters/base.ts';
 const statusMap = {
   'payment.succeeded': { kind: 'payment', status: 'succeeded' },
   'refund.succeeded': { kind: 'refund', status: 'refunded' },

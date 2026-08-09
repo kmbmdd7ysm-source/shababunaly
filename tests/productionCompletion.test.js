@@ -43,7 +43,7 @@ describe('production completion safeguards', () => {
     expect(auth).toContain("String(payload.aal || 'aal1') !== 'aal2'");
   });
   it('provides real retrieve/refund adapter paths instead of 501 placeholders', async () => {
-    const adapter = await read('api/payments/adapters/base.js');
+    const adapter = await read('api/payments/adapters/base.ts');
     expect(adapter).not.toContain('status(501)');
     expect(adapter).toContain('config.retrieveEnv');
     expect(adapter).toContain('config.refundEnv');

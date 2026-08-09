@@ -7,7 +7,7 @@ import {
   verifyGuestOrderToken,
 } from './_guest-order-token.ts';
 import { getPaymentAdapter } from './payments/registry.ts';
-import { clean } from './payments/adapters/base.js';
+import { clean } from './payments/adapters/base.ts';
 
 const PAYABLE_PAYMENT = new Set(['pending', 'partially_paid', 'failed']);
 const PAYABLE_ORDER = new Set(['awaiting_payment', 'received', 'final_payment_required']);

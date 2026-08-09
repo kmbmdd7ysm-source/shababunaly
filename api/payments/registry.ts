@@ -1,6 +1,6 @@
 import onlineCard from './adapters/online-card.ts';
 import libyanBankCard from './adapters/libyan-bank-card.ts';
-import type { PaymentAdapter } from './adapters/base.js';
+import type { PaymentAdapter } from './adapters/base.ts';
 
 const adapters = new Map<string, PaymentAdapter>([
   [onlineCard.id, onlineCard],
