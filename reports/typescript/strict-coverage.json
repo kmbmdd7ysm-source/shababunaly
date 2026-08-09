@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T21:23:53.788901+00:00",
-  "commitSha": "3400abb92a3e1a9c56e5356b1ef574ad9ce2570c",
-  "sourceFiles": 267,
-  "strictFiles": 219,
-  "strictCoveragePercent": 82.02,
+  "generatedAt": "2026-08-09T21:26:40.768463+00:00",
+  "commitSha": "844daafddaa96900a60979359214448aa87f8bac",
+  "sourceFiles": 268,
+  "strictFiles": 220,
+  "strictCoveragePercent": 82.09,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,
@@ -19,15 +19,5 @@
     }
   },
   "remainingApiJs": 0,
-  "remainingSrcJsx": 48,
-  "remainingPages": [
-    "src/pages/AccountPage.jsx",
-    "src/pages/CheckoutPage.jsx",
-    "src/pages/CustomizePage.jsx",
-    "src/pages/DesignSharePage.jsx",
-    "src/pages/OperationsDashboardPage.jsx",
-    "src/pages/OrderDetailPage.jsx",
-    "src/pages/SpecialRequestPage.jsx",
-    "src/pages/TeamsWholesalePage.jsx"
-  ]
+  "remainingSrcJsx": 48
 }
