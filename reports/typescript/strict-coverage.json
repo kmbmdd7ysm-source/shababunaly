@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T03:32:52.060557+00:00",
-  "commitSha": "5e1d9e5ad0fd4cd91c97a5329ddf924cdad9f5c9",
+  "generatedAt": "2026-08-09T03:34:31.115970+00:00",
+  "commitSha": "c07ddc77fa3cf331835b3b3205b17b5d64da4cb3",
   "sourceFiles": 259,
-  "strictFiles": 119,
-  "strictCoveragePercent": 45.95,
-  "legacyFileCount": 140,
-  "note": "Phase 3 IN PROGRESS. designStudio/productionPreflight/supabase/core contexts migrated."
+  "strictFiles": 124,
+  "strictCoveragePercent": 47.88,
+  "legacyFileCount": 135,
+  "note": "Phase 3 IN PROGRESS ~48%."
 }
