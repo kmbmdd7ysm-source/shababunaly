@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent, type ReactElement } from 'react';
-import MfaSecurityPanel from '../../components/account/MfaSecurityPanel.jsx';
+import MfaSecurityPanel from '../../components/account/MfaSecurityPanel.tsx';
 import {
   downloadPrivacyExport,
   listPrivacyExports,
@@ -92,7 +92,7 @@ export default function SecuritySection({
           {pick({ en: 'Update password', ar: 'تحديث كلمة المرور' })}
         </button>
       </form>
-      <MfaSecurityPanel auth={auth} pick={pick} />
+      <MfaSecurityPanel auth={auth as never} pick={pick} />
       <section className="privacy-export-panel">
         <h2>{pick({ en: 'Privacy export', ar: 'تصدير بيانات الخصوصية' })}</h2>
         <p>

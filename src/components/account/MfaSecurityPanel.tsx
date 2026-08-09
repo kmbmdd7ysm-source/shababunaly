@@ -1,8 +1,46 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
-export default function MfaSecurityPanel({ auth, pick }) {
-  const [state, setState] = useState({ loading: true, factors: [], aal: null, error: '' });
-  const [enrollment, setEnrollment] = useState(null);
+type LocalePick = (value: { en: string; ar: string }) => string;
+
+type MfaAuth = {
+  cloudConfigured?: boolean;
+  listMfaFactors: () => Promise<{
+    factors?: Array<Record<string, unknown>>;
+    aal?: Record<string, unknown> | null;
+  }>;
+  enrollMfaTotp: () => Promise<Record<string, unknown>>;
+  verifyMfaTotp: (factorId: string, code: string) => Promise<unknown>;
+  unenrollMfaFactor: (factorId: string) => Promise<unknown>;
+};
+
+type Enrollment = Record<string, unknown> & {
+  id?: string;
+  totp?: { qr_code?: string; secret?: string };
+};
+
+function errMsg(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (typeof error === 'object' && error && 'message' in error) {
+    return String((error as { message?: unknown }).message || '');
+  }
+  return String(error || '');
+}
+
+export default function MfaSecurityPanel({
+  auth,
+  pick,
+}: {
+  auth: MfaAuth;
+  pick: LocalePick;
+}): ReactElement {
+  const [state, setState] = useState<{
+    loading: boolean;
+    factors: Array<Record<string, unknown>>;
+    aal: Record<string, unknown> | null;
+    error: string;
+  }>({ loading: true, factors: [], aal: null, error: '' });
+  const [enrollment, setEnrollment] = useState<Enrollment | null>(null);
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -23,12 +61,14 @@ export default function MfaSecurityPanel({ auth, pick }) {
       const result = await auth.listMfaFactors();
       setState({
         loading: false,
-        factors: result.factors || [],
-        aal: result.aal || null,
+        factors: Array.isArray(result.factors)
+          ? (result.factors as Array<Record<string, unknown>>)
+          : [],
+        aal: (result.aal as Record<string, unknown> | null) || null,
         error: '',
       });
     } catch (error) {
-      setState({ loading: false, factors: [], aal: null, error: error?.message || String(error) });
+      setState({ loading: false, factors: [], aal: null, error: errMsg(error) || String(error) });
     }
   }, [auth, pick]);
 
@@ -39,34 +79,34 @@ export default function MfaSecurityPanel({ auth, pick }) {
   const begin = async () => {
     setBusy(true);
     try {
-      const result = await auth.enrollMfaTotp();
+      const result = (await auth.enrollMfaTotp()) as Enrollment;
       setEnrollment(result);
       setCode('');
       setState((current) => ({ ...current, error: '' }));
     } catch (error) {
-      setState((current) => ({ ...current, error: error?.message || String(error) }));
+      setState((current) => ({ ...current, error: errMsg(error) || String(error) }));
     } finally {
       setBusy(false);
     }
   };
 
-  const verify = async (event) => {
+  const verify = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!enrollment?.id || !/^\d{6}$/.test(code)) return;
     setBusy(true);
     try {
-      await auth.verifyMfaTotp(enrollment.id, code);
+      await auth.verifyMfaTotp(String(enrollment.id), code);
       setEnrollment(null);
       setCode('');
       await load();
     } catch (error) {
-      setState((current) => ({ ...current, error: error?.message || String(error) }));
+      setState((current) => ({ ...current, error: errMsg(error) || String(error) }));
     } finally {
       setBusy(false);
     }
   };
 
-  const remove = async (factorId) => {
+  const remove = async (factorId: string) => {
     if (
       !globalThis.confirm?.(
         pick({ en: 'Remove this authenticator factor?', ar: 'إزالة تطبيق المصادقة هذا؟' }),
@@ -78,11 +118,13 @@ export default function MfaSecurityPanel({ auth, pick }) {
       await auth.unenrollMfaFactor(factorId);
       await load();
     } catch (error) {
-      setState((current) => ({ ...current, error: error?.message || String(error) }));
+      setState((current) => ({ ...current, error: errMsg(error) || String(error) }));
     } finally {
       setBusy(false);
     }
   };
+
+  const totp = (enrollment?.totp || {}) as { qr_code?: string; secret?: string };
 
   return (
     <section className="mfa-security-panel" aria-labelledby="mfa-title">
@@ -107,16 +149,18 @@ export default function MfaSecurityPanel({ auth, pick }) {
         <p role="status">{pick({ en: 'Checking security…', ar: 'جاري فحص الأمان…' })}</p>
       ) : null}
       {state.factors.map((factor) => (
-        <article className="mfa-factor-row" key={factor.id}>
+        <article className="mfa-factor-row" key={String(factor.id)}>
           <div>
-            <strong>{factor.friendly_name || 'Authenticator'}</strong>
-            <small>{factor.status}</small>
+            <strong>{String(factor.friendly_name || 'Authenticator')}</strong>
+            <small>{String(factor.status || '')}</small>
           </div>
           <button
             type="button"
             className="btn-secondary compact"
             disabled={busy}
-            onClick={() => remove(factor.id)}
+            onClick={() => {
+              void remove(String(factor.id || ''));
+            }}
           >
             {pick({ en: 'Remove', ar: 'إزالة' })}
           </button>
@@ -127,24 +171,31 @@ export default function MfaSecurityPanel({ auth, pick }) {
           type="button"
           className="btn-secondary"
           disabled={busy || !auth.cloudConfigured}
-          onClick={begin}
+          onClick={() => {
+            void begin();
+          }}
         >
           {pick({ en: 'Add authenticator', ar: 'إضافة تطبيق مصادقة' })}
         </button>
       )}
-      {enrollment && (
-        <form className="mfa-enrollment" onSubmit={verify}>
+      {enrollment ? (
+        <form
+          className="mfa-enrollment"
+          onSubmit={(event) => {
+            void verify(event);
+          }}
+        >
           <h3>{pick({ en: 'Scan and verify', ar: 'امسح الرمز ثم أكّد' })}</h3>
-          {enrollment.totp?.qr_code && (
+          {totp.qr_code ? (
             <img
-              src={enrollment.totp.qr_code}
+              src={String(totp.qr_code)}
               alt={pick({ en: 'Authenticator QR code', ar: 'رمز QR لتطبيق المصادقة' })}
-              width="220"
-              height="220"
+              width={220}
+              height={220}
             />
-          )}
+          ) : null}
           <p>
-            <code dir="ltr">{enrollment.totp?.secret}</code>
+            <code dir="ltr">{String(totp.secret || '')}</code>
           </p>
           <label>
             {pick({ en: 'Six-digit code', ar: 'الرمز المكوّن من 6 أرقام' })}
@@ -167,12 +218,12 @@ export default function MfaSecurityPanel({ auth, pick }) {
             </button>
           </div>
         </form>
-      )}
-      {state.error && (
+      ) : null}
+      {state.error ? (
         <p className="form-status" role="alert">
           {state.error}
         </p>
-      )}
+      ) : null}
     </section>
   );
 }
