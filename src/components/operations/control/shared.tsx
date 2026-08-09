@@ -57,9 +57,9 @@ export function OperationalRow({
   table: string;
   row: Record<string, unknown>;
   label: string;
-  run: (key: string, action: () => Promise<unknown>, success: string) => unknown;
-  saving?: string | boolean;
-  pick: (value: { en: string; ar: string }) => string;
+  run: (...args: unknown[]) => unknown;
+  saving?: string | boolean | undefined;
+  pick: (value: string | { en?: string; ar?: string }) => string;
 }): ReactElement {
   return (
     <article>

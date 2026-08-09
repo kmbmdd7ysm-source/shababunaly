@@ -1,8 +1,22 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { upsertOperationalEntity } from '../../../services/operations';
 import { OperationalRow } from './shared';
 
-export default function MerchandisingManager({ state, pick, saving, run }) {
+export default function MerchandisingManager({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const s = (state || {}) as Record<string, unknown>;
+  const rows = (key: string) =>
+    Array.isArray(s[key]) ? (s[key] as Array<Record<string, unknown>>) : [];
   const [collection, setCollection] = useState({
     slug: '',
     name_en: '',
@@ -13,11 +27,16 @@ export default function MerchandisingManager({ state, pick, saving, run }) {
   const [coupon, setCoupon] = useState({
     code: '',
     discount_type: 'percent',
-    discount_value: 10,
-    minimum_subtotal: 0,
+    discount_value: '10',
+    minimum_subtotal: '0',
     active: true,
   });
-  const [tax, setTax] = useState({ country_code: '', region: '', rate: 0, active: true });
+  const [tax, setTax] = useState({
+    country_code: '',
+    region: '',
+    rate: '0',
+    active: true,
+  });
   return (
     <section className="operations-subsection">
       <h3>
@@ -169,31 +188,31 @@ export default function MerchandisingManager({ state, pick, saving, run }) {
       <details>
         <summary>{pick({ en: 'Existing merchandising rules', ar: 'قواعد العرض الحالية' })}</summary>
         <div className="workspace-list">
-          {state.collections.map((row) => (
+          {rows('collections').map((row: Record<string, unknown>) => (
             <OperationalRow
-              key={row.id}
+              key={String(row.id)}
               table="catalog_collections"
               row={row}
-              label={row.name_en}
+              label={String(row.name_en || row.name || '')}
               run={run}
               saving={saving}
               pick={pick}
             />
           ))}
-          {state.coupons.map((row) => (
+          {rows('coupons').map((row: Record<string, unknown>) => (
             <OperationalRow
-              key={row.id}
+              key={String(row.id)}
               table="coupons"
               row={row}
-              label={row.code}
+              label={String(row.code || '')}
               run={run}
               saving={saving}
               pick={pick}
             />
           ))}
-          {state.taxRules.map((row) => (
+          {rows('taxRules').map((row: Record<string, unknown>) => (
             <OperationalRow
-              key={row.id}
+              key={String(row.id)}
               table="tax_rules"
               row={row}
               label={`${row.country_code}${row.region ? ` · ${row.region}` : ''}`}
