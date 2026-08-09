@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T01:56:15.615Z",
-  "sourceFiles": 259,
-  "strictFiles": 27,
-  "strictCoveragePercent": 10.42,
+  "generatedAt": "2026-08-09T01:57:42.154Z",
+  "sourceFiles": 261,
+  "strictFiles": 30,
+  "strictCoveragePercent": 11.49,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -176,7 +176,6 @@
     "src/services/productionPreflight.js",
     "src/services/publicQuotes.js",
     "src/services/returns.js",
-    "src/services/siteContent.js",
     "src/services/specialRequests.js",
     "src/services/supabase.js",
     "src/services/sync/cloudState.js",
