@@ -45,7 +45,7 @@ body {
 }
 
 .site-header:not(.scrolled) {
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .site-header.scrolled .header-inner {
@@ -133,11 +133,11 @@ body {
 .section-heading .section-title {
   max-width: 18ch !important;
   letter-spacing: -0.055em !important;
-  line-height: 0.9 !important;
+  line-height: 0.9;
 }
 
 .section-label {
-  letter-spacing: 0.18em !important;
+  letter-spacing: 0.18em;
 }
 
 .product-card,
@@ -288,7 +288,7 @@ from {
     opacity: 1;
   }.section-heading .section-title {
     font-size: clamp(2.15rem, 11vw, 3.8rem) !important;
-    line-height: 0.94 !important;
+    line-height: 0.94;
     max-width: 13ch !important;
   }
 }
@@ -1474,15 +1474,15 @@ main,
   .mobile-menu-head .brand:hover,
   .mobile-menu-head .brand:active,
   .mobile-menu-head .brand:focus {
-    background: transparent !important;
-    color: inherit !important;
-    border-color: transparent !important;
+    background: transparent;
+    color: inherit;
+    border-color: transparent;
     border-radius: 0 !important;
-    box-shadow: none !important;
-    outline: 0 !important;
+    box-shadow: none;
+    outline: 0;
     transform: none !important;
     filter: none !important;
-    -webkit-tap-highlight-color: transparent !important;
+    -webkit-tap-highlight-color: transparent;
   }.header-actions .mobile-more-action::before,
   .header-actions .mobile-more-action::after,
   .mobile-menu-head .brand::before,
@@ -1497,7 +1497,7 @@ main,
 .product-card-media,
 .gallery-main,
 .smart-img {
-  background: #fff !important;
+  background: #fff;
 }
 
 .media-lightbox {
