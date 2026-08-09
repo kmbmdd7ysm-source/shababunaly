@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T04:04:12.614Z",
+  "generatedAt": "2026-08-09T04:07:37.954Z",
   "sourceFiles": 259,
-  "strictFiles": 148,
-  "strictCoveragePercent": 57.14,
+  "strictFiles": 149,
+  "strictCoveragePercent": 57.53,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -46,7 +46,6 @@
     "src/components/pwa/PwaPrompt.jsx",
     "src/components/shop/Filters.jsx",
     "src/components/shop/ProductCard.jsx",
-    "src/context/AuthContext.jsx",
     "src/context/CatalogContext.jsx",
     "src/context/UserDataContext.jsx",
     "src/data/footerSocial.jsx",

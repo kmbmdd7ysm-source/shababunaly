@@ -1,22 +1,16 @@
 # Continuation checkpoint
 
-- SHA: `756d17671e11b91b7dd0d0360336306f8ce9c659`
-- TypeScript: **57.14%** (148/259)
-- CSS: global 5657L / !important 238 (was 7252/348)
-
-## Status
-- Phase A IN PROGRESS at **57.14%**
-- AuthContext full TS: deferred (ambient present) — next careful rewrite
-- UserData/Catalog: JSX + ambients
-- Phase B pass1+2 done; legacy sheets still imported in main.jsx
-- Footer rebuilt; Home rebalanced; product cards borderless
+- SHA: `07d3c43a56b761d9abad698e5ecb57fe8a585872`
+- TypeScript: **57.53%** (149/259)
+- AuthContext: **MIGRATED**
+- CSS: global 5657L / !important 238
 
 ## Exact next
-1. Hand-typed AuthContext.tsx (avoid automated param rewrites inside useMemo)
-2. CatalogContext.tsx / UserDataContext.tsx
-3. Large pages Account/Customize/Checkout/Shop/Product/Teams
-4. Remove legacy CSS from main entry when safe
-5. Customize 3D + remaining phases
+1. CatalogContext.tsx
+2. UserDataContext.tsx
+3. Remaining large pages
+4. Legacy CSS unload from main.jsx when safe
+5. Customize 3D + phases H–Z
 
 ## Next command
-Hand-migrate AuthContext.jsx → .tsx with typed LocalAccount/AuthContextValue only
+Migrate CatalogContext.jsx → CatalogContext.tsx
