@@ -1,16 +1,19 @@
 # Continuation checkpoint
 
-- SHA: `07d3c43a56b761d9abad698e5ecb57fe8a585872`
+- SHA: `15b10878f2cd429690cce3a4bec00a887dd7c477`
+- Branch: `cursor/shababuna-redesign-master-plan-dc14`
+- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 - TypeScript: **57.53%** (149/259)
-- AuthContext: **MIGRATED**
-- CSS: global 5657L / !important 238
-
-## Exact next
-1. CatalogContext.tsx
-2. UserDataContext.tsx
-3. Remaining large pages
-4. Legacy CSS unload from main.jsx when safe
-5. Customize 3D + phases H–Z
+- AuthContext: **DONE**
+- CatalogContext / UserDataContext: ambient (next careful rewrites)
+- CSS: global 5657L / !important 238 (was 7252/348)
+- Footer rebuilt · Home rebalanced · Product cards borderless
 
 ## Next command
-Migrate CatalogContext.jsx → CatalogContext.tsx
+```bash
+cd /workspace && git rev-parse HEAD
+# Careful CatalogContext.tsx migration (cast overlay return; type supabase rows)
+npm run typecheck && npm run lint && npm run test:node
+```
+
+Do not restart from Phase 0.
