@@ -1,3 +1,4 @@
+export { Stat } from './Stat';
 import { useEffect, useState } from 'react';
 import {
   publishDesignProof,
@@ -165,14 +166,6 @@ function StaffAccessRow({ user, accessToken, currentUserId, pick, saving, run, o
   );
 }
 
-export function Stat({ label, value }) {
-  return (
-    <div className="operations-stat">
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}
 
 export function SpecialRequestOperationsCard({ request, pick, saving, run }) {
   const [values, setValues] = useState({
