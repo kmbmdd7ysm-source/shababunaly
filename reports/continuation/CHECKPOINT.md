@@ -1,34 +1,38 @@
 # Continuation checkpoint
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- SHA: `6ec65d7f2393a5dee12bea27ad1b63ebdab2ab66`
-- Date UTC: 2026-08-07T04:34:49Z
-- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
+- Full SHA: `f6bd3c146714b38747bc6e75a6c5c4844282c896`
+- UTC: 2026-08-09
 
-## Phases completed (code-side, gated)
+## Completed in this final-completion run
 
-+ Phase 14 journey smoke (partial) · Phase 13 DB BLOCKED · Phase 15 Arabic technical QA marker
+| Phase | Status |
+| --- | --- |
+| 0 Starting state | PASS |
+| 1 Clean npm ci + format/lint/tests green | PASS |
+| 2 Build provenance full-SHA match | PASS |
+| 3 TypeScript migration | IN PROGRESS (~6.59% → continuing) |
+| 5 Checkout 500→630 LYD copy | PASS |
+| 11 model-viewer dependency registered | PASS (partial Tier A) |
 
-0 Baseline · 1 Brand/tests · 2 Toolchain · 3 TypeScript core + shipping/Formspree · 4 CSS/RTL · 5 GlobalChrome · 6–7 Structural UI + Ready-to-Ship honesty · 8 Product master · 9–10 Media engines + StudioStage fix · 11 ProductStep extract · 12 Factory contracts · 17 Dedicated routes + lab gated
+## Next exact work
 
-## Next phase to resume
+1. Continue Phase 3: migrate `analytics.js`, `search.js`, cart/order services, AuthContext toward TS; raise strict coverage report
+2. Phase 4: CSS Coverage + shrink global.css / remove legacy stack
+3. Phase 6: unify release evidence index
+4. Phases 7–10: finish Account/Checkout/Customize/Shop modularization
+5. Phases 12–25 as commanded
 
-**Phase 11 continuation** — wire StudioShell into CustomizePage; extract DesignStep/RosterStep/ReviewStep; Checkout/Shop/Product splits
-Then Phase 13 DB live tests (likely needs Supabase CLI/Docker)  
-14 E2E/a11y/visual/PWA · 15 Arabic human review marker · 16 payment adapter polish · 18 Lighthouse · 19 coverage · 20 audit · 21 release evidence
+## Next commands
 
-## Known external blockers
-
-- Real warehouse quantities / supplier SKUs / barcodes / costs
-- Genuine 360 spinsets and product GLB/GLTF
-- Factory CAD/patterns/UV/Pantone/ICC evidence
-- Live payment provider credentials
-- Arabic human commercial copy approval
-- Database live tests if Supabase CLI/Docker unavailable
-
-## Exact next command
-
+```bash
+cd /workspace
+git rev-parse HEAD
+npm run typecheck && npm run test:node
+# convert src/utils/analytics.js → .ts and AuthContext progressively
 ```
-npm run test:node && npm run test:ui && npm run build
-# then continue Phase 11 modularization of CustomizePage Design/Roster/Review steps
-```
+
+## External blockers unchanged
+
+- Docker/Supabase for DB
+- Real inventory / GLB / 360 / factory CAD / payment credentials / human Arabic

@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T01:48:53.665Z",
+  "generatedAt": "2026-08-09T01:49:46.289Z",
   "sourceFiles": 258,
-  "strictFiles": 16,
-  "strictCoveragePercent": 6.2,
+  "strictFiles": 17,
+  "strictCoveragePercent": 6.59,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountRegister.jsx",
@@ -192,7 +192,6 @@
     "src/services/telemetry.js",
     "src/utils/analytics.js",
     "src/utils/designExports.js",
-    "src/utils/errors.js",
     "src/utils/productOptions.js",
     "src/utils/profileImage.js",
     "src/utils/recommendations.js",
