@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
@@ -20,10 +21,10 @@ import '../styles/catalog.css';
  * which is exactly what it is: same prices, same account, same cart, same
  * delivery system.
  */
-export default function LhaStorePage() {
+export default function LhaStorePage(): ReactElement {
   const { lhaStoreProducts } = useCatalog();
   const { pick } = useLanguage();
-  const items = lhaStoreProducts();
+  const items = lhaStoreProducts() as Array<Record<string, unknown> & { id?: string }>;
 
   return (
     <>
@@ -74,7 +75,7 @@ export default function LhaStorePage() {
           </div>
           <div className="gw-catalogue-grid">
             {items.map((product, index) => (
-              <ProductCard key={product.id} product={product} eager={index < 4} />
+              <ProductCard key={String(product.id)} product={product} eager={index < 4} />
             ))}
           </div>
         </div>

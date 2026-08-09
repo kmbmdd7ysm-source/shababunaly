@@ -9,6 +9,7 @@ export type CatalogContextValue = {
   getProductById: (id: string) => Record<string, unknown> | undefined;
   relatedProducts: (product: unknown, limit?: number) => Array<Record<string, unknown>>;
   readyToShipProducts: () => Array<Record<string, unknown>>;
+  lhaStoreProducts: () => Array<Record<string, unknown>>;
   productsByCategory?: (category: string) => Array<Record<string, unknown>>;
   productsBySubcategory?: (category: string, subcategory: string) => Array<Record<string, unknown>>;
   allBrands: unknown;
