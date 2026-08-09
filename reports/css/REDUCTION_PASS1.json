@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-08-09T03:43:30.808065+00:00",
+  "commitSha": "8ebb3b696fb66e28cc46a5e9127ccc3660a621e4",
+  "phase": "B-pass1-unused-class-removal",
+  "before": {
+    "global.css": {
+      "lines": 7252,
+      "important": 348
+    },
+    "premium.css": {
+      "lines": 2049,
+      "important": 67
+    },
+    "shababuna.css": {
+      "lines": 3551,
+      "important": 2
+    }
+  },
+  "after": {
+    "global.css": {
+      "lines": 5657,
+      "important": 288
+    },
+    "premium.css": {
+      "lines": 1752,
+      "important": 58
+    },
+    "shababuna.css": {
+      "lines": 3227,
+      "important": 2
+    }
+  },
+  "note": "Removed top-level rules whose selectors only referenced unused class names. @media nested unused rules remain for a later pass. Visual verification required."
+}
