@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `7cdd60efb5bc78885cdc44ca962fd792cb7c9345`
+- Full SHA: `3a582a11d6c879a18b06625d943dbf02ddfd284d`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -11,7 +11,7 @@
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
 | 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **17.76%** (46/259 executable) |
+| 3 | Complete TypeScript migration | **IN PROGRESS** — **24.71%** (64/259 executable) |
 | 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
 | 6 | Unify release evidence | NOT STARTED |
@@ -24,19 +24,20 @@
 
 ## Exact next (Phase 3)
 
-1. **Port `src/services/designStudio.js` → `.ts`** with StudioState interface (attempt left ~62 errors — finish typing)
+1. **Port `src/services/designStudio.js` → `.ts`** (StudioState interface; prior attempt ~62 errors)
 2. Port `productionPreflight.js` → `.ts`
 3. Port `supabase.js` → `.ts`
-4. Contexts: CommerceContext, CartContext, AuthContext
-5. Refresh coverage; do not leave Phase 3 until project-wide or exclusions documented
+4. Contexts: LanguageContext, CommerceContext, CartContext, AuthContext (ambient → full)
+5. Components that use `react-router` need a types workaround (RR type conflict with `skipLibCheck: false`)
+6. Remain in Phase 3 until project-wide or every exclusion documented
 
 ## Next command
 
 ```bash
 cd /workspace && git rev-parse HEAD
-# Finish designStudio.ts port
+# Finish designStudio.ts with StudioState
 npm run typecheck && npm run test:node && npm run lint
 ```
 
 ## Do not restart from Phase 0
-Resume Phase 3 only.
+Resume Phase 3 TypeScript migration only.
