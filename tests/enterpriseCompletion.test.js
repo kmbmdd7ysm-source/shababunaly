@@ -28,7 +28,7 @@ describe('enterprise production completion', () => {
     expect(workspace).toContain('Download Quote PDF');
   });
   it('quarantines staff media and scans it before use', async () => {
-    const upload = await read('api/admin-media-upload.js');
+    const upload = await read('api/admin-media-upload.ts');
     const scan = await read('api/media-scan-worker.ts');
     expect(upload).toContain("scan_status: 'quarantined'");
     expect(upload).toContain('requireStaffSession');
