@@ -1,3 +1,4 @@
+export { ShippingQuoteRow } from './ShippingQuoteRow';
 export { Stat } from './Stat';
 import { useEffect, useState } from 'react';
 import {
@@ -330,49 +331,7 @@ export function SpecialRequestOperationsCard({ request, pick, saving, run }) {
   );
 }
 
-export function ShippingQuoteRow({ order, pick, saving, run }) {
-  const [amount, setAmount] = useState('');
-  const [note, setNote] = useState('');
-  const key = `shipping-${order.id}`;
-  return (
-    <tr>
-      <td>
-        <strong>{order.order_number}</strong>
-        <small>{order.customer_email}</small>
-      </td>
-      <td>{order.shipping_summary?.countryCode || order.shipping_summary?.country || '—'}</td>
-      <td>{Array.isArray(order.items_snapshot) ? order.items_snapshot.length : '—'}</td>
-      <td>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          value={amount}
-          onChange={(event) => setAmount(event.target.value)}
-          aria-label={pick({ en: 'Shipping price in USD', ar: 'سعر الشحن بالدولار' })}
-        />
-        <input
-          value={note}
-          onChange={(event) => setNote(event.target.value)}
-          placeholder={pick({ en: 'Optional note', ar: 'ملاحظة اختيارية' })}
-        />
-      </td>
-      <td>
-        <button
-          className="btn-primary compact"
-          disabled={saving === key || amount === ''}
-          onClick={() =>
-            run(
-              key,
-              () => setShippingQuote({ orderId: order.id, amountUsd: amount, note }),
-              pick({
-                en: 'Shipping price saved and email notification queued.',
-                ar: 'تم حفظ سعر الشحن وإضافة إشعار البريد.',
-              }),
-            )
-          }
-        >
-          {pick({ en: 'Add & Notify', ar: 'إضافة وإشعار' })}
+ار' })}
         </button>
       </td>
     </tr>
