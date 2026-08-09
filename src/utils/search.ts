@@ -1,5 +1,36 @@
 import { products } from '../data/products.js';
 
+export type LocaleObject = { en?: string; ar?: string };
+export type LocaleText = LocaleObject | string | null | undefined;
+export type LocaleKeywordBag = { en?: string[]; ar?: string[] };
+
+export interface CatalogItem {
+  id?: string;
+  slug?: string;
+  name?: LocaleText;
+  description?: LocaleText;
+  brand?: string;
+  category?: string;
+  subcategory?: string;
+  productType?: string;
+  colors?: Array<{ key?: string; name?: LocaleText }>;
+  tags?: string[];
+  image?: string;
+  availability?: string;
+  [key: string]: unknown;
+}
+
+export interface SearchCandidate {
+  type: string;
+  title: LocaleText;
+  to: string;
+  keywords?: LocaleKeywordBag;
+  image?: string;
+  score?: number;
+  id?: string;
+}
+
+
 export const SEARCH_PAGES = [
   {
     type: 'page',
@@ -91,7 +122,7 @@ export const POPULAR_SEARCHES = [
   { id: 'lha', query: { en: 'LHA', ar: 'LHA' }, to: '/lha-store' },
 ];
 
-export const normalizeSearchText = (value = '') =>
+export const normalizeSearchText = (value: unknown = '') =>
   String(value ?? '')
     .toLowerCase()
     .normalize('NFKD')
@@ -100,10 +131,21 @@ export const normalizeSearchText = (value = '') =>
     .replace(/[^\p{L}\p{N}\s]/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-export const localizedValues = (value) => [value?.en, value?.ar].filter(Boolean);
-export const flattenText = (...values) =>
+export const localizedValues = (value: LocaleText | LocaleKeywordBag): string[] => {
+  if (!value) return [];
+  if (typeof value === 'string') return [value];
+  const en = value.en;
+  const ar = value.ar;
+  const parts: string[] = [];
+  if (Array.isArray(en)) parts.push(...en);
+  else if (en) parts.push(en);
+  if (Array.isArray(ar)) parts.push(...ar);
+  else if (ar) parts.push(ar);
+  return parts;
+};
+export const flattenText = (...values: unknown[]) =>
   normalizeSearchText(values.flat(Infinity).filter(Boolean).join(' '));
-export const scoreText = (query, candidate) => {
+export const scoreText = (query: string, candidate: string) => {
   const q = normalizeSearchText(query),
     c = normalizeSearchText(candidate);
   if (!q || !c) return -1;
@@ -113,11 +155,22 @@ export const scoreText = (query, candidate) => {
   const index = c.indexOf(q);
   return index >= 0 ? 160 - Math.min(index, 80) : -1;
 };
-export const hit = (query, ...values) =>
+export const hit = (query: string, ...values: unknown[]) =>
   !normalizeSearchText(query) || flattenText(...values).includes(normalizeSearchText(query));
 
-export function suggestionCandidates(catalog = products) {
-  const out = [];
+interface SuggestionRecord {
+  id: string;
+  type: string;
+  label: LocaleText;
+  to: string;
+  searchable: string;
+  item?: unknown;
+  score?: number;
+  index?: number;
+}
+
+export function suggestionCandidates(catalog: CatalogItem[] = products as CatalogItem[]): SuggestionRecord[] {
+  const out: SuggestionRecord[] = [];
   catalog.forEach((item) => {
     out.push({
       id: `product:${item.id}`,
@@ -161,20 +214,20 @@ export function suggestionCandidates(catalog = products) {
   );
   return out;
 }
-const candidateCache = new WeakMap();
-export function getSearchSuggestions(query, limit = 8, catalog = products) {
+const candidateCache = new WeakMap<object, SuggestionRecord[]>();
+export function getSearchSuggestions(query: string, limit = 8, catalog: CatalogItem[] = products as CatalogItem[]) {
   const q = normalizeSearchText(query);
   if (!q) return [];
-  let candidates = candidateCache.get(catalog);
+  let candidates = candidateCache.get(catalog as object);
   if (!candidates) {
     candidates = suggestionCandidates(catalog);
-    candidateCache.set(catalog, candidates);
+    candidateCache.set(catalog as object, candidates);
   }
-  const seen = new Set();
+  const seen = new Set<string>();
   return candidates
     .map((candidate, index) => ({ ...candidate, score: scoreText(q, candidate.searchable), index }))
-    .filter((c) => c.score >= 0)
-    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .filter((c) => (c.score ?? -1) >= 0)
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0) || (a.index ?? 0) - (b.index ?? 0))
     .filter((candidate) => {
       const key = `${candidate.type}:${normalizeSearchText(localizedValues(candidate.label).join('|'))}:${candidate.to}`;
       if (seen.has(key)) return false;
@@ -184,11 +237,11 @@ export function getSearchSuggestions(query, limit = 8, catalog = products) {
     .slice(0, limit);
 }
 
-export function searchSite(query = '', limit = 999, filters = {}, catalog = products) {
-  const types = filters.types || [];
-  const allow = (type) => !types.length || types.includes(type);
-  const colors = filters.colors || [];
-  const brands = filters.brands || [];
+export function searchSite(query = '', limit = 999, filters: Record<string, unknown> = {}, catalog: CatalogItem[] = products as CatalogItem[]) {
+  const types = (Array.isArray(filters.types) ? filters.types : []) as string[];
+  const allow = (type: string) => !types.length || types.includes(type);
+  const colors = (Array.isArray(filters.colors) ? filters.colors : []) as string[];
+  const brands = (Array.isArray(filters.brands) ? filters.brands : []) as string[];
   const productResults = allow('products')
     ? catalog
         .filter(
@@ -206,8 +259,13 @@ export function searchSite(query = '', limit = 999, filters = {}, catalog = prod
               ...localizedValues(item.description),
               item.colors?.flatMap((c) => localizedValues(c.name)),
             ) &&
-            (!colors.length || item.colors?.some((c) => colors.includes(c.name?.en))) &&
-            (!brands.length || brands.includes(item.brand)),
+            (!colors.length ||
+              item.colors?.some((c) => {
+                const name = c.name;
+                const en = typeof name === 'object' && name ? name.en : undefined;
+                return en ? colors.includes(en) : false;
+              })) &&
+            (!brands.length || (item.brand ? brands.includes(item.brand) : false)),
         )
         .slice(0, limit)
     : [];
@@ -219,14 +277,14 @@ export function searchSite(query = '', limit = 999, filters = {}, catalog = prod
   return { products: productResults, pages, total: productResults.length + pages.length };
 }
 
-export function getSearchFacets(catalog = products) {
+export function getSearchFacets(catalog: CatalogItem[] = products as CatalogItem[]) {
   return {
     types: ['products', 'pages'],
     colors: [
       ...new Set(
         catalog
           .flatMap((p) => p.colors || [])
-          .map((c) => c.name?.en)
+          .map((c) => (typeof c.name === 'object' && c.name ? c.name.en : undefined))
           .filter(Boolean),
       ),
     ].sort(),
