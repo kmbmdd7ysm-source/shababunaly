@@ -85,7 +85,7 @@ export default function ProductMediaViewer({
           }
         >
           <Realtime3DEngine
-            model={model}
+            model={model ?? undefined}
             fallbackSrc={fallback}
             alt={alt}
             eager={eager}
