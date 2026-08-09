@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:42:35.676Z",
+  "generatedAt": "2026-08-09T02:43:11.157Z",
   "sourceFiles": 259,
-  "strictFiles": 105,
-  "strictCoveragePercent": 40.54,
+  "strictFiles": 106,
+  "strictCoveragePercent": 40.93,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -17,7 +17,6 @@
     "src/components/common/Modal.jsx",
     "src/components/common/Newsletter.jsx",
     "src/components/common/Seo.jsx",
-    "src/components/common/ShareButtons.jsx",
     "src/components/common/SmartImage.jsx",
     "src/components/composition/Dossier.jsx",
     "src/components/composition/RouteMasthead.jsx",
