@@ -1,8 +1,7 @@
 {
-  "generatedAt": "2026-08-09T03:45:03.217238+00:00",
-  "commitSha": "c683bc03cd8702813d2becbe1fd147cc337b502d",
+  "generatedAt": "2026-08-09T03:48:39.066802+00:00",
+  "commitSha": "2a356f7f055ba264ae0ca4ecd8777c4d3bd8e921",
   "sourceFiles": 259,
-  "strictFiles": 132,
-  "strictCoveragePercent": 50.97,
-  "legacyFileCount": 127
+  "strictFiles": 133,
+  "strictCoveragePercent": 51.35
 }
