@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T03:55:15.822Z",
+  "generatedAt": "2026-08-09T03:56:41.529Z",
   "sourceFiles": 259,
-  "strictFiles": 140,
-  "strictCoveragePercent": 54.05,
+  "strictFiles": 141,
+  "strictCoveragePercent": 54.44,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -69,7 +69,6 @@
     "src/pages/HelpPage.jsx",
     "src/pages/HomePage.jsx",
     "src/pages/LabHomePage.jsx",
-    "src/pages/LhaStorePage.jsx",
     "src/pages/OperationsDashboardPage.jsx",
     "src/pages/OperationsPage.jsx",
     "src/pages/OrderDetailPage.jsx",
