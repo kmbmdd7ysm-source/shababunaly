@@ -1,3 +1,4 @@
+export { CatalogRow } from './CatalogRow';
 export { ShippingQuoteRow } from './ShippingQuoteRow';
 export { Stat } from './Stat';
 import { useEffect, useState } from 'react';
@@ -1007,89 +1008,7 @@ export function ProductContentCard({ row, pick, saving, run }) {
   );
 }
 
-export function CatalogRow({ row, pick, saving, run }) {
-  const [values, setValues] = useState({
-    price: row.unit_price ?? '',
-    wholesale: row.variant_data?.wholesalePrice ?? '',
-    stock: row.inventory_quantity ?? '',
-    ready: Boolean(row.variant_data?.readyToShip),
-    active: Boolean(row.active),
-  });
-  const key = `catalog-${row.variant_id}`;
-  return (
-    <tr>
-      <td>
-        <strong>{row.sku}</strong>
-        <small>
-          {row.variant_data?.color || ''} {row.variant_data?.size || ''}
-        </small>
-      </td>
-      <td>{row.product_name}</td>
-      <td>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          value={values.price}
-          onChange={(event) => setValues({ ...values, price: event.target.value })}
-        />
-      </td>
-      <td>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          value={values.wholesale}
-          onChange={(event) => setValues({ ...values, wholesale: event.target.value })}
-        />
-      </td>
-      <td>
-        <input
-          type="number"
-          min="0"
-          step="1"
-          value={values.stock}
-          onChange={(event) => setValues({ ...values, stock: event.target.value })}
-        />
-      </td>
-      <td>
-        <input
-          type="checkbox"
-          checked={values.ready}
-          onChange={(event) => setValues({ ...values, ready: event.target.checked })}
-          aria-label={pick({ en: 'Ready to ship', ar: 'تسليم فوري' })}
-        />
-      </td>
-      <td>
-        <input
-          type="checkbox"
-          checked={values.active}
-          onChange={(event) => setValues({ ...values, active: event.target.checked })}
-          aria-label={pick({ en: 'Active', ar: 'نشط' })}
-        />
-      </td>
-      <td>
-        <button
-          className="btn-secondary compact"
-          disabled={saving === key}
-          onClick={() =>
-            run(
-              key,
-              () =>
-                updateCatalogVariant({
-                  variantId: row.variant_id,
-                  unitPrice: values.price,
-                  wholesalePrice: values.wholesale,
-                  inventoryQuantity: values.stock,
-                  readyToShip: values.ready,
-                  active: values.active,
-                }),
-              pick({ en: 'Catalog variant saved.', ar: 'تم حفظ خيار المنتج.' }),
-            )
-          }
-        >
-          {pick({ en: 'Save', ar: 'حفظ' })}
-        </button>
+    </button>
       </td>
     </tr>
   );
