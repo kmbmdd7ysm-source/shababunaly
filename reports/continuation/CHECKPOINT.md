@@ -1,14 +1,15 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `a69c3a8a521eb27c4f5a591bf08b76bedb4ee6f3`
-- TypeScript: **68.73%** (178/259)
-- Remaining: ~18 api JS · ~63 src JS/JSX
+- SHA: `4c42e349f5c9143831f26e743ef9bdbe6f2d5246`
+- TypeScript: **69.11%** (179/259)
+- Remaining: ~17 api JS · ~63 src JS/JSX
 - CSS: global 5070L / !important 173 (was 7252/348)
 
 ## Exact next
-1. Remaining APIs (~18) + large pages
-2. Unload legacy CSS from main.jsx
-3. Phases 3–35
+1. Remaining APIs (~17): payment-webhook, special-request, readiness, workers, admin-*, signatures/*
+2. Large pages: Account, Customize, Checkout, Shop, Product, Teams
+3. Phase 2 unload legacy CSS from main.jsx
+4. Phases 3–35
 
 ## Next command
-Migrate payment-webhook.js / public-quote-request.js / Account modularization
+Migrate payment-webhook.js or special-request.js
