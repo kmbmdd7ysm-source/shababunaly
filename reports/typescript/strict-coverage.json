@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T20:56:23.211511+00:00",
-  "commitSha": "8d8003c59b0ab3a752073c302fce791875de1d08",
+  "generatedAt": "2026-08-09T21:00:08.093189+00:00",
+  "commitSha": "aec82115040d493ab51f77a820204644534e04a5",
   "sourceFiles": 266,
-  "strictFiles": 209,
-  "strictCoveragePercent": 78.57,
+  "strictFiles": 211,
+  "strictCoveragePercent": 79.32,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,
@@ -19,5 +19,15 @@
     }
   },
   "remainingApiJs": 0,
-  "remainingSrcJsx": 57
+  "remainingSrcJsx": 55,
+  "productMaster": {
+    "products": 69,
+    "variants": 982
+  },
+  "viewerTiers": {
+    "A": 0,
+    "B": 0,
+    "C": 23,
+    "D": 46
+  }
 }
