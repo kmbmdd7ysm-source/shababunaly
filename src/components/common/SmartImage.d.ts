@@ -1,13 +1,2 @@
-import type { ReactElement } from 'react';
-
-declare function SmartImage(props: {
-  src?: string;
-  alt?: string;
-  width?: number;
-  height?: number;
-  eager?: boolean;
-  className?: string;
-  sizes?: string;
-  [key: string]: unknown;
-}): ReactElement;
+declare const SmartImage: import('react').ComponentType<Record<string, unknown>>;
 export default SmartImage;
