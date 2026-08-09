@@ -2912,7 +2912,7 @@ main {
   object-fit: contain;
   background: transparent;
   border: 0;
-  border-radius: 0 !important;
+  border-radius: 0;
   box-shadow: none;
 }
 
@@ -3326,7 +3326,7 @@ html[dir='rtl'] * {
   background: transparent;
   color: inherit;
   box-shadow: none;
-  transform: none !important;
+  transform: none;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -3542,7 +3542,7 @@ html.search-modal-open body {
   width: 100%;
   min-width: 0;
   min-height: 58px;
-  border-radius: 4px !important;
+  border-radius: 4px;
   background: #fff;
   border: 1px solid #bbb;
   font-size: 1rem;
@@ -3981,8 +3981,8 @@ canvas {
     gap: 6px;
     direction: ltr;
     justify-self: start;
-    transform: none !important;
-    inset: auto !important;
+    transform: none;
+    inset: auto;
   }.header-inner .brand-logo {
     flex: 0 0 auto;
     width: auto;
@@ -4117,7 +4117,7 @@ canvas {
   background: #fff;
   border: 1px solid #111 !important;
   box-shadow: none;
-  transform: none !important;
+  transform: none;
 }
 
 .compare-product,
@@ -4130,7 +4130,7 @@ canvas {
   background: transparent;
   border: 1px solid #111 !important;
   box-shadow: none;
-  transform: none !important;
+  transform: none;
 }
 
 .compare-product.active {
@@ -4144,7 +4144,7 @@ canvas {
 
 .event-registration-cta,
 .detail-cta > .btn-primary {
-  border-radius: 999px !important;
+  border-radius: 999px;
 }
 
 .contact-grid,
@@ -4514,7 +4514,7 @@ html,
   height: min(86dvh, 760px) !important;
   max-height: calc(100dvh - env(safe-area-inset-top)) !important;
   margin-inline: auto !important;
-  transform: none !important;
+  transform: none;
   visibility:visible;
   opacity: 1;
   background: #fff;
@@ -4600,10 +4600,10 @@ body {
 #root[dir='rtl'] .page-hero,
 #root[dir='rtl'] .site-header,
 #root[dir='rtl'] .announcement-bar {
-  left: 0 !important;
-  right: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+  left: 0;
+  right: 0;
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
   max-width: 100%;
   transform: none;
@@ -4730,7 +4730,7 @@ html,
 
 .media-lightbox {
   position:fixed;
-  inset: 0 !important;
+  inset: 0;
   z-index: 3000;
   background: rgba(0, 0, 0, 0.92) !important;
   display:grid;
@@ -4762,7 +4762,7 @@ html,
 .lightbox-close {
   position:fixed;
   top: max(16px, env(safe-area-inset-top)) !important;
-  right: 16px !important;
+  right: 16px;
   z-index: 2;
 }
 
@@ -4790,7 +4790,7 @@ html,
 
 .media-lightbox {
   position:fixed;
-  inset: 0 !important;
+  inset: 0;
   z-index: 10000;
   display:flex;
   align-items:center;
@@ -4836,7 +4836,7 @@ html,
 .media-lightbox .lightbox-close {
   position:fixed;
   top: max(16px, env(safe-area-inset-top)) !important;
-  right: 16px !important;
+  right: 16px;
 }
 
 .media-lightbox .lightbox-tools {
