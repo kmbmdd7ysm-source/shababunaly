@@ -2,32 +2,50 @@ import { useEffect, useRef } from 'react';
 
 const SITE_KEY = String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim();
 
-export default function TurnstileWidget({ onToken, language = 'en', action = 'form-submit' }) {
-  const host = useRef(null);
+type TurnstileApi = {
+  render: (
+    host: HTMLElement,
+    options: Record<string, unknown>,
+  ) => string | number;
+  remove: (widgetId: string | number) => void;
+};
+
+export default function TurnstileWidget({
+  onToken,
+  language = 'en',
+  action = 'form-submit',
+}: {
+  onToken?: (token: string) => void;
+  language?: string;
+  action?: string;
+}) {
+  const host = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (!SITE_KEY) {
       if (import.meta.env.DEV) onToken?.('test-pass');
       return undefined;
     }
-    let widgetId;
+    let widgetId: string | number | undefined;
     let cancelled = false;
+    const turnstile = (globalThis as typeof globalThis & { turnstile?: TurnstileApi }).turnstile;
     const render = () => {
-      if (cancelled || !host.current || !globalThis.turnstile) return;
-      widgetId = globalThis.turnstile.render(host.current, {
+      const api = (globalThis as typeof globalThis & { turnstile?: TurnstileApi }).turnstile;
+      if (cancelled || !host.current || !api) return;
+      widgetId = api.render(host.current, {
         sitekey: SITE_KEY,
         language: language === 'ar' ? 'ar' : 'en',
         theme: 'light',
         action: String(action || 'form-submit')
           .replace(/[^A-Za-z0-9_-]/g, '')
           .slice(0, 32),
-        callback: (token) => onToken?.(token),
+        callback: (token: string) => onToken?.(token),
         'expired-callback': () => onToken?.(''),
         'error-callback': () => onToken?.(''),
       });
     };
     const existing = document.querySelector('script[data-shababuna-turnstile]');
     if (existing) {
-      if (globalThis.turnstile) render();
+      if (turnstile) render();
       else existing.addEventListener('load', render, { once: true });
     } else {
       const script = document.createElement('script');
@@ -40,20 +58,11 @@ export default function TurnstileWidget({ onToken, language = 'en', action = 'fo
     }
     return () => {
       cancelled = true;
-      if (widgetId != null && globalThis.turnstile) globalThis.turnstile.remove(widgetId);
+      const api = (globalThis as typeof globalThis & { turnstile?: TurnstileApi }).turnstile;
+      if (widgetId != null && api) api.remove(widgetId);
     };
   }, [action, language, onToken]);
 
-  // When no site key is configured, verification genuinely is unavailable and
-  // we must keep saying so — the server still rejects a request with no token,
-  // and pretending otherwise would misrepresent a security control.
-  //
-  // But this rendered as a red `role="alert"` inside the footer newsletter,
-  // which appears on EVERY route. Two consequences: a permanent error box on
-  // every page of the site, and an unprompted live-region announcement fired at
-  // screen-reader users on every single navigation for something they never
-  // did. It is a standing condition, not an event, so it is now a quiet
-  // `role="status"` note. The behaviour and the wording are unchanged.
   if (!SITE_KEY && !import.meta.env.DEV)
     return (
       <p className="gw-verify-note" role="status">
