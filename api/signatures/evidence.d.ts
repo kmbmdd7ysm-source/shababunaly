@@ -1,2 +1,5 @@
-export function recordSignatureEvidence(input: Record<string, unknown>): Promise<unknown>;
-export function buildSignatureEvidence(input: Record<string, unknown>): Record<string, unknown>;
+export function verifyAndStoreSignatureEvidence(
+  event: Record<string, unknown>,
+): Promise<Record<string, unknown>>;
+export function downloadEvidence(input: unknown): Promise<unknown>;
+export function verifiedIdentity(input: unknown): unknown;
