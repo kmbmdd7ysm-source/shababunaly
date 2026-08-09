@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { applyApiHeaders, guardPublicPost } from './_request-security.js';
-import { resolveSupabaseUser, supabaseUserRequest } from './_supabase-admin.js';
+import { resolveSupabaseUser, supabaseUserRequest } from './_supabase-admin.ts';
 import { createSignatureEnvelope } from './signatures/provider.js';
 
 const clean = (value, max = 1000) =>

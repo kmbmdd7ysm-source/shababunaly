@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { supabaseAdminRequest } from './_supabase-admin.js';
+import { supabaseAdminRequest } from './_supabase-admin.ts';
 
 const ALLOWED_EVENTS = new Set([
   'checkout_started',

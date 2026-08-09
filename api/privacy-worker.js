@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.js';
+import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.ts';
 import { applyApiHeaders } from './_request-security.js';
 
 const clean = (value, max = 1000) =>

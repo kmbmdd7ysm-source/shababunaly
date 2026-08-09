@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { getSupabaseAdminConfig } from '../_supabase-admin.js';
+import { getSupabaseAdminConfig } from '../_supabase-admin.ts';
 
 const clean = (value, max = 4000) =>
   String(value ?? '')

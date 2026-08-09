@@ -1,16 +1,18 @@
-const clean = (value, max = 5000) =>
+const clean = (value: unknown, max = 5000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
 
-export function getSupabaseAdminConfig() {
+type FetchOptions = RequestInit & { body?: BodyInit | null; headers?: HeadersInit };
+
+export function getSupabaseAdminConfig(): { base: string; serviceKey: string } {
   const base = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const serviceKey = clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
   if (!base || !serviceKey) throw new Error('supabase_not_configured');
   return { base, serviceKey };
 }
 
-export async function supabaseAdminRequest(path, options = {}) {
+export async function supabaseAdminRequest(path: string, options: FetchOptions = {}): Promise<unknown> {
   const { base, serviceKey } = getSupabaseAdminConfig();
   const response = await fetch(`${base}${path}`, {
     ...options,
@@ -27,7 +29,9 @@ export async function supabaseAdminRequest(path, options = {}) {
   });
   const text = await response.text();
   if (!response.ok) {
-    const error = new Error(`supabase:${response.status}:${text.slice(0, 500)}`);
+    const error = new Error(`supabase:${response.status}:${text.slice(0, 500)}`) as Error & {
+      status?: number;
+    };
     error.status = response.status;
     throw error;
   }
@@ -38,7 +42,12 @@ export async function supabaseAdminRequest(path, options = {}) {
   }
 }
 
-export async function resolveSupabaseUser(authorization) {
+export async function resolveSupabaseUser(authorization: unknown): Promise<{
+  id?: string;
+  email?: string;
+  app_metadata?: { role?: string; [key: string]: unknown };
+  [key: string]: unknown;
+} | null> {
   const token = clean(authorization, 6000).replace(/^Bearer\s+/i, '');
   if (!token) return null;
   const { base, serviceKey } = getSupabaseAdminConfig();
@@ -48,11 +57,15 @@ export async function resolveSupabaseUser(authorization) {
   });
   if (response.status === 401 || response.status === 403) return null;
   if (!response.ok) throw new Error(`supabase_auth:${response.status}`);
-  const user = await response.json();
+  const user = (await response.json()) as { id?: string; [key: string]: unknown };
   return user?.id ? user : null;
 }
 
-export async function supabaseUserRequest(path, authorization, options = {}) {
+export async function supabaseUserRequest(
+  path: string,
+  authorization: unknown,
+  options: FetchOptions = {},
+): Promise<unknown> {
   const token = clean(authorization, 6000).replace(/^Bearer\s+/i, '');
   if (!token) throw Object.assign(new Error('authentication_required'), { status: 401 });
   const { base, serviceKey } = getSupabaseAdminConfig();
@@ -71,7 +84,9 @@ export async function supabaseUserRequest(path, authorization, options = {}) {
   });
   const text = await response.text();
   if (!response.ok) {
-    const error = new Error(`supabase_user:${response.status}:${text.slice(0, 500)}`);
+    const error = new Error(`supabase_user:${response.status}:${text.slice(0, 500)}`) as Error & {
+      status?: number;
+    };
     error.status = response.status;
     throw error;
   }

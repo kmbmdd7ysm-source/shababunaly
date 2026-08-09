@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { guardPublicPost, applyApiHeaders } from './_request-security.js';
 import { verifyTurnstileToken } from './_turnstile.ts';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
+import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { recordBusinessEvent } from './_business-events.js';
 
 const clean = (value, max = 2000) =>

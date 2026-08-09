@@ -3,7 +3,7 @@ import {
   getSupabaseAdminConfig,
   resolveSupabaseUser,
   supabaseAdminRequest,
-} from './_supabase-admin.js';
+} from './_supabase-admin.ts';
 
 const clean = (value, max = 1000) =>
   String(value ?? '')

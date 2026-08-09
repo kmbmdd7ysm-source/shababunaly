@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import { applyApiHeaders, guardPublicPost } from './_request-security.js';
 import { requireStaffSession } from './_staff-auth.ts';
-import { supabaseAdminRequest } from './_supabase-admin.js';
+import { supabaseAdminRequest } from './_supabase-admin.ts';
 import { getPaymentAdapter } from './payments/registry.js';
 import { recordBusinessEvent } from './_business-events.js';
 

@@ -1,5 +1,5 @@
 import { applyApiHeaders, guardPublicPost } from './_request-security.js';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
+import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import {
   guestEmailHash,
   normalizeGuestEmail,

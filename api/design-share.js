@@ -1,5 +1,5 @@
 import { applyApiHeaders, guardPublicPost, guardPublicRequest } from './_request-security.js';
-import { supabaseAdminRequest } from './_supabase-admin.js';
+import { supabaseAdminRequest } from './_supabase-admin.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 
 const clean = (value, max = 5000) =>

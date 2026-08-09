@@ -1,5 +1,5 @@
 import { applyApiHeaders } from './_request-security.js';
-import { supabaseAdminRequest } from './_supabase-admin.js';
+import { supabaseAdminRequest } from './_supabase-admin.ts';
 import {
   getSignatureProviderConfig,
   normalizeSignatureEvent,
