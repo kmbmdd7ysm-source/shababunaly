@@ -22,6 +22,7 @@ import SpecialRequestsSection from '../components/account/SpecialRequestsSection
 import MfaSecurityPanel from '../components/account/MfaSecurityPanel';
 import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
+import SecuritySection from './account/SecuritySection';
 import {
   downloadPrivacyExport,
   listPrivacyExports,
@@ -1234,7 +1235,7 @@ export default function AccountPage() {
                   </button>
                 </form>
               )}
-              {section === 'security' && <Security auth={auth} pick={pick} lang={lang} />}{' '}
+              {section === 'security' && <SecuritySection auth={auth} pick={pick} lang={lang} />}
               {msg && (
                 <p role="status" aria-live="polite">
                   {msg}
@@ -1245,120 +1246,5 @@ export default function AccountPage() {
         </div>
       </section>
     </>
-  );
-}
-function Security({ auth, pick, lang }) {
-  const [p, setP] = useState(''),
-    [busy, setBusy] = useState(false),
-    [msg, setMsg] = useState(''),
-    [exports, setExports] = useState([]);
-  useEffect(() => {
-    if (!auth.cloudConfigured) return;
-    listPrivacyExports()
-      .then(setExports)
-      .catch(() => setExports([]));
-  }, [auth.cloudConfigured]);
-  const change = async (e) => {
-    e.preventDefault();
-    setBusy(true);
-    try {
-      await auth.updatePassword(p);
-      setP('');
-      setMsg(pick({ en: 'Password changed.', ar: 'تم تغيير كلمة المرور.' }));
-    } catch (x) {
-      setMsg(errorText(x, lang));
-    } finally {
-      setBusy(false);
-    }
-  };
-  const remove = async () => {
-    if (!confirm(pick({ en: 'Permanently delete this account?', ar: 'حذف هذا الحساب نهائيًا؟' })))
-      return;
-    try {
-      await auth.deleteAccount();
-    } catch (x) {
-      setMsg(x.message);
-    }
-  };
-  return (
-    <div className="security-stack">
-      <form onSubmit={change}>
-        <h2>{pick({ en: 'Change password', ar: 'تغيير كلمة المرور' })}</h2>
-        <input
-          type="password"
-          minLength="8"
-          autoComplete="new-password"
-          value={p}
-          onChange={(e) => setP(e.target.value)}
-          required
-        />
-        <button className="btn-primary" disabled={busy}>
-          {pick({ en: 'Update password', ar: 'تحديث كلمة المرور' })}
-        </button>
-      </form>
-      <MfaSecurityPanel auth={auth} pick={pick} />
-      <section className="privacy-export-panel">
-        <h2>{pick({ en: 'Privacy export', ar: 'تصدير بيانات الخصوصية' })}</h2>
-        <p>
-          {pick({
-            en: 'Request a secure export of the personal data linked to your account.',
-            ar: 'اطلب نسخة آمنة من البيانات الشخصية المرتبطة بحسابك.',
-          })}
-        </p>
-        <button
-          type="button"
-          className="btn-secondary"
-          disabled={busy || !auth.cloudConfigured}
-          onClick={async () => {
-            setBusy(true);
-            try {
-              await requestPrivacyExport();
-              setExports(await listPrivacyExports());
-              setMsg(pick({ en: 'Privacy export requested.', ar: 'تم طلب تصدير بياناتك.' }));
-            } catch (x) {
-              setMsg(errorText(x, lang));
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          {pick({ en: 'Request data export', ar: 'طلب تصدير البيانات' })}
-        </button>
-        {exports.length > 0 && (
-          <ul className="privacy-export-list">
-            {exports.map((item) => (
-              <li key={item.id}>
-                <span>{item.status}</span>
-                <time>
-                  {new Date(item.created_at).toLocaleDateString(lang === 'ar' ? 'ar-LY' : 'en-US')}
-                </time>
-                {item.status === 'ready' && item.export_asset_id && (
-                  <button
-                    type="button"
-                    className="btn-secondary compact"
-                    onClick={async () => {
-                      try {
-                        await downloadPrivacyExport(item.export_asset_id);
-                      } catch (error) {
-                        setMsg(errorText(error, lang));
-                      }
-                    }}
-                  >
-                    {pick({ en: 'Download', ar: 'تحميل' })}
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-      <button className="btn-secondary" onClick={() => auth.signOut('global')}>
-        {pick({ en: 'Sign out all devices', ar: 'تسجيل الخروج من جميع الأجهزة' })}
-      </button>
-      <button className="danger-button" onClick={remove}>
-        {pick({ en: 'Delete account', ar: 'حذف الحساب' })}
-      </button>
-      {msg && <p role="status">{msg}</p>}
-    </div>
   );
 }
