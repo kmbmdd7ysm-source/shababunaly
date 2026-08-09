@@ -1,14 +1,52 @@
+import type { ReactElement } from 'react';
 import { useId } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { getCustomProductType } from '../../data/customization';
 
-const safeText = (value, fallback, limit = 18) =>
+type DesignView = Record<string, unknown> & {
+  primary: string;
+  secondary: string;
+  accent: string;
+  pattern?: string;
+  neckline?: string;
+  font?: string;
+  teamName?: string;
+  playerName?: string;
+  number?: string;
+  sponsorName?: string;
+  logoPreview?: string;
+  variant?: string;
+  productType?: string;
+};
+
+function asDesign(input: unknown): DesignView {
+  const d = (input || {}) as Record<string, unknown>;
+  const next: DesignView = {
+    ...d,
+    primary: String(d.primary || '#050505'),
+    secondary: String(d.secondary || '#ffffff'),
+    accent: String(d.accent || '#d6d6d6'),
+  };
+  if (d.pattern != null) next.pattern = String(d.pattern);
+  if (d.neckline != null) next.neckline = String(d.neckline);
+  if (d.font != null) next.font = String(d.font);
+  if (d.teamName != null) next.teamName = String(d.teamName);
+  if (d.playerName != null) next.playerName = String(d.playerName);
+  if (d.number != null) next.number = String(d.number);
+  if (d.sponsorName != null) next.sponsorName = String(d.sponsorName);
+  if (d.logoPreview != null) next.logoPreview = String(d.logoPreview);
+  if (d.variant != null) next.variant = String(d.variant);
+  if (d.productType != null) next.productType = String(d.productType);
+  return next;
+}
+
+const safeText = (value: unknown, fallback: string, limit = 18) =>
   String(value || fallback)
     .trim()
     .toUpperCase()
     .slice(0, limit);
 
-function PatternDefs({ id, design }) {
+function PatternDefs({ id, design }: { id: string; design: DesignView }) {
   return (
     <defs>
       <linearGradient id={`${id}-gradient`} x1="0" x2="1" y1="0" y2="1">
@@ -33,13 +71,27 @@ function PatternDefs({ id, design }) {
   );
 }
 
-function fillFor(design, id) {
+function fillFor(design: DesignView, id: string): string {
   if (design.pattern === 'gradient') return `url(#${id}-gradient)`;
   if (design.pattern === 'geometric') return `url(#${id}-geometric)`;
   return design.primary;
 }
 
-function TextBlock({ design, back = false, x = 210, y = 190, numberY = 285, width = 230 }) {
+function TextBlock({
+  design,
+  back = false,
+  x = 210,
+  y = 190,
+  numberY = 285,
+  width = 230,
+}: {
+  design: DesignView;
+  back?: boolean;
+  x?: number;
+  y?: number;
+  numberY?: number;
+  width?: number;
+}) {
   const team = safeText(design.teamName, 'SHABABUNA');
   const player = safeText(design.playerName, 'PLAYER', 14);
   const number = safeText(design.number, '00', 2);
@@ -88,7 +140,7 @@ function TextBlock({ design, back = false, x = 210, y = 190, numberY = 285, widt
   );
 }
 
-function UniformPreview({ design, id }) {
+function UniformPreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   const stripe = design.pattern === 'side-stripe';
   const split = design.pattern === 'split';
@@ -164,7 +216,15 @@ function UniformPreview({ design, id }) {
   );
 }
 
-function JerseyPreview({ design, id, shirt = false }) {
+function JerseyPreview({
+  design,
+  id,
+  shirt = false,
+}: {
+  design: DesignView;
+  id: string;
+  shirt?: boolean;
+}) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 920 570" role="img" aria-label="Custom jersey preview">
@@ -194,7 +254,7 @@ function JerseyPreview({ design, id, shirt = false }) {
   );
 }
 
-function ShortsPreview({ design, id }) {
+function ShortsPreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 920 580" role="img" aria-label="Custom basketball shorts preview">
@@ -245,7 +305,7 @@ function ShortsPreview({ design, id }) {
   );
 }
 
-function PantsPreview({ design, id }) {
+function PantsPreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 920 650" role="img" aria-label="Custom team pants preview">
@@ -294,7 +354,15 @@ function PantsPreview({ design, id }) {
   );
 }
 
-function HoodiePreview({ design, id, tracksuit = false }) {
+function HoodiePreview({
+  design,
+  id,
+  tracksuit = false,
+}: {
+  design: DesignView;
+  id: string;
+  tracksuit?: boolean;
+}) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 920 650" role="img" aria-label="Custom team apparel preview">
@@ -358,7 +426,7 @@ function HoodiePreview({ design, id, tracksuit = false }) {
   );
 }
 
-function BagPreview({ design, id }) {
+function BagPreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 760 560" role="img" aria-label="Custom bag preview">
@@ -413,7 +481,7 @@ function BagPreview({ design, id }) {
   );
 }
 
-function SleevePreview({ design, id }) {
+function SleevePreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 760 560" role="img" aria-label="Custom sleeve preview">
@@ -442,7 +510,7 @@ function SleevePreview({ design, id }) {
   );
 }
 
-function BallPreview({ design, id }) {
+function BallPreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 760 560" role="img" aria-label="Custom basketball preview">
@@ -499,7 +567,7 @@ function BallPreview({ design, id }) {
   );
 }
 
-function PaddingPreview({ design, id }) {
+function PaddingPreview({ design, id }: { design: DesignView; id: string }) {
   const baseFill = fillFor(design, id);
   return (
     <svg viewBox="0 0 920 580" role="img" aria-label="Custom basketball hoop padding preview">
@@ -561,34 +629,41 @@ function PaddingPreview({ design, id }) {
   );
 }
 
-export default function DesignPreview({ design, className = '' }) {
+export default function DesignPreview({
+  design,
+  className = '',
+}: {
+  design?: unknown;
+  className?: string;
+}): ReactElement {
+  const viewDesign = asDesign(design);
   const { pick } = useLanguage();
   const id = useId().replace(/:/g, '');
-  const product = getCustomProductType(design.productType);
+  const product = getCustomProductType(String(viewDesign.productType || ''));
   const preview = product.preview;
   return (
     <div className={`design-preview ${className}`.trim()}>
       <div className="design-preview-label">
         <span>{pick(product.label)}</span>
         <small>
-          {design.variant === 'away'
+          {viewDesign.variant === 'away'
             ? pick({ en: 'Away', ar: 'الاحتياطي' })
-            : design.variant === 'third'
+            : viewDesign.variant === 'third'
               ? pick({ en: 'Third', ar: 'الثالث' })
               : pick({ en: 'Home', ar: 'الأساسي' })}
         </small>
       </div>
-      {preview === 'uniform' ? <UniformPreview design={design} id={id} /> : null}
-      {preview === 'jersey' ? <JerseyPreview design={design} id={id} /> : null}
-      {preview === 'shirt' ? <JerseyPreview design={design} id={id} shirt /> : null}
-      {preview === 'shorts' ? <ShortsPreview design={design} id={id} /> : null}
-      {preview === 'hoodie' ? <HoodiePreview design={design} id={id} /> : null}
-      {preview === 'pants' ? <PantsPreview design={design} id={id} /> : null}
-      {preview === 'tracksuit' ? <HoodiePreview design={design} id={id} tracksuit /> : null}
-      {preview === 'bag' ? <BagPreview design={design} id={id} /> : null}
-      {preview === 'sleeve' ? <SleevePreview design={design} id={id} /> : null}
-      {preview === 'ball' ? <BallPreview design={design} id={id} /> : null}
-      {preview === 'padding' ? <PaddingPreview design={design} id={id} /> : null}
+      {preview === 'uniform' ? <UniformPreview design={viewDesign} id={id} /> : null}
+      {preview === 'jersey' ? <JerseyPreview design={viewDesign} id={id} /> : null}
+      {preview === 'shirt' ? <JerseyPreview design={viewDesign} id={id} shirt /> : null}
+      {preview === 'shorts' ? <ShortsPreview design={viewDesign} id={id} /> : null}
+      {preview === 'hoodie' ? <HoodiePreview design={viewDesign} id={id} /> : null}
+      {preview === 'pants' ? <PantsPreview design={viewDesign} id={id} /> : null}
+      {preview === 'tracksuit' ? <HoodiePreview design={viewDesign} id={id} tracksuit /> : null}
+      {preview === 'bag' ? <BagPreview design={viewDesign} id={id} /> : null}
+      {preview === 'sleeve' ? <SleevePreview design={viewDesign} id={id} /> : null}
+      {preview === 'ball' ? <BallPreview design={viewDesign} id={id} /> : null}
+      {preview === 'padding' ? <PaddingPreview design={viewDesign} id={id} /> : null}
       <p className="design-preview-disclaimer">
         {pick({
           en: 'Interactive design draft. Manufacturing starts only after the final production proof is approved.',
