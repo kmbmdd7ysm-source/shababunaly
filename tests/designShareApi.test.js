@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import handler from '../api/design-share.js';
+import handler from '../api/design-share.ts';
 
 const TOKEN = 'A'.repeat(48);
 const envKeys = [

@@ -852,7 +852,7 @@ test('closes production preflight raster/vector and factory evidence branches', 
 
 test('closes final design-share, worker and preflight branch aliases', async () => {
   // design-share not-found mapping
-  const designShareModule = await import('../api/design-share.js');
+  const designShareModule = await import('../api/design-share.ts');
   const designShare = designShareModule.default;
   assert.equal(designShareModule.mapDesignShareError(new Error('expired')), 404);
   assert.equal(designShareModule.mapDesignShareError(new Error('offline')), 503);

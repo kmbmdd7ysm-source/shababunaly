@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from './test-api.js';
 import createSession from '../api/create-session.ts';
-import designShare from '../api/design-share.js';
+import designShare from '../api/design-share.ts';
 import formspree, { resolveFormspreeEndpoint } from '../api/formspree.ts';
 import guestOrderAccess from '../api/guest-order-access.ts';
 import publicQuote from '../api/public-quote-request.js';

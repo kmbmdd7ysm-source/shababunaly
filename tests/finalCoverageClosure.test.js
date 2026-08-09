@@ -43,7 +43,7 @@ import {
   verifyGuestOrderToken,
 } from '../api/_guest-order-token.ts';
 import createSessionHandler from '../api/create-session.ts';
-import designShareHandler from '../api/design-share.js';
+import designShareHandler from '../api/design-share.ts';
 import readinessHandler, {
   featureReadiness,
   optionalCapabilities,
