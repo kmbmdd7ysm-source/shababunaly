@@ -100,9 +100,9 @@ const strictness = JSON.parse(readFileSync('reports/typescript/strictness.json',
 const database = JSON.parse(readFileSync('reports/database/database-test-result.json', 'utf8'));
 const dependency = JSON.parse(readFileSync('reports/security/dependency-audit.json', 'utf8'));
 const catalog = JSON.parse(readFileSync('reports/catalog/catalog-completeness.json', 'utf8'));
-const factory = JSON.parse(readFileSync('reports/factory/factory-readiness.json', 'utf8'));
+const factory = JSON.parse(readFileSync('reports/factory/factory-readiness.tson', 'utf8'));
 const arabic = JSON.parse(readFileSync('reports/localization/arabic-review.json', 'utf8'));
-const providers = JSON.parse(readFileSync('reports/providers/provider-readiness.json', 'utf8'));
+const providers = JSON.parse(readFileSync('reports/providers/provider-readiness.tson', 'utf8'));
 const summary = {
   status: 'source_checks_passed_external_evidence_pending',
   generatedAt: now,

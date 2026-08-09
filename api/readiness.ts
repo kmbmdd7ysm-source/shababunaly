@@ -1,19 +1,19 @@
 import { applyApiHeaders } from './_request-security.ts';
 
-const clean = (value, max = 2000) =>
+const clean = (value: unknown, max = 2000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
-const validHttps = (value) => {
+const validHttps = (value: unknown): boolean => {
   try {
     return new URL(clean(value)).protocol === 'https:';
   } catch {
     return false;
   }
 };
-const productionMode = () =>
+const productionMode = (): boolean =>
   process.env.NODE_ENV === 'production' || process.env.REQUIRE_PRODUCTION_READINESS === 'true';
-const recentEvidence = (value, maxAgeHours = 168) => {
+const recentEvidence = (value: unknown, maxAgeHours = 168): boolean => {
   const timestamp = Date.parse(clean(value, 100));
   return (
     Number.isFinite(timestamp) &&
@@ -22,7 +22,7 @@ const recentEvidence = (value, maxAgeHours = 168) => {
   );
 };
 
-export function requiredEnvironment() {
+export function requiredEnvironment(): Record<string, unknown> {
   const formEndpoint = clean(
     process.env.VITE_FORM_ENDPOINT || process.env.FORMSPREE_ENDPOINT,
     1000,
@@ -97,16 +97,16 @@ export function publicProviderMetadata() {
   };
 }
 
-async function fetchWithTimeout(url, options = {}, timeoutMs = 3500) {
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 3500) {
   return fetch(url, {
     ...options,
-    signal: AbortSignal.timeout(timeoutMs),
+    signal: AbortSignal.timeout(Number(timeoutMs)),
     cache: 'no-store',
     redirect: 'error',
   });
 }
 
-export async function connectivityChecks(required = requiredEnvironment()) {
+export async function connectivityChecks(required: Record<string, unknown> = requiredEnvironment()) {
   const requestedSkip = process.env.READINESS_SKIP_NETWORK_CHECKS === 'true';
   const skipAllowed = !productionMode() || process.env.ALLOW_READINESS_NETWORK_SKIP === 'true';
   if (requestedSkip && skipAllowed) {
@@ -160,9 +160,9 @@ export async function connectivityChecks(required = requiredEnvironment()) {
 }
 
 export function featureReadiness(
-  required = requiredEnvironment(),
-  optional = optionalCapabilities(),
-  connectivity = {},
+  required: Record<string, unknown> = requiredEnvironment(),
+  optional: Record<string, unknown> = optionalCapabilities() as Record<string, unknown>,
+  connectivity: Record<string, unknown> = {},
 ) {
   const accountCloud =
     required.supabase_url &&
@@ -198,9 +198,14 @@ export function featureReadiness(
   };
 }
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
-  if (!['GET', 'HEAD'].includes(req.method)) {
+type ApiReq = { method?: string };
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown; end: () => unknown };
+};
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
+  if (!['GET', 'HEAD'].includes(String(req.method || ''))) {
     res.setHeader('Allow', 'GET, HEAD');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
@@ -230,6 +235,9 @@ export default async function handler(req, res) {
     checkedAt: new Date().toISOString(),
   };
   res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
-  if (req.method === 'HEAD') return res.status(ready ? 204 : 503).end();
+  if (req.method === 'HEAD') {
+    const head = res.status(ready ? 204 : 503);
+    return head.end();
+  }
   return res.status(ready ? 200 : 503).json(payload);
 }

@@ -312,7 +312,7 @@ for (const token of [
   'roster.csv',
 ])
   has(designExports, token, `production export ${token}`);
-const readiness = read('api/readiness.js');
+const readiness = read('api/readiness.ts');
 for (const token of [
   'requiredEnvironment',
   'optionalCapabilities',

@@ -48,7 +48,7 @@ import readinessHandler, {
   featureReadiness,
   optionalCapabilities,
   requiredEnvironment,
-} from '../api/readiness.js';
+} from '../api/readiness.ts';
 import specialRequestHandler, { isMalwareScannerConfigured } from '../api/special-request.js';
 import {
   buildNotificationTemplate,

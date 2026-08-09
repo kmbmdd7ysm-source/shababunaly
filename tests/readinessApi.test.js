@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import handler, { connectivityChecks, requiredEnvironment } from '../api/readiness.js';
+import handler, { connectivityChecks, requiredEnvironment } from '../api/readiness.ts';
 
 const keys = [
   'SITE_URL',

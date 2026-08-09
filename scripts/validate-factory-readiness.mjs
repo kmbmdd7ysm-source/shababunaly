@@ -141,7 +141,7 @@ const report = {
   },
 };
 mkdirSync('reports/factory', { recursive: true });
-writeFileSync('reports/factory/factory-readiness.json', `${JSON.stringify(report, null, 2)}\n`);
+writeFileSync('reports/factory/factory-readiness.tson', `${JSON.stringify(report, null, 2)}\n`);
 console.info(
   `Factory readiness: ${approved.length} fully evidenced manufacturer profile(s); ${missingProductTypes.length} product type(s) remain blocked.`,
 );

@@ -29,7 +29,7 @@ const sharePage = requireFile('src/pages/DesignSharePage.jsx');
 const shareApi = requireFile('api/design-share.ts');
 const spreadsheet = requireFile('src/utils/rosterSpreadsheet.js');
 const exportsSource = requireFile('src/utils/designExports.js');
-const readinessApi = requireFile('api/readiness.js');
+const readinessApi = requireFile('api/readiness.ts');
 const secureShareMigration = requireFile(
   'supabase/migrations/20260801025000_secure_design_sharing.sql',
 );

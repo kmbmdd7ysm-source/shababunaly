@@ -505,7 +505,7 @@ test('closes remaining business, readiness, provider and small utility branches'
   assert.deepEqual(sanitizeProperties({ '\n': 'ignored', object: {}, keep: false }), {
     keep: false,
   });
-  const { optionalCapabilities, connectivityChecks } = await import('../api/readiness.js');
+  const { optionalCapabilities, connectivityChecks } = await import('../api/readiness.ts');
   process.env.SIGNATURE_API_URL = 'https://sign.example';
   process.env.SIGNATURE_PROVIDER = 'Named';
   delete process.env.SIGNATURE_WEBHOOK_SECRET;

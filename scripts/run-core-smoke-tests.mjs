@@ -132,7 +132,7 @@ assert.equal(artworkZip.type, 'application/zip');
 assert.equal(artworkZip.size > 500, true);
 const app = readFileSync('src/App.jsx', 'utf8');
 assert.equal(app.includes('/design-share/:token'), true);
-const readiness = readFileSync('api/readiness.js', 'utf8');
+const readiness = readFileSync('api/readiness.ts', 'utf8');
 assert.match(readiness, /requiredEnvironment/);
 assert.match(readiness, /MALWARE_SCAN_API_URL/);
 

@@ -79,7 +79,7 @@ load('Visual baseline approval', 'reports/browser/visual-baseline-review.json', 
     ? true
     : 'visual baselines have not been hash-reviewed',
 );
-load('Provider readiness', 'reports/providers/provider-readiness.json', (v) =>
+load('Provider readiness', 'reports/providers/provider-readiness.tson', (v) =>
   v.status === 'passed' && v.productionReady === true
     ? true
     : 'payment and signature providers are not fully approved',
@@ -211,7 +211,7 @@ load('Catalog readiness', 'reports/catalog/catalog-completeness.json', (v) =>
     ? true
     : 'catalog still contains unverified stock, placeholders or incomplete commercial data',
 );
-load('Factory readiness', 'reports/factory/factory-readiness.json', (v) =>
+load('Factory readiness', 'reports/factory/factory-readiness.tson', (v) =>
   v.productionReady === true ? true : 'factory profiles are not approved',
 );
 const summary = {

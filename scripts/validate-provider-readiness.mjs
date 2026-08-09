@@ -93,7 +93,7 @@ const report = {
   signatureChecks,
 };
 mkdirSync('reports/providers', { recursive: true });
-writeFileSync('reports/providers/provider-readiness.json', `${JSON.stringify(report, null, 2)}\n`);
+writeFileSync('reports/providers/provider-readiness.tson', `${JSON.stringify(report, null, 2)}\n`);
 if (production && !productionReady) {
   console.error(
     'Provider readiness blocked: select documented payment and signature providers and attach sandbox, webhook, refund, identity, certificate and reconciliation evidence.',
