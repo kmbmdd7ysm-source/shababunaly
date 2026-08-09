@@ -1,6 +1,16 @@
-const first = (...values) => values.find((value) => String(value || '').trim()) || '';
+const first = (...values: unknown[]): string =>
+  String(values.find((value) => String(value || '').trim()) || '');
 
-export default function handler(req, res) {
+type ApiReq = { method?: string };
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => {
+    json: (b: unknown) => unknown;
+    end: () => unknown;
+  };
+};
+
+export default function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.setHeader('Allow', 'GET, HEAD');
     return res.status(405).json({ error: 'method_not_allowed' });
