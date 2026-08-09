@@ -1,31 +1,31 @@
+import type { ReactElement, ReactNode } from 'react';
 import { useId } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import '../../styles/composition.css';
 
+type DossierChapter = {
+  id?: string;
+  title?: ReactNode;
+  body?: ReactNode;
+};
+
+type DossierProps = {
+  chapters?: DossierChapter[];
+  aside?: ReactNode;
+  meta?: ReactNode;
+  lede?: ReactNode;
+};
+
 /*
- * The dossier — the structural replacement for "a container with stacked
- * `<section>` blocks", used by the legal, help, FAQ and size-guide routes.
- *
- * Those pages were a single scrolling column with no way to see the document's
- * shape or jump inside it. A dossier is a real document:
- *
- *   - a sticky INDEX rail listing every chapter, numbered, with the current
- *     one marked — so the reader can see the whole shape at once
- *   - numbered CHAPTERS on hairline rules, each with a stable anchor id
- *   - a capped measure so long legal prose stays readable
- *
- * The index is generated from the chapters, so it can never drift from the
- * content, and it degrades to a plain list of in-page links with no JavaScript
- * beyond React's own rendering.
- *
- * @param {{
- *   chapters: Array<{ id?: string, title: any, body: any }>,
- *   aside?: any,
- *   meta?: any,
- *   lede?: any,
- * }} props
+ * The dossier — structural replacement for stacked section blocks on legal,
+ * help, FAQ and size-guide routes: sticky contents + numbered chapters.
  */
-export default function Dossier({ chapters, aside = null, meta = null, lede = null }) {
+export default function Dossier({
+  chapters = [],
+  aside = null,
+  meta = null,
+  lede = null,
+}: DossierProps): ReactElement | null {
   const { pick } = useLanguage();
   const uid = useId().replace(/:/g, '');
   const entries = chapters.map((chapter, position) => ({

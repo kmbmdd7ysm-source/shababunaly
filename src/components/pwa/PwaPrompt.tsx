@@ -1,8 +1,8 @@
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Icon from '../icons/Icon';
-import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { onPwaEvent, promptInstall, applyPwaUpdate, isStandalone } from '../../utils/registerPwa';
-export default function PwaPrompt() {
+import { onPwaEvent, promptInstall, applyPwaUpdate, isStandalone } from '../../utils/registerPwa.ts';
+export default function PwaPrompt(): ReactElement | null {
   const { pick } = useLanguage();
   // Guards against any possibility of a reload loop.
   const reloadedRef = useRef(false);

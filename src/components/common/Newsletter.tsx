@@ -61,7 +61,9 @@ export default function Newsletter({ compact = false }: { compact?: boolean } = 
   return (
     <form
       className={`newsletter-form${compact ? ' newsletter-form--compact' : ''}`}
-      onSubmit={submit}
+      onSubmit={(event) => {
+        void submit(event);
+      }}
       noValidate
     >
       <div className="newsletter-input-row">
