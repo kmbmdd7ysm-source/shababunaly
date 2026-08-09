@@ -1,17 +1,18 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `4a0de816a7765c7c1ebcb48032584108acd3e933`
-- TypeScript: **92.57%** (249/269)
-- Remaining JSX (**9**):
+- SHA: `b99f006a9c15cf5a1a34cead058745d7033ca044`
+- TypeScript: **93.31%** (251/269)
+- Remaining JSX (**7**):
   - OrganizationWorkspace.jsx
   - DesignPreview.jsx · ProductionDesignEditor.jsx
-  - CatalogDraftManager.jsx · ProcurementAndBilling.jsx
   - OperationsCommerceModules.jsx · OperationsEnterpriseModules.jsx · OperationsMasterData.jsx
-  - Realtime3DEngine.jsx (ambient — model-viewer types)
+  - Realtime3DEngine.jsx (ambient — model-viewer)
 
 ## Exact next
-1. CatalogDraftManager · ProcurementAndBilling
-2. Ops*Modules · DesignPreview · ProductionDesignEditor · OrganizationWorkspace
-3. Remaining src JS · Phase 2 CSS · Phases 5–35 · final SHA evidence
+1. OperationsMasterData.tsx
+2. OperationsEnterpriseModules · OperationsCommerceModules
+3. DesignPreview · ProductionDesignEditor · OrganizationWorkspace
+4. Remaining src JS · Phase 2 CSS · Phases 5–35 · final SHA evidence
 
+All ops control/* modules now TSX except none remaining under control/.
 Hero slots preserved. No fabricate. Do not restart.
