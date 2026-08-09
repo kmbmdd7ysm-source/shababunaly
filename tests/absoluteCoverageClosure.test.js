@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from './test-api.js';
 import createSession from '../api/create-session.js';
 import designShare from '../api/design-share.js';
 import formspree, { resolveFormspreeEndpoint } from '../api/formspree.ts';
-import guestOrderAccess from '../api/guest-order-access.js';
+import guestOrderAccess from '../api/guest-order-access.ts';
 import publicQuote from '../api/public-quote-request.js';
 import retryPayment from '../api/retry-order-payment.js';
 import specialRequest from '../api/special-request.js';

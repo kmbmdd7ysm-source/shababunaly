@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import guestAccessHandler from '../api/guest-order-access.js';
+import guestAccessHandler from '../api/guest-order-access.ts';
 import publicQuoteHandler from '../api/public-quote-request.js';
 import retryPaymentHandler from '../api/retry-order-payment.js';
 import specialRequestHandler from '../api/special-request.js';

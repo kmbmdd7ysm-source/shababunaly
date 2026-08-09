@@ -18,7 +18,7 @@ const required = [
   'api/create-quote-session.js',
   'api/payment-webhook.js',
   'api/notification-worker.js',
-  'api/guest-order-access.js',
+  'api/guest-order-access.ts',
   'api/retry-order-payment.js',
   'api/public-quote-request.js',
   'docs/ORDER_BACKEND_DEPLOYMENT.md',

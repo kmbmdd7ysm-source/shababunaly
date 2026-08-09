@@ -9,7 +9,7 @@ import {
   verifyGuestOrderToken,
 } from './_guest-order-token.ts';
 
-const clean = (value, max = 5000) =>
+const clean = (value: unknown, max = 5000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
@@ -50,30 +50,36 @@ const SELECT = [
   'order_items(product_id,sku,product_name,variant_snapshot,quantity,unit_price,line_total)',
 ].join(',');
 
-async function findOrder(orderNumber) {
+async function findOrder(orderNumber: string): Promise<Record<string, unknown> | null> {
   const rows = await supabaseAdminRequest(
     `/rest/v1/orders?select=${encodeURIComponent(SELECT)}&order_number=eq.${encodeURIComponent(orderNumber)}&user_id=is.null&limit=1`,
   );
-  return Array.isArray(rows) ? rows[0] || null : null;
+  return Array.isArray(rows) ? (rows[0] as Record<string, unknown>) || null : null;
 }
 
-function publicOrder(row) {
+function publicOrder(row: Record<string, unknown>) {
   const { customer_email: _customerEmail, order_items: orderItems, ...safe } = row;
   return { ...safe, items: orderItems || [] };
 }
 
-function orderEmail(row) {
-  return normalizeGuestEmail(row.customer_email || row.shipping_summary?.email || '');
+function orderEmail(row: Record<string, unknown>): string {
+  const shipping =
+    row.shipping_summary && typeof row.shipping_summary === 'object'
+      ? (row.shipping_summary as Record<string, unknown>)
+      : {};
+  return normalizeGuestEmail(row.customer_email || shipping.email || '');
 }
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
+type ApiReq = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined>; query?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
+type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown } };
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: 16_000,
       limit: 10,
       windowMs: 15 * 60_000,
@@ -82,7 +88,7 @@ export default async function handler(req, res) {
   )
     return;
   try {
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     const orderNumber = normalizeGuestOrderNumber(body.orderNumber);
     if (!orderNumber) return res.status(200).json({ ok: true, order: null });
     const existing = verifyGuestOrderToken(body.accessToken, orderNumber);
@@ -101,9 +107,10 @@ export default async function handler(req, res) {
     }
     const email = normalizeGuestEmail(body.email);
     if (!email) return res.status(200).json({ ok: true, order: null });
+    const forwarded = req.headers['x-forwarded-for'];
     const captchaOk = await verifyTurnstileToken(
       clean(body.turnstileToken, 3000),
-      req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '',
+      String((Array.isArray(forwarded) ? forwarded[0] : forwarded) || req.socket?.remoteAddress || ''),
     );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const storedEmail = orderEmail(order);
@@ -111,6 +118,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, order: null });
     const accessToken = createGuestOrderToken({ orderNumber, email });
     const verified = verifyGuestOrderToken(accessToken, orderNumber);
+    if (!verified) return res.status(503).json({ ok: false, error: 'guest_token_unavailable' });
     return res.status(200).json({
       ok: true,
       order: publicOrder(order),
