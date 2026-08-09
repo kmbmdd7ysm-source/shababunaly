@@ -31,13 +31,13 @@ export default function LegalPage({ docKey }: { docKey: string }) {
   return (
     <>
       <Seo
-        title={pick(typed.title)}
-        description={pick(typed.intro)}
+        title={pick(typed.title) || ''}
+        description={pick(typed.intro) || ''}
         path={`/${docKey}`}
       />
       <RouteMasthead
         eyebrow={footer.legal}
-        title={pick(typed.title)}
+        title={pick(typed.title) || ''}
         trail={[
           { label: footer.legal || 'Legal' },
           { label: pick(typed.title) || '' },

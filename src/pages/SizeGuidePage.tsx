@@ -23,7 +23,7 @@ export default function SizeGuidePage(): ReactElement {
 
   return (
     <>
-      <Seo title={sizeGuide.title} description={sizeGuide.sub} path="/size-guide" />
+      <Seo title={sizeGuide.title || ''} description={sizeGuide.sub || ''} path="/size-guide" />
       <RouteMasthead
         eyebrow={sizeGuide.label}
         title={sizeGuide.title}

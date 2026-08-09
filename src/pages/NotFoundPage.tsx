@@ -8,7 +8,7 @@ export default function NotFoundPage() {
   const errors = (t.errors || {}) as Record<string, string>;
   return (
     <>
-      <Seo title={errors.notFoundTitle} description={errors.notFoundText} path="/404" noindex />
+      <Seo title={errors.notFoundTitle || ''} description={errors.notFoundText || ''} path="/404" noindex />
       <section className="gw-terminal">
         <div className="gw-terminal-inner">
           <span className="gw-terminal-code" aria-hidden="true">

@@ -29,7 +29,7 @@ export default function FaqPage() {
   if (faqCategories.length === 0) {
     return (
       <>
-        <Seo title={faq.title} description={faq.sub} path="/faq" />
+        <Seo title={faq.title || ''} description={faq.sub || ''} path="/faq" />
         <RouteMasthead
           eyebrow={faq.label}
           title={faq.title}
@@ -50,7 +50,7 @@ export default function FaqPage() {
 
   return (
     <>
-      <Seo title={faq.title} description={faq.sub} path="/faq" />
+      <Seo title={faq.title || ''} description={faq.sub || ''} path="/faq" />
       <RouteMasthead
         eyebrow={faq.label}
         title={faq.title}
