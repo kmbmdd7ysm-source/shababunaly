@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
 import { recordBusinessEvent, sanitizeProperties } from '../api/_business-events.ts';
-import malwareWorker, { malwareWorkerInternals } from '../api/malware-scan-worker.js';
+import malwareWorker, { malwareWorkerInternals } from '../api/malware-scan-worker.ts';
 import mediaWorker, { mediaWorkerInternals } from '../api/media-scan-worker.js';
 import {
   createSignatureEnvelope,
