@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { SITE } from '../src/config.ts';
 import { products } from '../src/data/products.js';
-import { legal } from '../src/data/legal.js';
+import { legal } from '../src/data/legal.ts';
 import {
   createHomeSchema,
   createProductSchema,

@@ -1,4 +1,7 @@
-const S = (hEn, hAr, pEn, pAr) => ({ h: { en: hEn, ar: hAr }, p: { en: pEn, ar: pAr } });
+const S = (hEn: string, hAr: string, pEn: string, pAr: string) => ({
+  h: { en: hEn, ar: hAr },
+  p: { en: pEn, ar: pAr },
+});
 
 export const legal = {
   'privacy-policy': {
@@ -203,4 +206,4 @@ export const legal = {
     ],
   },
 };
-export const getLegal = (key) => legal[key];
+export const getLegal = (key: keyof typeof legal) => legal[key];

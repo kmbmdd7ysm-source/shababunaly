@@ -19,8 +19,8 @@ export default defineConfig({
       include: ['src/**/*.{js,jsx,ts,tsx}', 'api/**/*.{js,ts}'],
       exclude: [
         'src/data/translations.js',
-        'src/data/legal.js',
-        'src/data/sizeGuide.js',
+        'src/data/legal.ts',
+        'src/data/sizeGuide.ts',
         'src/main.jsx',
       ],
       reporter: ['text', 'json', 'json-summary', 'html', 'lcov'],

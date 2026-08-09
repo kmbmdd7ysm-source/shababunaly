@@ -129,4 +129,4 @@ export const sizeGuides = [
   },
 ];
 
-export const getSizeGuide = (key) => sizeGuides.find((g) => g.key === key);
+export const getSizeGuide = (key: string) => sizeGuides.find((g) => g.key === key);
