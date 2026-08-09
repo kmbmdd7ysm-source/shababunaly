@@ -24,7 +24,7 @@ export default function CheckoutStatusPage({ status = 'success' }) {
   return (
     <>
       <Seo
-        title={success ? checkoutStatus.successTitle : checkoutStatus.cancelledTitle}
+        title={(success ? checkoutStatus.successTitle : checkoutStatus.cancelledTitle) || ''}
         description=""
         path={`/checkout/${success ? 'success' : 'cancelled'}`}
         noindex
