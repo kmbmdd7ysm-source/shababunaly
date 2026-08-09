@@ -1,19 +1,13 @@
 # Continuation checkpoint
 
-- SHA: `15b10878f2cd429690cce3a4bec00a887dd7c477`
-- Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
-- TypeScript: **57.53%** (149/259)
-- AuthContext: **DONE**
-- CatalogContext / UserDataContext: ambient (next careful rewrites)
-- CSS: global 5657L / !important 238 (was 7252/348)
-- Footer rebuilt · Home rebalanced · Product cards borderless
+- SHA: `356a04be4ba11c6a327db206a8187b9f184e3772`
+- TypeScript: **59.07%** (153/259)
+- AuthContext: DONE
+- API: geo/client-error/commerce-event/formspree migrated
+- CSS: global 5657L / !important 238
+
+## Next
+CatalogContext · UserDataContext · remaining APIs/pages · unload legacy CSS · Customize 3D · H–Z
 
 ## Next command
-```bash
-cd /workspace && git rev-parse HEAD
-# Careful CatalogContext.tsx migration (cast overlay return; type supabase rows)
-npm run typecheck && npm run lint && npm run test:node
-```
-
-Do not restart from Phase 0.
+Careful CatalogContext.tsx migration
