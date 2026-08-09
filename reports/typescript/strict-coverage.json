@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T02:19:42.819512+00:00",
-  "commitSha": "bb4307a86b67ae7c029db9df8c23ab41acce2181",
+  "generatedAt": "2026-08-09T02:20:22.459503+00:00",
+  "commitSha": "d5a3a6d07457cf560b7a9d93dcb258d047338b4d",
   "sourceFiles": 259,
-  "strictFiles": 64,
-  "strictCoveragePercent": 24.71,
-  "legacyFileCount": 195,
-  "note": "Phase 3 IN PROGRESS. designStudio full port next."
+  "strictFiles": 66,
+  "strictCoveragePercent": 25.48,
+  "legacyFileCount": 193,
+  "note": "Phase 3 IN PROGRESS \u2014 crossed 25%."
 }
