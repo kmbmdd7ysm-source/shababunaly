@@ -56,9 +56,11 @@ export default function PwaPrompt(): ReactElement | null {
             })}
           </span>
           <button
-            onClick={async () => {
-              await promptInstall();
-              setInstall(false);
+            onClick={() => {
+              void (async () => {
+                await promptInstall();
+                setInstall(false);
+              })();
             }}
           >
             {pick({ en: 'Install', ar: 'تثبيت' })}

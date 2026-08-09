@@ -51,7 +51,7 @@ describe('production completion safeguards', () => {
   it('protects public forms with Turnstile and file scanning architecture', async () => {
     for (const path of [
       'src/pages/ContactPage.jsx',
-      'src/components/common/Newsletter.jsx',
+      'src/components/common/Newsletter.tsx',
       'src/pages/TeamsWholesalePage.jsx',
       'src/pages/CustomizePage.jsx',
       'src/pages/SpecialRequestPage.jsx',
