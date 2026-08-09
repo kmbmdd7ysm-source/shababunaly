@@ -7,6 +7,9 @@ export interface VariantLike {
   inventoryTracking?: unknown;
   readyToShip?: unknown;
   stock?: unknown;
+  size?: unknown;
+  color?: unknown;
+  unitPrice?: unknown;
 }
 
 export interface ProductLike {
