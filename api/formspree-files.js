@@ -1,5 +1,5 @@
 import { guardPublicPost } from './_request-security.js';
-import { validateEncodedFiles } from './_file-security.js';
+import { validateEncodedFiles } from './_file-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 
 import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';

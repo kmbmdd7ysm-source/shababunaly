@@ -6,7 +6,7 @@ import {
   supabaseAdminRequest,
   supabaseUserRequest,
 } from './_supabase-admin.ts';
-import { validateEncodedFiles } from './_file-security.js';
+import { validateEncodedFiles } from './_file-security.ts';
 
 const clean = (value, max = 1000) =>
   String(value ?? '')

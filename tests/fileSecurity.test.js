@@ -1,5 +1,5 @@
 import { describe, expect, it } from './test-api.js';
-import { validateEncodedFiles } from '../api/_file-security.js';
+import { validateEncodedFiles } from '../api/_file-security.ts';
 const file = (name, mime, bytes, role = 'additional_file') => ({
   name,
   mime,

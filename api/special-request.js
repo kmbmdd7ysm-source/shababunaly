@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { guardPublicPost, applyApiHeaders } from './_request-security.js';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
-import { validateEncodedFiles } from './_file-security.js';
+import { validateEncodedFiles } from './_file-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 
 const clean = (value, max = 5000) =>
