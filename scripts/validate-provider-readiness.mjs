@@ -76,7 +76,7 @@ const codeChecks = {
     'supabase/migrations/20260802002000_external_signature_provider.sql',
   ),
   paymentWebhook: existsSync('api/payment-webhook.js'),
-  paymentRefund: existsSync('api/refund.js'),
+  paymentRefund: existsSync('api/refund.ts'),
   paymentRetrieve: existsSync('api/retry-order-payment.js'),
 };
 const codeReady = Object.values(codeChecks).every(Boolean);
