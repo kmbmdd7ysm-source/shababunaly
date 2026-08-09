@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement, ChangeEvent } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -9,14 +10,15 @@ import '../styles/runs.css';
 import OrderCard from '../components/account/OrderCard';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 
-export default function OrderTrackingPage() {
+export default function OrderTrackingPage(): ReactElement {
   const { t, pick } = useLanguage();
+  const ot = (t.orderTracking || {}) as Record<string, string>;
   const auth = useAuth();
   const navigate = useNavigate();
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [lookup, setLookup] = useState({ state: 'idle', order: null, error: null });
-  const [ordersState, setOrdersState] = useState({ state: 'idle', orders: [], error: null });
+  const [lookup, setLookup] = useState<{ state: string; order: Record<string, unknown> | null; error: string | null }>({ state: 'idle', order: null, error: null });
+  const [ordersState, setOrdersState] = useState<{ state: string; orders: unknown[]; error: string | null }>({ state: 'idle', orders: [], error: null });
   const [turnstileToken, setTurnstileToken] = useState('');
 
   const load = useCallback(async () => {
@@ -26,14 +28,18 @@ export default function OrderTrackingPage() {
       state: current.orders.length ? 'retrying' : 'loading',
     }));
     const result = await getMyOrders(auth.user.id);
-    setOrdersState(result);
+    setOrdersState({
+      state: String(result.state || 'ready'),
+      orders: Array.isArray(result.orders) ? result.orders : [],
+      error: result.error ? String(result.error) : null,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
   useEffect(() => {
-    load();
+    void load();
   }, [load]);
 
-  const submit = async (event) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!orderNumber.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setLookup({ state: 'invalid', order: null, error: null });
@@ -45,35 +51,37 @@ export default function OrderTrackingPage() {
       return;
     }
     const result = await lookupGuestOrder(orderNumber, email, turnstileToken);
-    setLookup(result);
-    if (result.order && result.accessToken) {
-      sessionStorage.setItem(
-        `shababuna-order-access:${result.order.orderNumber}`,
-        result.accessToken,
-      );
-      navigate(`/order-tracking/${encodeURIComponent(result.order.orderNumber)}`, {
-        state: { accessToken: result.accessToken },
-      });
+    setLookup({
+      state: String(result.state || 'idle'),
+      order: (result.order as Record<string, unknown> | null) || null,
+      error: result.error ? String(result.error) : null,
+    });
+    const order = result.order as Record<string, unknown> | null | undefined;
+    const accessToken = result.accessToken;
+    if (order && accessToken) {
+      const number = String(order.orderNumber || '');
+      sessionStorage.setItem(`shababuna-order-access:${number}`, String(accessToken));
+      navigate(`/order-tracking/${encodeURIComponent(number)}`);
     }
   };
 
   return (
     <>
       <Seo
-        title={t.orderTracking.title}
-        description={t.orderTracking.sub}
+        title={ot.title || ''}
+        description={ot.sub || ''}
         path="/order-tracking"
         noindex
       />
       <section className="gw-world-headband" aria-labelledby="tracking-title">
         <div className="gw-cat-head-inner">
-          <p className="gw-spec">{t.orderTracking.label}</p>
+          <p className="gw-spec">{ot.label}</p>
           <div className="gw-cat-head-row">
             <div>
               <h1 id="tracking-title" className="gw-cat-title">
-                {t.orderTracking.title}
+                {ot.title}
               </h1>
-              <p className="gw-world-lede">{t.orderTracking.sub}</p>
+              <p className="gw-world-lede">{ot.sub}</p>
             </div>
             {auth.user && ordersState.orders.length ? (
               <p className="gw-cat-count">
@@ -129,7 +137,10 @@ export default function OrderTrackingPage() {
                 (ordersState.orders.length ? (
                   <div className="orders-list">
                     {ordersState.orders.map((order) => (
-                      <OrderCard key={order.id} order={order} />
+                      <OrderCard
+                        key={String((order as Record<string, unknown>).id || '')}
+                        order={order as never}
+                      />
                     ))}
                   </div>
                 ) : (
@@ -152,20 +163,24 @@ export default function OrderTrackingPage() {
             </p>
             <form className="track-form" onSubmit={submit} noValidate>
               <label className="field">
-                <span>{t.orderTracking.orderNumber}</span>
+                <span>{ot.orderNumber}</span>
                 <input
                   value={orderNumber}
-                  onChange={(event) => setOrderNumber(event.target.value)}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    setOrderNumber(event.target.value)
+                  }
                   autoComplete="off"
                   required
                 />
               </label>
               <label className="field">
-                <span>{t.orderTracking.email}</span>
+                <span>{ot.email}</span>
                 <input
                   type="email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    setEmail(event.target.value)
+                  }
                   autoComplete="email"
                   required
                 />
@@ -178,7 +193,7 @@ export default function OrderTrackingPage() {
               >
                 {lookup.state === 'loading'
                   ? pick({ en: 'Checking…', ar: 'جارٍ التحقق…' })
-                  : t.orderTracking.track}
+                  : ot.track}
               </button>
             </form>
             {lookup.state === 'captcha-required' && (
@@ -215,7 +230,7 @@ export default function OrderTrackingPage() {
             )}
           </section>
           <p className="notice notice--muted">
-            {t.orderTracking.note} <Link to="/contact?type=order">{t.orderTracking.contact}</Link>
+            {ot.note} <Link to="/contact?type=order">{ot.contact}</Link>
           </p>
         </div>
       </section>
