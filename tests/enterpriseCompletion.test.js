@@ -5,7 +5,7 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 describe('enterprise production completion', () => {
   it('uses provider adapters for quotes and special requests', async () => {
     const quote = await read('api/create-quote-session.js');
-    const special = await read('api/create-special-request-session.js');
+    const special = await read('api/create-special-request-session.ts');
     expect(quote).toContain('getPaymentAdapter');
     expect(quote).toContain('adapter.createSession');
     expect(special).toContain("status !== 'awaiting_payment'");

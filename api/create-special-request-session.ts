@@ -1,12 +1,24 @@
 import { getPaymentAdapter } from './payments/registry.ts';
 import { clean } from './payments/adapters/base.js';
 import { guardPublicPost } from './_request-security.ts';
-const json = (res, status, body) => {
+
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+const json = (res: ApiRes, status: number, body: unknown) => {
   res.setHeader('Cache-Control', 'no-store, private');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   return res.status(status).json(body);
 };
-async function loadRequest(number) {
+
+async function loadRequest(number: string): Promise<Record<string, unknown>> {
   const base = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const key = clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
   if (!base || !key)
@@ -32,17 +44,19 @@ async function loadRequest(number) {
   );
   if (!response.ok)
     throw Object.assign(new Error('trusted_request_lookup_failed'), { status: 502 });
-  const rows = await response.json();
-  if (!rows?.[0]) throw Object.assign(new Error('special_request_not_found'), { status: 404 });
-  return rows[0];
+  const rows = (await response.json()) as Array<Record<string, unknown>>;
+  const row = rows[0];
+  if (!row) throw Object.assign(new Error('special_request_not_found'), { status: 404 });
+  return row;
 }
-export default async function handler(req, res) {
+
+export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return json(res, 405, { error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: 16000,
       limit: 30,
       windowMs: 10 * 60_000,
@@ -51,7 +65,7 @@ export default async function handler(req, res) {
     }))
   )
     return;
-  const body = req.body && typeof req.body === 'object' ? req.body : {};
+  const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
   const requestNumber = clean(body.requestNumber, 80).toUpperCase();
   const method = clean(body.paymentMethod, 40).toLowerCase();
   const adapter = getPaymentAdapter(method);
@@ -65,7 +79,7 @@ export default async function handler(req, res) {
     if (
       row.status !== 'awaiting_payment' ||
       row.customer_decision !== 'accepted' ||
-      (row.quote_expires_at && new Date(row.quote_expires_at).getTime() <= Date.now()) ||
+      (row.quote_expires_at && new Date(String(row.quote_expires_at)).getTime() <= Date.now()) ||
       !Number.isFinite(amount) ||
       amount <= 0
     )
@@ -83,15 +97,18 @@ export default async function handler(req, res) {
       amountMinor: Math.round(amount * 100),
       status: row.status,
     };
+    if (!adapter.createSession) return json(res, 503, { error: 'payment_provider_not_connected' });
     const result = await adapter.createSession({
       trustedOrder: trusted,
-      idempotencyKey: `special-request:${row.id}:${amount.toFixed(2)}`,
-      successUrl: `${site}/account?section=special-requests&payment=success&request=${encodeURIComponent(row.request_number)}`,
-      cancelUrl: `${site}/account?section=special-requests&payment=cancelled&request=${encodeURIComponent(row.request_number)}`,
+      idempotencyKey: `special-request:${String(row.id)}:${amount.toFixed(2)}`,
+      successUrl: `${site}/account?section=special-requests&payment=success&request=${encodeURIComponent(String(row.request_number))}`,
+      cancelUrl: `${site}/account?section=special-requests&payment=cancelled&request=${encodeURIComponent(String(row.request_number))}`,
     });
     return json(res, 200, { url: result.url, requestNumber: row.request_number });
-  } catch (error) {
-    const mapped = adapter.mapError(error);
-    return json(res, mapped.status, { error: mapped.code });
+  } catch (error: unknown) {
+    const mapped = adapter.mapError
+      ? adapter.mapError(error)
+      : { status: 502, code: 'payment_session_failed' };
+    return json(res, Number(mapped.status || 502), { error: mapped.code || mapped.error });
   }
 }
