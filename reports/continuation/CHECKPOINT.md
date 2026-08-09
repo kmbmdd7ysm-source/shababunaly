@@ -1,12 +1,13 @@
 # Continuation checkpoint
 
-- SHA: `a4f1c72f5a21a4859e5d9cc69506fbff51fa6293`
-- TypeScript: **54.44%** (141/259)
-- CSS: global 5657L / !important 238 (from 7252/348)
-- Footer · Home · Product cards · CSS pass1+2 · LhaStore TS
+- SHA: `28b89c975b7d1c8ff0acb0bad7cd3b281785f633`
+- TypeScript: **55.98%** (145/259)
+- CSS: global 5657L / !important 238 (was 7252/348)
+- premium !important 53 · shababuna 0
+- Footer · Home · Product cards · CSS passes · many pages TS
 
-## Next
-Auth/UserData/Catalog full TS · Shop modules · Customize 3D · Phases H–Z
+## Remaining large JSX
+Account · Customize · Checkout · Shop · Product · Teams · OpsDashboard · Auth/UserData/Catalog contexts
 
 ## Next command
-Continue TypeScript migration of AuthContext or remaining pages
+Continue TypeScript on remaining pages/services; then Shop/Customize visual systems
