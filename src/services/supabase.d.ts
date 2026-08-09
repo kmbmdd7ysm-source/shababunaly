@@ -1,10 +1,17 @@
-/** Ambient types for supabase.js until full migration. */
+/** Ambient types for supabase.js until full migration. No broad any. */
 export interface SupabaseQueryBuilder {
-  select: (columns: string) => SupabaseQueryBuilder;
+  select: (columns?: string) => SupabaseQueryBuilder;
+  insert: (row: unknown) => SupabaseQueryBuilder;
+  update: (row: unknown) => SupabaseQueryBuilder;
+  delete: () => SupabaseQueryBuilder;
   eq: (column: string, value: unknown) => SupabaseQueryBuilder;
+  order: (column: string, options?: { ascending?: boolean }) => SupabaseQueryBuilder;
+  abortSignal?: (signal: AbortSignal) => SupabaseQueryBuilder;
   maybeSingle: () => Promise<{ data: { content_value?: unknown } | null; error: Error | null }>;
-  insert?: (row: unknown) => Promise<{ data: unknown; error: Error | null }>;
-  update?: (row: unknown) => SupabaseQueryBuilder;
+  single: () => Promise<{ data: Record<string, unknown> | null; error: Error | null }>;
+  then?: (
+    resolve: (value: { data: unknown; error: Error | null }) => unknown,
+  ) => Promise<unknown>;
 }
 
 export interface SupabaseClientLike {
