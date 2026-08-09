@@ -1,16 +1,24 @@
 import { Helmet } from 'react-helmet-async';
-import { SITE } from '../../config';
+import { SITE } from '../../config.ts';
 import { useLanguage } from '../../context/LanguageContext';
 
-// Route-level SEO: title, description, canonical, Open Graph, Twitter, JSON-LD.
+type SeoProps = {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  type?: string;
+  noindex?: boolean;
+};
+
 export default function Seo({
-  title,
+  title = '',
   description = '',
   path = '/',
   image = SITE.defaultOg,
   type = 'website',
   noindex = false,
-}) {
+}: SeoProps) {
   const { lang } = useLanguage();
   const canonical = `${SITE.domain}${path === '/' ? '' : path}`;
   const absoluteImage = image?.startsWith('http') ? image : `${SITE.domain}${image}`;
@@ -44,9 +52,8 @@ export default function Seo({
   );
 }
 
-// Site-wide Organization + WebSite schema (used on the homepage).
-export function organizationSchema() {
-  return [
+export function organizationSchema(): Array<Record<string, unknown>> {
+  const schema: Array<Record<string, unknown>> = [
     {
       '@context': 'https://schema.org',
       '@type': ['Organization', 'OnlineStore'],
@@ -56,10 +63,6 @@ export function organizationSchema() {
       logo: `${SITE.domain}${SITE.logo}`,
       description: 'Basketball retail, custom manufacturing, team supply and wholesale.',
       areaServed: 'Worldwide',
-      ...(SITE.email ? { email: SITE.email } : {}),
-      ...(Object.values(SITE.social).some(Boolean)
-        ? { sameAs: Object.values(SITE.social).filter(Boolean) }
-        : {}),
     },
     {
       '@context': 'https://schema.org',
@@ -73,4 +76,8 @@ export function organizationSchema() {
       },
     },
   ];
+  if (SITE.email) schema[0]!.email = SITE.email;
+  const sameAs = Object.values(SITE.social).filter(Boolean);
+  if (sameAs.length) schema[0]!.sameAs = sameAs;
+  return schema;
 }

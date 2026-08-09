@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-08-09T03:51:52.988146+00:00",
+  "baseSha": "fbe9c0c73a81f8ab7bfc32d703c68ec0a3572ec9",
+  "phase": "B-pass2-safe-important-strip",
+  "after": {
+    "global.css": {
+      "lines": 5657,
+      "important": 238
+    },
+    "premium.css": {
+      "lines": 1752,
+      "important": 53
+    },
+    "shababuna.css": {
+      "lines": 3227,
+      "important": 0
+    }
+  },
+  "note": "Removed !important from layout/flex/display props unlikely to need cascade override after unused-rule cull."
+}

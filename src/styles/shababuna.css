@@ -2040,7 +2040,7 @@ body {
 }
 
 .manual-payment-panel {
-  display: grid !important;
+  display:grid;
   gap: 10px;
   padding-top: 14px;
   border-top: 1px solid #dfdfd8;
@@ -2283,7 +2283,7 @@ body {
 }
 
 .operations-check {
-  display: flex !important;
+  display:flex;
   align-items: flex-start;
   gap: 0.6rem;
 }

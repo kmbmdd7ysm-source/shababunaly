@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
-import Seo from '../components/common/Seo.jsx';
+import Seo from '../components/common/Seo.tsx';
 import Icon from '../components/icons/Icon';
 import '../styles/composition.css';
 

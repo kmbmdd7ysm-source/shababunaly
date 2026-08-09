@@ -1,6 +1,6 @@
 import { useLanguage } from '../context/LanguageContext';
 import { SITE } from '../config.ts';
-import Seo from '../components/common/Seo.jsx';
+import Seo from '../components/common/Seo.tsx';
 import RouteMasthead from '../components/composition/RouteMasthead';
 import Dossier from '../components/composition/Dossier.jsx';
 import { getLegal } from '../data/legal.ts';

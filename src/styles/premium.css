@@ -766,7 +766,7 @@ body {
 }
 
 .check-row {
-  display: flex !important;
+  display:flex;
   align-items: center;
   gap: 12px;
 }
@@ -1185,7 +1185,7 @@ button:disabled,
 
 .product-card-img,
 .gallery-image {
-  object-fit: contain !important;
+  object-fit:contain;
   object-position: center;
   transition:
     opacity var(--motion-base) var(--ease-standard),
@@ -1597,7 +1597,7 @@ main,
   .header-actions .mobile-more-action::after,
   .mobile-menu-head .brand::before,
   .mobile-menu-head .brand::after {
-    display: none !important;
+    display:none;
     content: none !important;
   }
 }
@@ -1611,7 +1611,7 @@ main,
 }
 
 .media-lightbox {
-  position: fixed !important;
+  position:fixed;
   inset: 0 !important;
 }
 
@@ -1620,7 +1620,7 @@ main,
   height: auto !important;
   max-width: 100% !important;
   max-height: 100% !important;
-  object-fit: contain !important;
+  object-fit:contain;
 }
 
 /* Performance stability: reserve paint geometry and keep route motion composited. */
