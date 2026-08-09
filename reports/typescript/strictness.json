@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:17:39.864Z",
+  "generatedAt": "2026-08-09T02:18:22.864Z",
   "sourceFiles": 259,
-  "strictFiles": 63,
-  "strictCoveragePercent": 24.32,
+  "strictFiles": 64,
+  "strictCoveragePercent": 24.71,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -31,7 +31,6 @@
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
     "src/components/custom/StudioStage.jsx",
-    "src/components/custom/studio/ProductStep.jsx",
     "src/components/custom/studio/StudioShell.jsx",
     "src/components/dev/BuildMarker.jsx",
     "src/components/errors/AppErrorBoundary.jsx",
