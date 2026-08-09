@@ -18,7 +18,13 @@ export default function ShareButtons({
   const url = typeof window !== 'undefined' ? window.location.href : '';
   const act = async (method: string) => {
     try {
-      await share({ title, text, url, method });
+      const payload: { title?: string; text?: string; url?: string; method?: string } = {
+        url,
+        method,
+      };
+      if (title) payload.title = title;
+      if (text) payload.text = text;
+      await share(payload);
       if (method === 'copy') {
         setCopied(true);
         setTimeout(() => setCopied(false), 1800);
