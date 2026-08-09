@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T02:01:09.010960+00:00",
-  "commitSha": "b99b4cc8c6f2249fc3c51b2463ea959a77e58d01",
+  "generatedAt": "2026-08-09T02:04:26.457174+00:00",
+  "commitSha": "cc868cf65532d1838ccba297763b13ae1795605e",
   "sourceFiles": 259,
-  "strictFiles": 36,
-  "strictCoveragePercent": 13.9,
-  "legacyFileCount": 223,
-  "note": "Executable .ts/.tsx only \u2014 .d.ts ambient declarations excluded from coverage numerator/denominator."
+  "strictFiles": 38,
+  "strictCoveragePercent": 14.67,
+  "legacyFileCount": 221,
+  "note": "Phase 3 IN PROGRESS \u2014 executable .ts/.tsx only."
 }
