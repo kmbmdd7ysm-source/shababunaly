@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import {
   listAddresses,
@@ -23,27 +24,50 @@ const EMPTY = {
   phone: '',
   isDefault: false,
 };
-const fromDb = (a) => ({
-  label: a.label || 'Home',
-  firstName: a.first_name || '',
-  lastName: a.last_name || '',
-  company: a.company || '',
-  addressLine1: a.address_line_1 || '',
-  addressLine2: a.address_line_2 || '',
-  city: a.city || '',
-  region: a.region || '',
-  postalCode: a.postal_code || '',
-  country: normalizeCountryCode(a.country || 'LY'),
-  phone: a.phone || '',
+type AddressForm = {
+  label: string;
+  firstName: string;
+  lastName: string;
+  company: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  region: string;
+  postalCode: string;
+  country: string;
+  phone: string;
+  isDefault: boolean;
+};
+
+const fromDb = (a: Record<string, unknown>): AddressForm => ({
+  label: String(a.label || 'Home'),
+  firstName: String(a.first_name || ''),
+  lastName: String(a.last_name || ''),
+  company: String(a.company || ''),
+  addressLine1: String(a.address_line_1 || ''),
+  addressLine2: String(a.address_line_2 || ''),
+  city: String(a.city || ''),
+  region: String(a.region || ''),
+  postalCode: String(a.postal_code || ''),
+  country: String(normalizeCountryCode(String(a.country || 'LY')) || 'LY'),
+  phone: String(a.phone || ''),
   isDefault: Boolean(a.is_default),
 });
-export default function AddressesSection({ userId, pick, language }) {
-  const [list, setList] = useState([]),
-    [form, setForm] = useState(EMPTY),
-    [editing, setEditing] = useState(null),
+export default function AddressesSection({
+  userId,
+  pick,
+  language,
+}: {
+  userId: string;
+  pick: (value: unknown) => string;
+  language?: string;
+}): ReactElement {
+  const [list, setList] = useState<Array<Record<string, unknown>>>([]),
+    [form, setForm] = useState<AddressForm>(EMPTY),
+    [editing, setEditing] = useState<string | null>(null),
     [loading, setLoading] = useState(true),
     [busy, setBusy] = useState(false),
-    [errors, setErrors] = useState({}),
+    [errors, setErrors] = useState<Record<string, string>>({}),
     [message, setMessage] = useState('');
   const load = async () => {
     setLoading(true);
@@ -57,17 +81,17 @@ export default function AddressesSection({ userId, pick, language }) {
     }
   };
   useEffect(() => {
-    load();
+    void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [userId]);
-  const submit = async (e) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const v = validateAddress(form);
+    const v = validateAddress(form as Record<string, unknown>);
     setErrors(v.errors);
     if (!v.valid) return;
     setBusy(true);
     try {
-      await saveAddress(userId, form, editing);
+      await saveAddress(userId, form as Record<string, unknown>, editing || undefined);
       setForm(EMPTY);
       setEditing(null);
       await load();
@@ -78,16 +102,16 @@ export default function AddressesSection({ userId, pick, language }) {
       setBusy(false);
     }
   };
-  const edit = (a) => {
-    setEditing(a.id);
+  const edit = (a: Record<string, unknown>) => {
+    setEditing(String(a.id || ''));
     setForm(fromDb(a));
     setErrors({});
   };
-  const remove = async (a) => {
+  const remove = async (a: Record<string, unknown>) => {
     if (!confirm(pick({ en: 'Delete this address?', ar: 'حذف هذا العنوان؟' }))) return;
     setBusy(true);
     try {
-      await deleteAddress(userId, a.id);
+      await deleteAddress(userId, String(a.id || ''));
       await load();
     } catch (e) {
       setMessage(errorText(e, language));
@@ -123,26 +147,26 @@ export default function AddressesSection({ userId, pick, language }) {
       ) : (
         <div className="address-grid">
           {list.map((a) => (
-            <article key={a.id} className="address-card">
+            <article key={String(a.id)} className="address-card">
               <div>
                 <strong>
-                  {a.label}
+                  {String(a.label || '')}
                   {a.is_default ? ` · ${pick({ en: 'Default', ar: 'افتراضي' })}` : ''}
                 </strong>
                 <p>
-                  {a.first_name} {a.last_name}
+                  {String(a.first_name || '')} {String(a.last_name || '')}
                   <br />
-                  {a.address_line_1}
+                  {String(a.address_line_1 || '')}
                   {a.address_line_2 ? (
                     <>
                       <br />
-                      {a.address_line_2}
+                      {String(a.address_line_2)}
                     </>
                   ) : null}
                   <br />
-                  {a.city}, {a.region} {a.postal_code}
+                  {String(a.city || '')}, {String(a.region || '')} {String(a.postal_code || '')}
                   <br />
-                  {getCountryName(a.country, language)}
+                  {getCountryName(String(a.country || ''), language)}
                 </p>
               </div>
               <div className="address-actions">
@@ -152,15 +176,22 @@ export default function AddressesSection({ userId, pick, language }) {
                 {!a.is_default && (
                   <button
                     type="button"
-                    onClick={async () => {
-                      await setDefaultAddress(userId, a.id);
-                      await load();
+                    onClick={() => {
+                      void (async () => {
+                        await setDefaultAddress(userId, String(a.id || ''));
+                        await load();
+                      })();
                     }}
                   >
                     {pick({ en: 'Set default', ar: 'تعيين افتراضي' })}
                   </button>
                 )}
-                <button type="button" onClick={() => remove(a)}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void remove(a);
+                  }}
+                >
                   {pick({ en: 'Delete', ar: 'حذف' })}
                 </button>
               </div>
@@ -168,7 +199,13 @@ export default function AddressesSection({ userId, pick, language }) {
           ))}
         </div>
       )}
-      <form className="account-form address-form" onSubmit={submit} noValidate>
+      <form
+        className="account-form address-form"
+        onSubmit={(event) => {
+          void submit(event);
+        }}
+        noValidate
+      >
         <h3>
           {editing
             ? pick({ en: 'Edit address', ar: 'تعديل العنوان' })
@@ -268,7 +305,7 @@ export default function AddressesSection({ userId, pick, language }) {
                 }));
               }}
               required
-              aria-describedby={errors.country ? 'address-country-error' : undefined}
+              {...(errors.country ? { 'aria-describedby': 'address-country-error' } : {})}
             />
             {errors.country && (
               <span id="address-country-error" className="field-error" role="alert">
@@ -330,8 +367,19 @@ function Field({
   form,
   error = '',
   auto = '',
-  inputMode = undefined,
+  inputMode,
   maxLength = 180,
+}: {
+  name: keyof AddressForm;
+  label: string;
+  value: string;
+  set: (next: AddressForm) => void;
+  form: AddressForm;
+  error?: string | undefined;
+  auto?: string | undefined;
+  inputMode?:
+    'text' | 'tel' | 'search' | 'email' | 'url' | 'numeric' | 'decimal' | 'none' | undefined;
+  maxLength?: number | undefined;
 }) {
   const id = `address-${name}`;
   return (

@@ -1,11 +1,10 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:24:32.454Z",
+  "generatedAt": "2026-08-09T22:25:43.988Z",
   "sourceFiles": 269,
-  "strictFiles": 235,
-  "strictCoveragePercent": 87.36,
+  "strictFiles": 236,
+  "strictCoveragePercent": 87.73,
   "legacyFiles": [
-    "src/components/account/AddressesSection.jsx",
     "src/components/account/MfaSecurityPanel.jsx",
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/account/ReturnsSection.jsx",
