@@ -1,16 +1,32 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `2760b27d0c18af4eaaa7335b0c489a98b38a5349`
-- TypeScript: **64.86%** (168/259)
-- Core contexts Auth/Catalog/UserData/Commerce/Cart: **DONE**
-- CSS: global 5070L / !important 235 (was 7252/348)
-- foundation.css added to main entry (Phase 2 cutover begun)
-- CartPage TSX migrated
+- SHA: `695696b4067cf9d9e9b192b5c0d846e89ebe2dad`
+- Branch: `cursor/shababuna-redesign-master-plan-dc14`
+- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
+- TypeScript: **65.25%** (169/259)
+
+## Phase progress
+| Phase | Status |
+| --- | --- |
+| 1 TypeScript | **IN PROGRESS 65.25%** — Auth/Catalog/UserData DONE |
+| 2 CSS extinction | **IN PROGRESS** — passes 1–4; foundation.css in main; global !important 173 (was 348) |
+| 3–4 Chrome/Footer | Footer DONE; Chrome PARTIAL |
+| 5–7 Home/Shop/Cards | PARTIAL |
+| 8–35 | PENDING |
+
+## CSS metrics
+- global: 5070L / 173 !important
+- premium: 1631L / 41 !important  
+- shababuna: 3067L / 0 !important
 
 ## Exact next
-1. Continue Phase 1 — Account/Customize/Checkout/Shop/Product/Teams pages + remaining APIs
-2. Phase 2 — stop loading premium/shababuna/global giants once ownership moved
-3. Phases 3–35
+1. Continue Phase 1 — large pages + remaining APIs → ~100%
+2. Phase 2 — remove global premium/shababuna from main once owned elsewhere
+3. Phases 3–35 sequentially
 
 ## Next command
-Migrate CheckoutPage / ShopPage modules; continue CSS extinction
+```bash
+cd /workspace && git rev-parse HEAD
+# Migrate CheckoutPage modules / remaining APIs
+npm run typecheck && npm run lint && npm run test:node
+```

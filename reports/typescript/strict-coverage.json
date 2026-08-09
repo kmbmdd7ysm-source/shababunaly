@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-09T18:55:10.843101+00:00",
-  "commitSha": "2760b27d0c18af4eaaa7335b0c489a98b38a5349",
+  "generatedAt": "2026-08-09T18:57:57.815286+00:00",
+  "commitSha": "695696b4067cf9d9e9b192b5c0d846e89ebe2dad",
   "sourceFiles": 259,
-  "strictFiles": 168,
-  "strictCoveragePercent": 64.86,
+  "strictFiles": 169,
+  "strictCoveragePercent": 65.25,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,
-      "important": 235
+      "important": 173
     },
     "premium.css": {
       "lines": 1631,
-      "important": 52
+      "important": 41
     },
     "shababuna.css": {
       "lines": 3067,
