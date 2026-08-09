@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 describe('trusted checkout architecture', () => {
   it('saves the trusted order before creating a hosted payment session', () => {
-    const source = fs.readFileSync('src/pages/CheckoutPage.jsx', 'utf8');
+    const source = fs.readFileSync('src/pages/CheckoutPage.tsx', 'utf8');
     expect(source.indexOf('const confirmation = await savePendingOrder(payload)')).toBeGreaterThan(
       -1,
     );

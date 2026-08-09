@@ -59,7 +59,7 @@ assert.equal(allBrands.length, 15);
 assert.equal(allBrands.includes('Shababuna'), true);
 assert.equal(allBrands.includes('LHA'), true);
 
-const checkout = readFileSync('src/pages/CheckoutPage.jsx', 'utf8');
+const checkout = readFileSync('src/pages/CheckoutPage.tsx', 'utf8');
 assert.match(checkout, /paymentPlan = shippingQuoteRequired \? 'pending_shipping_quote'/);
 assert.match(checkout, /paymentMethod === 'cash' \? cashPlan : 'full'/);
 const migration = [

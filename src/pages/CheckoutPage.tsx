@@ -1,3 +1,4 @@
+import type { ChangeEvent, ReactElement } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -31,8 +32,25 @@ import '../styles/transact.css';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CHECKOUT_KEY = 'shababuna-checkout-idempotency';
 
-export default function CheckoutPage() {
+type CheckoutForm = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  country: string;
+  address: string;
+  apartment: string;
+  city: string;
+  state: string;
+  postal: string;
+  phone: string;
+};
+
+export default function CheckoutPage(): ReactElement {
   const { t, pick, lang } = useLanguage();
+  const checkout = (t.checkout || {}) as Record<string, string>;
+  const cartCopy = (t.cart || {}) as Record<string, string>;
+  const nav = (t.nav || {}) as Record<string, string>;
+  const common = (t.common || {}) as Record<string, string>;
   const { items, subtotal, digitalOnly, hasPhysical, clearCart } = useCart();
   const {
     currency,
@@ -45,11 +63,11 @@ export default function CheckoutPage() {
     shippingRates,
   } = useCommerce();
   const auth = useAuth();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<CheckoutForm>({
     email: '',
     firstName: '',
     lastName: '',
-    country: countryCode,
+    country: String(countryCode || ''),
     address: '',
     apartment: '',
     city: '',
@@ -62,21 +80,24 @@ export default function CheckoutPage() {
     isCashEligibleCountry(countryCode) ? 'cash' : 'online_card',
   );
   const [cashPlan, setCashPlan] = useState('half');
-  const [orderConfirmed, setOrderConfirmed] = useState(null);
-  const [errors, setErrors] = useState({});
+  const [orderConfirmed, setOrderConfirmed] = useState<Record<string, unknown> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState('');
-  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [savedAddresses, setSavedAddresses] = useState<Array<Record<string, unknown>>>([]);
   const [selectedAddressId, setSelectedAddressId] = useState('');
   const idempotencyRef = useRef(sessionStorage.getItem(CHECKOUT_KEY) || createIdempotencyKey());
-  const errorSummaryRef = useRef(null);
+  const errorSummaryRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     sessionStorage.setItem(CHECKOUT_KEY, idempotencyRef.current);
   }, []);
   useEffect(() => {
     if (auth.user?.email)
-      setForm((current) => ({ ...current, email: current.email || auth.user.email }));
+      setForm((current) => ({
+        ...current,
+        email: current.email || String(auth.user?.email || ''),
+      }));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
   useEffect(() => {
@@ -93,11 +114,15 @@ export default function CheckoutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, []);
 
-  const set = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
-  const fieldA11y = (key) => ({
-    'aria-invalid': Boolean(errors[key]),
-    'aria-describedby': errors[key] ? `checkout-${key}-error` : undefined,
-  });
+  const set = (key: string) => (event: ChangeEvent<HTMLInputElement>) =>
+    setForm((current) => ({ ...current, [key]: event.target.value }));
+  const fieldA11y = (key: string) => {
+    const describedBy = errors[key] ? `checkout-${key}-error` : undefined;
+    return {
+      'aria-invalid': Boolean(errors[key]),
+      ...(describedBy ? { 'aria-describedby': describedBy } : {}),
+    };
+  };
   const shippingCountryCode = isSupportedCountryCode(form.country)
     ? String(form.country).toUpperCase()
     : '';
@@ -110,35 +135,36 @@ export default function CheckoutPage() {
   const allReady =
     items.length > 0 && items.every((item) => item.type !== 'product' || item.readyToShip);
 
-  const changeCountry = (nextCode) => {
-    const normalized = normalizeCountryCode(nextCode);
+  const changeCountry = (nextCode: string) => {
+    const normalized = String(normalizeCountryCode(nextCode) || '');
     setForm((current) => ({ ...current, country: normalized }));
     setCountryCode(normalized);
-    setErrors((current) => ({
-      ...current,
-      country: undefined,
-      postal: undefined,
-      state: undefined,
-    }));
+    setErrors((current) => {
+      const next = { ...current };
+      delete next.country;
+      delete next.postal;
+      delete next.state;
+      return next;
+    });
     if (!isCashEligibleCountry(normalized) && paymentMethod === 'cash')
       setPaymentMethod('online_card');
   };
 
-  const applySavedAddress = (address) => {
+  const applySavedAddress = (address: Record<string, unknown> | undefined) => {
     if (!address) return;
-    setSelectedAddressId(address.id || '');
-    const nextCountry = normalizeCountryCode(address.country || countryCode);
+    setSelectedAddressId(String(address.id || ''));
+    const nextCountry = String(normalizeCountryCode(String(address.country || countryCode)) || '');
     setForm((current) => ({
       ...current,
-      firstName: address.first_name || current.firstName,
-      lastName: address.last_name || current.lastName,
+      firstName: String(address.first_name || current.firstName),
+      lastName: String(address.last_name || current.lastName),
       country: nextCountry,
-      address: address.address_line_1 || address.line1 || '',
-      apartment: address.address_line_2 || address.line2 || '',
-      city: address.city || '',
-      state: address.region || '',
-      postal: address.postal_code || '',
-      phone: address.phone || current.phone,
+      address: String(address.address_line_1 || address.line1 || ''),
+      apartment: String(address.address_line_2 || address.line2 || ''),
+      city: String(address.city || ''),
+      state: String(address.region || ''),
+      postal: String(address.postal_code || ''),
+      phone: String(address.phone || current.phone),
     }));
     setCountryCode(nextCountry);
     if (!isCashEligibleCountry(nextCountry) && paymentMethod === 'cash')
@@ -151,10 +177,10 @@ export default function CheckoutPage() {
       setSavedAddresses([]);
       return undefined;
     }
-    listAddresses(auth.user.id)
+    listAddresses(String(auth.user.id))
       .then((rows) => {
         if (!active) return;
-        const list = rows || [];
+        const list = Array.isArray(rows) ? rows : [];
         setSavedAddresses(list);
         const preferred = list.find((row) => row.is_default) || list[0];
         if (preferred) applySavedAddress(preferred);
@@ -221,18 +247,18 @@ export default function CheckoutPage() {
             : SHIPPING_MESSAGES.quoteRequired;
 
   const validate = () => {
-    const next = {};
-    if (!EMAIL_RE.test(form.email)) next.email = t.checkout.emailError;
+    const next: Record<string, string> = {};
+    if (!EMAIL_RE.test(form.email)) next.email = checkout.emailError || '';
     if (!digitalOnly) {
-      ['firstName', 'lastName', 'country', 'address', 'city'].forEach((key) => {
-        if (!form[key].trim()) next[key] = t.checkout.requiredError;
+      (['firstName', 'lastName', 'country', 'address', 'city'] as const).forEach((key) => {
+        if (!form[key].trim()) next[key] = checkout.requiredError || '';
       });
       if (!addressRequirements)
         next.country = pick({ en: 'Invalid country.', ar: 'الدولة غير صالحة.' });
       if (addressRequirements?.regionRequired && !form.state.trim())
-        next.state = t.checkout.requiredError;
+        next.state = checkout.requiredError || '';
       if (addressRequirements?.postalCodeRequired && !form.postal.trim())
-        next.postal = t.checkout.requiredError;
+        next.postal = checkout.requiredError || '';
     }
     if (
       !shippingQuoteRequired &&
@@ -258,13 +284,13 @@ export default function CheckoutPage() {
         en: 'One or more cart items are no longer available. Remove them or choose another variant.',
         ar: 'منتج أو أكثر في السلة لم يعد متوفرًا. احذفه أو اختر خيارًا آخر.',
       });
-    if (!agree) next.agree = t.checkout.termsError;
+    if (!agree) next.agree = checkout.termsError || '';
     setErrors(next);
     if (Object.keys(next).length) requestAnimationFrame(() => errorSummaryRef.current?.focus());
     return Object.keys(next).length === 0;
   };
 
-  const savePendingOrder = async (payload) => {
+  const savePendingOrder = async (payload: Record<string, unknown>) => {
     const now = new Date();
     const date = `${now.getUTCFullYear()}${String(now.getUTCMonth() + 1).padStart(2, '0')}${String(now.getUTCDate()).padStart(2, '0')}`;
     const serial = String(Date.now() % 10_000_000).padStart(7, '0');
@@ -281,13 +307,24 @@ export default function CheckoutPage() {
         ? 'awaiting_cash_confirmation'
         : 'awaiting_payment';
     const requestedPaymentStatus = shippingQuoteRequired ? 'shipping_quote_pending' : 'pending';
-    const clientItems = payload.items.map((item) => ({
-      ...item,
-      displayUnitPrice: convert(item.unitPrice) ?? item.unitPrice,
-      displayLineTotal: convert(item.lineTotal) ?? item.lineTotal,
-    }));
+    const payloadItems = Array.isArray(payload.items)
+      ? (payload.items as Array<Record<string, unknown>>)
+      : [];
+    const customer = (payload.customer || {}) as Record<string, unknown>;
+    const clientItems = payloadItems.map((item) => {
+      const unitPrice = Number(item.unitPrice) || 0;
+      const lineTotal = Number(item.lineTotal) || 0;
+      return {
+        ...item,
+        quantity: Number(item.quantity) || 0,
+        name: String(item.name || ''),
+        purchaseMode: item.purchaseMode ? String(item.purchaseMode) : '',
+        displayUnitPrice: Number(convert(unitPrice) ?? unitPrice),
+        displayLineTotal: Number(convert(lineTotal) ?? lineTotal),
+      };
+    });
 
-    const result = await createOrder(
+    const result = (await createOrder(
       {
         ...payload,
         items: clientItems,
@@ -324,12 +361,12 @@ export default function CheckoutPage() {
         },
         taxTotal: 0,
         discountTotal: 0,
-      },
+      } as never,
       { idempotencyKey: idempotencyRef.current, allowPending: true },
-    );
+    )) as { order?: Record<string, unknown>; source?: string };
 
-    const trusted = result?.order || {};
-    const confirmedNumber = trusted.orderNumber || fallbackOrderNumber;
+    const trusted = (result?.order || {}) as Record<string, unknown>;
+    const confirmedNumber = String(trusted.orderNumber || fallbackOrderNumber);
     const canonicalSubtotal = Number.isFinite(Number(trusted.subtotal))
       ? Number(trusted.subtotal)
       : subtotal;
@@ -349,16 +386,16 @@ export default function CheckoutPage() {
     const displayDueNow = convert(canonicalDueNow) ?? canonicalDueNow;
     const displayRemaining = convert(canonicalRemaining) ?? canonicalRemaining;
     const trustedQuoteRequired = Boolean(trusted.shippingQuoteRequired ?? shippingQuoteRequired);
-    const trustedPlan = trusted.paymentPlan || paymentPlan;
-    const trustedDeliveryProfile = trusted.deliveryProfile || deliveryProfile;
-    const trustedOrderStatus = trusted.orderStatus || requestedOrderStatus;
-    const trustedPaymentStatus = trusted.paymentStatus || requestedPaymentStatus;
+    const trustedPlan = String(trusted.paymentPlan || paymentPlan);
+    const trustedDeliveryProfile = String(trusted.deliveryProfile || deliveryProfile);
+    const trustedOrderStatus = String(trusted.orderStatus || requestedOrderStatus);
+    const trustedPaymentStatus = String(trusted.paymentStatus || requestedPaymentStatus);
 
     const orderMessage = [
       `SHABABUNA ORDER: ${confirmedNumber}`,
-      `Customer: ${payload.customer.name}`,
-      `Email: ${payload.customer.email}`,
-      `Phone: ${payload.customer.phone || 'Not provided'}`,
+      `Customer: ${String(customer.name || '')}`,
+      `Email: ${String(customer.email || '')}`,
+      `Phone: ${String(customer.phone || 'Not provided')}`,
       `Country: ${shippingCountryCode}`,
       `Payment method: ${methodLabel}`,
       `Payment plan: ${trustedPlan}`,
@@ -384,14 +421,14 @@ export default function CheckoutPage() {
         {
           formType: 'order',
           message: orderMessage,
-          email: payload.customer.email,
+          email: String(customer.email || ''),
           orderNumber: confirmedNumber,
           paymentMethod: methodLabel,
           paymentPlan: trustedPlan,
           paymentStatus: trustedPaymentStatus,
-          customerName: payload.customer.name,
-          customerEmail: payload.customer.email,
-          customerPhone: payload.customer.phone,
+          customerName: String(customer.name || ''),
+          customerEmail: String(customer.email || ''),
+          customerPhone: String(customer.phone || ''),
           subtotal: displaySubtotal,
           shippingTotal: trustedQuoteRequired ? 'pending' : displayShippingTotal,
           total: displayTotal,
@@ -456,19 +493,23 @@ export default function CheckoutPage() {
               state: form.state,
               postal: form.postal,
             },
-        items: items.map((item) => ({
-          id: item.id,
-          type: item.type,
-          sku: item.sku,
-          name: pick(item.name),
-          quantity: item.quantity,
-          unitPrice: item.price,
-          lineTotal: item.price * item.quantity,
-          purchaseMode: item.purchaseMode || 'retail',
-          readyToShip: Boolean(item.readyToShip),
-          fulfillmentType: item.fulfillmentType,
-          registrationId: item.registrationId || null,
-        })),
+        items: items.map((item) => {
+          const price = Number(item.price) || 0;
+          const quantity = Number(item.quantity) || 0;
+          return {
+            id: item.id,
+            type: item.type,
+            sku: item.sku,
+            name: pick(item.name as never),
+            quantity,
+            unitPrice: price,
+            lineTotal: price * quantity,
+            purchaseMode: item.purchaseMode || 'retail',
+            readyToShip: Boolean(item.readyToShip),
+            fulfillmentType: item.fulfillmentType,
+            registrationId: item.registrationId || null,
+          };
+        }),
         totals: { subtotal, shipping: shippingEstimate, total, amountDueNow, remainingBalance },
         paymentMethod,
         paymentPlan,
@@ -476,7 +517,10 @@ export default function CheckoutPage() {
         deliveryProfile,
       };
 
-      const confirmation = await savePendingOrder(payload);
+      const confirmation = (await savePendingOrder(payload as Record<string, unknown>)) as Record<
+        string,
+        unknown
+      >;
       trackEvent('order_created', {
         value: total,
         currency: SITE.currency,
@@ -569,7 +613,12 @@ export default function CheckoutPage() {
   if (items.length === 0)
     return (
       <>
-        <Seo title={t.checkout.title} description={t.checkout.title} path="/checkout" noindex />
+        <Seo
+          title={String(checkout.title || '')}
+          description={String(checkout.title || '')}
+          path="/checkout"
+          noindex
+        />
         <section className="gw-checkout gw-checkout--terminal">
           <div className="gw-checkout-inner">
             {orderConfirmed ? (
@@ -580,7 +629,7 @@ export default function CheckoutPage() {
                 <h2>{pick({ en: 'Order received', ar: 'تم استلام طلبك' })}</h2>
                 <p>
                   {pick({ en: 'Order number', ar: 'رقم الطلب' })}:{' '}
-                  <strong>{orderConfirmed.number}</strong>
+                  <strong>{String(orderConfirmed.number || '')}</strong>
                 </p>
                 <p>
                   {orderConfirmed.shippingQuoteRequired
@@ -599,13 +648,13 @@ export default function CheckoutPage() {
                   <div>
                     <span>{pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
                     <strong>
-                      {orderConfirmed.displayDueNow.toFixed(2)} {currency}
+                      {(Number(orderConfirmed.displayDueNow) || 0).toFixed(2)} {currency}
                     </strong>
                   </div>
                   <div>
                     <span>{pick({ en: 'Remaining', ar: 'المتبقي' })}</span>
                     <strong>
-                      {orderConfirmed.displayRemaining.toFixed(2)} {currency}
+                      {(Number(orderConfirmed.displayRemaining) || 0).toFixed(2)} {currency}
                     </strong>
                   </div>
                 </div>
@@ -614,14 +663,14 @@ export default function CheckoutPage() {
                     {pick({ en: 'Track Order', ar: 'تتبع الطلب' })}
                   </Link>
                   <Link to="/shop" className="btn-secondary">
-                    {t.cart.continue}
+                    {cartCopy.continue}
                   </Link>
                 </div>
               </div>
             ) : (
               <EmptyState
-                message={t.checkout.emptyCart}
-                action={{ label: t.cart.startShopping, to: '/shop' }}
+                message={String(checkout.emptyCart || '')}
+                action={{ label: String(cartCopy.startShopping || ''), to: '/shop' }}
               />
             )}
           </div>
@@ -631,7 +680,12 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <Seo title={t.checkout.title} description={t.checkout.title} path="/checkout" noindex />
+      <Seo
+        title={String(checkout.title || '')}
+        description={String(checkout.title || '')}
+        path="/checkout"
+        noindex
+      />
 
       {/* A COMMIT SEQUENCE, not a page with a hero. The masthead states where the
         visitor is and what remains; the form below is a numbered run of steps
@@ -639,11 +693,11 @@ export default function CheckoutPage() {
       <section className="gw-checkout" aria-labelledby="gw-checkout-title">
         <div className="gw-checkout-inner">
           <div className="gw-checkout-head">
-            <p className="gw-spec">{t.nav.cart}</p>
+            <p className="gw-spec">{nav.cart}</p>
             <h1 id="gw-checkout-title" className="gw-checkout-title">
-              {t.checkout.title}
+              {checkout.title}
             </h1>
-            <p className="gw-checkout-assurance">{t.checkout.secureNote}</p>
+            <p className="gw-checkout-assurance">{checkout.secureNote}</p>
           </div>
 
           <div className="gw-checkout-body">
@@ -675,7 +729,7 @@ export default function CheckoutPage() {
                 className="checkout-form"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  submit();
+                  void submit();
                 }}
                 noValidate
               >
@@ -720,7 +774,7 @@ export default function CheckoutPage() {
                     errors={errors}
                     setField={set}
                     fieldA11y={fieldA11y}
-                    checkout={t.checkout || {}}
+                    checkout={checkout}
                     isLibya={isLibya}
                     savedAddresses={savedAddresses}
                     selectedAddressId={selectedAddressId}
@@ -798,9 +852,9 @@ export default function CheckoutPage() {
                     aria-describedby={errors.agree ? 'checkout-agree-error' : undefined}
                   />
                   <span>
-                    {t.checkout.terms}{' '}
+                    {checkout.terms}{' '}
                     <Link to="/terms" className="inline-link">
-                      {t.nav.terms}
+                      {nav.terms}
                     </Link>
                   </span>
                 </label>
@@ -820,14 +874,14 @@ export default function CheckoutPage() {
                   disabled={busy || !rateReady}
                 >
                   {busy
-                    ? t.checkout.processing
+                    ? checkout.processing
                     : shippingQuoteRequired
                       ? pick({
                           en: 'Place Pending Shipping Order',
                           ar: 'إرسال الطلب بانتظار سعر الشحن',
                         })
                       : paymentMethod !== 'cash' && paymentConfigured
-                        ? `${t.checkout.pay} · ${format(amountDueNow, lang)}`
+                        ? `${checkout.pay} · ${format(amountDueNow, lang)}`
                         : `${pick({ en: 'Confirm Order', ar: 'تأكيد الطلب' })} · ${format(amountDueNow, lang)}`}
                 </button>
                 <p className="summary-note">
@@ -837,49 +891,53 @@ export default function CheckoutPage() {
                   })}
                 </p>
                 <Link to="/cart" className="link-btn">
-                  <Icon name="back" size={18} /> {t.checkout.backToCart}
+                  <Icon name="back" size={18} /> {checkout.backToCart}
                 </Link>
               </form>
             </div>
 
             <aside className="checkout-summary">
-              <h2 className="summary-title">{t.checkout.summary}</h2>
+              <h2 className="summary-title">{checkout.summary}</h2>
               <ul className="summary-items">
-                {items.map((item) => (
-                  <li key={item.key} className="summary-item">
-                    <div className="summary-item-media">
-                      <SmartImage src={item.image} alt={pick(item.name)} />
-                      <span className="summary-item-qty">{item.quantity}</span>
-                    </div>
-                    <div className="summary-item-name">
-                      <span>{pick(item.name)}</span>
-                      {item.size && item.size !== 'OS' && <small>{item.size}</small>}
-                      {item.purchaseMode === 'wholesale' && (
-                        <small>{pick({ en: 'Wholesale', ar: 'جملة' })}</small>
-                      )}
-                    </div>
-                    <span className="summary-item-price">
-                      {format(item.price * item.quantity, lang)}
-                    </span>
-                  </li>
-                ))}
+                {items.map((item) => {
+                  const price = Number(item.price) || 0;
+                  const quantity = Number(item.quantity) || 0;
+                  return (
+                    <li key={String(item.key)} className="summary-item">
+                      <div className="summary-item-media">
+                        <SmartImage src={String(item.image || '')} alt={pick(item.name as never)} />
+                        <span className="summary-item-qty">{quantity}</span>
+                      </div>
+                      <div className="summary-item-name">
+                        <span>{pick(item.name as never)}</span>
+                        {item.size && item.size !== 'OS' ? (
+                          <small>{String(item.size)}</small>
+                        ) : null}
+                        {item.purchaseMode === 'wholesale' ? (
+                          <small>{pick({ en: 'Wholesale', ar: 'جملة' })}</small>
+                        ) : null}
+                      </div>
+                      <span className="summary-item-price">{format(price * quantity, lang)}</span>
+                    </li>
+                  );
+                })}
               </ul>
               <div className="summary-row">
-                <span>{t.cart.subtotal}</span>
+                <span>{cartCopy.subtotal}</span>
                 <span>{format(subtotal, lang)}</span>
               </div>
               <div className="summary-row">
-                <span>{t.cart.shipping}</span>
+                <span>{cartCopy.shipping}</span>
                 <span>
                   {shippingQuoteRequired
                     ? pick({ en: 'Pending quote', ar: 'قيد التسعير' })
                     : shipping.status === 'physical_paid'
-                      ? format(shipping.amount, lang, shipping.currency)
-                      : t.common.free}
+                      ? format(Number(shipping.amount) || 0, lang, String(shipping.currency || ''))
+                      : common.free}
                 </span>
               </div>
               <div className="summary-row total">
-                <span>{t.cart.total}</span>
+                <span>{cartCopy.total}</span>
                 <span>
                   {shippingQuoteRequired
                     ? pick({ en: 'Pending shipping', ar: 'بانتظار الشحن' })
@@ -897,7 +955,9 @@ export default function CheckoutPage() {
                 </div>
               </div>
               {isLibya && (
-                <p className="summary-note">{SHIPPING_MESSAGES.announcement[lang] || SHIPPING_MESSAGES.announcement.en}</p>
+                <p className="summary-note">
+                  {SHIPPING_MESSAGES.announcement[lang] || SHIPPING_MESSAGES.announcement.en}
+                </p>
               )}
             </aside>
           </div>

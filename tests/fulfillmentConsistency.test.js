@@ -9,7 +9,7 @@ describe('fulfillment consistency', () => {
   });
 
   it('keeps international shipping pending until a staff quote is added', () => {
-    const checkout = readFileSync('src/pages/CheckoutPage.jsx', 'utf8');
+    const checkout = readFileSync('src/pages/CheckoutPage.tsx', 'utf8');
     const migration = readFileSync(
       'supabase/migrations/20260731050000_shababuna_final_hardening.sql',
       'utf8',

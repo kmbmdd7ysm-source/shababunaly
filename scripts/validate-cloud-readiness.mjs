@@ -122,7 +122,7 @@ for (const name of [
 ])
   if (!env.includes(name)) errors.push(`Undocumented environment variable: ${name}`);
 
-const checkout = fs.readFileSync('src/pages/CheckoutPage.jsx', 'utf8');
+const checkout = fs.readFileSync('src/pages/CheckoutPage.tsx', 'utf8');
 const saveIndex = checkout.indexOf('const confirmation = await savePendingOrder(payload)');
 const sessionIndex = checkout.indexOf('createCheckoutSession({', saveIndex);
 if (saveIndex < 0 || sessionIndex < saveIndex)

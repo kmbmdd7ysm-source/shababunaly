@@ -78,9 +78,7 @@ export default function CheckoutPaymentStage({
               onChange={() => setPaymentMethod('online_card')}
             />
             <span>
-              <strong>
-                {pick({ en: 'Card & Digital Payment', ar: 'بطاقة ودفع إلكتروني' })}
-              </strong>
+              <strong>{pick({ en: 'Card & Digital Payment', ar: 'بطاقة ودفع إلكتروني' })}</strong>
               <small>Visa · Mastercard · Apple Pay · Google Pay · Samsung Pay</small>
             </span>
           </label>
@@ -89,9 +87,7 @@ export default function CheckoutPaymentStage({
 
       {paymentMethod === 'cash' && !stagedOrder && !shippingQuoteRequired ? (
         <fieldset className="form-block payment-plan">
-          <legend>
-            {pick({ en: 'Cash confirmation amount', ar: 'قيمة تأكيد الطلب النقدي' })}
-          </legend>
+          <legend>{pick({ en: 'Cash confirmation amount', ar: 'قيمة تأكيد الطلب النقدي' })}</legend>
           <div className="payment-plan-grid">
             <label className={cashPlan === 'half' ? 'active' : ''}>
               <input

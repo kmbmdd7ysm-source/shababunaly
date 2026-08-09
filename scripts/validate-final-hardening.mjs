@@ -197,7 +197,7 @@ has(orderApi, 'trusted_order_not_found', 'production order email fail-closed beh
 const createSession = read('api/create-session.ts');
 for (const token of ['payment_expires_at', 'shipping_quote_expires_at', 'loadTrustedOrder'])
   has(createSession, token, `payment session ${token}`);
-const checkout = read('src/pages/CheckoutPage.jsx');
+const checkout = read('src/pages/CheckoutPage.tsx');
 for (const token of [
   'shippingRates',
   'customOrder: stagedOrder',
