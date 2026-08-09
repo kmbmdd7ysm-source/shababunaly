@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T01:58:15.861Z",
+  "generatedAt": "2026-08-09T01:58:36.888Z",
   "sourceFiles": 262,
-  "strictFiles": 32,
-  "strictCoveragePercent": 12.21,
+  "strictFiles": 33,
+  "strictCoveragePercent": 12.6,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -167,7 +167,6 @@
     "src/services/b2b.js",
     "src/services/commerceSettings.js",
     "src/services/designStudio.js",
-    "src/services/formspree.js",
     "src/services/operations.js",
     "src/services/orders.js",
     "src/services/paymentRecovery.js",
