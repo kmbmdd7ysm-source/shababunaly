@@ -329,7 +329,6 @@ export function createHttpAdapter(config: HttpAdapterConfig) {
       return {
         status: Number(err.status || 502),
         code,
-        error: code,
         providerCode: clean(err.providerCode, 120),
       };
     },
