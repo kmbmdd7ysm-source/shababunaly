@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { lazy, Suspense } from 'react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -47,7 +48,7 @@ const MODULE_ICONS = {
   users: 'user',
   settings: 'help',
 };
-export default function OperationsPage() {
+export default function OperationsPage(): ReactElement | null {
   const auth = useAuth();
   const { pick } = useLanguage();
   if (auth.loading) return null;
@@ -76,8 +77,10 @@ export default function OperationsPage() {
         >
           {links.map((name) => (
             <NavLink key={name} to={`/operations/${name}`} className="gw-command-module">
-              <Icon name={MODULE_ICONS[name] || 'grid'} />
-              <span>{name === 'b2b' ? 'B2B' : name[0].toUpperCase() + name.slice(1)}</span>
+              <Icon name={(MODULE_ICONS as Record<string, string>)[name] || 'grid'} />
+              <span>
+                {name === 'b2b' ? 'B2B' : `${(name[0] || '').toUpperCase()}${name.slice(1)}`}
+              </span>
             </NavLink>
           ))}
         </nav>
