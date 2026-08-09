@@ -122,7 +122,10 @@ export function mapError(error: unknown): {
     code = 'auth_callback';
   else if (text.includes('jwt') || text.includes('session')) code = 'session_expired';
   else if (!globalThis.navigator?.onLine) code = 'offline';
-  const mapped = MAP[code] ?? MAP.generic!;
+  const mapped = MAP[code] || MAP.generic;
+  if (!mapped) {
+    return { code: 'generic', message: { en: 'Something went wrong. Please try again.', ar: 'حدث خطأ ما. حاول مرة أخرى.' } };
+  }
   const result: { code: string; message: LangPair; debug?: string } = {
     code,
     message: mapped,
