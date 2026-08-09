@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Seo from '../components/common/Seo';
@@ -40,11 +41,54 @@ import {
 } from '../components/operations/OperationsEnterpriseModules';
 import '../styles/operations.css';
 
-export default function OperationsPage() {
+type OpsRow = Record<string, unknown>;
+type OpsState = {
+  loading: boolean;
+  error: string;
+  exchangeRate: number;
+  orders: OpsRow[];
+  quotes: OpsRow[];
+  designs: OpsRow[];
+  returns: OpsRow[];
+  refunds: OpsRow[];
+  specialRequests: OpsRow[];
+  catalog: OpsRow[];
+  shippingRates: OpsRow[];
+  siteContent: OpsRow[];
+  brands: OpsRow[];
+  categories: OpsRow[];
+  collections: OpsRow[];
+  warehouses: OpsRow[];
+  suppliers: OpsRow[];
+  carriers: OpsRow[];
+  coupons: OpsRow[];
+  taxRules: OpsRow[];
+  invoices: OpsRow[];
+  purchaseOrders: OpsRow[];
+  shipments: OpsRow[];
+  shipmentItems: OpsRow[];
+  notifications: OpsRow[];
+  auditLog: OpsRow[];
+  mediaAssets: OpsRow[];
+  contracts: OpsRow[];
+  paymentProofs: OpsRow[];
+  reorders: OpsRow[];
+  lockers: OpsRow[];
+  messages: OpsRow[];
+  securityEvents: OpsRow[];
+  stockMovements: OpsRow[];
+  organizations: OpsRow[];
+  lockerProducts: OpsRow[];
+  warehouseInventory: OpsRow[];
+  inventoryImports: OpsRow[];
+  [key: string]: unknown;
+};
+
+export default function OperationsPage(): ReactElement | null {
   const { pick, lang } = useLanguage();
   const auth = useAuth();
   const catalog = useCatalog();
-  const [state, setState] = useState({
+  const [state, setState] = useState<OpsState>({
     loading: true,
     orders: [],
     quotes: [],
@@ -88,44 +132,101 @@ export default function OperationsPage() {
   const [saving, setSaving] = useState('');
   const [notice, setNotice] = useState('');
   const [catalogQuery, setCatalogQuery] = useState('');
-  const [adminUsers, setAdminUsers] = useState({ loading: false, rows: [], error: '' });
+  const [adminUsers, setAdminUsers] = useState<{
+    loading: boolean;
+    rows: Array<Record<string, unknown>>;
+    error: string;
+  }>({ loading: false, rows: [], error: '' });
   const staff = isStaffUser(auth.user);
+  const asRows = (value: unknown): Array<Record<string, unknown>> =>
+    Array.isArray(value) ? (value as Array<Record<string, unknown>>) : [];
 
   const load = useCallback(async () => {
     setState((current) => ({ ...current, loading: true, error: '' }));
     try {
       const data = await loadOperationsDashboard();
-      setState({ loading: false, ...data, error: '' });
+      setState((current) => ({
+        ...current,
+        ...data,
+        loading: false,
+        error: '',
+        orders: asRows(data.orders),
+        quotes: asRows(data.quotes),
+        designs: asRows(data.designs),
+        returns: asRows(data.returns),
+        refunds: asRows(data.refunds),
+        specialRequests: asRows(data.specialRequests),
+        catalog: asRows(data.catalog),
+        shippingRates: asRows(data.shippingRates),
+        siteContent: asRows(data.siteContent),
+        brands: asRows(data.brands),
+        categories: asRows(data.categories),
+        collections: asRows(data.collections),
+        warehouses: asRows(data.warehouses),
+        suppliers: asRows(data.suppliers),
+        carriers: asRows(data.carriers),
+        coupons: asRows(data.coupons),
+        taxRules: asRows(data.taxRules),
+        invoices: asRows(data.invoices),
+        purchaseOrders: asRows(data.purchaseOrders),
+        shipments: asRows(data.shipments),
+        shipmentItems: asRows(data.shipmentItems),
+        notifications: asRows(data.notifications),
+        auditLog: asRows(data.auditLog),
+        mediaAssets: asRows(data.mediaAssets),
+        contracts: asRows(data.contracts),
+        paymentProofs: asRows(data.paymentProofs),
+        reorders: asRows(data.reorders),
+        lockers: asRows(data.lockers),
+        messages: asRows(data.messages),
+        securityEvents: asRows(data.securityEvents),
+        stockMovements: asRows(data.stockMovements),
+        organizations: asRows(data.organizations),
+        lockerProducts: asRows(data.lockerProducts),
+        warehouseInventory: asRows(data.warehouseInventory),
+        inventoryImports: asRows(data.inventoryImports),
+        exchangeRate: Number(data.exchangeRate) || 9,
+      }));
       setRate(String(data.exchangeRate || 9));
     } catch (error) {
+      const message = error instanceof Error ? error.message : '';
       setState((current) => ({
         ...current,
         loading: false,
         error:
-          error?.message === 'cloud_not_configured'
+          message === 'cloud_not_configured'
             ? pick({
                 en: 'Connect Supabase to activate operations.',
                 ar: 'اربط Supabase لتفعيل منصة العمليات.',
               })
-            : `${pick({ en: 'Operations data could not be loaded.', ar: 'تعذر تحميل بيانات العمليات.' })} ${error?.message || ''}`,
+            : `${pick({ en: 'Operations data could not be loaded.', ar: 'تعذر تحميل بيانات العمليات.' })} ${message}`,
       }));
     }
   }, [pick]);
 
   useEffect(() => {
-    if (staff) load();
+    if (staff) void load();
   }, [staff, load]);
   useEffect(() => {
-    if (getStaffRole(auth.user) !== 'super_admin' || !auth.session?.access_token) return undefined;
+    const accessToken = String(auth.session?.access_token || '');
+    if (getStaffRole(auth.user) !== 'super_admin' || !accessToken) return undefined;
     let active = true;
     setAdminUsers((current) => ({ ...current, loading: true, error: '' }));
-    loadAdminUsers(auth.session.access_token)
+    loadAdminUsers(accessToken)
       .then((result) => {
-        if (active) setAdminUsers({ loading: false, rows: result.users || [], error: '' });
+        const payload = result as { users?: Array<Record<string, unknown>> } | unknown[];
+        const rows = Array.isArray(payload)
+          ? (payload as Array<Record<string, unknown>>)
+          : asRows((payload as { users?: unknown }).users);
+        if (active) setAdminUsers({ loading: false, rows, error: '' });
       })
       .catch((error) => {
         if (active)
-          setAdminUsers({ loading: false, rows: [], error: error?.message || 'users_unavailable' });
+          setAdminUsers({
+            loading: false,
+            rows: [],
+            error: error instanceof Error ? error.message : 'users_unavailable',
+          });
       });
     return () => {
       active = false;
@@ -133,20 +234,24 @@ export default function OperationsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id, auth.session?.access_token]);
   const activeOrders = useMemo(
-    () => state.orders.filter((order) => !['delivered', 'cancelled'].includes(order.order_status)),
+    () =>
+      state.orders.filter(
+        (order) => !['delivered', 'cancelled'].includes(String(order.order_status || '')),
+      ),
     [state.orders],
   );
   const pendingShipping = useMemo(
     () =>
       state.orders.filter(
-        (order) => order.shipping_quote_required || order.order_status === 'pending_shipping_quote',
+        (order) =>
+          Boolean(order.shipping_quote_required) || order.order_status === 'pending_shipping_quote',
       ),
     [state.orders],
   );
   const catalogProducts = useMemo(() => {
-    const grouped = new Map();
+    const grouped = new Map<string, OpsRow>();
     for (const row of state.catalog)
-      if (!grouped.has(row.product_id)) grouped.set(row.product_id, row);
+      if (!grouped.has(String(row.product_id))) grouped.set(String(row.product_id), row);
     return [...grouped.values()].sort((a, b) =>
       String(a.product_name).localeCompare(String(b.product_name)),
     );
@@ -166,7 +271,7 @@ export default function OperationsPage() {
       .slice(0, 200);
   }, [state.catalog, catalogQuery]);
 
-  const run = async (key, action, success) => {
+  const run = async (key: string, action: () => Promise<unknown>, success: string) => {
     setSaving(key);
     setNotice('');
     try {
@@ -175,7 +280,11 @@ export default function OperationsPage() {
       setNotice(success);
       await Promise.all([load(), catalog.refresh({ quiet: true })]);
     } catch (error) {
-      setNotice(`${pick({ en: 'Could not save:', ar: 'تعذر الحفظ:' })} ${error?.message || error}`);
+      setNotice(
+        `${pick({ en: 'Could not save:', ar: 'تعذر الحفظ:' })} ${
+          error instanceof Error ? error.message : String(error || '')
+        }`,
+      );
     } finally {
       setSaving('');
     }
@@ -191,7 +300,7 @@ export default function OperationsPage() {
       {/* A module header, not a marketing hero. Dense, chalk-toned, and
           carrying the operator's role so it is never ambiguous. */}
       <header className="gw-modulehead">
-        <p className="gw-spec">{`STAFF · ${getStaffRole(auth.user).toUpperCase()}`}</p>
+        <p className="gw-spec">{`STAFF · ${String(getStaffRole(auth.user) || '').toUpperCase()}`}</p>
         <h1 className="gw-modulehead-title">
           {pick({ en: 'Commerce Operations', ar: 'عمليات المتجر' })}
         </h1>
@@ -279,8 +388,8 @@ export default function OperationsPage() {
                   rows={state.shippingRates}
                   lang={lang}
                   pick={pick}
-                  saving={saving}
-                  run={run}
+                  saving={Boolean(saving)}
+                  run={run as never}
                 />
               </section>
               <section className="operations-section">
@@ -288,8 +397,8 @@ export default function OperationsPage() {
                 <HeroContentManager
                   row={state.siteContent.find((item) => item.content_key === 'home_hero')}
                   pick={pick}
-                  saving={saving}
-                  run={run}
+                  saving={Boolean(saving)}
+                  run={run as never}
                 />
               </section>
               {getStaffRole(auth.user) === 'super_admin' && (
@@ -303,12 +412,12 @@ export default function OperationsPage() {
                   </p>
                   <StaffAccessManager
                     state={adminUsers}
-                    accessToken={auth.session?.access_token}
+                    accessToken={String(auth.session?.access_token || '')}
                     currentUserId={auth.user.id}
                     pick={pick}
-                    saving={saving}
-                    run={run}
-                    onUpdated={(user) =>
+                    saving={Boolean(saving)}
+                    run={run as never}
+                    onUpdated={(user: OpsRow) =>
                       setAdminUsers((current) => ({
                         ...current,
                         rows: current.rows.map((row) => (row.id === user.id ? user : row)),
@@ -325,7 +434,12 @@ export default function OperationsPage() {
                     ar: 'إدارة البراندات والتصنيفات والمستودعات والموردين وشركات الشحن من سجلات قاعدة بيانات محمية.',
                   })}
                 </p>
-                <MasterDataManager data={state} pick={pick} saving={saving} run={run} />
+                <MasterDataManager
+                  data={state}
+                  pick={pick}
+                  saving={Boolean(saving)}
+                  run={run as never}
+                />
               </section>
               <section className="operations-section">
                 <h2>{pick({ en: 'Warehouse stock ledger', ar: 'سجل حركة مخزون المستودعات' })}</h2>
@@ -333,10 +447,15 @@ export default function OperationsPage() {
                   warehouses={state.warehouses}
                   catalog={state.catalog}
                   pick={pick}
-                  saving={saving}
-                  run={run}
+                  saving={Boolean(saving)}
+                  run={run as never}
                 />
-                <InventoryCsvManager state={state} pick={pick} saving={saving} run={run} />
+                <InventoryCsvManager
+                  state={state}
+                  pick={pick}
+                  saving={Boolean(saving)}
+                  run={run as never}
+                />
               </section>
               <section className="operations-section">
                 <h2>{pick({ en: 'Operations health', ar: 'صحة العمليات' })}</h2>
@@ -379,7 +498,9 @@ export default function OperationsPage() {
                     label={pick({ en: 'Security alerts', ar: 'تنبيهات الأمان' })}
                     value={
                       state.securityEvents.filter(
-                        (row) => !row.resolved_at && ['error', 'critical'].includes(row.severity),
+                        (row) =>
+                          !row.resolved_at &&
+                          ['error', 'critical'].includes(String(row.severity || '')),
                       ).length
                     }
                   />
@@ -387,7 +508,7 @@ export default function OperationsPage() {
                     label={pick({ en: 'Quarantined media', ar: 'وسائط في الحجر' })}
                     value={
                       state.mediaAssets.filter((row) =>
-                        ['quarantined', 'failed'].includes(row.scan_status),
+                        ['quarantined', 'failed'].includes(String(row.scan_status || '')),
                       ).length
                     }
                   />
@@ -398,8 +519,8 @@ export default function OperationsPage() {
                   </summary>
                   <ul>
                     {state.auditLog.slice(0, 20).map((row) => (
-                      <li key={row.id}>
-                        {row.action} · {row.entity_type} ·{' '}
+                      <li key={String(row.id)}>
+                        {String(row.action || '')} · {String(row.entity_type || '')} ·{' '}
                         {String(row.created_at || '').slice(0, 19)}
                       </li>
                     ))}
@@ -408,17 +529,22 @@ export default function OperationsPage() {
               </section>
               <section className="operations-section">
                 <h2>{pick({ en: 'Enterprise workflows', ar: 'عمليات المؤسسات' })}</h2>
-                <EnterpriseOperationsPanel state={state} pick={pick} saving={saving} run={run} />
+                <EnterpriseOperationsPanel
+                  state={state}
+                  pick={pick}
+                  saving={Boolean(saving)}
+                  run={run as never}
+                />
               </section>
               <BusinessIntelligencePanel pick={pick} />
               <section className="operations-section">
                 <h2>{pick({ en: 'Operations control center', ar: 'مركز التحكم التشغيلي' })}</h2>
                 <OperationsControlCenter
                   state={state}
-                  accessToken={auth.session?.access_token}
+                  accessToken={String(auth.session?.access_token || '')}
                   pick={pick}
-                  saving={saving}
-                  run={run}
+                  saving={Boolean(saving)}
+                  run={run as never}
                 />
               </section>
               <section className="operations-section">
@@ -442,16 +568,16 @@ export default function OperationsPage() {
                     <tbody>
                       {pendingShipping.map((order) => (
                         <ShippingQuoteRow
-                          key={order.id}
+                          key={String(order.id)}
                           order={order}
                           pick={pick}
-                          saving={saving}
-                          run={run}
+                          saving={Boolean(saving)}
+                          run={run as never}
                         />
                       ))}
                       {!pendingShipping.length && (
                         <tr>
-                          <td colSpan="5">
+                          <td colSpan={5}>
                             {pick({
                               en: 'No pending international shipping quotes.',
                               ar: 'لا توجد طلبات شحن دولي معلقة.',
@@ -468,11 +594,11 @@ export default function OperationsPage() {
                 <div className="operations-card-grid">
                   {state.specialRequests.map((request) => (
                     <SpecialRequestOperationsCard
-                      key={request.id}
+                      key={String(request.id)}
                       request={request}
                       pick={pick}
-                      saving={saving}
-                      run={run}
+                      saving={Boolean(saving)}
+                      run={run as never}
                     />
                   ))}
                   {!state.specialRequests.length && (
@@ -487,11 +613,11 @@ export default function OperationsPage() {
                 <div className="operations-card-grid">
                   {activeOrders.map((order) => (
                     <OrderOperationsCard
-                      key={order.id}
+                      key={String(order.id)}
                       order={order}
                       pick={pick}
-                      saving={saving}
-                      run={run}
+                      saving={Boolean(saving)}
+                      run={run as never}
                     />
                   ))}
                 </div>
@@ -501,12 +627,12 @@ export default function OperationsPage() {
                 <div className="operations-card-grid">
                   {state.returns.map((request) => (
                     <ReturnOperationsCard
-                      key={request.id}
+                      key={String(request.id)}
                       request={request}
                       orders={state.orders}
                       pick={pick}
-                      saving={saving}
-                      run={run}
+                      saving={Boolean(saving)}
+                      run={run as never}
                     />
                   ))}
                   {!state.returns.length && (
@@ -520,7 +646,13 @@ export default function OperationsPage() {
                 <h2>{pick({ en: 'Custom & wholesale quotes', ar: 'عروض التصميم والجملة' })}</h2>
                 <div className="operations-card-grid">
                   {state.quotes.map((quote) => (
-                    <QuoteCard key={quote.id} quote={quote} pick={pick} saving={saving} run={run} />
+                    <QuoteCard
+                      key={String(quote.id)}
+                      quote={quote}
+                      pick={pick}
+                      saving={Boolean(saving)}
+                      run={run as never}
+                    />
                   ))}
                 </div>
               </section>
@@ -529,12 +661,12 @@ export default function OperationsPage() {
                 <div className="operations-card-grid">
                   {state.designs.map((design) => (
                     <DesignProofCard
-                      key={design.id}
+                      key={String(design.id)}
                       design={design}
                       pick={pick}
-                      saving={saving}
-                      run={run}
-                      accessToken={auth.session?.access_token}
+                      saving={Boolean(saving)}
+                      run={run as never}
+                      accessToken={String(auth.session?.access_token || '')}
                     />
                   ))}
                   {!state.designs.length && (
@@ -551,11 +683,11 @@ export default function OperationsPage() {
                 <div className="operations-product-grid">
                   {catalogProducts.map((row) => (
                     <ProductContentCard
-                      key={row.product_id}
+                      key={String(row.product_id)}
                       row={row}
                       pick={pick}
-                      saving={saving}
-                      run={run}
+                      saving={Boolean(saving)}
+                      run={run as never}
                     />
                   ))}
                 </div>
@@ -589,11 +721,11 @@ export default function OperationsPage() {
                     <tbody>
                       {filteredCatalog.map((row) => (
                         <CatalogRow
-                          key={row.variant_id}
+                          key={String(row.variant_id)}
                           row={row}
                           pick={pick}
-                          saving={saving}
-                          run={run}
+                          saving={Boolean(saving)}
+                          run={run as never}
                         />
                       ))}
                     </tbody>

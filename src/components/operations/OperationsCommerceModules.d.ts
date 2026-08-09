@@ -1,0 +1,12 @@
+import type { ReactElement } from 'react';
+type AnyProps = Record<string, unknown>;
+export function StaffAccessManager(props: AnyProps): ReactElement;
+export function Stat(props: AnyProps): ReactElement;
+export function SpecialRequestOperationsCard(props: AnyProps): ReactElement;
+export function ShippingQuoteRow(props: AnyProps): ReactElement;
+export function OrderOperationsCard(props: AnyProps): ReactElement;
+export function QuoteCard(props: AnyProps): ReactElement;
+export function ReturnOperationsCard(props: AnyProps): ReactElement;
+export function DesignProofCard(props: AnyProps): ReactElement;
+export function ProductContentCard(props: AnyProps): ReactElement;
+export function CatalogRow(props: AnyProps): ReactElement;
