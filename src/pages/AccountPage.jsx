@@ -19,15 +19,9 @@ import OrderCard from '../components/account/OrderCard';
 import OrganizationWorkspace from '../components/account/OrganizationWorkspace';
 import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
-import MfaSecurityPanel from '../components/account/MfaSecurityPanel';
 import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
 import SecuritySection from './account/SecuritySection';
-import {
-  downloadPrivacyExport,
-  listPrivacyExports,
-  requestPrivacyExport,
-} from '../services/privacy';
 import '../styles/transact.css';
 import '../styles/account-sync.css';
 import '../styles/workspace.css';
