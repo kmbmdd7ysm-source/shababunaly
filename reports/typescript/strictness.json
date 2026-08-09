@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T19:20:39.346Z",
+  "generatedAt": "2026-08-09T19:21:45.944Z",
   "sourceFiles": 259,
-  "strictFiles": 184,
-  "strictCoveragePercent": 71.04,
+  "strictFiles": 185,
+  "strictCoveragePercent": 71.43,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -74,7 +74,6 @@
     "api/notification-worker.js",
     "api/order-notification.js",
     "api/payment-proof.js",
-    "api/payment-webhook.js",
     "api/payments/adapters/base.js",
     "api/privacy-worker.js",
     "api/signature-webhook.js",
