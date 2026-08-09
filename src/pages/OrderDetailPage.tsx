@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -13,35 +14,62 @@ import TurnstileWidget from '../components/security/TurnstileWidget';
 const payableStatuses = new Set(['pending', 'partially_paid', 'failed']);
 const payableOrderStatuses = new Set(['awaiting_payment', 'received', 'final_payment_required']);
 
-export default function OrderDetailPage() {
+type OrderDetailState = {
+  state: string;
+  order: Record<string, unknown> | null;
+  error: unknown;
+  accessToken?: string;
+};
+
+export default function OrderDetailPage(): ReactElement {
   const { orderNumber = '' } = useParams();
   const location = useLocation();
   const auth = useAuth();
   const { pick, lang } = useLanguage();
   const storageKey = `shababuna-order-access:${orderNumber}`;
+  const locationState = (location.state || {}) as { accessToken?: string };
   const [accessToken, setAccessToken] = useState(
-    location.state?.accessToken || sessionStorage.getItem(storageKey) || '',
+    locationState.accessToken || sessionStorage.getItem(storageKey) || '',
   );
   const [email, setEmail] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
-  const [state, setState] = useState({ state: 'loading', order: null, error: null });
+  const [state, setState] = useState<OrderDetailState>({
+    state: 'loading',
+    order: null,
+    error: null,
+  });
   const [paymentState, setPaymentState] = useState({ busy: false, message: '', error: false });
 
   const load = useCallback(
-    async ({ verifiedEmail = '', captcha = '', token = accessToken } = {}) => {
+    async ({
+      verifiedEmail = '',
+      captcha = '',
+      token = accessToken,
+    }: { verifiedEmail?: string; captcha?: string; token?: string } = {}) => {
       setState((current) => ({ ...current, state: 'loading' }));
-      const result = await getOrderDetails({
-        orderNumber,
-        userId: auth.user?.id,
-        email: verifiedEmail,
-        turnstileToken: captcha,
-        accessToken: token,
-      });
+      const detailQuery: {
+        orderNumber?: string;
+        userId?: string | null;
+        email?: string;
+        turnstileToken?: string;
+        accessToken?: string;
+      } = { orderNumber };
+      if (auth.user?.id) detailQuery.userId = String(auth.user.id);
+      if (verifiedEmail) detailQuery.email = verifiedEmail;
+      if (captcha) detailQuery.turnstileToken = captcha;
+      if (token) detailQuery.accessToken = token;
+      const result = (await getOrderDetails(detailQuery)) as OrderDetailState & {
+        accessToken?: string;
+      };
       if (result.accessToken) {
-        setAccessToken(result.accessToken);
-        sessionStorage.setItem(storageKey, result.accessToken);
+        setAccessToken(String(result.accessToken));
+        sessionStorage.setItem(storageKey, String(result.accessToken));
       }
-      setState(result);
+      setState({
+        state: String(result.state || 'error'),
+        order: (result.order as Record<string, unknown> | null) || null,
+        error: result.error ?? null,
+      });
     },
     [accessToken, auth.user?.id, orderNumber, storageKey],
   );
@@ -52,32 +80,39 @@ export default function OrderDetailPage() {
   }, [auth.loading, auth.user?.id, orderNumber]);
 
   const order = state.order;
-  const payment = order ? presentOrderStatus('payment', order.paymentStatus, lang) : null;
-  const status = order ? presentOrderStatus('order', order.orderStatus, lang) : null;
+  const payment = order
+    ? presentOrderStatus('payment', order.paymentStatus, lang as 'en' | 'ar')
+    : null;
+  const status = order ? presentOrderStatus('order', order.orderStatus, lang as 'en' | 'ar') : null;
   const fulfillment = order
-    ? presentOrderStatus('fulfillment', order.fulfillmentStatus, lang)
+    ? presentOrderStatus('fulfillment', order.fulfillmentStatus, lang as 'en' | 'ar')
     : null;
   const canRetryPayment = Boolean(
     order &&
     order.paymentMethod !== 'cash_on_delivery' &&
-    payableStatuses.has(order.paymentStatus) &&
-    payableOrderStatuses.has(order.orderStatus) &&
+    payableStatuses.has(String(order.paymentStatus || '')) &&
+    payableOrderStatuses.has(String(order.orderStatus || '')) &&
     !order.shippingQuoteRequired &&
     Number(order.amountDueNow || order.outstandingBalance || 0) > 0,
   );
 
   const payNow = async () => {
+    if (!order) return;
     setPaymentState({ busy: true, message: '', error: false });
     try {
-      const result = await retryOrderPayment({ orderNumber: order.orderNumber, accessToken });
+      const result = await retryOrderPayment({
+        orderNumber: String(order.orderNumber || ''),
+        accessToken,
+      });
       setPaymentState({
         busy: false,
         message: pick({ en: 'Secure checkout is opening…', ar: 'جاري فتح صفحة الدفع الآمنة…' }),
         error: false,
       });
-      globalThis.location.assign(result.url);
+      globalThis.location.assign(String(result.url || ''));
     } catch (error) {
-      const providerMissing = error?.message === 'payment_provider_not_connected';
+      const providerMissing =
+        error instanceof Error && error.message === 'payment_provider_not_connected';
       setPaymentState({
         busy: false,
         error: true,
@@ -170,26 +205,26 @@ export default function OrderDetailPage() {
               <div className="order-detail-head">
                 <div>
                   <p className="section-label">{pick({ en: 'Order number', ar: 'رقم الطلب' })}</p>
-                  <h2>{order.orderNumber}</h2>
-                  <time dateTime={order.createdAt}>
+                  <h2>{String(order.orderNumber || '')}</h2>
+                  <time dateTime={String(order.createdAt || '')}>
                     {new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', {
                       dateStyle: 'long',
-                    }).format(new Date(order.createdAt))}
+                    }).format(new Date(String(order.createdAt || Date.now())))}
                   </time>
                 </div>
               </div>
               <dl className="order-detail-status">
                 <div>
                   <dt>{pick({ en: 'Order status', ar: 'حالة الطلب' })}</dt>
-                  <dd>{status.label}</dd>
+                  <dd>{String(status?.label || '')}</dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Payment status', ar: 'حالة الدفع' })}</dt>
-                  <dd>{payment.label}</dd>
+                  <dd>{String(payment?.label || '')}</dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Fulfillment status', ar: 'حالة التنفيذ' })}</dt>
-                  <dd>{fulfillment.label}</dd>
+                  <dd>{String(fulfillment?.label || '')}</dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Payment method', ar: 'طريقة الدفع' })}</dt>
@@ -202,19 +237,20 @@ export default function OrderDetailPage() {
                 <div>
                   <dt>{pick({ en: 'Paid', ar: 'المدفوع' })}</dt>
                   <dd>
-                    {order.amountPaid.toFixed(2)} {order.currency}
+                    {(Number(order.amountPaid) || 0).toFixed(2)} {String(order.currency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Outstanding balance', ar: 'الرصيد غير المدفوع' })}</dt>
                   <dd>
-                    {order.outstandingBalance.toFixed(2)} {order.currency}
+                    {(Number(order.outstandingBalance) || 0).toFixed(2)}{' '}
+                    {String(order.currency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Due now', ar: 'المستحق الآن' })}</dt>
                   <dd>
-                    {order.amountDueNow.toFixed(2)} {order.currency}
+                    {(Number(order.amountDueNow) || 0).toFixed(2)} {String(order.currency || '')}
                   </dd>
                 </div>
               </dl>
@@ -233,7 +269,9 @@ export default function OrderDetailPage() {
                     type="button"
                     className="btn-primary"
                     disabled={paymentState.busy}
-                    onClick={payNow}
+                    onClick={() => {
+                      void payNow();
+                    }}
                   >
                     {paymentState.busy
                       ? pick({ en: 'Opening…', ar: 'جارٍ الفتح…' })
@@ -251,46 +289,55 @@ export default function OrderDetailPage() {
               )}
               <h2>{pick({ en: 'Items', ar: 'العناصر' })}</h2>
               <ul className="order-detail-items">
-                {order.items.map((item, index) => (
-                  <li key={`${item.id || item.sku}-${index}`}>
-                    <div>
-                      <strong>{item.name}</strong>
-                      {item.variant && (
-                        <small>
-                          {typeof item.variant === 'string'
-                            ? item.variant
-                            : JSON.stringify(item.variant)}
-                        </small>
-                      )}
-                    </div>
-                    <span>
-                      {item.quantity} × {(item.displayUnitPrice ?? item.unitPrice).toFixed(2)}{' '}
-                      {order.displayCurrency}
-                    </span>
-                    <strong>
-                      {(item.displayLineTotal ?? item.lineTotal).toFixed(2)} {order.displayCurrency}
-                    </strong>
-                  </li>
-                ))}
+                {(Array.isArray(order.items)
+                  ? (order.items as Array<Record<string, unknown>>)
+                  : []
+                ).map((item, index) => {
+                  const unit = Number(item.displayUnitPrice ?? item.unitPrice) || 0;
+                  const line = Number(item.displayLineTotal ?? item.lineTotal) || 0;
+                  return (
+                    <li key={`${String(item.id || item.sku || index)}-${index}`}>
+                      <div>
+                        <strong>{String(item.name || '')}</strong>
+                        {item.variant ? (
+                          <small>
+                            {typeof item.variant === 'string'
+                              ? item.variant
+                              : JSON.stringify(item.variant)}
+                          </small>
+                        ) : null}
+                      </div>
+                      <span>
+                        {Number(item.quantity) || 0} × {unit.toFixed(2)}{' '}
+                        {String(order.displayCurrency || '')}
+                      </span>
+                      <strong>
+                        {line.toFixed(2)} {String(order.displayCurrency || '')}
+                      </strong>
+                    </li>
+                  );
+                })}
               </ul>
               <dl className="order-totals">
                 <div>
                   <dt>{pick({ en: 'Subtotal', ar: 'المجموع الفرعي' })}</dt>
                   <dd>
-                    {(order.displaySubtotal ?? order.subtotal).toFixed(2)} {order.displayCurrency}
+                    {(Number(order.displaySubtotal ?? order.subtotal) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Shipping', ar: 'الشحن' })}</dt>
                   <dd>
-                    {(order.displayShippingTotal ?? order.shippingTotal).toFixed(2)}{' '}
-                    {order.displayCurrency}
+                    {(Number(order.displayShippingTotal ?? order.shippingTotal) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Total', ar: 'الإجمالي' })}</dt>
                   <dd>
-                    {(order.displayTotal ?? order.total).toFixed(2)} {order.displayCurrency}
+                    {(Number(order.displayTotal ?? order.total) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || '')}
                   </dd>
                 </div>
               </dl>

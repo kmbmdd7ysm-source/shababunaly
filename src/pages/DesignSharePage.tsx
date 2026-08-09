@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
@@ -13,13 +14,22 @@ import {
   respondToSharedDesign,
 } from '../services/designStudio';
 
-export default function DesignSharePage() {
+type ShareComment = {
+  name: string;
+  email: string;
+  text: string;
+  view: string;
+  x: number;
+  y: number;
+};
+
+export default function DesignSharePage(): ReactElement {
   const { token = '' } = useParams();
   const { pick, lang } = useLanguage();
-  const [record, setRecord] = useState(null);
+  const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [state, setState] = useState('loading');
   const [message, setMessage] = useState('');
-  const [comment, setComment] = useState({
+  const [comment, setComment] = useState<ShareComment>({
     name: '',
     email: '',
     text: '',
@@ -41,17 +51,23 @@ export default function DesignSharePage() {
     }
   };
   useEffect(() => {
-    refresh();
+    void refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [token]);
 
-  const submitComment = async (event) => {
+  const submitComment = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setMessage('');
     setBusy(true);
     try {
       const created = await addSharedDesignComment(token, { ...comment, turnstileToken });
-      setRecord((current) => ({ ...current, comments: [...(current.comments || []), created] }));
+      setRecord((current) => ({
+        ...(current || {}),
+        comments: [
+          ...((Array.isArray(current?.comments) ? current.comments : []) as unknown[]),
+          created,
+        ],
+      }));
       setComment((current) => ({ ...current, text: '' }));
       setTurnstileToken('');
       setMessage(pick({ en: 'Comment added securely.', ar: 'تمت إضافة التعليق بأمان.' }));
@@ -67,12 +83,17 @@ export default function DesignSharePage() {
     }
   };
 
-  const decide = async (decision) => {
+  const decide = async (decision: string) => {
     setMessage('');
     setBusy(true);
     try {
       const result = await respondToSharedDesign(token, decision, decisionNote, turnstileToken);
-      setRecord((current) => ({ ...current, status: result.status, approvalNote: decisionNote }));
+      const decisionResult = result as Record<string, unknown>;
+      setRecord((current) => ({
+        ...(current || {}),
+        status: decisionResult.status,
+        approvalNote: decisionNote,
+      }));
       setTurnstileToken('');
       setMessage(
         decision === 'approve'
@@ -113,23 +134,25 @@ export default function DesignSharePage() {
       </section>
     );
 
-  const canComment = ['comment', 'approve'].includes(record.permissions);
-  const canApprove = record.permissions === 'approve';
+  if (!record) return <LoadingScreen />;
+  const permissions = String(record.permissions || '');
+  const canComment = ['comment', 'approve'].includes(permissions);
+  const canApprove = permissions === 'approve';
   return (
     <section className="gw-review">
       <Seo
-        title={`${record.name || 'Design Review'} | SHABABUNA`}
+        title={`${String(record.name || 'Design Review')} | SHABABUNA`}
         description="Secure SHABABUNA production design review."
         noindex
       />
       <header className="gw-review-head">
         <div>
           <p className="section-label">SECURE DESIGN REVIEW</p>
-          <h1>{record.name}</h1>
+          <h1>{String(record.name || '')}</h1>
           <p>
             {pick({
-              en: `Version ${record.version} · Status: ${record.status}`,
-              ar: `النسخة ${record.version} · الحالة: ${record.status}`,
+              en: `Version ${String(record.version || '')} · Status: ${String(record.status || '')}`,
+              ar: `النسخة ${String(record.version || '')} · الحالة: ${String(record.status || '')}`,
             })}
           </p>
         </div>
@@ -143,26 +166,38 @@ export default function DesignSharePage() {
           value={record.studio}
           onChange={() => {}}
           readOnly
-          onCanvasPoint={(point) => setComment((current) => ({ ...current, ...point }))}
+          onCanvasPoint={(point: { view?: string; x?: number; y?: number }) =>
+            setComment((current) => ({
+              ...current,
+              ...(point.view ? { view: point.view } : {}),
+              ...(typeof point.x === 'number' ? { x: point.x } : {}),
+              ...(typeof point.y === 'number' ? { y: point.y } : {}),
+            }))
+          }
         />
       </div>
-      {(record.comments || []).length > 0 && (
+      {(Array.isArray(record.comments) ? record.comments : []).length > 0 && (
         <section className="design-share-comments">
           <h2>{pick({ en: 'Review comments', ar: 'تعليقات المراجعة' })}</h2>
-          {record.comments.map((item) => (
-            <article key={item.id}>
-              <strong>{item.author || 'Reviewer'}</strong>
+          {(record.comments as Array<Record<string, unknown>>).map((item) => (
+            <article key={String(item.id)}>
+              <strong>{String(item.author || 'Reviewer')}</strong>
               <span>
                 {String(item.view || 'front').toUpperCase()} ·{' '}
-                {new Date(item.createdAt).toLocaleString()}
+                {new Date(String(item.createdAt || Date.now())).toLocaleString()}
               </span>
-              <p>{item.text}</p>
+              <p>{String(item.text || '')}</p>
             </article>
           ))}
         </section>
       )}
       {canComment && (
-        <form className="design-share-form" onSubmit={submitComment}>
+        <form
+          className="design-share-form"
+          onSubmit={(event) => {
+            void submitComment(event);
+          }}
+        >
           <h2>{pick({ en: 'Add a pinned review comment', ar: 'أضف تعليق مراجعة مثبتًا' })}</h2>
           <p>
             {pick({
@@ -225,7 +260,7 @@ export default function DesignSharePage() {
             <span>{pick({ en: 'Comment', ar: 'التعليق' })}</span>
             <textarea
               required
-              minLength="2"
+              minLength={2}
               maxLength={1000}
               rows={4}
               value={comment.text}
@@ -260,14 +295,18 @@ export default function DesignSharePage() {
             <button
               className="btn-primary"
               disabled={busy || !turnstileToken || record.status === 'approved'}
-              onClick={() => decide('approve')}
+              onClick={() => {
+                void decide('approve');
+              }}
             >
               {pick({ en: 'Approve Final Proof', ar: 'اعتماد البروفة النهائية' })}
             </button>
             <button
               className="btn-secondary"
               disabled={busy || !turnstileToken || decisionNote.trim().length < 2}
-              onClick={() => decide('request_changes')}
+              onClick={() => {
+                void decide('request_changes');
+              }}
             >
               {pick({ en: 'Request Changes', ar: 'طلب تعديلات' })}
             </button>

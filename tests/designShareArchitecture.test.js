@@ -5,7 +5,7 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 describe('secure design sharing', () => {
   it('exposes a real expiring share route and page', async () => {
     const app = await read('src/App.jsx');
-    const page = await read('src/pages/DesignSharePage.jsx');
+    const page = await read('src/pages/DesignSharePage.tsx');
     expect(app).toContain('/design-share/:token');
     expect(page).toContain('loadSharedDesign');
     expect(page).toContain('respondToSharedDesign');
