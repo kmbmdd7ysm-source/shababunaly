@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `4b4e2f78211cedc841bb9a1d17cdfbf88eedbcb5`
+- Full SHA: `c84cbd8cd1378f785999af488c0da8aedff38754` (update to tip after this commit)
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -22,10 +22,10 @@
 
 ## Exact next (Phase 3)
 
-1. **Port `src/services/designStudio.js` → `.ts`**
+1. **Port `src/services/designStudio.js` → `.ts`** with StudioState
 2. Port `productionPreflight.js` → `.ts`
-3. Port `api/_request-security.js` and `_notification-templates.js`
-4. Full context migrations
+3. Port `api/_request-security.js` + `_notification-templates.js`
+4. Full context migrations (Language/Commerce/Cart/Auth)
 5. Remain in Phase 3 until project-wide or exclusions documented
 
 ## Next command
@@ -37,4 +37,4 @@ npm run typecheck && npm run test:node && npm run lint
 ```
 
 ## Do not restart from Phase 0
-Resume Phase 3 only.
+Resume Phase 3 TypeScript migration only.
