@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-09T21:00:08.093189+00:00",
-  "commitSha": "aec82115040d493ab51f77a820204644534e04a5",
+  "generatedAt": "2026-08-09T21:01:04.996506+00:00",
+  "commitSha": "b91b2d35b448c791bfd704f105468585318228f2",
   "sourceFiles": 266,
   "strictFiles": 211,
   "strictCoveragePercent": 79.32,
@@ -19,15 +19,5 @@
     }
   },
   "remainingApiJs": 0,
-  "remainingSrcJsx": 55,
-  "productMaster": {
-    "products": 69,
-    "variants": 982
-  },
-  "viewerTiers": {
-    "A": 0,
-    "B": 0,
-    "C": 23,
-    "D": 46
-  }
+  "remainingSrcJsx": 55
 }
