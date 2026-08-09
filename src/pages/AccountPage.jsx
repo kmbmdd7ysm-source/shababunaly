@@ -19,10 +19,14 @@ import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
-import SecuritySection from './account/SecuritySection';
-import OrdersSection from './account/OrdersSection';
-import ProfileSection from './account/ProfileSection';
-import PreferencesSection from './account/PreferencesSection';
+import {
+  LazyAccountSection,
+  SecuritySection,
+  OrdersSection,
+  ProfileSection,
+  PreferencesSection,
+  SavedSection,
+} from './account/AccountShell';
 import { ORGANIZATION_TYPES } from './account/accountConstants';
 import '../styles/transact.css';
 import '../styles/account-sync.css';
@@ -903,13 +907,16 @@ export default function AccountPage() {
                 <AccountOverview cartCount={cart.count} wishlistCount={data.wishlist.length} compareCount={compare.count} ordersCount={ordersState.orders.length} />
               )}
               {section === 'orders' && (
-                <OrdersSection pick={pick} ordersState={ordersState} loadOrders={loadOrders} />
+                <LazyAccountSection>
+                  <OrdersSection pick={pick} ordersState={ordersState} loadOrders={loadOrders} />
+                </LazyAccountSection>
               )}
               {section === 'workspace' && <OrganizationWorkspace />}
               {section === 'returns' && <ReturnsSection orders={ordersState.orders} />}
               {section === 'special-requests' && <SpecialRequestsSection />}
               {section === 'profile' && (
-                <ProfileSection
+                <LazyAccountSection>
+                  <ProfileSection
                   pick={pick}
                   lang={lang}
                   auth={auth}
@@ -924,23 +931,24 @@ export default function AccountPage() {
                   clearPhotoPreview={clearPhotoPreview}
                   data={data}
                 />
+                </LazyAccountSection>
               )}
               {section === 'saved' && (
-                <div>
-                  <h2>{pick({ en: 'Saved activity', ar: 'النشاط المحفوظ' })}</h2>
-                  <p>
-                    {pick({
-                      en: `${data.wishlist.length} wishlist items, ${data.recentlyViewed.length} recently viewed, ${compare.count} compared.`,
-                      ar: `${data.wishlist.length} في المفضلة، ${data.recentlyViewed.length} شوهدت مؤخرًا، ${compare.count} في المقارنة.`,
-                    })}
-                  </p>
-                </div>
+                <LazyAccountSection>
+                  <SavedSection
+                  pick={pick}
+                  wishlistCount={data.wishlist.length}
+                  recentlyViewedCount={data.recentlyViewed.length}
+                  compareCount={compare.count}
+                />
+                </LazyAccountSection>
               )}
               {section === 'addresses' && (
                 <AddressesSection userId={auth.user.id} pick={pick} language={lang} />
               )}{' '}
               {section === 'preferences' && (
-                <PreferencesSection
+                <LazyAccountSection>
+                  <PreferencesSection
                   pick={pick}
                   profile={profile}
                   setProfile={setProfile}
@@ -948,8 +956,13 @@ export default function AccountPage() {
                   commerce={commerce}
                   data={data}
                 />
+                </LazyAccountSection>
               )}
-              {section === 'security' && <SecuritySection auth={auth} pick={pick} lang={lang} />}
+              {section === 'security' && (
+                <LazyAccountSection>
+                  <SecuritySection auth={auth} pick={pick} lang={lang} />
+                </LazyAccountSection>
+              )}
               {msg && (
                 <p role="status" aria-live="polite">
                   {msg}
