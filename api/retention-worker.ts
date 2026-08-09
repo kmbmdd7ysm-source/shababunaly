@@ -1,19 +1,35 @@
 import { supabaseAdminRequest } from './_supabase-admin.ts';
 import { applyApiHeaders } from './_request-security.ts';
 
-const clean = (value, max = 1000) =>
+type ApiReq = {
+  method?: string;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')
     .replace(/\0/g, '')
     .trim()
     .slice(0, max);
-const json = (res, status, body) => res.status(status).json(body);
-const authorized = (req) =>
-  Boolean(process.env.CRON_SECRET) &&
-  clean(req.headers.authorization, 800) === `Bearer ${clean(process.env.CRON_SECRET, 500)}`;
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
-  if (!['GET', 'POST'].includes(req.method)) {
+const json = (res: ApiRes, status: number, body: unknown) => res.status(status).json(body);
+
+const authorized = (req: ApiReq) => {
+  const header = req.headers?.authorization ?? req.headers?.Authorization;
+  const token = Array.isArray(header) ? header[0] : header;
+  return (
+    Boolean(process.env.CRON_SECRET) &&
+    clean(token, 800) === `Bearer ${clean(process.env.CRON_SECRET, 500)}`
+  );
+};
+
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
+  if (!['GET', 'POST'].includes(String(req.method || ''))) {
     res.setHeader('Allow', 'GET, POST');
     return json(res, 405, { ok: false, error: 'method_not_allowed' });
   }
@@ -63,7 +79,11 @@ export default async function handler(req, res) {
       completed: results.filter((item) => item.status === 'fulfilled').length,
       failed: results.filter((item) => item.status === 'rejected').length,
     });
-  } catch (error) {
-    return json(res, 503, { ok: false, error: clean(error?.message || error, 200) });
+  } catch (error: unknown) {
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, 503, { ok: false, error: clean(message || error, 200) });
   }
 }

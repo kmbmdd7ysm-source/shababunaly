@@ -37,7 +37,7 @@ describe('enterprise production completion', () => {
   });
   it('provides privacy export and retention workers', async () => {
     const privacy = await read('api/privacy-worker.js');
-    const retention = await read('api/retention-worker.js');
+    const retention = await read('api/retention-worker.ts');
     const vercel = await read('vercel.json');
     expect(privacy).toContain('privacy_export_requests');
     expect(privacy).toContain('PRIVACY_EXPORT_BUCKET');
