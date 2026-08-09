@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
@@ -67,15 +68,31 @@ const productGroups = [
   { value: 'full-supply', en: 'Full organization supply', ar: 'تجهيز مؤسسة كامل' },
 ];
 
-export default function TeamsWholesalePage() {
+type TeamsForm = {
+  name: string;
+  email: string;
+  phone: string;
+  organization: string;
+  type: string;
+  country: string;
+  packageKey: string;
+  productGroup: string;
+  quantity: string;
+  deadline: string;
+  needs: string;
+};
+
+export default function TeamsWholesalePage(): ReactElement {
   const { pick, lang } = useLanguage();
   const auth = useAuth();
-  const [form, setForm] = useState({
+  const meta = ((auth.user as { user_metadata?: Record<string, unknown> } | null)?.user_metadata ||
+    {}) as Record<string, unknown>;
+  const [form, setForm] = useState<TeamsForm>({
     name: '',
-    email: auth.user?.email || '',
+    email: String(auth.user?.email || ''),
     phone: '',
-    organization: auth.user?.user_metadata?.organization_name || '',
-    type: auth.user?.user_metadata?.organization_type || 'club',
+    organization: String(meta.organization_name || ''),
+    type: String(meta.organization_type || 'club'),
     country: 'LY',
     packageKey: 'season',
     productGroup: 'full-supply',
@@ -83,18 +100,23 @@ export default function TeamsWholesalePage() {
     deadline: '',
     needs: '',
   });
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
-  const [submission, setSubmission] = useState({
+  const [submission, setSubmission] = useState<{
+    quote: Record<string, unknown> | null;
+    payload: Record<string, unknown> | null;
+    emailPending: boolean;
+    fingerprint: string;
+  }>({
     quote: null,
     payload: null,
     emailPending: false,
     fingerprint: '',
   });
 
-  const submit = async (event) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBusy(true);
     setStatus('');
@@ -127,22 +149,26 @@ export default function TeamsWholesalePage() {
     try {
       if (!quote) {
         const organization =
-          auth.user?.user_metadata?.account_type === 'organization'
-            ? await ensureOrganization({
-                userId: auth.user.id,
+          meta.account_type === 'organization' && auth.user?.id
+            ? ((await ensureOrganization({
+                userId: String(auth.user.id),
                 name: form.organization,
                 type: form.type,
                 countryCode: form.country,
-              })
+              })) as Record<string, unknown> | null)
             : null;
-        const result = await submitPublicQuote({
+        const result = (await submitPublicQuote({
           payload,
-          organizationId: organization?.id || null,
+          organizationId: organization?.id ? String(organization.id) : null,
           turnstileToken,
           idempotencyKey: globalThis.crypto?.randomUUID?.(),
-        });
-        quote = result.quote;
-        savedPayload = { ...payload, quoteId: quote.id, quoteNumber: quote.quote_number };
+        })) as { quote?: Record<string, unknown> };
+        quote = (result.quote || {}) as Record<string, unknown>;
+        savedPayload = {
+          ...payload,
+          quoteId: quote.id,
+          quoteNumber: quote.quote_number,
+        };
         setSubmission({ quote, payload: savedPayload, emailPending: true, fingerprint });
       }
     } catch {
@@ -157,23 +183,23 @@ export default function TeamsWholesalePage() {
     }
     try {
       await sendFormspreeWithFiles(
-        savedPayload,
+        (savedPayload || {}) as Record<string, unknown>,
         files,
         `Shababuna teams & wholesale — ${form.organization || form.name}`,
       );
-      setSubmission({ quote, payload: savedPayload, emailPending: false });
+      setSubmission({ quote, payload: savedPayload, emailPending: false, fingerprint });
       setStatus(
         pick({
-          en: `Request ${quote.quote_number || ''} was saved and delivered for review.`,
-          ar: `تم حفظ الطلب ${quote.quote_number || ''} وإرساله للمراجعة.`,
+          en: `Request ${String(quote?.quote_number || '')} was saved and delivered for review.`,
+          ar: `تم حفظ الطلب ${String(quote?.quote_number || '')} وإرساله للمراجعة.`,
         }),
       );
     } catch {
       setSubmission({ quote, payload: savedPayload, emailPending: true, fingerprint });
       setStatus(
         pick({
-          en: `Request ${quote.quote_number || ''} is saved securely. Email delivery is queued for retry; do not submit another request.`,
-          ar: `تم حفظ الطلب ${quote.quote_number || ''} بأمان. تم وضع إشعار البريد في قائمة إعادة المحاولة؛ لا ترسل طلبًا جديدًا.`,
+          en: `Request ${String(quote?.quote_number || '')} is saved securely. Email delivery is queued for retry; do not submit another request.`,
+          ar: `تم حفظ الطلب ${String(quote?.quote_number || '')} بأمان. تم وضع إشعار البريد في قائمة إعادة المحاولة؛ لا ترسل طلبًا جديدًا.`,
         }),
       );
     } finally {
@@ -342,13 +368,19 @@ export default function TeamsWholesalePage() {
                       ar: 'ادفع 50% المتبقية عند وصول البضاعة.',
                     },
                   ],
-                ].map(([title, copy], index) => (
-                  <article key={title.en}>
-                    <span>0{index + 1}</span>
-                    <h3>{pick(title)}</h3>
-                    <p>{pick(copy)}</p>
-                  </article>
-                ))}
+                ].map((entry, index) => {
+                  const [title, copy] = entry as [
+                    { en: string; ar: string },
+                    { en: string; ar: string },
+                  ];
+                  return (
+                    <article key={title.en}>
+                      <span>0{index + 1}</span>
+                      <h3>{pick(title)}</h3>
+                      <p>{pick(copy)}</p>
+                    </article>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -421,7 +453,12 @@ export default function TeamsWholesalePage() {
                     <small>30–60 {pick({ en: 'days estimated', ar: 'يومًا تقديريًا' })}</small>
                   </div>
                 </div>
-                <form className="quote-form" onSubmit={submit}>
+                <form
+                  className="quote-form"
+                  onSubmit={(event) => {
+                    void submit(event);
+                  }}
+                >
                   <div className="field-row">
                     <label className="field">
                       <span>{pick({ en: 'Name', ar: 'الاسم' })}</span>
@@ -563,7 +600,11 @@ export default function TeamsWholesalePage() {
                       type="file"
                       multiple
                       accept="image/*,.pdf,.csv,.xlsx"
-                      onChange={(event) => setFiles([...event.target.files].slice(0, 5))}
+                      onChange={(event) =>
+                        setFiles(
+                          event.target.files ? Array.from(event.target.files).slice(0, 5) : [],
+                        )
+                      }
                     />
                     <small>
                       {files.map((file) => file.name).join(' · ') ||
@@ -586,31 +627,34 @@ export default function TeamsWholesalePage() {
                       type="button"
                       className="btn-secondary block"
                       disabled={busy}
-                      onClick={async () => {
-                        setBusy(true);
-                        try {
-                          await sendFormspreeWithFiles(
-                            submission.payload,
-                            files,
-                            `Shababuna teams & wholesale — ${form.organization || form.name}`,
-                          );
-                          setSubmission((current) => ({ ...current, emailPending: false }));
-                          setStatus(
-                            pick({
-                              en: `Email delivery confirmed for ${submission.quote.quote_number}.`,
-                              ar: `تم تأكيد إرسال البريد للطلب ${submission.quote.quote_number}.`,
-                            }),
-                          );
-                        } catch {
-                          setStatus(
-                            pick({
-                              en: `Request ${submission.quote.quote_number} remains saved. Email will be retried automatically.`,
-                              ar: `الطلب ${submission.quote.quote_number} ما زال محفوظًا. ستتم إعادة محاولة البريد تلقائيًا.`,
-                            }),
-                          );
-                        } finally {
-                          setBusy(false);
-                        }
+                      onClick={() => {
+                        void (async () => {
+                          setBusy(true);
+                          const quoteNumber = String(submission.quote?.quote_number || '');
+                          try {
+                            await sendFormspreeWithFiles(
+                              (submission.payload || {}) as Record<string, unknown>,
+                              files,
+                              `Shababuna teams & wholesale — ${form.organization || form.name}`,
+                            );
+                            setSubmission((current) => ({ ...current, emailPending: false }));
+                            setStatus(
+                              pick({
+                                en: `Email delivery confirmed for ${quoteNumber}.`,
+                                ar: `تم تأكيد إرسال البريد للطلب ${quoteNumber}.`,
+                              }),
+                            );
+                          } catch {
+                            setStatus(
+                              pick({
+                                en: `Request ${quoteNumber} remains saved. Email will be retried automatically.`,
+                                ar: `الطلب ${quoteNumber} ما زال محفوظًا. ستتم إعادة محاولة البريد تلقائيًا.`,
+                              }),
+                            );
+                          } finally {
+                            setBusy(false);
+                          }
+                        })();
                       }}
                     >
                       {pick({ en: 'Retry email notification', ar: 'إعادة محاولة إشعار البريد' })}

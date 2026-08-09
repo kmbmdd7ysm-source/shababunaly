@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:09:51.401Z",
+  "generatedAt": "2026-08-09T22:11:47.853Z",
   "sourceFiles": 269,
-  "strictFiles": 226,
-  "strictCoveragePercent": 84.01,
+  "strictFiles": 227,
+  "strictCoveragePercent": 84.39,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -40,7 +40,6 @@
     "src/main.jsx",
     "src/pages/CustomizePage.jsx",
     "src/pages/OperationsDashboardPage.jsx",
-    "src/pages/TeamsWholesalePage.jsx",
     "src/services/account/addressService.js",
     "src/services/b2b.js",
     "src/services/operations.js",

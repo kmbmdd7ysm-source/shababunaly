@@ -52,7 +52,7 @@ describe('production completion safeguards', () => {
     for (const path of [
       'src/pages/ContactPage.tsx',
       'src/components/common/Newsletter.tsx',
-      'src/pages/TeamsWholesalePage.jsx',
+      'src/pages/TeamsWholesalePage.tsx',
       'src/pages/CustomizePage.jsx',
       'src/pages/SpecialRequestPage.tsx',
     ]) {
