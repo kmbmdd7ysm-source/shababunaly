@@ -1,15 +1,16 @@
 # Continuation checkpoint
 
-- SHA: `f3514c3d38d9d09dfdd2088c1aeb8d5e1fc3638f`
+- SHA: `014722816edd3fd6a75a9d703c8cb7743efeda98`
 - TypeScript: **54.05%** (140/259)
-- CSS legacy: global 5657L / 238 !important; premium 53 !important; shababuna 0 !important
-- Footer rebuilt · Homepage rebalanced · CSS pass 1+2 done
+- CSS: global 5657L / !important 238 (was 7252 / 348)
+- premium !important 53 (was 67); shababuna !important 0
+- Footer rebuilt · Home rebalanced · Product cards borderless · CSS pass 1+2
 
-## Next unfinished
-1. AuthContext / UserDataContext / CatalogContext full TS
-2. Shop / Product card visual rebuild
-3. Customize 3D verification
-4. Remaining phases F–Z and final verdict
+## Exact next unfinished
+1. AuthContext.tsx / UserDataContext.tsx / CatalogContext.tsx (still JSX + ambients)
+2. Shop discovery visual modules beyond cards
+3. Customize 3D end-to-end verification
+4. Phases H–Z (product detail, media engines, inventory, E2E, a11y, visual, perf, PWA, coverage, verdict)
 
 ## Next command
-Continue AuthContext migration OR Shop product-card rebuild
+Migrate AuthContext carefully OR continue Shop/Customize visual systems

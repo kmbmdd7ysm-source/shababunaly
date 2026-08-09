@@ -1,8 +1,5 @@
-export function useUserData(): {
-  wishlist: string[];
-  recentlyViewed: string[];
-  toggleWishlist: (id: string) => void;
-  hasWishlist: (id: string) => boolean;
-  recordViewed: (id: string) => void;
-  status?: string;
-} | null;
+export type UserDataContextValue = Record<string, unknown>;
+export function useUserData(): UserDataContextValue;
+export function UserDataProvider(props: {
+  children?: import('react').ReactNode;
+}): import('react').ReactNode;
