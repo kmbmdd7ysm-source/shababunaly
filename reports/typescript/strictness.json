@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T01:58:36.888Z",
+  "generatedAt": "2026-08-09T01:58:59.322Z",
   "sourceFiles": 262,
-  "strictFiles": 33,
-  "strictCoveragePercent": 12.6,
+  "strictFiles": 34,
+  "strictCoveragePercent": 12.98,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -180,7 +180,6 @@
     "src/services/sync/offlineQueue.js",
     "src/services/sync/protocol.js",
     "src/services/sync/storage.js",
-    "src/services/telemetry.js",
     "src/utils/analytics.js",
     "src/utils/designExports.js",
     "src/utils/profileImage.js",

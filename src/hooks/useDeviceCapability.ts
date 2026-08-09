@@ -17,7 +17,7 @@ const SLOW_CONNECTIONS = new Set(['slow-2g', '2g', '3g']);
  * @param {any} [nav]
  * @returns {'a'|'b'|'c'}
  */
-export function resolveCapabilityTier(nav) {
+export function resolveCapabilityTier(nav?: { connection?: { saveData?: boolean; effectiveType?: string }; deviceMemory?: number; hardwareConcurrency?: number } | null) {
   const source = nav || {};
   const connection = source.connection || {};
   const memory = Number(source.deviceMemory) || 0;
@@ -44,8 +44,8 @@ export function resolveCapabilityTier(nav) {
  *
  * @returns {'a'|'b'|'c'}
  */
-export function useDeviceCapability() {
-  const [tier, setTier] = useState('a');
+export function useDeviceCapability(): 'a' | 'b' | 'c' {
+  const [tier, setTier] = useState<'a' | 'b' | 'c'>('a');
 
   useEffect(() => {
     const resolved = resolveCapabilityTier(globalThis.navigator);
