@@ -60,10 +60,10 @@
   color: var(--sh-night-ink);
   cursor: pointer;
   font-family: var(--sh-font-display);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -71,7 +71,6 @@
 [lang='ar'] .gw-sysbanner-dismiss {
   font-family: var(--sh-font-arabic);
   letter-spacing: 0;
-  text-transform: none;
 }
 
 .gw-sysbanner-dismiss:hover,
@@ -154,10 +153,10 @@
   color: var(--sh-night-ink-70);
   cursor: pointer;
   font-family: var(--sh-font-display);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -165,7 +164,6 @@
 [lang='ar'] .gw-announce-dismiss {
   font-family: var(--sh-font-arabic);
   letter-spacing: 0;
-  text-transform: none;
 }
 
 .gw-announce-dismiss:hover {
