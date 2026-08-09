@@ -4243,8 +4243,7 @@ canvas {
     overflow-wrap: normal !important;
     word-break: normal !important;
     hyphens: none !important;
-  }.contact-info .section-title,
-  .contact-list,
+  }
 }
 
 /* LASTWEB final screenshot-backed containment corrections. */
