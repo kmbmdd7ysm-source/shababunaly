@@ -1,12 +1,22 @@
-import { trackEvent } from './analytics';
+import { trackEvent } from './analytics.ts';
 
-export async function share({ title, text, url, method }) {
+export async function share({
+  title,
+  text,
+  url,
+  method,
+}: {
+  title?: string;
+  text?: string;
+  url?: string;
+  method?: string;
+}): Promise<boolean> {
   trackEvent('share', { method, title });
   if (method === 'native' && navigator.share) {
     await navigator.share({ title, text, url });
     return true;
   }
-  if (method === 'copy') {
+  if (method === 'copy' && url) {
     await navigator.clipboard.writeText(url);
     return true;
   }
@@ -16,19 +26,19 @@ export async function share({ title, text, url, method }) {
       '_blank',
       'noopener,noreferrer',
     );
-  if (method === 'facebook')
+  if (method === 'facebook' && url)
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       '_blank',
       'noopener,noreferrer',
     );
-  if (method === 'x')
+  if (method === 'x' && url)
     window.open(
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(String(title || ''))}&url=${encodeURIComponent(url)}`,
       '_blank',
       'noopener,noreferrer',
     );
   if (method === 'email')
-    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${text}\n${url}`)}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(String(title || ''))}&body=${encodeURIComponent(`${text}\n${url}`)}`;
   return true;
 }

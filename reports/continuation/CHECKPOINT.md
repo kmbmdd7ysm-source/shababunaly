@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `949d72ca0c5de9b3d8a1f12e46ff6833f7709c12`
+- Full SHA: `c524ee7c863310e55ffdc56d8b90966aa0d3a759`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -11,34 +11,33 @@
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
 | 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **14.29%** (37/259 executable; `.d.ts` excluded) |
+| 3 | Complete TypeScript migration | **IN PROGRESS** — **15.44%** (40/259 executable) |
 | 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
-| 6–25 | See prior notes | NOT STARTED / PARTIAL |
+| 6 | Unify release evidence | NOT STARTED |
+| 7 | Modularize Account | **IN PROGRESS** |
+| 8–25 | Remaining | NOT STARTED / PARTIAL |
 
 ## Green verification
 
-- `npm ci`
-- `npm run format:check`
-- `npm run lint`
-- `npm run typecheck`
-- `npm run test:node` (323)
-- `npm run test:ui` (63)
-- `npm run build` + `npm run verify:build-provenance`
+`format:check` · `lint` · `typecheck` · `test:node` (323) · `test:ui` · `build` · `verify:build-provenance`
 
-## Exact next file
+## Exact next (Phase 3)
 
-`src/utils/search.js` → TypeScript (products.d.ts ready; ~52 errors remained on last attempt — finish typing catalog item shapes)
-
-Then: `designStudio.js` → `.ts` → `productionPreflight.js` → `.ts` → contexts.
+1. `src/services/designStudio.js` → `.ts` (largest remaining utility/service blocker)
+2. `src/services/productionPreflight.js` → `.ts`
+3. `src/services/supabase.js` → `.ts`
+4. Contexts: CommerceContext, CartContext, AuthContext
+5. Refresh `reports/typescript/strict-coverage.json`
+6. Do not leave Phase 3 until project-wide or exclusions documented
 
 ## Next command
 
 ```bash
 cd /workspace && git rev-parse HEAD
-# Finish search.ts with CatalogItem interface
+# Begin designStudio.js TypeScript migration
 npm run typecheck && npm run test:node && npm run lint
 ```
 
 ## Do not restart from Phase 0
-Resume Phase 3 TypeScript migration.
+Resume Phase 3 only.
