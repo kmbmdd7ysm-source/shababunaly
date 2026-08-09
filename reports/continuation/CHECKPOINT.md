@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `d0d3db7c9f8226787e2ede20b9a2531c6ef0879b`
+- Full SHA: `3cef6c398faeae4bd29197f0ed3e95d4545eb7f2`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -11,7 +11,7 @@
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
 | 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **15.83%** (41/259 executable) |
+| 3 | Complete TypeScript migration | **IN PROGRESS** — **16.22%** (42/259 executable) |
 | 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
 | 6 | Unify release evidence | NOT STARTED |
@@ -24,12 +24,12 @@
 
 ## Exact next (Phase 3)
 
-1. **`src/services/designStudio.js` → `.ts`** (priority — unblocks productionPreflight)
+1. **`src/services/designStudio.js` → `.ts`**
 2. `src/services/productionPreflight.js` → `.ts`
 3. `src/services/supabase.js` → `.ts`
 4. Contexts: CommerceContext, CartContext, AuthContext
-5. Refresh `reports/typescript/strict-coverage.json`
-6. Remain in Phase 3 until project-wide or every exclusion documented
+5. Refresh coverage JSON
+6. Remain in Phase 3 until project-wide or exclusions documented
 
 ## Next command
 
