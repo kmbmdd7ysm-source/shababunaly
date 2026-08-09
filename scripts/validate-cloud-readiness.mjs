@@ -17,7 +17,7 @@ const required = [
   'api/create-session.ts',
   'api/create-quote-session.ts',
   'api/payment-webhook.ts',
-  'api/notification-worker.js',
+  'api/notification-worker.ts',
   'api/guest-order-access.ts',
   'api/retry-order-payment.ts',
   'api/public-quote-request.ts',

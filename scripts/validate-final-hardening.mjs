@@ -165,7 +165,7 @@ for (const token of [
   "entityType: 'quote'",
 ])
   has(quoteSession, token, `quote session ${token}`);
-const worker = read('api/notification-worker.js');
+const worker = read('api/notification-worker.ts');
 for (const token of [
   'expire_stale_commerce_orders',
   'claim_commerce_notifications',

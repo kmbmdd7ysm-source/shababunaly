@@ -1,25 +1,37 @@
 import { buildNotificationTemplate } from './_notification-templates.ts';
-const formspreeEndpoint = () =>
-  clean(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT, 1000);
-const clean = (value, max = 12000) =>
+
+type ApiReq = {
+  method?: string;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+const clean = (value: unknown, max = 12000): string =>
   String(value ?? '')
     .replace(/\0/g, '')
     .slice(0, max);
-const json = (res, status, body) => {
+
+const formspreeEndpoint = (): string =>
+  clean(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT, 1000);
+
+const json = (res: ApiRes, status: number, body: unknown) => {
   res.setHeader('Cache-Control', 'no-store, private');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   return res.status(status).json(body);
 };
 
-function authorized(req) {
+function authorized(req: ApiReq): boolean {
   const secret = clean(process.env.CRON_SECRET, 500);
   if (!secret) return false;
-  const header = clean(req.headers.authorization, 800);
+  const header = clean(req.headers?.authorization, 800);
   return header === `Bearer ${secret}`;
 }
 
-async function supabaseRequest(path, options = {}) {
+async function supabaseRequest(path: string, options: RequestInit = {}) {
   const base = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const key = clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
   if (!base || !key) throw new Error('supabase_not_configured');
@@ -30,7 +42,7 @@ async function supabaseRequest(path, options = {}) {
       'Content-Type': 'application/json',
       apikey: key,
       Authorization: `Bearer ${key}`,
-      ...(options.headers || {}),
+      ...((options.headers as Record<string, string>) || {}),
     },
   });
   const text = await response.text();
@@ -42,18 +54,21 @@ async function supabaseRequest(path, options = {}) {
   }
 }
 
-async function deliver(row) {
+async function deliver(row: Record<string, unknown>) {
   const endpoint = formspreeEndpoint();
   if (!/^https:\/\/formspree\.io\/f\/[A-Za-z0-9_-]+$/u.test(endpoint))
     throw new Error('formspree_not_configured');
-  const payload = row.payload && typeof row.payload === 'object' ? row.payload : {};
-  const template = buildNotificationTemplate(row);
+  const payload =
+    row.payload && typeof row.payload === 'object'
+      ? (row.payload as Record<string, unknown>)
+      : {};
+  const template = buildNotificationTemplate(row) as Record<string, string>;
   const params = new URLSearchParams({
     _subject: clean(row.subject || template.title, 240),
-    template_version: template.templateVersion,
-    locale: template.locale,
-    customer_message: template.customerMessage,
-    admin_summary: template.adminSummary,
+    template_version: clean(template.templateVersion, 80),
+    locale: clean(template.locale, 10),
+    customer_message: clean(template.customerMessage, 5000),
+    admin_summary: clean(template.adminSummary, 5000),
     _template: 'table',
     request_type: clean(row.event_type, 80),
     reference_id: clean(
@@ -96,8 +111,8 @@ async function deliver(row) {
   if (!response.ok) throw new Error(`formspree:${response.status}:${text.slice(0, 300)}`);
 }
 
-export default async function handler(req, res) {
-  if (!['GET', 'POST'].includes(req.method)) {
+export default async function handler(req: ApiReq, res: ApiRes) {
+  if (!['GET', 'POST'].includes(String(req.method || ''))) {
     res.setHeader('Allow', 'GET, POST');
     return json(res, 405, { ok: false, error: 'method_not_allowed' });
   }
@@ -113,16 +128,16 @@ export default async function handler(req, res) {
     } catch {
       // Notification delivery must continue even if the optional expiry RPC is not deployed yet.
     }
-    const rows = await supabaseRequest('rpc/claim_commerce_notifications', {
+    const rows = (await supabaseRequest('rpc/claim_commerce_notifications', {
       method: 'POST',
       body: JSON.stringify({ p_limit: 25 }),
-    });
+    })) as Array<Record<string, unknown>> | null;
     let sent = 0;
     let failed = 0;
     for (const row of rows || []) {
       try {
         await deliver(row);
-        await supabaseRequest(`commerce_notifications?id=eq.${encodeURIComponent(row.id)}`, {
+        await supabaseRequest(`commerce_notifications?id=eq.${encodeURIComponent(String(row.id))}`, {
           method: 'PATCH',
           headers: { Prefer: 'return=minimal' },
           body: JSON.stringify({
@@ -133,16 +148,20 @@ export default async function handler(req, res) {
           }),
         });
         sent += 1;
-      } catch (error) {
+      } catch (error: unknown) {
+        const message =
+          error && typeof error === 'object' && 'message' in error
+            ? (error as { message?: unknown }).message
+            : error;
         const attempts = Math.max(1, Number(row.attempts || 1));
         const exhausted = attempts >= 8;
         const delayMinutes = Math.min(360, 2 ** Math.min(attempts, 8));
-        await supabaseRequest(`commerce_notifications?id=eq.${encodeURIComponent(row.id)}`, {
+        await supabaseRequest(`commerce_notifications?id=eq.${encodeURIComponent(String(row.id))}`, {
           method: 'PATCH',
           headers: { Prefer: 'return=minimal' },
           body: JSON.stringify({
             delivery_status: exhausted ? 'dead_letter' : 'failed',
-            last_error: clean(error.message, 1000),
+            last_error: clean(message, 1000),
             available_at: exhausted
               ? new Date('9999-12-31T23:59:59.000Z').toISOString()
               : new Date(Date.now() + delayMinutes * 60_000).toISOString(),
@@ -165,7 +184,7 @@ export default async function handler(req, res) {
                   notificationId: row.id,
                   eventType: row.event_type,
                   attempts,
-                  error: clean(error.message, 1000),
+                  error: clean(message, 1000),
                 },
               }),
             });
@@ -183,7 +202,11 @@ export default async function handler(req, res) {
       sent,
       failed,
     });
-  } catch (error) {
-    return json(res, 503, { ok: false, error: clean(error.message, 500) });
+  } catch (error: unknown) {
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, 503, { ok: false, error: clean(message, 500) });
   }
 }
