@@ -1,23 +1,19 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `40feb40ae6611e5f4274ce6b109b52032a45ba91`
-- TypeScript: **93.31%** (251/269)
-- CSS: global !important **68** · cull pass 10 removed 9 unused single-class rules
-- Build: green
-- Remaining JSX (**7**): components/account/OrganizationWorkspace.jsx, components/custom/DesignPreview.jsx, components/custom/ProductionDesignEditor.jsx, components/operations/OperationsCommerceModules.jsx, components/operations/OperationsEnterpriseModules.jsx, components/operations/OperationsMasterData.jsx, components/product/engines/Realtime3DEngine.jsx
+- SHA: `d7d0b197400ce8166d4fc2b6eb051b265164adf6`
+- TypeScript: **93.68%** (252/269)
+- CSS: global !important **68** · premium **36** · culls passes 10–11
+- Remaining JSX (**6**):
+  - OrganizationWorkspace.jsx
+  - ProductionDesignEditor.jsx
+  - OperationsCommerceModules.jsx
+  - OperationsEnterpriseModules.jsx
+  - OperationsMasterData.jsx
+  - Realtime3DEngine.jsx (ambient — model-viewer)
 
-## Exact next unfinished
-1. ProductionDesignEditor.tsx (or OperationsCommerceModules.tsx)
-2. OrganizationWorkspace · DesignPreview (SVG fill typing heavy) · Ops modules
-3. Remaining src JS (11)
-4. Phase 2 CSS ownership relocation/deletion of legacy globals
-5. Phases 5–35 visual/functional/perf/a11y/E2E + final SHA evidence
+## Exact next
+1. **ProductionDesignEditor.tsx** (reuse DesignPreview asDesign pattern)
+2. Ops*Modules · OrganizationWorkspace
+3. Remaining src JS · Phase 2 ownership · Phases 5–35 · final SHA
 
-## Next command
-```bash
-cd /workspace && git rev-parse HEAD
-# Continue ProductionDesignEditor or CommerceModules with wide props
-npm run typecheck
-```
-
-Do not restart. Hero slots preserved. No fabricated data.
+Hero slots preserved. No fabricate. Do not restart.
