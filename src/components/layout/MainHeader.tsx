@@ -337,9 +337,11 @@ export default function MainHeader(): ReactElement {
                   <button
                     type="button"
                     className="gw-nav-minor gw-nav-minor--button"
-                    onClick={async () => {
-                      await void (typeof auth.signOut === 'function' ? auth.signOut() : undefined);
-                      close();
+                    onClick={() => {
+                      void (async () => {
+                        if (typeof auth.signOut === 'function') await auth.signOut();
+                        close();
+                      })();
                     }}
                   >
                     {pick({ en: 'Sign out', ar: 'تسجيل الخروج' })}
