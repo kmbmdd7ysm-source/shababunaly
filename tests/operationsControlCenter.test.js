@@ -20,7 +20,7 @@ test.describe('operations control center', () => {
     const sql = await read(
       'supabase/migrations/20260801023000_shababuna_operations_control_center.sql',
     );
-    const worker = await read('api/media-scan-worker.js');
+    const worker = await read('api/media-scan-worker.ts');
     assert.match(sql, /v_visibility='public' and before_row\.scan_status<>'clean'/);
     assert.match(worker, /MALWARE_SCAN_API_URL/);
     assert.match(worker, /EICAR-STANDARD-ANTIVIRUS-TEST-FILE/);

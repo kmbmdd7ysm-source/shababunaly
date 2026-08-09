@@ -1,14 +1,20 @@
 import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.ts';
 import { applyApiHeaders } from './_request-security.ts';
 
-const clean = (value, max = 1000) =>
+type ApiReq = { method?: string; headers?: Record<string, string | string[] | undefined> };
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')
     .replace(/\0/g, '')
     .trim()
     .slice(0, max);
-const json = (res, status, body) => res.status(status).json(body);
-const errorText = (error, max = 1000) => clean(error instanceof Error ? error.message : error, max);
-const securityEvent = (severity, eventType, message, context = {}) =>
+const json = (res: ApiRes, status: number, body: unknown) => res.status(status).json(body);
+const errorText = (error: unknown, max = 1000): string => clean(error instanceof Error ? error.message : error, max);
+const securityEvent = (severity: string, eventType: string, message: string, context: Record<string, unknown> = {}) =>
   supabaseAdminRequest('/rest/v1/security_events', {
     method: 'POST',
     headers: { Prefer: 'return=minimal' },
@@ -20,23 +26,23 @@ const securityEvent = (severity, eventType, message, context = {}) =>
       context,
     }),
   }).catch(() => null);
-const authorized = (req) => {
+const authorized = (req: ApiReq): boolean => {
   const secret = clean(process.env.CRON_SECRET, 500);
-  return Boolean(secret) && clean(req.headers.authorization, 800) === `Bearer ${secret}`;
+  return Boolean(secret) && clean(req.headers?.authorization, 800) === `Bearer ${secret}`;
 };
-const objectUrl = (row) => {
+const objectUrl = (row: Record<string, unknown>): string => {
   const { base } = getSupabaseAdminConfig();
   const path = String(row.storage_path || '')
     .split('/')
     .map(encodeURIComponent)
     .join('/');
-  return `${base}/storage/v1/object/${encodeURIComponent(row.bucket || 'media-quarantine')}/${path}`;
+  return `${base}/storage/v1/object/${encodeURIComponent(String(row.bucket || 'media-quarantine'))}/${path}`;
 };
-const storageHeaders = () => {
+const storageHeaders = (): Record<string, string> => {
   const { serviceKey } = getSupabaseAdminConfig();
   return { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` };
 };
-async function download(row) {
+async function download(row: Record<string, unknown>) {
   const response = await fetch(objectUrl(row), { headers: storageHeaders(), cache: 'no-store' });
   if (!response.ok) throw new Error(`storage_download_failed:${response.status}`);
   const bytes = new Uint8Array(await response.arrayBuffer());
@@ -44,7 +50,7 @@ async function download(row) {
     throw new Error('stored_file_size_mismatch');
   return bytes;
 }
-async function remove(row) {
+async function remove(row: Record<string, unknown>) {
   const response = await fetch(objectUrl(row), {
     method: 'DELETE',
     headers: storageHeaders(),
@@ -53,7 +59,7 @@ async function remove(row) {
   if (!response.ok && response.status !== 404)
     throw new Error(`storage_delete_failed:${response.status}`);
 }
-async function scan(row, bytes) {
+async function scan(row: Record<string, unknown>, bytes: Buffer | Uint8Array) {
   const endpoint = clean(process.env.MALWARE_SCAN_API_URL, 1500);
   const token = clean(process.env.MALWARE_SCAN_API_KEY, 5000);
   const test =
@@ -82,12 +88,12 @@ async function scan(row, bytes) {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': row.mime_type || 'application/octet-stream',
+        'Content-Type': String(row.mime_type || 'application/octet-stream'),
         Authorization: `Bearer ${token}`,
         'X-File-Name': encodeURIComponent(clean(row.original_name, 180)),
         'X-File-SHA256': clean(row.sha256, 64),
       },
-      body: bytes,
+      body: bytes as BodyInit,
       signal: controller.signal,
       cache: 'no-store',
     });
@@ -107,14 +113,14 @@ async function scan(row, bytes) {
     };
     clearTimeout(timeout);
     return result;
-  } catch (error) {
+  } catch (error: unknown) {
     clearTimeout(timeout);
     if (error instanceof Error && error.name === 'AbortError')
       throw new Error('malware_scanner_timeout');
     throw error;
   }
 }
-const update = (id, patch) =>
+const update = (id: string, patch: Record<string, unknown>) =>
   supabaseAdminRequest(`/rest/v1/media_assets?id=eq.${encodeURIComponent(id)}`, {
     method: 'PATCH',
     headers: { Prefer: 'return=minimal' },
@@ -126,18 +132,18 @@ async function expire() {
   );
   let expired = 0;
   let failed = 0;
-  for (const row of rows || []) {
+  for (const row of (Array.isArray(rows) ? rows : []) as Array<Record<string, unknown>>) {
     try {
       await remove(row);
-      await update(row.id, {
+      await update(String(row.id), {
         scan_status: 'expired',
         storage_deleted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         metadata: { ...(row.metadata || {}), expiryReason: 'quarantine_expired' },
       });
       expired += 1;
-    } catch (error) {
-      await update(row.id, {
+    } catch (error: unknown) {
+      await update(String(row.id), {
         metadata: { ...(row.metadata || {}), expiryError: errorText(error, 1000) },
         updated_at: new Date().toISOString(),
       });
@@ -147,9 +153,9 @@ async function expire() {
   return { expired, failed };
 }
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
-  if (!['GET', 'POST'].includes(req.method)) {
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
+  if (!['GET', 'POST'].includes(String(req.method || ''))) {
     res.setHeader('Allow', 'GET, POST');
     return json(res, 405, { ok: false, error: 'method_not_allowed' });
   }
@@ -162,10 +168,10 @@ export default async function handler(req, res) {
     let cleanCount = 0;
     let infectedCount = 0;
     let failedCount = 0;
-    for (const row of rows || []) {
+    for (const row of (Array.isArray(rows) ? rows : []) as Array<Record<string, unknown>>) {
       try {
         const attempts = Number(row.scan_attempts || 0) + 1;
-        await update(row.id, {
+        await update(String(row.id), {
           scan_status: 'scanning',
           scan_attempts: attempts,
           updated_at: new Date().toISOString(),
@@ -174,14 +180,14 @@ export default async function handler(req, res) {
         const result = await scan(row, bytes);
         const infected = result.verdict === 'infected';
         if (infected) await remove(row);
-        await update(row.id, {
+        await update(String(row.id), {
           scan_status: infected ? 'infected' : 'clean',
           storage_deleted_at: infected ? new Date().toISOString() : null,
           metadata: {
             ...(row.metadata || {}),
             antivirusProvider: result.provider,
             antivirusReference: result.reference,
-            scanResult: result.raw || { verdict: result.verdict },
+            scanResult: (result as { raw?: unknown }).raw || { verdict: result.verdict },
           },
           updated_at: new Date().toISOString(),
         });
@@ -194,9 +200,9 @@ export default async function handler(req, res) {
             { mediaAssetId: row.id, sha256: row.sha256, provider: result.provider },
           );
         } else cleanCount += 1;
-      } catch (error) {
+      } catch (error: unknown) {
         const attempts = Number(row.scan_attempts || 0) + 1;
-        await update(row.id, {
+        await update(String(row.id), {
           scan_status: 'failed',
           scan_attempts: attempts,
           next_scan_at: new Date(
@@ -217,14 +223,14 @@ export default async function handler(req, res) {
     }
     return json(res, 200, {
       ok: true,
-      processed: (rows || []).length,
+      processed: (Array.isArray(rows) ? rows : []).length,
       clean: cleanCount,
       infected: infectedCount,
       failed: failedCount,
       expired: expiry.expired,
       expiryFailed: expiry.failed,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     return json(res, 503, { ok: false, error: errorText(error, 200) });
   }
 }
@@ -240,3 +246,4 @@ export const mediaWorkerInternals = Object.freeze({
   expire,
   errorText,
 });
+
