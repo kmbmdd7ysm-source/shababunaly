@@ -1,11 +1,10 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:20:34.452Z",
+  "generatedAt": "2026-08-09T22:22:23.709Z",
   "sourceFiles": 269,
-  "strictFiles": 232,
-  "strictCoveragePercent": 86.25,
+  "strictFiles": 234,
+  "strictCoveragePercent": 86.99,
   "legacyFiles": [
-    "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
     "src/components/account/MfaSecurityPanel.jsx",
     "src/components/account/OrganizationWorkspace.jsx",
@@ -34,7 +33,6 @@
     "src/data/lhaProducts.js",
     "src/data/products.js",
     "src/data/translations.js",
-    "src/main.jsx",
     "src/services/account/addressService.js",
     "src/services/b2b.js",
     "src/services/operations.js",

@@ -10,7 +10,7 @@ import { SITE } from '../config';
 import { shippingConfig } from '../config/shipping';
 import { categories } from '../data/categories';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
-// The shared GROUNDWORK layers are global from Phase 2 onward (main.jsx).
+// The shared GROUNDWORK layers are global from Phase 2 onward (main.tsx).
 // Only this prototype's own composition ships in the lazy route chunk.
 import '../styles/lab-home.css';
 

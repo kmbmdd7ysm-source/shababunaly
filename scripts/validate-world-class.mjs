@@ -14,7 +14,7 @@ const requireText = (source, value, label = value) => {
 
 const config = requireFile('src/config.js');
 const shipping = requireFile('src/config/shipping.ts');
-const app = requireFile('src/App.jsx');
+const app = requireFile('src/App.tsx');
 const customize = requireFile('src/pages/CustomizePage.tsx');
 const preview = requireFile('src/components/custom/DesignPreview.jsx');
 const productionEditor = requireFile('src/components/custom/ProductionDesignEditor.jsx');

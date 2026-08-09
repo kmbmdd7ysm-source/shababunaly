@@ -130,7 +130,7 @@ const artworkZip = buildProductionPackage({
 });
 assert.equal(artworkZip.type, 'application/zip');
 assert.equal(artworkZip.size > 500, true);
-const app = readFileSync('src/App.jsx', 'utf8');
+const app = readFileSync('src/App.tsx', 'utf8');
 assert.equal(app.includes('/design-share/:token'), true);
 const readiness = readFileSync('api/readiness.ts', 'utf8');
 assert.match(readiness, /requiredEnvironment/);

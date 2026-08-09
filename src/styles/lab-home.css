@@ -2,7 +2,7 @@
    SHABABUNA — GROUNDWORK homepage prototype (/lab/home)
    --------------------------------------------------------------------------
    Prototype-only composition. Deleting this file, `src/pages/LabHomePage.jsx`
-   and one route line in `src/App.jsx` removes the prototype completely.
+   and one route line in `src/App.tsx` removes the prototype completely.
    Prototype-only composition; the shared `gw-*` system is global.
    ========================================================================== */
 

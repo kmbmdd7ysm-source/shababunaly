@@ -36,7 +36,7 @@ for (const required of ['<html', '<head>', 'id="root"', 'viewport', 'theme-color
   if (!index.includes(required)) failures.push(`index.html missing ${required}`);
 }
 
-const app = readFileSync('src/App.jsx', 'utf8');
+const app = readFileSync('src/App.tsx', 'utf8');
 if (!app.includes('<main')) failures.push('App shell is missing the main landmark');
 const importTargets = [...app.matchAll(/import\(['"](\.\.?\/[^'"]+)['"]\)/g)].map(
   (match) => match[1],

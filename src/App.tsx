@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { lazy, Suspense } from 'react';
 import BuildMarker from './components/dev/BuildMarker';
 import Home from './pages/HomePage';
@@ -49,7 +50,7 @@ const Events = lazy(() => import('./pages/EventsPage'));
 const OnlineTraining = lazy(() => import('./pages/OnlineTrainingPage'));
 const Coaches = lazy(() => import('./pages/CoachesPage'));
 
-export default function App() {
+export default function App(): ReactElement {
   usePageTracking();
   const location = useLocation();
   return (

@@ -240,7 +240,7 @@
 
 /* ---------- THE PLAN ------------------------------------------------------ */
 
-/* `main.jsx` imports App before it imports the stylesheets, so this file is
+/* `main.tsx` imports App before it imports the stylesheets, so this file is
    emitted BEFORE layout.css and loses a specificity tie. The doubled class
    makes the intent win regardless of emission order: five departments are five
    zones of one court and must read as one row, not four plus an orphan. */

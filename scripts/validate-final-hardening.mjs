@@ -294,7 +294,7 @@ for (const token of [
   'expires_at',
 ])
   has(shareMigration, token, `secure design sharing ${token}`);
-const app = read('src/App.jsx');
+const app = read('src/App.tsx');
 has(app, '/design-share/:token', 'secure design-share route');
 const spreadsheet = read('src/utils/rosterSpreadsheet.js');
 for (const token of [

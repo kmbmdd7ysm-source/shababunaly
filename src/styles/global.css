@@ -3625,8 +3625,8 @@ html[dir='rtl'] a {
     display:grid;
     gap: 2px;
   }.header-inner .brand-logo {
-    width: 42px !important;
-    height: 42px !important;
+    width: 42px;
+    height: 42px;
   }.header-actions .icon-btn {
     min-width: 44px;
     width: 44px;
@@ -3666,8 +3666,8 @@ html[dir='rtl'] a {
     max-width: calc(100% - 164px);
     gap: 7px;
   }.header-inner .brand-logo {
-    width: 38px !important;
-    height: 38px !important;
+    width: 38px;
+    height: 38px;
   }.header-inner .brand-text b {
     font-size: 0.74rem;
   }.header-inner .brand-text small {
@@ -3692,8 +3692,8 @@ html[dir='rtl'] a {
 .header-inner > .brand {
     max-width: calc(100% - 148px);
   }.header-inner .brand-logo {
-    width: 34px !important;
-    height: 34px !important;
+    width: 34px;
+    height: 34px;
   }.header-inner .brand-text b {
     font-size: 0.65rem;
   }.header-actions .icon-btn {
@@ -3722,8 +3722,8 @@ html[dir='rtl'] .chevron-side {
     min-width: 0;
     gap: 6px;
   }.header-inner .brand-logo {
-    width: 38px !important;
-    height: 38px !important;
+    width: 38px;
+    height: 38px;
     flex: 0 0 38px;
   }.header-inner .brand-text {
     min-width: 0;
@@ -3735,10 +3735,10 @@ html[dir='rtl'] .chevron-side {
     gap: 0;
   }.header-actions .icon-btn,
   .mobile-menu .icon-btn {
-    width: 44px !important;
-    min-width: 44px !important;
-    height: 44px !important;
-    min-height: 44px !important;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
     padding: 0;
     display: inline-grid;
     place-items: center;
@@ -3752,8 +3752,8 @@ html[dir='rtl'] .chevron-side {
 .header-inner > .brand {
     max-width: calc(100% - 176px);
   }.header-inner .brand-logo {
-    width: 34px !important;
-    height: 34px !important;
+    width: 34px;
+    height: 34px;
     flex-basis: 34px;
   }.header-inner .brand-text b {
     font-size: 0.62rem;
@@ -3768,25 +3768,25 @@ html[dir='rtl'] .chevron-side {
 .header-actions .icon-btn,
   .mobile-menu .icon-btn {
     box-sizing: border-box;
-    width: 44px !important;
-    min-width: 44px !important;
-    height: 44px !important;
-    min-height: 44px !important;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
     flex: 0 0 44px;
   }
 }
 
 @media (max-width: 480px) {
 .header-actions .icon-btn {
-    width: 44px !important;
-    min-width: 44px !important;
+    width: 44px;
+    min-width: 44px;
   }
 }
 
 @media (max-width: 340px) {
 .header-actions .icon-btn {
-    width: 44px !important;
-    min-width: 44px !important;
+    width: 44px;
+    min-width: 44px;
   }.header-inner > .brand {
     max-width: calc(100% - 176px);
   }
@@ -4191,7 +4191,7 @@ canvas {
 
 .header-inner .brand-logo--header {
   display: block;
-  width: 48px !important;
+  width: 48px;
   height: auto;
   max-height: 44px;
   object-fit: contain;
@@ -4200,12 +4200,12 @@ canvas {
 
 @media (max-width: 760px) {
 .header-inner > .brand {
-    width: 52px !important;
-    min-width: 52px !important;
+    width: 52px;
+    min-width: 52px;
     overflow:visible;
   }.header-inner .brand-logo--header {
-    width: 44px !important;
-    max-width: 44px !important;
+    width: 44px;
+    max-width: 44px;
     max-height: 38px;
   }html[dir='rtl'] .header-inner .brand-logo--header {
     object-position: right center;
@@ -4258,17 +4258,17 @@ canvas {
 
 @media (max-width: 760px) {
 .header-inner > .brand {
-    width: 64px !important;
-    min-width: 64px !important;
+    width: 64px;
+    min-width: 64px;
     height: 52px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
   }.header-inner .brand-logo--header {
     width: auto;
-    height: 46px !important;
-    max-width: 58px !important;
-    max-height: 46px !important;
+    height: 46px;
+    max-width: 58px;
+    max-height: 46px;
     object-fit: contain;
   }html[dir='rtl'] .header-inner > .brand {
     justify-content: flex-end;
@@ -4354,8 +4354,8 @@ html,
 
 .contact-form .contact-consent input {
   grid-column: 1;
-  width: 20px !important;
-  height: 20px !important;
+  width: 20px;
+  height: 20px;
   margin: 0.2rem 0 0 !important;
 }
 
@@ -4510,7 +4510,7 @@ html,
   inset-block: auto 0 !important;
   z-index: 1;
   width: 100%;
-  max-width: 430px !important;
+  max-width: 430px;
   height: min(86dvh, 760px) !important;
   max-height: calc(100dvh - env(safe-area-inset-top)) !important;
   margin-inline: auto !important;
@@ -4806,7 +4806,7 @@ html,
 .media-lightbox .lightbox-stage {
   width: 100%;
   height: 100%;
-  max-width: 1200px !important;
+  max-width: 1200px;
   display:flex;
   align-items:center;
   justify-content:center;

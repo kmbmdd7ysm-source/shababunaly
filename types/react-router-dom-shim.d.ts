@@ -28,7 +28,11 @@ declare module 'react-router-dom' {
 
   export const Navigate: ComponentType<{ to: To; replace?: boolean; state?: unknown }>;
 
-  export const BrowserRouter: ComponentType<{ children?: ReactNode; basename?: string }>;
+  export const BrowserRouter: ComponentType<{
+    children?: ReactNode;
+    basename?: string;
+    future?: { v7_startTransition?: boolean; v7_relativeSplatPath?: boolean };
+  }>;
   export const MemoryRouter: ComponentType<{ children?: ReactNode; initialEntries?: string[] }>;
   export const Routes: ComponentType<{ children?: ReactNode }>;
   export const Route: ComponentType<{

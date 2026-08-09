@@ -6,7 +6,7 @@ describe('teams, wholesale and operations architecture', () => {
     'supabase/migrations/20260731040000_shababuna_b2b_operations.sql',
     'utf8',
   );
-  const app = readFileSync('src/App.jsx', 'utf8');
+  const app = readFileSync('src/App.tsx', 'utf8');
   const operations = readFileSync('src/services/operations.js', 'utf8');
 
   it('creates the full B2B data model with RLS', () => {
