@@ -7,7 +7,7 @@ import {
   normalizeGuestEmail,
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
-} from './_guest-order-token.js';
+} from './_guest-order-token.ts';
 
 const clean = (value, max = 5000) =>
   String(value ?? '')

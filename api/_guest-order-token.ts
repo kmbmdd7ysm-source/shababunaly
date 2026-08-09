@@ -1,37 +1,45 @@
 import crypto from 'node:crypto';
 
-const clean = (value, max = 5000) =>
+const clean = (value: unknown, max = 5000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
 const ORDER = /^(SHB|LHA)-\d{8}-\d{7}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function secret() {
+function secret(): string {
   const value = clean(process.env.GUEST_ORDER_ACCESS_SECRET || process.env.CRON_SECRET, 5000);
   if (value.length < 32) throw new Error('guest_access_not_configured');
   return value;
 }
 
-export function normalizeGuestOrderNumber(value) {
+export function normalizeGuestOrderNumber(value: unknown): string {
   const orderNumber = clean(value, 40).toUpperCase();
   return ORDER.test(orderNumber) ? orderNumber : '';
 }
 
-export function normalizeGuestEmail(value) {
+export function normalizeGuestEmail(value: unknown): string {
   const email = clean(value, 254).toLowerCase();
   return EMAIL.test(email) ? email : '';
 }
 
-export function guestEmailHash(email) {
+export function guestEmailHash(email: unknown): string {
   return crypto.createHash('sha256').update(normalizeGuestEmail(email)).digest('hex');
 }
 
-function signature(encoded) {
+function signature(encoded: string): string {
   return crypto.createHmac('sha256', secret()).update(encoded).digest('base64url');
 }
 
-export function createGuestOrderToken({ orderNumber, email, ttlSeconds = 1800 }) {
+export function createGuestOrderToken({
+  orderNumber,
+  email,
+  ttlSeconds = 1800,
+}: {
+  orderNumber: unknown;
+  email: unknown;
+  ttlSeconds?: number;
+}): string {
   const number = normalizeGuestOrderNumber(orderNumber);
   const normalizedEmail = normalizeGuestEmail(email);
   if (!number || !normalizedEmail) throw new Error('invalid_guest_access');
@@ -47,16 +55,23 @@ export function createGuestOrderToken({ orderNumber, email, ttlSeconds = 1800 })
   return `${payload}.${signature(payload)}`;
 }
 
-export function verifyGuestOrderToken(token, expectedOrderNumber = '') {
+export function verifyGuestOrderToken(
+  token: unknown,
+  expectedOrderNumber = '',
+): { orderNumber: string; emailHash: string; exp: number } | null {
   const [payload, provided, extra] = clean(token, 8000).split('.');
   if (!payload || !provided || extra) return null;
   const expected = signature(payload);
   const left = Buffer.from(provided);
   const right = Buffer.from(expected);
   if (left.length !== right.length || !crypto.timingSafeEqual(left, right)) return null;
-  let data;
+  let data: { orderNumber?: unknown; emailHash?: unknown; exp?: unknown };
   try {
-    data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as {
+      orderNumber?: unknown;
+      emailHash?: unknown;
+      exp?: unknown;
+    };
   } catch {
     return null;
   }

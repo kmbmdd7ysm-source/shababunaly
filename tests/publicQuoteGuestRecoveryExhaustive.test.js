@@ -8,7 +8,7 @@ import {
   normalizeGuestEmail,
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
-} from '../api/_guest-order-token.js';
+} from '../api/_guest-order-token.ts';
 
 const ENV = [
   'NODE_ENV',

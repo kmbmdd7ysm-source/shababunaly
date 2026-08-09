@@ -6,7 +6,7 @@ import guestOrderAccess from '../api/guest-order-access.js';
 import publicQuote from '../api/public-quote-request.js';
 import retryPayment from '../api/retry-order-payment.js';
 import specialRequest from '../api/special-request.js';
-import { createGuestOrderToken } from '../api/_guest-order-token.js';
+import { createGuestOrderToken } from '../api/_guest-order-token.ts';
 import { parseRosterCsv, rosterToCsv } from '../src/data/customization.ts';
 import {
   normalizeCatalogProduct,

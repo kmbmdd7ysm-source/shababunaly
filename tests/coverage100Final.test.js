@@ -12,7 +12,7 @@ import formspreeHandler, {
 } from '../api/formspree.js';
 import createSessionHandler from '../api/create-session.js';
 import designShareHandler from '../api/design-share.js';
-import { createGuestOrderToken, verifyGuestOrderToken } from '../api/_guest-order-token.js';
+import { createGuestOrderToken, verifyGuestOrderToken } from '../api/_guest-order-token.ts';
 import {
   buildNotificationTemplate,
   EVENT_COPY,

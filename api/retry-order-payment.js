@@ -5,7 +5,7 @@ import {
   normalizeGuestEmail,
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
-} from './_guest-order-token.js';
+} from './_guest-order-token.ts';
 import { getPaymentAdapter } from './payments/registry.js';
 import { clean } from './payments/adapters/base.js';
 
