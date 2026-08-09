@@ -17,7 +17,7 @@
  */
 const RELOAD_FLAG = 'shababuna-sw-purged';
 
-export async function purgeServiceWorkers() {
+export async function purgeServiceWorkers(): Promise<void> {
   if (!('serviceWorker' in navigator)) return;
 
   const wasControlled = Boolean(navigator.serviceWorker.controller);
