@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:01:08.978Z",
+  "generatedAt": "2026-08-09T02:01:54.737Z",
   "sourceFiles": 259,
-  "strictFiles": 36,
-  "strictCoveragePercent": 13.9,
+  "strictFiles": 37,
+  "strictCoveragePercent": 14.29,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -160,7 +160,6 @@
     "src/pages/TeamsWholesalePage.jsx",
     "src/services/account/addressService.js",
     "src/services/b2b.js",
-    "src/services/commerceSettings.js",
     "src/services/designStudio.js",
     "src/services/operations.js",
     "src/services/orders.js",
