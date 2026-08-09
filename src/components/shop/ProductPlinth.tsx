@@ -16,7 +16,22 @@ import { resolveProductViewer } from '../../utils/productViewerTier';
  * the tier from the same resolver the product page uses, and the link is the
  * ordinary product URL — so pricing, currency and routing stay in one place.
  */
-export default function ProductPlinth({ product, index = 0, eager = false }) {
+export default function ProductPlinth({
+  product,
+  index = 0,
+  eager = false,
+}: {
+  product: Record<string, unknown> & {
+    slug?: string;
+    image?: string;
+    brand?: string;
+    name?: { en?: string; ar?: string } | string;
+    colors?: Array<{ image?: string }>;
+    [key: string]: unknown;
+  };
+  index?: number;
+  eager?: boolean;
+}) {
   const { pick } = useLanguage();
   const viewer = resolveProductViewer(product);
   // Same resolution ProductCard uses: the first colourway's image if the
@@ -61,14 +76,19 @@ export default function ProductPlinth({ product, index = 0, eager = false }) {
           ) : product.comingSoon ? (
             <span className="status-pill">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</span>
           ) : (
-            <Price amount={product.price} compareAt={product.compareAt} />
+            <Price
+              amount={Number(product.price) || 0}
+              compareAt={
+                product.compareAt == null ? null : Number(product.compareAt) || null
+              }
+            />
           )}
         </p>
 
         <dl className="gw-plinth-spec">
           <div>
             <dt>{pick({ en: 'Department', ar: 'القسم' })}</dt>
-            <dd>{product.category}</dd>
+            <dd>{String(product.category || '')}</dd>
           </div>
           {colours > 0 && (
             <div>
