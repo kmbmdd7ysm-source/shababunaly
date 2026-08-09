@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T19:22:38.652Z",
+  "generatedAt": "2026-08-09T19:23:41.645Z",
   "sourceFiles": 259,
-  "strictFiles": 185,
-  "strictCoveragePercent": 71.43,
+  "strictFiles": 186,
+  "strictCoveragePercent": 71.81,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -72,7 +72,6 @@
     "api/malware-scan-worker.js",
     "api/media-scan-worker.js",
     "api/notification-worker.js",
-    "api/order-notification.js",
     "api/payment-proof.js",
     "api/payments/adapters/base.js",
     "api/privacy-worker.js",
