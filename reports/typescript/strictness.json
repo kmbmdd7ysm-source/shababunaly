@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T19:01:02.372Z",
+  "generatedAt": "2026-08-09T19:02:02.452Z",
   "sourceFiles": 259,
-  "strictFiles": 171,
-  "strictCoveragePercent": 66.02,
+  "strictFiles": 172,
+  "strictCoveragePercent": 66.41,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -74,7 +74,6 @@
     "api/contract-sign.js",
     "api/create-quote-session.js",
     "api/create-session.js",
-    "api/create-special-request-session.js",
     "api/design-share.js",
     "api/malware-scan-worker.js",
     "api/media-scan-worker.js",
