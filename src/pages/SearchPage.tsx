@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -9,21 +10,23 @@ import '../styles/catalogue.css';
 import '../styles/composition.css';
 import '../styles/catalog.css';
 
-export default function SearchPage() {
+export default function SearchPage(): ReactElement {
   const { t, pick } = useLanguage();
+  const searchCopy = (t.search || {}) as Record<string, string>;
+  const common = (t.common || {}) as Record<string, string>;
   const { products } = useCatalog();
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useState(params.get('q') || '');
-  const [types, setTypes] = useState([]);
-  const [colors, setColors] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [types, setTypes] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
+  const [brands, setBrands] = useState<string[]>([]);
   useEffect(() => setQuery(params.get('q') || ''), [params]);
   const results = useMemo(
     () => searchSite(query, 999, { types, colors, brands }, products),
     [query, types, colors, brands, products],
   );
   const searchFacets = useMemo(() => getSearchFacets(products), [products]);
-  const toggle = (value, setter) =>
+  const toggle = (value: string, setter: (fn: (current: string[]) => string[]) => void) =>
     setter((current) =>
       current.includes(value) ? current.filter((x) => x !== value) : [...current, value],
     );
@@ -68,11 +71,11 @@ export default function SearchPage() {
                 ar: 'ابحث عن المنتجات والبراندات والخدمات…',
               })}
             />
-            <button className="gw-btn gw-btn--primary">{t.common.search}</button>
+            <button className="gw-btn gw-btn--primary">{common.search}</button>
           </form>
           <p className="gw-console-readout" aria-live="polite">
             <span className="gw-figure gw-isolate-ltr">{results.total}</span>
-            <span className="gw-spec">{t.common.results}</span>
+            <span className="gw-spec">{common.results}</span>
           </p>
         </div>
       </section>
@@ -92,7 +95,7 @@ export default function SearchPage() {
                     setBrands([]);
                   }}
                 >
-                  {t.common.clearAll}
+                  {common.clearAll}
                 </button>
               )}
             </div>
@@ -100,7 +103,7 @@ export default function SearchPage() {
               title={pick({ en: 'Result type', ar: 'نوع النتيجة' })}
               vals={searchFacets.types}
               active={types}
-              toggle={(value) => toggle(value, setTypes)}
+              toggle={(value: string) => toggle(value, setTypes)}
               labels={{
                 products: pick({ en: 'Products', ar: 'المنتجات' }),
                 pages: pick({ en: 'Pages & Services', ar: 'الصفحات والخدمات' }),
@@ -108,15 +111,15 @@ export default function SearchPage() {
             />
             <Facet
               title={pick({ en: 'Brand', ar: 'البراند' })}
-              vals={searchFacets.brands}
+              vals={(searchFacets.brands || []).filter(Boolean) as string[]}
               active={brands}
-              toggle={(value) => toggle(value, setBrands)}
+              toggle={(value: string) => toggle(value, setBrands)}
             />
             <Facet
               title={pick({ en: 'Colour', ar: 'اللون' })}
-              vals={searchFacets.colors}
+              vals={(searchFacets.colors || []).filter(Boolean) as string[]}
               active={colors}
-              toggle={(value) => toggle(value, setColors)}
+              toggle={(value: string) => toggle(value, setColors)}
             />
           </aside>
 
@@ -135,7 +138,7 @@ export default function SearchPage() {
               </div>
             ) : results.total === 0 ? (
               <div className="gw-terminal-inner">
-                <h2 className="gw-terminal-title">{t.search.noResults}</h2>
+                <h2 className="gw-terminal-title">{searchCopy.noResults}</h2>
                 <p className="gw-terminal-copy">
                   {pick({ en: 'Still cannot find it?', ar: 'ما زلت لم تجد المنتج؟' })}
                 </p>
@@ -186,7 +189,19 @@ export default function SearchPage() {
   );
 }
 
-function Facet({ title, vals, active, toggle, labels = {} }) {
+function Facet({
+  title,
+  vals,
+  active,
+  toggle,
+  labels = {},
+}: {
+  title: string;
+  vals: string[];
+  active: string[];
+  toggle: (value: string) => void;
+  labels?: Record<string, string>;
+}): ReactElement {
   return (
     <fieldset className="gw-facet">
       <legend className="gw-spec">{title}</legend>
