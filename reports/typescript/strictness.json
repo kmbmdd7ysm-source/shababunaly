@@ -1,6 +1,6 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:32:42.381Z",
+  "generatedAt": "2026-08-09T22:33:13.473Z",
   "sourceFiles": 269,
   "strictFiles": 239,
   "strictCoveragePercent": 88.85,
@@ -36,13 +36,7 @@
     "src/utils/rosterSpreadsheet.js",
     "src/utils/simplePdf.js"
   ],
-  "violations": [
-    {
-      "file": "src/components/custom/StudioStage.tsx",
-      "issue": "explicit-any-in-strict-scope",
-      "count": 2
-    }
-  ],
+  "violations": [],
   "compilerGuarantees": {
     "strict": true,
     "noImplicitAny": true,

@@ -67,9 +67,6 @@ const ZOOM_MIN = 100;
 const ZOOM_MAX = 220;
 const ZOOM_STEP = 20;
 
-/**
- * @param {{ design: any, preflight?: any }} props
- */
 export default function StudioStage({
   design,
   preflight = null,
