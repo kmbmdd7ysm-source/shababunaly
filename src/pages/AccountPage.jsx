@@ -15,13 +15,13 @@ import { errorText, mapError } from '../utils/errors';
 import { createProfileImageDataUrl, validateProfileImage } from '../utils/profileImage';
 import { getMyOrders } from '../services/orders';
 import { safeInternalReturnPath } from '../utils/safeReturnPath';
-import OrderCard from '../components/account/OrderCard';
 import OrganizationWorkspace from '../components/account/OrganizationWorkspace';
 import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
 import SecuritySection from './account/SecuritySection';
+import OrdersSection from './account/OrdersSection';
 import '../styles/transact.css';
 import '../styles/account-sync.css';
 import '../styles/workspace.css';
@@ -909,57 +909,7 @@ export default function AccountPage() {
                 <AccountOverview cartCount={cart.count} wishlistCount={data.wishlist.length} compareCount={compare.count} ordersCount={ordersState.orders.length} />
               )}
               {section === 'orders' && (
-                <section aria-labelledby="account-orders-title">
-                  <div className="section-heading-row">
-                    <h2 id="account-orders-title">
-                      {pick({ en: 'Recent Orders', ar: 'الطلبات الأخيرة' })}
-                    </h2>
-                    {['error', 'partial'].includes(ordersState.state) && (
-                      <button
-                        className="btn-secondary"
-                        onClick={loadOrders}
-                        disabled={ordersState.state === 'retrying'}
-                      >
-                        {ordersState.state === 'retrying'
-                          ? pick({ en: 'Retrying…', ar: 'جارٍ إعادة المحاولة…' })
-                          : pick({ en: 'Retry', ar: 'إعادة المحاولة' })}
-                      </button>
-                    )}
-                  </div>
-                  {ordersState.state === 'loading' && (
-                    <p role="status">
-                      {pick({ en: 'Loading orders…', ar: 'جاري تحميل الطلبات…' })}
-                    </p>
-                  )}
-                  {ordersState.state === 'partial' && (
-                    <div className="notice notice--info" role="status">
-                      {pick({
-                        en: 'Cloud synchronization is temporarily unavailable. Local orders are shown.',
-                        ar: 'المزامنة السحابية غير متاحة مؤقتاً. يتم عرض الطلبات المحلية.',
-                      })}
-                    </div>
-                  )}
-                  {ordersState.state === 'error' && (
-                    <div className="notice notice--info" role="alert">
-                      {pick({ en: 'We could not load your orders.', ar: 'تعذر تحميل طلباتك.' })}
-                    </div>
-                  )}
-                  {!['loading', 'error'].includes(ordersState.state) &&
-                    (ordersState.orders.length ? (
-                      <div className="orders-list">
-                        {ordersState.orders.slice(0, 5).map((order) => (
-                          <OrderCard key={order.id} order={order} compact />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="notice notice--muted">
-                        {pick({ en: 'No orders yet.', ar: 'لا توجد طلبات حتى الآن.' })}
-                      </div>
-                    ))}
-                  <Link className="btn-secondary" to="/order-tracking">
-                    {pick({ en: 'View All Orders', ar: 'عرض كل الطلبات' })}
-                  </Link>
-                </section>
+                <OrdersSection pick={pick} ordersState={ordersState} loadOrders={loadOrders} />
               )}
               {section === 'workspace' && <OrganizationWorkspace />}
               {section === 'returns' && <ReturnsSection orders={ordersState.orders} />}
