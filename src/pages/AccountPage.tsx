@@ -564,7 +564,8 @@ export default function AccountPage(): ReactElement {
                       ref={photoRef}
                       type="file"
                       accept="image/*"
-                      onChange={async (e) => {
+                      onChange={(e) => {
+                        void (async () => {
                         const f = e.target.files?.[0];
                         if (!f) return;
                         const result = await validateProfileImage(f);
@@ -587,6 +588,7 @@ export default function AccountPage(): ReactElement {
                         if (photoPreview) URL.revokeObjectURL(photoPreview);
                         setPhotoPreview(URL.createObjectURL(f));
                         setMsg('');
+                        })();
                       }}
                     />
                   </label>
@@ -595,8 +597,8 @@ export default function AccountPage(): ReactElement {
                       <img
                         src={photoPreview}
                         alt={pick({ en: 'Profile preview', ar: 'معاينة الصورة الشخصية' })}
-                        width="320"
-                        height="320"
+                        width={320}
+                        height={320}
                         decoding="async"
                       />
                       <button type="button" onClick={clearPhotoPreview}>
@@ -854,7 +856,8 @@ export default function AccountPage(): ReactElement {
                 accept="image/*"
                 disabled={busy}
                 aria-label={pick({ en: 'Choose profile photo', ar: 'اختر صورة شخصية' })}
-                onChange={async (event) => {
+                onChange={(event) => {
+                  void (async () => {
                   const input = event.currentTarget;
                   const file = input.files?.[0];
                   if (!file) return;
@@ -920,6 +923,7 @@ export default function AccountPage(): ReactElement {
                     setBusy(false);
                     input.value = '';
                   }
+                  })();
                 }}
               />
             </label>
@@ -968,7 +972,9 @@ export default function AccountPage(): ReactElement {
                   <OrdersSection
                     pick={pick as never}
                     ordersState={ordersState as never}
-                    loadOrders={loadOrders}
+                    loadOrders={() => {
+                      void loadOrders();
+                    }}
                   />
                 </LazyAccountSection>
               )}
