@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:35:50.305Z",
+  "generatedAt": "2026-08-09T02:36:37.397Z",
   "sourceFiles": 259,
-  "strictFiles": 87,
-  "strictCoveragePercent": 33.59,
+  "strictFiles": 88,
+  "strictCoveragePercent": 33.98,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -64,7 +64,6 @@
     "src/components/operations/sections/SettingsSection.jsx",
     "src/components/operations/sections/ShippingSection.jsx",
     "src/components/operations/sections/UsersSection.jsx",
-    "src/components/product/ProductMediaViewer.jsx",
     "src/components/product/ViewingTierNote.jsx",
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/components/pwa/PwaPrompt.jsx",
