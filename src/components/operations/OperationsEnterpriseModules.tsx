@@ -1,33 +1,40 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
-import {
-  applyInventoryImport,
-  createInventoryCsv,
-  parseInventoryCsv,
-  previewInventoryImport,
-  reviewPaymentProof,
-  rollbackInventoryImport,
-  upsertOperationalEntity,
-} from '../../services/operations';
+import { reviewPaymentProof, upsertOperationalEntity } from '../../services/operations';
 
 export { InventoryCsvManager } from './InventoryCsvManager';
 
-export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
+export function EnterpriseOperationsPanel({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const s = (state || {}) as Record<string, unknown>;
+  const rows = (key: string) =>
+    Array.isArray(s[key]) ? (s[key] as Array<Record<string, unknown>>) : [];
+  const firstId = (key: string) => String(rows(key)[0]?.id || '');
   const [contract, setContract] = useState({
-    organization_id: state.organizations[0]?.id || '',
+    organization_id: firstId('organizations'),
     quote_id: '',
     title: '',
     status: 'draft',
     terms: '{}',
   });
   const [locker, setLocker] = useState({
-    organization_id: state.organizations[0]?.id || '',
+    organization_id: firstId('organizations'),
     name: '',
     slug: '',
     status: 'draft',
     access_mode: 'private',
   });
   const [lockerProduct, setLockerProduct] = useState({
-    locker_store_id: state.lockers[0]?.id || '',
+    locker_store_id: firstId('lockers'),
     product_id: '',
     status: 'active',
   });
@@ -90,9 +97,9 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
               required
             >
               <option value="">—</option>
-              {state.organizations.map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.name}
+              {rows('organizations').map((row: Record<string, unknown>) => (
+                <option key={String(row.id)} value={String(row.id || '')}>
+                  {String(row.name || '')}
                 </option>
               ))}
             </select>
@@ -143,26 +150,26 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
           <label>
             <span>{pick({ en: 'Organization', ar: 'المؤسسة' })}</span>
             <select
-              value={locker.organization_id}
+              value={String(locker.organization_id || '')}
               onChange={(event) => setLocker({ ...locker, organization_id: event.target.value })}
               required
             >
               <option value="">—</option>
-              {state.organizations.map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.name}
+              {rows('organizations').map((row: Record<string, unknown>) => (
+                <option key={String(row.id)} value={String(row.id || '')}>
+                  {String(row.name || '')}
                 </option>
               ))}
             </select>
           </label>
           <input
-            value={locker.name}
+            value={String(locker.name || '')}
             onChange={(event) => setLocker({ ...locker, name: event.target.value })}
             placeholder={pick({ en: 'Store name', ar: 'اسم المتجر' })}
             required
           />
           <input
-            value={locker.slug}
+            value={String(locker.slug || '')}
             onChange={(event) =>
               setLocker({
                 ...locker,
@@ -174,7 +181,7 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
           />
           <div className="operations-form-grid">
             <select
-              value={locker.status}
+              value={String(locker.status || '')}
               onChange={(event) => setLocker({ ...locker, status: event.target.value })}
             >
               <option value="draft">draft</option>
@@ -182,7 +189,7 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
               <option value="paused">paused</option>
             </select>
             <select
-              value={locker.access_mode}
+              value={String(locker.access_mode || '')}
               onChange={(event) => setLocker({ ...locker, access_mode: event.target.value })}
             >
               <option value="private">private</option>
@@ -225,9 +232,9 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
             required
           >
             <option value="">—</option>
-            {state.lockers.map((row) => (
-              <option key={row.id} value={row.id}>
-                {row.name}
+            {rows('lockers').map((row: Record<string, unknown>) => (
+              <option key={String(row.id)} value={String(row.id || '')}>
+                {String(row.name || '')}
               </option>
             ))}
           </select>
@@ -261,16 +268,16 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
         </form>
       </div>
       <div className="operations-card-grid">
-        {state.paymentProofs.map((proof) => (
+        {rows('paymentProofs').map((proof) => (
           <PaymentProofReviewCard
-            key={proof.id}
+            key={String(proof.id)}
             proof={proof}
             pick={pick}
             saving={saving}
             run={run}
           />
         ))}
-        {!state.paymentProofs.length && (
+        {!rows('paymentProofs').length && (
           <p>
             {pick({
               en: 'No payment proofs awaiting review.',
@@ -287,34 +294,34 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
           })}
         </summary>
         <div className="workspace-list">
-          {state.contracts.map((row) => (
-            <article key={row.id}>
+          {rows('contracts').map((row: Record<string, unknown>) => (
+            <article key={String(row.id)}>
               <div>
-                <span className="workspace-status-dot" data-status={row.status} />
+                <span className="workspace-status-dot" data-status={String(row.status ?? '')} />
                 <div>
-                  <h3>{row.contract_number}</h3>
+                  <h3>{String(row.contract_number ?? '')}</h3>
                   <p>
-                    {row.title} · {row.status}
+                    {String(row.title || '')} · {String(row.status ?? '')}
                   </p>
                 </div>
               </div>
               <small>{String(row.created_at || '').slice(0, 10)}</small>
             </article>
           ))}
-          {state.reorders.map((row) => (
-            <article key={row.id}>
+          {rows('reorders').map((row: Record<string, unknown>) => (
+            <article key={String(row.id)}>
               <div>
-                <span className="workspace-status-dot" data-status={row.status} />
+                <span className="workspace-status-dot" data-status={String(row.status ?? '')} />
                 <div>
-                  <h3>{row.request_number}</h3>
+                  <h3>{String(row.request_number ?? '')}</h3>
                   <p>
-                    {row.request_type} · {row.status}
+                    {String(row.request_type ?? '')} · {String(row.status ?? '')}
                   </p>
                 </div>
               </div>
               <select
                 aria-label={pick({ en: 'Reorder status', ar: 'حالة إعادة الطلب' })}
-                value={row.status}
+                value={String(row.status ?? '')}
                 onChange={(event) =>
                   run(
                     `reorder-${row.id}`,
@@ -344,12 +351,22 @@ export function EnterpriseOperationsPanel({ state, pick, saving, run }) {
   );
 }
 
-function PaymentProofReviewCard({ proof, pick, saving, run }) {
+function PaymentProofReviewCard({
+  proof,
+  pick,
+  saving,
+  run,
+}: {
+  proof: Record<string, unknown>;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
   const [note, setNote] = useState('');
-  const review = (status) =>
+  const review = (status: string) =>
     run(
-      `payment-proof-${proof.id}-${status}`,
-      () => reviewPaymentProof({ proofId: proof.id, status, note }),
+      `payment-proof-${String(proof.id ?? '')}-${status}`,
+      () => reviewPaymentProof({ proofId: String(proof.id || ''), status, note }),
       pick({
         en: `Payment proof ${status}.`,
         ar: status === 'verified' ? 'تم اعتماد إثبات الدفع.' : 'تم رفض إثبات الدفع.',
@@ -358,13 +375,14 @@ function PaymentProofReviewCard({ proof, pick, saving, run }) {
   return (
     <article className="operations-card">
       <div>
-        <span>{proof.proof_number}</span>
-        <strong>{proof.status}</strong>
+        <span>{String(proof.proof_number ?? '')}</span>
+        <strong>{String(proof.status ?? '')}</strong>
       </div>
       <p>
-        {Number(proof.amount || 0).toFixed(2)} {proof.currency} · {proof.payment_method}
+        {Number(proof.amount || 0).toFixed(2)} {String(proof.currency ?? '')} ·{' '}
+        {String(proof.payment_method ?? '')}
       </p>
-      <p>{proof.reference || '—'}</p>
+      <p>{String(proof.reference || '—')}</p>
       <textarea
         rows={2}
         value={note}
@@ -376,7 +394,9 @@ function PaymentProofReviewCard({ proof, pick, saving, run }) {
           type="button"
           className="btn-primary compact"
           disabled={Boolean(saving)}
-          onClick={() => review('verified')}
+          onClick={() => {
+            void Promise.resolve(review('verified'));
+          }}
         >
           {pick({ en: 'Verify', ar: 'اعتماد' })}
         </button>
@@ -384,7 +404,9 @@ function PaymentProofReviewCard({ proof, pick, saving, run }) {
           type="button"
           className="btn-secondary compact"
           disabled={Boolean(saving)}
-          onClick={() => review('rejected')}
+          onClick={() => {
+            void Promise.resolve(review('rejected'));
+          }}
         >
           {pick({ en: 'Reject', ar: 'رفض' })}
         </button>
@@ -392,4 +414,3 @@ function PaymentProofReviewCard({ proof, pick, saving, run }) {
     </article>
   );
 }
-

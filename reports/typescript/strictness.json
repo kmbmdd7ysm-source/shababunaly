@@ -1,13 +1,12 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T23:06:32.573Z",
+  "generatedAt": "2026-08-09T23:08:13.747Z",
   "sourceFiles": 271,
-  "strictFiles": 256,
-  "strictCoveragePercent": 94.46,
+  "strictFiles": 257,
+  "strictCoveragePercent": 94.83,
   "legacyFiles": [
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/operations/OperationsCommerceModules.jsx",
-    "src/components/operations/OperationsEnterpriseModules.jsx",
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/data/generatedOptimizedImages.js",
     "src/data/lhaProducts.js",
