@@ -9,7 +9,7 @@ const proofMigration = read(
 );
 const workspace = read('src/components/account/OrganizationWorkspace.jsx');
 const operations = [
-  read('src/pages/OperationsPage.jsx'),
+  read('src/pages/OperationsPage.tsx'),
   read('src/components/operations/OperationsEnterpriseModules.jsx'),
   read('src/components/operations/OperationsCommerceModules.jsx'),
 ].join('\n');
@@ -64,8 +64,8 @@ await test('enterprise B2B workflows', async (t) => {
 
   await t.test('provides a guarded team locker route using trusted catalog products', () => {
     assert.match(app, /team-locker\/:slug/);
-    assert.match(read('src/pages/TeamLockerPage.jsx'), /getTeamLocker/);
-    assert.match(read('src/pages/TeamLockerPage.jsx'), /ProductCard/);
+    assert.match(read('src/pages/TeamLockerPage.tsx'), /getTeamLocker/);
+    assert.match(read('src/pages/TeamLockerPage.tsx'), /ProductCard/);
   });
 
   await t.test('adds staff visibility and actions for enterprise workflow queues', () => {

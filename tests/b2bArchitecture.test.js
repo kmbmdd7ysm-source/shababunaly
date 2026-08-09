@@ -48,7 +48,7 @@ describe('teams, wholesale and operations architecture', () => {
   it('keeps staff operations out of public navigation but exposes a guarded route', () => {
     expect(app).toContain('path="/operations/*"');
     expect(app).toContain('OperationsPage');
-    const operationsPage = readFileSync('src/pages/OperationsPage.jsx', 'utf8');
+    const operationsPage = readFileSync('src/pages/OperationsPage.tsx', 'utf8');
     expect(operationsPage).toContain('lazy(');
     expect(operationsPage).toContain('OperationsDashboardPage');
     expect(operationsPage).toContain('path="orders"');

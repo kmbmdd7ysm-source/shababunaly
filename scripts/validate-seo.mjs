@@ -13,7 +13,7 @@ if (width !== 1200 || height !== 630)
   throw new Error(`Open Graph PNG must be 1200x630; received ${width}x${height}.`);
 const config = fs.readFileSync(path.join(root, 'src/config.js'), 'utf8');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const seo = fs.readFileSync(path.join(root, 'src/components/common/Seo.jsx'), 'utf8');
+const seo = fs.readFileSync(path.join(root, 'src/components/common/Seo.tsx'), 'utf8');
 if (!config.includes("defaultOg: '/brand/shababuna-social.png'"))
   throw new Error('Central SEO configuration does not reference the Shababuna Open Graph PNG.');
 if (!html.includes('/brand/shababuna-social.png'))
