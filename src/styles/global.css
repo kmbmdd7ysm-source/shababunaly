@@ -2747,7 +2747,7 @@ main {
 
 .academy-intro p,
 .academy-intro .lead {
-  color: rgba(255, 255, 255, 0.74) !important;
+  color: rgba(255, 255, 255, 0.74);
 }
 
 /* Value cards everywhere else: black on light — fixes white-on-white */
@@ -2828,7 +2828,7 @@ main {
 
 .page-hero p,
 .page-hero .lead {
-  color: rgba(255, 255, 255, 0.76) !important;
+  color: rgba(255, 255, 255, 0.76);
 }
 
 .cta-band h1,
@@ -2866,7 +2866,7 @@ main {
 
 .site-footer p,
 .site-footer small {
-  color: rgba(255, 255, 255, 0.67) !important;
+  color: rgba(255, 255, 255, 0.67);
 }
 
 /* Arabic: readable display rhythm, no collisions */
@@ -4732,7 +4732,7 @@ html,
   position:fixed;
   inset: 0;
   z-index: 3000;
-  background: rgba(0, 0, 0, 0.92) !important;
+  background: rgba(0, 0, 0, 0.92);
   display:grid;
   place-items:center;
   padding: 72px 16px 52px !important;
@@ -4829,8 +4829,8 @@ html,
 .media-lightbox .lightbox-nav,
 .media-lightbox .lightbox-tools button {
   color: #111;
-  background: rgba(255, 255, 255, 0.94) !important;
-  border-color: rgba(0, 0, 0, 0.28) !important;
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(0, 0, 0, 0.28);
 }
 
 .media-lightbox .lightbox-close {
