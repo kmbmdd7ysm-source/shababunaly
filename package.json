@@ -90,7 +90,8 @@
     "test:e2e:staging-live": "npm run test:e2e:isolation && STAGING_LIVE_E2E=true node scripts/run-browser-tests.mjs e2e/staging-live-workflows.spec.js",
     "validate:action-pinning": "node scripts/validate-action-pinning.mjs",
     "test:malware-pipeline": "node scripts/verify-malware-pipeline.mjs",
-    "validate:product-master": "node --experimental-strip-types scripts/validate-product-master.mjs"
+    "validate:product-master": "node --experimental-strip-types scripts/validate-product-master.mjs",
+    "verify:build-provenance": "node scripts/verify-build-provenance.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.6",

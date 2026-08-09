@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
 const maxAgeMs = Number(process.env.RELEASE_REPORT_MAX_AGE_MS || 6 * 60 * 60 * 1000);
 const now = Date.now();
@@ -83,9 +84,23 @@ load('Provider readiness', 'reports/providers/provider-readiness.json', (v) =>
     ? true
     : 'payment and signature providers are not fully approved',
 );
-load('Build', 'reports/build/build-provenance.json', (v) =>
-  v.status === 'passed' && v.distSha256 && v.commitSha ? true : 'build provenance is not passed',
-);
+load('Build', 'reports/build/build-provenance.json', (v) => {
+  if (v.status !== 'passed' || !v.distSha256 || !v.commitSha) return 'build provenance is not passed';
+  let head = '';
+  try {
+    head = execFileSync('git', ['rev-parse', 'HEAD'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return 'unable to read current HEAD for provenance comparison';
+  }
+  if (!/^[0-9a-f]{40}$/i.test(String(v.commitSha))) return 'build provenance commitSha is not a full SHA';
+  if (String(v.commitSha) !== head) {
+    return `build provenance SHA ${v.commitSha} != current HEAD ${head}`;
+  }
+  return true;
+});
 load('Database/RLS', 'reports/database/database-test-result.json', (v) =>
   v.status === 'passed' && Number(v.runs) >= 3
     ? true

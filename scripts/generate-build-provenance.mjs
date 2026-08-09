@@ -55,19 +55,48 @@ const assetFiles = entries.filter((entry) =>
 const chunks = assetFiles
   .filter((entry) => /\.js$/i.test(entry.path))
   .sort((a, b) => b.bytes - a.bytes);
+const branch =
+  process.env.GITHUB_REF_NAME ||
+  process.env.VERCEL_GIT_COMMIT_REF ||
+  git(['branch', '--show-current']);
+const dirty = git(['status', '--porcelain'], '') !== '';
+const lockfileHash = (() => {
+  try {
+    return createHash('sha256').update(readFileSync(join(root, 'package-lock.json'))).digest('hex');
+  } catch {
+    return 'missing';
+  }
+})();
+let viteVersion = 'unknown';
+try {
+  viteVersion = JSON.parse(readFileSync(join(root, 'node_modules/vite/package.json'), 'utf8')).version;
+} catch {
+  /* optional */
+}
+let npmVersion = 'unknown';
+try {
+  npmVersion = execSyncSafe('npm -v');
+} catch {
+  /* optional */
+}
 const provenance = {
   status: 'passed',
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   buildId,
   commitSha,
-  ref:
-    process.env.GITHUB_REF ||
-    process.env.VERCEL_GIT_COMMIT_REF ||
-    git(['branch', '--show-current']),
+  branch,
+  ref: process.env.GITHUB_REF || process.env.VERCEL_GIT_COMMIT_REF || branch,
+  dirty,
+  workingTreeClean: !dirty,
   runId: process.env.GITHUB_RUN_ID || null,
   runAttempt: process.env.GITHUB_RUN_ATTEMPT || null,
   deploymentId: process.env.VERCEL_DEPLOYMENT_ID || null,
   node: process.version,
+  npm: npmVersion,
+  vite: viteVersion,
+  mode: process.env.NODE_ENV || 'production',
+  lockfileSha256: lockfileHash,
   fileCount: entries.length,
   totalBytes: entries.reduce((sum, entry) => sum + entry.bytes, 0),
   distSha256: distHash,
