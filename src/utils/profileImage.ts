@@ -1,6 +1,6 @@
 const SIGNATURES = {
-  jpeg: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff,
-  png: (b) =>
+  jpeg: (b: Uint8Array) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff,
+  png: (b: Uint8Array) =>
     b[0] === 0x89 &&
     b[1] === 0x50 &&
     b[2] === 0x4e &&
@@ -9,7 +9,7 @@ const SIGNATURES = {
     b[5] === 0x0a &&
     b[6] === 0x1a &&
     b[7] === 0x0a,
-  webp: (b) =>
+  webp: (b: Uint8Array) =>
     String.fromCharCode(...b.slice(0, 4)) === 'RIFF' &&
     String.fromCharCode(...b.slice(8, 12)) === 'WEBP',
 };
@@ -18,12 +18,12 @@ export const PROFILE_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 export const PROFILE_IMAGE_MAX_BYTES = 8 * 1024 * 1024;
 const PROFILE_IMAGE_TARGET_BYTES = 180 * 1024;
 
-export async function validateProfileImage(file) {
+export async function validateProfileImage(
+  file: File | null | undefined,
+): Promise<{ valid: boolean; reason?: string }> {
   if (!file || !String(file.type || '').startsWith('image/'))
     return { valid: false, reason: 'type' };
   if (file.size > PROFILE_IMAGE_MAX_BYTES) return { valid: false, reason: 'size' };
-  // iOS may expose a selected photo as HEIC/HEIF even when Safari can decode it.
-  // Signature validation remains strict for the three web-native formats.
   if (!PROFILE_IMAGE_TYPES.includes(file.type)) return { valid: true };
   const bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
   const signatureValid =
@@ -33,7 +33,14 @@ export async function validateProfileImage(file) {
   return signatureValid ? { valid: true } : { valid: false, reason: 'signature' };
 }
 
-function loadImageElement(file) {
+interface DrawableSource {
+  drawable: CanvasImageSource;
+  width: number;
+  height: number;
+  close?: () => void;
+}
+
+function loadImageElement(file: Blob): Promise<DrawableSource> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const image = new Image();
@@ -49,7 +56,7 @@ function loadImageElement(file) {
   });
 }
 
-async function loadDrawable(file) {
+async function loadDrawable(file: Blob): Promise<DrawableSource> {
   if (typeof createImageBitmap === 'function') {
     try {
       const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
@@ -66,12 +73,12 @@ async function loadDrawable(file) {
   return loadImageElement(file);
 }
 
-function approximateDataUrlBytes(dataUrl) {
+function approximateDataUrlBytes(dataUrl: string): number {
   const payload = String(dataUrl).split(',')[1] || '';
   return Math.ceil((payload.length * 3) / 4);
 }
 
-function renderDataUrl(source, maxSide, quality) {
+function renderDataUrl(source: DrawableSource, maxSide: number, quality: number): string {
   const longestSide = Math.max(source.width, source.height);
   const scale = Math.min(1, maxSide / longestSide);
   const width = Math.max(1, Math.round(source.width * scale));
@@ -87,12 +94,14 @@ function renderDataUrl(source, maxSide, quality) {
   return canvas.toDataURL('image/jpeg', quality);
 }
 
-export async function createProfileImageDataUrl(file, maxSide = 256, quality = 0.76) {
+export async function createProfileImageDataUrl(
+  file: File,
+  maxSide = 256,
+  quality = 0.76,
+): Promise<string> {
   const source = await loadDrawable(file);
   try {
-    // Keep the image small enough for fast cross-device profile synchronization and
-    // Supabase auth metadata while retaining a sharp avatar on high-density screens.
-    const attempts = [
+    const attempts: Array<[number, number]> = [
       [maxSide, quality],
       [240, 0.7],
       [224, 0.64],
