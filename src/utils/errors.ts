@@ -1,4 +1,6 @@
-const MAP = {
+type LangPair = { en: string; ar: string };
+
+const MAP: Record<string, LangPair> = {
   auth_invalid: {
     en: 'Email or password is incorrect.',
     ar: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
@@ -65,8 +67,16 @@ const MAP = {
   },
 };
 
-export function mapError(error) {
-  const text = String(error?.message || '').toLowerCase();
+export function mapError(error: unknown): {
+  code: string;
+  message: LangPair;
+  debug?: string;
+} {
+  const message =
+    error && typeof error === 'object' && 'message' in error
+      ? String((error as { message?: unknown }).message || '')
+      : String(error || '');
+  const text = message.toLowerCase();
   let code = 'generic';
   if (text.includes('invalid login') || text.includes('invalid credentials')) code = 'auth_invalid';
   else if (
@@ -77,10 +87,7 @@ export function mapError(error) {
     code = 'email_exists';
   else if (text.includes('signup is disabled') || text.includes('signups not allowed'))
     code = 'signup_disabled';
-  else if (
-    text.includes('database error saving new user') ||
-    text.includes('error saving new user')
-  )
+  else if (text.includes('database error saving new user') || text.includes('error saving new user'))
     code = 'signup_database';
   else if (
     text.includes('error sending confirmation') ||
@@ -115,12 +122,16 @@ export function mapError(error) {
     code = 'auth_callback';
   else if (text.includes('jwt') || text.includes('session')) code = 'session_expired';
   else if (!globalThis.navigator?.onLine) code = 'offline';
-  return {
+  const mapped = MAP[code] ?? MAP.generic!;
+  const result: { code: string; message: LangPair; debug?: string } = {
     code,
-    message: MAP[code],
-    debug: import.meta?.env?.DEV ? String(error?.message || error) : undefined,
+    message: mapped,
   };
+  if (import.meta?.env?.DEV) result.debug = message || String(error);
+  return result;
 }
 
-export const errorText = (error, language = 'en') =>
-  mapError(error).message[language] || mapError(error).message.en;
+export const errorText = (error: unknown, language = 'en'): string => {
+  const mapped = mapError(error).message;
+  return mapped[language as 'en' | 'ar'] || mapped.en;
+};

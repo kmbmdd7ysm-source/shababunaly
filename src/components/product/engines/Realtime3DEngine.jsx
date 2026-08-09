@@ -1,3 +1,4 @@
+import '@google/model-viewer';
 import { useEffect, useState } from 'react';
 import StaticMediaEngine from './StaticMediaEngine';
 
@@ -13,7 +14,7 @@ export default function Realtime3DEngine({ model, fallbackSrc, alt, eager, pick 
   useEffect(() => {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    setSupported(Boolean(gl) && Boolean(customElements.get('model-viewer')) && Boolean(model));
+    setSupported(Boolean(gl) && Boolean(model));
   }, [model]);
 
   if (!supported) {
