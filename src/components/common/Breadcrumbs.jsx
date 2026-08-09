@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 
 // items: [{ label, to? }] — last item is the current page (no link).
-export default function Breadcrumbs({ items }) {
+export default function Breadcrumbs({ items }: {
+  items?: Array<{ label?: string; to?: string }>;
+}) {
   const { t } = useLanguage();
   return (
     <nav className="breadcrumbs" aria-label={t.a11y.breadcrumb}>

@@ -9,7 +9,11 @@ export const SORT_OPTIONS = [
   'name-desc',
 ];
 
-export default function SortSelect({ value, onChange, options = SORT_OPTIONS }) {
+export default function SortSelect({ value, onChange, options = SORT_OPTIONS }: {
+  value?: string;
+  onChange?: (value: string) => void;
+  options?: Array<{ value: string; label: string }>;
+}) {
   const { t } = useLanguage();
   const labels = {
     featured: t.shop.sortFeatured,

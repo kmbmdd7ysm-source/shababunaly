@@ -8,6 +8,13 @@ export default function SectionHeading({
   link = '',
   linkLabel = '',
   align = 'start',
+}: {
+  label?: import('react').ReactNode;
+  title?: import('react').ReactNode;
+  sub?: import('react').ReactNode;
+  link?: string;
+  linkLabel?: import('react').ReactNode;
+  align?: string;
 }) {
   return (
     <div className={`section-heading section-heading--${align}`}>
