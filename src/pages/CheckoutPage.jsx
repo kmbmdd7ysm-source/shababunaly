@@ -8,6 +8,7 @@ import { SITE } from '../config';
 import { resolveShipping, SHIPPING_MESSAGES } from '../config/shipping';
 import { useCommerce } from '../context/CommerceContext';
 import CountrySelect from '../components/common/CountrySelect';
+import CheckoutContactStage from './checkout/CheckoutContactStage';
 import Icon from '../components/icons/Icon';
 import {
   getAddressRequirements,
@@ -703,28 +704,13 @@ export default function CheckoutPage() {
                     <p>{errors.cart}</p>
                   </div>
                 )}
-                <fieldset className="form-block">
-                  <legend>{pick({ en: 'Contact', ar: 'التواصل' })}</legend>
-                  <label className="field">
-                    <span>Email</span>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={set('email')}
-                      autoComplete="email"
-                      {...fieldA11y('email')}
-                    />
-                    {errors.email && (
-                      <span id="checkout-email-error" className="form-error" role="status">
-                        {errors.email}
-                      </span>
-                    )}
-                  </label>
-                  <label className="field">
-                    <span>{pick({ en: 'Phone / WhatsApp', ar: 'الهاتف / واتساب' })}</span>
-                    <input value={form.phone} onChange={set('phone')} autoComplete="tel" />
-                  </label>
-                </fieldset>
+                <CheckoutContactStage
+                  pick={pick}
+                  form={form}
+                  errors={errors}
+                  setField={set}
+                  fieldA11y={fieldA11y}
+                />
 
                 {!digitalOnly && (
                   <fieldset className="form-block">
