@@ -1,6 +1,6 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T21:06:47.575Z",
+  "generatedAt": "2026-08-09T21:07:31.798Z",
   "sourceFiles": 266,
   "strictFiles": 213,
   "strictCoveragePercent": 80.08,
