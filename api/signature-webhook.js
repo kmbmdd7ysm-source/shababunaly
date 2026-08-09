@@ -5,7 +5,7 @@ import {
   normalizeSignatureEvent,
   verifySignatureWebhook,
 } from './signatures/provider.ts';
-import { verifyAndStoreSignatureEvidence } from './signatures/evidence.js';
+import { verifyAndStoreSignatureEvidence } from './signatures/evidence.ts';
 
 export const config = { api: { bodyParser: false } };
 const MAX_BODY_BYTES = 256_000;
