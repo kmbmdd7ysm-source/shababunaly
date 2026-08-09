@@ -1,4 +1,4 @@
-import { getPaymentAdapter } from './payments/registry.js';
+import { getPaymentAdapter } from './payments/registry.ts';
 import { guardPublicPost } from './_request-security.ts';
 
 const MAX_BODY_BYTES = 16_000;

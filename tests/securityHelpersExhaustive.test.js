@@ -12,7 +12,7 @@ import {
   supabaseUserRequest,
 } from '../api/_supabase-admin.ts';
 import { verifyTurnstileToken } from '../api/_turnstile.ts';
-import { configuredPaymentMethods, getPaymentAdapter } from '../api/payments/registry.js';
+import { configuredPaymentMethods, getPaymentAdapter } from '../api/payments/registry.ts';
 
 const ENV = [
   'NODE_ENV',

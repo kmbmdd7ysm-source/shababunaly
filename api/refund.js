@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
 import { requireStaffSession } from './_staff-auth.ts';
 import { supabaseAdminRequest } from './_supabase-admin.ts';
-import { getPaymentAdapter } from './payments/registry.js';
+import { getPaymentAdapter } from './payments/registry.ts';
 import { recordBusinessEvent } from './_business-events.ts';
 
 const clean = (value, max = 1000) =>

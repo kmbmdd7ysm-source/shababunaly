@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { getPaymentAdapter } from './payments/registry.js';
+import { getPaymentAdapter } from './payments/registry.ts';
 import { recordBusinessEvent } from './_business-events.ts';
 export const config = { api: { bodyParser: false } };
 const MAX_BODY_BYTES = 128_000;

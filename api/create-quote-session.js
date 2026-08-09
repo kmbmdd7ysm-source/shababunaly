@@ -1,4 +1,4 @@
-import { getPaymentAdapter } from './payments/registry.js';
+import { getPaymentAdapter } from './payments/registry.ts';
 import { clean } from './payments/adapters/base.js';
 import { guardPublicPost } from './_request-security.ts';
 

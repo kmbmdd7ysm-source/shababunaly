@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { getPaymentAdapter } from '../api/payments/registry.js';
+import { getPaymentAdapter } from '../api/payments/registry.ts';
 
 const production =
   process.env.NODE_ENV === 'production' || process.env.REQUIRE_LIVE_INTEGRATIONS === 'true';
