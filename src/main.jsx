@@ -19,6 +19,7 @@ import { STORAGE_KEYS } from './config';
  * 2. Token + foundation layers are global.
  * 3. Route/domain sheets load with the routes that need them (not in this entry).
  */
+import './styles/foundation.css';
 import './styles/global.css';
 import './styles/premium.css';
 import './styles/shababuna.css';

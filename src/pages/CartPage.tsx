@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
@@ -12,9 +13,12 @@ import { categories } from '../data/categories';
 import Icon from '../components/icons/Icon';
 import '../styles/transact.css';
 
-export default function CartPage() {
+export default function CartPage(): ReactElement {
   const { getProduct, products } = useCatalog();
   const { t, pick, lang } = useLanguage();
+  const cartCopy = (t.cart || {}) as Record<string, string>;
+  const nav = (t.nav || {}) as Record<string, string>;
+  const checkoutCopy = (t.checkout || {}) as Record<string, string>;
   const { format, usdToLydRate } = useCommerce();
   const { items, updateQuantity, removeItem, subtotal, hasPhysical } = useCart();
 
@@ -26,7 +30,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Seo title={t.cart.title} description={t.cart.title} path="/cart" noindex />
+      <Seo title={cartCopy.title || ''} description={cartCopy.title || ''} path="/cart" noindex />
 
       {/* A LEDGER, not a page with a hero. The bag is a running account: a
           measured masthead carrying the item count as a figure, then the lines,
@@ -34,10 +38,10 @@ export default function CartPage() {
       <section className="gw-ledger" aria-labelledby="gw-cart-title">
         <div className="gw-ledger-inner">
           <div className="gw-ledger-head">
-            <p className="gw-spec">{t.nav.cart}</p>
+            <p className="gw-spec">{nav.cart}</p>
             <div className="gw-ledger-head-row">
               <h1 id="gw-cart-title" className="gw-ledger-title">
-                {t.cart.title}
+                {cartCopy.title}
               </h1>
               <p className="gw-ledger-count">
                 <span className="gw-figure gw-isolate-ltr">{items.length}</span>
@@ -77,11 +81,11 @@ export default function CartPage() {
                   </svg>
                 </div>
 
-                <p className="gw-ledger-empty-line">{t.cart.empty}</p>
-                <p className="gw-ledger-empty-hint">{t.cart.emptyHint}</p>
+                <p className="gw-ledger-empty-line">{cartCopy.empty}</p>
+                <p className="gw-ledger-empty-hint">{cartCopy.emptyHint}</p>
                 <div className="gw-empty-actions">
                   <Link to="/shop" className="gw-btn gw-btn--primary">
-                    {t.cart.startShopping}
+                    {cartCopy.startShopping}
                   </Link>
                   <Link to="/shop/ready-to-ship" className="gw-btn gw-btn--ghost">
                     {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
@@ -130,31 +134,39 @@ export default function CartPage() {
 
                 <ul className="gw-lines">
                   {items.map((item, index) => {
-                    const product = item.type === 'product' ? getProduct(item.slug) : null;
+                    const product = item.type === 'product' && item.slug ? getProduct(String(item.slug)) : null;
                     return (
                       <li key={item.key} className="gw-line">
                         <span className="gw-line-index" aria-hidden="true">
                           {String(index + 1).padStart(2, '0')}
                         </span>
                         <Link to={item.href || '#'} className="gw-line-media">
-                          <SmartImage src={item.image} alt={pick(item.name)} />
+                          <SmartImage src={String(item.image || '')} alt={pick(item.name as { en?: string; ar?: string })} />
                         </Link>
                         <div className="gw-line-body">
                           <Link to={item.href || '#'} className="gw-line-name">
-                            {pick(item.name)}
+                            {pick(item.name as { en?: string; ar?: string })}
                           </Link>
                           <p className="gw-line-meta">
-                            {item.type === 'product' && item.color && product && (
+                            {item.type === 'product' && item.color && product ? (
                               <span>
-                                {pick(product.colors.find((c) => c.key === item.color)?.name) ||
-                                  item.color}
+                                {String(
+                                  pick(
+                                    ((Array.isArray(product.colors) ? product.colors : []).find(
+                                      (c) => c.key === item.color,
+                                    )?.name as { en?: string; ar?: string } | undefined) || {
+                                      en: String(item.color),
+                                      ar: String(item.color),
+                                    },
+                                  ) || item.color,
+                                )}
                               </span>
-                            )}
-                            {item.type === 'product' && item.size && item.size !== 'OS' && (
-                              <span> · {item.size}</span>
-                            )}
-                            {item.type === 'training' && <span>{t.cart.digital}</span>}
-                            {item.type === 'event' && <span>{t.cart.event}</span>}
+                            ) : null}
+                            {item.type === 'product' && item.size && item.size !== 'OS' ? (
+                              <span>{` · ${String(item.size)}`}</span>
+                            ) : null}
+                            {item.type === 'training' ? <span>{cartCopy.digital || ''}</span> : null}
+                            {item.type === 'event' ? <span>{cartCopy.event || ''}</span> : null}
                           </p>
                           <div className="gw-line-controls">
                             {item.type === 'product' ? (
@@ -166,19 +178,19 @@ export default function CartPage() {
                                 compact
                               />
                             ) : (
-                              <span className="gw-line-fixed">{t.cart.qty}: 1</span>
+                              <span className="gw-line-fixed">{cartCopy.qty}: 1</span>
                             )}
                             <button
                               type="button"
                               className="gw-line-remove"
                               onClick={() => removeItem(item.key)}
                             >
-                              {t.cart.remove}
+                              {cartCopy.remove}
                             </button>
                           </div>
                         </div>
                         <div className="gw-line-price">
-                          {format(item.price * item.quantity, lang)}
+                          {format(Number(item.price || 0) * Number(item.quantity || 0), lang)}
                         </div>
                       </li>
                     );
@@ -186,7 +198,7 @@ export default function CartPage() {
                 </ul>
 
                 <Link to="/shop" className="gw-ledger-back">
-                  <Icon name="back" size={18} /> {t.cart.continue}
+                  <Icon name="back" size={18} /> {cartCopy.continue}
                 </Link>
               </div>
 
@@ -194,18 +206,18 @@ export default function CartPage() {
                   apart by a heavier rule rather than by colour. */}
               <aside className="gw-reckoning" aria-labelledby="gw-reckoning-title">
                 <h2 id="gw-reckoning-title" className="gw-spec gw-reckoning-title">
-                  {t.cart.title}
+                  {cartCopy.title}
                 </h2>
                 <dl className="gw-reckoning-rows">
                   <div>
-                    <dt>{t.cart.subtotal}</dt>
+                    <dt>{cartCopy.subtotal}</dt>
                     <dd>{format(subtotal, lang)}</dd>
                   </div>
                   <div>
-                    <dt>{t.cart.shipping}</dt>
+                    <dt>{cartCopy.shipping}</dt>
                     <dd className="gw-reckoning-muted">
                       {hasPhysical
-                        ? t.cart.shippingCalc
+                        ? cartCopy.shippingCalc
                         : items.some((item) => item.type === 'event') &&
                             !items.some((item) => item.type === 'training')
                           ? lang === 'ar'
@@ -218,13 +230,13 @@ export default function CartPage() {
                   </div>
                 </dl>
                 <p className="gw-reckoning-total">
-                  <span>{t.cart.total}</span>
+                  <span>{cartCopy.total}</span>
                   <span>{format(subtotal, lang)}</span>
                 </p>
                 <Link to="/checkout" className="gw-btn gw-btn--primary gw-reckoning-commit">
-                  {t.cart.checkout}
+                  {cartCopy.checkout}
                 </Link>
-                <p className="gw-reckoning-note">{t.checkout.secureNote}</p>
+                <p className="gw-reckoning-note">{checkoutCopy.secureNote}</p>
               </aside>
             </div>
           )}
