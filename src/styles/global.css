@@ -2710,10 +2710,6 @@ main {
 .mobile-link,
 .mobile-accordion-btn,
 .mobile-sublink,
-.mobile-sub-title {
-  color: #050505;
-}
-
 /* Hero: intentional black stage with unmistakable white hierarchy */
 
 .hero {
@@ -2931,13 +2927,6 @@ html[dir='rtl'] * {
 }
 
 .display-title,
-.hero-title {
-  font-size: clamp(2.8rem, 8vw, 6.5rem);
-  line-height: 0.91;
-  max-width: 14ch;
-  text-wrap: balance;
-}
-
 .section-heading .section-title {
   font-size: clamp(2rem, 5vw, 4.4rem);
   line-height: 0.94;
@@ -2990,9 +2979,7 @@ html[dir='rtl'] * {
 
 @media (max-width: 720px) {
 .display-title,
-  .hero-title {
-    font-size: clamp(2.65rem, 12vw, 4.4rem);
-  }.section-heading .section-title {
+.section-heading .section-title {
     font-size: clamp(2.15rem, 10vw, 3.5rem);
   }
 }
@@ -3189,12 +3176,6 @@ html[dir='rtl'] * {
 }
 
 .button-row,
-.checkout-entry-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
 .help-result-count {
   color: var(--muted);
 }
@@ -3296,9 +3277,7 @@ html[dir='rtl'] * {
 .order-card dl {
     grid-template-columns: 1fr;
   }.button-row,
-  .checkout-entry-actions {
-    display: grid;
-  }.button-row > *,
+.button-row > *,
   .checkout-entry-actions > * {
     width: 100%;
   }
@@ -3420,16 +3399,6 @@ html.search-modal-open body {
 }
 
 .shop-category-scroll,
-.mobile-filter-pills {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scrollbar-width: none;
-  padding: 4px 2px 14px;
-  scroll-padding-inline: var(--gutter);
-}
-
 .shop-category-scroll::-webkit-scrollbar,
 .mobile-filter-pills::-webkit-scrollbar {
   display: none;
@@ -3856,24 +3825,6 @@ canvas {
 
 .shop-category-scroll,
 .shop-subcategory-scroll,
-.mobile-filter-pills {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  margin: 0;
-  padding: 4px 2px 12px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-inline: contain;
-  scroll-padding-inline: 2px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
 .shop-category-scroll::-webkit-scrollbar,
 .shop-subcategory-scroll::-webkit-scrollbar,
 .mobile-filter-pills::-webkit-scrollbar {
@@ -4035,10 +3986,7 @@ canvas {
   html[dir='rtl'] .mobile-filter-pills {
     direction: rtl;
   }.shop-grid,
-  .shop-main {
-    display: block;
-    width: 100%;
-  }.product-grid {
+.product-grid {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4297,9 +4245,6 @@ canvas {
     hyphens: none !important;
   }.contact-info .section-title,
   .contact-list,
-  .contact-social {
-    min-width: 0;
-  }
 }
 
 /* LASTWEB final screenshot-backed containment corrections. */
