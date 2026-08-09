@@ -1,15 +1,16 @@
 let gaLoaded = false,
   clarityLoaded = false,
   allowed = false;
-const seen = new Map();
+const seen = new Map<string, number>();
 const getId = () => String(import.meta.env.VITE_GA_MEASUREMENT_ID || '').trim();
-const sanitizeString = (v) =>
+const sanitizeString = (v: unknown) =>
   String(v)
     .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[email]')
     .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, '[phone]')
     .slice(0, 100);
-export function sanitizePayload(params = {}) {
-  const clean = {};
+
+export function sanitizePayload(params: Record<string, unknown> = {}): Record<string, unknown> {
+  const clean: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(params)) {
     if (/password|address|email|phone|token|secret/i.test(k)) continue;
     if (v == null) continue;
@@ -24,15 +25,16 @@ export function sanitizePayload(params = {}) {
   }
   return clean;
 }
-export function initAnalytics(ok) {
+
+export function initAnalytics(ok: boolean): void {
   allowed = Boolean(ok);
   const id = getId();
   if (!allowed || !id || gaLoaded) return;
   window.dataLayer = window.dataLayer || [];
   window.gtag =
     window.gtag ||
-    function () {
-      window.dataLayer.push(arguments);
+    function (...args: unknown[]) {
+      window.dataLayer?.push(args);
     };
   window.gtag('js', new Date());
   window.gtag('config', id, {
@@ -47,13 +49,15 @@ export function initAnalytics(ok) {
   document.head.appendChild(s);
   gaLoaded = true;
 }
-export function initHeatmap(ok) {
+
+type ClarityFn = ((...args: unknown[]) => void) & { q: unknown[] };
+
+export function initHeatmap(ok: boolean): void {
   const id = String(import.meta.env.VITE_CLARITY_PROJECT_ID || '').trim();
   if (!ok || !id || clarityLoaded) return;
-  /** @type {any} */
-  const clarityQueue = function () {
-    clarityQueue.q.push(arguments);
-  };
+  const clarityQueue = function (...args: unknown[]) {
+    clarityQueue.q.push(args);
+  } as ClarityFn;
   clarityQueue.q = [];
   window.clarity = window.clarity || clarityQueue;
   const s = document.createElement('script');
@@ -62,15 +66,19 @@ export function initHeatmap(ok) {
   s.dataset.shababunaHeatmap = 'true';
   document.head.appendChild(s);
   clarityLoaded = true;
-  window.clarity('consent', true);
-  window.clarity('set', 'mask-inputs', 'true');
+  window.clarity?.('consent', true);
+  window.clarity?.('set', 'mask-inputs', 'true');
 }
-export function disableAnalytics() {
+
+export function disableAnalytics(): void {
   allowed = false;
   const id = getId();
-  if (id) window[`ga-disable-${id}`] = true;
+  if (id) {
+    (window as unknown as Record<string, boolean>)[`ga-disable-${id}`] = true;
+  }
 }
-export function revokeAnalyticsConsent() {
+
+export function revokeAnalyticsConsent(): void {
   disableAnalytics();
   if (typeof window.clarity === 'function') window.clarity('consent', false);
   document
@@ -79,7 +87,8 @@ export function revokeAnalyticsConsent() {
   gaLoaded = false;
   clarityLoaded = false;
 }
-export function trackEvent(name, params = {}) {
+
+export function trackEvent(name: string, params: Record<string, unknown> = {}): void {
   if (!allowed) return;
   const payload = sanitizePayload(params),
     key = `${name}:${JSON.stringify(payload)}`,
@@ -93,8 +102,10 @@ export function trackEvent(name, params = {}) {
     /* ignore */
   }
 }
+
 export const safeTrack = trackEvent;
-export function trackPage(path) {
+
+export function trackPage(path: string): void {
   trackEvent('page_view', { page_path: path, page_title: document.title });
 }
 
@@ -111,8 +122,13 @@ const commerceSessionId = (() => {
     return `${Date.now()}-memory`;
   }
 })();
+
 let commerceSequence = 0;
-export async function trackCommerceEvent(eventName, params = {}) {
+
+export async function trackCommerceEvent(
+  eventName: string,
+  params: Record<string, unknown> = {},
+): Promise<void> {
   const safe = sanitizePayload(params);
   const sourceEventId = `${commerceSessionId}:${eventName}:${++commerceSequence}`;
   try {
@@ -128,12 +144,12 @@ export async function trackCommerceEvent(eventName, params = {}) {
         currency: safe.currency,
         paymentMethod: safe.payment_method,
         stage: safe.stage,
-        itemCount: safe.items,
+        items: safe.items,
         shippingQuoteRequired: safe.shipping_quote_required,
       }),
     });
-    return response.ok;
+    if (!response.ok) throw new Error(`commerce_event_${response.status}`);
   } catch {
-    return false;
+    trackEvent(eventName, { ...safe, source_event_id: sourceEventId, offline: true });
   }
 }
