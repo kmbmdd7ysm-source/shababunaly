@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:06:26.781Z",
+  "generatedAt": "2026-08-09T02:07:23.292Z",
   "sourceFiles": 259,
-  "strictFiles": 41,
-  "strictCoveragePercent": 15.83,
+  "strictFiles": 42,
+  "strictCoveragePercent": 16.22,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -175,7 +175,6 @@
     "src/services/sync/protocol.js",
     "src/services/sync/storage.js",
     "src/utils/designExports.js",
-    "src/utils/profileImage.js",
     "src/utils/rosterSpreadsheet.js",
     "src/utils/simplePdf.js",
     "api/_business-events.js",
