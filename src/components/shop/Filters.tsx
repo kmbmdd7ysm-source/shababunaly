@@ -1,24 +1,56 @@
+import type { ReactElement } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useCommerce } from '../../context/CommerceContext';
-import { categories } from '../../data/categories';
-import { useCatalog } from '../../context/CatalogContext';
+import { categories } from '../../data/categories.js';
+import { useCatalog, type CatalogProduct } from '../../context/CatalogContext';
 import ColorSwatch from '../common/ColorSwatch';
 
-export default function Filters({ filters, onChange, onClear, visibleProducts = [] }) {
-  const { allSizes, allColors, allBrands, allProductTypes } = useCatalog();
+type FilterState = Record<string, unknown> & {
+  category?: string;
+  subcategory?: string;
+  brands?: string[];
+  productTypes?: string[];
+  sizes?: string[];
+  colors?: string[];
+  readyToShip?: boolean;
+  priceMin?: string | number;
+  priceMax?: string | number;
+};
+
+export default function Filters({
+  filters,
+  onChange,
+  onClear,
+  visibleProducts = [],
+}: {
+  filters: FilterState;
+  onChange: (patch: Partial<FilterState>) => void;
+  onClear: () => void;
+  visibleProducts?: CatalogProduct[];
+}): ReactElement {
+  const catalog = useCatalog();
+  const allSizes = (catalog.allSizes || []) as string[];
+  const allColors = (catalog.allColors || []) as Array<{ key: string; hex?: string; name?: { en?: string; ar?: string } }>;
+  const allBrands = (catalog.allBrands || []) as string[];
+  const allProductTypes = (catalog.allProductTypes || []) as string[];
   const { t, pick } = useLanguage();
+  const common = (t.common || {}) as Record<string, string>;
+  const shop = (t.shop || {}) as Record<string, string>;
   const { countryCode } = useCommerce();
   const isLibya = countryCode === 'LY';
   const activeCat = categories.find((c) => c.slug === filters.category);
   const availableBrands = new Set(visibleProducts.map((p) => p.brand));
   const availableTypes = new Set(visibleProducts.map((p) => p.productType));
-  const availableSizes = new Set(visibleProducts.flatMap((p) => p.sizes || []));
+  const availableSizes = new Set(visibleProducts.flatMap((p) => (p.sizes as string[]) || []));
   const availableColors = new Set(
-    visibleProducts.flatMap((p) => (p.colors || []).map((c) => c.key)),
+    visibleProducts.flatMap((p) =>
+      (Array.isArray(p.colors) ? p.colors : []).map((c) => String(c.key || '')),
+    ),
   );
 
-  const toggleArray = (field, value) => {
-    const set = new Set(filters[field] || []);
+  const toggleArray = (field: string, value: string) => {
+    const current = Array.isArray(filters[field]) ? (filters[field] as string[]) : [];
+    const set = new Set(current);
     set.has(value) ? set.delete(value) : set.add(value);
     onChange({ [field]: [...set] });
   };
@@ -26,9 +58,9 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
   return (
     <div className="filters filters--premium">
       <div className="filters-head">
-        <h2 className="filters-title">{t.common.filters}</h2>
+        <h2 className="filters-title">{common.filters}</h2>
         <button type="button" className="filters-clear" onClick={onClear}>
-          {t.common.clearAll}
+          {common.clearAll}
         </button>
       </div>
 
@@ -41,7 +73,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
             checked={!filters.category}
             onChange={() => onChange({ category: '', subcategory: '' })}
           />
-          <span>{t.common.all}</span>
+          <span>{common.all}</span>
         </label>
         {categories
           .filter((category) => isLibya || category.slug !== 'ready-to-ship')
@@ -68,7 +100,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
               checked={!filters.subcategory}
               onChange={() => onChange({ subcategory: '' })}
             />
-            <span>{t.common.all}</span>
+            <span>{common.all}</span>
           </label>
           {activeCat.subcategories.map((subcategory) => (
             <label key={subcategory.slug} className="filter-radio">
@@ -90,7 +122,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
           <label className="filter-check filter-check--ready">
             <input
               type="checkbox"
-              checked={filters.readyOnly}
+              checked={Boolean(filters.readyOnly)}
               onChange={(event) => onChange({ readyOnly: event.target.checked })}
             />
             <span>
@@ -102,10 +134,10 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
         <label className="filter-check">
           <input
             type="checkbox"
-            checked={filters.inStock}
+            checked={Boolean(filters.inStock)}
             onChange={(event) => onChange({ inStock: event.target.checked })}
           />
-          <span>{t.shop.inStock}</span>
+          <span>{shop.inStock}</span>
         </label>
       </fieldset>
 
@@ -118,7 +150,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
               <label className="filter-check" key={brand}>
                 <input
                   type="checkbox"
-                  checked={filters.brands.includes(brand)}
+                  checked={(filters.brands || []).includes(brand)}
                   onChange={() => toggleArray('brands', brand)}
                 />
                 <span>{brand}</span>
@@ -137,7 +169,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
                 <label className="filter-check" key={type}>
                   <input
                     type="checkbox"
-                    checked={filters.productTypes.includes(type)}
+                    checked={(filters.productTypes || []).includes(type)}
                     onChange={() => toggleArray('productTypes', type)}
                   />
                   <span>{type}</span>
@@ -149,7 +181,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
 
       {availableSizes.size > 1 && (
         <fieldset className="filter-group">
-          <legend>{t.shop.sizeFilter}</legend>
+          <legend>{shop.sizeFilter}</legend>
           <div className="filter-chips">
             {allSizes
               .filter((size) => availableSizes.has(size))
@@ -157,9 +189,9 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
                 <button
                   key={size}
                   type="button"
-                  className={`filter-chip${filters.sizes.includes(size) ? ' active' : ''}`}
+                  className={`filter-chip${(filters.sizes || []).includes(size) ? ' active' : ''}`}
                   onClick={() => toggleArray('sizes', size)}
-                  aria-pressed={filters.sizes.includes(size)}
+                  aria-pressed={(filters.sizes || []).includes(size)}
                 >
                   {size}
                 </button>
@@ -170,7 +202,7 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
 
       {availableColors.size > 1 && (
         <fieldset className="filter-group">
-          <legend>{t.shop.colorFilter}</legend>
+          <legend>{shop.colorFilter}</legend>
           <div className="filter-swatches">
             {allColors
               .filter((color) => availableColors.has(color.key))
@@ -178,13 +210,13 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
                 <button
                   key={color.key}
                   type="button"
-                  className={`filter-swatch${filters.colors.includes(color.key) ? ' active' : ''}`}
+                  className={`filter-swatch${(filters.colors || []).includes(color.key) ? ' active' : ''}`}
                   onClick={() => toggleArray('colors', color.key)}
-                  aria-pressed={filters.colors.includes(color.key)}
+                  aria-pressed={(filters.colors || []).includes(color.key)}
                   title={pick(color.name)}
                   aria-label={pick(color.name)}
                 >
-                  <ColorSwatch color={color.hex} />
+                  <ColorSwatch color={String(color.hex || '#777777')} />
                 </button>
               ))}
           </div>
@@ -192,25 +224,25 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
       )}
 
       <fieldset className="filter-group">
-        <legend>{t.shop.priceRange}</legend>
+        <legend>{shop.priceRange}</legend>
         <div className="price-range">
           <label>
-            <span className="sr-only">{t.shop.min}</span>
+            <span className="sr-only">{shop.min}</span>
             <input
               type="number"
               min="0"
-              placeholder={t.shop.min}
+              placeholder={shop.min}
               value={filters.priceMin}
               onChange={(event) => onChange({ priceMin: event.target.value })}
             />
           </label>
           <span aria-hidden="true">—</span>
           <label>
-            <span className="sr-only">{t.shop.max}</span>
+            <span className="sr-only">{shop.max}</span>
             <input
               type="number"
               min="0"
-              placeholder={t.shop.max}
+              placeholder={shop.max}
               value={filters.priceMax}
               onChange={(event) => onChange({ priceMax: event.target.value })}
             />
@@ -223,23 +255,23 @@ export default function Filters({ filters, onChange, onClear, visibleProducts = 
         <label className="filter-check">
           <input
             type="checkbox"
-            checked={filters.newOnly}
+            checked={Boolean(filters.newOnly)}
             onChange={(event) => onChange({ newOnly: event.target.checked })}
           />
-          <span>{t.shop.newOnly}</span>
+          <span>{shop.newOnly}</span>
         </label>
         <label className="filter-check">
           <input
             type="checkbox"
-            checked={filters.bestOnly}
+            checked={Boolean(filters.bestOnly)}
             onChange={(event) => onChange({ bestOnly: event.target.checked })}
           />
-          <span>{t.shop.bestOnly}</span>
+          <span>{shop.bestOnly}</span>
         </label>
         <label className="filter-check">
           <input
             type="checkbox"
-            checked={filters.customizableOnly}
+            checked={Boolean(filters.customizableOnly)}
             onChange={(event) => onChange({ customizableOnly: event.target.checked })}
           />
           <span>{pick({ en: 'Customizable', ar: 'قابل للتخصيص' })}</span>
