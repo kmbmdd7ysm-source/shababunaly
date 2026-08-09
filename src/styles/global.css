@@ -960,12 +960,6 @@ strong {
   flex-wrap: wrap;
 }
 
-.shop-count {
-  color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
 .shop-toolbar .sort-select {
   margin-inline-start: auto;
 }
@@ -1184,13 +1178,6 @@ strong {
   top: 12px;
   inset-inline-start: 12px;
 }
-
-.gallery-thumbs {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
 .gallery-thumb {
   width: 72px;
   aspect-ratio: 1;
@@ -1732,12 +1719,6 @@ to {
     align-items: start;
   }
 }
-
-.cart-lines {
-  display: grid;
-  gap: 1.25rem;
-}
-
 .cart-list {
   display: grid;
   gap: 1.25rem;
@@ -2752,7 +2733,7 @@ main {
 .section--muted .value-card,
 .values-grid .value-card {
   background: #fff;
-  border: 1px solid #cfcfc8 !important;
+  border: 1px solid #cfcfc8;
   color: #050505;
 }
 
@@ -3518,7 +3499,7 @@ html.search-modal-open body {
 }
 
 .size-pill.selected {
-  border: 2px solid #111 !important;
+  border: 2px solid #111;
   background: #fff;
   color: #111;
 }
@@ -3556,13 +3537,13 @@ html[dir='rtl'] .page-hero h1 {
 }
 
 html[dir='rtl'] .hero-title {
-  font-size: clamp(2.15rem, 10vw, 4.5rem) !important;
+  font-size: clamp(2.15rem, 10vw, 4.5rem);
   max-width: 13ch;
 }
 
 html[dir='rtl'] .section-title,
 html[dir='rtl'] .page-hero h1 {
-  font-size: clamp(1.9rem, 8vw, 3.8rem) !important;
+  font-size: clamp(1.9rem, 8vw, 3.8rem);
 }
 
 html[dir='rtl'] button,
@@ -3652,7 +3633,7 @@ html[dir='rtl'] a {
   }.size-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }html[dir='rtl'] .hero-title {
-    font-size: clamp(2rem, 9.8vw, 3.2rem) !important;
+    font-size: clamp(2rem, 9.8vw, 3.2rem);
     line-height: 1.45;
   }
 }
@@ -4063,7 +4044,7 @@ canvas {
   appearance: none;
   color: #111;
   background: #fff;
-  border: 1px solid #111 !important;
+  border: 1px solid #111;
   box-shadow: none;
   transform: none;
 }
@@ -4076,7 +4057,7 @@ canvas {
 .compare-product.active {
   color: #111;
   background: transparent;
-  border: 1px solid #111 !important;
+  border: 1px solid #111;
   box-shadow: none;
   transform: none;
 }
@@ -4182,14 +4163,14 @@ canvas {
 .contact-list a,
 .contact-list span {
   overflow-wrap: break-word !important;
-  word-break: normal !important;
+  word-break: normal;
 }
 
 .contact-info .section-title {
   font-size: clamp(2rem, 8vw, 4.5rem);
   line-height: 0.92;
   overflow-wrap: normal !important;
-  word-break: keep-all !important;
+  word-break: keep-all;
   hyphens: none;
 }
 
@@ -4237,11 +4218,11 @@ canvas {
     max-width: 100%;
   }.contact-info .section-title {
     max-width: 100%;
-    font-size: clamp(2rem, 9.5vw, 2.75rem) !important;
+    font-size: clamp(2rem, 9.5vw, 2.75rem);
     line-height: 0.98;
     letter-spacing: -0.035em;
     overflow-wrap: normal !important;
-    word-break: normal !important;
+    word-break: normal;
     hyphens: none !important;
   }
 }
@@ -4300,7 +4281,7 @@ html,
   grid-column: 1;
   width: 20px;
   height: 20px;
-  margin: 0.2rem 0 0 !important;
+  margin: 0.2rem 0 0;
 }
 
 .contact-form .contact-consent span {
@@ -4310,7 +4291,7 @@ html,
   max-width: 100%;
   white-space: normal;
   overflow-wrap: normal !important;
-  word-break: normal !important;
+  word-break: normal;
 }
 
 html[dir='rtl'] .contact-form .contact-consent {
@@ -4327,7 +4308,7 @@ html[dir='rtl'] .contact-form .contact-consent span {
 
 @media (max-width: 760px) {
 .contact-section .container {
-    padding-inline: var(--gutter) !important;
+    padding-inline: var(--gutter);
   }.contact-form input,
   .contact-form select,
   .contact-form textarea,
@@ -4450,14 +4431,14 @@ html,
 .filters-drawer-panel,
 .filters-drawer.open .filters-drawer-panel {
   position:absolute;
-  inset-inline: 0 !important;
-  inset-block: auto 0 !important;
+  inset-inline: 0;
+  inset-block: auto 0;
   z-index: 1;
   width: 100%;
   max-width: 430px;
-  height: min(86dvh, 760px) !important;
-  max-height: calc(100dvh - env(safe-area-inset-top)) !important;
-  margin-inline: auto !important;
+  height: min(86dvh, 760px);
+  max-height: calc(100dvh - env(safe-area-inset-top));
+  margin-inline: auto;
   transform: none;
   visibility:visible;
   opacity: 1;
@@ -4492,7 +4473,7 @@ html[dir='rtl'] .site-shell,
 html[dir='rtl'] main {
   inline-size: 100%;
   max-inline-size: 100%;
-  margin-inline: 0 !important;
+  margin-inline: 0;
   overflow-x:hidden;
 }
 
@@ -4501,7 +4482,7 @@ html[dir='rtl'] .hero-media,
 html[dir='rtl'] .page-hero,
 html[dir='rtl'] .announcement-bar,
 html[dir='rtl'] .site-header {
-  inset-inline: auto !important;
+  inset-inline: auto;
   width: 100%;
   max-width: 100%;
 }
@@ -4617,7 +4598,7 @@ html,
   #main-content {
     inline-size: 100%;
     max-inline-size: 100%;
-    margin-inline: 0 !important;
+    margin-inline: 0;
   }body,
   #root,
   .site-shell,
@@ -4642,7 +4623,7 @@ html,
     .modal-backdrop,
     .media-lightbox
   ) {
-    inset-inline: 0 !important;
+    inset-inline: 0;
     inline-size: 100%;
     max-inline-size: 100%;
   }/* Long user/order content wraps rather than widening the page. */:where(.order-number, .order-card, .order-detail, .account-page, .contact-section) {
@@ -4656,7 +4637,7 @@ html,
 #root[dir='rtl'],
 #root[dir='rtl'] .site-shell,
 #root[dir='rtl'] #main-content {
-  inset-inline: 0 !important;
+  inset-inline: 0;
   translate: none !important;
   inline-size: 100%;
   max-inline-size: 100%;
@@ -4679,13 +4660,13 @@ html,
   background: rgba(0, 0, 0, 0.92);
   display:grid;
   place-items:center;
-  padding: 72px 16px 52px !important;
+  padding: 72px 16px 52px;
   overflow:hidden;
 }
 
 .lightbox-stage {
-  width: min(1100px, 100%) !important;
-  height: min(78dvh, 900px) !important;
+  width: min(1100px, 100%);
+  height: min(78dvh, 900px);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -4705,14 +4686,14 @@ html,
 
 .lightbox-close {
   position:fixed;
-  top: max(16px, env(safe-area-inset-top)) !important;
+  top: max(16px, env(safe-area-inset-top));
   right: 16px;
   z-index: 2;
 }
 
 @media (min-width: 860px) {
 .contact-info .section-title {
-    font-size: clamp(1.65rem, 2.7vw, 3rem) !important;
+    font-size: clamp(1.65rem, 2.7vw, 3rem);
     line-height: 1;
     max-width: 100%;
     overflow-wrap: anywhere !important;
@@ -4721,10 +4702,10 @@ html,
 
 @media (max-width: 760px) {
 .media-lightbox {
-    padding: 76px 8px 52px !important;
+    padding: 76px 8px 52px;
   }.lightbox-stage {
     width: 100%;
-    height: calc(100dvh - 140px) !important;
+    height: calc(100dvh - 140px);
   }.lightbox-nav {
     display:none;
   }
@@ -4740,8 +4721,8 @@ html,
   align-items:center;
   justify-content:center;
   width: 100vw;
-  height: 100dvh !important;
-  padding: 64px 64px 56px !important;
+  height: 100dvh;
+  padding: 64px 64px 56px;
   background: #fff;
   color: #111;
   overflow:hidden;
@@ -4779,7 +4760,7 @@ html,
 
 .media-lightbox .lightbox-close {
   position:fixed;
-  top: max(16px, env(safe-area-inset-top)) !important;
+  top: max(16px, env(safe-area-inset-top));
   right: 16px;
 }
 
@@ -4789,7 +4770,7 @@ html,
 
 @media (max-width: 760px) {
 .media-lightbox {
-    padding: calc(64px + env(safe-area-inset-top)) 8px calc(44px + env(safe-area-inset-bottom)) !important;
+    padding: calc(64px + env(safe-area-inset-top)) 8px calc(44px + env(safe-area-inset-bottom));
   }.media-lightbox .lightbox-stage {
     width: 100%;
     height: 100%;

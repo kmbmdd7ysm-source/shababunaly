@@ -82,7 +82,7 @@ body {
 .hero {
   overflow: hidden;
   isolation: isolate;
-  background: linear-gradient(135deg, #030303, #111 70%, #050505) !important;
+  background: linear-gradient(135deg, #030303, #111 70%, #050505);
 }
 
 .hero .btn-primary,
@@ -123,7 +123,7 @@ body {
 
 .section {
   position: relative;
-  padding-block: clamp(88px, 10vw, 160px) !important;
+  padding-block: clamp(88px, 10vw, 160px);
 }
 
 .section-heading {
@@ -131,8 +131,8 @@ body {
 }
 
 .section-heading .section-title {
-  max-width: 18ch !important;
-  letter-spacing: -0.055em !important;
+  max-width: 18ch;
+  letter-spacing: -0.055em;
   line-height: 0.9;
 }
 
@@ -196,7 +196,7 @@ body {
 }
 
 .search-overlay {
-  background: rgba(5, 5, 5, 0.72) !important;
+  background: rgba(5, 5, 5, 0.72);
   backdrop-filter: blur(18px) saturate(130%);
   animation: overlayIn 0.3s ease both;
 }
@@ -274,14 +274,14 @@ from {
 
 @media (max-width: 760px) {
 .section {
-    padding-block: 88px !important;
+    padding-block: 88px;
   }.quick-add {
     transform: none;
     opacity: 1;
   }.section-heading .section-title {
-    font-size: clamp(2.15rem, 11vw, 3.8rem) !important;
+    font-size: clamp(2.15rem, 11vw, 3.8rem);
     line-height: 0.94;
-    max-width: 13ch !important;
+    max-width: 13ch;
   }
 }
 
@@ -1203,11 +1203,6 @@ html {
 #root,
 main,
 .site-header,
-.site-footer {
-  min-width: 0;
-  max-width: 100%;
-}
-
 .container {
   width: min(100%, var(--container));
   min-width: 0;
@@ -1219,15 +1214,6 @@ main,
   display: flex;
   align-items: center;
   gap: 0.25rem;
-}
-
-.lang-text-btn {
-  min-height: 40px;
-  padding: 0 0.75rem;
-  border: 1px solid var(--border-strong);
-  background: #fff;
-  border-radius: 999px;
-  font-weight: 700;
 }
 
 .mobile-menu {
@@ -1461,7 +1447,7 @@ main,
     background: transparent;
     color: inherit;
     border-color: transparent;
-    border-radius: 0 !important;
+    border-radius: 0;
     box-shadow: none;
     outline: 0;
     transform: none !important;
@@ -1486,7 +1472,7 @@ main,
 
 .media-lightbox {
   position:fixed;
-  inset: 0 !important;
+  inset: 0;
 }
 
 .lightbox-stage img {
