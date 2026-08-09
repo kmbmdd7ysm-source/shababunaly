@@ -58,8 +58,11 @@ export function reportClientError(error: unknown, context: Record<string, unknow
 }
 
 export function installGlobalErrorMonitoring(): void {
-  if (globalThis.__shababunaErrorMonitoringInstalled) return;
-  globalThis.__shababunaErrorMonitoringInstalled = true;
+  const root = globalThis as typeof globalThis & {
+    __shababunaErrorMonitoringInstalled?: boolean;
+  };
+  if (root.__shababunaErrorMonitoringInstalled) return;
+  root.__shababunaErrorMonitoringInstalled = true;
   globalThis.addEventListener?.('error', (event) =>
     reportClientError((event as ErrorEvent).error || (event as ErrorEvent).message, {
       source: 'window.error',
