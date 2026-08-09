@@ -41,7 +41,9 @@ export default function ShareButtons({
           <button
             type="button"
             className="btn-secondary compact share-control"
-            onClick={() => act('native')}
+            onClick={() => {
+              void act('native');
+            }}
           >
             {common.share}
           </button>
@@ -49,28 +51,36 @@ export default function ShareButtons({
         <button
           type="button"
           className="btn-secondary compact share-control"
-          onClick={() => act('copy')}
+          onClick={() => {
+            void act('copy');
+          }}
         >
           {copied && <Icon name="check" size={16} />} {copied ? common.copied : common.copy}
         </button>
         <button
           type="button"
           className="btn-secondary compact share-control"
-          onClick={() => act('whatsapp')}
+          onClick={() => {
+            void act('whatsapp');
+          }}
         >
           {common.whatsapp}
         </button>
         <button
           type="button"
           className="btn-secondary compact share-control"
-          onClick={() => act('x')}
+          onClick={() => {
+            void act('x');
+          }}
         >
           {common.x}
         </button>
         <button
           type="button"
           className="btn-secondary compact share-control"
-          onClick={() => act('email')}
+          onClick={() => {
+            void act('email');
+          }}
         >
           {common.email}
         </button>
