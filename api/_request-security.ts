@@ -31,15 +31,15 @@ const allowedOrigins = new Set([
 ]);
 
 function clientAddress(req: ApiRequest): string {
-  return clean(
+  const raw = clean(
     req.headers['x-forwarded-for'] ||
       req.headers['x-real-ip'] ||
       req.socket?.remoteAddress ||
       'unknown',
     200,
-  )
-    .split(',')[0]!
-    .trim();
+  );
+  const first = raw.split(',')[0] || raw;
+  return first.trim();
 }
 
 function secureEqual(left: unknown, right: unknown): boolean {
