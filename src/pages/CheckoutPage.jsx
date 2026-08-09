@@ -7,8 +7,8 @@ import { createIdempotencyKey, createOrder } from '../services/orders';
 import { SITE } from '../config';
 import { resolveShipping, SHIPPING_MESSAGES } from '../config/shipping';
 import { useCommerce } from '../context/CommerceContext';
-import CountrySelect from '../components/common/CountrySelect';
 import CheckoutContactStage from './checkout/CheckoutContactStage';
+import CheckoutAddressStage from './checkout/CheckoutAddressStage';
 import Icon from '../components/icons/Icon';
 import {
   getAddressRequirements,
@@ -713,147 +713,19 @@ export default function CheckoutPage() {
                 />
 
                 {!digitalOnly && (
-                  <fieldset className="form-block">
-                    <legend>{pick({ en: 'Delivery address', ar: 'عنوان التوصيل' })}</legend>
-                    {savedAddresses.length > 0 && (
-                      <label className="field">
-                        <span>{pick({ en: 'Saved address', ar: 'عنوان محفوظ' })}</span>
-                        <select
-                          value={selectedAddressId}
-                          onChange={(event) =>
-                            applySavedAddress(
-                              savedAddresses.find((row) => row.id === event.target.value),
-                            )
-                          }
-                        >
-                          <option value="">
-                            {pick({ en: 'Choose an address', ar: 'اختر عنوانًا' })}
-                          </option>
-                          {savedAddresses.map((address) => (
-                            <option key={address.id} value={address.id}>
-                              {address.label || 'Address'} —{' '}
-                              {address.address_line_1 || address.line1}, {address.city}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    )}
-                    <div className="field-row">
-                      <label className="field">
-                        <span>{t.checkout.firstName}</span>
-                        <input
-                          value={form.firstName}
-                          onChange={set('firstName')}
-                          autoComplete="given-name"
-                          {...fieldA11y('firstName')}
-                        />
-                        {errors.firstName && (
-                          <span id="checkout-firstName-error" className="form-error" role="status">
-                            {errors.firstName}
-                          </span>
-                        )}
-                      </label>
-                      <label className="field">
-                        <span>{t.checkout.lastName}</span>
-                        <input
-                          value={form.lastName}
-                          onChange={set('lastName')}
-                          autoComplete="family-name"
-                          {...fieldA11y('lastName')}
-                        />
-                        {errors.lastName && (
-                          <span id="checkout-lastName-error" className="form-error" role="status">
-                            {errors.lastName}
-                          </span>
-                        )}
-                      </label>
-                    </div>
-                    <label className="field">
-                      <span>{t.checkout.country}</span>
-                      <CountrySelect
-                        value={form.country}
-                        onChange={changeCountry}
-                        required
-                        aria-invalid={Boolean(errors.country)}
-                        aria-describedby={errors.country ? 'checkout-country-error' : undefined}
-                      />
-                      {errors.country && (
-                        <span id="checkout-country-error" className="form-error" role="status">
-                          {errors.country}
-                        </span>
-                      )}
-                    </label>
-                    <label className="field">
-                      <span>{t.checkout.address}</span>
-                      <input
-                        value={form.address}
-                        onChange={set('address')}
-                        autoComplete="address-line1"
-                        {...fieldA11y('address')}
-                      />
-                      {errors.address && (
-                        <span id="checkout-address-error" className="form-error" role="status">
-                          {errors.address}
-                        </span>
-                      )}
-                    </label>
-                    <label className="field">
-                      <span>{t.checkout.apartment}</span>
-                      <input
-                        value={form.apartment}
-                        onChange={set('apartment')}
-                        autoComplete="address-line2"
-                      />
-                    </label>
-                    <div className="field-row">
-                      <label className="field">
-                        <span>{t.checkout.city}</span>
-                        <input
-                          value={form.city}
-                          onChange={set('city')}
-                          autoComplete="address-level2"
-                          {...fieldA11y('city')}
-                        />
-                        {errors.city && (
-                          <span id="checkout-city-error" className="form-error" role="status">
-                            {errors.city}
-                          </span>
-                        )}
-                      </label>
-                      {!isLibya && (
-                        <label className="field">
-                          <span>{t.checkout.state}</span>
-                          <input
-                            value={form.state}
-                            onChange={set('state')}
-                            autoComplete="address-level1"
-                            {...fieldA11y('state')}
-                          />
-                          {errors.state && (
-                            <span id="checkout-state-error" className="form-error" role="status">
-                              {errors.state}
-                            </span>
-                          )}
-                        </label>
-                      )}
-                      {!isLibya && (
-                        <label className="field">
-                          <span>{t.checkout.postal}</span>
-                          <input
-                            value={form.postal}
-                            onChange={set('postal')}
-                            autoComplete="postal-code"
-                            {...fieldA11y('postal')}
-                          />
-                          {errors.postal && (
-                            <span id="checkout-postal-error" className="form-error" role="status">
-                              {errors.postal}
-                            </span>
-                          )}
-                        </label>
-                      )}
-                    </div>
-                  </fieldset>
+                  <CheckoutAddressStage
+                    pick={pick}
+                    form={form}
+                    errors={errors}
+                    setField={set}
+                    fieldA11y={fieldA11y}
+                    checkout={t.checkout || {}}
+                    isLibya={isLibya}
+                    savedAddresses={savedAddresses}
+                    selectedAddressId={selectedAddressId}
+                    applySavedAddress={applySavedAddress}
+                    changeCountry={changeCountry}
+                  />
                 )}
 
                 <fieldset className="form-block payment-methods">
