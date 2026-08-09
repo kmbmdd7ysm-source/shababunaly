@@ -1,3 +1,4 @@
+export { ProductContentCard } from './ProductContentCard';
 export { CatalogRow } from './CatalogRow';
 export { ShippingQuoteRow } from './ShippingQuoteRow';
 export { Stat } from './Stat';
@@ -888,123 +889,7 @@ export function DesignProofCard({ design, pick, saving, run, accessToken }) {
   );
 }
 
-export function ProductContentCard({ row, pick, saving, run }) {
-  const data = row.variant_data || {};
-  const [values, setValues] = useState({
-    nameEn: data.nameEn || row.product_name || '',
-    nameAr: data.nameAr || '',
-    descriptionEn: data.descriptionEn || '',
-    descriptionAr: data.descriptionAr || '',
-    brand: data.brand || '',
-    category: data.category || '',
-    subcategory: data.subcategory || '',
-    productType: data.productType || '',
-    imageUrl: data.imageUrl || '',
-    featured: Boolean(data.featured),
-    newArrival: Boolean(data.newArrival),
-    bestSeller: Boolean(data.bestSeller),
-    comingSoon: Boolean(data.comingSoon),
-    quoteOnly: Boolean(data.quoteOnly),
-  });
-  const key = `catalog-product-${row.product_id}`;
-  const set = (field) => (event) =>
-    setValues((current) => ({
-      ...current,
-      [field]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
-    }));
-  return (
-    <details className="operations-product-card">
-      <summary>
-        <span>
-          <strong>{values.nameEn || row.product_name}</strong>
-          <small>
-            {row.product_id} · {values.brand || data.brand || 'Shababuna'}
-          </small>
-        </span>
-        <span>{pick({ en: 'Edit', ar: 'تعديل' })}</span>
-      </summary>
-      <div className="operations-product-editor">
-        <div className="operations-form-grid">
-          <label>
-            <span>English name</span>
-            <input value={values.nameEn} onChange={set('nameEn')} />
-          </label>
-          <label>
-            <span>{pick({ en: 'Arabic name (optional)', ar: 'الاسم العربي (اختياري)' })}</span>
-            <input value={values.nameAr} onChange={set('nameAr')} />
-          </label>
-          <label>
-            <span>Brand</span>
-            <input value={values.brand} onChange={set('brand')} />
-          </label>
-          <label>
-            <span>Product type</span>
-            <input value={values.productType} onChange={set('productType')} />
-          </label>
-          <label>
-            <span>Category</span>
-            <input value={values.category} onChange={set('category')} />
-          </label>
-          <label>
-            <span>Subcategory</span>
-            <input value={values.subcategory} onChange={set('subcategory')} />
-          </label>
-        </div>
-        <label>
-          <span>
-            {pick({
-              en: 'Product image URL or /public path',
-              ar: 'رابط صورة المنتج أو مسار public',
-            })}
-          </span>
-          <input
-            value={values.imageUrl}
-            onChange={set('imageUrl')}
-            placeholder="/images/products/item.webp"
-          />
-        </label>
-        <div className="operations-form-grid operations-form-grid--descriptions">
-          <label>
-            <span>English description</span>
-            <textarea rows={4} value={values.descriptionEn} onChange={set('descriptionEn')} />
-          </label>
-          <label>
-            <span>{pick({ en: 'Arabic description', ar: 'الوصف العربي' })}</span>
-            <textarea rows={4} value={values.descriptionAr} onChange={set('descriptionAr')} />
-          </label>
-        </div>
-        <div className="operations-check-grid">
-          {[
-            ['featured', 'Featured'],
-            ['newArrival', 'New Arrival'],
-            ['bestSeller', 'Best Seller'],
-            ['comingSoon', 'Coming Soon'],
-            ['quoteOnly', 'Quote Only'],
-          ].map(([field, label]) => (
-            <label key={field}>
-              <input type="checkbox" checked={values[field]} onChange={set(field)} />
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
-        <button
-          className="btn-primary compact"
-          disabled={saving === key || !values.nameEn.trim()}
-          onClick={() =>
-            run(
-              key,
-              () => updateCatalogProduct({ productId: row.product_id, ...values }),
-              pick({
-                en: 'Product content saved and published to the live catalog.',
-                ar: 'تم حفظ محتوى المنتج ونشره في الكتالوج المباشر.',
-              }),
-            )
-          }
-        >
-          {pick({ en: 'Save Product', ar: 'حفظ المنتج' })}
-        </button>
-      </div>
-    </details>
+etails>
   );
 }
 
