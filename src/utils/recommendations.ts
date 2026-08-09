@@ -1,4 +1,4 @@
-interface RecommendProduct {
+export interface RecommendProduct {
   id: string;
   availability?: string;
   category?: string;

@@ -1,21 +1,23 @@
 import ProductCard from '../shop/ProductCard';
 import { useCatalog } from '../../context/CatalogContext';
-import { recommend } from '../../utils/recommendations';
+import { recommend } from '../../utils/recommendations.ts';
 import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
 import { useWishlist } from '../../hooks/useWishlist';
 import { useCart } from '../../context/CartContext';
 import { useLanguage } from '../../context/LanguageContext';
-export default function Recommendations({ current }) {
+
+export default function Recommendations({ current }: { current?: { id?: string; [key: string]: unknown } }) {
   const { products } = useCatalog();
   const { ids } = useRecentlyViewed(),
     w = useWishlist(),
     { items } = useCart(),
     { pick } = useLanguage();
-  const list = recommend(products, {
-    current,
+  const catalog = products as Array<{ id: string; [key: string]: unknown }>;
+  const list = recommend(catalog as never, {
+    current: current as never,
     recent: ids,
     wishlist: w.ids || [],
-    cart: items,
+    cart: (items as Array<{ id: string }>) || [],
   }).slice(0, 4);
   if (!list.length) return null;
   return (
@@ -25,7 +27,7 @@ export default function Recommendations({ current }) {
         <h2 className="section-title">{pick({ en: 'Recommended for you', ar: 'مقترحة لك' })}</h2>
         <div className="product-grid">
           {list.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={String(p.id)} product={p} />
           ))}
         </div>
       </div>
