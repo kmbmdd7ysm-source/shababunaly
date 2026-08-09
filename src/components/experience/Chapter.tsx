@@ -1,26 +1,18 @@
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 
 /**
  * A dark, full-bleed chapter.
- *
- * The governing rule of the GROUNDWORK direction: the system is measured and
- * light, the film is lit and dark, and the two meet at a threshold but never
- * blend. A chapter is therefore always full-bleed, always bounded top and
- * bottom by a drawn rule, and always exits back to the measured chalk field.
- * There is no gradient between the two worlds and no dark UI chrome.
- *
- * @param {{
- *   label?: string,
- *   title?: string,
- *   children?: any,
- *   titleClassName?: string,
- * }} props
  */
 export default function Chapter({
   label = '',
   title = '',
   children = null,
   titleClassName = 'gw-display',
+}: {
+  label?: ReactNode;
+  title?: ReactNode;
+  children?: ReactNode;
+  titleClassName?: string;
 }) {
   const headingId = useId();
   const labelled = title ? { 'aria-labelledby': headingId } : {};

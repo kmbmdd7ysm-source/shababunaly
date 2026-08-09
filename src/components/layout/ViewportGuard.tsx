@@ -4,8 +4,6 @@ import { useLanguage } from '../../context/LanguageContext';
 
 /**
  * Keeps the document viewport anchored to the physical screen edge.
- * Horizontal product/category scrollers remain independent; only accidental
- * document-level horizontal drift is corrected.
  */
 export default function ViewportGuard() {
   const location = useLocation();
