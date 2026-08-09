@@ -1,4 +1,4 @@
-import { applyApiHeaders } from './_request-security.js';
+import { applyApiHeaders } from './_request-security.ts';
 
 const clean = (value, max = 2000) =>
   String(value ?? '')

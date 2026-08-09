@@ -1,5 +1,5 @@
 import { getPaymentAdapter } from './payments/registry.js';
-import { guardPublicPost } from './_request-security.js';
+import { guardPublicPost } from './_request-security.ts';
 
 const MAX_BODY_BYTES = 16_000;
 const ALLOWED_METHODS = new Set(['online_card', 'libyan_bank_card']);

@@ -4,7 +4,7 @@ import {
   guardPublicPost,
   guardPublicRequest,
   verifyBearerSecret,
-} from '../api/_request-security.js';
+} from '../api/_request-security.ts';
 import {
   getSupabaseAdminConfig,
   resolveSupabaseUser,

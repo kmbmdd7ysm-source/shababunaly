@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
 import {
   resolveSupabaseUser,
   getSupabaseAdminConfig,

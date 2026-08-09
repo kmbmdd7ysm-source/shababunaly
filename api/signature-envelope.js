@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
 import { resolveSupabaseUser, supabaseUserRequest } from './_supabase-admin.ts';
 import { createSignatureEnvelope } from './signatures/provider.js';
 

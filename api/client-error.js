@@ -1,4 +1,4 @@
-import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
 import { supabaseAdminRequest } from './_supabase-admin.ts';
 
 const clean = (value, max = 600) =>

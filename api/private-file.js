@@ -1,4 +1,4 @@
-import { applyApiHeaders } from './_request-security.js';
+import { applyApiHeaders } from './_request-security.ts';
 import {
   getSupabaseAdminConfig,
   resolveSupabaseUser,

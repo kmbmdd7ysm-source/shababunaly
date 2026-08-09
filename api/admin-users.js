@@ -1,4 +1,4 @@
-import { applyApiHeaders } from './_request-security.js';
+import { applyApiHeaders } from './_request-security.ts';
 import { requireStaffSession } from './_staff-auth.ts';
 
 const ALLOWED_ROLES = new Set(['customer', 'sales', 'operations', 'admin', 'super_admin']);

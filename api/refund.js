@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
 import { requireStaffSession } from './_staff-auth.ts';
 import { supabaseAdminRequest } from './_supabase-admin.ts';
 import { getPaymentAdapter } from './payments/registry.js';

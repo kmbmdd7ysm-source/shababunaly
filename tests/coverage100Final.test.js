@@ -22,7 +22,7 @@ import {
   guardPublicRequest,
   guardPublicPost,
   verifyBearerSecret,
-} from '../api/_request-security.js';
+} from '../api/_request-security.ts';
 import {
   normalizeCatalogProduct,
   normalizeLhaCatalogProduct,

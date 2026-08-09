@@ -1,6 +1,6 @@
 import { getPaymentAdapter } from './payments/registry.js';
 import { clean } from './payments/adapters/base.js';
-import { guardPublicPost } from './_request-security.js';
+import { guardPublicPost } from './_request-security.ts';
 
 const MAX_BODY_BYTES = 16_000;
 const PAYABLE_STATUSES = new Set(['deposit_required', 'final_payment_required']);

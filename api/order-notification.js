@@ -1,4 +1,4 @@
-import { guardPublicPost } from './_request-security.js';
+import { guardPublicPost } from './_request-security.ts';
 export const resolveOrderNotificationEndpoint = () =>
   String(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT || '').trim();
 

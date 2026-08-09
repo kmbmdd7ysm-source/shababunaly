@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { guardPublicPost, applyApiHeaders } from './_request-security.js';
+import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { recordBusinessEvent } from './_business-events.ts';

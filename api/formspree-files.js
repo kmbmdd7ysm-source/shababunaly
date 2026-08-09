@@ -1,4 +1,4 @@
-import { guardPublicPost } from './_request-security.js';
+import { guardPublicPost } from './_request-security.ts';
 import { validateEncodedFiles } from './_file-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 

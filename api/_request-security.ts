@@ -1,7 +1,20 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 
-const developmentBuckets = new Map();
-const clean = (value, max = 1000) =>
+type ApiRequest = {
+  method?: string;
+  headers: Record<string, string | string[] | undefined>;
+  body?: unknown;
+  socket?: { remoteAddress?: string };
+};
+
+type ApiResponse = {
+  setHeader: (name: string, value: string) => void;
+  status: (code: number) => ApiResponse;
+  json: (body: unknown) => unknown;
+};
+
+const developmentBuckets = new Map<string, { count: number; resetAt: number }>();
+const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
@@ -17,7 +30,7 @@ const allowedOrigins = new Set([
   'http://127.0.0.1:5173',
 ]);
 
-function clientAddress(req) {
+function clientAddress(req: ApiRequest): string {
   return clean(
     req.headers['x-forwarded-for'] ||
       req.headers['x-real-ip'] ||
@@ -25,17 +38,17 @@ function clientAddress(req) {
       'unknown',
     200,
   )
-    .split(',')[0]
+    .split(',')[0]!
     .trim();
 }
 
-function secureEqual(left, right) {
+function secureEqual(left: unknown, right: unknown): boolean {
   const a = Buffer.from(String(left));
   const b = Buffer.from(String(right));
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-export function applyApiHeaders(res) {
+export function applyApiHeaders(res: ApiResponse): void {
   res.setHeader('Cache-Control', 'no-store, private');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -43,7 +56,17 @@ export function applyApiHeaders(res) {
   res.setHeader('X-Frame-Options', 'DENY');
 }
 
-async function consumeDurableLimit({ bucket, subjectHash, limit, windowSeconds }) {
+async function consumeDurableLimit({
+  bucket,
+  subjectHash,
+  limit,
+  windowSeconds,
+}: {
+  bucket: string;
+  subjectHash: string;
+  limit: number;
+  windowSeconds: number;
+}): Promise<boolean | null> {
   const base = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const key = clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
   if (!base || !key) return null;
@@ -67,7 +90,11 @@ async function consumeDurableLimit({ bucket, subjectHash, limit, windowSeconds }
   return Boolean(await upstream.json());
 }
 
-function consumeDevelopmentLimit(key, limit, windowMs) {
+function consumeDevelopmentLimit(
+  key: string,
+  limit: number,
+  windowMs: number,
+): { allowed: boolean; retryAfter: number } {
   const now = Date.now();
   const current = developmentBuckets.get(key);
   const bucket =
@@ -81,16 +108,22 @@ function consumeDevelopmentLimit(key, limit, windowMs) {
 }
 
 export async function guardPublicRequest(
-  req,
-  res,
+  req: ApiRequest,
+  res: ApiResponse,
   {
     maxBytes = 64_000,
     limit = 12,
     windowMs = 60_000,
     bucket = 'public-request',
     honeypot = true,
+  }: {
+    maxBytes?: number;
+    limit?: number;
+    windowMs?: number;
+    bucket?: string;
+    honeypot?: boolean;
   } = {},
-) {
+): Promise<boolean> {
   applyApiHeaders(res);
   const origin = clean(req.headers.origin, 1000);
   if (origin && !allowedOrigins.has(origin)) {
@@ -102,7 +135,8 @@ export async function guardPublicRequest(
     res.status(413).json({ ok: false, error: 'request_too_large' });
     return false;
   }
-  const body = req.body && typeof req.body === 'object' ? req.body : {};
+  const body =
+    req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
   if (honeypot && clean(body.website || body.company_website || body._gotcha, 500)) {
     res.status(200).json({ ok: true });
     return false;
@@ -158,11 +192,21 @@ export async function guardPublicRequest(
   return true;
 }
 
-export async function guardPublicPost(req, res, options = {}) {
+export async function guardPublicPost(
+  req: ApiRequest,
+  res: ApiResponse,
+  options: {
+    maxBytes?: number;
+    limit?: number;
+    windowMs?: number;
+    bucket?: string;
+    honeypot?: boolean;
+  } = {},
+): Promise<boolean> {
   return guardPublicRequest(req, res, { ...options, honeypot: options.honeypot !== false });
 }
 
-export function verifyBearerSecret(header, expected) {
+export function verifyBearerSecret(header: unknown, expected: unknown): boolean {
   const provided = clean(header, 5000).replace(/^Bearer\s+/i, '');
   return Boolean(expected) && secureEqual(provided, expected);
 }

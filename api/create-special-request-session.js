@@ -1,6 +1,6 @@
 import { getPaymentAdapter } from './payments/registry.js';
 import { clean } from './payments/adapters/base.js';
-import { guardPublicPost } from './_request-security.js';
+import { guardPublicPost } from './_request-security.ts';
 const json = (res, status, body) => {
   res.setHeader('Cache-Control', 'no-store, private');
   res.setHeader('X-Content-Type-Options', 'nosniff');
