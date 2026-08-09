@@ -1,15 +1,23 @@
+import type { ReactElement } from 'react';
 import Icon from '../icons/Icon';
 import { useEffect, useRef, useState } from 'react';
 import { lockDocumentScroll } from '../../utils/scrollLock';
 export default function MediaLightbox({
   open,
   onClose,
-  items,
+  items = [],
   index = 0,
   onIndexChange,
   label = 'Media viewer',
-}) {
-  const dialog = useRef(null);
+}: {
+  open?: boolean;
+  onClose: () => void;
+  items?: string[];
+  index?: number;
+  onIndexChange?: (index: number) => void;
+  label?: string;
+}): ReactElement | null {
+  const dialog = useRef<HTMLDivElement | null>(null);
   const [zoom, setZoom] = useState(1);
   const [i, setI] = useState(index);
   useEffect(() => setI(index), [index]);
@@ -17,7 +25,7 @@ export default function MediaLightbox({
     if (!open) return undefined;
     const old = document.activeElement;
     dialog.current?.focus();
-    const key = (e) => {
+    const key = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight') next();
       if (e.key === 'ArrowLeft') prev();
@@ -32,7 +40,7 @@ export default function MediaLightbox({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [open, i]);
   if (!open) return null;
-  const go = (n) => {
+  const go = (n: number) => {
     const x = (n + items.length) % items.length;
     setI(x);
     onIndexChange?.(x);
@@ -47,7 +55,7 @@ export default function MediaLightbox({
       aria-modal="true"
       aria-label={label}
       ref={dialog}
-      tabIndex="-1"
+      tabIndex={-1}
     >
       <button className="lightbox-close" onClick={onClose} aria-label="Close">
         <Icon name="close" />
