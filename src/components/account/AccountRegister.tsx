@@ -1,6 +1,14 @@
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function AccountRegister({ sections, section, selectSection }) {
+export default function AccountRegister({
+  sections,
+  section,
+  selectSection,
+}: {
+  sections: Record<string, string>;
+  section: string;
+  selectSection: (id: string) => void;
+}) {
   const { pick } = useLanguage();
   return (
     <nav

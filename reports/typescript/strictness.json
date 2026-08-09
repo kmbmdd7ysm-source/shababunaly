@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:29:54.246Z",
+  "generatedAt": "2026-08-09T02:30:58.112Z",
   "sourceFiles": 259,
-  "strictFiles": 76,
-  "strictCoveragePercent": 29.34,
+  "strictFiles": 77,
+  "strictCoveragePercent": 29.73,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountRegister.jsx",
@@ -21,7 +21,6 @@
     "src/components/common/EmptyState.jsx",
     "src/components/common/Modal.jsx",
     "src/components/common/Newsletter.jsx",
-    "src/components/common/SectionHeading.jsx",
     "src/components/common/Seo.jsx",
     "src/components/common/ShareButtons.jsx",
     "src/components/common/SmartImage.jsx",

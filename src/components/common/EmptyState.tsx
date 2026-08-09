@@ -1,14 +1,23 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function EmptyState({ message = '', hint = '', action = null }) {
+export default function EmptyState({
+  message = '',
+  hint = '',
+  action = null,
+}: {
+  message?: string;
+  hint?: string;
+  action?: { to?: string; label?: string; onClick?: () => void } | null;
+}) {
   const { t } = useLanguage();
+  const common = (t.common as { results?: string } | undefined) || {};
   return (
     <div className="empty-state" role="status">
       <span className="empty-mark" aria-hidden="true">
         🏀
       </span>
-      <p className="empty-message">{message || t.common.results}</p>
+      <p className="empty-message">{message || common.results}</p>
       {hint && <p className="empty-hint">{hint}</p>}
       {action &&
         (action.to ? (
