@@ -1,5 +1,7 @@
 import { PRODUCT_FAMILIES } from '../../../data/productFamilies.ts';
-import { CUSTOM_PRODUCT_TYPES } from '../../../data/customization';
+import { CUSTOM_PRODUCT_TYPES } from '../../../data/customization.ts';
+
+type PickFn = (value: { en?: string; ar?: string } | string) => string;
 
 export default function ProductStep({
   pick,
@@ -8,6 +10,13 @@ export default function ProductStep({
   design,
   selectProduct,
   setStep,
+}: {
+  pick: PickFn;
+  productFamily: string | null;
+  setProductFamily: (family: string | null) => void;
+  design: Record<string, unknown>;
+  selectProduct: (product: unknown) => void;
+  setStep: (step: string) => void;
 }) {
   return (
     <section className="gw-family-stage" aria-labelledby="custom-product-title">
