@@ -1,7 +1,7 @@
 import { commerceConfig, isSupportedDisplayCurrency } from '../config/commerce.ts';
 import { isSupportedCountryCode, normalizeCountryCode } from '../data/countries.ts';
 import type { Currency } from '../domain/types.ts';
-import { safeRead, safeRemove, safeWrite, scopeKey } from './sync/storage.js';
+import { safeRead, safeRemove, safeWrite, scopeKey } from './sync/storage.ts';
 
 const BASES = Object.freeze({
   currency: 'shababuna-display-currency',
