@@ -1,0 +1,20 @@
+{
+  "unused": [
+    "coach-card",
+    "coach-card-img",
+    "country-combobox__option",
+    "country-combobox__toggle",
+    "event-card",
+    "gallery-image",
+    "gallery-open",
+    "home-deferred-anchor",
+    "mobile-menu-foot",
+    "mobile-menu-head",
+    "mobile-more-action",
+    "product-layout",
+    "program-card",
+    "training-card"
+  ],
+  "removed": 3,
+  "importantAfter": 36
+}

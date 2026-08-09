@@ -144,14 +144,6 @@ body {
 .program-card,
 .event-card,
 .training-card,
-.coach-card {
-  transition:
-    transform 0.55s var(--ease-premium),
-    box-shadow 0.55s var(--ease-premium),
-    border-color 0.35s !important;
-  will-change: transform;
-}
-
 .product-card:hover,
 .program-card:hover,
 .event-card:hover,
@@ -1114,14 +1106,6 @@ button:disabled,
 }
 
 .product-card-img,
-.gallery-image {
-  object-fit:contain;
-  object-position: center;
-  transition:
-    opacity var(--motion-base) var(--ease-standard),
-    transform var(--motion-slow) var(--ease-emphasized);
-}
-
 @media (hover: hover) and (pointer: fine) {
 .product-card-media:hover .product-card-img--main,
   .gallery-open:hover .gallery-image {
@@ -1524,10 +1508,6 @@ main,
 .program-card-img,
 .event-card-img,
 .training-card-img,
-.coach-card-img {
-  display: block;
-}
-
 /* Mobile performance hardening: preserve the visual design while keeping the
    first paint limited to the poster and above-the-fold content. */
 
