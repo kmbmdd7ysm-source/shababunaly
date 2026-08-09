@@ -39,12 +39,12 @@ export function StaffAccessManager({
             <StaffAccessRow
               key={String(user.id)}
               user={user}
-              accessToken={accessToken}
-              currentUserId={currentUserId}
+              {...(accessToken ? { accessToken } : {})}
+              {...(currentUserId ? { currentUserId } : {})}
               pick={pick}
-              saving={saving}
+              {...(saving !== undefined ? { saving } : {})}
               run={run}
-              onUpdated={onUpdated}
+              {...(onUpdated ? { onUpdated } : {})}
             />
           ))}
           {!rows.length ? (
