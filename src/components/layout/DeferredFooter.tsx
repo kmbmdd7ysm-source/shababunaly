@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 
-const Footer = lazy(() => import('./Footer'));
+const Footer = lazy(() => import('./Footer.tsx'));
 
 export default function DeferredFooter() {
   const anchorRef = useRef(null);
