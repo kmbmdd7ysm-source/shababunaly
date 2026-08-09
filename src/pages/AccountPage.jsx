@@ -21,6 +21,7 @@ import ReturnsSection from '../components/account/ReturnsSection';
 import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import MfaSecurityPanel from '../components/account/MfaSecurityPanel';
 import AccountRegister from '../components/account/AccountRegister';
+import AccountOverview from '../components/account/AccountOverview';
 import {
   downloadPrivacyExport,
   listPrivacyExports,
@@ -910,27 +911,7 @@ export default function AccountPage() {
             <AccountRegister sections={t} section={section} selectSection={selectSection} />
             <div className="gw-account-panel">
               {section === 'overview' && (
-                <div className="gw-account-summary">
-                  <article className="gw-account-summary-card">
-                    <h2>{pick({ en: 'Cart', ar: 'السلة' })}</h2>
-                    <strong>{cart.count}</strong>
-                  </article>
-                  <article className="gw-account-summary-card">
-                    <h2>{pick({ en: 'Wishlist', ar: 'المفضلة' })}</h2>
-                    <strong>{data.wishlist.length}</strong>
-                  </article>
-                  <article className="gw-account-summary-card">
-                    <h2>{pick({ en: 'Comparisons', ar: 'المقارنات' })}</h2>
-                    <strong>{compare.count}</strong>
-                  </article>
-                  <article className="gw-account-summary-card">
-                    <h2>{pick({ en: 'Orders', ar: 'الطلبات' })}</h2>
-                    <strong>{ordersState.orders.length}</strong>
-                    <Link to="/order-tracking">
-                      {pick({ en: 'View My Orders', ar: 'عرض طلباتي' })}
-                    </Link>
-                  </article>
-                </div>
+                <AccountOverview cartCount={cart.count} wishlistCount={data.wishlist.length} compareCount={compare.count} ordersCount={ordersState.orders.length} />
               )}
               {section === 'orders' && (
                 <section aria-labelledby="account-orders-title">
