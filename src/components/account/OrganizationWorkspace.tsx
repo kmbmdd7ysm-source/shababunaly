@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent, FormEvent, ReactElement } from 'react';
+import type { LocaleValue } from '../../context/LanguageContext';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -21,6 +23,23 @@ import {
 } from '../../services/b2b';
 import { createTextPdf, downloadBlob } from '../../utils/simplePdf';
 
+type StatusLabel = { en: string; ar: string };
+type PickFn = (value: LocaleValue) => string;
+type Row = Record<string, unknown>;
+
+function asRecord(value: unknown): Row {
+  return value && typeof value === 'object' && !Array.isArray(value) ? (value as Row) : {};
+}
+
+function asRows(value: unknown): Row[] {
+  return Array.isArray(value) ? (value as Row[]) : [];
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+
 const STATUS_LABELS = {
   draft: { en: 'Draft', ar: 'مسودة' },
   quote_requested: { en: 'Quote requested', ar: 'تم طلب عرض السعر' },
@@ -41,6 +60,10 @@ const STATUS_LABELS = {
   completed: { en: 'Completed', ar: 'مكتمل' },
 };
 
+function statusLabel(status: unknown): StatusLabel | undefined {
+  return (STATUS_LABELS as Record<string, StatusLabel>)[String(status || '')];
+}
+
 const WORKSPACE_TABS = [
   { key: 'designs', en: 'Designs', ar: 'التصاميم' },
   { key: 'rosters', en: 'Rosters', ar: 'قوائم الفريق' },
@@ -53,22 +76,38 @@ const WORKSPACE_TABS = [
   { key: 'locker', en: 'Team Locker', ar: 'متجر الفريق' },
 ];
 
-function formatDate(value, lang) {
+function formatDate(value: unknown, lang?: string): string {
   if (!value) return '—';
   try {
     return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-LY' : 'en-US', {
       dateStyle: 'medium',
-    }).format(new Date(value));
+    }).format(new Date(String(value)));
   } catch {
     return String(value).slice(0, 10);
   }
 }
 
-export default function OrganizationWorkspace() {
+export default function OrganizationWorkspace(): ReactElement {
   const { pick, lang } = useLanguage();
   const auth = useAuth();
+  const userMeta = ((auth.user as { user_metadata?: Row } | null)?.user_metadata || {}) as Row;
   const [tab, setTab] = useState('designs');
-  const [state, setState] = useState({
+  type WorkspaceState = {
+    loading: boolean;
+    designs: Row[];
+    rosters: Row[];
+    quotes: Row[];
+    production: Row[];
+    documents: Row[];
+    shipping: Row[];
+    messages: Row[];
+    reorders: Row[];
+    locker: Row[];
+    organizationIds: string[];
+    error: string;
+    [key: string]: unknown;
+  };
+  const [state, setState] = useState<WorkspaceState>({
     loading: true,
     designs: [],
     rosters: [],
@@ -82,7 +121,8 @@ export default function OrganizationWorkspace() {
     organizationIds: [],
     error: '',
   });
-  const accountType = auth.user?.user_metadata?.account_type || 'customer';
+  const listFor = (key: string): Row[] => asRows(state[key]);
+  const accountType = String(userMeta.account_type || 'customer');
   const isOrganization = accountType === 'organization';
 
   const load = useCallback(async () => {
@@ -91,41 +131,43 @@ export default function OrganizationWorkspace() {
     try {
       if (isOrganization) {
         await ensureOrganization({
-          userId: auth.user.id,
-          name: auth.user.user_metadata?.organization_name,
-          type: auth.user.user_metadata?.organization_type || 'club',
-          countryCode: auth.user.user_metadata?.country_code || 'LY',
+          userId: String(auth.user.id),
+          name: String(userMeta.organization_name || ''),
+          type: String(userMeta.organization_type || 'club'),
+          countryCode: String(userMeta.country_code || 'LY'),
         });
       }
-      const [designs, rosters, quotes, production, enterprise] = await Promise.all([
-        listSavedDesigns(auth.user.id),
-        listRosters(auth.user.id),
-        listQuoteRequests(auth.user.id),
-        listProductionUpdates(auth.user.id),
-        loadEnterpriseWorkspace(auth.user.id),
+      const [designsRaw, rostersRaw, quotesRaw, productionRaw, enterpriseRaw] = await Promise.all([
+        listSavedDesigns(String(auth.user.id)),
+        listRosters(String(auth.user.id)),
+        listQuoteRequests(String(auth.user.id)),
+        listProductionUpdates(String(auth.user.id)),
+        loadEnterpriseWorkspace(String(auth.user.id)),
       ]);
-      const documents = [
-        ...(enterprise.invoices || []).map((row) => ({ ...row, document_kind: 'invoice' })),
-        ...(enterprise.contracts || []).map((row) => ({ ...row, document_kind: 'contract' })),
-        ...(enterprise.paymentProofs || []).map((row) => ({
-          ...row,
-          document_kind: 'payment_proof',
-        })),
+      const enterprise = asRecord(enterpriseRaw);
+      const documents: Row[] = [
+        ...asRows(enterprise.invoices).map((row) => ({ ...row, document_kind: 'invoice' }) as Row),
+        ...asRows(enterprise.contracts).map((row) => ({ ...row, document_kind: 'contract' }) as Row),
+        ...asRows(enterprise.paymentProofs).map(
+          (row) => ({ ...row, document_kind: 'payment_proof' }) as Row,
+        ),
       ].sort((a, b) =>
-        String(b.updated_at || b.created_at).localeCompare(String(a.updated_at || a.created_at)),
+        String(b.updated_at || b.created_at || '').localeCompare(
+          String(a.updated_at || a.created_at || ''),
+        ),
       );
       setState({
         loading: false,
-        designs,
-        rosters,
-        quotes,
-        production,
+        designs: asRows(designsRaw),
+        rosters: asRows(rostersRaw),
+        quotes: asRows(quotesRaw),
+        production: asRows(productionRaw),
         documents,
-        shipping: enterprise.shipments || [],
-        messages: enterprise.messages || [],
-        reorders: enterprise.reorders || [],
-        locker: enterprise.lockers || [],
-        organizationIds: enterprise.organizations || [],
+        shipping: asRows(enterprise.shipments),
+        messages: asRows(enterprise.messages),
+        reorders: asRows(enterprise.reorders),
+        locker: asRows(enterprise.lockers),
+        organizationIds: asRows(enterprise.organizations).map((row) => String(row.id || '')),
         error: '',
       });
     } catch {
@@ -140,18 +182,18 @@ export default function OrganizationWorkspace() {
     }
   }, [
     auth.user?.id,
-    auth.user?.user_metadata?.country_code,
-    auth.user?.user_metadata?.organization_name,
-    auth.user?.user_metadata?.organization_type,
+    userMeta.country_code,
+    userMeta.organization_name,
+    userMeta.organization_type,
     isOrganization,
     pick,
   ]);
 
   useEffect(() => {
-    load();
+    void load();
   }, [load]);
 
-  const activeRows = useMemo(() => state[tab] || [], [state, tab]);
+  const activeRows = useMemo(() => asRows(state[tab]), [state, tab]);
 
   if (!isOrganization) {
     return (
@@ -179,7 +221,7 @@ export default function OrganizationWorkspace() {
         <div>
           <p className="section-label">B2B WORKSPACE</p>
           <h2 id="organization-workspace-title">
-            {auth.user?.user_metadata?.organization_name ||
+            {String(userMeta.organization_name || '') ||
               pick({ en: 'Organization workspace', ar: 'منصة المؤسسة' })}
           </h2>
         </div>
@@ -187,7 +229,7 @@ export default function OrganizationWorkspace() {
           <Link to="/customize" className="btn-primary">
             {pick({ en: 'New Design', ar: 'تصميم جديد' })}
           </Link>
-          <button type="button" className="btn-secondary" onClick={load} disabled={state.loading}>
+          <button type="button" className="btn-secondary" onClick={() => { void load(); }} disabled={state.loading}>
             {state.loading
               ? pick({ en: 'Refreshing…', ar: 'جاري التحديث…' })
               : pick({ en: 'Refresh', ar: 'تحديث' })}
@@ -206,7 +248,7 @@ export default function OrganizationWorkspace() {
             onClick={() => setTab(item.key)}
           >
             <span>{pick({ en: item.en, ar: item.ar })}</span>
-            <b>{state[item.key]?.length || 0}</b>
+            <b>{listFor(item.key).length}</b>
           </button>
         ))}
       </nav>
@@ -252,42 +294,57 @@ export default function OrganizationWorkspace() {
       {!state.loading && tab === 'designs' && activeRows.length > 0 && (
         <div className="workspace-card-grid">
           {activeRows.map((item) => (
-            <DesignWorkspaceCard key={item.id} item={item} pick={pick} lang={lang} onSaved={load} />
+            <DesignWorkspaceCard
+              key={String(item.id)}
+              item={item}
+              pick={pick}
+              lang={String(lang)}
+              onSaved={load}
+            />
           ))}
         </div>
       )}
 
       {!state.loading && tab === 'rosters' && activeRows.length > 0 && (
         <div className="workspace-list">
-          {activeRows.map((item) => (
-            <article key={item.id}>
-              <div>
-                <span className="workspace-index">
-                  {String(item.player_count || item.players?.length || 0).padStart(2, '0')}
-                </span>
+          {activeRows.map((item) => {
+            const players = asRows(item.players);
+            return (
+              <article key={String(item.id)}>
                 <div>
-                  <h3>{item.name}</h3>
-                  <p>
-                    {pick({ en: 'players', ar: 'لاعب' })} ·{' '}
-                    {item.validation_errors
-                      ? pick({
-                          en: `${item.validation_errors} issues`,
-                          ar: `${item.validation_errors} ملاحظات`,
-                        })
-                      : pick({ en: 'Validated', ar: 'تم التحقق' })}
-                  </p>
+                  <span className="workspace-index">
+                    {String(item.player_count || players.length || 0).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h3>{String(item.name || '')}</h3>
+                    <p>
+                      {pick({ en: 'players', ar: 'لاعب' })} ·{' '}
+                      {item.validation_errors
+                        ? pick({
+                            en: `${String(item.validation_errors)} issues`,
+                            ar: `${String(item.validation_errors)} ملاحظات`,
+                          })
+                        : pick({ en: 'Validated', ar: 'تم التحقق' })}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <small>{formatDate(item.updated_at, lang)}</small>
-            </article>
-          ))}
+                <small>{formatDate(item.updated_at, lang)}</small>
+              </article>
+            );
+          })}
         </div>
       )}
 
       {!state.loading && tab === 'quotes' && activeRows.length > 0 && (
         <div className="workspace-list">
           {activeRows.map((item) => (
-            <QuoteWorkspaceRow key={item.id} item={item} pick={pick} lang={lang} onSaved={load} />
+            <QuoteWorkspaceRow
+              key={String(item.id)}
+              item={item}
+              pick={pick}
+              lang={String(lang)}
+              onSaved={load}
+            />
           ))}
         </div>
       )}
@@ -295,19 +352,19 @@ export default function OrganizationWorkspace() {
       {!state.loading && tab === 'production' && activeRows.length > 0 && (
         <div className="production-timeline">
           {activeRows.map((item) => (
-            <article key={item.id}>
+            <article key={String(item.id)}>
               <span className="timeline-marker" />
               <div>
                 <small>{formatDate(item.created_at, lang)}</small>
                 <h3>
                   {pick(
-                    STATUS_LABELS[item.status] || {
-                      en: item.title || item.status,
-                      ar: item.title_ar || item.status,
+                    statusLabel(item.status) || {
+                      en: String(item.title || item.status || ''),
+                      ar: String(item.title_ar || item.status || ''),
                     },
                   )}
                 </h3>
-                {item.message && <p>{item.message}</p>}
+                {Boolean(item.message) && <p>{String(item.message || '')}</p>}
               </div>
             </article>
           ))}
@@ -318,54 +375,59 @@ export default function OrganizationWorkspace() {
         <EnterpriseDocuments
           rows={state.documents}
           quotes={state.quotes}
-          accessToken={auth.session?.access_token}
-          user={auth.user}
+          {...(auth.session?.access_token
+            ? { accessToken: String(auth.session.access_token) }
+            : {})}
+          {...(auth.user ? { user: auth.user } : {})}
           pick={pick}
-          lang={lang}
+          lang={String(lang)}
           onSaved={load}
         />
       )}
       {!state.loading && tab === 'shipping' && (
-        <ShipmentWorkspace rows={state.shipping} pick={pick} lang={lang} />
+        <ShipmentWorkspace rows={state.shipping} pick={pick} lang={String(lang)} />
       )}
       {!state.loading && tab === 'messages' && (
         <MessageWorkspace
           rows={state.messages}
-          organizationId={state.organizationIds[0]}
+          {...(state.organizationIds[0] ? { organizationId: state.organizationIds[0] } : {})}
           pick={pick}
-          lang={lang}
+          lang={String(lang)}
           onSaved={load}
         />
       )}
       {!state.loading && tab === 'reorders' && (
         <ReorderWorkspace
           rows={state.reorders}
-          organizationId={state.organizationIds[0]}
+          {...(state.organizationIds[0] ? { organizationId: state.organizationIds[0] } : {})}
           designs={state.designs}
           quotes={state.quotes}
           pick={pick}
-          lang={lang}
+          lang={String(lang)}
           onSaved={load}
         />
       )}
       {!state.loading && tab === 'locker' && (
-        <TeamLockerWorkspace rows={state.locker} pick={pick} lang={lang} />
+        <TeamLockerWorkspace rows={state.locker} pick={pick} lang={String(lang)} />
       )}
     </section>
   );
 }
 
-function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
+function DesignWorkspaceCard({ item, pick, lang, onSaved }: { item: Row; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState('');
-  const proofUrls = Array.isArray(item.proof_data?.urls)
-    ? item.proof_data.urls.filter((url) => /^https:\/\//i.test(String(url || '')))
+  const preview = asRecord(item.preview_data);
+  const designData = asRecord(item.design_data);
+  const proofData = asRecord(item.proof_data);
+  const proofUrls = Array.isArray(proofData.urls)
+    ? (proofData.urls as unknown[]).filter((url) => /^https:\/\//i.test(String(url || '')))
     : [];
   const actionable = item.status === 'proof_ready';
-  const respond = async (decision) => {
+  const respond = async (decision: string) => {
     setBusy(decision);
     try {
-      await respondToDesign({ designId: item.id, decision, note });
+      await respondToDesign({ designId: String(item.id || ''), decision, note });
       await onSaved();
     } finally {
       setBusy('');
@@ -380,11 +442,11 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
           width="80"
           height="96"
           rx="10"
-          fill={item.preview_data?.primary || item.design_data?.primary || '#050505'}
+          fill={String(preview.primary || designData.primary || '#050505')}
         />
         <path
           d="M0 66L80 36V96H0Z"
-          fill={item.preview_data?.secondary || item.design_data?.secondary || '#ffffff'}
+          fill={String(preview.secondary || designData.secondary || '#ffffff')}
           opacity=".3"
         />
         <text
@@ -392,31 +454,31 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
           y="58"
           textAnchor="middle"
           dominantBaseline="middle"
-          fill={item.preview_data?.secondary || item.design_data?.secondary || '#ffffff'}
+          fill={String(preview.secondary || designData.secondary || '#ffffff')}
           fontSize="28"
           fontWeight="900"
         >
-          {item.preview_data?.number || item.design_data?.number || '00'}
+          {String(preview.number || designData.number || '00')}
         </text>
       </svg>
       <div className="workspace-card-copy">
         <span className="workspace-status">
           {pick(
-            STATUS_LABELS[item.status] || {
-              en: item.status || 'Draft',
-              ar: item.status || 'مسودة',
+            statusLabel(item.status) || {
+              en: String(item.status || 'Draft'),
+              ar: String(item.status || 'مسودة'),
             },
           )}
         </span>
-        <h3>{item.name}</h3>
+        <h3>{String(item.name || '')}</h3>
         <p>
-          {item.product_type} · v{item.version || 1}
+          {String(item.product_type || '')} · v{String(item.version || 1)}
         </p>
         <small>{formatDate(item.updated_at, lang)}</small>
         {proofUrls.length > 0 && (
           <div className="proof-link-row">
-            {proofUrls.map((url, index) => (
-              <a key={`${url}-${index}`} href={url} target="_blank" rel="noreferrer">
+            {proofUrls.map((url: unknown, index: number) => (
+              <a key={`${String(url)}-${index}`} href={String(url)} target="_blank" rel="noreferrer">
                 {pick({ en: `Proof ${index + 1}`, ar: `البروفة ${index + 1}` })}
               </a>
             ))}
@@ -427,7 +489,7 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
             <textarea
               rows={2}
               value={note}
-              onChange={(event) => setNote(event.target.value)}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setNote(event.target.value)}
               placeholder={pick({
                 en: 'Optional approval or change note',
                 ar: 'ملاحظة اختيارية للاعتماد أو التعديل',
@@ -438,7 +500,7 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
                 type="button"
                 className="btn-primary compact"
                 disabled={Boolean(busy)}
-                onClick={() => respond('approved')}
+                onClick={() => { void respond('approved'); }}
               >
                 {busy === 'approved'
                   ? pick({ en: 'Approving…', ar: 'جاري الاعتماد…' })
@@ -448,7 +510,7 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
                 type="button"
                 className="btn-secondary compact"
                 disabled={Boolean(busy)}
-                onClick={() => respond('changes_requested')}
+                onClick={() => { void respond('changes_requested'); }}
               >
                 {pick({ en: 'Request Changes', ar: 'طلب تعديلات' })}
               </button>
@@ -456,7 +518,7 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
           </div>
         )}
       </div>
-      <Link to={`/customize?design=${encodeURIComponent(item.id)}`}>
+      <Link to={`/customize?design=${encodeURIComponent(String(item.id || ''))}`}>
         {item.status === 'approved'
           ? pick({ en: 'View', ar: 'عرض' })
           : pick({ en: 'Open', ar: 'فتح' })}{' '}
@@ -466,34 +528,39 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }) {
   );
 }
 
-function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
+function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState('');
-  const actionable = ['quote_sent', 'awaiting_approval'].includes(item.status);
+  const requestData = asRecord(item.request_data);
+  const actionable = ['quote_sent', 'awaiting_approval'].includes(String(item.status || ''));
   const payable =
-    ['deposit_required', 'final_payment_required'].includes(item.status) &&
+    ['deposit_required', 'final_payment_required'].includes(String(item.status || '')) &&
     Number(item.amount_due_now) > 0;
   const onlineCardConfigured = isPaymentMethodConfigured('online_card');
   const libyanCardConfigured = isPaymentMethodConfigured('libyan_bank_card');
-  const customerEmail = item.request_data?.customerEmail || item.request_data?.email || '';
-  const respond = async (decision) => {
+  const customerEmail = String(requestData.customerEmail || requestData.email || '');
+  const respond = async (decision: string) => {
     setBusy(decision);
     setMessage('');
     try {
-      await respondToQuote({ quoteId: item.id, decision, note });
+      await respondToQuote({ quoteId: String(item.id || ''), decision, note });
       await onSaved();
-    } catch (error) {
-      setMessage(error?.message || String(error));
+    } catch (error: unknown) {
+      setMessage(errorMessage(error));
     } finally {
       setBusy('');
     }
   };
-  const pay = async (paymentMethod) => {
+  const pay = async (paymentMethod: string) => {
     setBusy(paymentMethod);
     setMessage('');
     try {
-      await startQuotePayment({ quoteNumber: item.quote_number, customerEmail, paymentMethod });
+      await startQuotePayment({
+        quoteNumber: String(item.quote_number || ''),
+        customerEmail,
+        paymentMethod,
+      });
     } catch {
       setMessage(
         pick({
@@ -504,11 +571,11 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
       setBusy('');
     }
   };
-  const downloadDocument = (kind) => {
+  const downloadDocument = (kind: string) => {
     const isInvoice = kind === 'invoice';
     const blob = createTextPdf({
       title: isInvoice ? 'SHABABUNA INVOICE' : 'SHABABUNA QUOTE',
-      subtitle: `${item.quote_number || item.id} · BUILT DIFFERENT`,
+      subtitle: `${String(item.quote_number || item.id || '')} · BUILT DIFFERENT`,
       sections: [
         {
           heading: 'Customer',
@@ -516,9 +583,9 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
             ['Email', customerEmail || '—'],
             [
               'Organization',
-              item.request_data?.organizationName || item.request_data?.teamName || '—',
+              String(requestData.organizationName || requestData.teamName || '—'),
             ],
-            ['Status', item.status || '—'],
+            ['Status', String(item.status || '—')],
             ['Created', formatDate(item.created_at, lang)],
           ],
         },
@@ -553,15 +620,25 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
         },
       ],
     });
-    downloadBlob(blob, `${isInvoice ? 'invoice' : 'quote'}-${item.quote_number || item.id}.pdf`);
+    downloadBlob(
+      blob,
+      `${isInvoice ? 'invoice' : 'quote'}-${String(item.quote_number || item.id || '')}.pdf`,
+    );
   };
   return (
     <article className={actionable || payable ? 'workspace-list-actionable' : ''}>
       <div>
-        <span className="workspace-status-dot" data-status={item.status} />
+        <span className="workspace-status-dot" data-status={String(item.status || '')} />
         <div>
-          <h3>{item.quote_number || item.id}</h3>
-          <p>{pick(STATUS_LABELS[item.status] || { en: item.status, ar: item.status })}</p>
+          <h3>{String(item.quote_number || item.id || '')}</h3>
+          <p>
+            {pick(
+              statusLabel(item.status) || {
+                en: String(item.status || ''),
+                ar: String(item.status || ''),
+              },
+            )}
+          </p>
           <div className="quote-payment-breakdown">
             <small>
               {pick({ en: 'Paid', ar: 'مدفوع' })}: ${Number(item.amount_paid || 0).toFixed(2)}
@@ -583,7 +660,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
             <div className="quote-response">
               <input
                 value={note}
-                onChange={(event) => setNote(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setNote(event.target.value)}
                 placeholder={pick({ en: 'Optional note', ar: 'ملاحظة اختيارية' })}
               />
               <div>
@@ -591,7 +668,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
                   type="button"
                   className="btn-primary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => respond('accepted')}
+                  onClick={() => { void respond('accepted'); }}
                 >
                   {pick({ en: 'Accept Quote', ar: 'قبول العرض' })}
                 </button>
@@ -599,7 +676,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
                   type="button"
                   className="btn-secondary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => respond('changes_requested')}
+                  onClick={() => { void respond('changes_requested'); }}
                 >
                   {pick({ en: 'Request Changes', ar: 'طلب تعديل' })}
                 </button>
@@ -613,7 +690,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
                   type="button"
                   className="btn-primary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => pay('online_card')}
+                  onClick={() => { void pay('online_card'); }}
                 >
                   {pick({ en: 'Pay by Card', ar: 'الدفع بالبطاقة' })}
                 </button>
@@ -623,7 +700,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
                   type="button"
                   className="btn-secondary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => pay('libyan_bank_card')}
+                  onClick={() => { void pay('libyan_bank_card'); }}
                 >
                   {pick({ en: 'Libyan Bank Card', ar: 'بطاقة مصرفية ليبية' })}
                 </button>
@@ -659,7 +736,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
         <strong>
           {item.total == null
             ? pick({ en: 'Under review', ar: 'قيد المراجعة' })
-            : `${item.total} ${item.currency || 'USD'}`}
+            : `${String(item.total)} ${String(item.currency || 'USD')}`}
         </strong>
         <small>{formatDate(item.updated_at || item.created_at, lang)}</small>
       </div>
@@ -667,12 +744,12 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }) {
   );
 }
 
-function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSaved }) {
+function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSaved }: { rows: Row[]; quotes: Row[]; accessToken?: string | undefined; user?: unknown; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
   const [entityType, setEntityType] = useState('quote');
-  const [entityId, setEntityId] = useState(quotes[0]?.id || '');
+  const [entityId, setEntityId] = useState(String(quotes[0]?.id || ''));
   const [amount, setAmount] = useState('');
   const [reference, setReference] = useState('');
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState('');
   const invoices = rows.filter((row) => row.document_kind === 'invoice');
@@ -680,14 +757,23 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
   const proofs = rows.filter((row) => row.document_kind === 'payment_proof');
   const entityOptions = entityType === 'invoice' ? invoices : quotes;
   useEffect(() => {
-    if (!entityOptions.some((row) => row.id === entityId)) setEntityId(entityOptions[0]?.id || '');
+    if (!entityOptions.some((row) => String(row.id || '') === entityId)) {
+      setEntityId(String(entityOptions[0]?.id || ''));
+    }
   }, [entityId, entityOptions]);
-  const upload = async (event) => {
+  const upload = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBusy('proof');
     setMessage('');
     try {
-      await submitPaymentProof({ accessToken, entityType, entityId, file, amount, reference });
+      await submitPaymentProof({
+        ...(accessToken ? { accessToken } : {}),
+        entityType,
+        entityId,
+        file,
+        amount,
+        reference,
+      });
       setFile(null);
       setAmount('');
       setReference('');
@@ -698,15 +784,15 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
         }),
       );
       await onSaved();
-    } catch (error) {
-      setMessage(error?.message || String(error));
+    } catch (error: unknown) {
+      setMessage(errorMessage(error));
     } finally {
       setBusy('');
     }
   };
   return (
     <div className="enterprise-panel-stack">
-      <form className="enterprise-action-card" onSubmit={upload}>
+      <form className="enterprise-action-card" onSubmit={(event) => { void upload(event); }}>
         <div>
           <p className="section-label">PAYMENT PROOF</p>
           <h3>{pick({ en: 'Submit bank-transfer proof', ar: 'إرسال إثبات التحويل المصرفي' })}</h3>
@@ -720,18 +806,18 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
         <div className="operations-form-grid">
           <label>
             <span>{pick({ en: 'Document type', ar: 'نوع المستند' })}</span>
-            <select value={entityType} onChange={(event) => setEntityType(event.target.value)}>
+            <select value={entityType} onChange={(event: ChangeEvent<HTMLSelectElement>) => setEntityType(event.target.value)}>
               <option value="quote">{pick({ en: 'Quote', ar: 'عرض سعر' })}</option>
               <option value="invoice">{pick({ en: 'Invoice', ar: 'فاتورة' })}</option>
             </select>
           </label>
           <label>
             <span>{pick({ en: 'Reference document', ar: 'المستند المرجعي' })}</span>
-            <select value={entityId} onChange={(event) => setEntityId(event.target.value)} required>
+            <select value={entityId} onChange={(event: ChangeEvent<HTMLSelectElement>) => setEntityId(event.target.value)} required>
               <option value="">—</option>
               {entityOptions.map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.quote_number || row.invoice_number || row.id}
+                <option key={String(row.id)} value={String(row.id || '')}>
+                  {String(row.quote_number || row.invoice_number || row.id || '')}
                 </option>
               ))}
             </select>
@@ -740,10 +826,10 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
             <span>{pick({ en: 'Amount', ar: 'المبلغ' })}</span>
             <input
               type="number"
-              min="0.01"
-              step="0.01"
+              min={0.01}
+              step={0.01}
               value={amount}
-              onChange={(event) => setAmount(event.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setAmount(event.target.value)}
               required
             />
           </label>
@@ -751,7 +837,7 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
             <span>{pick({ en: 'Transfer reference', ar: 'مرجع التحويل' })}</span>
             <input
               value={reference}
-              onChange={(event) => setReference(event.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setReference(event.target.value)}
               maxLength={240}
             />
           </label>
@@ -761,7 +847,9 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp,application/pdf"
-            onChange={(event) => setFile(event.target.files?.[0] || null)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setFile(event.target.files?.[0] || null)
+            }
             required
           />
         </label>
@@ -782,34 +870,34 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
       <div className="workspace-card-grid">
         {contracts.map((contract) => (
           <ContractWorkspaceCard
-            key={contract.id}
+            key={String(contract.id)}
             contract={contract}
-            accessToken={accessToken}
-            user={user}
+            {...(accessToken ? { accessToken } : {})}
+            {...(user !== undefined ? { user } : {})}
             pick={pick}
-            lang={lang}
+            lang={String(lang)}
             onSaved={onSaved}
           />
         ))}
       </div>
       <div className="workspace-list">
         {invoices.map((invoice) => (
-          <InvoiceWorkspaceRow key={invoice.id} invoice={invoice} pick={pick} lang={lang} />
+          <InvoiceWorkspaceRow key={String(invoice.id)} invoice={invoice} pick={pick} lang={String(lang)} />
         ))}
         {proofs.map((proof) => (
-          <article key={proof.id}>
+          <article key={String(proof.id)}>
             <div>
-              <span className="workspace-status-dot" data-status={proof.status} />
+              <span className="workspace-status-dot" data-status={String(proof.status || '')} />
               <div>
-                <h3>{proof.proof_number}</h3>
+                <h3>{String(proof.proof_number || '')}</h3>
                 <p>
-                  {pick({ en: 'Payment proof', ar: 'إثبات دفع' })} · {proof.status}
+                  {pick({ en: 'Payment proof', ar: 'إثبات دفع' })} · {String(proof.status || '')}
                 </p>
               </div>
             </div>
             <div className="workspace-money">
               <strong>
-                {Number(proof.amount || 0).toFixed(2)} {proof.currency}
+                {Number(proof.amount || 0).toFixed(2)} {String(proof.currency || '')}
               </strong>
               <small>{formatDate(proof.created_at, lang)}</small>
             </div>
@@ -820,15 +908,17 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
   );
 }
 
-function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSaved }) {
+function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSaved }: { contract: Row; accessToken?: string | undefined; user?: unknown; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+  const authUser = asRecord(user);
+  const userMetadata = asRecord(authUser.user_metadata);
   const [name, setName] = useState(
-    user?.user_metadata?.full_name || user?.email?.split('@')[0] || '',
+    String(userMetadata.full_name || String(authUser.email || '').split('@')[0] || ''),
   );
   const [signature, setSignature] = useState('');
   const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
-  const signable = ['sent', 'viewed', 'changes_requested'].includes(contract.status);
+  const signable = ['sent', 'viewed', 'changes_requested'].includes(String(contract.status || ''));
   const externalProviderConfigured = Boolean(import.meta.env.VITE_SIGNATURE_PROVIDER);
   const externalRequired = contract.signature_mode === 'external_required';
   const sign = async () => {
@@ -840,21 +930,21 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
         (contract.signature_mode === 'external_optional' && externalProviderConfigured)
       ) {
         await startExternalContractSignature({
-          accessToken,
-          contractId: contract.id,
+          ...(accessToken ? { accessToken } : {}),
+          contractId: String(contract.id || ''),
           signerName: name,
-          signerEmail: user?.email || '',
+          signerEmail: String(authUser.email || ''),
         });
         return;
       }
       await signOrganizationContract({
-        accessToken,
-        contractId: contract.id,
+        ...(accessToken ? { accessToken } : {}),
+        contractId: String(contract.id || ''),
         signerName: name,
-        signerEmail: user?.email || '',
+        signerEmail: String(authUser.email || ''),
         signatureValue: signature,
         signatureType: 'typed',
-        consentVersion: contract.terms_version || '1.0',
+        consentVersion: String(contract.terms_version || '1.0'),
       });
       setMessage(
         pick({
@@ -863,8 +953,8 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
         }),
       );
       await onSaved();
-    } catch (error) {
-      setMessage(error?.message || String(error));
+    } catch (error: unknown) {
+      setMessage(errorMessage(error));
     } finally {
       setBusy(false);
     }
@@ -872,12 +962,12 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
   return (
     <article className="workspace-card">
       <div className="workspace-card-copy">
-        <span className="workspace-status">{contract.status}</span>
-        <h3>{contract.title}</h3>
+        <span className="workspace-status">{String(contract.status || '')}</span>
+        <h3>{String(contract.title || '')}</h3>
         <p>
-          {contract.contract_number} · {formatDate(contract.created_at, lang)}
+          {String(contract.contract_number || '')} · {formatDate(contract.created_at, lang)}
         </p>
-        {contract.valid_until && (
+        {Boolean(contract.valid_until) && (
           <small>
             {pick({ en: 'Valid until', ar: 'صالح حتى' })}: {formatDate(contract.valid_until, lang)}
           </small>
@@ -886,13 +976,13 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
           <div className="workspace-approval">
             <input
               value={name}
-              onChange={(event) => setName(event.target.value)}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
               placeholder={pick({ en: 'Authorized signer name', ar: 'اسم المفوض بالتوقيع' })}
             />
             {!externalRequired && (
               <input
                 value={signature}
-                onChange={(event) => setSignature(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setSignature(event.target.value)}
                 placeholder={pick({
                   en: 'Type your full legal name as signature',
                   ar: 'اكتب اسمك القانوني الكامل كتوقيع',
@@ -903,7 +993,7 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
               <input
                 type="checkbox"
                 checked={consent}
-                onChange={(event) => setConsent(event.target.checked)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setConsent(event.target.checked)}
               />
               <span>
                 {pick({
@@ -930,7 +1020,7 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
                 (!externalRequired && signature.trim().length < 2) ||
                 (externalRequired && !externalProviderConfigured)
               }
-              onClick={sign}
+              onClick={() => { void sign(); }}
             >
               {busy
                 ? pick({ en: 'Opening secure signature…', ar: 'جاري فتح التوقيع الآمن…' })
@@ -961,16 +1051,17 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
   );
 }
 
-function InvoiceWorkspaceRow({ invoice, pick, lang }) {
+function InvoiceWorkspaceRow({ invoice, pick, lang }: { invoice: Row; pick: PickFn; lang: string }): ReactElement {
+  const currency = String(invoice.currency || 'USD');
   const download = () => {
     const blob = createTextPdf({
       title: 'SHABABUNA INVOICE',
-      subtitle: `${invoice.invoice_number} · BUILT DIFFERENT`,
+      subtitle: `${String(invoice.invoice_number || '')} · BUILT DIFFERENT`,
       sections: [
         {
           heading: 'Invoice',
           rows: [
-            ['Status', invoice.status],
+            ['Status', String(invoice.status || '')],
             ['Created', formatDate(invoice.created_at, lang)],
             ['Due', formatDate(invoice.due_at, lang)],
           ],
@@ -978,32 +1069,32 @@ function InvoiceWorkspaceRow({ invoice, pick, lang }) {
         {
           heading: 'Commercial summary',
           rows: [
-            ['Subtotal', `${Number(invoice.subtotal || 0).toFixed(2)} ${invoice.currency}`],
-            ['Shipping', `${Number(invoice.shipping_total || 0).toFixed(2)} ${invoice.currency}`],
-            ['Tax', `${Number(invoice.tax_total || 0).toFixed(2)} ${invoice.currency}`],
-            ['Discount', `${Number(invoice.discount_total || 0).toFixed(2)} ${invoice.currency}`],
-            ['Total', `${Number(invoice.total || 0).toFixed(2)} ${invoice.currency}`],
-            ['Paid', `${Number(invoice.amount_paid || 0).toFixed(2)} ${invoice.currency}`],
+            ['Subtotal', `${Number(invoice.subtotal || 0).toFixed(2)} ${currency}`],
+            ['Shipping', `${Number(invoice.shipping_total || 0).toFixed(2)} ${currency}`],
+            ['Tax', `${Number(invoice.tax_total || 0).toFixed(2)} ${currency}`],
+            ['Discount', `${Number(invoice.discount_total || 0).toFixed(2)} ${currency}`],
+            ['Total', `${Number(invoice.total || 0).toFixed(2)} ${currency}`],
+            ['Paid', `${Number(invoice.amount_paid || 0).toFixed(2)} ${currency}`],
           ],
         },
       ],
     });
-    downloadBlob(blob, `invoice-${invoice.invoice_number}.pdf`);
+    downloadBlob(blob, `invoice-${String(invoice.invoice_number || 'invoice')}.pdf`);
   };
   return (
     <article>
       <div>
-        <span className="workspace-status-dot" data-status={invoice.status} />
+        <span className="workspace-status-dot" data-status={String(invoice.status || '')} />
         <div>
-          <h3>{invoice.invoice_number}</h3>
+          <h3>{String(invoice.invoice_number || '')}</h3>
           <p>
-            {invoice.status} · {formatDate(invoice.created_at, lang)}
+            {String(invoice.status || '')} · {formatDate(invoice.created_at, lang)}
           </p>
         </div>
       </div>
       <div className="workspace-money">
         <strong>
-          {Number(invoice.total || 0).toFixed(2)} {invoice.currency}
+          {Number(invoice.total || 0).toFixed(2)} {currency}
         </strong>
         <button type="button" className="btn-secondary compact" onClick={download}>
           {pick({ en: 'Download PDF', ar: 'تحميل PDF' })}
@@ -1013,35 +1104,37 @@ function InvoiceWorkspaceRow({ invoice, pick, lang }) {
   );
 }
 
-function ShipmentWorkspace({ rows, pick, lang }) {
+function ShipmentWorkspace({ rows, pick, lang }: { rows: Row[]; pick: PickFn; lang: string }): ReactElement | null {
   if (!rows.length) return null;
   return (
     <div className="workspace-list">
       {rows.map((shipment) => {
-        const template = shipment.carrier?.tracking_url_template || '';
+        const carrier = asRecord(shipment.carrier);
+        const template = String(carrier.tracking_url_template || '');
+        const trackingNumber = String(shipment.tracking_number || '');
         const trackingUrl =
-          shipment.tracking_number && template
+          trackingNumber && template
             ? template
-                .replace('{tracking}', encodeURIComponent(shipment.tracking_number))
-                .replace('{trackingNumber}', encodeURIComponent(shipment.tracking_number))
+                .replace('{tracking}', encodeURIComponent(trackingNumber))
+                .replace('{trackingNumber}', encodeURIComponent(trackingNumber))
             : '';
         return (
-          <article key={shipment.id}>
+          <article key={String(shipment.id)}>
             <div>
-              <span className="workspace-status-dot" data-status={shipment.status} />
+              <span className="workspace-status-dot" data-status={String(shipment.status || '')} />
               <div>
-                <h3>{shipment.shipment_number}</h3>
+                <h3>{String(shipment.shipment_number || '')}</h3>
                 <p>
-                  {shipment.carrier?.name ||
+                  {String(carrier.name || '') ||
                     pick({ en: 'Carrier pending', ar: 'شركة الشحن قيد التحديد' })}{' '}
-                  · {shipment.status}
+                  · {String(shipment.status || '')}
                 </p>
-                {shipment.tracking_number && <small>{shipment.tracking_number}</small>}
+                {Boolean(trackingNumber) && <small>{trackingNumber}</small>}
               </div>
             </div>
             <div className="workspace-money">
               <small>{formatDate(shipment.shipped_at || shipment.created_at, lang)}</small>
-              {trackingUrl && (
+              {Boolean(trackingUrl) && (
                 <a
                   className="btn-secondary compact"
                   href={trackingUrl}
@@ -1059,33 +1152,36 @@ function ShipmentWorkspace({ rows, pick, lang }) {
   );
 }
 
-function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }) {
+function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }: { rows: Row[]; organizationId?: string | undefined; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
   const [body, setBody] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
-  const submit = async (event) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBusy(true);
     setMessage('');
     try {
-      await createProjectMessage({ organizationId, body });
+      await createProjectMessage({
+        ...(organizationId ? { organizationId } : {}),
+        body,
+      });
       setBody('');
       await onSaved();
-    } catch (error) {
-      setMessage(error?.message || String(error));
+    } catch (error: unknown) {
+      setMessage(errorMessage(error));
     } finally {
       setBusy(false);
     }
   };
   return (
     <div className="enterprise-panel-stack">
-      <form className="enterprise-action-card" onSubmit={submit}>
+      <form className="enterprise-action-card" onSubmit={(event) => { void submit(event); }}>
         <h3>{pick({ en: 'Message the Shababuna project team', ar: 'راسل فريق مشروع شبابنا' })}</h3>
         <textarea
           rows={4}
           maxLength={5000}
           value={body}
-          onChange={(event) => setBody(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setBody(event.target.value)}
           required
         />
         <button className="btn-primary compact" disabled={busy || !organizationId || !body.trim()}>
@@ -1099,7 +1195,7 @@ function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }) {
       </form>
       <div className="workspace-list">
         {rows.map((row) => (
-          <article key={row.id}>
+          <article key={String(row.id)}>
             <div>
               <span className="workspace-status-dot" />
               <div>
@@ -1108,7 +1204,7 @@ function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }) {
                     ? pick({ en: 'Project message', ar: 'رسالة المشروع' })
                     : pick({ en: 'Shababuna update', ar: 'تحديث شبابنا' })}
                 </h3>
-                <p>{row.body}</p>
+                <p>{String(row.body || '')}</p>
               </div>
             </div>
             <small>{formatDate(row.created_at, lang)}</small>
@@ -1119,10 +1215,18 @@ function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }) {
   );
 }
 
-function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, onSaved }) {
+function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, onSaved }: { rows: Row[]; organizationId?: string | undefined; designs: Row[]; quotes: Row[]; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
   const sources = [
-    ...quotes.map((row) => ({ kind: 'quote', id: row.id, label: row.quote_number || row.id })),
-    ...designs.map((row) => ({ kind: 'design', id: row.id, label: row.name || row.id })),
+    ...quotes.map((row) => ({
+      kind: 'quote',
+      id: String(row.id || ''),
+      label: String(row.quote_number || row.id || ''),
+    })),
+    ...designs.map((row) => ({
+      kind: 'design',
+      id: String(row.id || ''),
+      label: String(row.name || row.id || ''),
+    })),
   ];
   const [source, setSource] = useState(sources[0] ? `${sources[0].kind}:${sources[0].id}` : '');
   const [type, setType] = useState('full_reorder');
@@ -1130,7 +1234,7 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
   const [player, setPlayer] = useState({ name: '', number: '', size: '' });
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
-  const submit = async (event) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBusy(true);
     setMessage('');
@@ -1138,7 +1242,7 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
       const [kind, ...parts] = source.split(':');
       const id = parts.join(':');
       await createReorderRequest({
-        organizationId,
+        ...(organizationId ? { organizationId } : {}),
         sourceQuoteId: kind === 'quote' ? id : null,
         sourceDesignId: kind === 'design' ? id : null,
         requestType: type,
@@ -1147,20 +1251,20 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
       });
       setNote('');
       await onSaved();
-    } catch (error) {
-      setMessage(error?.message || String(error));
+    } catch (error: unknown) {
+      setMessage(errorMessage(error));
     } finally {
       setBusy(false);
     }
   };
   return (
     <div className="enterprise-panel-stack">
-      <form className="enterprise-action-card" onSubmit={submit}>
+      <form className="enterprise-action-card" onSubmit={(event) => { void submit(event); }}>
         <h3>{pick({ en: 'Reorder an approved project', ar: 'إعادة طلب مشروع معتمد' })}</h3>
         <div className="operations-form-grid">
           <label>
             <span>{pick({ en: 'Source', ar: 'المصدر' })}</span>
-            <select value={source} onChange={(event) => setSource(event.target.value)} required>
+            <select value={source} onChange={(event: ChangeEvent<HTMLSelectElement>) => setSource(event.target.value)} required>
               <option value="">—</option>
               {sources.map((row) => (
                 <option key={`${row.kind}:${row.id}`} value={`${row.kind}:${row.id}`}>
@@ -1171,7 +1275,7 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
           </label>
           <label>
             <span>{pick({ en: 'Request type', ar: 'نوع الطلب' })}</span>
-            <select value={type} onChange={(event) => setType(event.target.value)}>
+            <select value={type} onChange={(event: ChangeEvent<HTMLSelectElement>) => setType(event.target.value)}>
               <option value="full_reorder">
                 {pick({ en: 'Full reorder', ar: 'إعادة الطلب كاملًا' })}
               </option>
@@ -1188,24 +1292,30 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
             <input
               placeholder={pick({ en: 'Player name', ar: 'اسم اللاعب' })}
               value={player.name}
-              onChange={(event) => setPlayer({ ...player, name: event.target.value })}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setPlayer({ ...player, name: event.target.value })
+              }
             />
             <input
               placeholder={pick({ en: 'Number', ar: 'الرقم' })}
               value={player.number}
-              onChange={(event) => setPlayer({ ...player, number: event.target.value })}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setPlayer({ ...player, number: event.target.value })
+              }
             />
             <input
               placeholder={pick({ en: 'Size', ar: 'المقاس' })}
               value={player.size}
-              onChange={(event) => setPlayer({ ...player, size: event.target.value })}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setPlayer({ ...player, size: event.target.value })
+              }
             />
           </div>
         )}
         <textarea
           rows={3}
           value={note}
-          onChange={(event) => setNote(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setNote(event.target.value)}
           placeholder={pick({
             en: 'Quantities or changes needed',
             ar: 'الكميات أو التعديلات المطلوبة',
@@ -1222,13 +1332,13 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
       </form>
       <div className="workspace-list">
         {rows.map((row) => (
-          <article key={row.id}>
+          <article key={String(row.id)}>
             <div>
-              <span className="workspace-status-dot" data-status={row.status} />
+              <span className="workspace-status-dot" data-status={String(row.status || '')} />
               <div>
-                <h3>{row.request_number}</h3>
+                <h3>{String(row.request_number || '')}</h3>
                 <p>
-                  {row.request_type} · {row.status}
+                  {String(row.request_type || '')} · {String(row.status || '')}
                 </p>
               </div>
             </div>
@@ -1240,17 +1350,17 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
   );
 }
 
-function TeamLockerWorkspace({ rows, pick, lang }) {
+function TeamLockerWorkspace({ rows, pick, lang }: { rows: Row[]; pick: PickFn; lang: string }): ReactElement | null {
   if (!rows.length) return null;
   return (
     <div className="workspace-card-grid">
       {rows.map((store) => (
-        <article className="workspace-card" key={store.id}>
+        <article className="workspace-card" key={String(store.id)}>
           <div className="workspace-card-copy">
-            <span className="workspace-status">{store.status}</span>
-            <h3>{store.name}</h3>
+            <span className="workspace-status">{String(store.status || '')}</span>
+            <h3>{String(store.name || '')}</h3>
             <p>
-              {store.description ||
+              {String(store.description || '') ||
                 pick({ en: 'Private organization storefront', ar: 'متجر خاص بالمؤسسة' })}
             </p>
             <small>
@@ -1260,7 +1370,7 @@ function TeamLockerWorkspace({ rows, pick, lang }) {
             </small>
           </div>
           {store.status === 'active' && (
-            <Link to={`/team-locker/${encodeURIComponent(store.slug)}`}>
+            <Link to={`/team-locker/${encodeURIComponent(String(store.slug || ''))}`}>
               {pick({ en: 'Open Store', ar: 'فتح المتجر' })} →
             </Link>
           )}
