@@ -1,6 +1,6 @@
-import { getSupabase } from './supabase';
+import { getSupabase } from './supabase.ts';
 
-export async function requestPrivacyExport() {
+export async function requestPrivacyExport(): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
   const { data, error } = await client.rpc('request_my_privacy_export');
@@ -8,7 +8,7 @@ export async function requestPrivacyExport() {
   return data;
 }
 
-export async function listPrivacyExports() {
+export async function listPrivacyExports(): Promise<unknown[]> {
   const client = await getSupabase();
   if (!client) throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
   const { data, error } = await client
@@ -17,10 +17,10 @@ export async function listPrivacyExports() {
     .order('created_at', { ascending: false })
     .limit(20);
   if (error) throw error;
-  return data || [];
+  return (data as unknown[]) || [];
 }
 
-export async function downloadPrivacyExport(assetId) {
+export async function downloadPrivacyExport(assetId: string): Promise<void> {
   const client = await getSupabase();
   if (!client) throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
   const { data: sessionData } = await client.auth.getSession();
@@ -30,7 +30,11 @@ export async function downloadPrivacyExport(assetId) {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });
-  const data = await response.json().catch(() => ({}));
+  const data = (await response.json().catch(() => ({}))) as {
+    url?: string;
+    name?: string;
+    error?: string;
+  };
   if (!response.ok || !data.url) throw new Error(data.error || 'privacy_export_unavailable');
   const anchor = document.createElement('a');
   anchor.href = data.url;

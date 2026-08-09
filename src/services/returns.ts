@@ -1,13 +1,13 @@
-import { getSupabase } from './supabase';
-import { sendFormspree } from './formspree';
+import { getSupabase } from './supabase.ts';
+import { sendFormspree } from './formspree.ts';
 
-const clean = (value, max = 3000) =>
+const clean = (value: unknown, max = 3000): string =>
   String(value ?? '')
     .replace(/[<>]/g, '')
     .trim()
     .slice(0, max);
 
-export async function listMyReturns(userId) {
+export async function listMyReturns(userId: string | null | undefined): Promise<unknown[]> {
   if (!userId) return [];
   const client = await getSupabase();
   if (!client) return [];
@@ -18,10 +18,20 @@ export async function listMyReturns(userId) {
     .order('created_at', { ascending: false })
     .limit(50);
   if (error) throw error;
-  return data || [];
+  return (data as unknown[]) || [];
 }
 
-export async function createReturnRequest({ orderNumber, reason, details = '', items = [] }) {
+export async function createReturnRequest({
+  orderNumber,
+  reason,
+  details = '',
+  items = [],
+}: {
+  orderNumber: string;
+  reason: string;
+  details?: string;
+  items?: Array<Record<string, unknown>>;
+}): Promise<Record<string, unknown>> {
   const normalizedItems = items
     .map((item) => ({
       variantId: clean(item.variantId || item.variant_id || item.sku, 240),
@@ -43,27 +53,34 @@ export async function createReturnRequest({ orderNumber, reason, details = '', i
     p_items: normalizedItems,
   });
   if (error) throw error;
+  const row = (data || {}) as Record<string, unknown>;
   try {
     await sendFormspree(
       {
         formType: 'return_request',
         event: 'new_return_request',
-        returnNumber: data?.return_number,
-        orderNumber: data?.order_number,
-        customerEmail: data?.customer_email,
-        reason: data?.reason,
-        details: data?.details,
-        items: data?.requested_items,
+        returnNumber: row.return_number,
+        orderNumber: row.order_number,
+        customerEmail: row.customer_email,
+        reason: row.reason,
+        details: row.details,
+        items: row.requested_items,
       },
-      `New return request — ${data?.return_number || orderNumber}`,
+      `New return request — ${String(row.return_number || orderNumber)}`,
     );
   } catch {
     // The database notification outbox retries independently.
   }
-  return data;
+  return row;
 }
 
-export async function cancelReturnRequest({ returnId, note = '' }) {
+export async function cancelReturnRequest({
+  returnId,
+  note = '',
+}: {
+  returnId: string;
+  note?: string;
+}): Promise<Record<string, unknown>> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_cancel_return_request', {
@@ -71,20 +88,21 @@ export async function cancelReturnRequest({ returnId, note = '' }) {
     p_note: clean(note, 1000),
   });
   if (error) throw error;
+  const row = (data || {}) as Record<string, unknown>;
   try {
     await sendFormspree(
       {
         formType: 'return_request',
         event: 'return_cancelled',
-        returnNumber: data?.return_number,
-        orderNumber: data?.order_number,
-        customerEmail: data?.customer_email,
-        note: data?.customer_note,
+        returnNumber: row.return_number,
+        orderNumber: row.order_number,
+        customerEmail: row.customer_email,
+        note: row.customer_note,
       },
-      `Return cancelled — ${data?.return_number || returnId}`,
+      `Return cancelled — ${String(row.return_number || returnId)}`,
     );
   } catch {
     // The outbox remains the reliable retry path.
   }
-  return data;
+  return row;
 }
