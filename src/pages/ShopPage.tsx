@@ -108,11 +108,13 @@ export default function ShopPage(): ReactElement {
             (Array.isArray(value) ? value : []).forEach((entry) =>
               query.append(param, String(entry)),
             );
-          } else if (key === 'priceMin')
-            value ? query.set('min', String(value)) : query.delete('min');
-          else if (key === 'priceMax')
-            value ? query.set('max', String(value)) : query.delete('max');
-          else {
+          } else if (key === 'priceMin') {
+            if (value) query.set('min', String(value));
+            else query.delete('min');
+          } else if (key === 'priceMax') {
+            if (value) query.set('max', String(value));
+            else query.delete('max');
+          } else {
             const booleanMap: Record<string, string> = {
               inStock: 'instock',
               readyOnly: 'ready',
@@ -121,7 +123,10 @@ export default function ShopPage(): ReactElement {
               customizableOnly: 'custom',
             };
             const queryKey = booleanMap[key];
-            if (queryKey) value ? query.set(queryKey, '1') : query.delete(queryKey);
+            if (queryKey) {
+              if (value) query.set(queryKey, '1');
+              else query.delete(queryKey);
+            }
           }
         });
       });
@@ -237,7 +242,6 @@ export default function ShopPage(): ReactElement {
           en: 'Basketball clothing, footwear, accessories, balls and equipment — retail, wholesale and custom-ready.',
           ar: 'ملابس وأحذية وإكسسوارات وكرات ومعدات كرة السلة — بالقطعة والجملة وقابلة للتخصيص.',
         });
-  /** @type {Array<{label:any,to?:string}>} */
   const crumbs: Array<{ label: string; to?: string }> = [{ label: nav.shop || 'Shop', to: '/shop' }];
   if (cat)
     crumbs.push(
@@ -659,9 +663,9 @@ export default function ShopPage(): ReactElement {
         ) : (
           <div className="gw-run">
             <EmptyState
-              message={shop.empty}
-              hint={shop.emptyHint}
-              action={{ label: common.clearAll || '' || 'Clear', onClick: () => navigate('/shop') }}
+              message={shop.empty || ''}
+              hint={shop.emptyHint || ''}
+              action={{ label: common.clearAll || 'Clear', onClick: () => navigate('/shop') }}
             />
           </div>
         )}
