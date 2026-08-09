@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T03:18:15.765Z",
+  "generatedAt": "2026-08-09T03:29:54.717Z",
   "sourceFiles": 259,
-  "strictFiles": 113,
-  "strictCoveragePercent": 43.63,
+  "strictFiles": 114,
+  "strictCoveragePercent": 44.02,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -108,7 +108,6 @@
     "src/services/publicQuotes.js",
     "src/services/returns.js",
     "src/services/specialRequests.js",
-    "src/services/supabase.js",
     "src/services/sync/cloudState.js",
     "src/services/sync/offlineQueue.js",
     "src/services/sync/protocol.js",
