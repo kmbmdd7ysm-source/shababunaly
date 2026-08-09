@@ -10,8 +10,8 @@ import {
 import { translations } from '../data/translations.js';
 import { STORAGE_KEYS } from '../config.ts';
 
-type Lang = 'en' | 'ar';
-type LocaleValue = { en?: string; ar?: string } | string | null | undefined;
+export type Lang = 'en' | 'ar';
+export type LocaleValue = { en?: string; ar?: string } | string | null | undefined;
 
 export type LanguageContextValue = {
   lang: Lang;
@@ -24,8 +24,8 @@ export type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children?: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(
-    () => (localStorage.getItem(STORAGE_KEYS.language) === 'ar' ? 'ar' : 'en'),
+  const [lang, setLangState] = useState<Lang>(() =>
+    localStorage.getItem(STORAGE_KEYS.language) === 'ar' ? 'ar' : 'en',
   );
   const setLang = useCallback((value: string) => setLangState(value === 'ar' ? 'ar' : 'en'), []);
   const pick = useCallback(
