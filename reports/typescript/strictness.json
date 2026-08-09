@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T19:40:11.449Z",
+  "generatedAt": "2026-08-09T19:42:08.802Z",
   "sourceFiles": 259,
-  "strictFiles": 192,
-  "strictCoveragePercent": 74.13,
+  "strictFiles": 193,
+  "strictCoveragePercent": 74.52,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -70,8 +70,7 @@
     "api/admin-media-upload.js",
     "api/payment-proof.js",
     "api/signature-webhook.js",
-    "api/signatures/evidence.js",
-    "api/signatures/provider.js"
+    "api/signatures/evidence.js"
   ],
   "violations": [],
   "compilerGuarantees": {
