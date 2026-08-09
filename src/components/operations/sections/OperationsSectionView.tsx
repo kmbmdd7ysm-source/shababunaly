@@ -1,10 +1,11 @@
+import type { ReactElement } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import Seo from '../../common/Seo';
 import '../../../styles/command.css';
 import { useLanguage } from '../../../context/LanguageContext';
 import { loadOperationsSection } from '../../../services/operations';
 
-function Row({ value }) {
+function Row({ value }: { value?: Record<string, unknown> }): ReactElement {
   const label =
     value?.order_number ||
     value?.quote_number ||
@@ -22,26 +23,40 @@ function Row({ value }) {
   return (
     <li>
       <strong>{String(label)}</strong>
-      {status !== undefined && <span> · {String(status)}</span>}
+      {status !== undefined ? <span> · {String(status)}</span> : null}
     </li>
   );
 }
-export default function OperationsSectionView({ section, title, description }) {
+
+export default function OperationsSectionView({
+  section,
+  title,
+  description,
+}: {
+  section: string;
+  title: { en: string; ar: string };
+  description: { en: string; ar: string };
+}): ReactElement {
   const { pick } = useLanguage();
-  const [state, setState] = useState({ loading: true, data: null, error: '' });
+  const [state, setState] = useState<{
+    loading: boolean;
+    data: Record<string, unknown> | null;
+    error: string;
+  }>({ loading: true, data: null, error: '' });
   useEffect(() => {
     let active = true;
     setState({ loading: true, data: null, error: '' });
     loadOperationsSection(section)
       .then((data) => {
-        if (active) setState({ loading: false, data, error: '' });
+        if (active) setState({ loading: false, data: data as Record<string, unknown>, error: '' });
       })
       .catch((error) => {
         if (active)
           setState({
             loading: false,
             data: null,
-            error: error?.message || 'operations_section_unavailable',
+            error:
+              error instanceof Error ? error.message : 'operations_section_unavailable',
           });
       });
     return () => {
@@ -49,7 +64,10 @@ export default function OperationsSectionView({ section, title, description }) {
     };
   }, [section]);
   const groups = useMemo(
-    () => Object.entries(state.data || {}).filter(([, value]) => Array.isArray(value)),
+    () =>
+      Object.entries(state.data || {}).filter((entry): entry is [string, unknown[]] =>
+        Array.isArray(entry[1]),
+      ),
     [state.data],
   );
   return (
@@ -62,14 +80,14 @@ export default function OperationsSectionView({ section, title, description }) {
       </header>
       <section className="operations-page">
         <div>
-          {state.loading && (
+          {state.loading ? (
             <p role="status">{pick({ en: 'Loading module…', ar: 'جاري تحميل القسم…' })}</p>
-          )}
-          {state.error && (
+          ) : null}
+          {state.error ? (
             <p role="alert" className="form-error">
               {state.error}
             </p>
-          )}
+          ) : null}
           {!state.loading &&
             !state.error &&
             groups.map(([name, rows]) => (
@@ -77,9 +95,15 @@ export default function OperationsSectionView({ section, title, description }) {
                 <h2>{name}</h2>
                 <p>{rows.length} records</p>
                 <ul className="operations-compact-list">
-                  {rows.slice(0, 100).map((row, index) => (
-                    <Row key={row?.id || row?.variant_id || `${name}-${index}`} value={row} />
-                  ))}
+                  {rows.slice(0, 100).map((row, index) => {
+                    const record = (row || {}) as Record<string, unknown>;
+                    return (
+                      <Row
+                        key={String(record.id || record.variant_id || `${name}-${index}`)}
+                        value={record}
+                      />
+                    );
+                  })}
                 </ul>
               </section>
             ))}
