@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
@@ -50,24 +51,44 @@ const messages = {
   },
 };
 
-export default function SpecialRequestPage() {
+type SpecialRequestForm = {
+  customerName: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  country: string;
+  productUrl: string;
+  description: string;
+  preferredBrand: string;
+  desiredQuantity: string;
+  size: string;
+  color: string;
+  targetBudget: string;
+  requiredDate: string;
+  preferredContactMethod: string;
+  consent: boolean;
+};
+
+export default function SpecialRequestPage(): ReactElement {
   const { pick, lang } = useLanguage();
   const auth = useAuth();
-  const [form, setForm] = useState(() => ({
+  const metadata = (auth.user?.user_metadata || {}) as Record<string, unknown>;
+  const [form, setForm] = useState<SpecialRequestForm>(() => ({
     ...initial,
-    email: auth.user?.email || '',
-    customerName: auth.user?.user_metadata?.fullName || '',
+    email: String(auth.user?.email || ''),
+    customerName: String(metadata.fullName || ''),
   }));
-  const [productImage, setProductImage] = useState(null);
-  const [additionalFiles, setAdditionalFiles] = useState([]);
+  const [productImage, setProductImage] = useState<File | null>(null);
+  const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
   const [token, setToken] = useState('');
   const [busy, setBusy] = useState(false);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState('');
-  const set = (key, value) => setForm((current) => ({ ...current, [key]: value }));
-  const onToken = useCallback((value) => setToken(value), []);
+  const set = <K extends keyof SpecialRequestForm>(key: K, value: SpecialRequestForm[K]) =>
+    setForm((current) => ({ ...current, [key]: value }));
+  const onToken = useCallback((value: string) => setToken(value), []);
 
-  const submit = async (event) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBusy(true);
     setError('');
@@ -77,7 +98,7 @@ export default function SpecialRequestPage() {
       if (productUrl && !/^https?:\/\/[^\s]+$/i.test(productUrl))
         throw new Error('product_reference_required');
       if (!productUrl && !productImage) throw new Error('product_reference_required');
-      const request = await submitSpecialRequest({
+      const request = (await submitSpecialRequest({
         payload: {
           ...form,
           productUrl,
@@ -88,8 +109,8 @@ export default function SpecialRequestPage() {
         productImage,
         additionalFiles,
         turnstileToken: token,
-        accessToken: auth.session?.access_token || '',
-      });
+        accessToken: String(auth.session?.access_token || ''),
+      })) as Record<string, unknown>;
       setResult(request);
       setForm((current) => ({
         ...initial,
@@ -101,9 +122,11 @@ export default function SpecialRequestPage() {
       setAdditionalFiles([]);
       setToken('');
     } catch (failure) {
+      const code = failure instanceof Error ? failure.message : '';
+      const messageMap = messages as Record<string, { en: string; ar: string }>;
       setError(
         pick(
-          messages[failure?.message] || {
+          messageMap[code] || {
             en: 'The request could not be submitted safely. Review the fields and try again.',
             ar: 'تعذر إرسال الطلب بأمان. راجع البيانات وحاول مرة أخرى.',
           },
@@ -197,13 +220,19 @@ export default function SpecialRequestPage() {
               </Link>
             )}
           </aside>
-          <form className="special-request-form" onSubmit={submit} noValidate>
+          <form
+            className="special-request-form"
+            onSubmit={(event) => {
+              void submit(event);
+            }}
+            noValidate
+          >
             <div className="field-row">
               <label className="field">
                 <span>{pick({ en: 'Customer name', ar: 'اسم العميل' })}</span>
                 <input
                   required
-                  minLength="2"
+                  minLength={2}
                   autoComplete="name"
                   value={form.customerName}
                   onChange={(e) => set('customerName', e.target.value)}
@@ -279,7 +308,7 @@ export default function SpecialRequestPage() {
               <span>{pick({ en: 'Description', ar: 'الوصف' })}</span>
               <textarea
                 required
-                minLength="10"
+                minLength={10}
                 rows={6}
                 value={form.description}
                 onChange={(e) => set('description', e.target.value)}
@@ -349,7 +378,9 @@ export default function SpecialRequestPage() {
                 type="file"
                 multiple
                 accept=".jpg,.jpeg,.png,.webp,.pdf,.csv,.xlsx"
-                onChange={(e) => setAdditionalFiles([...e.target.files].slice(0, 4))}
+                onChange={(e) =>
+                  setAdditionalFiles(e.target.files ? Array.from(e.target.files).slice(0, 4) : [])
+                }
               />
               <small>
                 {additionalFiles.map((file) => file.name).join(' · ') ||
@@ -398,7 +429,7 @@ export default function SpecialRequestPage() {
             {result && (
               <div className="special-request-success" role="status">
                 <strong>{pick({ en: 'Request received', ar: 'تم استلام الطلب' })}</strong>
-                <span>{result.requestNumber}</span>
+                <span>{String(result.requestNumber || '')}</span>
                 <p>
                   {pick({
                     en: 'Your order has not been placed and no payment is due. We will review the request first.',
