@@ -1,4 +1,4 @@
-import { buildNotificationTemplate } from './_notification-templates.js';
+import { buildNotificationTemplate } from './_notification-templates.ts';
 const formspreeEndpoint = () =>
   clean(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT, 1000);
 const clean = (value, max = 12000) =>

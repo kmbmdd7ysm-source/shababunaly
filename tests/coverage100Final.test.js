@@ -17,7 +17,7 @@ import {
   buildNotificationTemplate,
   EVENT_COPY,
   notificationReference,
-} from '../api/_notification-templates.js';
+} from '../api/_notification-templates.ts';
 import {
   guardPublicRequest,
   guardPublicPost,

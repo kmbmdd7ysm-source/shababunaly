@@ -53,7 +53,7 @@ import specialRequestHandler, { isMalwareScannerConfigured } from '../api/specia
 import {
   buildNotificationTemplate,
   notificationReference,
-} from '../api/_notification-templates.js';
+} from '../api/_notification-templates.ts';
 import {
   __resetSupabaseForTests,
   __setSupabaseBuildEnvForTests,
