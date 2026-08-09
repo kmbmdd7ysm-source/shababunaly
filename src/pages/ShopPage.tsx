@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+import type { CatalogProduct } from '../context/CatalogContext';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -19,22 +21,30 @@ import '../styles/catalogue.css';
 import '../styles/runs.css';
 import '../styles/catalog.css';
 
-const numberOrNull = (value) =>
+const numberOrNull = (value: unknown): number | null =>
   value === '' || value == null || Number.isNaN(Number(value)) ? null : Number(value);
 
-export default function ShopPage() {
+const nameEn = (name: CatalogProduct['name']): string => {
+  if (name && typeof name === 'object') return String(name.en || '');
+  return String(name || '');
+};
+
+export default function ShopPage(): ReactElement {
   const { category, subcategory } = useParams();
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const { t, pick } = useLanguage();
+  const common = (t.common || {}) as Record<string, string>;
+  const shop = (t.shop || {}) as Record<string, string>;
+  const nav = (t.nav || {}) as Record<string, string>;
   const { countryCode } = useCommerce();
   const { products, featuredProducts } = useCatalog();
   const isLibya = countryCode === 'LY';
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const drawerRef = useRef(null);
-  const triggerRef = useRef(null);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const cat = category ? getCategory(category) : null;
-  const sub = cat && subcategory ? getSubcategory(category, subcategory) : null;
+  const sub = cat && subcategory ? getSubcategory(String(category), String(subcategory)) : null;
 
   const filters = useMemo(
     () => ({
@@ -58,16 +68,16 @@ export default function ShopPage() {
   const sort = params.get('sort') || 'featured';
 
   const updateParams = useCallback(
-    (mutate) => {
+    (mutate: (query: URLSearchParams) => void) => {
       const next = new URLSearchParams(params);
       mutate(next);
-      setParams(next, { replace: true, preventScrollReset: true });
+      setParams(next);
     },
     [params, setParams],
   );
 
   const onChange = useCallback(
-    (patch) => {
+    (patch: Record<string, unknown>) => {
       if ('category' in patch || 'subcategory' in patch) {
         const nextCategory = 'category' in patch ? patch.category : filters.category;
         const nextSubcategory =
@@ -86,14 +96,24 @@ export default function ShopPage() {
       }
       updateParams((query) => {
         Object.entries(patch).forEach(([key, value]) => {
-          const map = { sizes: 'size', colors: 'color', brands: 'brand', productTypes: 'type' };
+          const map: Record<string, string> = {
+            sizes: 'size',
+            colors: 'color',
+            brands: 'brand',
+            productTypes: 'type',
+          };
           if (map[key]) {
-            query.delete(map[key]);
-            value.forEach((entry) => query.append(map[key], entry));
-          } else if (key === 'priceMin') value ? query.set('min', value) : query.delete('min');
-          else if (key === 'priceMax') value ? query.set('max', value) : query.delete('max');
+            const param = map[key];
+            query.delete(param);
+            (Array.isArray(value) ? value : []).forEach((entry) =>
+              query.append(param, String(entry)),
+            );
+          } else if (key === 'priceMin')
+            value ? query.set('min', String(value)) : query.delete('min');
+          else if (key === 'priceMax')
+            value ? query.set('max', String(value)) : query.delete('max');
           else {
-            const booleanMap = {
+            const booleanMap: Record<string, string> = {
               inStock: 'instock',
               readyOnly: 'ready',
               newOnly: 'new',
@@ -111,7 +131,7 @@ export default function ShopPage() {
 
   const baseProducts = useMemo(
     () =>
-      products.filter((product) => {
+      (products as CatalogProduct[]).filter((product) => {
         if (category === 'ready-to-ship') {
           return (
             product.readyToShip === true &&
@@ -132,18 +152,18 @@ export default function ShopPage() {
     const max = numberOrNull(filters.priceMax);
     const query = filters.q.trim().toLowerCase();
     let list = baseProducts.filter((product) => {
-      if (filters.sizes.length && !product.sizes.some((size) => filters.sizes.includes(size)))
+      if (filters.sizes.length && !(product.sizes || []).some((size) => filters.sizes.includes(String(size))))
         return false;
       if (
         filters.colors.length &&
-        !product.colors.some((color) => filters.colors.includes(color.key))
+        !(product.colors || []).some((color) => filters.colors.includes(String(color.key)))
       )
         return false;
-      if (filters.brands.length && !filters.brands.includes(product.brand)) return false;
-      if (filters.productTypes.length && !filters.productTypes.includes(product.productType))
+      if (filters.brands.length && !filters.brands.includes(String(product.brand || ''))) return false;
+      if (filters.productTypes.length && !filters.productTypes.includes(String(product.productType || '')))
         return false;
-      if (min != null && product.price < min) return false;
-      if (max != null && product.price > max) return false;
+      if (min != null && Number(product.price || 0) < min) return false;
+      if (max != null && Number(product.price || 0) > max) return false;
       if (
         filters.inStock &&
         !(
@@ -169,17 +189,17 @@ export default function ShopPage() {
       if (filters.customizableOnly && !product.customizable) return false;
       if (query) {
         const haystack =
-          `${product.name.en} ${pick(product.description)} ${product.brand} ${product.productType}`.toLowerCase();
+          `${nameEn(product.name)} ${pick(product.description as { en?: string; ar?: string })} ${product.brand || ''} ${product.productType || ''}`.toLowerCase();
         if (!haystack.includes(query)) return false;
       }
       return true;
     });
-    if (sort === 'price-asc') list = [...list].sort((a, b) => a.price - b.price);
-    else if (sort === 'price-desc') list = [...list].sort((a, b) => b.price - a.price);
+    if (sort === 'price-asc') list = [...list].sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+    else if (sort === 'price-desc') list = [...list].sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
     else if (sort === 'name-asc')
-      list = [...list].sort((a, b) => a.name.en.localeCompare(b.name.en));
+      list = [...list].sort((a, b) => nameEn(a.name).localeCompare(nameEn(b.name)));
     else if (sort === 'name-desc')
-      list = [...list].sort((a, b) => b.name.en.localeCompare(a.name.en));
+      list = [...list].sort((a, b) => nameEn(b.name).localeCompare(nameEn(a.name)));
     else if (sort === 'newest')
       list = [...list].sort((a, b) => Number(b.newArrival) - Number(a.newArrival));
     else
@@ -195,8 +215,8 @@ export default function ShopPage() {
   useEffect(() => {
     if (!drawerOpen) return undefined;
     const unlock = lockDocumentScroll();
-    drawerRef.current?.querySelector('button,input')?.focus();
-    const onKey = (event) => event.key === 'Escape' && setDrawerOpen(false);
+    (drawerRef.current?.querySelector('button,input') as HTMLElement | null)?.focus();
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setDrawerOpen(false); };
     document.addEventListener('keydown', onKey);
     const trigger = triggerRef.current;
     return () => {
@@ -218,7 +238,7 @@ export default function ShopPage() {
           ar: 'ملابس وأحذية وإكسسوارات وكرات ومعدات كرة السلة — بالقطعة والجملة وقابلة للتخصيص.',
         });
   /** @type {Array<{label:any,to?:string}>} */
-  const crumbs = [{ label: t.nav.shop, to: '/shop' }];
+  const crumbs: Array<{ label: string; to?: string }> = [{ label: nav.shop || 'Shop', to: '/shop' }];
   if (cat)
     crumbs.push(
       sub ? { label: pick(cat.name), to: `/shop/${cat.slug}` } : { label: pick(cat.name) },
@@ -380,7 +400,7 @@ export default function ShopPage() {
               <p className="gw-entrance-count">
                 <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
                 <span className="gw-spec">
-                  {filtered.length === 1 ? t.common.result : t.common.results}
+                  {filtered.length === 1 ? common.result : common.results}
                 </span>
               </p>
             </div>
@@ -431,12 +451,12 @@ export default function ShopPage() {
               </h2>
             </header>
             <div className="gw-world-stage">
-              <ProductPlinth product={featured[0]} index={0} eager />
+              <ProductPlinth product={featured[0] as never} index={0} eager />
             </div>
             {featured.length > 1 && (
               <div className="gw-world-rail">
                 {featured.slice(1).map((product, index) => (
-                  <ProductCard key={product.id} product={product} eager={index < 2} />
+                  <ProductCard key={product.id} product={product as never} eager={index < 2} />
                 ))}
               </div>
             )}
@@ -465,7 +485,7 @@ export default function ShopPage() {
               <p className="gw-cat-count">
                 <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
                 <span className="gw-spec">
-                  {filtered.length === 1 ? t.common.result : t.common.results}
+                  {filtered.length === 1 ? common.result : common.results}
                 </span>
               </p>
             </div>
@@ -514,11 +534,11 @@ export default function ShopPage() {
       {!showEntrance && category && filtered.length > 0 && (
         <section className="gw-dept-world" aria-label={heading}>
           <div className="gw-dept-world-inner">
-            <ProductPlinth product={filtered[0]} index={0} eager />
+            <ProductPlinth product={filtered[0] as never} index={0} eager />
             {filtered.length > 1 && (
               <div className="gw-dept-world-rail">
                 {filtered.slice(1, 4).map((product) => (
-                  <ProductCard key={`world-${product.id}`} product={product} />
+                  <ProductCard key={`world-${product.id}`} product={product as never} />
                 ))}
               </div>
             )}
@@ -542,7 +562,7 @@ export default function ShopPage() {
               aria-current={!category ? 'page' : undefined}
               onClick={() => navigate('/shop')}
             >
-              {t.common.all}
+              {common.all}
             </button>
             {departments.map((item) => (
               <button
@@ -570,7 +590,7 @@ export default function ShopPage() {
               onClick={() => setDrawerOpen(true)}
             >
               <Icon name="filter" />
-              <span>{t.common.filters}</span>
+              <span>{common.filters}</span>
               {activeTokens.length > 0 && (
                 <span className="gw-tally gw-tally--inline">{activeTokens.length}</span>
               )}
@@ -582,7 +602,7 @@ export default function ShopPage() {
                   value === 'featured' ? query.delete('sort') : query.set('sort', value),
                 )
               }
-              options={SORT_OPTIONS}
+              options={[...SORT_OPTIONS] as string[]}
             />
           </div>
         </div>
@@ -607,7 +627,7 @@ export default function ShopPage() {
               ))}
             </ul>
             <button type="button" className="gw-console-clear" onClick={() => navigate('/shop')}>
-              {t.common.clearAll}
+              {common.clearAll}
             </button>
           </div>
         )}
@@ -621,13 +641,13 @@ export default function ShopPage() {
           runs.length ? (
             runs.map((run) => (
               <section key={run.from} className="gw-run" aria-label={`${heading} ${run.from + 1}`}>
-                <ProductPlinth product={run.lead} index={run.from / RUN} eager={run.from === 0} />
+                <ProductPlinth product={run.lead as never} index={run.from / RUN} eager={run.from === 0} />
                 {run.rest.length > 0 && (
                   <div className="gw-run-grid">
                     {run.rest.map((product, position) => (
                       <ProductCard
                         key={product.id}
-                        product={product}
+                        product={product as never}
                         eager={run.from === 0 && position < 3}
                       />
                     ))}
@@ -639,9 +659,9 @@ export default function ShopPage() {
         ) : (
           <div className="gw-run">
             <EmptyState
-              message={t.shop.empty}
-              hint={t.shop.emptyHint}
-              action={{ label: t.common.clearAll, onClick: () => navigate('/shop') }}
+              message={shop.empty}
+              hint={shop.emptyHint}
+              action={{ label: common.clearAll || '' || 'Clear', onClick: () => navigate('/shop') }}
             />
           </div>
         )}
@@ -668,22 +688,22 @@ export default function ShopPage() {
             className="gw-filter-sheet is-open"
             role="dialog"
             aria-modal="true"
-            aria-label={t.common.filters}
+            aria-label={common.filters}
           >
             <button
               type="button"
               className="gw-filter-sheet-scrim"
-              aria-label={t.common.close}
+              aria-label={common.close}
               onClick={() => setDrawerOpen(false)}
             />
             <div ref={drawerRef} className="gw-filter-sheet-panel">
               <div className="gw-filter-sheet-head">
-                <h2>{t.common.filters}</h2>
+                <h2>{common.filters}</h2>
                 <button
                   type="button"
                   className="gw-instrument"
                   onClick={() => setDrawerOpen(false)}
-                  aria-label={t.common.close}
+                  aria-label={common.close}
                 >
                   <Icon name="close" />
                 </button>
