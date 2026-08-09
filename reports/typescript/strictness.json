@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T20:27:04.013Z",
+  "generatedAt": "2026-08-09T20:27:51.061Z",
   "sourceFiles": 259,
-  "strictFiles": 194,
-  "strictCoveragePercent": 74.9,
+  "strictFiles": 195,
+  "strictCoveragePercent": 75.29,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -68,8 +68,7 @@
     "src/utils/rosterSpreadsheet.js",
     "src/utils/simplePdf.js",
     "api/admin-media-upload.js",
-    "api/payment-proof.js",
-    "api/signature-webhook.js"
+    "api/payment-proof.js"
   ],
   "violations": [],
   "compilerGuarantees": {

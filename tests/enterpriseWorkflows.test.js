@@ -77,7 +77,7 @@ await test('enterprise B2B workflows', async (t) => {
   await t.test(
     'uploads private proofs through quarantine APIs and never accepts arbitrary public URLs as proof',
     () => {
-      const proofApi = read('api/payment-proof.js');
+      const proofApi = read('api/payment-proof.ts');
       assert.match(proofApi, /media-quarantine/);
       assert.match(proofApi, /validateEncodedFiles/);
       assert.match(proofApi, /customer_register_payment_proof/);

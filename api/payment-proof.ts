@@ -8,12 +8,37 @@ import {
 } from './_supabase-admin.ts';
 import { validateEncodedFiles } from './_file-security.ts';
 
-const clean = (value, max = 1000) =>
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+type EncodedFile = {
+  name: string;
+  extension: string;
+  detectedMime: string;
+  byteSize: number;
+  sha256: string;
+  buffer: Buffer | Uint8Array;
+};
+
+const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')
     .replace(/\0/g, '')
     .trim()
     .slice(0, max);
-async function upload(bucket, path, buffer, mime) {
+
+async function upload(
+  bucket: string,
+  path: string,
+  buffer: Buffer | Uint8Array,
+  mime: string,
+): Promise<void> {
   const { base, serviceKey } = getSupabaseAdminConfig();
   const encoded = path.split('/').map(encodeURIComponent).join('/');
   const response = await fetch(
@@ -26,19 +51,20 @@ async function upload(bucket, path, buffer, mime) {
         'Content-Type': mime,
         'x-upsert': 'false',
       },
-      body: buffer,
+      body: buffer as BodyInit,
     },
   );
   if (!response.ok) throw new Error(`storage_upload_failed:${response.status}`);
 }
-export default async function handler(req, res) {
-  applyApiHeaders(res);
+
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: 3_100_000,
       limit: 8,
       windowMs: 10 * 60_000,
@@ -48,10 +74,13 @@ export default async function handler(req, res) {
     return;
   let assetId = '';
   try {
-    const authorization = clean(req.headers.authorization, 6000);
+    const authorization = clean(req.headers?.authorization, 6000);
     const user = await resolveSupabaseUser(authorization);
     if (!user) return res.status(401).json({ ok: false, error: 'authentication_required' });
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+      string,
+      unknown
+    >;
     const entityType = clean(body.entityType, 20);
     const entityId = clean(body.entityId, 100);
     const amount = Number(body.amount);
@@ -63,18 +92,20 @@ export default async function handler(req, res) {
       amount <= 0
     )
       return res.status(400).json({ ok: false, error: 'invalid_payment_proof_details' });
-    const files = validateEncodedFiles(body.files);
+    const files = validateEncodedFiles(body.files) as EncodedFile[];
+    const first = files[0];
     if (
       files.length !== 1 ||
-      !['image/jpeg', 'image/png', 'image/webp', 'application/pdf'].includes(files[0].detectedMime)
+      !first ||
+      !['image/jpeg', 'image/png', 'image/webp', 'application/pdf'].includes(first.detectedMime)
     )
       return res.status(400).json({ ok: false, error: 'one_payment_proof_file_required' });
-    const file = files[0];
+    const file = first;
     assetId = randomUUID();
     const bucket = process.env.MEDIA_QUARANTINE_BUCKET || 'media-quarantine';
     const path = `payment-proofs/${user.id}/${assetId}.${file.extension}`;
     await upload(bucket, path, file.buffer, file.detectedMime);
-    const rows = await supabaseAdminRequest('/rest/v1/media_assets?select=*', {
+    const rows = (await supabaseAdminRequest('/rest/v1/media_assets?select=*', {
       method: 'POST',
       headers: { Prefer: 'return=representation' },
       body: JSON.stringify({
@@ -92,8 +123,8 @@ export default async function handler(req, res) {
         visibility: 'private',
         metadata: { entityType },
       }),
-    });
-    const asset = rows?.[0];
+    })) as Array<Record<string, unknown>>;
+    const asset = Array.isArray(rows) ? rows[0] : null;
     if (!asset?.id) throw new Error('media_asset_create_failed');
     const proof = await supabaseUserRequest(
       '/rest/v1/rpc/customer_register_payment_proof',
@@ -115,7 +146,7 @@ export default async function handler(req, res) {
     return res
       .status(201)
       .json({ ok: true, proof, asset: { id: asset.id, scanStatus: asset.scan_status } });
-  } catch (error) {
+  } catch (error: unknown) {
     if (assetId) {
       try {
         await supabaseAdminRequest(`/rest/v1/media_assets?id=eq.${encodeURIComponent(assetId)}`, {
@@ -125,12 +156,23 @@ export default async function handler(req, res) {
         /* ignore */
       }
     }
-    const raw = clean(error?.message || error, 240);
+    const raw = clean(
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error,
+      240,
+    );
     const client = /invalid_|required|unsupported_file|file_signature|file_mime|one_payment/.test(
       raw,
     );
+    const status =
+      client
+        ? 400
+        : error && typeof error === 'object' && 'status' in error
+          ? Number((error as { status?: unknown }).status || 503)
+          : 503;
     return res
-      .status(client ? 400 : error?.status || 503)
+      .status(status)
       .json({ ok: false, error: client ? raw.split(':').pop() : 'payment_proof_unavailable' });
   }
 }
