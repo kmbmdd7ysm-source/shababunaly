@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `10d45111550d8c5760bd358a02769fa84e698f17`
+- Full SHA: `52e345d3930443fe5fcb1cb9c0586c17864b217f`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -10,29 +10,36 @@
 | --- | --- | --- |
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
-| 2 | Build provenance SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** (~10.04% / 26 of 259) |
-| 4 | Destroy legacy CSS debt | NOT STARTED (this run) |
+| 2 | Build provenance full-SHA match | **PASS** |
+| 3 | Complete TypeScript migration | **IN PROGRESS** (~10.42% / 27 of 259) |
+| 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
 | 6 | Unify release evidence | NOT STARTED |
-| 7 | Modularize Account | **IN PROGRESS** (Register + Overview) |
+| 7 | Modularize Account | **IN PROGRESS** |
 | 8–10 | Checkout/Customize/Shop modularize | NOT STARTED |
-| 11 | Product media engine + model-viewer | **PARTIAL** (`@google/model-viewer` installed) |
+| 11 | Product media + model-viewer | **PARTIAL** |
 | 12–25 | Remaining | NOT STARTED |
 
-## Exact next actions
+## TypeScript files already migrated (strict)
 
-1. Stay in **Phase 3** until strict TS coverage is project-wide (or every exclusion documented).
-2. Next files: `src/utils/analytics.js` (proper types), `src/utils/search.js`, `src/services/supabase.js` → `.ts`, AuthContext, CartContext.
-3. Refresh `reports/typescript/strict-coverage.json` after each batch.
-4. Gate: `npm run typecheck && npm run test:node && npm run test:ui && npm run build && node scripts/verify-build-provenance.mjs`
+commerce, shipping, integrations, money, orderStatus, payments, fulfillment, productEligibility, productOptions, productViewerTier, recommendations, relatedProducts, productMaster, availability, factory, types, errors, scrollLock, safeReturnPath, unregisterPwa, brand, config, categories, navigation, announcements, countries, customization
+
+## Exact next actions (Phase 3)
+
+1. Convert `src/services/productionPreflight.js` → `.ts`
+2. Convert `src/services/supabase.js` → `.ts` (careful with test factories)
+3. Convert `src/utils/search.js`, `analytics.js` (proper types)
+4. Begin context migrations: CommerceContext, CartContext
+5. Refresh `reports/typescript/strict-coverage.json`
+6. Do not leave Phase 3 until coverage is project-wide or every exclusion is documented
 
 ## Next command
 
 ```bash
 cd /workspace && git rev-parse HEAD
-# Convert src/utils/search.js and src/services/orderStatus already TS — continue AuthContext
+# migrate productionPreflight.js then supabase.js
+npm run typecheck && npm run test:node && npm run lint
 ```
 
 ## Do not restart from Phase 0
-Resume Phase 3 TypeScript migration.
+Resume Phase 3 TypeScript migration only.
