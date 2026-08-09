@@ -1,25 +1,20 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `63226dccc67a507bfbe0ebc764a3d5c7ebc39fa5`
-- TypeScript: **77.39%** (202/261)
-- API JS: **0** · src JS/JSX ~59
-- CSS: global !important 173 · legacy deferred from main
+- SHA: `8d8003c59b0ab3a752073c302fce791875de1d08`
+- TypeScript: **78.57%** (209/266)
+- API JS: **0** · src JS/JSX ~57
+- CSS: global !important 127 (was 348) · total legacy !important ~164
 
 ## Completed this resume
-- All remaining APIs (evidence, signature-webhook, payment-proof, admin-media-upload)
-- Contact · LabHome · MainHeader
-- Phase 2 deferred legacy CSS
-- Account SecuritySection + OrdersSection extracted (Phase 14)
+- Account Profile/Preferences/Saved + AccountShell lazy
+- AppErrorBoundary · CountrySelect
+- CSS pass 6 (!important 214→164)
+- All APIs (prior)
 
 ## Exact next
-1. Extract more Account sections (Profile/Preferences) + lazy AccountShell
-2. Customize/Checkout/Shop/Product/Teams TypeScript + modularization
-3. Phase 2 rule ownership relocation
-4. Phases 5–35
+1. Continue Phase 1 — migrate remaining pages/services (Checkout/Shop/Product/Customize/Teams/Home/orders/operations)
+2. Phase 2 — more ownership moves for legacy CSS
+3. Phases 5–35
 
 ## Next command
-```bash
-cd /workspace && git rev-parse HEAD
-# Extract Account Profile section; continue large-page migration
-npm run typecheck && npm run lint && npm run test:node
-```
+Migrate CartDrawer / Filters / OrderTracking; continue large pages

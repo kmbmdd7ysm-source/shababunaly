@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T20:53:51.985Z",
+  "generatedAt": "2026-08-09T20:56:23.203Z",
   "sourceFiles": 266,
-  "strictFiles": 208,
-  "strictCoveragePercent": 78.2,
+  "strictFiles": 209,
+  "strictCoveragePercent": 78.57,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -11,7 +11,6 @@
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/account/ReturnsSection.jsx",
     "src/components/account/SpecialRequestsSection.jsx",
-    "src/components/common/CountrySelect.jsx",
     "src/components/custom/DesignPreview.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",
     "src/components/custom/StudioStage.jsx",

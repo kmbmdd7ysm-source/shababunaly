@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-09T20:42:13.312764+00:00",
-  "commitSha": "63226dccc67a507bfbe0ebc764a3d5c7ebc39fa5",
-  "sourceFiles": 261,
-  "strictFiles": 202,
-  "strictCoveragePercent": 77.39,
+  "generatedAt": "2026-08-09T20:56:23.211511+00:00",
+  "commitSha": "8d8003c59b0ab3a752073c302fce791875de1d08",
+  "sourceFiles": 266,
+  "strictFiles": 209,
+  "strictCoveragePercent": 78.57,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,
-      "important": 173
+      "important": 127
     },
     "premium.css": {
       "lines": 1631,
-      "important": 41
+      "important": 37
     },
     "shababuna.css": {
       "lines": 3067,
@@ -19,5 +19,5 @@
     }
   },
   "remainingApiJs": 0,
-  "remainingSrcJsx": 59
+  "remainingSrcJsx": 57
 }
