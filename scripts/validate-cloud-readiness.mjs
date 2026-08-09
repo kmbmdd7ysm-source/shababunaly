@@ -14,7 +14,7 @@ const required = [
   'supabase/functions/lookup-guest-order/index.ts',
   'scripts/sync-product-catalog.mjs',
   'supabase/generated/product_catalog.sql',
-  'api/create-session.js',
+  'api/create-session.ts',
   'api/create-quote-session.ts',
   'api/payment-webhook.js',
   'api/notification-worker.js',
@@ -74,7 +74,7 @@ if (!generated.includes('"wholesalePrice"'))
 if (!generated.includes('"minimumOrder"'))
   errors.push('Catalog metadata does not include custom minimums');
 
-const paymentApi = fs.readFileSync('api/create-session.js', 'utf8');
+const paymentApi = fs.readFileSync('api/create-session.ts', 'utf8');
 for (const token of [
   'SUPABASE_SERVICE_ROLE_KEY',
   'loadTrustedOrder',

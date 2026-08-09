@@ -13,7 +13,7 @@ describe('trusted checkout architecture', () => {
   });
 
   it('reloads the trusted Supabase order on the server', () => {
-    const source = fs.readFileSync('api/create-session.js', 'utf8');
+    const source = fs.readFileSync('api/create-session.ts', 'utf8');
     expect(source).toContain('loadTrustedOrder');
     expect(source).toContain('SUPABASE_SERVICE_ROLE_KEY');
     expect(source).toContain('order_not_payable');

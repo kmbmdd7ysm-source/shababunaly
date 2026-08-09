@@ -1,32 +1,48 @@
 import { getPaymentAdapter } from './payments/registry.ts';
 import { guardPublicPost } from './_request-security.ts';
 
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
 const MAX_BODY_BYTES = 16_000;
 const ALLOWED_METHODS = new Set(['online_card', 'libyan_bank_card']);
 const PAYABLE_STATUSES = new Set(['pending', 'failed', 'partially_paid']);
-const clean = (value, max = 300) =>
+
+const clean = (value: unknown, max = 300): string =>
   String(value || '')
     .trim()
     .slice(0, max);
-const json = (res, status, body) => {
+
+const json = (res: ApiRes, status: number, body: unknown) => {
   res.setHeader('Cache-Control', 'no-store, private');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
   return res.status(status).json(body);
 };
-const validOrderNumber = (value) => /^SHB-\d{8}-\d{7}$/.test(value);
-const validUuid = (value) =>
+
+const validOrderNumber = (value: string) => /^SHB-\d{8}-\d{7}$/.test(value);
+const validUuid = (value: string) =>
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 
-async function loadTrustedOrder({ orderNumber, idempotencyKey }) {
+async function loadTrustedOrder({
+  orderNumber,
+  idempotencyKey,
+}: {
+  orderNumber: string;
+  idempotencyKey: string;
+}): Promise<Record<string, unknown>> {
   const supabaseUrl = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const serviceRole = clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 4000);
   if (!supabaseUrl || !serviceRole || !/^https:\/\//i.test(supabaseUrl))
     throw Object.assign(new Error('trusted_order_store_not_connected'), { status: 503 });
-  // The public handler validates that exactly one trusted reference format is
-  // present before this private lookup is called. Keeping the lookup free of
-  // an unreachable empty-filter state prevents accidental broad order reads.
   const filters = validOrderNumber(orderNumber)
     ? `order_number=eq.${encodeURIComponent(orderNumber)}`
     : `idempotency_key=eq.${encodeURIComponent(idempotencyKey)}`;
@@ -64,19 +80,19 @@ async function loadTrustedOrder({ orderNumber, idempotencyKey }) {
     },
   );
   if (!response.ok) throw Object.assign(new Error('trusted_order_lookup_failed'), { status: 502 });
-  const rows = await response.json();
+  const rows = (await response.json()) as Array<Record<string, unknown>>;
   const order = Array.isArray(rows) ? rows[0] : null;
   if (!order) throw Object.assign(new Error('trusted_order_not_found'), { status: 404 });
   return order;
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return json(res, 405, { error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: MAX_BODY_BYTES,
       limit: 30,
       windowMs: 10 * 60_000,
@@ -85,7 +101,10 @@ export default async function handler(req, res) {
     }))
   )
     return;
-  const body = req.body && typeof req.body === 'object' ? req.body : null;
+  const body = (req.body && typeof req.body === 'object' ? req.body : null) as Record<
+    string,
+    unknown
+  > | null;
   const method = clean(body?.paymentMethod, 40);
   const orderNumber = clean(body?.orderNumber, 40).toUpperCase();
   const idempotencyKey = clean(body?.idempotencyKey, 80);
@@ -97,19 +116,27 @@ export default async function handler(req, res) {
     return json(res, 400, { error: 'invalid_checkout_request' });
   const adapter = getPaymentAdapter(method);
   if (!adapter?.configured()) return json(res, 503, { error: 'payment_provider_not_connected' });
-  let order;
+  let order: Record<string, unknown>;
   try {
     order = await loadTrustedOrder({ orderNumber, idempotencyKey });
-  } catch (error) {
-    return json(res, error.status || 502, { error: clean(error.message, 120) });
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status || 502)
+        : 502;
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, status, { error: clean(message, 120) });
   }
   const due = Number(order.amount_due_now);
   if (
     order.payment_method !== method ||
     order.shipping_quote_required === true ||
     (order.shipping_quote_expires_at &&
-      new Date(order.shipping_quote_expires_at).getTime() <= Date.now()) ||
-    (order.payment_expires_at && new Date(order.payment_expires_at).getTime() <= Date.now()) ||
+      new Date(String(order.shipping_quote_expires_at)).getTime() <= Date.now()) ||
+    (order.payment_expires_at && new Date(String(order.payment_expires_at)).getTime() <= Date.now()) ||
     order.currency !== 'USD' ||
     !Number.isFinite(due) ||
     due <= 0 ||
@@ -124,6 +151,7 @@ export default async function handler(req, res) {
     return json(res, 403, { error: 'order_customer_mismatch' });
   const siteUrl = clean(process.env.SITE_URL || 'https://shababuna.ly', 1000).replace(/\/$/, '');
   try {
+    if (!adapter.createSession) return json(res, 503, { error: 'payment_provider_not_connected' });
     const session = await adapter.createSession({
       trustedOrder: {
         id: order.id,
@@ -138,13 +166,15 @@ export default async function handler(req, res) {
         remainingBalance: Number(order.remaining_balance || 0),
         deliveryProfile: order.delivery_profile,
       },
-      idempotencyKey: `${order.idempotency_key}:${order.payment_stage || 'initial'}:${Number(order.amount_paid || 0).toFixed(2)}:${due.toFixed(2)}`,
-      successUrl: `${siteUrl}/checkout/success?order=${encodeURIComponent(order.order_number)}`,
-      cancelUrl: `${siteUrl}/checkout/cancelled?order=${encodeURIComponent(order.order_number)}`,
+      idempotencyKey: `${String(order.idempotency_key)}:${String(order.payment_stage || 'initial')}:${Number(order.amount_paid || 0).toFixed(2)}:${due.toFixed(2)}`,
+      successUrl: `${siteUrl}/checkout/success?order=${encodeURIComponent(String(order.order_number))}`,
+      cancelUrl: `${siteUrl}/checkout/cancelled?order=${encodeURIComponent(String(order.order_number))}`,
     });
     return json(res, 200, { url: session.url, orderNumber: order.order_number });
-  } catch (error) {
-    const mapped = adapter.mapError(error);
-    return json(res, mapped.status, { error: mapped.code });
+  } catch (error: unknown) {
+    const mapped = adapter.mapError
+      ? adapter.mapError(error)
+      : { status: 502, code: 'payment_session_failed' };
+    return json(res, Number(mapped.status || 502), { error: mapped.code || mapped.error });
   }
 }

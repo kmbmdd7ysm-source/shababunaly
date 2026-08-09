@@ -194,7 +194,7 @@ for (const source of [formApi, orderApi]) {
 
 has(orderApi, 'loadTrustedOrder', 'trusted order email notification');
 has(orderApi, 'trusted_order_not_found', 'production order email fail-closed behavior');
-const createSession = read('api/create-session.js');
+const createSession = read('api/create-session.ts');
 for (const token of ['payment_expires_at', 'shipping_quote_expires_at', 'loadTrustedOrder'])
   has(createSession, token, `payment session ${token}`);
 const checkout = read('src/pages/CheckoutPage.jsx');

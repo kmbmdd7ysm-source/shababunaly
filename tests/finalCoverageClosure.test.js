@@ -42,7 +42,7 @@ import {
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
 } from '../api/_guest-order-token.ts';
-import createSessionHandler from '../api/create-session.js';
+import createSessionHandler from '../api/create-session.ts';
 import designShareHandler from '../api/design-share.js';
 import readinessHandler, {
   featureReadiness,
