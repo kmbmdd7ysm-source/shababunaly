@@ -11,7 +11,7 @@ export default function ContentCms({
   saving,
   run,
 }: {
-  state: { siteContent?: Array<Record<string, unknown>> };
+  state: Record<string, unknown>;
   pick: LocalePick;
   saving?: string | boolean;
   run: (key: string, action: () => Promise<unknown>, success: string) => unknown;
@@ -27,7 +27,9 @@ export default function ContentCms({
     [],
   );
   const current = (contentKey: string) => {
-    const rows = Array.isArray(state.siteContent) ? state.siteContent : [];
+    const rows = Array.isArray(state.siteContent)
+      ? (state.siteContent as Array<Record<string, unknown>>)
+      : [];
     const hit = rows.find((row) => row.content_key === contentKey);
     return hit?.content_value || defaults[contentKey];
   };
