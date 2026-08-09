@@ -1,32 +1,27 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `695696b4067cf9d9e9b192b5c0d846e89ebe2dad`
-- Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
-- TypeScript: **65.25%** (169/259)
+- SHA: `aae9fc965b62154f1bbda4f2f36c90c1f60e30bb`
+- TypeScript: **65.64%** (170/259)
+- Remaining JS/JSX: ~89 executable files in audit scope
 
-## Phase progress
-| Phase | Status |
-| --- | --- |
-| 1 TypeScript | **IN PROGRESS 65.25%** — Auth/Catalog/UserData DONE |
-| 2 CSS extinction | **IN PROGRESS** — passes 1–4; foundation.css in main; global !important 173 (was 348) |
-| 3–4 Chrome/Footer | Footer DONE; Chrome PARTIAL |
-| 5–7 Home/Shop/Cards | PARTIAL |
-| 8–35 | PENDING |
+## Completed in this run (do not redo)
+- CatalogContext.tsx · UserDataContext.tsx
+- SmartImage · Modal · Newsletter · Dossier · PwaPrompt · CartPage
+- CSS passes 3–4 + foundation.css in main
+- APIs: private-file · retention-worker (+ earlier geo/formspree/etc.)
 
-## CSS metrics
-- global: 5070L / 173 !important
-- premium: 1631L / 41 !important  
-- shababuna: 3067L / 0 !important
+## CSS
+- global 5070L / !important 173 (was 7252 / 348)
+- premium 41 !important · shababuna 0
 
 ## Exact next
-1. Continue Phase 1 — large pages + remaining APIs → ~100%
-2. Phase 2 — remove global premium/shababuna from main once owned elsewhere
-3. Phases 3–35 sequentially
+1. Phase 1 continue — Checkout/Shop/Product/Account/Customize/Teams pages + remaining APIs
+2. Phase 2 — remove legacy global/premium/shababuna from main when rules relocated
+3. Phases 3–35 per FINAL CONTINUOUS COMPLETION COMMAND
 
 ## Next command
 ```bash
 cd /workspace && git rev-parse HEAD
-# Migrate CheckoutPage modules / remaining APIs
+# Migrate next large page or remaining APIs
 npm run typecheck && npm run lint && npm run test:node
 ```

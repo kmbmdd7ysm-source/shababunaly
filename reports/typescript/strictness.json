@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T18:57:57.808Z",
+  "generatedAt": "2026-08-09T18:59:17.754Z",
   "sourceFiles": 259,
-  "strictFiles": 169,
-  "strictCoveragePercent": 65.25,
+  "strictFiles": 170,
+  "strictCoveragePercent": 65.64,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -88,7 +88,6 @@
     "api/public-quote-request.js",
     "api/readiness.js",
     "api/refund.js",
-    "api/retention-worker.js",
     "api/retry-order-payment.js",
     "api/signature-envelope.js",
     "api/signature-webhook.js",
