@@ -40,7 +40,7 @@ export function ColorSelector({
             title={pick(c.name)}
             aria-label={pick(c.name)}
           >
-            <ColorSwatch color={c.hex} />
+            <ColorSwatch {...(c.hex ? { color: c.hex } : {})} />
           </button>
         ))}
       </div>
