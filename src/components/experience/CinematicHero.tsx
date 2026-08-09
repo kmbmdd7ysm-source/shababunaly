@@ -60,8 +60,15 @@ export default function CinematicHero(): ReactElement {
           });
         })
         .catch(() => {});
-    const idle = globalThis.requestIdleCallback?.(load, { timeout: 2200 });
-    const timer = idle == null ? setTimeout(load, 900) : null;
+    const idle = globalThis.requestIdleCallback?.(() => {
+      void load();
+    }, { timeout: 2200 });
+    const timer =
+      idle == null
+        ? setTimeout(() => {
+            void load();
+          }, 900)
+        : null;
     return () => {
       if (active) active = false;
       if (idle != null) globalThis.cancelIdleCallback?.(idle);
