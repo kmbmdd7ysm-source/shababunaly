@@ -1,4 +1,6 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import type { ReactElement } from 'react';
+import type { CatalogProduct } from '../context/CatalogContext';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCompare } from '../context/CompareContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -11,23 +13,36 @@ import { getCompareAction } from '../utils/productOptions';
 import Icon from '../components/icons/Icon';
 import SmartImage from '../components/common/SmartImage';
 import { getVariantPurchaseLimit } from '../utils/productEligibility';
-export default function ComparePage() {
+
+export default function ComparePage(): ReactElement {
   const { products } = useCatalog();
   const c = useCompare(),
     { pick } = useLanguage(),
     { addItem } = useCart(),
     navigate = useNavigate(),
-    location = useLocation();
-  const list = c.ids.map((id) => products.find((p) => p.id === id)).filter(Boolean);
-  const rows = [
+      const list = c.ids
+    .map((id) => products.find((p) => p.id === id))
+    .filter((p): p is CatalogProduct => Boolean(p));
+  type RowFn = (p: CatalogProduct) => unknown;
+  const rows: Array<[string, RowFn]> = [
     [pick({ en: 'Category', ar: 'الفئة' }), (p) => p.category],
     [pick({ en: 'Collection', ar: 'المجموعة' }), (p) => p.collection],
-    [pick({ en: 'Colors', ar: 'الألوان' }), (p) => p.colors?.map((x) => pick(x.name)).join(', ')],
-    [pick({ en: 'Sizes', ar: 'المقاسات' }), (p) => p.sizes?.join(', ')],
-    [pick({ en: 'Material', ar: 'الخامة' }), (p) => pick(p.material)],
-    [pick({ en: 'Fit', ar: 'القَصّة' }), (p) => pick(p.fit)],
+    [
+      pick({ en: 'Colors', ar: 'الألوان' }),
+      (p) =>
+        (Array.isArray(p.colors) ? p.colors : [])
+          .map((x) => pick((x.name as { en?: string; ar?: string }) || { en: '', ar: '' }))
+          .join(', '),
+    ],
+    [pick({ en: 'Sizes', ar: 'المقاسات' }), (p) => (Array.isArray(p.sizes) ? p.sizes : []).join(', ')],
+    [pick({ en: 'Material', ar: 'الخامة' }), (p) => pick(p.material as { en?: string; ar?: string })],
+    [pick({ en: 'Fit', ar: 'القَصّة' }), (p) => pick(p.fit as { en?: string; ar?: string })],
     [pick({ en: 'Availability', ar: 'التوفر' }), (p) => p.availability],
-    [pick({ en: 'Features', ar: 'المزايا' }), (p) => (pick(p.features) || []).join(' · ')],
+    [
+      pick({ en: 'Features', ar: 'المزايا' }),
+      (p) =>
+        (Array.isArray(p.features) ? p.features : []).map(String).join(' · '),
+    ],
   ];
   return (
     <>
@@ -124,21 +139,21 @@ export default function ComparePage() {
                           className="compare-remove"
                           onClick={() => c.remove(p.id)}
                           aria-label={pick({
-                            en: `Remove ${pick(p.name)} from comparison`,
-                            ar: `إزالة ${pick(p.name)} من المقارنة`,
+                            en: `Remove ${pick(p.name as { en?: string; ar?: string })} from comparison`,
+                            ar: `إزالة ${pick(p.name as { en?: string; ar?: string })} من المقارنة`,
                           })}
                         >
                           <Icon name="close" size={20} />
                         </button>
                         <SmartImage
-                          src={p.image}
-                          alt={pick(p.name)}
+                          src={String(p.image || '')}
+                          alt={pick(p.name as { en?: string; ar?: string })}
                           width={1000}
                           height={1250}
                           sizes="(min-width: 900px) 260px, 62vw"
                         />
-                        <Link to={`/products/${p.slug}`}>{pick(p.name)}</Link>
-                        <Price amount={p.price} compareAt={p.compareAt} />
+                        <Link to={`/products/${String(p.slug || '')}`}>{pick(p.name as { en?: string; ar?: string })}</Link>
+                        <Price amount={Number(p.price || 0)} compareAt={p.compareAt == null ? null : Number(p.compareAt)} />
                         {(() => {
                           const action = getCompareAction(p);
                           const label =
@@ -153,44 +168,48 @@ export default function ComparePage() {
                             <button
                               className="btn-primary"
                               disabled={action.type === 'unavailable'}
-                              aria-label={`${label}: ${pick(p.name)}`}
+                              aria-label={`${label}: ${pick(p.name as { en?: string; ar?: string })}`}
                               onClick={() => {
                                 if (action.type === 'choose-options') {
-                                  navigate(`/products/${p.slug}`, {
-                                    state: { from: location.pathname, compareIds: c.ids },
-                                  });
+                                  navigate(`/products/${String(p.slug || '')}`);
                                   return;
                                 }
                                 if (action.type === 'quote') {
                                   navigate(
-                                    `/teams-wholesale?product=${encodeURIComponent(p.slug)}#quote`,
+                                    `/teams-wholesale?product=${encodeURIComponent(String(p.slug || ''))}#quote`,
                                   );
                                   return;
                                 }
                                 const v = action.variant;
                                 if (!v) return;
+                                const variant = v as Record<string, unknown>;
                                 addItem({
-                                  key: cartKey('product', p.id, `${v.color}-${v.size}`),
+                                  key: cartKey(
+                                    'product',
+                                    p.id,
+                                    `${String(variant.color)}-${String(variant.size)}`,
+                                  ),
                                   type: 'product',
                                   id: p.id,
-                                  slug: p.slug,
+                                  slug: String(p.slug || ''),
                                   name: p.name,
-                                  image: p.image,
-                                  price: Number(v.unitPrice ?? p.price),
-                                  retailPrice: Number(v.unitPrice ?? p.price),
+                                  image: String(p.image || ''),
+                                  price: Number(variant.unitPrice ?? p.price),
+                                  retailPrice: Number(variant.unitPrice ?? p.price),
                                   wholesalePrice:
-                                    Number(v.wholesalePrice ?? p.wholesalePrice ?? 0) || null,
-                                  size: v.size,
-                                  color: v.color,
-                                  sku: v.sku,
-                                  maxStock: getVariantPurchaseLimit(v),
-                                  inventoryTracking: v.inventoryTracking !== false,
-                                  href: `/products/${p.slug}`,
+                                    Number(variant.wholesalePrice ?? p.wholesalePrice ?? 0) || null,
+                                  size: String(variant.size || ''),
+                                  color: String(variant.color || ''),
+                                  sku: String(variant.sku || ''),
+                                  maxStock: getVariantPurchaseLimit(variant as never),
+                                  inventoryTracking: variant.inventoryTracking !== false,
+                                  href: `/products/${String(p.slug || '')}`,
                                   quantity: 1,
                                   purchaseMode: 'retail',
-                                  readyToShip: p.readyToShip === true && v.readyToShip !== false,
+                                  readyToShip:
+                                    p.readyToShip === true && variant.readyToShip !== false,
                                   deliveryProfile: p.readyToShip ? 'ready' : 'standard',
-                                });
+                                } as never);
                               }}
                             >
                               {label}
@@ -210,7 +229,7 @@ export default function ComparePage() {
                       <tr className={diff ? 'is-different' : ''} key={label}>
                         <th>{label}</th>
                         {vals.map((v, i) => (
-                          <td key={i}>{v || '—'}</td>
+                          <td key={i}>{String(v ?? '—')}</td>
                         ))}
                       </tr>
                     );
