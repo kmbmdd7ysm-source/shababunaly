@@ -1,6 +1,6 @@
-import { getSupabase } from './supabase';
+import { getSupabase } from './supabase.ts';
 
-const ACCEPTED = new Map([
+const ACCEPTED = new Map<string, string[]>([
   ['image/jpeg', ['jpg', 'jpeg']],
   ['image/png', ['png']],
   ['image/webp', ['webp']],
@@ -12,7 +12,7 @@ const MAX_FILE_BYTES = 2 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 3 * 1024 * 1024;
 const MAX_FILES = 5;
 
-function extension(name) {
+function extension(name: unknown): string {
   return (
     String(name || '')
       .split('.')
@@ -21,7 +21,7 @@ function extension(name) {
   );
 }
 
-function encodeFile(file, role) {
+function encodeFile(file: File, role: string): Promise<Record<string, string>> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error('file_read_failed'));
@@ -36,7 +36,10 @@ function encodeFile(file, role) {
   });
 }
 
-export function validateSpecialRequestFiles(productImage, additionalFiles = []) {
+export function validateSpecialRequestFiles(
+  productImage: File | null | undefined,
+  additionalFiles: File[] = [],
+): Array<{ file: File; role: string }> {
   const entries = [
     ...(productImage ? [{ file: productImage, role: 'product_image' }] : []),
     ...additionalFiles.map((file) => ({ file, role: 'additional_file' })),
@@ -63,7 +66,13 @@ export async function submitSpecialRequest({
   additionalFiles = [],
   turnstileToken,
   accessToken = '',
-}) {
+}: {
+  payload: Record<string, unknown>;
+  productImage?: File | null;
+  additionalFiles?: File[];
+  turnstileToken?: string;
+  accessToken?: string;
+}): Promise<unknown> {
   const entries = validateSpecialRequestFiles(productImage, additionalFiles);
   const files = await Promise.all(entries.map(({ file, role }) => encodeFile(file, role)));
   const response = await fetch('/api/special-request', {
@@ -80,12 +89,16 @@ export async function submitSpecialRequest({
       idempotencyKey: crypto.randomUUID(),
     }),
   });
-  const data = await response.json().catch(() => ({}));
+  const data = (await response.json().catch(() => ({}))) as {
+    ok?: boolean;
+    error?: string;
+    request?: unknown;
+  };
   if (!response.ok || !data.ok) throw new Error(data.error || 'special_request_unavailable');
   return data.request;
 }
 
-export async function getMySpecialRequests() {
+export async function getMySpecialRequests(): Promise<unknown[]> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client
@@ -93,10 +106,14 @@ export async function getMySpecialRequests() {
     .select('*')
     .order('created_at', { ascending: false });
   if (error) throw error;
-  return data || [];
+  return (data as unknown[]) || [];
 }
 
-export async function respondToSpecialRequest(requestId, decision, note = '') {
+export async function respondToSpecialRequest(
+  requestId: string,
+  decision: string,
+  note = '',
+): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_respond_special_request', {
@@ -108,7 +125,15 @@ export async function respondToSpecialRequest(requestId, decision, note = '') {
   return data;
 }
 
-export async function startSpecialRequestPayment({ requestNumber, customerEmail, paymentMethod }) {
+export async function startSpecialRequestPayment({
+  requestNumber,
+  customerEmail,
+  paymentMethod,
+}: {
+  requestNumber: string;
+  customerEmail: string;
+  paymentMethod: string;
+}): Promise<Record<string, unknown>> {
   const response = await fetch('/api/create-special-request-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -116,7 +141,10 @@ export async function startSpecialRequestPayment({ requestNumber, customerEmail,
     cache: 'no-store',
     body: JSON.stringify({ requestNumber, customerEmail, paymentMethod }),
   });
-  const data = await response.json().catch(() => ({}));
+  const data = (await response.json().catch(() => ({}))) as {
+    url?: string;
+    error?: string;
+  };
   if (!response.ok || !data.url) throw new Error(data.error || 'special_request_payment_failed');
   window.location.assign(data.url);
   return data;
