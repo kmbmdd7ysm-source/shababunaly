@@ -1,19 +1,23 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `9fc35f293dcbe1186ab09abd4d9abe9d0daea363`
-- TypeScript: **96.03%** — OrgWorkspace done; Realtime3D ambient (model-viewer); remaining 12 JS with ambients; `tsc` GREEN
-- Phase 2 CSS: !important global 33 / premium 26; unused cull pass 13; legacy still deferred from main
+- SHA: `f36b74026528ecac545440e44d62eceaa647096c`
+- TypeScript: **96.03%** (OrgWorkspace done; Realtime3D ambient; 12 JS with ambients); `tsc` GREEN
+- Phase 2 CSS: !important global 33 / premium 26; deferred legacy load intact
+- Visual: home/shop/customize/cart/checkout rendering; commerce add-to-bag→cart→checkout verified
+- Cart: Libya free-ship banner gated to LY; empty states use SVG (no emoji)
 
 ## Exact next unfinished
-1. Phase 2 continued ownership moves + further extinction of deferred legacy sheets
-2. Visual/UX verification of critical routes (home/shop/product/cart/checkout/customize/teams/account) EN+AR desktop+mobile
-3. Functional E2E commerce journeys
-4. a11y / perf / remaining audited groups
-5. Final SHA evidence — NOT FINAL COMPLETE
+1. Continue Phase 2 CSS ownership / further extinction
+2. Product PDP layout polish (details below fold / immersive stage)
+3. AR language switch + RTL visual verification (toggle path)
+4. Customize full step flow + Teams form submit
+5. Remaining audited groups / a11y / perf / final evidence
+NOT FINAL COMPLETE
 
 ## Verified
 - `npx tsc --noEmit` EXIT 0
-- OrganizationWorkspace.tsx migrated
-- CSS brace-balanced after passes
+- Routes 200; build GREEN earlier this session
+- Add to bag → cart 1 line → checkout form (Playwright)
+- Libya free-ship banner absent for non-LY cart
 
-Hero slots preserved. No fabricated data.
+Hero slots preserved. No fabricated inventory.
