@@ -6,11 +6,13 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from 'react';
-import { commerceConfig, isSupportedDisplayCurrency } from '../config/commerce';
-import { fetchPublicShippingRates, fetchUsdToLydRate } from '../services/commerceSettings';
-import { isSupportedCountryCode, normalizeCountryCode } from '../data/countries';
-import { convertPrice, formatMoney } from '../services/money';
+import { commerceConfig, isSupportedDisplayCurrency } from '../config/commerce.ts';
+import { fetchPublicShippingRates, fetchUsdToLydRate } from '../services/commerceSettings.ts';
+import { isSupportedCountryCode, normalizeCountryCode } from '../data/countries.ts';
+import { convertPrice, formatMoney } from '../services/money.ts';
+import type { Currency } from '../domain/types.ts';
 import {
   clearPendingCommercePreference,
   hasCountryPreference,
@@ -22,39 +24,55 @@ import {
   writeCountryPreference,
   writeCurrencyPreference,
   writePendingCommercePreference,
-} from '../services/commercePreferences';
-import { fetchProfile, upsertProfile } from '../services/sync/cloudState';
-import { createChannel } from '../services/sync/storage';
-import { trackEvent } from '../utils/analytics';
+} from '../services/commercePreferences.ts';
+import { fetchProfile, upsertProfile } from '../services/sync/cloudState.ts';
+import { createChannel } from '../services/sync/storage.ts';
+import { trackEvent } from '../utils/analytics.ts';
 import { useAuth } from './AuthContext';
 
-const CommerceContext = createContext(null);
+export type CommerceContextValue = {
+  currency: Currency;
+  setCurrency: (value: string, options?: { explicit?: boolean; persist?: boolean }) => void;
+  countryCode: string;
+  setCountryCode: (value: string, options?: { explicit?: boolean; persist?: boolean }) => void;
+  preferenceStatus: string;
+  convert: (amount: number | string, from?: string) => number;
+  format: (amount: number | string, lang?: string, from?: string) => string;
+  config: typeof commerceConfig;
+  usdToLydRate: number;
+  rateStatus: string;
+  rateReady: boolean;
+  shippingRates: Record<string, number>;
+  shippingRatesStatus: string;
+};
+
+const CommerceContext = createContext<CommerceContextValue | null>(null);
 const CLOUD_DEBOUNCE_MS = 800;
 
-function validProfileCurrency(profile) {
+function validProfileCurrency(profile: Record<string, unknown> | null | undefined): string | null {
   const value = profile?.preferred_currency || profile?.preferredCurrency;
   return isSupportedDisplayCurrency(value) ? value : null;
 }
 
-function validProfileCountry(profile) {
+function validProfileCountry(profile: Record<string, unknown> | null | undefined): string | null {
   const value = profile?.preferred_country || profile?.preferredCountry;
   return isSupportedCountryCode(value) ? String(value).toUpperCase() : null;
 }
 
-export function CommerceProvider({ children }) {
+export function CommerceProvider({ children }: { children?: ReactNode }) {
   const auth = useAuth();
   const userId = auth.user?.id || null;
-  const [currency, setCurrencyState] = useState(() => readCurrencyPreference(null));
-  const [countryCode, setCountryState] = useState(() => readCountryPreference(null));
+  const [currency, setCurrencyState] = useState<Currency>(() => readCurrencyPreference(null));
+  const [countryCode, setCountryState] = useState<string>(() => readCountryPreference(null));
   const [preferenceStatus, setPreferenceStatus] = useState('local');
   // A safe public fallback is available immediately so selecting LYD can never
   // merely relabel an unconverted USD amount while the cloud setting loads.
-  const [usdToLydRate, setUsdToLydRate] = useState(commerceConfig.fallbackUsdToLydRate);
+  const [usdToLydRate, setUsdToLydRate] = useState<number>(commerceConfig.fallbackUsdToLydRate);
   const [rateStatus, setRateStatus] = useState('fallback');
   const [shippingRates, setShippingRates] = useState({});
   const [shippingRatesStatus, setShippingRatesStatus] = useState('idle');
-  const channel = useRef(null);
-  const cloudTimer = useRef();
+  const channel = useRef<ReturnType<typeof createChannel> | null>(null);
+  const cloudTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const generation = useRef(0);
   const explicitCurrency = useRef(false);
   const explicitCountry = useRef(false);
@@ -134,13 +152,13 @@ export function CommerceProvider({ children }) {
     setCurrencyState(readCurrencyPreference(userId));
     setCountryState(readCountryPreference(userId));
     setPreferenceStatus('syncing');
-    fetchProfile(userId)
+    (fetchProfile(userId) as Promise<Record<string, unknown> | null>)
       .then((profile) => {
         if (generation.current !== currentGeneration || !profile) return;
         const cloudCurrency = validProfileCurrency(profile);
         const cloudCountry = validProfileCountry(profile);
         if (cloudCurrency && !explicitCurrency.current) {
-          setCurrencyState(cloudCurrency);
+          setCurrencyState(normalizeCurrency(cloudCurrency));
           writeCurrencyPreference(userId, cloudCurrency);
         }
         if (cloudCountry && !explicitCountry.current) {
@@ -161,7 +179,7 @@ export function CommerceProvider({ children }) {
     if (hasCountryPreference(userId) || hasCurrencyPreference(userId)) return undefined;
     let active = true;
     let started = false;
-    let controller;
+    let controller: AbortController | undefined;
 
     const removeListeners = () => {
       globalThis.removeEventListener?.('pointerdown', startGeoLookup);
@@ -210,7 +228,7 @@ export function CommerceProvider({ children }) {
   }, [userId]);
 
   const persistCloud = useCallback(
-    (patch) => {
+    (patch: { preferredCurrency?: string; preferredCountry?: string }) => {
       if (!userId) return;
       clearTimeout(cloudTimer.current);
       if (globalThis.navigator?.onLine === false) {
@@ -221,7 +239,7 @@ export function CommerceProvider({ children }) {
       setPreferenceStatus('syncing');
       cloudTimer.current = setTimeout(async () => {
         try {
-          const existing = (await fetchProfile(userId)) || {};
+          const existing = ((await fetchProfile(userId)) as Record<string, unknown> | null) || {};
           await upsertProfile(userId, { ...existing, ...patch });
           clearPendingCommercePreference(userId);
           setPreferenceStatus('synced');
@@ -246,7 +264,7 @@ export function CommerceProvider({ children }) {
   }, [userId, preferenceStatus, currency, countryCode, persistCloud]);
 
   const setCurrency = useCallback(
-    (next) => {
+    (next: string) => {
       const valid = normalizeCurrency(next);
       explicitCurrency.current = true;
       setCurrencyState(valid);
@@ -259,7 +277,7 @@ export function CommerceProvider({ children }) {
   );
 
   const setCountryCode = useCallback(
-    (next) => {
+    (next: string) => {
       const valid = normalizeCountryCode(next);
       explicitCountry.current = true;
       setCountryState(valid);
@@ -272,14 +290,13 @@ export function CommerceProvider({ children }) {
   );
 
   const convert = useCallback(
-    (amount, sourceCurrency = commerceConfig.baseCurrency) => {
-      if (sourceCurrency !== currency && !usdToLydRate) return null;
-      return convertPrice(amount, sourceCurrency, currency, usdToLydRate);
+    (amount: number | string, sourceCurrency: string = commerceConfig.baseCurrency) => {
+      return Number(convertPrice(amount, sourceCurrency, currency, usdToLydRate) || 0);
     },
     [currency, usdToLydRate],
   );
   const format = useCallback(
-    (amount, lang = 'en', sourceCurrency = commerceConfig.baseCurrency) => {
+    (amount: number | string, lang = 'en', sourceCurrency: string = commerceConfig.baseCurrency) => {
       if (sourceCurrency !== currency && !usdToLydRate)
         return lang === 'ar' ? 'السعر غير متاح' : 'Price unavailable';
       return formatMoney(
@@ -291,7 +308,7 @@ export function CommerceProvider({ children }) {
     [currency, usdToLydRate],
   );
 
-  const value = useMemo(
+  const value = useMemo<CommerceContextValue>(
     () => ({
       currency,
       setCurrency,
@@ -324,7 +341,7 @@ export function CommerceProvider({ children }) {
   return <CommerceContext.Provider value={value}>{children}</CommerceContext.Provider>;
 }
 
-export function useCommerce() {
+export function useCommerce(): CommerceContextValue {
   const value = useContext(CommerceContext);
   if (!value) throw new Error('useCommerce must be used inside CommerceProvider');
   return value;

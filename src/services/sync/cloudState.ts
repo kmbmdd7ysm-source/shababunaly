@@ -1,5 +1,6 @@
-import { getSupabase } from '../supabase';
-export async function fetchCloudState(userId) {
+import { getSupabase } from '../supabase.ts';
+
+export async function fetchCloudState(userId: string | null | undefined): Promise<unknown> {
   const s = await getSupabase();
   if (!s || !userId) return null;
   const { data, error } = await s
@@ -10,7 +11,11 @@ export async function fetchCloudState(userId) {
   if (error) throw error;
   return data;
 }
-export async function upsertCloudState(userId, state) {
+
+export async function upsertCloudState(
+  userId: string | null | undefined,
+  state: Record<string, unknown>,
+): Promise<unknown> {
   const s = await getSupabase();
   if (!s || !userId) return null;
   const { data: current, error: readError } = await s
@@ -19,15 +24,21 @@ export async function upsertCloudState(userId, state) {
     .eq('user_id', userId)
     .maybeSingle();
   if (readError) throw readError;
+  const currentRow = (current || {}) as { preferences?: unknown };
   const existingPreferences =
-    current?.preferences && typeof current.preferences === 'object' ? current.preferences : {};
+    currentRow.preferences && typeof currentRow.preferences === 'object'
+      ? (currentRow.preferences as Record<string, unknown>)
+      : {};
   const payload = {
     user_id: userId,
     cart: state.cart || [],
     wishlist: state.wishlist || [],
     compare: state.compare || [],
     recently_viewed: state.recentlyViewed || [],
-    preferences: { ...existingPreferences, ...(state.preferences || {}) },
+    preferences: {
+      ...existingPreferences,
+      ...((state.preferences as Record<string, unknown>) || {}),
+    },
     version: Number(state.version || 1),
     updated_at: new Date().toISOString(),
   };
@@ -39,16 +50,22 @@ export async function upsertCloudState(userId, state) {
   if (error) throw error;
   return data;
 }
-export async function fetchProfile(userId) {
+
+export async function fetchProfile(userId: string | null | undefined): Promise<unknown> {
   const s = await getSupabase();
   if (!s || !userId) return null;
   const { data, error } = await s.from('profiles').select('*').eq('id', userId).maybeSingle();
   if (error) throw error;
   return data;
 }
-export async function upsertProfile(userId, profile) {
+
+export async function upsertProfile(
+  userId: string | null | undefined,
+  profile: Record<string, unknown>,
+): Promise<unknown> {
   const s = await getSupabase();
   if (!s || !userId) return null;
+  const accountType = profile.accountType ?? profile.account_type;
   const allowed = {
     id: userId,
     first_name: profile.firstName ?? profile.first_name ?? null,
@@ -56,16 +73,13 @@ export async function upsertProfile(userId, profile) {
     display_name: profile.displayName ?? profile.display_name ?? null,
     avatar_url: profile.avatarUrl ?? profile.avatar_url ?? null,
     phone: profile.phone ?? null,
-    account_type:
-      (profile.accountType ?? profile.account_type) === 'organization'
-        ? 'organization'
-        : 'customer',
+    account_type: accountType === 'organization' ? 'organization' : 'customer',
     organization_name:
-      (profile.accountType ?? profile.account_type) === 'organization'
+      accountType === 'organization'
         ? (profile.organizationName ?? profile.organization_name ?? null)
         : null,
     organization_type:
-      (profile.accountType ?? profile.account_type) === 'organization'
+      accountType === 'organization'
         ? (profile.organizationType ?? profile.organization_type ?? 'club')
         : null,
     preferred_language: profile.preferredLanguage || profile.preferred_language || 'en',
@@ -86,7 +100,9 @@ export async function upsertProfile(userId, profile) {
   return data;
 }
 
-export async function fetchCommercePreferences(userId) {
+export async function fetchCommercePreferences(
+  userId: string | null | undefined,
+): Promise<unknown> {
   const s = await getSupabase();
   if (!s || !userId) return null;
   const { data, error } = await s
@@ -98,10 +114,16 @@ export async function fetchCommercePreferences(userId) {
   return data;
 }
 
-export async function updateCommercePreferences(userId, preferences) {
+export async function updateCommercePreferences(
+  userId: string | null | undefined,
+  preferences: {
+    preferredCurrency?: string;
+    preferredCountry?: string;
+  },
+): Promise<unknown> {
   const s = await getSupabase();
   if (!s || !userId) return null;
-  const payload = { id: userId, updated_at: new Date().toISOString() };
+  const payload: Record<string, unknown> = { id: userId, updated_at: new Date().toISOString() };
   if (preferences.preferredCurrency) payload.preferred_currency = preferences.preferredCurrency;
   if (preferences.preferredCountry) payload.preferred_country = preferences.preferredCountry;
   const { data, error } = await s
