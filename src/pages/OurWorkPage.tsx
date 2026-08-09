@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import RouteMasthead from '../components/composition/RouteMasthead';
@@ -40,7 +41,7 @@ const capabilities = Object.freeze([
   },
 ]);
 
-export default function OurWorkPage() {
+export default function OurWorkPage(): ReactElement {
   const { pick } = useLanguage();
   return (
     <>
