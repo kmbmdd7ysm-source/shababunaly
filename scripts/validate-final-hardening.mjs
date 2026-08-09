@@ -277,7 +277,7 @@ for (const token of [
   'manual_factory_match_required',
 ])
   has(preflight, token, `production preflight ${token}`);
-const customizePage = read('src/pages/CustomizePage.jsx');
+const customizePage = read('src/pages/CustomizePage.tsx');
 for (const token of ['productionPreflight', 'readyForQuote'])
   has(customizePage, token, `preflight quote gate ${token}`);
 

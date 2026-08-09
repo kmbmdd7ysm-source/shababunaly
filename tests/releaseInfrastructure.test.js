@@ -47,7 +47,7 @@ describe('release infrastructure hardening', () => {
   test('ships generic factory specifications and fail-closed production preflight artifacts', () => {
     const preflight = read('src/services/productionPreflight.ts');
     const exports = read('src/utils/designExports.js');
-    const customize = read('src/pages/CustomizePage.jsx');
+    const customize = read('src/pages/CustomizePage.tsx');
     for (const token of [
       'FACTORY_TEMPLATE_SPECS',
       'minimumRasterDpi',

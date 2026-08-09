@@ -53,7 +53,7 @@ describe('production completion safeguards', () => {
       'src/pages/ContactPage.tsx',
       'src/components/common/Newsletter.tsx',
       'src/pages/TeamsWholesalePage.tsx',
-      'src/pages/CustomizePage.jsx',
+      'src/pages/CustomizePage.tsx',
       'src/pages/SpecialRequestPage.tsx',
     ]) {
       expect(await read(path)).toContain('TurnstileWidget');
