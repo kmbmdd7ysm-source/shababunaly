@@ -22,3 +22,5 @@ export function clearB2bLocalState(userId: string): void;
 export function duplicateCustomDesign(input: Record<string, unknown>): Promise<unknown>;
 export function listDesignVersions(designId: string): Promise<unknown[]>;
 export function saveLocalProductionUpdate(userId: string, update: unknown): void;
+export function signOrganizationContract(input: Record<string, unknown>): Promise<unknown>;
+export function submitPaymentProof(input: Record<string, unknown>): Promise<unknown>;
