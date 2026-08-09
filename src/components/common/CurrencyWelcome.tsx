@@ -1,9 +1,10 @@
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { useCommerce } from '../../context/CommerceContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { STORAGE_KEYS } from '../../config';
 
-export default function CurrencyWelcome() {
+export default function CurrencyWelcome(): ReactElement | null {
   const { currency, setCurrency, setCountryCode } = useCommerce();
   const { pick } = useLanguage();
   const [open, setOpen] = useState(() => {
@@ -33,7 +34,7 @@ export default function CurrencyWelcome() {
   }, [open, setCountryCode, setCurrency]);
 
   if (!open) return null;
-  const confirm = (value) => {
+  const confirm = (value: string) => {
     setCurrency(value);
     try {
       localStorage.setItem(STORAGE_KEYS.welcome, 'done');
