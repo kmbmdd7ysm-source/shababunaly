@@ -1,4 +1,4 @@
-/* `icon` names resolve against src/components/icons/Icon.jsx. The rail shows the
+/* `icon` names resolve against src/components/icons/Icon.tsx. The rail shows the
    icon when collapsed and the label when open, so every entry needs one. */
 export const mainNav = [
   { to: '/', key: 'home', icon: 'home' },

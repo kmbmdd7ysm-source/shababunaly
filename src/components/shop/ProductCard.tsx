@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useCart, cartKey } from '../../context/CartContext';
@@ -15,29 +16,51 @@ import { getCompareAction } from '../../utils/productOptions';
 import { getVariantPurchaseLimit } from '../../utils/productEligibility';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability.ts';
 
-export default function ProductCard({ product, eager = false, displayColor = null }) {
+export default function ProductCard({
+  product,
+  eager = false,
+  displayColor = null,
+}: {
+  product: unknown;
+  eager?: boolean;
+  displayColor?: string | null;
+}): ReactElement {
+  const p = product as {
+    slug?: string;
+    price?: number;
+    compareAt?: number | null;
+    image?: string;
+    name?: unknown;
+    colors?: Array<{ key?: string; image?: string; name?: unknown; [k: string]: unknown }>;
+    inventoryVerified?: boolean;
+    wholesalePrice?: number | null;
+    [k: string]: unknown;
+  };
   const { t, pick, lang } = useLanguage();
+  const common = (t.common || {}) as Record<string, string>;
+  const badge = (t.badge || {}) as Record<string, string>;
+  const a11y = (t.a11y || {}) as Record<string, string>;
   const { addItem } = useCart();
   const { countryCode } = useCommerce();
   const { isLowStock } = useCatalog();
   const { has, toggle } = useWishlist();
   const compare = useCompare();
   const navigate = useNavigate();
-  const availability = resolveAvailabilityState(product, { countryCode });
+  const availability = resolveAvailabilityState(p as never, { countryCode });
   const comingSoon = availability === 'COMING_SOON';
   const soldOut = availability === 'OUT_OF_STOCK';
-  const onSale = product.compareAt && product.compareAt > product.price;
-  const low = isLowStock(product) && product.inventoryVerified === true;
+  const onSale = Boolean(p.compareAt && Number(p.compareAt) > Number(p.price || 0));
+  const low = isLowStock(p as never) && p.inventoryVerified === true;
   const availabilityCopy = availabilityLabel(availability, lang === 'ar' ? 'ar' : 'en');
-  const to = `/products/${product.slug}${displayColor ? `?color=${displayColor}` : ''}`;
-  const cardColor = product.colors.find((c) => c.key === displayColor);
-  const cardImage = cardColor?.image || product.image;
-  const action = getCompareAction(product);
+  const to = `/products/${String(p.slug || '')}${displayColor ? `?color=${displayColor}` : ''}`;
+  const cardColor = (p.colors || []).find((c) => c.key === displayColor);
+  const cardImage = cardColor?.image || p.image;
+  const action = getCompareAction(p as never);
 
   const runPrimaryAction = () => {
     if (comingSoon || soldOut || action.type === 'unavailable') return;
     if (action.type === 'quote') {
-      navigate(`/teams-wholesale?product=${encodeURIComponent(product.slug)}#quote`);
+      navigate(`/teams-wholesale?product=${encodeURIComponent(String(p.slug || ''))}#quote`);
       return;
     }
     if (action.type === 'choose-options') {
@@ -46,34 +69,34 @@ export default function ProductCard({ product, eager = false, displayColor = nul
     }
     const variant = action.variant;
     if (!variant) return;
-    const unitPrice = Number(variant.unitPrice ?? product.price);
+    const unitPrice = Number(variant.unitPrice ?? p.price);
     addItem({
-      key: cartKey('product', product.id, `${variant.color}-${variant.size}-retail`),
+      key: cartKey('product', String(p.id || ''), `${variant.color}-${variant.size}-retail`),
       type: 'product',
-      id: product.id,
-      slug: product.slug,
-      name: product.name,
-      image: cardImage,
+      id: String(p.id || ''),
+      slug: String(p.slug || ''),
+      name: p.name as never,
+      image: String(cardImage || ''),
       price: unitPrice,
       retailPrice: unitPrice,
-      wholesalePrice: Number(variant.wholesalePrice ?? product.wholesalePrice ?? 0) || null,
-      size: variant.size,
-      color: variant.color,
-      sku: variant.sku,
-      maxStock: getVariantPurchaseLimit(variant),
+      wholesalePrice:
+        Number((variant as { wholesalePrice?: number }).wholesalePrice ?? p.wholesalePrice ?? 0) ||
+        null,
+      size: String(variant.size || ''),
+      color: String(variant.color || ''),
+      sku: String(variant.sku || ''),
+      maxStock: getVariantPurchaseLimit(variant as never),
       inventoryTracking: variant.inventoryTracking !== false,
       href: to,
       quantity: 1,
       purchaseMode: 'retail',
-      readyToShip: product.readyToShip === true && variant.readyToShip !== false,
-      customizable: product.customizable === true,
+      readyToShip: p.readyToShip === true && variant.readyToShip !== false,
+      customizable: p.customizable === true,
       madeInUSA:
-        product.madeInUSA === true &&
-        product.claimVerified === true &&
-        Boolean(product.claimEvidenceReference),
-      largeEquipment: product.largeEquipment === true,
-      deliveryProfile: product.readyToShip ? 'ready' : 'standard',
-    });
+        p.madeInUSA === true && p.claimVerified === true && Boolean(p.claimEvidenceReference),
+      largeEquipment: p.largeEquipment === true,
+      deliveryProfile: p.readyToShip ? 'ready' : 'standard',
+    } as never);
   };
 
   const actionLabel =
@@ -81,24 +104,24 @@ export default function ProductCard({ product, eager = false, displayColor = nul
       ? pick({ en: 'Choose options', ar: 'اختر الخيارات' })
       : action.type === 'quote'
         ? pick({ en: 'Request price', ar: 'اطلب السعر' })
-        : t.common.quickAdd;
+        : common.quickAdd;
 
   return (
-    <article className="product-card" data-product-id={product.id}>
+    <article className="product-card" data-product-id={String(p.id || '')}>
       <div className="product-card-media">
-        <Link to={to} aria-label={pick(product.name)}>
+        <Link to={to} aria-label={pick(p.name as never)}>
           <SmartImage
-            src={cardImage}
-            alt={pick(product.alt)}
+            src={String(cardImage || '')}
+            alt={String(pick((p.alt || p.name) as never) || '')}
             width={900}
             height={1200}
             sizes="(min-width: 1040px) 25vw, (min-width: 700px) 33vw, 50vw"
             className="product-card-img product-card-img--main"
             eager={eager}
           />
-          {product.hoverImage && (
+          {Boolean(p.hoverImage) && (
             <SmartImage
-              src={product.hoverImage}
+              src={String(p.hoverImage || '')}
               alt=""
               width={900}
               height={1200}
@@ -124,27 +147,29 @@ export default function ProductCard({ product, eager = false, displayColor = nul
               availability === 'SUPPLIER_ORDER') && (
               <Badge tone="limited">{availabilityCopy.label}</Badge>
             )}
-          {!comingSoon && !soldOut && onSale && <Badge tone="sale">{t.badge.sale}</Badge>}
-          {!comingSoon && !soldOut && product.newArrival && <Badge tone="new">{t.badge.new}</Badge>}
-          {!comingSoon && !soldOut && product.bestSeller && (
-            <Badge tone="best">{t.badge.best}</Badge>
+          {!comingSoon && !soldOut && onSale && <Badge tone="sale">{badge.sale}</Badge>}
+          {!comingSoon && !soldOut && Boolean(p.newArrival) && (
+            <Badge tone="new">{badge.new}</Badge>
           )}
-          {!comingSoon && !soldOut && low && <Badge tone="limited">{t.badge.limited}</Badge>}
+          {!comingSoon && !soldOut && Boolean(p.bestSeller) && (
+            <Badge tone="best">{badge.best}</Badge>
+          )}
+          {!comingSoon && !soldOut && low && <Badge tone="limited">{badge.limited}</Badge>}
         </div>
         <button
           type="button"
-          className={`gw-card-action gw-card-action--wish${has(product.id) ? ' is-active' : ''}`}
-          onClick={() => toggle(product.id)}
-          aria-pressed={has(product.id)}
-          aria-label={has(product.id) ? t.a11y.removeWishlist : t.a11y.addWishlist}
+          className={`gw-card-action gw-card-action--wish${has(String(p.id || '')) ? ' is-active' : ''}`}
+          onClick={() => toggle(String(p.id || ''))}
+          aria-pressed={has(String(p.id || ''))}
+          aria-label={has(String(p.id || '')) ? a11y.removeWishlist : a11y.addWishlist}
         >
           <Icon name="heart" />
         </button>
         <button
           type="button"
-          className={`gw-card-action gw-card-action--compare${compare.has(product.id) ? ' is-active' : ''}`}
-          onClick={() => compare.toggle(product.id)}
-          aria-pressed={compare.has(product.id)}
+          className={`gw-card-action gw-card-action--compare${compare.has(String(p.id || '')) ? ' is-active' : ''}`}
+          onClick={() => compare.toggle(String(p.id || ''))}
+          aria-pressed={compare.has(String(p.id || ''))}
           aria-label={pick({ en: 'Compare product', ar: 'قارن المنتج' })}
         >
           <Icon name="compare" />
@@ -162,24 +187,32 @@ export default function ProductCard({ product, eager = false, displayColor = nul
         )}
       </div>
       <div className="product-card-body">
-        <span className="product-card-brand">{product.brand}</span>
+        <span className="product-card-brand">{String(p.brand || '')}</span>
         <Link to={to} className="product-card-name">
-          {pick(product.name)}
+          {pick(p.name as never)}
         </Link>
         <div className="product-card-meta">
-          {product.quoteOnly ? (
+          {p.quoteOnly ? (
             <span className="status-pill">
               {pick({ en: 'Price by request', ar: 'السعر عند الطلب' })}
             </span>
           ) : comingSoon ? (
             <span className="status-pill">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</span>
           ) : (
-            <Price amount={product.price} compareAt={product.compareAt} size="sm" />
+            <Price
+              amount={Number(p.price) || 0}
+              compareAt={p.compareAt == null ? null : Number(p.compareAt)}
+              size="sm"
+            />
           )}
-          {product.colors.length > 1 && (
+          {(p.colors || []).length > 1 && (
             <span className="color-dots" aria-hidden="true">
-              {product.colors.slice(0, 4).map((c) => (
-                <ColorSwatch key={c.key} color={c.hex} className="color-dot" />
+              {(p.colors || []).slice(0, 4).map((c) => (
+                <ColorSwatch
+                  key={String(c.key || c.hex || '')}
+                  color={String(c.hex || '')}
+                  className="color-dot"
+                />
               ))}
             </span>
           )}

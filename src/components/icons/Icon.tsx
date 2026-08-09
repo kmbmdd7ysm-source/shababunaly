@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 const paths = {
   search: (
     <>
@@ -163,7 +164,19 @@ const paths = {
   ),
 };
 
-export default function Icon({ name, size = 24, strokeWidth = 1.9, className = '' }) {
+export default function Icon({
+  name,
+  size = 24,
+  strokeWidth = 1.9,
+  className = '',
+}: {
+  name?: string;
+  size?: number;
+  strokeWidth?: number;
+  className?: string;
+}): ReactElement | null {
+  if (!name || !(name in paths)) return null;
+  const icon = paths[name as keyof typeof paths];
   return (
     <svg
       className={className}
@@ -178,7 +191,7 @@ export default function Icon({ name, size = 24, strokeWidth = 1.9, className = '
       aria-hidden="true"
       focusable="false"
     >
-      {paths[name] || null}
+      {icon}
     </svg>
   );
 }

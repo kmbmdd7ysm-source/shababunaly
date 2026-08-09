@@ -1,3 +1,9 @@
+import type {
+  FormEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  ReactElement,
+  RefObject,
+} from 'react';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
@@ -12,7 +18,7 @@ import { lockDocumentScroll } from '../../utils/scrollLock';
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
-function Highlight({ text, query }) {
+function Highlight({ text, query }: { text: string; query: string }): ReactElement | string {
   const value = String(text || '');
   const q = String(query || '').trim();
   if (!q) return value;
@@ -27,15 +33,24 @@ function Highlight({ text, query }) {
   );
 }
 
-export default function SearchOverlay({ open, onClose, triggerRef }) {
+export default function SearchOverlay({
+  open,
+  onClose,
+  triggerRef,
+}: {
+  open: boolean;
+  onClose: () => void;
+  triggerRef?: RefObject<HTMLElement | null> | null;
+}): ReactElement | null {
   const { t, pick, lang } = useLanguage();
+  const searchCopy = (t.search || {}) as Record<string, string>;
   const { products } = useCatalog();
   const navigate = useNavigate();
   const location = useLocation();
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(-1);
-  const inputRef = useRef(null);
-  const dialogRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const historyManaged = useRef(false);
   const closingFromPop = useRef(false);
   const listId = useId();
@@ -75,7 +90,7 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
     const onPopState = () => {
       if (open) closeWithoutHistory();
     };
-    const onKeyDown = (event) => {
+    const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
         close('escape');
@@ -83,11 +98,15 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
       }
       if (event.key === 'Tab') {
         const nodes = [...(dialogRef.current?.querySelectorAll(FOCUSABLE) || [])].filter(
-          (node) => !node.hidden && node.getAttribute('aria-hidden') !== 'true',
+          (node): node is HTMLElement => {
+            const el = node as HTMLElement;
+            return !el.hidden && el.getAttribute('aria-hidden') !== 'true';
+          },
         );
         if (!nodes.length) return;
         const first = nodes[0];
         const last = nodes.at(-1);
+        if (!first || !last) return;
         if (event.shiftKey && document.activeElement === first) {
           event.preventDefault();
           last.focus();
@@ -124,12 +143,12 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
   useEffect(() => setActiveIndex(-1), [query]);
   if (!open) return null;
 
-  const activate = (item) => {
+  const activate = (item: { type?: string; to?: string }) => {
     trackEvent('search_suggestion_click', { type: item.type });
-    navigate(item.to);
+    navigate(String(item.to || '/'));
     closeWithoutHistory();
   };
-  const submit = (event) => {
+  const submit = (event?: FormEvent) => {
     event?.preventDefault?.();
     if (activeIndex >= 0 && suggestions[activeIndex]) {
       activate(suggestions[activeIndex]);
@@ -141,7 +160,7 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
     navigate(`/search?q=${encodeURIComponent(value)}`);
     closeWithoutHistory();
   };
-  const onInputKeyDown = (event) => {
+  const onInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     if (!suggestions.length) return;
     if (event.key === 'ArrowDown') {
       event.preventDefault();
@@ -165,7 +184,13 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
         <h1 id={`${listId}-title`} className="sr-only">
           {pick({ en: 'Search Shababuna', ar: 'البحث في شبابنا' })}
         </h1>
-        <form className="search-mobile-head" role="search" onSubmit={submit}>
+        <form
+          className="search-mobile-head"
+          role="search"
+          onSubmit={(event) => {
+            void submit(event);
+          }}
+        >
           <div className="search-input-wrap">
             <Icon name="search" />
             <input
@@ -176,8 +201,8 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={onInputKeyDown}
-              placeholder={t.search.placeholder}
-              aria-label={t.search.placeholder}
+              placeholder={searchCopy.placeholder}
+              aria-label={searchCopy.placeholder}
               role="combobox"
               aria-autocomplete="list"
               aria-expanded={Boolean(query.trim() && suggestions.length)}
@@ -280,31 +305,38 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
               {results.products.length > 0 && (
                 <section className="search-products" aria-labelledby={`${listId}-products`}>
                   <div className="search-section-title">
-                    <h2 id={`${listId}-products`}>{t.search.products}</h2>
+                    <h2 id={`${listId}-products`}>{searchCopy.products}</h2>
                     <button type="button" onClick={submit}>
-                      {t.search.viewAllResults}
+                      {searchCopy.viewAllResults}
                     </button>
                   </div>
                   <div className="search-product-grid">
                     {results.products.slice(0, 4).map((product) => (
                       <Link
-                        key={product.id}
-                        to={`/products/${product.slug}`}
+                        key={String(product.id)}
+                        to={`/products/${String(product.slug || '')}`}
                         onClick={() => {
                           trackEvent('search_result_click', { type: 'product' });
                           closeWithoutHistory();
                         }}
                       >
                         <SmartImage
-                          src={product.image}
-                          alt={pick(product.name)}
+                          src={String(product.image || '')}
+                          alt={String(pick(product.name as never) || '')}
                           width={320}
                           height={320}
                         />
                         <strong>
-                          <Highlight text={pick(product.name)} query={query} />
+                          <Highlight
+                            text={String(pick(product.name as never) || '')}
+                            query={query}
+                          />
                         </strong>
-                        <Price amount={product.price} compareAt={product.compareAt} size="sm" />
+                        <Price
+                          amount={Number(product.price) || 0}
+                          compareAt={product.compareAt == null ? null : Number(product.compareAt)}
+                          size="sm"
+                        />
                       </Link>
                     ))}
                   </div>
@@ -312,8 +344,8 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
               )}
               {results.total === 0 && (
                 <div className="notice notice--muted">
-                  <p>{t.search.noResults}</p>
-                  <p>{t.search.noResultsHint}</p>
+                  <p>{searchCopy.noResults}</p>
+                  <p>{searchCopy.noResultsHint}</p>
                 </div>
               )}
               {results.total > 0 && (
@@ -322,7 +354,7 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
                   className="btn-secondary block search-view-all"
                   onClick={submit}
                 >
-                  {t.search.viewAllResults}
+                  {searchCopy.viewAllResults}
                 </button>
               )}
             </>
