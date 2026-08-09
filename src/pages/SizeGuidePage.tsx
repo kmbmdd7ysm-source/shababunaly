@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo.tsx';
 import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier.jsx';
+import Dossier from '../components/composition/Dossier';
 import { sizeGuides, sizeUnitNote } from '../data/sizeGuide.ts';
 
 /*

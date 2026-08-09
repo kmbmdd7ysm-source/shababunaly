@@ -15,7 +15,7 @@ export default function CartDrawer(): ReactElement | null {
   const cartCopy = (t.cart || {}) as Record<string, string>;
   const a11y = (t.a11y || {}) as Record<string, string>;
   const common = (t.common || {}) as Record<string, string>;
-  const { format, usdToLydRate } = useCommerce();
+  const { format, usdToLydRate, countryCode } = useCommerce();
   const {
     items,
     drawerOpen,
@@ -46,6 +46,7 @@ export default function CartDrawer(): ReactElement | null {
   }, [drawerOpen, closeDrawer]);
 
   const freeShipping = getLibyaFreeShippingProgress(subtotal, usdToLydRate);
+  const showLibyaFreeShip = hasPhysical && String(countryCode || '').toUpperCase() === 'LY';
   const typeLabel = (type: unknown): string =>
     type === 'training' ? cartCopy.digital || '' : type === 'event' ? cartCopy.event || '' : '';
 
@@ -82,16 +83,37 @@ export default function CartDrawer(): ReactElement | null {
 
         {items.length === 0 ? (
           <div className="cart-drawer-empty">
-            <span aria-hidden="true">🏀</span>
+            <div className="gw-empty-orb" aria-hidden="true">
+              <svg viewBox="0 0 120 120" width="72" height="72" fill="none">
+                <circle cx="60" cy="60" r="52" stroke="currentColor" strokeWidth="2.5" />
+                <path
+                  d="M60 8c18 16 28 34 28 52s-10 36-28 52"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M60 8c-18 16-28 34-28 52s10 36 28 52"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path d="M12 48c30 8 66 8 96 0" stroke="currentColor" strokeWidth="2" />
+                <path d="M12 72c30-8 66-8 96 0" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </div>
             <p>{cartCopy.empty}</p>
             <span className="muted">{cartCopy.emptyHint}</span>
-            <button className="btn-primary" onClick={closeDrawer}>
-              {cartCopy.startShopping}
-            </button>
+            <div className="gw-empty-actions">
+              <button type="button" className="btn-primary" onClick={closeDrawer}>
+                {cartCopy.startShopping}
+              </button>
+              <Link to="/shop/ready-to-ship" className="btn-secondary" onClick={closeDrawer}>
+                {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+              </Link>
+            </div>
           </div>
         ) : (
           <>
-            {hasPhysical ? (
+            {showLibyaFreeShip ? (
               <div className="freeship-bar">
                 <p>
                   {freeShipping.remainingUsd > 0 ? (
@@ -112,7 +134,7 @@ export default function CartDrawer(): ReactElement | null {
                   })}
                 />
               </div>
-            ) : (
+            ) : !hasPhysical ? (
               <div className="freeship-bar">
                 <p>
                   {items.some((item) => item.type === 'training') &&
@@ -129,7 +151,7 @@ export default function CartDrawer(): ReactElement | null {
                         : 'Digital delivery — no physical shipping'}
                 </p>
               </div>
-            )}
+            ) : null}
             <ul className="cart-drawer-items">
               {items.map((item) => (
                 <li key={item.key} className="cart-line">

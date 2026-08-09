@@ -19,14 +19,17 @@ export default function CartPage(): ReactElement {
   const cartCopy = (t.cart || {}) as Record<string, string>;
   const nav = (t.nav || {}) as Record<string, string>;
   const checkoutCopy = (t.checkout || {}) as Record<string, string>;
-  const { format, usdToLydRate } = useCommerce();
+  const { format, usdToLydRate, countryCode } = useCommerce();
   const { items, updateQuantity, removeItem, subtotal, hasPhysical } = useCart();
 
   // Ready-to-ship is a Libya-only department; the empty-bag gates honour the
   // same rule the catalogue does.
 
   const freeShipping = getLibyaFreeShippingProgress(subtotal, usdToLydRate);
-  const showFreeShip = hasPhysical;
+  // Libya free-delivery progress is only meaningful for Libya destinations —
+  // international carts calculate shipping at checkout and must not show the
+  // Libya unlock banner.
+  const showFreeShip = hasPhysical && String(countryCode || '').toUpperCase() === 'LY';
 
   return (
     <>

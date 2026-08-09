@@ -1,7 +1,7 @@
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo.tsx';
 import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier.jsx';
+import Dossier from '../components/composition/Dossier';
 import Accordion from '../components/common/Accordion';
 import EmptyState from '../components/common/EmptyState';
 import { faqCategories } from '../data/faqs.ts';

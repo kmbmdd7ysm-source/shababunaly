@@ -6,8 +6,8 @@ import { useCookies } from '../../context/CookieContext';
 import { useCommerce } from '../../context/CommerceContext';
 import { trackEvent } from '../../utils/analytics.ts';
 import { footerNav } from '../../data/navigation.ts';
-import { footerContacts } from '../../data/footerSocial.jsx';
-import Newsletter from '../common/Newsletter.jsx';
+import { footerContacts } from '../../data/footerSocial';
+import Newsletter from '../common/Newsletter';
 import '../../styles/colophon.css';
 
 type FooterLink = { to: string; key?: string; label?: { en?: string; ar?: string } };
