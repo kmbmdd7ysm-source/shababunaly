@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:34:14.881Z",
+  "generatedAt": "2026-08-09T22:34:45.458Z",
   "sourceFiles": 269,
-  "strictFiles": 240,
-  "strictCoveragePercent": 89.22,
+  "strictFiles": 241,
+  "strictCoveragePercent": 89.59,
   "legacyFiles": [
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/custom/DesignPreview.jsx",
@@ -20,7 +20,6 @@
     "src/components/operations/control/NotificationAndSecurity.jsx",
     "src/components/operations/control/ProcurementAndBilling.jsx",
     "src/components/operations/control/ProductMasterFields.jsx",
-    "src/components/operations/control/shared.jsx",
     "src/components/operations/sections/OperationsSectionView.jsx",
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/data/generatedOptimizedImages.js",
