@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from './test-api.js';
-import { SITE } from '../src/config.js';
+import { SITE } from '../src/config.ts';
 import { mainNav } from '../src/data/navigation.js';
 
 describe('brand and navigation', () => {

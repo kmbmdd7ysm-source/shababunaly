@@ -31,7 +31,7 @@ for (const file of required) {
   } else if (file.endsWith('.svg')) validateSvg(file);
 }
 const html = readFileSync('index.html', 'utf8');
-const configFiles = ['src/config.js', 'src/config/brand.js'];
+const configFiles = ['src/config.js', 'src/config/brand.ts'];
 const referenced = new Set();
 for (const match of html.matchAll(/(?:href|content)=["'](\/[^"']+)["']/g)) referenced.add(match[1]);
 for (const file of configFiles) {

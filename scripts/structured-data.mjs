@@ -1,4 +1,4 @@
-import { SITE } from '../src/config.js';
+import { SITE } from '../src/config.ts';
 
 export function createHomeSchema() {
   return {
