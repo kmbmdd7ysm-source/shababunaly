@@ -1,3 +1,4 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -12,24 +13,25 @@ const ACTIVE_STATUSES = new Set([
   'refund_pending',
 ]);
 
-function withinWindow(order) {
+function withinWindow(order: Record<string, unknown>): boolean {
   const delivered =
     order.deliveredAt || (order.orderStatus === 'delivered' ? order.updatedAt : null);
   if (!delivered) return false;
-  const age = Date.now() - new Date(delivered).getTime();
+  const age = Date.now() - new Date(String(delivered)).getTime();
   return Number.isFinite(age) && age >= 0 && age <= RETURN_WINDOW_DAYS * 86400000;
 }
 
-function returnableItems(order) {
-  return (order.items || []).filter(
+function returnableItems(order: Record<string, unknown>): Array<Record<string, unknown>> {
+  const items = Array.isArray(order.items) ? (order.items as Array<Record<string, unknown>>) : [];
+  return items.filter(
     (item) =>
-      item.variantId &&
+      Boolean(item.variantId) &&
       String(item.purchaseMode || 'retail').toLowerCase() === 'retail' &&
       !item.customizable,
   );
 }
 
-function statusLabel(status, pick) {
+function statusLabel(status: unknown, pick: (v: { en: string; ar: string }) => string): string {
   const labels = {
     requested: { en: 'Requested', ar: 'تم تقديم الطلب' },
     under_review: { en: 'Under review', ar: 'قيد المراجعة' },
@@ -41,15 +43,27 @@ function statusLabel(status, pick) {
     closed: { en: 'Closed', ar: 'مغلق' },
     cancelled: { en: 'Cancelled', ar: 'ملغي' },
   };
-  return pick(labels[status] || { en: status || 'Unknown', ar: status || 'غير معروف' });
+  const key = String(status || '');
+  return pick(
+    (labels as Record<string, { en: string; ar: string }>)[key] || {
+      en: key || 'Unknown',
+      ar: key || 'غير معروف',
+    },
+  );
 }
 
-export default function ReturnsSection({ orders = [] }) {
+export default function ReturnsSection({
+  orders = [],
+}: {
+  orders?: Array<Record<string, unknown>>;
+}): ReactElement {
   const auth = useAuth();
   const { pick, lang } = useLanguage();
-  const [returns, setReturns] = useState([]);
+  const [returns, setReturns] = useState<Array<Record<string, unknown>>>([]);
   const [selectedOrder, setSelectedOrder] = useState('');
-  const [selected, setSelected] = useState({});
+  const [selected, setSelected] = useState<Record<string, { checked: boolean; quantity: number }>>(
+    {},
+  );
   const [reason, setReason] = useState('');
   const [details, setDetails] = useState('');
   const [state, setState] = useState({ loading: true, busy: '', message: '' });
@@ -64,7 +78,8 @@ export default function ReturnsSection({ orders = [] }) {
           returnableItems(order).length > 0 &&
           !returns.some(
             (request) =>
-              request.order_number === order.orderNumber && ACTIVE_STATUSES.has(request.status),
+              request.order_number === order.orderNumber &&
+              ACTIVE_STATUSES.has(String(request.status || '')),
           ),
       ),
     [orders, returns],
@@ -72,7 +87,7 @@ export default function ReturnsSection({ orders = [] }) {
 
   const order = useMemo(
     () =>
-      eligibleOrders.find((item) => item.orderNumber === selectedOrder) ||
+      eligibleOrders.find((item) => String(item.orderNumber || '') === selectedOrder) ||
       eligibleOrders[0] ||
       null,
     [eligibleOrders, selectedOrder],
@@ -82,48 +97,52 @@ export default function ReturnsSection({ orders = [] }) {
     if (!auth.user?.id) return;
     setState((current) => ({ ...current, loading: true, message: '' }));
     try {
-      const data = await listMyReturns(auth.user.id);
-      setReturns(data);
+      const data = await listMyReturns(String(auth.user.id));
+      setReturns((Array.isArray(data) ? data : []).map((row) => row as Record<string, unknown>));
       setState((current) => ({ ...current, loading: false }));
     } catch (error) {
       setState({
         loading: false,
         busy: '',
-        message: `${pick({ en: 'Returns could not be loaded.', ar: 'تعذر تحميل طلبات الإرجاع.' })} ${error?.message || ''}`,
+        message: `${pick({ en: 'Returns could not be loaded.', ar: 'تعذر تحميل طلبات الإرجاع.' })} ${(error instanceof Error ? error.message : '') || ''}`,
       });
     }
   }, [auth.user?.id, pick]);
 
   useEffect(() => {
-    load();
+    void load();
   }, [load]);
   useEffect(() => {
     if (!order) return;
-    setSelectedOrder(order.orderNumber);
+    setSelectedOrder(String(order.orderNumber || ''));
     setSelected((current) => {
-      const next = {};
+      const next: Record<string, { checked: boolean; quantity: number }> = {};
       for (const item of returnableItems(order)) {
-        next[item.variantId] = current[item.variantId] || { checked: false, quantity: 1 };
+        const variantId = String(item.variantId || '');
+        next[variantId] = current[variantId] || { checked: false, quantity: 1 };
       }
       return next;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [order?.orderNumber]);
 
-  const submit = async (event) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!order) return;
     const items = returnableItems(order)
-      .filter((item) => selected[item.variantId]?.checked)
-      .map((item) => ({
-        variantId: item.variantId,
-        sku: item.sku,
-        name: item.name,
-        quantity: Math.min(
-          item.quantity,
-          Math.max(1, Number(selected[item.variantId]?.quantity) || 1),
-        ),
-      }));
+      .filter((item) => selected[String(item.variantId || '')]?.checked)
+      .map((item) => {
+        const variantId = String(item.variantId || '');
+        return {
+          variantId,
+          sku: String(item.sku || ''),
+          name: item.name,
+          quantity: Math.min(
+            Number(item.quantity) || 1,
+            Math.max(1, Number(selected[variantId]?.quantity) || 1),
+          ),
+        };
+      });
     if (!reason.trim() || !items.length) {
       setState((current) => ({
         ...current,
@@ -136,7 +155,12 @@ export default function ReturnsSection({ orders = [] }) {
     }
     setState((current) => ({ ...current, busy: 'create', message: '' }));
     try {
-      await createReturnRequest({ orderNumber: order.orderNumber, reason, details, items });
+      await createReturnRequest({
+        orderNumber: String(order.orderNumber || ''),
+        reason,
+        details,
+        items: items as never,
+      });
       setReason('');
       setDetails('');
       setSelected({});
@@ -153,16 +177,16 @@ export default function ReturnsSection({ orders = [] }) {
       setState((current) => ({
         ...current,
         busy: '',
-        message: `${pick({ en: 'Return request failed:', ar: 'تعذر إرسال طلب الإرجاع:' })} ${error?.message || error}`,
+        message: `${pick({ en: 'Return request failed:', ar: 'تعذر إرسال طلب الإرجاع:' })} ${(error instanceof Error ? error.message : '') || error}`,
       }));
     }
   };
 
-  const cancel = async (request) => {
-    setState((current) => ({ ...current, busy: request.id, message: '' }));
+  const cancel = async (request: Record<string, unknown>) => {
+    setState((current) => ({ ...current, busy: String(request.id || ''), message: '' }));
     try {
       await cancelReturnRequest({
-        returnId: request.id,
+        returnId: String(request.id || ''),
         note: pick({ en: 'Cancelled by customer.', ar: 'ألغاه العميل.' }),
       });
       await load();
@@ -170,7 +194,7 @@ export default function ReturnsSection({ orders = [] }) {
       setState((current) => ({
         ...current,
         busy: '',
-        message: `${pick({ en: 'Could not cancel:', ar: 'تعذر الإلغاء:' })} ${error?.message || error}`,
+        message: `${pick({ en: 'Could not cancel:', ar: 'تعذر الإلغاء:' })} ${(error instanceof Error ? error.message : '') || error}`,
       }));
     }
   };
@@ -208,34 +232,36 @@ export default function ReturnsSection({ orders = [] }) {
       {returns.length > 0 && (
         <div className="returns-history">
           {returns.map((request) => (
-            <article key={request.id} className="return-history-card">
+            <article key={String(request.id)} className="return-history-card">
               <div>
-                <strong>{request.return_number}</strong>
+                <strong>{String(request.return_number || '')}</strong>
                 <span className="status-badge status-neutral">
                   {statusLabel(request.status, pick)}
                 </span>
               </div>
               <p>
-                {request.order_number} · {request.reason}
+                {String(request.order_number || '')} · {String(request.reason || '')}
               </p>
               <small>
                 {new Intl.DateTimeFormat(lang === 'ar' ? 'ar-LY' : 'en-US', {
                   dateStyle: 'medium',
-                }).format(new Date(request.created_at))}
+                }).format(new Date(String(request.created_at || Date.now())))}
               </small>
-              {request.refund_amount != null && (
+              {request.refund_amount != null ? (
                 <strong>${Number(request.refund_amount).toFixed(2)} USD</strong>
-              )}
-              {['requested', 'under_review'].includes(request.status) && (
+              ) : null}
+              {['requested', 'under_review'].includes(String(request.status || '')) ? (
                 <button
                   type="button"
                   className="link-btn"
-                  disabled={state.busy === request.id}
-                  onClick={() => cancel(request)}
+                  disabled={state.busy === String(request.id || '')}
+                  onClick={() => {
+                    void cancel(request);
+                  }}
                 >
                   {pick({ en: 'Cancel request', ar: 'إلغاء الطلب' })}
                 </button>
-              )}
+              ) : null}
             </article>
           ))}
         </div>
@@ -244,62 +270,72 @@ export default function ReturnsSection({ orders = [] }) {
       {state.loading ? (
         <p role="status">{pick({ en: 'Loading returns…', ar: 'جاري تحميل الإرجاع…' })}</p>
       ) : eligibleOrders.length ? (
-        <form className="return-request-form" onSubmit={submit}>
+        <form
+          className="return-request-form"
+          onSubmit={(event) => {
+            void submit(event);
+          }}
+        >
           <h3>{pick({ en: 'Start a return', ar: 'ابدأ طلب إرجاع' })}</h3>
           <label>
             <span>{pick({ en: 'Delivered order', ar: 'الطلب الذي تم تسليمه' })}</span>
             <select
-              value={order?.orderNumber || ''}
+              value={String(order?.orderNumber || '')}
               onChange={(event) => setSelectedOrder(event.target.value)}
             >
               {eligibleOrders.map((item) => (
-                <option key={item.orderNumber} value={item.orderNumber}>
-                  {item.orderNumber}
+                <option key={String(item.orderNumber)} value={String(item.orderNumber || '')}>
+                  {String(item.orderNumber || '')}
                 </option>
               ))}
             </select>
           </label>
           <div className="return-item-list">
-            {order &&
-              returnableItems(order).map((item) => {
-                const value = selected[item.variantId] || { checked: false, quantity: 1 };
-                return (
-                  <div className="return-item-row" key={item.variantId}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={value.checked}
-                        onChange={(event) =>
-                          setSelected((current) => ({
-                            ...current,
-                            [item.variantId]: { ...value, checked: event.target.checked },
-                          }))
-                        }
-                      />
-                      <span>
-                        <strong>{item.name}</strong>
-                        <small>{item.sku || item.variantId}</small>
-                      </span>
-                    </label>
-                    <label>
-                      <span>{pick({ en: 'Quantity', ar: 'الكمية' })}</span>
-                      <input
-                        type="number"
-                        min="1"
-                        max={item.quantity}
-                        value={value.quantity}
-                        disabled={!value.checked}
-                        onChange={(event) =>
-                          setSelected((current) => ({
-                            ...current,
-                            [item.variantId]: { ...value, quantity: event.target.value },
-                          }))
-                        }
-                      />
-                    </label>
-                  </div>
-                );
-              })}
+            {order
+              ? returnableItems(order).map((item) => {
+                  const variantId = String(item.variantId || '');
+                  const value = selected[variantId] || { checked: false, quantity: 1 };
+                  return (
+                    <div className="return-item-row" key={variantId}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={value.checked}
+                          onChange={(event) =>
+                            setSelected((current) => ({
+                              ...current,
+                              [variantId]: { ...value, checked: event.target.checked },
+                            }))
+                          }
+                        />
+                        <span>
+                          <strong>{String(item.name || '')}</strong>
+                          <small>{String(item.sku || item.variantId || '')}</small>
+                        </span>
+                      </label>
+                      <label>
+                        <span>{pick({ en: 'Quantity', ar: 'الكمية' })}</span>
+                        <input
+                          type="number"
+                          min={1}
+                          max={Number(item.quantity) || 1}
+                          value={value.quantity}
+                          disabled={!value.checked}
+                          onChange={(event) =>
+                            setSelected((current) => ({
+                              ...current,
+                              [variantId]: {
+                                ...value,
+                                quantity: Number(event.target.value) || 1,
+                              },
+                            }))
+                          }
+                        />
+                      </label>
+                    </div>
+                  );
+                })
+              : null}
           </div>
           <label>
             <span>{pick({ en: 'Reason', ar: 'السبب' })}</span>

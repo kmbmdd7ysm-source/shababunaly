@@ -80,7 +80,7 @@ for (const token of [
 ])
   has(operations, token, `operations ${token}`);
 
-const returns = read('src/components/account/ReturnsSection.jsx');
+const returns = read('src/components/account/ReturnsSection.tsx');
 for (const token of [
   'createReturnRequest',
   'cancelReturnRequest',
