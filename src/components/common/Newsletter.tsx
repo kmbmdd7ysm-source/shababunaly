@@ -1,3 +1,4 @@
+import type { FormEvent, ChangeEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { trackEvent } from '../../utils/analytics';
@@ -6,27 +7,28 @@ import TurnstileWidget from '../security/TurnstileWidget';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function Newsletter({ compact = false }) {
+export default function Newsletter({ compact = false }: { compact?: boolean } = {}): ReactElement {
   const { t } = useLanguage();
+  const newsletter = (t.newsletter || {}) as Record<string, string>;
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
   const [error, setError] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
 
-  const submit = async (e) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     if (!EMAIL_RE.test(email)) {
-      setError(t.newsletter.invalid);
+      setError(newsletter.invalid || '');
       return;
     }
     if (!consent) {
-      setError(t.newsletter.required);
+      setError(newsletter.required || '');
       return;
     }
     if (!turnstileToken) {
-      setError(t.newsletter.required);
+      setError(newsletter.required || '');
       return;
     }
     setStatus('sending');
@@ -45,14 +47,14 @@ export default function Newsletter({ compact = false }) {
       trackEvent('newsletter_success', { source: compact ? 'footer' : 'section' });
     } catch {
       setStatus('error');
-      setError(t.newsletter.error);
+      setError(newsletter.error || '');
     }
   };
 
   if (status === 'success')
     return (
       <p className="newsletter-success" role="status">
-        {t.newsletter.success}
+        {newsletter.success}
       </p>
     );
 
@@ -64,24 +66,24 @@ export default function Newsletter({ compact = false }) {
     >
       <div className="newsletter-input-row">
         <label className="sr-only" htmlFor="nl-email">
-          {t.newsletter.placeholder}
+          {newsletter.placeholder}
         </label>
         <input
           id="nl-email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={t.newsletter.placeholder}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+          placeholder={newsletter.placeholder}
           required
           autoComplete="email"
         />
         <button type="submit" className="btn-primary" disabled={status === 'sending'}>
-          {status === 'sending' ? t.newsletter.subscribing : t.newsletter.subscribe}
+          {status === 'sending' ? newsletter.subscribing : newsletter.subscribe}
         </button>
       </div>
       <label className="newsletter-consent">
-        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-        <span>{t.newsletter.consent}</span>
+        <input type="checkbox" checked={consent} onChange={(e: ChangeEvent<HTMLInputElement>) => setConsent(e.target.checked)} />
+        <span>{newsletter.consent}</span>
       </label>
       <TurnstileWidget
         onToken={setTurnstileToken}
