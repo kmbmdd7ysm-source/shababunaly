@@ -1,10 +1,18 @@
 import SmartImage from '../../common/SmartImage';
 
-export default function StaticMediaEngine({ src, alt, eager = false }) {
+export default function StaticMediaEngine({
+  src,
+  alt,
+  eager = false,
+}: {
+  src?: string;
+  alt?: string;
+  eager?: boolean;
+}) {
   return (
     <SmartImage
-      src={src}
-      alt={alt}
+      {...(src ? { src } : {})}
+      {...(alt ? { alt } : {})}
       width={900}
       height={1125}
       eager={eager}
