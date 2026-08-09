@@ -1,3 +1,17 @@
+import type { ReactElement } from 'react';
+
+function asRecordish(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function asRows(source: unknown, key: string): Array<Record<string, unknown>> {
+  const root = source && typeof source === 'object' ? (source as Record<string, unknown>) : {};
+  const value = root[key];
+  return Array.isArray(value) ? (value as Array<Record<string, unknown>>) : [];
+}
+
 import ProductMasterFields from './control/ProductMasterFields';
 import { useEffect, useMemo, useState } from 'react';
 import { getLocalizedCountries } from '../../data/countries';
@@ -9,11 +23,22 @@ import {
   upsertOperationalEntity,
 } from '../../services/operations';
 
-export function MasterDataManager({ data, pick, saving, run }) {
+export function MasterDataManager({
+  data,
+  pick,
+  saving,
+  run,
+}: {
+  data?: unknown;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const dataRec = data;
   const configs = [
     {
       table: 'catalog_brands',
-      rows: data.brands,
+      rows: asRows(dataRec, 'brands'),
       label: { en: 'Brand', ar: 'براند' },
       fields: [
         ['name', 'Name'],
@@ -22,7 +47,7 @@ export function MasterDataManager({ data, pick, saving, run }) {
     },
     {
       table: 'catalog_categories',
-      rows: data.categories,
+      rows: asRows(dataRec, 'categories'),
       label: { en: 'Category', ar: 'تصنيف' },
       fields: [
         ['name_en', 'English name'],
@@ -32,7 +57,7 @@ export function MasterDataManager({ data, pick, saving, run }) {
     },
     {
       table: 'warehouses',
-      rows: data.warehouses,
+      rows: asRows(dataRec, 'warehouses'),
       label: { en: 'Warehouse', ar: 'مستودع' },
       fields: [
         ['name', 'Name'],
@@ -43,7 +68,7 @@ export function MasterDataManager({ data, pick, saving, run }) {
     },
     {
       table: 'suppliers',
-      rows: data.suppliers,
+      rows: asRows(dataRec, 'suppliers'),
       label: { en: 'Supplier', ar: 'مورد' },
       fields: [
         ['name', 'Name'],
@@ -54,7 +79,7 @@ export function MasterDataManager({ data, pick, saving, run }) {
     },
     {
       table: 'carriers',
-      rows: data.carriers,
+      rows: asRows(dataRec, 'carriers'),
       label: { en: 'Carrier', ar: 'شركة شحن' },
       fields: [
         ['name', 'Name'],
@@ -77,16 +102,30 @@ export function MasterDataManager({ data, pick, saving, run }) {
     </div>
   );
 }
-function MasterEntityCard({ config, pick, saving, run }) {
-  const initial = Object.fromEntries(config.fields.map(([key]) => [key, '']));
-  const [values, setValues] = useState(initial);
+function MasterEntityCard({
+  config,
+  pick,
+  saving,
+  run,
+}: {
+  config: Record<string, unknown>;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const fields = Array.isArray(config.fields) ? (config.fields as Array<[string, string]>) : [];
+  const rows = Array.isArray(config.rows) ? (config.rows as Array<Record<string, unknown>>) : [];
+  const table = String(config.table || '');
+  const label = (config.label || { en: '', ar: '' }) as { en: string; ar: string };
+  const initial = Object.fromEntries(fields.map(([key]) => [key, ''] as [string, string]));
+  const [values, setValues] = useState<Record<string, string>>(initial as Record<string, string>);
   const [selected, setSelected] = useState('');
-  const key = `master-${config.table}`;
+  const key = `master-${table}`;
   const save = () =>
     run(
       key,
       () =>
-        upsertOperationalEntity(config.table, {
+        upsertOperationalEntity(table, {
           ...(selected ? { id: selected } : {}),
           ...values,
           active: true,
@@ -96,30 +135,30 @@ function MasterEntityCard({ config, pick, saving, run }) {
   return (
     <article className="operations-card">
       <div>
-        <span>{pick(config.label)}</span>
-        <strong>{config.rows?.length || 0}</strong>
+        <span>{pick(label)}</span>
+        <strong>{rows?.length || 0}</strong>
       </div>
       <select
         value={selected}
         onChange={(event) => {
           const id = event.target.value;
           setSelected(id);
-          const row = config.rows.find((item) => item.id === id);
+          const row = rows.find((item) => item.id === id);
           setValues(
             row
-              ? Object.fromEntries(config.fields.map(([field]) => [field, row[field] || '']))
-              : initial,
+              ? Object.fromEntries(fields.map(([field]) => [field, String(row[field] ?? '')]))
+              : (initial as Record<string, string>),
           );
         }}
       >
         <option value="">{pick({ en: 'Create new', ar: 'إنشاء جديد' })}</option>
-        {(config.rows || []).map((row) => (
-          <option key={row.id} value={row.id}>
-            {row.name || row.name_en || row.code || row.slug}
+        {(rows || []).map((row: Record<string, unknown>) => (
+          <option key={String(row.id)} value={String(row.id || '')}>
+            {String(row.name || row.name_en || row.code || row.slug || '')}
           </option>
         ))}
       </select>
-      {config.fields.map(([field, label]) => (
+      {fields.map(([field, label]: [string, string]) => (
         <label key={field}>
           <span>{label}</span>
           <input
@@ -145,7 +184,7 @@ function MasterEntityCard({ config, pick, saving, run }) {
             onClick={() =>
               run(
                 `${key}-delete`,
-                () => deleteOperationalEntity(config.table, selected),
+                () => deleteOperationalEntity(table, selected),
                 pick({ en: 'Record deleted.', ar: 'تم حذف السجل.' }),
               )
             }
@@ -157,7 +196,23 @@ function MasterEntityCard({ config, pick, saving, run }) {
     </article>
   );
 }
-export function StockMovementManager({ warehouses, catalog, pick, saving, run }) {
+export function StockMovementManager({
+  warehouses,
+  catalog,
+  pick,
+  saving,
+  run,
+}: {
+  warehouses?: unknown;
+  catalog?: unknown;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const warehouseRows = Array.isArray(warehouses)
+    ? (warehouses as Array<Record<string, unknown>>)
+    : [];
+  const catalogList = Array.isArray(catalog) ? (catalog as Array<Record<string, unknown>>) : [];
   const [warehouseId, setWarehouseId] = useState('');
   const [variantId, setVariantId] = useState('');
   const [movementType, setMovementType] = useState('receipt');
@@ -169,9 +224,9 @@ export function StockMovementManager({ warehouses, catalog, pick, saving, run })
         <span>{pick({ en: 'Warehouse', ar: 'المستودع' })}</span>
         <select value={warehouseId} onChange={(e) => setWarehouseId(e.target.value)}>
           <option value="">—</option>
-          {warehouses.map((row) => (
-            <option key={row.id} value={row.id}>
-              {row.name} · {row.code}
+          {warehouseRows.map((row) => (
+            <option key={String(row.id)} value={String(row.id || '')}>
+              {String(row.name || '')} · {String(row.code || '')}
             </option>
           ))}
         </select>
@@ -180,9 +235,9 @@ export function StockMovementManager({ warehouses, catalog, pick, saving, run })
         <span>SKU / Variant</span>
         <select value={variantId} onChange={(e) => setVariantId(e.target.value)}>
           <option value="">—</option>
-          {catalog.slice(0, 1000).map((row) => (
-            <option key={row.variant_id} value={row.variant_id}>
-              {row.sku} · {row.product_name}
+          {catalogList.slice(0, 1000).map((row: Record<string, unknown>) => (
+            <option key={String(row.variant_id)} value={String(row.variant_id || '')}>
+              {String(row.sku || '')} · {String(row.product_name || '')}
             </option>
           ))}
         </select>
@@ -237,7 +292,20 @@ export function StockMovementManager({ warehouses, catalog, pick, saving, run })
   );
 }
 
-export function ShippingRatesManager({ rows, lang, pick, saving, run }) {
+export function ShippingRatesManager({
+  rows,
+  lang,
+  pick,
+  saving,
+  run,
+}: {
+  rows?: unknown;
+  lang?: string;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const rateRows = Array.isArray(rows) ? (rows as Array<Record<string, unknown>>) : [];
   const options = useMemo(
     () => getLocalizedCountries(lang).filter((country) => country.code !== 'LY'),
     [lang],
@@ -246,11 +314,11 @@ export function ShippingRatesManager({ rows, lang, pick, saving, run }) {
   const [rate, setRate] = useState('');
   const [note, setNote] = useState('');
   const [active, setActive] = useState(true);
-  const selected = rows.find((row) => row.country_code === countryCode);
+  const selected = rateRows.find((row) => row.country_code === countryCode);
   useEffect(() => {
     setRate(selected?.rate_usd == null ? '' : String(selected.rate_usd));
-    setNote(selected?.note || '');
-    setActive(selected?.active ?? true);
+    setNote(String(selected?.note || ''));
+    setActive(Boolean(selected?.active ?? true));
   }, [countryCode, selected?.rate_usd, selected?.note, selected?.active]);
   const key = `country-rate-${countryCode}`;
   return (
@@ -303,11 +371,11 @@ export function ShippingRatesManager({ rows, lang, pick, saving, run }) {
         {pick({ en: 'Save Country Rate', ar: 'حفظ سعر الدولة' })}
       </button>
       <div className="configured-rate-list">
-        {rows
-          .filter((row) => row.active)
-          .map((row) => (
-            <span key={row.country_code}>
-              <strong>{row.country_code}</strong> ${Number(row.rate_usd).toFixed(2)}
+        {rateRows
+          .filter((row: Record<string, unknown>) => Boolean(row.active))
+          .map((row: Record<string, unknown>) => (
+            <span key={String(row.country_code)}>
+              <strong>{String(row.country_code || '')}</strong> ${Number(row.rate_usd).toFixed(2)}
             </span>
           ))}
       </div>
@@ -315,18 +383,31 @@ export function ShippingRatesManager({ rows, lang, pick, saving, run }) {
   );
 }
 
-export function HeroContentManager({ row, pick, saving, run }) {
-  const value = row?.content_value || {};
+export function HeroContentManager({
+  row,
+  pick,
+  saving,
+  run,
+}: {
+  row?: unknown;
+  pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const contentRow = (row || {}) as Record<string, unknown>;
+  const contentValue = asRecordish(contentRow.content_value);
+
+  const value = contentValue;
   const [enabled, setEnabled] = useState(value.enabled !== false);
-  const [desktopVideoUrl, setDesktopVideoUrl] = useState(value.desktopVideoUrl || '');
-  const [mobileVideoUrl, setMobileVideoUrl] = useState(value.mobileVideoUrl || '');
+  const [desktopVideoUrl, setDesktopVideoUrl] = useState(String(value.desktopVideoUrl || ''));
+  const [mobileVideoUrl, setMobileVideoUrl] = useState(String(value.mobileVideoUrl || ''));
   useEffect(() => {
     setEnabled(value.enabled !== false);
-    setDesktopVideoUrl(value.desktopVideoUrl || '');
-    setMobileVideoUrl(value.mobileVideoUrl || '');
+    setDesktopVideoUrl(String(value.desktopVideoUrl || ''));
+    setMobileVideoUrl(String(value.mobileVideoUrl || ''));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
-  }, [row?.updated_at]);
-  const valid = (url) => !url || /^https:\/\//i.test(url);
+  }, [contentRow.updated_at]);
+  const valid = (url: string) => !url || /^https:\/\//i.test(url);
   return (
     <div className="hero-content-manager">
       <p>
