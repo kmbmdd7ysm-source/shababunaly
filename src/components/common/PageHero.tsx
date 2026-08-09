@@ -1,4 +1,16 @@
-export default function PageHero({ label = '', title = '', description = '', children = null }) {
+import type { ReactNode } from 'react';
+
+export default function PageHero({
+  label = '',
+  title = '',
+  description = '',
+  children = null,
+}: {
+  label?: ReactNode;
+  title?: ReactNode;
+  description?: ReactNode;
+  children?: ReactNode;
+}) {
   return (
     <section className="page-hero">
       <div className="court-lines" aria-hidden="true" />
