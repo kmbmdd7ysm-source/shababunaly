@@ -1,21 +1,11 @@
 # Continuation checkpoint
 
-- SHA: `11111113f13122766478436e5988d7e945d32af8`
-- TypeScript: **49.42%** (128/259)
+- SHA: `55a466ed2e05553c153c923ccb00550f45a85255`
+- TypeScript: **50.19%** (130/259)
 
-## Completed major services
-designStudio, productionPreflight, supabase, formspree, returns, privacy, publicQuotes, specialRequests, money, shipping, commerce configs
+## Crossed 50% executable TypeScript
 
-## Completed contexts
-Language, Cookie, Compare, Readiness, Cart
-
-## Next
-1. CommerceContext.tsx
-2. AuthContext.tsx
-3. UserDataContext.tsx
-4. CatalogContext.tsx (currently ambient)
-5. Remaining pages/components
-6. Phase B CSS demolition
+Next: AuthContext, UserDataContext, CatalogContext, remaining pages → Phase B CSS.
 
 ## Next command
-Migrate CommerceContext.jsx
+Migrate AuthContext.jsx → AuthContext.tsx

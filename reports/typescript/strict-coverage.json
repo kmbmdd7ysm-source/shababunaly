@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T03:36:08.345832+00:00",
-  "commitSha": "11111113f13122766478436e5988d7e945d32af8",
+  "generatedAt": "2026-08-09T03:38:39.385721+00:00",
+  "commitSha": "55a466ed2e05553c153c923ccb00550f45a85255",
   "sourceFiles": 259,
-  "strictFiles": 128,
-  "strictCoveragePercent": 49.42,
-  "legacyFileCount": 131,
-  "note": "Phase 3 ~49.4%. Next: Auth/Commerce/UserData/Catalog contexts + remaining pages."
+  "strictFiles": 130,
+  "strictCoveragePercent": 50.19,
+  "legacyFileCount": 129,
+  "note": "Phase 3 crossed 50%."
 }
