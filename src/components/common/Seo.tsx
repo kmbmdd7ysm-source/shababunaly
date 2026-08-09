@@ -76,8 +76,9 @@ export function organizationSchema(): Array<Record<string, unknown>> {
       },
     },
   ];
-  if (SITE.email) schema[0]!.email = SITE.email;
+  const organization = schema[0];
+  if (organization && SITE.email) organization.email = SITE.email;
   const sameAs = Object.values(SITE.social).filter(Boolean);
-  if (sameAs.length) schema[0]!.sameAs = sameAs;
+  if (organization && sameAs.length) organization.sameAs = sameAs;
   return schema;
 }
