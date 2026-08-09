@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T03:51:17.162Z",
+  "generatedAt": "2026-08-09T03:52:58.689Z",
   "sourceFiles": 259,
-  "strictFiles": 139,
-  "strictCoveragePercent": 53.67,
+  "strictFiles": 140,
+  "strictCoveragePercent": 54.05,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -15,7 +15,6 @@
     "src/components/common/CurrencyWelcome.jsx",
     "src/components/common/Modal.jsx",
     "src/components/common/Newsletter.jsx",
-    "src/components/common/Seo.jsx",
     "src/components/common/SmartImage.jsx",
     "src/components/composition/Dossier.jsx",
     "src/components/custom/DesignPreview.jsx",

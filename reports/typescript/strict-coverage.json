@@ -1,22 +1,21 @@
 {
-  "generatedAt": "2026-08-09T03:51:17.168811+00:00",
-  "commitSha": "73e5432a4e19bc60a5e2a31454707c25c836d6f4",
+  "generatedAt": "2026-08-09T03:52:58.695971+00:00",
+  "commitSha": "f3514c3d38d9d09dfdd2088c1aeb8d5e1fc3638f",
   "sourceFiles": 259,
-  "strictFiles": 139,
-  "strictCoveragePercent": 53.67,
+  "strictFiles": 140,
+  "strictCoveragePercent": 54.05,
   "cssLegacy": {
     "global.css": {
       "lines": 5657,
-      "important": 288
+      "important": 238
     },
     "premium.css": {
       "lines": 1752,
-      "important": 58
+      "important": 53
     },
     "shababuna.css": {
       "lines": 3227,
-      "important": 2
+      "important": 0
     }
-  },
-  "note": "Phase A ~54%. Phase B pass1 done. Phase D Footer done. Phase E homepage rebalance started."
+  }
 }
