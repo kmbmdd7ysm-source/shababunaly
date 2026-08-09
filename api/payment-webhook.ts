@@ -1,30 +1,48 @@
 import crypto from 'node:crypto';
 import { getPaymentAdapter } from './payments/registry.ts';
 import { recordBusinessEvent } from './_business-events.ts';
+
 export const config = { api: { bodyParser: false } };
+
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+  query?: Record<string, string | string[] | undefined>;
+} & AsyncIterable<Uint8Array | Buffer>;
+
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
 const MAX_BODY_BYTES = 128_000;
-const clean = (value, max = 500) =>
+const clean = (value: unknown, max = 500): string =>
   String(value ?? '')
     .trim()
     .slice(0, max);
-const json = (res, status, body) => {
+
+const json = (res: ApiRes, status: number, body: unknown) => {
   res.setHeader('Cache-Control', 'no-store, private');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
   return res.status(status).json(body);
 };
-async function readRawBody(req) {
-  const chunks = [];
+
+async function readRawBody(req: ApiReq): Promise<Buffer> {
+  const chunks: Buffer[] = [];
   let size = 0;
   for await (const chunk of req) {
-    size += chunk.length;
+    const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    size += buf.length;
     if (size > MAX_BODY_BYTES) throw Object.assign(new Error('request_too_large'), { status: 413 });
-    chunks.push(chunk);
+    chunks.push(buf);
   }
   return Buffer.concat(chunks);
 }
-async function applyEvent(event, payloadHash) {
+
+async function applyEvent(event: Record<string, unknown>, payloadHash: string) {
   const url = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const key = clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
   if (!url || !key)
@@ -66,57 +84,79 @@ async function applyEvent(event, payloadHash) {
       status: response.status >= 500 ? 502 : 409,
     });
   try {
-    return JSON.parse(text);
+    return JSON.parse(text) as Record<string, unknown>;
   } catch {
     return {};
   }
 }
-export default async function handler(req, res) {
+
+export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return json(res, 405, { ok: false, error: 'method_not_allowed' });
   }
-  let raw;
+  let raw: Buffer;
   try {
     raw = await readRawBody(req);
-  } catch (error) {
-    return json(res, error.status || 400, { ok: false, error: clean(error.message, 120) });
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status || 400)
+        : 400;
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, status, { ok: false, error: clean(message, 120) });
   }
+  const providerHeader = req.headers?.['x-payment-provider'];
+  const providerQuery = req.query?.provider;
   const provider = clean(
-    req.headers['x-payment-provider'] || req.query?.provider,
+    (Array.isArray(providerHeader) ? providerHeader[0] : providerHeader) ||
+      (Array.isArray(providerQuery) ? providerQuery[0] : providerQuery),
     80,
   ).toLowerCase();
   const adapter = getPaymentAdapter(provider);
   if (!adapter) return json(res, 400, { ok: false, error: 'unknown_payment_provider' });
-  if (!adapter.verifyWebhook(raw, req.headers))
+  if (!adapter.verifyWebhook?.(raw, req.headers || {}))
     return json(res, 401, { ok: false, error: 'invalid_webhook_signature' });
-  let payload;
+  let payload: unknown;
   try {
     payload = JSON.parse(raw.toString('utf8'));
   } catch {
     return json(res, 400, { ok: false, error: 'invalid_json' });
   }
-  let event;
+  let event: Record<string, unknown>;
   try {
+    if (!adapter.normalizeEvent)
+      return json(res, 503, { ok: false, error: 'payment_provider_not_connected' });
     event = adapter.normalizeEvent(payload);
-  } catch (error) {
-    return json(res, error.status || 400, { ok: false, error: clean(error.message, 120) });
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status || 400)
+        : 400;
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, status, { ok: false, error: clean(message, 120) });
   }
   const validEntity =
     event.entityType === 'quote' || event.quoteNumber
-      ? /^QT-\d{8}-[A-Z0-9-]{4,40}$/i.test(event.quoteNumber)
-      : /^SHB-\d{8}-\d{7}$/.test(event.orderNumber);
+      ? /^QT-\d{8}-[A-Z0-9-]{4,40}$/i.test(String(event.quoteNumber || ''))
+      : /^SHB-\d{8}-\d{7}$/.test(String(event.orderNumber || ''));
   if (
     !event.eventId ||
     !validEntity ||
     !event.eventStatus ||
-    !Number.isFinite(event.amount) ||
-    event.amount <= 0
+    !Number.isFinite(Number(event.amount)) ||
+    Number(event.amount) <= 0
   )
     return json(res, 400, { ok: false, error: 'invalid_payment_event' });
   try {
     const result = await applyEvent(event, crypto.createHash('sha256').update(raw).digest('hex'));
-    const reference = event.quoteNumber || event.orderNumber;
+    const reference = String(event.quoteNumber || event.orderNumber || '');
     const status = String(
       result?.payment_status || result?.paymentStatus || event.eventStatus || '',
     ).toLowerCase();
@@ -132,8 +172,8 @@ export default async function handler(req, res) {
       entityType: event.quoteNumber ? 'quote' : 'order',
       entityReference: reference,
       valueUsd: event.amount,
-      currency: event.currency,
-      channel: event.provider,
+      currency: String(event.currency || 'USD'),
+      channel: String(event.provider || provider),
       sourceEventId: event.eventId,
       properties: { payment_status: status, transaction_id: event.transactionId },
     });
@@ -144,7 +184,15 @@ export default async function handler(req, res) {
       referenceNumber: reference,
       paymentStatus: status || null,
     });
-  } catch (error) {
-    return json(res, error.status || 502, { ok: false, error: clean(error.message, 500) });
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status || 502)
+        : 502;
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, status, { ok: false, error: clean(message, 500) });
   }
 }

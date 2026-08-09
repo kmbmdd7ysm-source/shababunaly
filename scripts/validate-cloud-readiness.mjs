@@ -16,7 +16,7 @@ const required = [
   'supabase/generated/product_catalog.sql',
   'api/create-session.ts',
   'api/create-quote-session.ts',
-  'api/payment-webhook.js',
+  'api/payment-webhook.ts',
   'api/notification-worker.js',
   'api/guest-order-access.ts',
   'api/retry-order-payment.ts',

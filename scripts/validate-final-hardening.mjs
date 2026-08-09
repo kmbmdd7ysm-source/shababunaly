@@ -146,7 +146,7 @@ for (const token of [
 ])
   has(globalShipping, token, `authoritative shipping ${token}`);
 
-const webhook = read('api/payment-webhook.js');
+const webhook = read('api/payment-webhook.ts');
 for (const token of [
   'getPaymentAdapter',
   'verifyWebhook',

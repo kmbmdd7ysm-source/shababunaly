@@ -75,7 +75,7 @@ const codeChecks = {
   externalSignatureMigration: existsSync(
     'supabase/migrations/20260802002000_external_signature_provider.sql',
   ),
-  paymentWebhook: existsSync('api/payment-webhook.js'),
+  paymentWebhook: existsSync('api/payment-webhook.ts'),
   paymentRefund: existsSync('api/refund.ts'),
   paymentRetrieve: existsSync('api/retry-order-payment.ts'),
 };
