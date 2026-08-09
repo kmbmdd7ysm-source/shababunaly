@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T04:11:54.802668+00:00",
-  "commitSha": "aab1130fd5461a1e03d68612b94f8102e4d48872",
+  "generatedAt": "2026-08-09T04:13:01.497211+00:00",
+  "commitSha": "5535728a4c894f98041124e25c490fc79502913e",
   "sourceFiles": 259,
-  "strictFiles": 155,
-  "strictCoveragePercent": 59.85,
+  "strictFiles": 158,
+  "strictCoveragePercent": 61,
   "cssLegacy": {
     "global.css": {
       "lines": 5657,
@@ -17,5 +17,7 @@
       "lines": 3227,
       "important": 0
     }
-  }
+  },
+  "authMigrated": true,
+  "crossed60": true
 }

@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T04:11:54.795Z",
+  "generatedAt": "2026-08-09T04:13:01.491Z",
   "sourceFiles": 259,
-  "strictFiles": 155,
-  "strictCoveragePercent": 59.85,
+  "strictFiles": 158,
+  "strictCoveragePercent": 61,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -94,9 +94,6 @@
     "api/payment-proof.js",
     "api/payment-webhook.js",
     "api/payments/adapters/base.js",
-    "api/payments/adapters/libyan-bank-card.js",
-    "api/payments/adapters/online-card.js",
-    "api/payments/registry.js",
     "api/privacy-worker.js",
     "api/private-file.js",
     "api/public-quote-request.js",
