@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T03:38:39.357Z",
+  "generatedAt": "2026-08-09T03:42:37.337Z",
   "sourceFiles": 259,
-  "strictFiles": 130,
-  "strictCoveragePercent": 50.19,
+  "strictFiles": 132,
+  "strictCoveragePercent": 50.97,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AddressesSection.jsx",
@@ -93,8 +93,6 @@
     "src/services/b2b.js",
     "src/services/operations.js",
     "src/services/orders.js",
-    "src/services/sync/offlineQueue.js",
-    "src/services/sync/protocol.js",
     "src/utils/designExports.js",
     "src/utils/rosterSpreadsheet.js",
     "src/utils/simplePdf.js",

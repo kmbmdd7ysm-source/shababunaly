@@ -1,11 +1,21 @@
 # Continuation checkpoint
 
-- SHA: `fffbf859f3a1aa371990b7e2f39c2b3345b899f2`
-- TypeScript: **50.19%** (130/259)
+- SHA: `a13b3830024e2e15863540970a7b76455435dcb9`
+- Branch: cursor/shababuna-redesign-master-plan-dc14
+- TypeScript: **50.97%** (132/259)
 
-## Crossed 50% executable TypeScript
+## Phase A status
+Core commerce services + Commerce/Cart/Language/Cookie/Compare/Readiness contexts migrated.
+Auth/UserData/Catalog remain JSX (ambients present) — next TS targets.
 
-Next: AuthContext, UserDataContext, CatalogContext, remaining pages → Phase B CSS.
+## Phase B status
+CSS inventory started (`reports/css/INVENTORY_START.md`).
+Legacy still loaded: global.css 7252 · shababuna.css 3551 · premium.css 2049 · !important ~435
+
+## Exact next
+1. Continue TS (Auth when ready; more pages/services)
+2. Begin CSS unused-selector removal + route scoping
+3. Rebuild GlobalChrome / Footer structurally
 
 ## Next command
-Migrate AuthContext.jsx → AuthContext.tsx
+Begin Phase B CSS selector classification + remove proven-unused legacy rules

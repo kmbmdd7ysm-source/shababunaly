@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T03:38:39.385721+00:00",
-  "commitSha": "55a466ed2e05553c153c923ccb00550f45a85255",
+  "generatedAt": "2026-08-09T03:42:37.343508+00:00",
+  "commitSha": "a13b3830024e2e15863540970a7b76455435dcb9",
   "sourceFiles": 259,
-  "strictFiles": 130,
-  "strictCoveragePercent": 50.19,
-  "legacyFileCount": 129,
-  "note": "Phase 3 crossed 50%."
+  "strictFiles": 132,
+  "strictCoveragePercent": 50.97,
+  "legacyFileCount": 127,
+  "note": "Phase 3 ~51%. Auth/UserData/Catalog still JSX with ambients."
 }
