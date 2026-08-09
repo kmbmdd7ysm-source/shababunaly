@@ -15,12 +15,11 @@ import '../styles/transact.css';
 export default function CartPage() {
   const { getProduct, products } = useCatalog();
   const { t, pick, lang } = useLanguage();
-  const { format, usdToLydRate, countryCode } = useCommerce();
+  const { format, usdToLydRate } = useCommerce();
   const { items, updateQuantity, removeItem, subtotal, hasPhysical } = useCart();
 
   // Ready-to-ship is a Libya-only department; the empty-bag gates honour the
   // same rule the catalogue does.
-  const isLibya = countryCode === 'LY';
 
   const freeShipping = getLibyaFreeShippingProgress(subtotal, usdToLydRate);
   const showFreeShip = hasPhysical;
@@ -91,15 +90,15 @@ export default function CartPage() {
               </div>
               <ul className="gw-ledger-gates">
                 {categories.map((entry) => (
-                    <li key={entry.slug}>
-                      <Link to={`/shop/${entry.slug}`}>
-                        <span className="gw-ledger-gate-name">{pick(entry.name)}</span>
-                        <span className="gw-ledger-gate-count gw-isolate-ltr">
-                          {products.filter((item) => item.category === entry.slug).length}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
+                  <li key={entry.slug}>
+                    <Link to={`/shop/${entry.slug}`}>
+                      <span className="gw-ledger-gate-name">{pick(entry.name)}</span>
+                      <span className="gw-ledger-gate-count gw-isolate-ltr">
+                        {products.filter((item) => item.category === entry.slug).length}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           ) : (

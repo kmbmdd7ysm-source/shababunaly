@@ -1,19 +1,26 @@
 const MAX_MESSAGE = 600;
 const MAX_CONTEXT_KEYS = 24;
 
-const clean = (value, max = MAX_MESSAGE) => String(value ?? '')
-  .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[email]')
-  .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, '[phone]')
-  .replace(/(access|refresh|service|secret|password|token)[=:][^\s,&]+/gi, '$1=[redacted]')
-  .slice(0, max);
+const clean = (value, max = MAX_MESSAGE) =>
+  String(value ?? '')
+    .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[email]')
+    .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, '[phone]')
+    .replace(/(access|refresh|service|secret|password|token)[=:][^\s,&]+/gi, '$1=[redacted]')
+    .slice(0, max);
 
 function sanitizeContext(context) {
   if (!context || typeof context !== 'object') return {};
-  return Object.fromEntries(Object.entries(context).slice(0, MAX_CONTEXT_KEYS).map(([key, value]) => {
-    if (/password|token|secret|address|email|phone|whatsapp/i.test(key)) return [key, '[redacted]'];
-    if (value == null || typeof value === 'number' || typeof value === 'boolean') return [key, value];
-    return [key, clean(Array.isArray(value) ? value.join(',') : value, 300)];
-  }));
+  return Object.fromEntries(
+    Object.entries(context)
+      .slice(0, MAX_CONTEXT_KEYS)
+      .map(([key, value]) => {
+        if (/password|token|secret|address|email|phone|whatsapp/i.test(key))
+          return [key, '[redacted]'];
+        if (value == null || typeof value === 'number' || typeof value === 'boolean')
+          return [key, value];
+        return [key, clean(Array.isArray(value) ? value.join(',') : value, 300)];
+      }),
+  );
 }
 
 export function reportClientError(error, context = {}) {
@@ -39,12 +46,18 @@ export function reportClientError(error, context = {}) {
       keepalive: true,
       body,
     }).catch(() => {});
-  } catch {}
+  } catch {
+    /* ignore */
+  }
 }
 
 export function installGlobalErrorMonitoring() {
   if (globalThis.__shababunaErrorMonitoringInstalled) return;
   globalThis.__shababunaErrorMonitoringInstalled = true;
-  globalThis.addEventListener?.('error', (event) => reportClientError(event.error || event.message, { source: 'window.error' }));
-  globalThis.addEventListener?.('unhandledrejection', (event) => reportClientError(event.reason, { source: 'unhandledrejection' }));
+  globalThis.addEventListener?.('error', (event) =>
+    reportClientError(event.error || event.message, { source: 'window.error' }),
+  );
+  globalThis.addEventListener?.('unhandledrejection', (event) =>
+    reportClientError(event.reason, { source: 'unhandledrejection' }),
+  );
 }

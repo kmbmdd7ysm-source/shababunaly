@@ -4,7 +4,9 @@ import fs from 'node:fs';
 
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const migration = read('supabase/migrations/20260801020000_shababuna_enterprise_workflows.sql');
-const proofMigration = read('supabase/migrations/20260801021000_shababuna_customer_enterprise_rpcs.sql');
+const proofMigration = read(
+  'supabase/migrations/20260801021000_shababuna_customer_enterprise_rpcs.sql',
+);
 const workspace = read('src/components/account/OrganizationWorkspace.jsx');
 const operations = [
   read('src/pages/OperationsPage.jsx'),
@@ -16,7 +18,15 @@ const app = read('src/App.jsx');
 
 await test('enterprise B2B workflows', async (t) => {
   await t.test('creates contracts, signatures, payment proofs, reorders and team lockers', () => {
-    for (const table of ['organization_contracts','contract_signatures','payment_proofs','reorder_requests','team_locker_stores','team_locker_products','team_locker_orders']) {
+    for (const table of [
+      'organization_contracts',
+      'contract_signatures',
+      'payment_proofs',
+      'reorder_requests',
+      'team_locker_stores',
+      'team_locker_products',
+      'team_locker_orders',
+    ]) {
       assert.match(migration, new RegExp(`create table if not exists public\\.${table}`));
     }
   });
@@ -38,7 +48,14 @@ await test('enterprise B2B workflows', async (t) => {
   });
 
   await t.test('exposes real customer workspace actions instead of marketing-only cards', () => {
-    for (const feature of ['EnterpriseDocuments','ShipmentWorkspace','MessageWorkspace','ReorderWorkspace','TeamLockerWorkspace']) assert.match(workspace, new RegExp(feature));
+    for (const feature of [
+      'EnterpriseDocuments',
+      'ShipmentWorkspace',
+      'MessageWorkspace',
+      'ReorderWorkspace',
+      'TeamLockerWorkspace',
+    ])
+      assert.match(workspace, new RegExp(feature));
     assert.match(b2b, /createProjectMessage/);
     assert.match(b2b, /createReorderRequest/);
     assert.match(b2b, /submitPaymentProof/);
@@ -57,13 +74,16 @@ await test('enterprise B2B workflows', async (t) => {
     assert.match(operations, /Create Contract|Create Team Locker/);
   });
 
-  await t.test('uploads private proofs through quarantine APIs and never accepts arbitrary public URLs as proof', () => {
-    const proofApi = read('api/payment-proof.js');
-    assert.match(proofApi, /media-quarantine/);
-    assert.match(proofApi, /validateEncodedFiles/);
-    assert.match(proofApi, /customer_register_payment_proof/);
-    const signApi = read('api/contract-sign.js');
-    assert.match(signApi, /createHash/);
-    assert.match(signApi, /customer_sign_contract/);
-  });
+  await t.test(
+    'uploads private proofs through quarantine APIs and never accepts arbitrary public URLs as proof',
+    () => {
+      const proofApi = read('api/payment-proof.js');
+      assert.match(proofApi, /media-quarantine/);
+      assert.match(proofApi, /validateEncodedFiles/);
+      assert.match(proofApi, /customer_register_payment_proof/);
+      const signApi = read('api/contract-sign.js');
+      assert.match(signApi, /createHash/);
+      assert.match(signApi, /customer_sign_contract/);
+    },
+  );
 });

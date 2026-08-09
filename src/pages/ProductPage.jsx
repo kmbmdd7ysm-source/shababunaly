@@ -9,7 +9,6 @@ import { trackEvent } from '../utils/analytics';
 import Seo from '../components/common/Seo';
 import { resolveProductViewer } from '../utils/productViewerTier';
 import Breadcrumbs from '../components/common/Breadcrumbs';
-import SmartImage from '../components/common/SmartImage';
 import Price from '../components/common/Price';
 import Badge from '../components/common/Badge';
 import Modal from '../components/common/Modal';
@@ -69,6 +68,7 @@ export default function ProductPage() {
     setQty(1);
     setActiveImg(0);
     setError('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [slug]);
 
   /* Verified photography and a concept plate need different stage treatments:

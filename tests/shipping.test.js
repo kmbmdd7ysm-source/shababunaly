@@ -22,7 +22,9 @@ describe('shipping rules', () => {
     expect(progress.thresholdLyd).toBe(630);
     expect(progress.progressPercent).toBe(100);
     expect(progress.remainingUsd).toBe(0);
-    expect(resolveShipping('LY', { subtotalUsd: 70, usdToLydRate: 9 }).status).toBe('physical_free');
+    expect(resolveShipping('LY', { subtotalUsd: 70, usdToLydRate: 9 }).status).toBe(
+      'physical_free',
+    );
     expect(shippingConfig.libya.freeThreshold.amount).toBe(630);
     expect(shippingConfig.libya.freeThresholdUsd).toBe(70);
   });
@@ -43,7 +45,9 @@ describe('shipping rules', () => {
 
   it('requires quotes for custom and large equipment', () => {
     expect(resolveShipping('US', { subtotalUsd: 100 }).status).toBe('quote_required');
-    expect(/** @type {any} */ (resolveShipping('LY', { customOrder: true })).pendingShippingQuote).toBe(true);
+    expect(
+      /** @type {any} */ (resolveShipping('LY', { customOrder: true })).pendingShippingQuote,
+    ).toBe(true);
     expect(resolveShipping('LY', { largeEquipment: true }).status).toBe('quote_required');
   });
 
@@ -77,9 +81,9 @@ describe('shipping edge coverage', () => {
       countryCode: '',
       amount: 15,
     });
-    expect(resolveShipping('fr', { internationalRates: { FR: /** @type {any} */ ('bad') } }).status).toBe(
-      'quote_required',
-    );
+    expect(
+      resolveShipping('fr', { internationalRates: { FR: /** @type {any} */ ('bad') } }).status,
+    ).toBe('quote_required');
     expect(resolveShipping('de', { internationalRates: { DE: -1 } }).status).toBe('quote_required');
   });
 

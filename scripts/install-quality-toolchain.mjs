@@ -63,7 +63,8 @@ for (const [name, expected] of Object.entries(lock.packages)) {
     missingInstalled.push(`${name}@${expected}`);
     continue;
   }
-  if (pkg.version !== expected) versionMismatches.push(`${name}: expected ${expected}, found ${pkg.version}`);
+  if (pkg.version !== expected)
+    versionMismatches.push(`${name}: expected ${expected}, found ${pkg.version}`);
 }
 
 if (missingInstalled.length || versionMismatches.length) {
@@ -73,4 +74,6 @@ if (missingInstalled.length || versionMismatches.length) {
   process.exit(1);
 }
 
-console.log(`Quality toolchain verified (${Object.keys(lock.packages).length} packages via npm ci).`);
+console.log(
+  `Quality toolchain verified (${Object.keys(lock.packages).length} packages via npm ci).`,
+);

@@ -23,11 +23,7 @@
       "access": "public",
       "linesAdded": 422,
       "linesRemoved": 24,
-      "compositionMarkers": [
-        "gw-section",
-        "Chapter",
-        "SpecBlock"
-      ],
+      "compositionMarkers": ["gw-section", "Chapter", "SpecBlock"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -38,14 +34,8 @@
       "access": "public",
       "linesAdded": 140,
       "linesRemoved": 14,
-      "compositionMarkers": [
-        "gw-manifesto",
-        "gw-principles",
-        "RouteMasthead"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["gw-manifesto", "gw-principles", "RouteMasthead"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -55,9 +45,7 @@
       "access": "public",
       "linesAdded": 431,
       "linesRemoved": 101,
-      "compositionMarkers": [
-        "gw-catalogue"
-      ],
+      "compositionMarkers": ["gw-catalogue"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -68,9 +56,7 @@
       "access": "public",
       "linesAdded": 431,
       "linesRemoved": 101,
-      "compositionMarkers": [
-        "gw-catalogue"
-      ],
+      "compositionMarkers": ["gw-catalogue"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -81,9 +67,7 @@
       "access": "public",
       "linesAdded": 431,
       "linesRemoved": 101,
-      "compositionMarkers": [
-        "gw-catalogue"
-      ],
+      "compositionMarkers": ["gw-catalogue"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -94,11 +78,7 @@
       "access": "public",
       "linesAdded": 485,
       "linesRemoved": 77,
-      "compositionMarkers": [
-        "gw-catalogue",
-        "gw-stage",
-        "gw-deck"
-      ],
+      "compositionMarkers": ["gw-catalogue", "gw-stage", "gw-deck"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -109,9 +89,7 @@
       "access": "public",
       "linesAdded": 98,
       "linesRemoved": 55,
-      "compositionMarkers": [
-        "gw-ledger"
-      ],
+      "compositionMarkers": ["gw-ledger"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -122,9 +100,7 @@
       "access": "public",
       "linesAdded": 910,
       "linesRemoved": 166,
-      "compositionMarkers": [
-        "gw-checkout"
-      ],
+      "compositionMarkers": ["gw-checkout"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -135,9 +111,7 @@
       "access": "public",
       "linesAdded": 18,
       "linesRemoved": 11,
-      "compositionMarkers": [
-        "gw-terminal"
-      ],
+      "compositionMarkers": ["gw-terminal"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -148,9 +122,7 @@
       "access": "public",
       "linesAdded": 18,
       "linesRemoved": 11,
-      "compositionMarkers": [
-        "gw-terminal"
-      ],
+      "compositionMarkers": ["gw-terminal"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -161,11 +133,7 @@
       "access": "public",
       "linesAdded": 992,
       "linesRemoved": 132,
-      "compositionMarkers": [
-        "gw-studio",
-        "RouteMasthead",
-        "StudioStage"
-      ],
+      "compositionMarkers": ["gw-studio", "RouteMasthead", "StudioStage"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -176,10 +144,7 @@
       "access": "public",
       "linesAdded": 362,
       "linesRemoved": 41,
-      "compositionMarkers": [
-        "gw-request",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-request", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -190,14 +155,8 @@
       "access": "public",
       "linesAdded": 489,
       "linesRemoved": 57,
-      "compositionMarkers": [
-        "gw-lifecycle",
-        "RouteMasthead"
-      ],
-      "legacyWrappers": [
-        "section className=\"section\"",
-        "className=\"container\""
-      ],
+      "compositionMarkers": ["gw-lifecycle", "RouteMasthead"],
+      "legacyWrappers": ["section className=\"section\"", "className=\"container\""],
       "status": "fully-rebuilt"
     },
     {
@@ -207,11 +166,7 @@
       "access": "team",
       "linesAdded": 108,
       "linesRemoved": 10,
-      "compositionMarkers": [
-        "gw-catalogue",
-        "gw-terminal",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-catalogue", "gw-terminal", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -222,10 +177,7 @@
       "access": "public",
       "linesAdded": 234,
       "linesRemoved": 21,
-      "compositionMarkers": [
-        "gw-terminal",
-        "gw-review"
-      ],
+      "compositionMarkers": ["gw-terminal", "gw-review"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -236,10 +188,7 @@
       "access": "public",
       "linesAdded": 67,
       "linesRemoved": 6,
-      "compositionMarkers": [
-        "gw-catalogue",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-catalogue", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -250,10 +199,7 @@
       "access": "public",
       "linesAdded": 78,
       "linesRemoved": 30,
-      "compositionMarkers": [
-        "gw-principles",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-principles", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -308,13 +254,8 @@
       "access": "public",
       "linesAdded": 206,
       "linesRemoved": 31,
-      "compositionMarkers": [
-        "gw-contact",
-        "RouteMasthead"
-      ],
-      "legacyWrappers": [
-        "className=\"container\""
-      ],
+      "compositionMarkers": ["gw-contact", "RouteMasthead"],
+      "legacyWrappers": ["className=\"container\""],
       "status": "fully-rebuilt"
     },
     {
@@ -324,14 +265,8 @@
       "access": "public",
       "linesAdded": 56,
       "linesRemoved": 27,
-      "compositionMarkers": [
-        "gw-terminal",
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["gw-terminal", "RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -341,11 +276,7 @@
       "access": "public",
       "linesAdded": 30,
       "linesRemoved": 20,
-      "compositionMarkers": [
-        "gw-desk",
-        "gw-helpindex",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-desk", "gw-helpindex", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -356,9 +287,7 @@
       "access": "staff",
       "linesAdded": 75,
       "linesRemoved": 24,
-      "compositionMarkers": [
-        "gw-command"
-      ],
+      "compositionMarkers": ["gw-command"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -369,13 +298,8 @@
       "access": "public",
       "linesAdded": 48,
       "linesRemoved": 34,
-      "compositionMarkers": [
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -385,11 +309,7 @@
       "access": "public",
       "linesAdded": 191,
       "linesRemoved": 25,
-      "compositionMarkers": [
-        "gw-catalogue",
-        "gw-console",
-        "gw-terminal"
-      ],
+      "compositionMarkers": ["gw-catalogue", "gw-console", "gw-terminal"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -400,10 +320,7 @@
       "access": "public",
       "linesAdded": 23,
       "linesRemoved": 12,
-      "compositionMarkers": [
-        "gw-desk",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-desk", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -414,10 +331,7 @@
       "access": "public",
       "linesAdded": 221,
       "linesRemoved": 48,
-      "compositionMarkers": [
-        "gw-desk",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-desk", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -428,11 +342,7 @@
       "access": "public",
       "linesAdded": 26,
       "linesRemoved": 18,
-      "compositionMarkers": [
-        "gw-terminal",
-        "gw-matrix",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-terminal", "gw-matrix", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -443,11 +353,7 @@
       "access": "public",
       "linesAdded": 41,
       "linesRemoved": 31,
-      "compositionMarkers": [
-        "gw-catalogue",
-        "gw-terminal",
-        "RouteMasthead"
-      ],
+      "compositionMarkers": ["gw-catalogue", "gw-terminal", "RouteMasthead"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -458,10 +364,7 @@
       "access": "customer",
       "linesAdded": 142,
       "linesRemoved": 34,
-      "compositionMarkers": [
-        "gw-account",
-        "gw-gate"
-      ],
+      "compositionMarkers": ["gw-account", "gw-gate"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -483,9 +386,7 @@
       "access": "public",
       "linesAdded": 39,
       "linesRemoved": 3,
-      "compositionMarkers": [
-        "gw-terminal"
-      ],
+      "compositionMarkers": ["gw-terminal"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -496,12 +397,7 @@
       "access": "public",
       "linesAdded": 405,
       "linesRemoved": 0,
-      "compositionMarkers": [
-        "gw-hero",
-        "gw-section",
-        "Chapter",
-        "SpecBlock"
-      ],
+      "compositionMarkers": ["gw-hero", "gw-section", "Chapter", "SpecBlock"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     },
@@ -512,13 +408,8 @@
       "access": "public",
       "linesAdded": 36,
       "linesRemoved": 21,
-      "compositionMarkers": [
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -528,13 +419,8 @@
       "access": "public",
       "linesAdded": 36,
       "linesRemoved": 21,
-      "compositionMarkers": [
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -544,13 +430,8 @@
       "access": "public",
       "linesAdded": 36,
       "linesRemoved": 21,
-      "compositionMarkers": [
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -560,13 +441,8 @@
       "access": "public",
       "linesAdded": 36,
       "linesRemoved": 21,
-      "compositionMarkers": [
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -576,13 +452,8 @@
       "access": "public",
       "linesAdded": 36,
       "linesRemoved": 21,
-      "compositionMarkers": [
-        "RouteMasthead",
-        "Dossier"
-      ],
-      "legacyWrappers": [
-        "PageHero"
-      ],
+      "compositionMarkers": ["RouteMasthead", "Dossier"],
+      "legacyWrappers": ["PageHero"],
       "status": "fully-rebuilt"
     },
     {
@@ -592,9 +463,7 @@
       "access": "public",
       "linesAdded": 25,
       "linesRemoved": 9,
-      "compositionMarkers": [
-        "gw-terminal"
-      ],
+      "compositionMarkers": ["gw-terminal"],
       "legacyWrappers": [],
       "status": "fully-rebuilt"
     }

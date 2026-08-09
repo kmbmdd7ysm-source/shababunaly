@@ -51,7 +51,9 @@ export function initHeatmap(ok) {
   const id = String(import.meta.env.VITE_CLARITY_PROJECT_ID || '').trim();
   if (!ok || !id || clarityLoaded) return;
   /** @type {any} */
-  const clarityQueue = function () { clarityQueue.q.push(arguments); };
+  const clarityQueue = function () {
+    clarityQueue.q.push(arguments);
+  };
   clarityQueue.q = [];
   window.clarity = window.clarity || clarityQueue;
   const s = document.createElement('script');
@@ -71,7 +73,9 @@ export function disableAnalytics() {
 export function revokeAnalyticsConsent() {
   disableAnalytics();
   if (typeof window.clarity === 'function') window.clarity('consent', false);
-  document.querySelectorAll('[data-shababuna-analytics],[data-shababuna-heatmap]').forEach((x) => x.remove());
+  document
+    .querySelectorAll('[data-shababuna-analytics],[data-shababuna-heatmap]')
+    .forEach((x) => x.remove());
   gaLoaded = false;
   clarityLoaded = false;
 }
@@ -85,7 +89,9 @@ export function trackEvent(name, params = {}) {
   try {
     window.gtag?.('event', name, payload);
     window.clarity?.('event', name);
-  } catch {}
+  } catch {
+    /* ignore */
+  }
 }
 export const safeTrack = trackEvent;
 export function trackPage(path) {
@@ -97,10 +103,13 @@ const commerceSessionId = (() => {
     const key = 'shababuna-commerce-session';
     const existing = sessionStorage.getItem(key);
     if (existing) return existing;
-    const created = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const created =
+      globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     sessionStorage.setItem(key, created);
     return created;
-  } catch { return `${Date.now()}-memory`; }
+  } catch {
+    return `${Date.now()}-memory`;
+  }
 })();
 let commerceSequence = 0;
 export async function trackCommerceEvent(eventName, params = {}) {
@@ -108,13 +117,23 @@ export async function trackCommerceEvent(eventName, params = {}) {
   const sourceEventId = `${commerceSessionId}:${eventName}:${++commerceSequence}`;
   try {
     const response = await fetch('/api/commerce-event', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
       body: JSON.stringify({
-        eventName, sourceEventId, checkoutReference: safe.checkout_reference,
-        valueUsd: safe.value, currency: safe.currency, paymentMethod: safe.payment_method,
-        stage: safe.stage, itemCount: safe.items, shippingQuoteRequired: safe.shipping_quote_required,
+        eventName,
+        sourceEventId,
+        checkoutReference: safe.checkout_reference,
+        valueUsd: safe.value,
+        currency: safe.currency,
+        paymentMethod: safe.payment_method,
+        stage: safe.stage,
+        itemCount: safe.items,
+        shippingQuoteRequired: safe.shipping_quote_required,
       }),
     });
     return response.ok;
-  } catch { return false; }
+  } catch {
+    return false;
+  }
 }

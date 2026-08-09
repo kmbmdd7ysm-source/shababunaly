@@ -135,7 +135,21 @@ export const CUSTOM_FONTS = Object.freeze([
   { key: 'modern', label: { en: 'Modern', ar: 'عصري' } },
 ]);
 
-export const CUSTOM_SIZES = Object.freeze(['YXS', 'YS', 'YM', 'YL', 'YXL', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL']);
+export const CUSTOM_SIZES = Object.freeze([
+  'YXS',
+  'YS',
+  'YM',
+  'YL',
+  'YXL',
+  'XS',
+  'S',
+  'M',
+  'L',
+  'XL',
+  '2XL',
+  '3XL',
+  '4XL',
+]);
 
 export const DEFAULT_CUSTOM_DESIGN = Object.freeze({
   productType: 'game-set',
@@ -156,7 +170,10 @@ export const DEFAULT_CUSTOM_DESIGN = Object.freeze({
 
 /** @param {string} key @returns {CustomProductType} */
 export function getCustomProductType(key) {
-  return CUSTOM_PRODUCT_TYPES.find((item) => item.key === key) || /** @type {CustomProductType} */ (CUSTOM_PRODUCT_TYPES[0]);
+  return (
+    CUSTOM_PRODUCT_TYPES.find((item) => item.key === key) ||
+    /** @type {CustomProductType} */ (CUSTOM_PRODUCT_TYPES[0])
+  );
 }
 
 /** @param {RosterInput[]} [rows] @returns {RosterRow[]} */
@@ -164,11 +181,22 @@ export function normalizeRoster(rows = []) {
   const seenNumbers = new Set();
   return rows
     .map((row, index) => {
-      const name = String(row.name || row.playerName || '').trim().slice(0, 40);
-      const jerseyName = String(row.jerseyName || row.printName || name).trim().toUpperCase().slice(0, 18);
-      const number = String(row.number ?? '').replace(/\D/g, '').slice(0, 2);
-      const jerseySize = String(row.jerseySize || row.size || '').trim().toUpperCase();
-      const shortsSize = String(row.shortsSize || row.size || '').trim().toUpperCase();
+      const name = String(row.name || row.playerName || '')
+        .trim()
+        .slice(0, 40);
+      const jerseyName = String(row.jerseyName || row.printName || name)
+        .trim()
+        .toUpperCase()
+        .slice(0, 18);
+      const number = String(row.number ?? '')
+        .replace(/\D/g, '')
+        .slice(0, 2);
+      const jerseySize = String(row.jerseySize || row.size || '')
+        .trim()
+        .toUpperCase();
+      const shortsSize = String(row.shortsSize || row.size || '')
+        .trim()
+        .toUpperCase();
       /** @type {string[]} */
       const errors = [];
       if (!name) errors.push('name');
@@ -191,11 +219,16 @@ export function normalizeRoster(rows = []) {
 
 /** @param {string} [text] @returns {RosterRow[]} */
 export function parseRosterCsv(text = '') {
-  const lines = String(text).replace(/^\uFEFF/, '').split(/\r?\n/).filter(Boolean);
+  const lines = String(text)
+    .replace(/^\uFEFF/, '')
+    .split(/\r?\n/)
+    .filter(Boolean);
   if (!lines.length) return [];
   const firstLine = /** @type {string} */ (lines[0]);
   const delimiter = firstLine.includes(';') ? ';' : ',';
-  const headers = firstLine.split(delimiter).map((value) => value.trim().replace(/^"|"$/g, '').toLowerCase());
+  const headers = firstLine
+    .split(delimiter)
+    .map((value) => value.trim().replace(/^"|"$/g, '').toLowerCase());
   /** @param {...string} keys */
   const indexOf = (...keys) => headers.findIndex((header) => keys.includes(header));
   const nameIndex = indexOf('name', 'player name', 'player', 'الاسم');
@@ -203,18 +236,27 @@ export function parseRosterCsv(text = '') {
   const numberIndex = indexOf('number', 'jersey number', '#', 'الرقم');
   const jerseySizeIndex = indexOf('jersey size', 'size', 'shirt size', 'مقاس السيريا');
   const shortsSizeIndex = indexOf('shorts size', 'short size', 'مقاس الشورت');
-  const dataLines = headers.some((header) => /name|player|number|size|الاسم|الرقم|مقاس/.test(header)) ? lines.slice(1) : lines;
-  return normalizeRoster(dataLines.map((line, index) => {
-    const values = line.split(delimiter).map((value) => value.trim().replace(/^"|"$/g, ''));
-    return {
-      id: `csv-${index + 1}`,
-      name: values[nameIndex >= 0 ? nameIndex : 0] || '',
-      jerseyName: values[printIndex >= 0 ? printIndex : nameIndex >= 0 ? nameIndex : 0] || '',
-      number: values[numberIndex >= 0 ? numberIndex : 1] || '',
-      jerseySize: values[jerseySizeIndex >= 0 ? jerseySizeIndex : 2] || '',
-      shortsSize: values[shortsSizeIndex >= 0 ? shortsSizeIndex : jerseySizeIndex >= 0 ? jerseySizeIndex : 2] || '',
-    };
-  }));
+  const dataLines = headers.some((header) =>
+    /name|player|number|size|الاسم|الرقم|مقاس/.test(header),
+  )
+    ? lines.slice(1)
+    : lines;
+  return normalizeRoster(
+    dataLines.map((line, index) => {
+      const values = line.split(delimiter).map((value) => value.trim().replace(/^"|"$/g, ''));
+      return {
+        id: `csv-${index + 1}`,
+        name: values[nameIndex >= 0 ? nameIndex : 0] || '',
+        jerseyName: values[printIndex >= 0 ? printIndex : nameIndex >= 0 ? nameIndex : 0] || '',
+        number: values[numberIndex >= 0 ? numberIndex : 1] || '',
+        jerseySize: values[jerseySizeIndex >= 0 ? jerseySizeIndex : 2] || '',
+        shortsSize:
+          values[
+            shortsSizeIndex >= 0 ? shortsSizeIndex : jerseySizeIndex >= 0 ? jerseySizeIndex : 2
+          ] || '',
+      };
+    }),
+  );
 }
 
 /** @param {RosterInput[]} [rows] */
@@ -225,6 +267,8 @@ export function rosterToCsv(rows = []) {
   const escaped = (value) => `"${String(value).replace(/"/g, '""')}"`;
   return [
     ['Player Name', 'Jersey Name', 'Number', 'Jersey Size', 'Shorts Size'].map(escaped).join(','),
-    ...normalizeRoster(rows).map((row) => [row.name, row.jerseyName, row.number, row.jerseySize, row.shortsSize].map(escaped).join(',')),
+    ...normalizeRoster(rows).map((row) =>
+      [row.name, row.jerseyName, row.number, row.jerseySize, row.shortsSize].map(escaped).join(','),
+    ),
   ].join('\n');
 }

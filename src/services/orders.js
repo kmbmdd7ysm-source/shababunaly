@@ -5,7 +5,9 @@ const LEGACY_KEYS = ['shababuna-orders-v3', 'shababuna-orders-v2'];
 const MAX_ORDERS = 50;
 const SCHEMA_VERSION = 4;
 const CLOUD_ORDER_HISTORY_KEY = 'orderHistory';
-const allowLocalOrderStorage = Boolean(import.meta.env.DEV) || ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
+const allowLocalOrderStorage =
+  Boolean(import.meta.env.DEV) ||
+  ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
 const clean = (value = '') => String(value).trim();
 const emailKey = (value = '') => clean(value).toLowerCase();
 const safeNumber = (value) => (Number.isFinite(Number(value)) ? Number(value) : 0);
@@ -149,9 +151,31 @@ export function normalizeOrder(order = {}) {
     paymentPlan: clean(order.paymentPlan || order.payment_plan || 'full'),
     amountPaid: Math.max(0, safeNumber(order.amountPaid ?? order.amount_paid)),
     amountRefunded: Math.max(0, safeNumber(order.amountRefunded ?? order.amount_refunded)),
-    amountDueNow: Math.max(0, safeNumber(order.amountDueNow ?? order.amount_due_now ?? order.total)),
-    outstandingBalance: Math.max(0, safeNumber(order.outstandingBalance ?? order.outstanding_balance ?? order.remainingBalance ?? order.remaining_balance)),
-    remainingBalance: Math.max(0, safeNumber(order.remainingBalance ?? order.remaining_balance ?? Math.max(0, safeNumber(order.outstandingBalance ?? order.outstanding_balance) - safeNumber(order.amountDueNow ?? order.amount_due_now)))),
+    amountDueNow: Math.max(
+      0,
+      safeNumber(order.amountDueNow ?? order.amount_due_now ?? order.total),
+    ),
+    outstandingBalance: Math.max(
+      0,
+      safeNumber(
+        order.outstandingBalance ??
+          order.outstanding_balance ??
+          order.remainingBalance ??
+          order.remaining_balance,
+      ),
+    ),
+    remainingBalance: Math.max(
+      0,
+      safeNumber(
+        order.remainingBalance ??
+          order.remaining_balance ??
+          Math.max(
+            0,
+            safeNumber(order.outstandingBalance ?? order.outstanding_balance) -
+              safeNumber(order.amountDueNow ?? order.amount_due_now),
+          ),
+      ),
+    ),
     depositRequired: Boolean(order.depositRequired ?? order.deposit_required),
     paymentStage: clean(order.paymentStage || order.payment_stage || 'initial'),
     paymentProvider: clean(order.paymentProvider || order.payment_provider),
@@ -206,7 +230,8 @@ export function readLocalOrders() {
 }
 
 export function writeLocalOrders(orders) {
-  if (!allowLocalOrderStorage) return { ok: false, error: new Error('local_order_storage_disabled') };
+  if (!allowLocalOrderStorage)
+    return { ok: false, error: new Error('local_order_storage_disabled') };
   if (!storageAvailable()) return { ok: false, error: new Error('storage_unavailable') };
   try {
     localStorage.setItem(
@@ -240,33 +265,33 @@ async function invokeOrderFunction(name, body) {
 
 function orderIdentity(order) {
   return clean(
-    order?.idempotencyKey ||
-      order?.idempotency_key ||
-      order?.orderNumber ||
-      order?.order_number,
+    order?.idempotencyKey || order?.idempotency_key || order?.orderNumber || order?.order_number,
   );
 }
 
 function mergeOrderLists(...groups) {
   const merged = new Map();
-  groups.flat().filter(Boolean).forEach((raw) => {
-    const order = normalizeOrder(raw);
-    const key = orderIdentity(order) || order.id;
-    const current = merged.get(key);
-    const orderTime = Number(new Date(order.updatedAt || order.createdAt));
-    const currentTime = current
-      ? Number(new Date(current.updatedAt || current.createdAt))
-      : Number.NEGATIVE_INFINITY;
-    const orderIsSynced = order.syncState === 'synced' || order.source === 'cloud';
-    const currentIsSynced = current?.syncState === 'synced' || current?.source === 'cloud';
-    if (
-      !current ||
-      orderTime > currentTime ||
-      (orderTime === currentTime && orderIsSynced && !currentIsSynced)
-    ) {
-      merged.set(key, order);
-    }
-  });
+  groups
+    .flat()
+    .filter(Boolean)
+    .forEach((raw) => {
+      const order = normalizeOrder(raw);
+      const key = orderIdentity(order) || order.id;
+      const current = merged.get(key);
+      const orderTime = Number(new Date(order.updatedAt || order.createdAt));
+      const currentTime = current
+        ? Number(new Date(current.updatedAt || current.createdAt))
+        : Number.NEGATIVE_INFINITY;
+      const orderIsSynced = order.syncState === 'synced' || order.source === 'cloud';
+      const currentIsSynced = current?.syncState === 'synced' || current?.source === 'cloud';
+      if (
+        !current ||
+        orderTime > currentTime ||
+        (orderTime === currentTime && orderIsSynced && !currentIsSynced)
+      ) {
+        merged.set(key, order);
+      }
+    });
   return [...merged.values()]
     .sort((a, b) => Number(new Date(b.createdAt)) - Number(new Date(a.createdAt)))
     .slice(0, MAX_ORDERS);
@@ -402,14 +427,23 @@ export async function createOrder(input, options = {}) {
       if (candidate.userId) {
         try {
           await saveCloudHistoryOrder(order);
-        } catch {}
+        } catch {
+          /* ignore */
+        }
       }
       return { order, source: 'cloud', duplicate: Boolean(cloud.data.duplicate), warning: null };
     }
-    if (!allowLocalOrderStorage) throw new Error('cloud_order_creation_failed', { cause: cloud.error });
-    if (!isCash && !allowLocalPendingQuote) throw new Error('cloud_order_creation_failed', { cause: cloud.error });
+    if (!allowLocalOrderStorage)
+      throw new Error('cloud_order_creation_failed', { cause: cloud.error });
+    if (!isCash && !allowLocalPendingQuote)
+      throw new Error('cloud_order_creation_failed', { cause: cloud.error });
     const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
-    return { order: local.order, source: 'local', duplicate: local.duplicate, warning: 'development_only_local_order' };
+    return {
+      order: local.order,
+      source: 'local',
+      duplicate: local.duplicate,
+      warning: 'development_only_local_order',
+    };
   }
   if (!allowLocalOrderStorage) throw new Error('cloud_order_creation_required');
   if (!isCash && !allowLocalPendingQuote) throw new Error('online_payment_requires_server');
@@ -547,7 +581,12 @@ export async function getMyOrders(userId) {
   };
 }
 
-export async function lookupGuestOrder(orderNumber, email = '', turnstileToken = '', accessToken = '') {
+export async function lookupGuestOrder(
+  orderNumber,
+  email = '',
+  turnstileToken = '',
+  accessToken = '',
+) {
   const number = clean(orderNumber).toUpperCase();
   const normalizedEmail = emailKey(email);
   if (!number || (!normalizedEmail && !accessToken))
@@ -557,13 +596,24 @@ export async function lookupGuestOrder(orderNumber, email = '', turnstileToken =
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       credentials: 'same-origin',
-      body: JSON.stringify({ orderNumber: number, email: normalizedEmail, turnstileToken, accessToken }),
+      body: JSON.stringify({
+        orderNumber: number,
+        email: normalizedEmail,
+        turnstileToken,
+        accessToken,
+      }),
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
       const error = new Error(data?.error || `guest_order_lookup_failed:${response.status}`);
       error.status = response.status;
-      return { state: response.status === 400 ? 'invalid' : 'error', order: null, source: 'none', error, accessToken: '' };
+      return {
+        state: response.status === 400 ? 'invalid' : 'error',
+        order: null,
+        source: 'none',
+        error,
+        accessToken: '',
+      };
     }
     if (data?.order) {
       return {
@@ -576,24 +626,39 @@ export async function lookupGuestOrder(orderNumber, email = '', turnstileToken =
       };
     }
   } catch (error) {
-    if (!allowLocalOrderStorage) return { state: 'error', order: null, source: 'none', error, accessToken: '' };
+    if (!allowLocalOrderStorage)
+      return { state: 'error', order: null, source: 'none', error, accessToken: '' };
   }
   if (allowLocalOrderStorage && normalizedEmail) {
     const local = readLocalOrders();
-    const order = local.orders.find((item) => clean(item.orderNumber).toUpperCase() === number && emailKey(item.email) === normalizedEmail) || null;
-    if (order) return { state: 'success', order, source: 'local', error: local.error, accessToken: '' };
+    const order =
+      local.orders.find(
+        (item) =>
+          clean(item.orderNumber).toUpperCase() === number &&
+          emailKey(item.email) === normalizedEmail,
+      ) || null;
+    if (order)
+      return { state: 'success', order, source: 'local', error: local.error, accessToken: '' };
   }
   return { state: 'not-found', order: null, source: 'none', error: null, accessToken: '' };
 }
 
-export async function getOrderDetails({ orderNumber, userId, email = '', turnstileToken = '', accessToken = '' }) {
+export async function getOrderDetails({
+  orderNumber,
+  userId,
+  email = '',
+  turnstileToken = '',
+  accessToken = '',
+}) {
   const number = clean(orderNumber).toUpperCase();
   if (!number) return { state: 'not-found', order: null, error: null, accessToken: '' };
   if (userId) {
     const result = await getMyOrders(userId);
-    const order = result.orders.find((item) => clean(item.orderNumber).toUpperCase() === number) || null;
+    const order =
+      result.orders.find((item) => clean(item.orderNumber).toUpperCase() === number) || null;
     return { ...result, state: order ? result.state : 'not-found', order, accessToken: '' };
   }
-  if (!email && !accessToken) return { state: 'verification-required', order: null, error: null, accessToken: '' };
+  if (!email && !accessToken)
+    return { state: 'verification-required', order: null, error: null, accessToken: '' };
   return lookupGuestOrder(number, email, turnstileToken, accessToken);
 }

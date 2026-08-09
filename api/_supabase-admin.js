@@ -1,4 +1,7 @@
-const clean = (value, max = 5000) => String(value ?? '').trim().slice(0, max);
+const clean = (value, max = 5000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
 
 export function getSupabaseAdminConfig() {
   const base = clean(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
@@ -15,7 +18,9 @@ export async function supabaseAdminRequest(path, options = {}) {
       Accept: 'application/json',
       apikey: serviceKey,
       Authorization: `Bearer ${serviceKey}`,
-      ...(options.body != null && !(options.body instanceof Uint8Array) ? { 'Content-Type': 'application/json' } : {}),
+      ...(options.body != null && !(options.body instanceof Uint8Array)
+        ? { 'Content-Type': 'application/json' }
+        : {}),
       ...(options.headers || {}),
     },
     cache: 'no-store',
@@ -26,7 +31,11 @@ export async function supabaseAdminRequest(path, options = {}) {
     error.status = response.status;
     throw error;
   }
-  try { return text ? JSON.parse(text) : null; } catch { return text; }
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return text;
+  }
 }
 
 export async function resolveSupabaseUser(authorization) {
@@ -53,7 +62,9 @@ export async function supabaseUserRequest(path, authorization, options = {}) {
       Accept: 'application/json',
       apikey: serviceKey,
       Authorization: `Bearer ${token}`,
-      ...(options.body != null && !(options.body instanceof Uint8Array) ? { 'Content-Type': 'application/json' } : {}),
+      ...(options.body != null && !(options.body instanceof Uint8Array)
+        ? { 'Content-Type': 'application/json' }
+        : {}),
       ...(options.headers || {}),
     },
     cache: 'no-store',
@@ -64,5 +75,9 @@ export async function supabaseUserRequest(path, authorization, options = {}) {
     error.status = response.status;
     throw error;
   }
-  try { return text ? JSON.parse(text) : null; } catch { return text; }
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return text;
+  }
 }

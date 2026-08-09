@@ -50,7 +50,9 @@ export default function MultiAngleEngine({
               className={`gw-viewer-tab${position === safeIndex ? ' is-active' : ''}`}
               onClick={() => setIndex(position)}
             >
-              {pick(VIEW_LABELS[position] || { en: `View ${position + 1}`, ar: `عرض ${position + 1}` })}
+              {pick(
+                VIEW_LABELS[position] || { en: `View ${position + 1}`, ar: `عرض ${position + 1}` },
+              )}
             </button>
           ))}
         </div>

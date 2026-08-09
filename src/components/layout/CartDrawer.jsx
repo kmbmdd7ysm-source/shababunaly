@@ -50,6 +50,12 @@ export default function CartDrawer() {
       <div
         className={`drawer-overlay${drawerOpen ? ' open' : ''}`}
         onClick={closeDrawer}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape' || event.key === 'Enter') closeDrawer();
+        }}
+        role="button"
+        tabIndex={drawerOpen ? 0 : -1}
+        aria-label={t.common.close}
         aria-hidden={!drawerOpen}
       />
       <aside
@@ -92,7 +98,15 @@ export default function CartDrawer() {
                     SHIPPING_MESSAGES.unlocked[lang]
                   )}
                 </p>
-                <progress className="freeship-progress" max="100" value={freeShipping.progressPercent} aria-label={pick({ en: 'Free delivery progress', ar: 'التقدم نحو التوصيل المجاني' })} />
+                <progress
+                  className="freeship-progress"
+                  max="100"
+                  value={freeShipping.progressPercent}
+                  aria-label={pick({
+                    en: 'Free delivery progress',
+                    ar: 'التقدم نحو التوصيل المجاني',
+                  })}
+                />
               </div>
             ) : (
               <div className="freeship-bar">
@@ -106,7 +120,9 @@ export default function CartDrawer() {
                       ? lang === 'ar'
                         ? 'تأكيد تسجيل الفعالية — دون شحن مادي'
                         : 'Event registration confirmation — no physical shipping'
-                      : (lang === 'ar' ? 'توصيل رقمي — دون شحن مادي' : 'Digital delivery — no physical shipping')}
+                      : lang === 'ar'
+                        ? 'توصيل رقمي — دون شحن مادي'
+                        : 'Digital delivery — no physical shipping'}
                 </p>
               </div>
             )}

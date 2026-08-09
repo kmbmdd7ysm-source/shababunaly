@@ -8,7 +8,8 @@ const walk = (directory) => {
     const absolute = join(directory, name);
     const info = statSync(absolute);
     if (info.isDirectory()) walk(absolute);
-    else if (/\.(?:js|jsx|ts|tsx)$/.test(name)) sourceFiles.push(relative(root, absolute).replaceAll('\\', '/'));
+    else if (/\.(?:js|jsx|ts|tsx)$/.test(name))
+      sourceFiles.push(relative(root, absolute).replaceAll('\\', '/'));
   }
 };
 for (const directory of ['src', 'api']) walk(directory);
@@ -23,7 +24,8 @@ for (const file of strictFiles) {
   }
   // Allow the word "any" only in documented unavoidable comments / unknown catch patterns elsewhere.
   const explicitAny = [...text.matchAll(/:\s*any\b|<any>|as any\b/g)].length;
-  if (explicitAny) violations.push({ file, issue: 'explicit-any-in-strict-scope', count: explicitAny });
+  if (explicitAny)
+    violations.push({ file, issue: 'explicit-any-in-strict-scope', count: explicitAny });
 }
 
 const report = {
@@ -31,7 +33,9 @@ const report = {
   generatedAt: new Date().toISOString(),
   sourceFiles: sourceFiles.length,
   strictFiles: strictFiles.length,
-  strictCoveragePercent: Number(((strictFiles.length / Math.max(1, sourceFiles.length)) * 100).toFixed(2)),
+  strictCoveragePercent: Number(
+    ((strictFiles.length / Math.max(1, sourceFiles.length)) * 100).toFixed(2),
+  ),
   legacyFiles: legacy,
   violations,
   compilerGuarantees: {

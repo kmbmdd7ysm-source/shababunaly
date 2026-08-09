@@ -50,13 +50,17 @@ const USABLE_MEDIA_STATES = new Set([
   'placeholder',
   'generated',
 ]);
-const NON_SELLABLE_INVENTORY_SOURCES = new Set(['unverified_catalog', 'concept_only', 'sample_data']);
+const NON_SELLABLE_INVENTORY_SOURCES = new Set([
+  'unverified_catalog',
+  'concept_only',
+  'sample_data',
+]);
 
 export function hasRealProductMedia(product: ProductLike | null | undefined): boolean {
   return Boolean(
     product?.image &&
-      TRUSTED_MEDIA_STATES.has(String(product.mediaStatus || '').toLowerCase()) &&
-      !String(product.image).startsWith('/images/catalog/'),
+    TRUSTED_MEDIA_STATES.has(String(product.mediaStatus || '').toLowerCase()) &&
+    !String(product.image).startsWith('/images/catalog/'),
   );
 }
 
@@ -72,14 +76,17 @@ export function hasSellablePrice(product: ProductLike | null | undefined): boole
 }
 
 export function hasValidSku(product: ProductLike | null | undefined): boolean {
-  return typeof product?.sku === 'string' && /^[A-Z0-9][A-Z0-9._-]{2,79}$/i.test(product.sku.trim());
+  return (
+    typeof product?.sku === 'string' && /^[A-Z0-9][A-Z0-9._-]{2,79}$/i.test(product.sku.trim())
+  );
 }
 
 export function isProductPublishable(product: ProductLike | null | undefined): boolean {
   if (!product || product.status !== PRODUCT_STATUSES.ACTIVE) return false;
   if (!hasValidSku(product) || !hasUsableProductMedia(product)) return false;
   if (!hasSellablePrice(product) && product.quoteOnly !== true) return false;
-  if (NON_SELLABLE_INVENTORY_SOURCES.has(String(product.inventorySource || '').toLowerCase())) return false;
+  if (NON_SELLABLE_INVENTORY_SOURCES.has(String(product.inventorySource || '').toLowerCase()))
+    return false;
   return product.available !== false && product.comingSoon !== true;
 }
 
@@ -101,28 +108,41 @@ export function isVariantPurchasable(
   product: ProductLike | null | undefined,
   variant: VariantLike | null | undefined,
 ): boolean {
-  if (!product || !isProductPublishable(product) || product.quoteOnly === true || !variant?.sku) return false;
+  if (!product || !isProductPublishable(product) || product.quoteOnly === true || !variant?.sku)
+    return false;
   if (variant.active === false) return false;
-  if (['out_of_stock', 'unavailable', 'archived'].includes(String(variant.availabilityState || '').toLowerCase())) {
+  if (
+    ['out_of_stock', 'unavailable', 'archived'].includes(
+      String(variant.availabilityState || '').toLowerCase(),
+    )
+  ) {
     return false;
   }
   if (variant.inventoryTracking === false || product.inventoryTracking === false) return true;
   return Number(variant.stock) > 0;
 }
 
-export function getVariantPurchaseLimit(variant: VariantLike | null | undefined, fallback = 99): number {
+export function getVariantPurchaseLimit(
+  variant: VariantLike | null | undefined,
+  fallback = 99,
+): number {
   if (!variant) return 0;
   return variant.inventoryTracking === false ? fallback : Math.max(0, Number(variant.stock) || 0);
 }
 
-export function isReadyToShipEligible(product: ProductLike | null | undefined, countryCode = 'LY'): boolean {
+export function isReadyToShipEligible(
+  product: ProductLike | null | undefined,
+  countryCode = 'LY',
+): boolean {
   if (!product || countryCode !== 'LY' || !isProductPublishable(product)) return false;
   if (product.readyToShip !== true || product.inventoryTracking !== true) return false;
   if (String(product.inventoryLocation || '').toUpperCase() !== 'LY') return false;
   return Array.isArray(product.variants)
     ? product.variants.some(
         (variant) =>
-          variant.inventoryTracking === true && variant.readyToShip !== false && Number(variant.stock) > 0,
+          variant.inventoryTracking === true &&
+          variant.readyToShip !== false &&
+          Number(variant.stock) > 0,
       )
     : Number(product.stock) > 0;
 }

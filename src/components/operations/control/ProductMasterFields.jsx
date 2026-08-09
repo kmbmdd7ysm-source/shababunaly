@@ -33,7 +33,11 @@ export default function ProductMasterFields({ product, onChange }) {
           <label key={key}>
             <span>{pick({ en, ar })}</span>
             <input
-              value={typeof master[key] === 'string' && master[key] !== 'pending_verification' ? master[key] : ''}
+              value={
+                typeof master[key] === 'string' && master[key] !== 'pending_verification'
+                  ? master[key]
+                  : ''
+              }
               placeholder={pick({ en: 'pending verification', ar: 'بانتظار التحقق' })}
               onChange={(event) => onChange?.({ ...product, [key]: event.target.value || null })}
             />

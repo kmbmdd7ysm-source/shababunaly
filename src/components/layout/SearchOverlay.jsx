@@ -100,6 +100,7 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
     window.addEventListener('popstate', onPopState);
     document.addEventListener('keydown', onKeyDown);
     trackEvent('search_open');
+    const trigger = triggerRef?.current;
     return () => {
       window.clearTimeout(focusTimer);
       window.removeEventListener('popstate', onPopState);
@@ -114,8 +115,10 @@ export default function SearchOverlay({ open, onClose, triggerRef }) {
           location.pathname + location.search + location.hash,
         );
       closingFromPop.current = false;
-      triggerRef?.current?.focus?.();
+      trigger?.focus?.();
     };
+    // open is the intentional trigger; close helpers are stable enough for overlay lifecycle.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- overlay mount/unmount keyed on `open`
   }, [open]);
 
   useEffect(() => setActiveIndex(-1), [query]);

@@ -39,7 +39,9 @@ function reducer(state, action) {
         {
           ...item,
           quantity:
-            item.type === 'product' ? Math.max(item.minQuantity ?? 1, Math.min(item.quantity, item.maxStock ?? Infinity)) : 1,
+            item.type === 'product'
+              ? Math.max(item.minQuantity ?? 1, Math.min(item.quantity, item.maxStock ?? Infinity))
+              : 1,
           updatedAt: new Date().toISOString(),
         },
       ];
@@ -50,7 +52,10 @@ function reducer(state, action) {
           ? i
           : {
               ...i,
-              quantity: Math.max(i.minQuantity ?? 1, Math.min(action.quantity, i.maxStock ?? Infinity)),
+              quantity: Math.max(
+                i.minQuantity ?? 1,
+                Math.min(action.quantity, i.maxStock ?? Infinity),
+              ),
               updatedAt: new Date().toISOString(),
             },
       );
@@ -91,7 +96,10 @@ function reducer(state, action) {
           unavailable: !purchasable,
           quantity: !purchasable
             ? Number(item.quantity || 1)
-            : Math.max(wholesale ? Number(product.wholesaleMin || 1) : 1, Math.min(Number(item.quantity || 1), maxStock || 99)),
+            : Math.max(
+                wholesale ? Number(product.wholesaleMin || 1) : 1,
+                Math.min(Number(item.quantity || 1), maxStock || 99),
+              ),
         };
       });
     default:
@@ -116,7 +124,10 @@ export function CartProvider({ children }) {
   }, [scope, auth.loading]);
   useEffect(() => {
     if (!ready.current || !catalog.products?.length) return;
-    dispatch({ type: 'RECONCILE_CATALOG', byId: new Map(catalog.products.map((product) => [product.id, product])) });
+    dispatch({
+      type: 'RECONCILE_CATALOG',
+      byId: new Map(catalog.products.map((product) => [product.id, product])),
+    });
   }, [catalog.products]);
   useEffect(() => {
     channel.current?.close();

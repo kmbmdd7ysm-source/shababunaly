@@ -15,7 +15,13 @@ describe('brand and navigation', () => {
 
   it('keeps the requested minimal main navigation', () => {
     expect(mainNav.map((item) => item.to)).toEqual([
-      '/', '/shop', '/customize', '/teams-wholesale', '/lha-store', '/our-work', '/about',
+      '/',
+      '/shop',
+      '/customize',
+      '/teams-wholesale',
+      '/lha-store',
+      '/our-work',
+      '/about',
     ]);
   });
 
@@ -26,5 +32,4 @@ describe('brand and navigation', () => {
     expect(source).toContain('organization_name');
     expect(source).toContain('organization_type');
   });
-
 });

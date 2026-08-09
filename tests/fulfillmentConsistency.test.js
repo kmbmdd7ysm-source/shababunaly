@@ -10,14 +10,22 @@ describe('fulfillment consistency', () => {
 
   it('keeps international shipping pending until a staff quote is added', () => {
     const checkout = readFileSync('src/pages/CheckoutPage.jsx', 'utf8');
-    const migration = readFileSync('supabase/migrations/20260731050000_shababuna_final_hardening.sql', 'utf8');
+    const migration = readFileSync(
+      'supabase/migrations/20260731050000_shababuna_final_hardening.sql',
+      'utf8',
+    );
     expect(checkout).toContain('pending_shipping_quote');
     expect(migration).toContain('staff_set_shipping_quote');
-    expect(migration).toContain("v_plan=case when before_row.deposit_required then 'half' else 'full' end");
+    expect(migration).toContain(
+      "v_plan=case when before_row.deposit_required then 'half' else 'full' end",
+    );
   });
 
   it('requires full electronic payment while preserving staged cash/custom rules', () => {
-    const sql = readFileSync('supabase/migrations/20260731020000_shababuna_global_commerce.sql', 'utf8');
+    const sql = readFileSync(
+      'supabase/migrations/20260731020000_shababuna_global_commerce.sql',
+      'utf8',
+    );
     expect(sql).toContain("v_payment_plan := 'half'");
     expect(sql).toContain("v_payment_plan := 'full'");
     expect(sql).toContain("v_payment_plan := 'pending_shipping_quote'");

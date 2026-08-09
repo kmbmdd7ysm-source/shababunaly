@@ -1,6 +1,9 @@
 import crypto from 'node:crypto';
 
-const clean = (value, max = 5000) => String(value ?? '').trim().slice(0, max);
+const clean = (value, max = 5000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
 const ORDER = /^(SHB|LHA)-\d{8}-\d{7}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,12 +35,15 @@ export function createGuestOrderToken({ orderNumber, email, ttlSeconds = 1800 })
   const number = normalizeGuestOrderNumber(orderNumber);
   const normalizedEmail = normalizeGuestEmail(email);
   if (!number || !normalizedEmail) throw new Error('invalid_guest_access');
-  const payload = Buffer.from(JSON.stringify({
-    orderNumber: number,
-    emailHash: guestEmailHash(normalizedEmail),
-    exp: Math.floor(Date.now() / 1000) + Math.max(300, Math.min(86400, Number(ttlSeconds) || 1800)),
-    nonce: crypto.randomUUID(),
-  })).toString('base64url');
+  const payload = Buffer.from(
+    JSON.stringify({
+      orderNumber: number,
+      emailHash: guestEmailHash(normalizedEmail),
+      exp:
+        Math.floor(Date.now() / 1000) + Math.max(300, Math.min(86400, Number(ttlSeconds) || 1800)),
+      nonce: crypto.randomUUID(),
+    }),
+  ).toString('base64url');
   return `${payload}.${signature(payload)}`;
 }
 
@@ -49,10 +55,20 @@ export function verifyGuestOrderToken(token, expectedOrderNumber = '') {
   const right = Buffer.from(expected);
   if (left.length !== right.length || !crypto.timingSafeEqual(left, right)) return null;
   let data;
-  try { data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')); } catch { return null; }
+  try {
+    data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+  } catch {
+    return null;
+  }
   const number = normalizeGuestOrderNumber(data?.orderNumber);
-  if (!number || (expectedOrderNumber && number !== normalizeGuestOrderNumber(expectedOrderNumber))) return null;
+  if (!number || (expectedOrderNumber && number !== normalizeGuestOrderNumber(expectedOrderNumber)))
+    return null;
   if (!/^[0-9a-f]{64}$/i.test(String(data?.emailHash || ''))) return null;
-  if (!Number.isFinite(Number(data?.exp)) || Number(data.exp) <= Math.floor(Date.now() / 1000)) return null;
-  return { orderNumber: number, emailHash: String(data.emailHash).toLowerCase(), exp: Number(data.exp) };
+  if (!Number.isFinite(Number(data?.exp)) || Number(data.exp) <= Math.floor(Date.now() / 1000))
+    return null;
+  return {
+    orderNumber: number,
+    emailHash: String(data.emailHash).toLowerCase(),
+    exp: Number(data.exp),
+  };
 }

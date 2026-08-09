@@ -28,10 +28,12 @@ describe('forms and media readiness', () => {
       'public/brand/shababuna-wordmark-ar-black.png',
       'public/brand/shababuna-wordmark-ar-white.png',
       'public/brand/shababuna-social.png',
-    ]) expect(fs.existsSync(file)).toBe(true);
+    ])
+      expect(fs.existsSync(file)).toBe(true);
     for (const quarantined of [
       'public/brand/shababuna-mark-black.png',
       'public/brand/shababuna-mark-white.png',
-    ]) expect(fs.existsSync(quarantined)).toBe(false);
+    ])
+      expect(fs.existsSync(quarantined)).toBe(false);
   });
 });

@@ -11,7 +11,11 @@ async function authHeader() {
 export async function retryOrderPayment({ orderNumber, accessToken = '' }) {
   const response = await fetch('/api/retry-order-payment', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...(await authHeader()) },
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      ...(await authHeader()),
+    },
     credentials: 'same-origin',
     body: JSON.stringify({ orderNumber, accessToken }),
   });

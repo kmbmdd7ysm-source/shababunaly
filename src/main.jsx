@@ -102,7 +102,7 @@ createRoot(document.getElementById('root')).render(
 
 if (typeof window !== 'undefined') {
   let backgroundStarted = false;
-  let backgroundTimer;
+  let backgroundTimer = 0;
   const startBackgroundTasks = () => {
     if (backgroundStarted) return;
     backgroundStarted = true;

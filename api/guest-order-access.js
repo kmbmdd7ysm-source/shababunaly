@@ -1,18 +1,59 @@
 import { guardPublicPost, applyApiHeaders } from './_request-security.js';
 import { verifyTurnstileToken } from './_turnstile.js';
 import { supabaseAdminRequest } from './_supabase-admin.js';
-import { createGuestOrderToken, guestEmailHash, normalizeGuestEmail, normalizeGuestOrderNumber, verifyGuestOrderToken } from './_guest-order-token.js';
+import {
+  createGuestOrderToken,
+  guestEmailHash,
+  normalizeGuestEmail,
+  normalizeGuestOrderNumber,
+  verifyGuestOrderToken,
+} from './_guest-order-token.js';
 
-const clean = (value, max = 5000) => String(value ?? '').trim().slice(0, max);
+const clean = (value, max = 5000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
 const SELECT = [
-  'id','order_number','customer_email','currency','display_currency','subtotal','display_subtotal','shipping_total','display_shipping_total','tax_total','discount_total','total','display_total',
-  'payment_method','payment_plan','amount_paid','amount_refunded','amount_due_now','outstanding_balance','remaining_balance','payment_stage','payment_provider','payment_status','order_status','fulfillment_status',
-  'shipping_quote_required','payment_expires_at','shipping_quote_expires_at','delivery_profile','created_at','updated_at','delivered_at','shipping_summary',
-  'order_items(product_id,sku,product_name,variant_snapshot,quantity,unit_price,line_total)'
+  'id',
+  'order_number',
+  'customer_email',
+  'currency',
+  'display_currency',
+  'subtotal',
+  'display_subtotal',
+  'shipping_total',
+  'display_shipping_total',
+  'tax_total',
+  'discount_total',
+  'total',
+  'display_total',
+  'payment_method',
+  'payment_plan',
+  'amount_paid',
+  'amount_refunded',
+  'amount_due_now',
+  'outstanding_balance',
+  'remaining_balance',
+  'payment_stage',
+  'payment_provider',
+  'payment_status',
+  'order_status',
+  'fulfillment_status',
+  'shipping_quote_required',
+  'payment_expires_at',
+  'shipping_quote_expires_at',
+  'delivery_profile',
+  'created_at',
+  'updated_at',
+  'delivered_at',
+  'shipping_summary',
+  'order_items(product_id,sku,product_name,variant_snapshot,quantity,unit_price,line_total)',
 ].join(',');
 
 async function findOrder(orderNumber) {
-  const rows = await supabaseAdminRequest(`/rest/v1/orders?select=${encodeURIComponent(SELECT)}&order_number=eq.${encodeURIComponent(orderNumber)}&user_id=is.null&limit=1`);
+  const rows = await supabaseAdminRequest(
+    `/rest/v1/orders?select=${encodeURIComponent(SELECT)}&order_number=eq.${encodeURIComponent(orderNumber)}&user_id=is.null&limit=1`,
+  );
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
@@ -21,7 +62,9 @@ function publicOrder(row) {
   return { ...safe, items: orderItems || [] };
 }
 
-function orderEmail(row) { return normalizeGuestEmail(row.customer_email || row.shipping_summary?.email || ''); }
+function orderEmail(row) {
+  return normalizeGuestEmail(row.customer_email || row.shipping_summary?.email || '');
+}
 
 export default async function handler(req, res) {
   applyApiHeaders(res);
@@ -29,7 +72,15 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(req, res, { maxBytes: 16_000, limit: 10, windowMs: 15 * 60_000, bucket: 'guest-order-access' }))) return;
+  if (
+    !(await guardPublicPost(req, res, {
+      maxBytes: 16_000,
+      limit: 10,
+      windowMs: 15 * 60_000,
+      bucket: 'guest-order-access',
+    }))
+  )
+    return;
   try {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const orderNumber = normalizeGuestOrderNumber(body.orderNumber);
@@ -39,18 +90,33 @@ export default async function handler(req, res) {
     if (!order) return res.status(200).json({ ok: true, order: null });
     if (existing) {
       const storedEmail = orderEmail(order);
-      if (!storedEmail || guestEmailHash(storedEmail) !== existing.emailHash) return res.status(200).json({ ok: true, order: null });
-      return res.status(200).json({ ok: true, order: publicOrder(order), accessToken: clean(body.accessToken, 8000), expiresAt: new Date(existing.exp * 1000).toISOString() });
+      if (!storedEmail || guestEmailHash(storedEmail) !== existing.emailHash)
+        return res.status(200).json({ ok: true, order: null });
+      return res.status(200).json({
+        ok: true,
+        order: publicOrder(order),
+        accessToken: clean(body.accessToken, 8000),
+        expiresAt: new Date(existing.exp * 1000).toISOString(),
+      });
     }
     const email = normalizeGuestEmail(body.email);
     if (!email) return res.status(200).json({ ok: true, order: null });
-    const captchaOk = await verifyTurnstileToken(clean(body.turnstileToken, 3000), req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '');
+    const captchaOk = await verifyTurnstileToken(
+      clean(body.turnstileToken, 3000),
+      req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '',
+    );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const storedEmail = orderEmail(order);
-    if (!storedEmail || storedEmail !== email) return res.status(200).json({ ok: true, order: null });
+    if (!storedEmail || storedEmail !== email)
+      return res.status(200).json({ ok: true, order: null });
     const accessToken = createGuestOrderToken({ orderNumber, email });
     const verified = verifyGuestOrderToken(accessToken, orderNumber);
-    return res.status(200).json({ ok: true, order: publicOrder(order), accessToken, expiresAt: new Date(verified.exp * 1000).toISOString() });
+    return res.status(200).json({
+      ok: true,
+      order: publicOrder(order),
+      accessToken,
+      expiresAt: new Date(verified.exp * 1000).toISOString(),
+    });
   } catch {
     return res.status(503).json({ ok: false, error: 'guest_order_access_unavailable' });
   }

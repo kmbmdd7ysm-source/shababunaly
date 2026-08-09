@@ -1,6 +1,10 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { products } from '../src/data/products.js';
-import { normalizeProductMaster, missingMasterFields, normalizeVariantInventory } from '../src/domain/productMaster.ts';
+import {
+  normalizeProductMaster,
+  missingMasterFields,
+  normalizeVariantInventory,
+} from '../src/domain/productMaster.ts';
 
 const ids = new Set();
 const skus = new Set();
@@ -18,9 +22,11 @@ for (const product of products) {
   if (!product.slug) issues.push('missing_slug');
   if (!product.name?.en && !product.name) issues.push('missing_english_title');
   if (!product.category) issues.push('missing_category');
-  if (!Number.isFinite(Number(product.price)) && product.quoteOnly !== true) issues.push('missing_price');
+  if (!Number.isFinite(Number(product.price)) && product.quoteOnly !== true)
+    issues.push('missing_price');
   if (!product.image) issues.push('missing_image');
-  if (!Array.isArray(product.variants) || product.variants.length === 0) issues.push('missing_variants');
+  if (!Array.isArray(product.variants) || product.variants.length === 0)
+    issues.push('missing_variants');
 
   if (product.id) {
     if (ids.has(product.id)) duplicates.push({ type: 'id', value: product.id });
@@ -48,7 +54,8 @@ for (const product of products) {
 
   for (const variant of product.variants || []) {
     variantCount += 1;
-    if (!variant.sku) issues.push(`variant_missing_sku:${variant.size || ''}:${variant.color || ''}`);
+    if (!variant.sku)
+      issues.push(`variant_missing_sku:${variant.size || ''}:${variant.color || ''}`);
     if (variant.sku) {
       if (skus.has(variant.sku)) duplicates.push({ type: 'variant_sku', value: variant.sku });
       skus.add(variant.sku);
@@ -56,7 +63,8 @@ for (const product of products) {
     normalizeVariantInventory(product, variant);
   }
 
-  if (issues.length) structural.push({ id: product.id, slug: product.slug, issues: [...new Set(issues)] });
+  if (issues.length)
+    structural.push({ id: product.id, slug: product.slug, issues: [...new Set(issues)] });
 }
 
 const report = {

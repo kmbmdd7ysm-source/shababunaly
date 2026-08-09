@@ -26,7 +26,8 @@ export function resolveAvailabilityState(
 
   if (tracking && verified) {
     const variants = product.variants ?? [];
-    const anyStock = variants.some((variant) => Number(variant.stock) > 0) || Number(product.stock) > 0;
+    const anyStock =
+      variants.some((variant) => Number(variant.stock) > 0) || Number(product.stock) > 0;
     return anyStock ? 'READY_TO_SHIP' : 'OUT_OF_STOCK';
   }
 

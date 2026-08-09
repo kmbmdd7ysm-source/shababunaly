@@ -14,16 +14,18 @@ export async function fetchUsdToLydRate() {
   return validateUsdToLydRate(data?.usd_to_lyd_rate);
 }
 
-
 export async function fetchPublicShippingRates() {
   const supabase = await getSupabase();
   if (!supabase) return {};
   const { data, error } = await supabase.rpc('get_public_shipping_rates');
   if (error) throw error;
   const source = data && typeof data === 'object' ? data : {};
-  return Object.fromEntries(Object.entries(source).flatMap(([code, value]) => {
-    const rate = Number(value);
-    return /^[A-Z]{2}$/.test(String(code).toUpperCase()) && Number.isFinite(rate) && rate >= 0
-      ? [[String(code).toUpperCase(), rate]] : [];
-  }));
+  return Object.fromEntries(
+    Object.entries(source).flatMap(([code, value]) => {
+      const rate = Number(value);
+      return /^[A-Z]{2}$/.test(String(code).toUpperCase()) && Number.isFinite(rate) && rate >= 0
+        ? [[String(code).toUpperCase(), rate]]
+        : [];
+    }),
+  );
 }

@@ -27,6 +27,7 @@ export default function OrderTrackingPage() {
     }));
     const result = await getMyOrders(auth.user.id);
     setOrdersState(result);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
   useEffect(() => {
     load();

@@ -1,6 +1,9 @@
 import crypto from 'node:crypto';
 
-export const clean = (value, max = 1000) => String(value ?? '').trim().slice(0, max);
+export const clean = (value, max = 1000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
 
 export function verifyHmacSha256(raw, secret, header) {
   if (!secret || !header) return false;
@@ -22,36 +25,69 @@ export function normalizeProviderEvent(payload, provider, amountUnit = 'minor', 
   const mapped = statusMap[providerStatus];
   if (!mapped) throw Object.assign(new Error('unsupported_provider_event'), { status: 400 });
   const explicitMinor = Number(object.amountMinor ?? object.amount_minor ?? source.amountMinor);
-  const generic = Number(mapped.kind === 'refund'
-    ? (object.amount_refunded ?? source.amount_refunded ?? object.amount ?? source.amount)
-    : (object.amount_received ?? object.amount_paid ?? object.amount ?? source.amount));
-  const amount = Number.isFinite(explicitMinor) ? explicitMinor / 100 : amountUnit === 'major' ? generic : generic / 100;
-  if (!Number.isFinite(amount) || amount < 0) throw Object.assign(new Error('invalid_provider_amount'), { status: 400 });
+  const generic = Number(
+    mapped.kind === 'refund'
+      ? (object.amount_refunded ?? source.amount_refunded ?? object.amount ?? source.amount)
+      : (object.amount_received ?? object.amount_paid ?? object.amount ?? source.amount),
+  );
+  const amount = Number.isFinite(explicitMinor)
+    ? explicitMinor / 100
+    : amountUnit === 'major'
+      ? generic
+      : generic / 100;
+  if (!Number.isFinite(amount) || amount < 0)
+    throw Object.assign(new Error('invalid_provider_amount'), { status: 400 });
   return {
     provider,
     kind: mapped.kind,
     eventId: clean(source.id || source.eventId || object.eventId, 240),
     eventStatus: mapped.status,
-    entityType: clean(metadata.entityType || metadata.entity_type || object.entityType || source.entityType || 'order', 20).toLowerCase(),
-    orderNumber: clean(metadata.orderNumber || metadata.order_number || object.orderNumber || source.orderNumber, 80).toUpperCase(),
-    quoteNumber: clean(metadata.quoteNumber || metadata.quote_number || object.quoteNumber || source.quoteNumber, 80).toUpperCase(),
+    entityType: clean(
+      metadata.entityType ||
+        metadata.entity_type ||
+        object.entityType ||
+        source.entityType ||
+        'order',
+      20,
+    ).toLowerCase(),
+    orderNumber: clean(
+      metadata.orderNumber || metadata.order_number || object.orderNumber || source.orderNumber,
+      80,
+    ).toUpperCase(),
+    quoteNumber: clean(
+      metadata.quoteNumber || metadata.quote_number || object.quoteNumber || source.quoteNumber,
+      80,
+    ).toUpperCase(),
     amount,
     currency: clean(object.currency || source.currency || 'USD', 10).toUpperCase(),
-    transactionId: clean(object.payment_intent || object.transactionId || object.id || source.transactionId, 240),
+    transactionId: clean(
+      object.payment_intent || object.transactionId || object.id || source.transactionId,
+      240,
+    ),
   };
 }
 
 function requireHttpsEnv(name) {
   const value = clean(process.env[name], 1500);
-  if (!value || !/^https:\/\//i.test(value)) throw Object.assign(new Error(`${name.toLowerCase()}_not_configured`), { status: 503 });
+  if (!value || !/^https:\/\//i.test(value))
+    throw Object.assign(new Error(`${name.toLowerCase()}_not_configured`), { status: 503 });
   return value;
 }
 
 function expandTemplate(template, values) {
-  return template.replace(/\{([a-zA-Z0-9_]+)\}/g, (_, key) => encodeURIComponent(clean(values[key], 500)));
+  return template.replace(/\{([a-zA-Z0-9_]+)\}/g, (_, key) =>
+    encodeURIComponent(clean(values[key], 500)),
+  );
 }
 
-async function providerRequest({ url, secret, method = 'POST', body, idempotencyKey, timeoutMs = 20000 }) {
+async function providerRequest({
+  url,
+  secret,
+  method = 'POST',
+  body,
+  idempotencyKey,
+  timeoutMs = 20000,
+}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -69,7 +105,11 @@ async function providerRequest({ url, secret, method = 'POST', body, idempotency
     });
     const text = await response.text().catch(() => '');
     let data = {};
-    try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text.slice(0, 500) }; }
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = { raw: text.slice(0, 500) };
+    }
     if (!response.ok) {
       const error = Object.assign(new Error('provider_rejected'), {
         status: response.status === 429 ? 429 : response.status >= 500 ? 502 : 400,
@@ -82,7 +122,8 @@ async function providerRequest({ url, secret, method = 'POST', body, idempotency
     return data;
   } catch (error) {
     clearTimeout(timeout);
-    if (error?.name === 'AbortError') throw Object.assign(new Error('provider_timeout'), { status: 504 });
+    if (error?.name === 'AbortError')
+      throw Object.assign(new Error('provider_timeout'), { status: 504 });
     throw error;
   }
 }
@@ -102,7 +143,8 @@ export function createHttpAdapter(config) {
     async createSession({ trustedOrder, idempotencyKey, successUrl, cancelUrl }) {
       const endpoint = requireHttpsEnv(config.endpointEnv);
       const providerSecret = secret();
-      if (!providerSecret) throw Object.assign(new Error('payment_provider_not_connected'), { status: 503 });
+      if (!providerSecret)
+        throw Object.assign(new Error('payment_provider_not_connected'), { status: 503 });
       const data = await providerRequest({
         url: endpoint,
         secret: providerSecret,
@@ -116,30 +158,72 @@ export function createHttpAdapter(config) {
           cancelUrl,
         },
       });
-      if (!/^https:\/\//i.test(data.url || '')) throw Object.assign(new Error('provider_missing_checkout_url'), { status: 502 });
+      if (!/^https:\/\//i.test(data.url || ''))
+        throw Object.assign(new Error('provider_missing_checkout_url'), { status: 502 });
       return { url: data.url, providerSessionId: clean(data.id || data.sessionId, 240) };
     },
     verifyWebhook(raw, headers) {
-      const headerName = clean(process.env[config.signatureHeaderEnv] || 'x-shababuna-signature', 100).toLowerCase();
-      return verifyHmacSha256(raw, clean(process.env[config.webhookSecretEnv], 5000), headers[headerName] || headers['x-webhook-signature'] || headers['x-signature']);
+      const headerName = clean(
+        process.env[config.signatureHeaderEnv] || 'x-shababuna-signature',
+        100,
+      ).toLowerCase();
+      return verifyHmacSha256(
+        raw,
+        clean(process.env[config.webhookSecretEnv], 5000),
+        headers[headerName] || headers['x-webhook-signature'] || headers['x-signature'],
+      );
     },
     normalizeEvent(payload) {
-      return normalizeProviderEvent(payload, config.id, clean(process.env[config.amountUnitEnv], 20).toLowerCase() === 'major' ? 'major' : 'minor', config.statusMap);
+      return normalizeProviderEvent(
+        payload,
+        config.id,
+        clean(process.env[config.amountUnitEnv], 20).toLowerCase() === 'major' ? 'major' : 'minor',
+        config.statusMap,
+      );
     },
     async retrievePayment({ transactionId, providerSessionId, orderNumber, quoteNumber }) {
       const template = requireHttpsEnv(config.retrieveEnv);
       const providerSecret = secret();
-      if (!providerSecret) throw Object.assign(new Error('payment_provider_not_connected'), { status: 503 });
-      const url = expandTemplate(template, { transactionId, providerSessionId, orderNumber, quoteNumber });
-      const data = await providerRequest({ url, secret: providerSecret, method: 'GET', body: undefined, idempotencyKey: undefined, timeoutMs: Number(config.retrieveTimeoutMs) > 0 ? Number(config.retrieveTimeoutMs) : 15000 });
-      return { provider: config.id, raw: data, id: clean(data.id || data.transactionId || transactionId, 240), status: clean(data.status, 100).toLowerCase(), amount: data.amount, currency: clean(data.currency || 'USD', 10).toUpperCase() };
+      if (!providerSecret)
+        throw Object.assign(new Error('payment_provider_not_connected'), { status: 503 });
+      const url = expandTemplate(template, {
+        transactionId,
+        providerSessionId,
+        orderNumber,
+        quoteNumber,
+      });
+      const data = await providerRequest({
+        url,
+        secret: providerSecret,
+        method: 'GET',
+        body: undefined,
+        idempotencyKey: undefined,
+        timeoutMs: Number(config.retrieveTimeoutMs) > 0 ? Number(config.retrieveTimeoutMs) : 15000,
+      });
+      return {
+        provider: config.id,
+        raw: data,
+        id: clean(data.id || data.transactionId || transactionId, 240),
+        status: clean(data.status, 100).toLowerCase(),
+        amount: data.amount,
+        currency: clean(data.currency || 'USD', 10).toUpperCase(),
+      };
     },
-    async refund({ transactionId, amount, currency = 'USD', idempotencyKey, reason = '', metadata = {} }) {
+    async refund({
+      transactionId,
+      amount,
+      currency = 'USD',
+      idempotencyKey,
+      reason = '',
+      metadata = {},
+    }) {
       const endpoint = requireHttpsEnv(config.refundEnv);
       const providerSecret = secret();
-      if (!providerSecret) throw Object.assign(new Error('payment_provider_not_connected'), { status: 503 });
+      if (!providerSecret)
+        throw Object.assign(new Error('payment_provider_not_connected'), { status: 503 });
       const numericAmount = Number(amount);
-      if (!transactionId || !Number.isFinite(numericAmount) || numericAmount <= 0) throw Object.assign(new Error('invalid_refund_request'), { status: 400 });
+      if (!transactionId || !Number.isFinite(numericAmount) || numericAmount <= 0)
+        throw Object.assign(new Error('invalid_refund_request'), { status: 400 });
       const data = await providerRequest({
         url: endpoint,
         secret: providerSecret,
@@ -156,7 +240,12 @@ export function createHttpAdapter(config) {
           metadata,
         },
       });
-      return { provider: config.id, id: clean(data.id || data.refundId, 240), status: clean(data.status || 'pending', 100).toLowerCase(), raw: data };
+      return {
+        provider: config.id,
+        id: clean(data.id || data.refundId, 240),
+        status: clean(data.status || 'pending', 100).toLowerCase(),
+        raw: data,
+      };
     },
     mapError(error) {
       return {

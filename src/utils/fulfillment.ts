@@ -12,7 +12,8 @@ export interface FulfillmentItem {
 
 export function getCartItemFulfillmentType(item: FulfillmentItem | null | undefined): string {
   const explicit = String(item?.fulfillmentType || item?.fulfillment_type || '').toLowerCase();
-  if ((Object.values(FULFILLMENT_TYPES) as string[]).some((value) => value === explicit)) return explicit;
+  if ((Object.values(FULFILLMENT_TYPES) as string[]).some((value) => value === explicit))
+    return explicit;
   if (item?.type === 'product') return FULFILLMENT_TYPES.PHYSICAL;
   if (item?.type === 'training') return FULFILLMENT_TYPES.DIGITAL_TRAINING;
   if (item?.type === 'event') return FULFILLMENT_TYPES.EVENT_REGISTRATION;

@@ -182,8 +182,6 @@ npm run quality:gate
 - Do not enable a payment provider until its webhook updates the matching trusted order and is tested in sandbox mode.
 - Product prices in JavaScript are seed/catalogue data. Production checkout uses the trusted Supabase catalogue and transactional RPC.
 
-
-
 ## PageSpeed release gate
 
 The protected release requires both local/deployed Lighthouse evidence and Google PageSpeed Insights evidence. It rejects a release unless the generated reports meet the requested score profile: mobile `99 / 100 / 100 / 100` and desktop `100 / 100 / 100 / 100`, plus strict LCP, CLS and TBT budgets. Scores must still be measured against the final deployed domain because hosting, third-party scripts, real media, network conditions and payment providers affect the result. The project never fabricates PageSpeed reports.

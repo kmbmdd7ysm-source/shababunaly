@@ -133,7 +133,7 @@ for (const route of ROUTES) {
         const step = window.innerHeight * 0.8;
         for (let y = 0; y < document.body.scrollHeight; y += step) {
           window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 90));
+          await new Promise((resolve) => setTimeout(resolve, 90));
         }
         window.scrollTo(0, 0);
       });

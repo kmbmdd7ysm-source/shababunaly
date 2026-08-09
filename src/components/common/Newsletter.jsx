@@ -25,11 +25,20 @@ export default function Newsletter({ compact = false }) {
       setError(t.newsletter.required);
       return;
     }
-    if (!turnstileToken) { setError(t.newsletter.required); return; }
+    if (!turnstileToken) {
+      setError(t.newsletter.required);
+      return;
+    }
     setStatus('sending');
     try {
       await sendFormspree(
-        { email, source: 'newsletter', consent: true, turnstileToken, submittedAt: new Date().toISOString() },
+        {
+          email,
+          source: 'newsletter',
+          consent: true,
+          turnstileToken,
+          submittedAt: new Date().toISOString(),
+        },
         'Shababuna newsletter subscription',
       );
       setStatus('success');
@@ -74,7 +83,10 @@ export default function Newsletter({ compact = false }) {
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
         <span>{t.newsletter.consent}</span>
       </label>
-      <TurnstileWidget onToken={setTurnstileToken} language={document.documentElement.lang || 'en'} />
+      <TurnstileWidget
+        onToken={setTurnstileToken}
+        language={document.documentElement.lang || 'en'}
+      />
       {error && (
         <p className="form-error" role="alert">
           {error}

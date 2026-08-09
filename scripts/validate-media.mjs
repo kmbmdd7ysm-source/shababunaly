@@ -19,7 +19,14 @@ for (const product of products) {
 
   const expectedStatus = conceptArtwork(product.image) ? 'placeholder' : 'supplied';
   if (product.mediaStatus !== expectedStatus) {
-    console.error('Product media has incorrect status:', product.id, product.slug, product.mediaStatus, 'expected', expectedStatus);
+    console.error(
+      'Product media has incorrect status:',
+      product.id,
+      product.slug,
+      product.mediaStatus,
+      'expected',
+      expectedStatus,
+    );
     errors++;
   }
 
@@ -47,7 +54,12 @@ for (const product of products) {
     }
     const owner = owners.get(source);
     if (owner && owner !== product.id) {
-      console.error('Supplied product image borrowed by unrelated products:', owner, product.id, source);
+      console.error(
+        'Supplied product image borrowed by unrelated products:',
+        owner,
+        product.id,
+        source,
+      );
       errors++;
     } else {
       owners.set(source, product.id);
@@ -57,5 +69,6 @@ for (const product of products) {
 
 console.info(`Media validation: ${errors} errors, ${warnings} warnings`);
 const productionRequired = process.env.REQUIRE_FINAL_MEDIA === 'true';
-if (productionRequired && warnings) console.error(`Final-media gate failed: ${warnings} placeholder asset reference(s) remain.`);
+if (productionRequired && warnings)
+  console.error(`Final-media gate failed: ${warnings} placeholder asset reference(s) remain.`);
 process.exitCode = errors || (productionRequired && warnings) ? 1 : 0;

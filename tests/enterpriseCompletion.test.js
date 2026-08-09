@@ -8,12 +8,14 @@ describe('enterprise production completion', () => {
     const special = await read('api/create-special-request-session.js');
     expect(quote).toContain('getPaymentAdapter');
     expect(quote).toContain('adapter.createSession');
-    expect(special).toContain("status!=='awaiting_payment'");
+    expect(special).toContain("status !== 'awaiting_payment'");
     expect(special).toContain('customer_decision');
   });
   it('enforces quote total as subtotal plus shipping plus tax less discount', async () => {
     const service = await read('src/services/operations.js');
-    const sql = await read('supabase/migrations/20260801010000_shababuna_production_completion.sql');
+    const sql = await read(
+      'supabase/migrations/20260801010000_shababuna_production_completion.sql',
+    );
     expect(service).toContain('parsedSubtotal + parsedShipping + parsedTax - parsedDiscount');
     expect(service).toContain('p_tax_total');
     expect(service).toContain('p_discount_total');
@@ -30,7 +32,7 @@ describe('enterprise production completion', () => {
     const scan = await read('api/media-scan-worker.js');
     expect(upload).toContain("scan_status:'quarantined'");
     expect(upload).toContain('requireStaffSession');
-    expect(scan).toMatch(/scan_status:\s*infected\s*\?\s*'infected'\s*:\s*'clean'/);
+    expect(scan).toMatch(/scan_status:\s*infected\s*\?\s*'infected'\s*:\s*'clean'/s);
     expect(scan).toContain('MALWARE_SCAN_API_URL');
   });
   it('provides privacy export and retention workers', async () => {

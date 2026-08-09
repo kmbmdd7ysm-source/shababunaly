@@ -1,16 +1,35 @@
-const clean = (value, max = 12000) => String(value ?? '').replace(/\0/g, '').trim().slice(0, max);
+const clean = (value, max = 12000) =>
+  String(value ?? '')
+    .replace(/\0/g, '')
+    .trim()
+    .slice(0, max);
 
 const EVENT_COPY = Object.freeze({
   order_created: {
-    en: { title: 'Order received', body: 'Your SHABABUNA order was received and is waiting for the next confirmed step.' },
-    ar: { title: 'تم استلام الطلب', body: 'تم استلام طلبك لدى شبابنا وهو بانتظار الخطوة المؤكدة التالية.' },
+    en: {
+      title: 'Order received',
+      body: 'Your SHABABUNA order was received and is waiting for the next confirmed step.',
+    },
+    ar: {
+      title: 'تم استلام الطلب',
+      body: 'تم استلام طلبك لدى شبابنا وهو بانتظار الخطوة المؤكدة التالية.',
+    },
   },
   payment_required: {
-    en: { title: 'Payment required', body: 'A verified payment is required before this order can move forward.' },
-    ar: { title: 'الدفع مطلوب', body: 'يلزم إتمام دفعة موثقة قبل انتقال الطلب إلى المرحلة التالية.' },
+    en: {
+      title: 'Payment required',
+      body: 'A verified payment is required before this order can move forward.',
+    },
+    ar: {
+      title: 'الدفع مطلوب',
+      body: 'يلزم إتمام دفعة موثقة قبل انتقال الطلب إلى المرحلة التالية.',
+    },
   },
   shipping_quote_ready: {
-    en: { title: 'Shipping quote ready', body: 'Your shipping quote is ready for review in your account.' },
+    en: {
+      title: 'Shipping quote ready',
+      body: 'Your shipping quote is ready for review in your account.',
+    },
     ar: { title: 'سعر الشحن جاهز', body: 'أصبح سعر الشحن جاهزًا للمراجعة داخل حسابك.' },
   },
   quote_ready: {
@@ -18,7 +37,10 @@ const EVENT_COPY = Object.freeze({
     ar: { title: 'عرض السعر جاهز', body: 'عرض السعر التجاري جاهز للمراجعة والاعتماد.' },
   },
   proof_ready: {
-    en: { title: 'Design proof ready', body: 'A design proof is ready for approval or requested changes.' },
+    en: {
+      title: 'Design proof ready',
+      body: 'A design proof is ready for approval or requested changes.',
+    },
     ar: { title: 'بروفة التصميم جاهزة', body: 'بروفة التصميم جاهزة للاعتماد أو طلب التعديلات.' },
   },
   refund_updated: {
@@ -30,7 +52,10 @@ const EVENT_COPY = Object.freeze({
     ar: { title: 'تحديث الإرجاع', body: 'يوجد تحديث جديد على طلب الإرجاع.' },
   },
   special_request_updated: {
-    en: { title: 'Special request update', body: 'There is a new update on your special product request.' },
+    en: {
+      title: 'Special request update',
+      body: 'There is a new update on your special product request.',
+    },
     ar: { title: 'تحديث الطلب الخاص', body: 'يوجد تحديث جديد على طلب المنتج الخاص بك.' },
   },
 });
@@ -40,7 +65,14 @@ function localeOf(payload) {
 }
 
 export function notificationReference(row = {}, payload = {}) {
-  return clean(payload.orderNumber || payload.quoteNumber || payload.requestNumber || payload.referenceId || row.entity_id, 160);
+  return clean(
+    payload.orderNumber ||
+      payload.quoteNumber ||
+      payload.requestNumber ||
+      payload.referenceId ||
+      row.entity_id,
+    160,
+  );
 }
 
 export function buildNotificationTemplate(row = {}) {
@@ -48,12 +80,18 @@ export function buildNotificationTemplate(row = {}) {
   const locale = localeOf(payload);
   const copy = EVENT_COPY[row.event_type]?.[locale] || {
     title: clean(row.subject, 240) || (locale === 'ar' ? 'تحديث من شبابنا' : 'SHABABUNA update'),
-    body: locale === 'ar' ? 'يوجد تحديث جديد مرتبط بطلبك.' : 'There is a new update related to your request.',
+    body:
+      locale === 'ar'
+        ? 'يوجد تحديث جديد مرتبط بطلبك.'
+        : 'There is a new update related to your request.',
   };
   const reference = notificationReference(row, payload);
   const amount = clean(payload.amount ?? payload.total ?? payload.totalUsd, 80);
   const currency = clean(payload.currency || 'USD', 12);
-  const accountUrl = clean(payload.customerAccountUrl || payload.trackingUrl || payload.paymentRecoveryUrl, 1000);
+  const accountUrl = clean(
+    payload.customerAccountUrl || payload.trackingUrl || payload.paymentRecoveryUrl,
+    1000,
+  );
   const lines = [copy.body];
   if (reference) lines.push(`${locale === 'ar' ? 'المرجع' : 'Reference'}: ${reference}`);
   if (amount) lines.push(`${locale === 'ar' ? 'المبلغ' : 'Amount'}: ${amount} ${currency}`);

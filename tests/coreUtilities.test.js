@@ -30,9 +30,22 @@ describe('order status presentation', () => {
   });
 
   it('normalizes known values and fails safely for unknown values', () => {
-    expect(presentOrderStatus('payment', ' PAID ', 'en')).toMatchObject({ value: 'paid', label: 'Paid', category: 'success', known: true });
-    expect(presentOrderStatus('order', 'not-real', 'en')).toMatchObject({ value: 'not-real', label: 'Status unavailable', known: false });
-    expect(presentOrderStatus('order', '', 'ar')).toMatchObject({ value: 'unknown', label: 'الحالة غير متاحة', known: false });
+    expect(presentOrderStatus('payment', ' PAID ', 'en')).toMatchObject({
+      value: 'paid',
+      label: 'Paid',
+      category: 'success',
+      known: true,
+    });
+    expect(presentOrderStatus('order', 'not-real', 'en')).toMatchObject({
+      value: 'not-real',
+      label: 'Status unavailable',
+      known: false,
+    });
+    expect(presentOrderStatus('order', '', 'ar')).toMatchObject({
+      value: 'unknown',
+      label: 'الحالة غير متاحة',
+      known: false,
+    });
     expect(presentOrderStatus('missing', 'paid', 'en').known).toBe(false);
   });
 });
@@ -47,9 +60,15 @@ describe('fulfillment classification', () => {
 
   it('maps legacy item types and defaults unknown items to physical', () => {
     expect(getCartItemFulfillmentType({ type: 'product' })).toBe(FULFILLMENT_TYPES.PHYSICAL);
-    expect(getCartItemFulfillmentType({ type: 'training' })).toBe(FULFILLMENT_TYPES.DIGITAL_TRAINING);
-    expect(getCartItemFulfillmentType({ type: 'event' })).toBe(FULFILLMENT_TYPES.EVENT_REGISTRATION);
-    expect(getCartItemFulfillmentType({ type: 'unknown', fulfillmentType: 'bad' })).toBe(FULFILLMENT_TYPES.PHYSICAL);
+    expect(getCartItemFulfillmentType({ type: 'training' })).toBe(
+      FULFILLMENT_TYPES.DIGITAL_TRAINING,
+    );
+    expect(getCartItemFulfillmentType({ type: 'event' })).toBe(
+      FULFILLMENT_TYPES.EVENT_REGISTRATION,
+    );
+    expect(getCartItemFulfillmentType({ type: 'unknown', fulfillmentType: 'bad' })).toBe(
+      FULFILLMENT_TYPES.PHYSICAL,
+    );
     expect(getCartItemFulfillmentType(null)).toBe(FULFILLMENT_TYPES.PHYSICAL);
   });
 
@@ -65,7 +84,15 @@ describe('fulfillment classification', () => {
 
 describe('safe internal navigation', () => {
   it('accepts only allow-listed local routes including query and hash values', () => {
-    for (const value of ['/', '/shop', '/shop?sort=new', '/products/item-1#details', '/account/orders', '/checkout?step=payment', '/favorites']) {
+    for (const value of [
+      '/',
+      '/shop',
+      '/shop?sort=new',
+      '/products/item-1#details',
+      '/account/orders',
+      '/checkout?step=payment',
+      '/favorites',
+    ]) {
       expect(safeInternalReturnPath(value, '/')).toBe(value);
     }
   });
@@ -83,22 +110,41 @@ describe('safe internal navigation', () => {
       '/shop%00x',
       '/shop%ZZ',
       123,
-    ]) expect(safeInternalReturnPath(value, '/safe')).toBe('/safe');
+    ])
+      expect(safeInternalReturnPath(value, '/safe')).toBe('/safe');
   });
 });
 
 describe('site search', () => {
   const catalog = [
     {
-      id: 'p1', slug: 'alpha-shoe', status: 'active', name: { en: 'Alpha Shoe', ar: 'Alpha Shoe' },
-      brand: 'Nike', productType: 'Shoe', category: 'Footwear', subcategory: 'In-Court', collection: 'Core',
-      tags: ['speed'], keywords: ['guard'], description: { en: 'Fast basketball shoe', ar: 'حذاء كرة سلة سريع' },
+      id: 'p1',
+      slug: 'alpha-shoe',
+      status: 'active',
+      name: { en: 'Alpha Shoe', ar: 'Alpha Shoe' },
+      brand: 'Nike',
+      productType: 'Shoe',
+      category: 'Footwear',
+      subcategory: 'In-Court',
+      collection: 'Core',
+      tags: ['speed'],
+      keywords: ['guard'],
+      description: { en: 'Fast basketball shoe', ar: 'حذاء كرة سلة سريع' },
       colors: [{ name: { en: 'Black', ar: 'أسود' } }],
     },
     {
-      id: 'p2', slug: 'beta-ball', status: 'active', name: { en: 'Beta Basketball', ar: 'Beta Basketball' },
-      brand: 'Molten', productType: 'Basketball', category: 'Basketballs', subcategory: 'Indoor', collection: 'Pro',
-      tags: ['game'], keywords: ['ball'], description: { en: 'Official size', ar: 'مقاس رسمي' },
+      id: 'p2',
+      slug: 'beta-ball',
+      status: 'active',
+      name: { en: 'Beta Basketball', ar: 'Beta Basketball' },
+      brand: 'Molten',
+      productType: 'Basketball',
+      category: 'Basketballs',
+      subcategory: 'Indoor',
+      collection: 'Pro',
+      tags: ['game'],
+      keywords: ['ball'],
+      description: { en: 'Official size', ar: 'مقاس رسمي' },
       colors: [{ name: { en: 'Orange', ar: 'برتقالي' } }],
     },
   ];
@@ -121,14 +167,28 @@ describe('site search', () => {
 
   it('filters products and pages by type, color and brand', () => {
     expect(searchSite('basketball', 20, {}, catalog).total > 0).toBe(true);
-    expect(searchSite('', 20, { types: ['products'], colors: ['Black'], brands: ['Nike'] }, catalog).products).toHaveLength(1);
-    expect(searchSite('', 20, { types: ['products'], colors: ['Orange'], brands: ['Nike'] }, catalog).products).toHaveLength(0);
-    expect(searchSite('contact', 20, { types: ['pages'] }, catalog).pages.some((item) => item.to === '/contact')).toBe(true);
+    expect(
+      searchSite('', 20, { types: ['products'], colors: ['Black'], brands: ['Nike'] }, catalog)
+        .products,
+    ).toHaveLength(1);
+    expect(
+      searchSite('', 20, { types: ['products'], colors: ['Orange'], brands: ['Nike'] }, catalog)
+        .products,
+    ).toHaveLength(0);
+    expect(
+      searchSite('contact', 20, { types: ['pages'] }, catalog).pages.some(
+        (item) => item.to === '/contact',
+      ),
+    ).toBe(true);
     expect(searchSite('no-match', 20, {}, catalog).total).toBe(0);
   });
 
   it('builds stable unique facets', () => {
-    expect(getSearchFacets(catalog)).toEqual({ types: ['products', 'pages'], colors: ['Black', 'Orange'], brands: ['Molten', 'Nike'] });
+    expect(getSearchFacets(catalog)).toEqual({
+      types: ['products', 'pages'],
+      colors: ['Black', 'Orange'],
+      brands: ['Molten', 'Nike'],
+    });
     expect(getSearchFacets([])).toEqual({ types: ['products', 'pages'], colors: [], brands: [] });
   });
 });

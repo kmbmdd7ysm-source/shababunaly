@@ -1,5 +1,13 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { disableAnalytics, initAnalytics, initHeatmap, revokeAnalyticsConsent, sanitizePayload, trackEvent, trackPage } from '../../src/utils/analytics';
+import {
+  disableAnalytics,
+  initAnalytics,
+  initHeatmap,
+  revokeAnalyticsConsent,
+  sanitizePayload,
+  trackEvent,
+  trackPage,
+} from '../../src/utils/analytics';
 
 describe('privacy-safe analytics', () => {
   beforeEach(() => {
@@ -10,7 +18,17 @@ describe('privacy-safe analytics', () => {
   });
 
   test('scrubs direct identifiers and unsafe nested shapes', () => {
-    expect(sanitizePayload({ email: 'a@example.com', phone: '+1 212 555 1212', label: 'Email a@example.com', count: 2, ok: true, rows: ['+1 212 555 1212'], object: { secret: 'x' } })).toEqual({ label: 'Email [email]', count: 2, ok: true, rows: ['[phone]'], object: undefined });
+    expect(
+      sanitizePayload({
+        email: 'a@example.com',
+        phone: '+1 212 555 1212',
+        label: 'Email a@example.com',
+        count: 2,
+        ok: true,
+        rows: ['+1 212 555 1212'],
+        object: { secret: 'x' },
+      }),
+    ).toEqual({ label: 'Email [email]', count: 2, ok: true, rows: ['[phone]'], object: undefined });
   });
 
   test('does not emit without consent and safely disables providers', () => {

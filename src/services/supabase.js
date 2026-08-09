@@ -5,7 +5,13 @@ let clientFactory = defaultClientFactory;
 let buildEnvOverride;
 let configStatus = { checked: false, configured: false, source: 'none' };
 const CLIENT_OPTIONS = Object.freeze({
-  auth: Object.freeze({ persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, flowType: 'implicit', storageKey: 'shababuna-auth-session-v1' }),
+  auth: Object.freeze({
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: false,
+    flowType: 'implicit',
+    storageKey: 'shababuna-auth-session-v1',
+  }),
   global: Object.freeze({ headers: Object.freeze({ 'X-Client-Info': 'shababuna-web/1.0.0' }) }),
 });
 
@@ -15,7 +21,11 @@ const first = (...values) => values.map(clean).find(Boolean) ?? '';
 function validConfig(url, key) {
   try {
     const parsed = new URL(url);
-    return parsed.protocol === 'https:' && /\.supabase\.(co|in)$/.test(parsed.hostname) && key.length > 20;
+    return (
+      parsed.protocol === 'https:' &&
+      /\.supabase\.(co|in)$/.test(parsed.hostname) &&
+      key.length > 20
+    );
   } catch {
     return false;
   }
@@ -34,24 +44,41 @@ async function readRuntimeConfig() {
   if (!contentType.toLowerCase().includes('application/json')) return null;
   const data = await response.json();
   const url = first(data?.supabaseUrl, data?.url);
-  const key = first(data?.supabaseAnonKey, data?.supabasePublishableKey, data?.publishableKey, data?.anonKey);
+  const key = first(
+    data?.supabaseAnonKey,
+    data?.supabasePublishableKey,
+    data?.publishableKey,
+    data?.anonKey,
+  );
   return validConfig(url, key) ? { url, key } : null;
 }
 
 async function resolveRuntimeConfig() {
   try {
     const config = await readRuntimeConfig();
-    configStatus = { checked: true, configured: Boolean(config), source: config ? 'runtime' : 'none' };
+    configStatus = {
+      checked: true,
+      configured: Boolean(config),
+      source: config ? 'runtime' : 'none',
+    };
     return config;
   } catch (error) {
-    configStatus = { checked: true, configured: false, source: error?.name === 'AbortError' || error?.name === 'TimeoutError' ? 'timeout' : 'error' };
+    configStatus = {
+      checked: true,
+      configured: false,
+      source: error?.name === 'AbortError' || error?.name === 'TimeoutError' ? 'timeout' : 'error',
+    };
     return null;
   }
 }
 
 async function resolveConfig() {
   const env = buildEnvOverride ?? import.meta.env ?? {};
-  const buildUrl = first(env.VITE_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_URL, env.PUBLIC_SUPABASE_URL);
+  const buildUrl = first(
+    env.VITE_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.PUBLIC_SUPABASE_URL,
+  );
   const buildKey = first(
     env.VITE_SUPABASE_ANON_KEY,
     env.VITE_SUPABASE_PUBLISHABLE_KEY,
@@ -74,7 +101,9 @@ async function createConfiguredClient(config) {
   return module.createClient(config.url, config.key, CLIENT_OPTIONS);
 }
 
-export function getSupabaseConfigStatus() { return { ...configStatus }; }
+export function getSupabaseConfigStatus() {
+  return { ...configStatus };
+}
 
 export async function getSupabase() {
   const config = await resolveConfig();
@@ -91,16 +120,36 @@ export function authRedirectUrl(mode = 'confirm') {
 }
 
 function cleanAuthRedirectUrl(url) {
-  for (const key of ['code','token_hash','type','error','error_code','error_description','access_token','refresh_token','expires_in','expires_at']) url.searchParams.delete(key);
+  for (const key of [
+    'code',
+    'token_hash',
+    'type',
+    'error',
+    'error_code',
+    'error_description',
+    'access_token',
+    'refresh_token',
+    'expires_in',
+    'expires_at',
+  ])
+    url.searchParams.delete(key);
   url.hash = '';
-  globalThis.history?.replaceState({}, globalThis.document?.title ?? '', `${url.pathname}${url.search}`);
+  globalThis.history?.replaceState(
+    {},
+    globalThis.document?.title ?? '',
+    `${url.pathname}${url.search}`,
+  );
 }
 
 export async function completeAuthRedirect(client) {
   if (!client || !globalThis.location) return { handled: false, data: null, error: null };
   const url = new URL(globalThis.location.href);
   const hash = new URLSearchParams(url.hash.replace(/^#/, ''));
-  const callbackError = url.searchParams.get('error_description') ?? url.searchParams.get('error') ?? hash.get('error_description') ?? hash.get('error');
+  const callbackError =
+    url.searchParams.get('error_description') ??
+    url.searchParams.get('error') ??
+    hash.get('error_description') ??
+    hash.get('error');
   if (callbackError) {
     cleanAuthRedirectUrl(url);
     return { handled: true, data: null, error: new Error(callbackError) };
@@ -113,7 +162,10 @@ export async function completeAuthRedirect(client) {
   const type = rawType === 'signup' || rawType === 'magiclink' ? 'email' : rawType;
   let result = { handled: false, data: null, error: null };
   if (accessToken && refreshToken) {
-    const response = await client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+    const response = await client.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
     result = { handled: true, data: response.data ?? null, error: response.error ?? null };
   } else if (code) {
     const response = await client.auth.exchangeCodeForSession(code);
@@ -128,11 +180,18 @@ export async function completeAuthRedirect(client) {
 
 export function __setSupabaseBuildEnvForTests(env) {
   buildEnvOverride = env ?? undefined;
-  clientPromise = undefined; configPromise = undefined;
+  clientPromise = undefined;
+  configPromise = undefined;
   configStatus = { checked: false, configured: false, source: 'none' };
 }
-export function __setSupabaseClientFactoryForTests(factory) { clientFactory = factory ?? defaultClientFactory; clientPromise = undefined; }
+export function __setSupabaseClientFactoryForTests(factory) {
+  clientFactory = factory ?? defaultClientFactory;
+  clientPromise = undefined;
+}
 export function __resetSupabaseForTests() {
-  clientPromise = undefined; configPromise = undefined; clientFactory = defaultClientFactory; buildEnvOverride = undefined;
+  clientPromise = undefined;
+  configPromise = undefined;
+  clientFactory = defaultClientFactory;
+  buildEnvOverride = undefined;
   configStatus = { checked: false, configured: false, source: 'none' };
 }

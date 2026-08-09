@@ -1,8 +1,14 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 
 const developmentBuckets = new Map();
-const clean = (value, max = 1000) => String(value ?? '').trim().slice(0, max);
-const configuredSite = clean(process.env.SITE_URL || 'https://shababuna.ly', 1000).replace(/\/$/, '');
+const clean = (value, max = 1000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
+const configuredSite = clean(process.env.SITE_URL || 'https://shababuna.ly', 1000).replace(
+  /\/$/,
+  '',
+);
 const allowedOrigins = new Set([
   configuredSite,
   'https://shababuna.ly',
@@ -12,7 +18,15 @@ const allowedOrigins = new Set([
 ]);
 
 function clientAddress(req) {
-  return clean(req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.socket?.remoteAddress || 'unknown', 200).split(',')[0].trim();
+  return clean(
+    req.headers['x-forwarded-for'] ||
+      req.headers['x-real-ip'] ||
+      req.socket?.remoteAddress ||
+      'unknown',
+    200,
+  )
+    .split(',')[0]
+    .trim();
 }
 
 function secureEqual(left, right) {
@@ -35,8 +49,18 @@ async function consumeDurableLimit({ bucket, subjectHash, limit, windowSeconds }
   if (!base || !key) return null;
   const upstream = await fetch(`${base}/rest/v1/rpc/consume_edge_rate_limit`, {
     method: 'POST',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json', apikey: key, Authorization: `Bearer ${key}` },
-    body: JSON.stringify({ p_bucket: bucket, p_subject_hash: subjectHash, p_limit: limit, p_window_seconds: windowSeconds }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+    },
+    body: JSON.stringify({
+      p_bucket: bucket,
+      p_subject_hash: subjectHash,
+      p_limit: limit,
+      p_window_seconds: windowSeconds,
+    }),
     cache: 'no-store',
   });
   if (!upstream.ok) throw new Error(`rate_limit_store:${upstream.status}`);
@@ -46,13 +70,27 @@ async function consumeDurableLimit({ bucket, subjectHash, limit, windowSeconds }
 function consumeDevelopmentLimit(key, limit, windowMs) {
   const now = Date.now();
   const current = developmentBuckets.get(key);
-  const bucket = !current || current.resetAt <= now ? { count: 0, resetAt: now + windowMs } : current;
+  const bucket =
+    !current || current.resetAt <= now ? { count: 0, resetAt: now + windowMs } : current;
   bucket.count += 1;
   developmentBuckets.set(key, bucket);
-  return { allowed: bucket.count <= limit, retryAfter: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)) };
+  return {
+    allowed: bucket.count <= limit,
+    retryAfter: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+  };
 }
 
-export async function guardPublicRequest(req, res, { maxBytes = 64_000, limit = 12, windowMs = 60_000, bucket = 'public-request', honeypot = true } = {}) {
+export async function guardPublicRequest(
+  req,
+  res,
+  {
+    maxBytes = 64_000,
+    limit = 12,
+    windowMs = 60_000,
+    bucket = 'public-request',
+    honeypot = true,
+  } = {},
+) {
   applyApiHeaders(res);
   const origin = clean(req.headers.origin, 1000);
   if (origin && !allowedOrigins.has(origin)) {
@@ -71,7 +109,11 @@ export async function guardPublicRequest(req, res, { maxBytes = 64_000, limit = 
   }
 
   const salt = clean(process.env.EDGE_RATE_LIMIT_SALT || process.env.CRON_SECRET, 5000);
-  const subjectHash = createHash('sha256').update(`${salt || 'development'}:${clientAddress(req)}:${clean(req.headers['user-agent'], 500)}`).digest('hex');
+  const subjectHash = createHash('sha256')
+    .update(
+      `${salt || 'development'}:${clientAddress(req)}:${clean(req.headers['user-agent'], 500)}`,
+    )
+    .digest('hex');
   if (!salt) {
     if (process.env.NODE_ENV === 'production') {
       res.status(503).json({ ok: false, error: 'security_service_unavailable' });
@@ -86,7 +128,12 @@ export async function guardPublicRequest(req, res, { maxBytes = 64_000, limit = 
     return true;
   }
   try {
-    const allowed = await consumeDurableLimit({ bucket: clean(bucket, 80), subjectHash, limit, windowSeconds: Math.max(1, Math.ceil(windowMs / 1000)) });
+    const allowed = await consumeDurableLimit({
+      bucket: clean(bucket, 80),
+      subjectHash,
+      limit,
+      windowSeconds: Math.max(1, Math.ceil(windowMs / 1000)),
+    });
     if (allowed === false) {
       res.setHeader('Retry-After', String(Math.max(1, Math.ceil(windowMs / 1000))));
       res.status(429).json({ ok: false, error: 'rate_limited' });

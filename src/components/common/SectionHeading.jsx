@@ -1,7 +1,14 @@
 import Icon from '../icons/Icon';
 import { Link } from 'react-router-dom';
 
-export default function SectionHeading({ label = '', title = '', sub = '', link = '', linkLabel = '', align = 'start' }) {
+export default function SectionHeading({
+  label = '',
+  title = '',
+  sub = '',
+  link = '',
+  linkLabel = '',
+  align = 'start',
+}) {
   return (
     <div className={`section-heading section-heading--${align}`}>
       <div>

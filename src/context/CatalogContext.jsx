@@ -34,8 +34,13 @@ function overlayProduct(product, rows) {
       availabilityState: row.availability_state || 'in_stock',
       unitPrice: Number.isFinite(unitPrice) ? unitPrice : Number(product.price),
       compareAt: Number.isFinite(compareAt) ? compareAt : null,
-      wholesalePrice: Number.isFinite(wholesalePrice) ? wholesalePrice : Number(product.wholesalePrice || 0) || null,
-      readyToShip: Boolean(data.readyToShip) && Boolean(row.inventory_tracking) && Number(row.inventory_quantity) > 0,
+      wholesalePrice: Number.isFinite(wholesalePrice)
+        ? wholesalePrice
+        : Number(product.wholesalePrice || 0) || null,
+      readyToShip:
+        Boolean(data.readyToShip) &&
+        Boolean(row.inventory_tracking) &&
+        Number(row.inventory_quantity) > 0,
       catalogUpdatedAt: row.updated_at || null,
     };
   });
@@ -46,27 +51,48 @@ function overlayProduct(product, rows) {
   const data = rowData(activeRows[0]);
   const readyToShip = activeRows.some((row) => {
     const variant = rowData(row);
-    return Boolean(variant.readyToShip) && Boolean(row.inventory_tracking) && Number(row.inventory_quantity) > 0;
+    return (
+      Boolean(variant.readyToShip) &&
+      Boolean(row.inventory_tracking) &&
+      Number(row.inventory_quantity) > 0
+    );
   });
-  const hasAvailableVariant = activeRows.some((row) => (
+  const hasAvailableVariant = activeRows.some((row) =>
     row.inventory_tracking
       ? Number(row.inventory_quantity) > 0
-      : !['out_of_stock', 'unavailable'].includes(row.availability_state)
-  ));
+      : !['out_of_stock', 'unavailable'].includes(row.availability_state),
+  );
   const retailPrices = variants.map((variant) => variant.unitPrice).filter(Number.isFinite);
   const comparePrices = variants.map((variant) => variant.compareAt).filter(Number.isFinite);
-  const wholesalePrices = variants.map((variant) => variant.wholesalePrice).filter((value) => Number.isFinite(value) && value > 0);
+  const wholesalePrices = variants
+    .map((variant) => variant.wholesalePrice)
+    .filter((value) => Number.isFinite(value) && value > 0);
   const unitPrice = retailPrices.length ? Math.min(...retailPrices) : Number(product.price);
   const compareAt = comparePrices.length ? Math.min(...comparePrices) : product.compareAt;
-  const wholesalePrice = wholesalePrices.length ? Math.min(...wholesalePrices) : Number(product.wholesalePrice);
+  const wholesalePrice = wholesalePrices.length
+    ? Math.min(...wholesalePrices)
+    : Number(product.wholesalePrice);
 
   const comingSoon = data.comingSoon == null ? product.comingSoon : Boolean(data.comingSoon);
-  const productName = data.nameEn || data.nameAr
-    ? { en: data.nameEn || product.name?.en || product.name, ar: data.nameAr || data.nameEn || product.name?.ar || product.name?.en || product.name }
-    : product.name;
-  const description = data.descriptionEn || data.descriptionAr
-    ? { en: data.descriptionEn || product.description?.en || '', ar: data.descriptionAr || data.descriptionEn || product.description?.ar || product.description?.en || '' }
-    : product.description;
+  const productName =
+    data.nameEn || data.nameAr
+      ? {
+          en: data.nameEn || product.name?.en || product.name,
+          ar: data.nameAr || data.nameEn || product.name?.ar || product.name?.en || product.name,
+        }
+      : product.name;
+  const description =
+    data.descriptionEn || data.descriptionAr
+      ? {
+          en: data.descriptionEn || product.description?.en || '',
+          ar:
+            data.descriptionAr ||
+            data.descriptionEn ||
+            product.description?.ar ||
+            product.description?.en ||
+            '',
+        }
+      : product.description;
 
   return {
     ...product,
@@ -90,22 +116,31 @@ function overlayProduct(product, rows) {
     wholesalePriceVaries: new Set(wholesalePrices.map((value) => value.toFixed(2))).size > 1,
     wholesaleMin: Number(data.wholesaleMin ?? product.wholesaleMin),
     minimumOrder: Number(data.minimumOrder ?? product.minimumOrder),
-    wholesaleAvailable: data.wholesaleAvailable == null ? product.wholesaleAvailable : Boolean(data.wholesaleAvailable),
-    retailAvailable: data.retailAvailable == null ? product.retailAvailable : Boolean(data.retailAvailable),
+    wholesaleAvailable:
+      data.wholesaleAvailable == null
+        ? product.wholesaleAvailable
+        : Boolean(data.wholesaleAvailable),
+    retailAvailable:
+      data.retailAvailable == null ? product.retailAvailable : Boolean(data.retailAvailable),
     customizable: data.customizable == null ? product.customizable : Boolean(data.customizable),
-    largeEquipment: data.largeEquipment == null ? product.largeEquipment : Boolean(data.largeEquipment),
+    largeEquipment:
+      data.largeEquipment == null ? product.largeEquipment : Boolean(data.largeEquipment),
     madeInUSA: data.madeInUSA == null ? product.madeInUSA : Boolean(data.madeInUSA),
     readyToShip,
-    deliveryProfile: readyToShip ? 'ready' : (data.deliveryProfile || product.deliveryProfile || 'standard'),
+    deliveryProfile: readyToShip
+      ? 'ready'
+      : data.deliveryProfile || product.deliveryProfile || 'standard',
     inventoryTracking: tracked,
     inventorySource: data.inventorySource || product.inventorySource,
     variants,
     stock,
     availability: !comingSoon && hasAvailableVariant ? 'in-stock' : 'sold-out',
     available: !comingSoon && hasAvailableVariant,
-    catalogUpdatedAt: activeRows.reduce((latest, row) => (
-      !latest || String(row.updated_at || '') > String(latest) ? row.updated_at : latest
-    ), null),
+    catalogUpdatedAt: activeRows.reduce(
+      (latest, row) =>
+        !latest || String(row.updated_at || '') > String(latest) ? row.updated_at : latest,
+      null,
+    ),
   };
 }
 
@@ -132,7 +167,7 @@ export function CatalogProvider({ children }) {
   const [updatedAt, setUpdatedAt] = useState(null);
 
   const refresh = useCallback(async ({ quiet = false } = {}) => {
-    if (!quiet) setStatus((current) => current === 'ready' ? 'refreshing' : 'loading');
+    if (!quiet) setStatus((current) => (current === 'ready' ? 'refreshing' : 'loading'));
     try {
       const client = await getSupabase();
       if (!client) {
@@ -167,11 +202,13 @@ export function CatalogProvider({ children }) {
         if (document.visibilityState === 'visible') refresh({ quiet: true });
       }, REFRESH_MS);
     };
-    if (typeof window.requestIdleCallback === 'function') idleId = window.requestIdleCallback(start, { timeout: 1800 });
+    if (typeof window.requestIdleCallback === 'function')
+      idleId = window.requestIdleCallback(start, { timeout: 1800 });
     else timer = window.setTimeout(start, 900);
     return () => {
       cancelled = true;
-      if (typeof window.cancelIdleCallback === 'function' && idleId) window.cancelIdleCallback(idleId);
+      if (typeof window.cancelIdleCallback === 'function' && idleId)
+        window.cancelIdleCallback(idleId);
       window.clearTimeout(timer);
       window.clearInterval(timer);
     };
@@ -180,7 +217,11 @@ export function CatalogProvider({ children }) {
   const value = useMemo(() => {
     const byId = new Map(products.map((product) => [product.id, product]));
     const bySlug = new Map(products.map((product) => [product.slug, product]));
-    const colors = Array.from(new Map(products.flatMap((product) => product.colors || []).map((color) => [color.key, color])).values());
+    const colors = Array.from(
+      new Map(
+        products.flatMap((product) => product.colors || []).map((color) => [color.key, color]),
+      ).values(),
+    );
     const brands = unique(products.map((product) => product.brand)).sort((a, b) => {
       const ai = staticBrands.indexOf(a);
       const bi = staticBrands.indexOf(b);
@@ -205,7 +246,9 @@ export function CatalogProvider({ children }) {
           ? products.filter((product) => isReadyToShipEligible(product, 'LY'))
           : products.filter((product) => product.category === category),
       productsBySubcategory: (category, subcategory) =>
-        products.filter((product) => product.category === category && product.subcategory === subcategory),
+        products.filter(
+          (product) => product.category === category && product.subcategory === subcategory,
+        ),
       relatedProducts: (item, limit = 4) => getRelatedProducts(item, products, limit),
       isLowStock: (product) =>
         Boolean(product?.inventoryTracking) &&
@@ -213,9 +256,13 @@ export function CatalogProvider({ children }) {
         Number(product.stock) > 0 &&
         Number(product.stock) <= Number(product.lowStockThreshold || 0),
       allColors: colors.length ? colors : staticColors,
-      allSizes: unique(products.flatMap((product) => product.sizes || [])).length ? unique(products.flatMap((product) => product.sizes || [])) : staticSizes,
+      allSizes: unique(products.flatMap((product) => product.sizes || [])).length
+        ? unique(products.flatMap((product) => product.sizes || []))
+        : staticSizes,
       allBrands: brands.length ? brands : staticBrands,
-      allProductTypes: unique(products.map((product) => product.productType)).sort().length ? unique(products.map((product) => product.productType)).sort() : staticProductTypes,
+      allProductTypes: unique(products.map((product) => product.productType)).sort().length
+        ? unique(products.map((product) => product.productType)).sort()
+        : staticProductTypes,
     };
   }, [products, status, error, updatedAt, refresh]);
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
 import '../styles/studio.css';
 import LoadingScreen from '../components/common/LoadingScreen';
@@ -43,6 +42,7 @@ export default function DesignSharePage() {
   };
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [token]);
 
   const submitComment = async (event) => {

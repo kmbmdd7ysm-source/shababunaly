@@ -87,7 +87,6 @@ export function CommerceProvider({ children }) {
     };
   }, [currency, userId]);
 
-
   useEffect(() => {
     const path = globalThis.location?.pathname || '/';
     const shouldLoad = /^\/checkout(?:\/|$)/.test(path) || (countryCode && countryCode !== 'LY');
@@ -105,7 +104,9 @@ export function CommerceProvider({ children }) {
         setShippingRates({});
         setShippingRatesStatus('error');
       });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [countryCode]);
 
   useEffect(() => {

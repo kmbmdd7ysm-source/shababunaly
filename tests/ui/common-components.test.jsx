@@ -33,7 +33,16 @@ const withRouter = (node) => render(<MemoryRouter>{node}</MemoryRouter>);
 
 describe('shared accessible UI primitives', () => {
   test('renders headings, badges, avatars, colors and breadcrumbs', () => {
-    withRouter(<><Badge>New</Badge><Avatar name="Shababuna" src="" /><ColorSwatch color="#000000" /><Breadcrumbs items={[{ label: 'Shop', to: '/shop' }, { label: 'Product' }]} /><PageHero label="Label" title="Title" description="Description" /><SectionHeading title="Featured" /></>);
+    withRouter(
+      <>
+        <Badge>New</Badge>
+        <Avatar name="Shababuna" src="" />
+        <ColorSwatch color="#000000" />
+        <Breadcrumbs items={[{ label: 'Shop', to: '/shop' }, { label: 'Product' }]} />
+        <PageHero label="Label" title="Title" description="Description" />
+        <SectionHeading title="Featured" />
+      </>,
+    );
     expect(screen.getByText('New')).toBeVisible();
     expect(screen.getByText('S')).toBeVisible();
     expect(screen.getByRole('link', { name: 'Shop' })).toHaveAttribute('href', '/shop');
@@ -43,7 +52,12 @@ describe('shared accessible UI primitives', () => {
 
   test('accordion and quantity selector support keyboard-safe state changes', () => {
     const onChange = vi.fn();
-    render(<><Accordion items={[{ title: 'Details', content: 'Body' }]} /><QuantitySelector value={2} min={1} max={3} onChange={onChange} /></>);
+    render(
+      <>
+        <Accordion items={[{ title: 'Details', content: 'Body' }]} />
+        <QuantitySelector value={2} min={1} max={3} onChange={onChange} />
+      </>,
+    );
     fireEvent.click(screen.getByRole('button', { name: /Details/i }));
     expect(screen.getByText('Body')).toBeVisible();
     const buttons = screen.getAllByRole('button');
@@ -53,16 +67,29 @@ describe('shared accessible UI primitives', () => {
 
   test('modal traps the dialog surface and closes by explicit action and Escape', () => {
     const onClose = vi.fn();
-    const { rerender } = render(<Modal open title="Secure dialog" onClose={onClose}><button>Inside</button></Modal>);
+    const { rerender } = render(
+      <Modal open title="Secure dialog" onClose={onClose}>
+        <button>Inside</button>
+      </Modal>,
+    );
     expect(screen.getByRole('dialog', { name: 'Secure dialog' })).toBeVisible();
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(onClose).toHaveBeenCalled();
-    rerender(<Modal open={false} title="Secure dialog" onClose={onClose}>Hidden</Modal>);
+    rerender(
+      <Modal open={false} title="Secure dialog" onClose={onClose}>
+        Hidden
+      </Modal>,
+    );
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   test('empty and loading states expose meaningful status text', () => {
-    render(<><EmptyState message="Nothing yet" hint="Try again later" /><LoadingScreen /></>);
+    render(
+      <>
+        <EmptyState message="Nothing yet" hint="Try again later" />
+        <LoadingScreen />
+      </>,
+    );
     expect(screen.getByText('Nothing yet')).toBeVisible();
     expect(screen.getByText('Try again later')).toBeVisible();
   });

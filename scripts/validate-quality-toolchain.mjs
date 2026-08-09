@@ -37,7 +37,8 @@ for (const [name, expected] of Object.entries(lock.packages)) {
     continue;
   }
   installed[name] = pkg.version;
-  if (pkg.version !== expected) mismatches.push(`${name}: expected ${expected}, found ${pkg.version}`);
+  if (pkg.version !== expected)
+    mismatches.push(`${name}: expected ${expected}, found ${pkg.version}`);
 }
 
 const required = process.env.REQUIRE_QUALITY_TOOLCHAIN === 'true';

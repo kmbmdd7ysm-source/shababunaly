@@ -43,7 +43,15 @@ describe('CSP and PWA hardening', { concurrency: false }, () => {
   it('keeps sensitive routes network-only and revisions caches by build id', async () => {
     const worker = await readFile(new URL('../public/sw.js', import.meta.url), 'utf8');
     expect(worker).toContain("PARAMS.get('v')");
-    for (const route of ['/api', '/account', '/checkout', '/operations', '/team-locker', '/design-share', '/special-request']) {
+    for (const route of [
+      '/api',
+      '/account',
+      '/checkout',
+      '/operations',
+      '/team-locker',
+      '/design-share',
+      '/special-request',
+    ]) {
       expect(worker).toContain(route.replace('/', '\\/'));
     }
     expect(worker).toContain('key.startsWith(CACHE_PREFIX)');

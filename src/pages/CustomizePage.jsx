@@ -178,6 +178,7 @@ export default function CustomizePage() {
   useEffect(() => {
     if (auth.user?.email)
       setContact((current) => ({ ...current, email: current.email || auth.user.email }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
 
   useEffect(() => {
@@ -228,6 +229,7 @@ export default function CustomizePage() {
         .catch(() => setAutosaveState('error'));
     }, 1400);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id, savedId, lockedDesign, design.studio]);
 
   const selectProduct = (key) => {

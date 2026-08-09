@@ -49,23 +49,20 @@ export function UserDataProvider({ children }) {
     abort = useRef(),
     channel = useRef(null),
     version = useRef(0);
-  const snapshot = useCallback(
-    () => {
-      // The avatar is stored in public.profiles and auth metadata. Keeping the base64
-      // image out of user_state prevents large repeat sync payloads on every cart or
-      // wishlist change while preserving all normal preferences.
-      const { avatarUrl: _avatarUrl, avatar_url: _avatar_url, ...syncPreferences } = profile;
-      return {
-        cart: cart.items,
-        wishlist,
-        compare: normalizeIds(compare.ids),
-        recentlyViewed: recent,
-        preferences: syncPreferences,
-        version: version.current,
-      };
-    },
-    [cart.items, wishlist, compare.ids, recent, profile],
-  );
+  const snapshot = useCallback(() => {
+    // The avatar is stored in public.profiles and auth metadata. Keeping the base64
+    // image out of user_state prevents large repeat sync payloads on every cart or
+    // wishlist change while preserving all normal preferences.
+    const { avatarUrl: _avatarUrl, avatar_url: _avatar_url, ...syncPreferences } = profile;
+    return {
+      cart: cart.items,
+      wishlist,
+      compare: normalizeIds(compare.ids),
+      recentlyViewed: recent,
+      preferences: syncPreferences,
+      version: version.current,
+    };
+  }, [cart.items, wishlist, compare.ids, recent, profile]);
   const apply = useCallback(
     (s) => {
       cart.replaceItems(s.cart || []);
@@ -75,6 +72,7 @@ export function UserDataProvider({ children }) {
       if (s.profile) setProfile(s.profile);
       version.current = Number(s.version || version.current || 0);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
     [cart.replaceItems, compare.replace],
   );
   useEffect(() => {
@@ -86,6 +84,7 @@ export function UserDataProvider({ children }) {
       if (m.type === 'auth-signout' && uid) auth.signOut();
     });
     return () => channel.current?.close();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [uid]);
   useEffect(() => {
     if (auth.loading) return undefined;
@@ -134,6 +133,7 @@ export function UserDataProvider({ children }) {
       }
     })();
     return () => abort.current?.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [uid, auth.loading]);
   useEffect(() => {
     if (!hydrated.current) return;
@@ -264,6 +264,7 @@ export function UserDataProvider({ children }) {
       cart.replaceItems([]);
       compare.replace([]);
       hydrated.current = false;
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
     }, [uid, cart.replaceItems, compare.replace]);
   return (
     <C.Provider

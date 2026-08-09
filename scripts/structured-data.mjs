@@ -13,7 +13,9 @@ export function createHomeSchema() {
         description: 'Basketball retail, custom manufacturing, team supply and wholesale.',
         areaServed: 'Worldwide',
         ...(SITE.email ? { email: SITE.email } : {}),
-        ...(Object.values(SITE.social).some(Boolean) ? { sameAs: Object.values(SITE.social).filter(Boolean) } : {}),
+        ...(Object.values(SITE.social).some(Boolean)
+          ? { sameAs: Object.values(SITE.social).filter(Boolean) }
+          : {}),
       },
       {
         '@type': 'WebSite',
@@ -44,7 +46,10 @@ export function createProductSchema(product) {
       '@type': 'Offer',
       priceCurrency: product.currency || SITE.currency,
       price: Number(product.price).toFixed(2),
-      availability: product.availability === 'sold-out' ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+      availability:
+        product.availability === 'sold-out'
+          ? 'https://schema.org/OutOfStock'
+          : 'https://schema.org/InStock',
       url: `${SITE.domain}/products/${product.slug}`,
     },
   };

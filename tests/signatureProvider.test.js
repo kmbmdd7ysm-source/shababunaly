@@ -9,10 +9,16 @@ import {
 } from '../api/signatures/provider.js';
 
 const KEYS = [
-  'SIGNATURE_PROVIDER', 'SIGNATURE_CREATE_ENVELOPE_URL', 'SIGNATURE_API_URL',
-  'SIGNATURE_API_KEY', 'SIGNATURE_WEBHOOK_SECRET', 'SIGNATURE_PROVIDER_SCHEMA_VERSION',
-  'SIGNATURE_PROVIDER_DOCS_URL', 'SIGNATURE_PROVIDER_SANDBOX_URL',
-  'SIGNATURE_WEBHOOK_HEADER', 'SIGNATURE_TIMEOUT_MS',
+  'SIGNATURE_PROVIDER',
+  'SIGNATURE_CREATE_ENVELOPE_URL',
+  'SIGNATURE_API_URL',
+  'SIGNATURE_API_KEY',
+  'SIGNATURE_WEBHOOK_SECRET',
+  'SIGNATURE_PROVIDER_SCHEMA_VERSION',
+  'SIGNATURE_PROVIDER_DOCS_URL',
+  'SIGNATURE_PROVIDER_SANDBOX_URL',
+  'SIGNATURE_WEBHOOK_HEADER',
+  'SIGNATURE_TIMEOUT_MS',
 ];
 const originalFetch = globalThis.fetch;
 const reset = () => {
@@ -59,14 +65,20 @@ test('creates a signature envelope with idempotency and rejects malformed provid
     const headers = new Headers(options.headers);
     assert.equal(headers.get('Idempotency-Key'), 'contract:123');
     assert.equal(headers.get('Authorization'), 'Bearer secret-key');
-    return new Response(JSON.stringify({
-      envelope_id: 'env_123',
-      signing_url: 'https://sign.example.test/session/123',
-      status: 'sent',
-      document_sha256: 'a'.repeat(64),
-    }), { status: 201, headers: { 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({
+        envelope_id: 'env_123',
+        signing_url: 'https://sign.example.test/session/123',
+        status: 'sent',
+        document_sha256: 'a'.repeat(64),
+      }),
+      { status: 201, headers: { 'Content-Type': 'application/json' } },
+    );
   };
-  const result = await createSignatureEnvelope({ idempotencyKey: 'contract:123', contractId: '123' });
+  const result = await createSignatureEnvelope({
+    idempotencyKey: 'contract:123',
+    contractId: '123',
+  });
   assert.deepEqual(result, {
     provider: 'dropbox sign',
     envelopeId: 'env_123',
@@ -77,7 +89,10 @@ test('creates a signature envelope with idempotency and rejects malformed provid
   });
 
   globalThis.fetch = async () => new Response('{}', { status: 200 });
-  await assert.rejects(() => createSignatureEnvelope({ idempotencyKey: 'x' }), /invalid_signature_provider_response/);
+  await assert.rejects(
+    () => createSignatureEnvelope({ idempotencyKey: 'x' }),
+    /invalid_signature_provider_response/,
+  );
 
   globalThis.fetch = async () => new Response('provider unavailable', { status: 503 });
   await assert.rejects(
@@ -89,9 +104,14 @@ test('creates a signature envelope with idempotency and rejects malformed provid
 test('aborts an unresponsive signature provider using the configured timeout', async () => {
   configure();
   process.env.SIGNATURE_TIMEOUT_MS = '5';
-  globalThis.fetch = (_url, options) => new Promise((_resolve, reject) => {
-    options.signal.addEventListener('abort', () => reject(Object.assign(new Error('aborted'), { name: 'AbortError' })), { once: true });
-  });
+  globalThis.fetch = (_url, options) =>
+    new Promise((_resolve, reject) => {
+      options.signal.addEventListener(
+        'abort',
+        () => reject(Object.assign(new Error('aborted'), { name: 'AbortError' })),
+        { once: true },
+      );
+    });
   await assert.rejects(() => createSignatureEnvelope({ idempotencyKey: 'timeout' }), /aborted/);
 });
 
@@ -102,7 +122,10 @@ test('verifies HMAC webhooks with a configurable header and rejects malformed si
   const signature = createHmac('sha256', 'webhook-secret').update(raw).digest('hex');
   assert.equal(verifySignatureWebhook(raw, { 'x-dropbox-signature': `sha256=${signature}` }), true);
   assert.equal(verifySignatureWebhook(raw, { 'x-dropbox-signature': 'not-a-signature' }), false);
-  assert.equal(verifySignatureWebhook(Buffer.from('tampered'), { 'x-dropbox-signature': signature }), false);
+  assert.equal(
+    verifySignatureWebhook(Buffer.from('tampered'), { 'x-dropbox-signature': signature }),
+    false,
+  );
 });
 
 test('normalizes provider lifecycle events and preserves required signature evidence', () => {
@@ -127,5 +150,8 @@ test('normalizes provider lifecycle events and preserves required signature evid
   assert.equal(normalized.signedDocumentSha256, 'b'.repeat(64));
   assert.equal(normalized.auditCertificateSha256, 'c'.repeat(64));
   assert.deepEqual(normalized.identityVerification, { method: 'government_id', verified: true });
-  assert.throws(() => normalizeSignatureEvent({ status: 'unknown-state' }), /unsupported_signature_event/);
+  assert.throws(
+    () => normalizeSignatureEvent({ status: 'unknown-state' }),
+    /unsupported_signature_event/,
+  );
 });

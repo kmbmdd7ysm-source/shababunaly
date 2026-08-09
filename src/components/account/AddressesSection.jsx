@@ -58,6 +58,7 @@ export default function AddressesSection({ userId, pick, language }) {
   };
   useEffect(() => {
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [userId]);
   const submit = async (e) => {
     e.preventDefault();
@@ -321,7 +322,17 @@ export default function AddressesSection({ userId, pick, language }) {
     </section>
   );
 }
-function Field({ name, label, value, set, form, error = '', auto = '', inputMode = undefined, maxLength = 180 }) {
+function Field({
+  name,
+  label,
+  value,
+  set,
+  form,
+  error = '',
+  auto = '',
+  inputMode = undefined,
+  maxLength = 180,
+}) {
   const id = `address-${name}`;
   return (
     <label htmlFor={id}>

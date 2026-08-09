@@ -75,6 +75,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (auth.user?.email)
       setForm((current) => ({ ...current, email: current.email || auth.user.email }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
   useEffect(() => {
     if (items.length) {
@@ -87,6 +88,7 @@ export default function CheckoutPage() {
       trackEvent('begin_checkout', details);
       void trackCommerceEvent('checkout_started', details);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, []);
 
   const set = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
@@ -161,6 +163,7 @@ export default function CheckoutPage() {
     return () => {
       active = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
 
   const shipping = useMemo(

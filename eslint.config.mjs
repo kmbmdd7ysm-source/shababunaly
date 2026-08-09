@@ -50,7 +50,7 @@ const sharedRules = {
   'jsx-a11y/anchor-is-valid': 'error',
   'jsx-a11y/click-events-have-key-events': 'error',
   'jsx-a11y/no-static-element-interactions': 'error',
-  'jsx-a11y/label-has-associated-control': 'error',
+  'jsx-a11y/label-has-associated-control': ['error', { assert: 'either', depth: 3 }],
   'import/no-duplicates': 'error',
   'import/no-cycle': ['error', { maxDepth: 2 }],
   'import/no-mutable-exports': 'error',

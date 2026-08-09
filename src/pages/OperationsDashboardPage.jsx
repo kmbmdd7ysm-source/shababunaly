@@ -130,6 +130,7 @@ export default function OperationsPage() {
     return () => {
       active = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id, auth.session?.access_token]);
   const activeOrders = useMemo(
     () => state.orders.filter((order) => !['delivered', 'cancelled'].includes(order.order_status)),

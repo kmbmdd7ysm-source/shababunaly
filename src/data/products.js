@@ -20,10 +20,14 @@ const SHOES = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12', '13
 export function verifiedVariantStock({ input, color, size }) {
   if (input.inventoryVerified !== true) return 0;
   const directKey = `${color.key}:${size}`;
-  if (input.stockByVariant && Object.prototype.hasOwnProperty.call(input.stockByVariant, directKey)) {
+  if (
+    input.stockByVariant &&
+    Object.prototype.hasOwnProperty.call(input.stockByVariant, directKey)
+  ) {
     return Math.max(0, Number(input.stockByVariant[directKey]) || 0);
   }
-  if (Number.isFinite(Number(input.stockPerVariant))) return Math.max(0, Number(input.stockPerVariant));
+  if (Number.isFinite(Number(input.stockPerVariant)))
+    return Math.max(0, Number(input.stockPerVariant));
   return 0;
 }
 
@@ -31,13 +35,12 @@ export function normalizeCatalogProduct(input) {
   const colors = input.colors?.length ? input.colors : [C.black];
   const sizes = input.sizes?.length ? input.sizes : ['OS'];
   const inventoryVerified = input.inventoryVerified === true;
-  const inventoryTracking = inventoryVerified && (input.inventoryTracking ?? Boolean(input.readyToShip));
+  const inventoryTracking =
+    inventoryVerified && (input.inventoryTracking ?? Boolean(input.readyToShip));
   const variants = [];
   colors.forEach((color) => {
     sizes.forEach((size) => {
-      const stock = inventoryTracking
-        ? verifiedVariantStock({ input, color, size })
-        : 0;
+      const stock = inventoryTracking ? verifiedVariantStock({ input, color, size }) : 0;
       variants.push({
         size,
         color: color.key,
@@ -52,12 +55,12 @@ export function normalizeCatalogProduct(input) {
       });
     });
   });
-  const stock = inventoryTracking
-    ? variants.reduce((sum, variant) => sum + variant.stock, 0)
-    : 0;
+  const stock = inventoryTracking ? variants.reduce((sum, variant) => sum + variant.stock, 0) : 0;
   const name = typeof input.name === 'string' ? { en: input.name, ar: input.name } : input.name;
   const mediaPath = input.image || '/images/catalog/equipment.svg';
-  const mediaStatus = mediaPath.startsWith('/images/catalog/') ? 'placeholder' : (input.mediaStatus || 'supplied');
+  const mediaStatus = mediaPath.startsWith('/images/catalog/')
+    ? 'placeholder'
+    : input.mediaStatus || 'supplied';
   const quoteOnly = input.quoteOnly === true || !(Number(input.price) > 0);
   const status = 'active';
   const available = input.available !== false;
@@ -73,7 +76,9 @@ export function normalizeCatalogProduct(input) {
     featured: false,
     newArrival: false,
     bestSeller: false,
-    inventorySource: inventoryVerified ? (input.inventorySource || 'verified_inventory') : 'supplier_order',
+    inventorySource: inventoryVerified
+      ? input.inventorySource || 'verified_inventory'
+      : 'supplier_order',
     lowStockThreshold: 3,
     gallery: [],
     related: [],
@@ -97,8 +102,22 @@ export function normalizeCatalogProduct(input) {
     manufacturingClaimStatus: input.manufacturingClaimStatus || 'unverified',
     claimEvidenceReference: input.claimEvidenceReference || null,
     claimVerified: input.claimVerified === true,
-    minimumOrder: Number(input.minimumOrder ?? (input.customizable ? (input.category === 'basketballs' ? 6 : input.category === 'equipment' ? 1 : 10) : 1)),
-    madeInUSA: Boolean(input.madeInUSA && input.claimVerified === true && input.category === 'clothing' && (input.brand || 'Shababuna') === 'Shababuna'),
+    minimumOrder: Number(
+      input.minimumOrder ??
+        (input.customizable
+          ? input.category === 'basketballs'
+            ? 6
+            : input.category === 'equipment'
+              ? 1
+              : 10
+          : 1),
+    ),
+    madeInUSA: Boolean(
+      input.madeInUSA &&
+      input.claimVerified === true &&
+      input.category === 'clothing' &&
+      (input.brand || 'Shababuna') === 'Shababuna',
+    ),
     name,
     colors,
     sizes,
@@ -107,7 +126,10 @@ export function normalizeCatalogProduct(input) {
     availability: available ? 'in-stock' : 'sold-out',
     readyToShip: Boolean(input.readyToShip && inventoryTracking && stock > 0),
     inventoryLocation: input.inventoryLocation || null,
-    deliveryProfile: input.readyToShip && inventoryTracking && stock > 0 ? 'ready' : (input.deliveryProfile || (quoteOnly ? 'custom' : 'standard')),
+    deliveryProfile:
+      input.readyToShip && inventoryTracking && stock > 0
+        ? 'ready'
+        : input.deliveryProfile || (quoteOnly ? 'custom' : 'standard'),
     image: mediaPath,
     mediaStatus,
     hoverImage: input.hoverImage || null,
@@ -122,56 +144,893 @@ export function normalizeCatalogProduct(input) {
 }
 
 const shababunaProducts = [
-  normalizeCatalogProduct({ id:'s001', slug:'shababuna-pro-game-set', sku:'SHA-GAME-PRO', name:'Shababuna Pro Game Set', description:{en:'Professional basketball jersey and pocket-free shorts engineered with an NBA-inspired performance fit. Available for single purchase and lower-priced team quantities.',ar:'طقم كرة سلة احترافي يتكون من سيريا وشورت بدون جيوب بقصة أداء مستوحاة من المقاسات الاحترافية. متوفر بالقطعة وبسعر أقل للكميات.'}, category:'clothing', subcategory:'game-sets', productType:'Full Game Set', price:95, wholesalePrice:72, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.white,C.red,C.blue], image:'/images/catalog/apparel.svg', readyToShip:true, customizable:true, featured:true, bestSeller:true, material:{en:'Lightweight moisture-wicking performance mesh',ar:'شبك أداء خفيف وطارد للرطوبة'}, fit:{en:'Professional basketball fit',ar:'قصة كرة سلة احترافية'}, features:{en:['Pocket-free game shorts','Full-colour sublimation available','Designed by Shababuna','Manufacturing origin pending verification'],ar:['شورت لعب بدون جيوب','إمكانية طباعة سبلميشن كاملة','من تصميم شبابنا','بلد التصنيع قيد التحقق']}, sizeGuide:'shorts' }),
-  normalizeCatalogProduct({ id:'s002', slug:'shababuna-elite-game-jersey', sku:'SHA-JER-ELT', name:'Shababuna Elite Game Jersey', description:{en:'Lightweight game jersey sold individually or in team quantities, with full custom production available from ten pieces.',ar:'سيريا لعب خفيفة متوفرة بالقطعة أو بكميات الفرق، مع تصنيع مخصص كامل ابتداءً من عشر قطع.'}, category:'clothing', subcategory:'game-jerseys', productType:'Game Jersey', price:55, wholesalePrice:39, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.white,C.blue,C.green], image:'/images/catalog/jersey.svg', readyToShip:true, customizable:true, newArrival:true, material:{en:'Performance mesh',ar:'شبك أداء'}, fit:{en:'Pro basketball fit',ar:'قصة احترافية لكرة السلة'}, sizeGuide:'tops' }),
-  normalizeCatalogProduct({ id:'s003', slug:'shababuna-court-game-shorts', sku:'SHA-SHT-CRT', name:'Shababuna Court Game Shorts', description:{en:'Pocket-free basketball game shorts with a wide performance waistband and team-order pricing.',ar:'شورت لعب كرة سلة بدون جيوب بخصر أداء عريض مع سعر خاص لطلبات الفرق.'}, category:'clothing', subcategory:'game-shorts', productType:'Game Shorts', price:42, wholesalePrice:30, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.white,C.red,C.navy], image:'/images/catalog/shorts.svg', readyToShip:true, customizable:true, bestSeller:true, sizeGuide:'shorts' }),
-  normalizeCatalogProduct({ id:'s004', slug:'shababuna-reversible-practice-jersey', sku:'SHA-PRC-REV', name:'Shababuna Reversible Practice Jersey', description:{en:'Two-sided practice jersey built for daily team training and custom colour production.',ar:'سيريا تمرين بوجهين مصممة للتدريب اليومي للفرق ومتوفرة بتصنيع ألوان مخصص.'}, category:'clothing', subcategory:'practice-jerseys', productType:'Reversible Practice Jersey', price:38, wholesalePrice:27, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.white,C.red,C.blue], image:'/images/catalog/training.svg', readyToShip:false, customizable:true, featured:true, sizeGuide:'tops' }),
-  normalizeCatalogProduct({ id:'s005', slug:'shababuna-practice-shorts', sku:'SHA-PRC-SHT', name:'Shababuna Practice Shorts', description:{en:'Breathable practice shorts for individual players and team orders.',ar:'شورت تمرين خفيف للاعبين وطلبات الفرق.'}, category:'clothing', subcategory:'practice-shorts', productType:'Practice Shorts', price:32, wholesalePrice:23, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.grey,C.blue], image:'/images/catalog/shorts.svg', readyToShip:true, customizable:true, sizeGuide:'shorts' }),
-  normalizeCatalogProduct({ id:'s006', slug:'built-different-performance-tee', sku:'SHA-TEE-BD', name:'Built Different Performance Tee', description:{en:'Shababuna performance tee with a clean athletic cut and BUILT DIFFERENT identity.',ar:'تيشيرت أداء من شبابنا بقصة رياضية نظيفة وهوية BUILT DIFFERENT.'}, category:'clothing', subcategory:'t-shirts', productType:'Performance T-Shirt', price:28, wholesalePrice:20, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.white,C.grey], image:'/images/catalog/training.svg', readyToShip:true, newArrival:true, featured:true, sizeGuide:'t-shirts' }),
-  normalizeCatalogProduct({ id:'s007', slug:'shababuna-heavyweight-hoodie', sku:'SHA-HOOD-HVY', name:'Shababuna Heavyweight Hoodie', description:{en:'Premium heavyweight hoodie available individually, wholesale and as a fully customized team product.',ar:'هودي ثقيل فاخر متوفر بالقطعة والجملة وكتصنيع مخصص كامل للفرق.'}, category:'clothing', subcategory:'hoodies', productType:'Hoodie', price:78, wholesalePrice:56, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.grey,C.cream], image:'/images/catalog/hoodie.svg', readyToShip:false, customizable:true, sizeGuide:'hoodies' }),
-  normalizeCatalogProduct({ id:'s008', slug:'shababuna-travel-pants', sku:'SHA-PANT-TRV', name:'Shababuna Travel Pants', description:{en:'Relaxed team travel pants with clean branding and wholesale pricing.',ar:'سروال سفر مريح للفرق بتصميم نظيف وسعر خاص للجملة.'}, category:'clothing', subcategory:'pants', productType:'Team Pants', price:62, wholesalePrice:44, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.grey,C.navy], image:'/images/catalog/pants.svg', readyToShip:false, customizable:true, sizeGuide:'pants' }),
-  normalizeCatalogProduct({ id:'s009', slug:'shababuna-team-tracksuit', sku:'SHA-TRK-PRO', name:'Shababuna Team Tracksuit', description:{en:'Full team tracksuit designed for travel, warm-up and staff use.',ar:'بدلة رياضية كاملة للفرق مصممة للسفر والإحماء والطاقم.'}, category:'clothing', subcategory:'tracksuits', productType:'Tracksuit', price:118, wholesalePrice:86, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.grey,C.navy], image:'/images/catalog/apparel.svg', readyToShip:false, customizable:true, featured:true }),
-  normalizeCatalogProduct({ id:'s010', slug:'shababuna-compression-top', sku:'SHA-CMP-TOP', name:'Shababuna Compression Top', description:{en:'Basketball compression base layer for training and games.',ar:'طبقة ضغط أساسية لكرة السلة للتمرين والمباريات.'}, category:'clothing', subcategory:'compression', productType:'Compression Top', price:32, wholesalePrice:23, wholesaleMin:10, sizes:APPAREL, colors:[C.black,C.white], image:'/images/catalog/training.svg', readyToShip:true, sizeGuide:'tops' }),
-  normalizeCatalogProduct({ id:'s011', slug:'shababuna-pro-basketball-socks', sku:'SHA-SOCK-PRO', name:'Shababuna Pro Basketball Socks', description:{en:'Cushioned basketball socks available by the pair and in team quantities.',ar:'جوارب كرة سلة مبطنة متوفرة بالزوج وبكميات الفرق.'}, category:'clothing', subcategory:'socks', productType:'Basketball Socks', price:9, wholesalePrice:6, wholesaleMin:12, sizes:['S/M','L/XL'], colors:[C.black,C.white], image:'/images/catalog/accessories.svg', readyToShip:true, customizable:true, bestSeller:true }),
+  normalizeCatalogProduct({
+    id: 's001',
+    slug: 'shababuna-pro-game-set',
+    sku: 'SHA-GAME-PRO',
+    name: 'Shababuna Pro Game Set',
+    description: {
+      en: 'Professional basketball jersey and pocket-free shorts engineered with an NBA-inspired performance fit. Available for single purchase and lower-priced team quantities.',
+      ar: 'طقم كرة سلة احترافي يتكون من سيريا وشورت بدون جيوب بقصة أداء مستوحاة من المقاسات الاحترافية. متوفر بالقطعة وبسعر أقل للكميات.',
+    },
+    category: 'clothing',
+    subcategory: 'game-sets',
+    productType: 'Full Game Set',
+    price: 95,
+    wholesalePrice: 72,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.white, C.red, C.blue],
+    image: '/images/catalog/apparel.svg',
+    readyToShip: true,
+    customizable: true,
+    featured: true,
+    bestSeller: true,
+    material: {
+      en: 'Lightweight moisture-wicking performance mesh',
+      ar: 'شبك أداء خفيف وطارد للرطوبة',
+    },
+    fit: { en: 'Professional basketball fit', ar: 'قصة كرة سلة احترافية' },
+    features: {
+      en: [
+        'Pocket-free game shorts',
+        'Full-colour sublimation available',
+        'Designed by Shababuna',
+        'Manufacturing origin pending verification',
+      ],
+      ar: [
+        'شورت لعب بدون جيوب',
+        'إمكانية طباعة سبلميشن كاملة',
+        'من تصميم شبابنا',
+        'بلد التصنيع قيد التحقق',
+      ],
+    },
+    sizeGuide: 'shorts',
+  }),
+  normalizeCatalogProduct({
+    id: 's002',
+    slug: 'shababuna-elite-game-jersey',
+    sku: 'SHA-JER-ELT',
+    name: 'Shababuna Elite Game Jersey',
+    description: {
+      en: 'Lightweight game jersey sold individually or in team quantities, with full custom production available from ten pieces.',
+      ar: 'سيريا لعب خفيفة متوفرة بالقطعة أو بكميات الفرق، مع تصنيع مخصص كامل ابتداءً من عشر قطع.',
+    },
+    category: 'clothing',
+    subcategory: 'game-jerseys',
+    productType: 'Game Jersey',
+    price: 55,
+    wholesalePrice: 39,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.white, C.blue, C.green],
+    image: '/images/catalog/jersey.svg',
+    readyToShip: true,
+    customizable: true,
+    newArrival: true,
+    material: { en: 'Performance mesh', ar: 'شبك أداء' },
+    fit: { en: 'Pro basketball fit', ar: 'قصة احترافية لكرة السلة' },
+    sizeGuide: 'tops',
+  }),
+  normalizeCatalogProduct({
+    id: 's003',
+    slug: 'shababuna-court-game-shorts',
+    sku: 'SHA-SHT-CRT',
+    name: 'Shababuna Court Game Shorts',
+    description: {
+      en: 'Pocket-free basketball game shorts with a wide performance waistband and team-order pricing.',
+      ar: 'شورت لعب كرة سلة بدون جيوب بخصر أداء عريض مع سعر خاص لطلبات الفرق.',
+    },
+    category: 'clothing',
+    subcategory: 'game-shorts',
+    productType: 'Game Shorts',
+    price: 42,
+    wholesalePrice: 30,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.white, C.red, C.navy],
+    image: '/images/catalog/shorts.svg',
+    readyToShip: true,
+    customizable: true,
+    bestSeller: true,
+    sizeGuide: 'shorts',
+  }),
+  normalizeCatalogProduct({
+    id: 's004',
+    slug: 'shababuna-reversible-practice-jersey',
+    sku: 'SHA-PRC-REV',
+    name: 'Shababuna Reversible Practice Jersey',
+    description: {
+      en: 'Two-sided practice jersey built for daily team training and custom colour production.',
+      ar: 'سيريا تمرين بوجهين مصممة للتدريب اليومي للفرق ومتوفرة بتصنيع ألوان مخصص.',
+    },
+    category: 'clothing',
+    subcategory: 'practice-jerseys',
+    productType: 'Reversible Practice Jersey',
+    price: 38,
+    wholesalePrice: 27,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.white, C.red, C.blue],
+    image: '/images/catalog/training.svg',
+    readyToShip: false,
+    customizable: true,
+    featured: true,
+    sizeGuide: 'tops',
+  }),
+  normalizeCatalogProduct({
+    id: 's005',
+    slug: 'shababuna-practice-shorts',
+    sku: 'SHA-PRC-SHT',
+    name: 'Shababuna Practice Shorts',
+    description: {
+      en: 'Breathable practice shorts for individual players and team orders.',
+      ar: 'شورت تمرين خفيف للاعبين وطلبات الفرق.',
+    },
+    category: 'clothing',
+    subcategory: 'practice-shorts',
+    productType: 'Practice Shorts',
+    price: 32,
+    wholesalePrice: 23,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.grey, C.blue],
+    image: '/images/catalog/shorts.svg',
+    readyToShip: true,
+    customizable: true,
+    sizeGuide: 'shorts',
+  }),
+  normalizeCatalogProduct({
+    id: 's006',
+    slug: 'built-different-performance-tee',
+    sku: 'SHA-TEE-BD',
+    name: 'Built Different Performance Tee',
+    description: {
+      en: 'Shababuna performance tee with a clean athletic cut and BUILT DIFFERENT identity.',
+      ar: 'تيشيرت أداء من شبابنا بقصة رياضية نظيفة وهوية BUILT DIFFERENT.',
+    },
+    category: 'clothing',
+    subcategory: 't-shirts',
+    productType: 'Performance T-Shirt',
+    price: 28,
+    wholesalePrice: 20,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.white, C.grey],
+    image: '/images/catalog/training.svg',
+    readyToShip: true,
+    newArrival: true,
+    featured: true,
+    sizeGuide: 't-shirts',
+  }),
+  normalizeCatalogProduct({
+    id: 's007',
+    slug: 'shababuna-heavyweight-hoodie',
+    sku: 'SHA-HOOD-HVY',
+    name: 'Shababuna Heavyweight Hoodie',
+    description: {
+      en: 'Premium heavyweight hoodie available individually, wholesale and as a fully customized team product.',
+      ar: 'هودي ثقيل فاخر متوفر بالقطعة والجملة وكتصنيع مخصص كامل للفرق.',
+    },
+    category: 'clothing',
+    subcategory: 'hoodies',
+    productType: 'Hoodie',
+    price: 78,
+    wholesalePrice: 56,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.grey, C.cream],
+    image: '/images/catalog/hoodie.svg',
+    readyToShip: false,
+    customizable: true,
+    sizeGuide: 'hoodies',
+  }),
+  normalizeCatalogProduct({
+    id: 's008',
+    slug: 'shababuna-travel-pants',
+    sku: 'SHA-PANT-TRV',
+    name: 'Shababuna Travel Pants',
+    description: {
+      en: 'Relaxed team travel pants with clean branding and wholesale pricing.',
+      ar: 'سروال سفر مريح للفرق بتصميم نظيف وسعر خاص للجملة.',
+    },
+    category: 'clothing',
+    subcategory: 'pants',
+    productType: 'Team Pants',
+    price: 62,
+    wholesalePrice: 44,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.grey, C.navy],
+    image: '/images/catalog/pants.svg',
+    readyToShip: false,
+    customizable: true,
+    sizeGuide: 'pants',
+  }),
+  normalizeCatalogProduct({
+    id: 's009',
+    slug: 'shababuna-team-tracksuit',
+    sku: 'SHA-TRK-PRO',
+    name: 'Shababuna Team Tracksuit',
+    description: {
+      en: 'Full team tracksuit designed for travel, warm-up and staff use.',
+      ar: 'بدلة رياضية كاملة للفرق مصممة للسفر والإحماء والطاقم.',
+    },
+    category: 'clothing',
+    subcategory: 'tracksuits',
+    productType: 'Tracksuit',
+    price: 118,
+    wholesalePrice: 86,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.grey, C.navy],
+    image: '/images/catalog/apparel.svg',
+    readyToShip: false,
+    customizable: true,
+    featured: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's010',
+    slug: 'shababuna-compression-top',
+    sku: 'SHA-CMP-TOP',
+    name: 'Shababuna Compression Top',
+    description: {
+      en: 'Basketball compression base layer for training and games.',
+      ar: 'طبقة ضغط أساسية لكرة السلة للتمرين والمباريات.',
+    },
+    category: 'clothing',
+    subcategory: 'compression',
+    productType: 'Compression Top',
+    price: 32,
+    wholesalePrice: 23,
+    wholesaleMin: 10,
+    sizes: APPAREL,
+    colors: [C.black, C.white],
+    image: '/images/catalog/training.svg',
+    readyToShip: true,
+    sizeGuide: 'tops',
+  }),
+  normalizeCatalogProduct({
+    id: 's011',
+    slug: 'shababuna-pro-basketball-socks',
+    sku: 'SHA-SOCK-PRO',
+    name: 'Shababuna Pro Basketball Socks',
+    description: {
+      en: 'Cushioned basketball socks available by the pair and in team quantities.',
+      ar: 'جوارب كرة سلة مبطنة متوفرة بالزوج وبكميات الفرق.',
+    },
+    category: 'clothing',
+    subcategory: 'socks',
+    productType: 'Basketball Socks',
+    price: 9,
+    wholesalePrice: 6,
+    wholesaleMin: 12,
+    sizes: ['S/M', 'L/XL'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/accessories.svg',
+    readyToShip: true,
+    customizable: true,
+    bestSeller: true,
+  }),
 
   ...[
-    ['s020','nike-in-court-basketball-shoe','SHA-SHO-NIK','Nike In-Court Basketball Shoe','Nike','in-court',165,true],
-    ['s021','adidas-in-court-basketball-shoe','SHA-SHO-ADI','adidas In-Court Basketball Shoe','adidas','in-court',150,true],
-    ['s022','jordan-in-court-basketball-shoe','SHA-SHO-JOR','Jordan In-Court Basketball Shoe','Jordan','in-court',175,false],
-    ['s023','under-armour-in-court-basketball-shoe','SHA-SHO-UA','Under Armour In-Court Basketball Shoe','Under Armour','in-court',145,true],
-    ['s024','puma-in-court-basketball-shoe','SHA-SHO-PUM','Puma In-Court Basketball Shoe','Puma','in-court',135,false],
-    ['s025','new-balance-in-court-basketball-shoe','SHA-SHO-NB','New Balance In-Court Basketball Shoe','New Balance','in-court',155,false],
-    ['s026','li-ning-in-court-basketball-shoe','SHA-SHO-LN','Li-Ning In-Court Basketball Shoe','Li-Ning','in-court',180,false],
-    ['s027','anta-in-court-basketball-shoe','SHA-SHO-ANT','ANTA In-Court Basketball Shoe','ANTA','in-court',160,false],
-    ['s028','peak-in-court-basketball-shoe','SHA-SHO-PEA','Peak In-Court Basketball Shoe','Peak','in-court',125,false],
-    ['s029','361-in-court-basketball-shoe','SHA-SHO-361','361° In-Court Basketball Shoe','361°','in-court',130,false],
-  ].map(([id,slug,sku,name,brand,subcategory,price,readyToShip]) => normalizeCatalogProduct({ id,slug,sku,name,brand,description:{en:`${brand} basketball footwear catalogue product. Final colourways, specifications and product media can be managed from the catalogue.`,ar:`منتج أحذية كرة سلة من ${brand}. يمكن إدارة الألوان والمواصفات والصور النهائية من الكتالوج.`},category:'footwear',subcategory,productType:'Basketball Shoe',price:Number(price),wholesalePrice:Math.round(Number(price)*.82),wholesaleMin:6,sizes:SHOES,colors:[C.black,C.white,C.red],image:'/images/catalog/shoe.svg',readyToShip,newArrival:true })),
-  normalizeCatalogProduct({ id:'s030', slug:'nike-off-court-basketball-shoe', sku:'SHA-LIFE-NIK', name:'Nike Off-Court Basketball Shoe', brand:'Nike', description:{en:'Basketball lifestyle footwear for travel and everyday wear.',ar:'حذاء لايف ستايل لكرة السلة للسفر والاستخدام اليومي.'}, category:'footwear', subcategory:'off-court', productType:'Lifestyle Shoe', price:125, wholesalePrice:102, wholesaleMin:6, sizes:SHOES, colors:[C.black,C.white,C.grey], image:'/images/catalog/lifestyle-shoe.svg', readyToShip:true }),
-  normalizeCatalogProduct({ id:'s031', slug:'shababuna-recovery-slides', sku:'SHA-SLD-REC', name:'Shababuna Recovery Slides', description:{en:'Comfort slides for recovery, travel and team use.',ar:'شبشب مريح للاستشفاء والسفر واستخدام الفرق.'}, category:'footwear', subcategory:'off-court', productType:'Slides', price:42, wholesalePrice:29, wholesaleMin:10, sizes:['7','8','9','10','11','12','13'], colors:[C.black,C.white], image:'/images/catalog/lifestyle-shoe.svg', readyToShip:true, customizable:true }),
+    [
+      's020',
+      'nike-in-court-basketball-shoe',
+      'SHA-SHO-NIK',
+      'Nike In-Court Basketball Shoe',
+      'Nike',
+      'in-court',
+      165,
+      true,
+    ],
+    [
+      's021',
+      'adidas-in-court-basketball-shoe',
+      'SHA-SHO-ADI',
+      'adidas In-Court Basketball Shoe',
+      'adidas',
+      'in-court',
+      150,
+      true,
+    ],
+    [
+      's022',
+      'jordan-in-court-basketball-shoe',
+      'SHA-SHO-JOR',
+      'Jordan In-Court Basketball Shoe',
+      'Jordan',
+      'in-court',
+      175,
+      false,
+    ],
+    [
+      's023',
+      'under-armour-in-court-basketball-shoe',
+      'SHA-SHO-UA',
+      'Under Armour In-Court Basketball Shoe',
+      'Under Armour',
+      'in-court',
+      145,
+      true,
+    ],
+    [
+      's024',
+      'puma-in-court-basketball-shoe',
+      'SHA-SHO-PUM',
+      'Puma In-Court Basketball Shoe',
+      'Puma',
+      'in-court',
+      135,
+      false,
+    ],
+    [
+      's025',
+      'new-balance-in-court-basketball-shoe',
+      'SHA-SHO-NB',
+      'New Balance In-Court Basketball Shoe',
+      'New Balance',
+      'in-court',
+      155,
+      false,
+    ],
+    [
+      's026',
+      'li-ning-in-court-basketball-shoe',
+      'SHA-SHO-LN',
+      'Li-Ning In-Court Basketball Shoe',
+      'Li-Ning',
+      'in-court',
+      180,
+      false,
+    ],
+    [
+      's027',
+      'anta-in-court-basketball-shoe',
+      'SHA-SHO-ANT',
+      'ANTA In-Court Basketball Shoe',
+      'ANTA',
+      'in-court',
+      160,
+      false,
+    ],
+    [
+      's028',
+      'peak-in-court-basketball-shoe',
+      'SHA-SHO-PEA',
+      'Peak In-Court Basketball Shoe',
+      'Peak',
+      'in-court',
+      125,
+      false,
+    ],
+    [
+      's029',
+      '361-in-court-basketball-shoe',
+      'SHA-SHO-361',
+      '361° In-Court Basketball Shoe',
+      '361°',
+      'in-court',
+      130,
+      false,
+    ],
+  ].map(([id, slug, sku, name, brand, subcategory, price, readyToShip]) =>
+    normalizeCatalogProduct({
+      id,
+      slug,
+      sku,
+      name,
+      brand,
+      description: {
+        en: `${brand} basketball footwear catalogue product. Final colourways, specifications and product media can be managed from the catalogue.`,
+        ar: `منتج أحذية كرة سلة من ${brand}. يمكن إدارة الألوان والمواصفات والصور النهائية من الكتالوج.`,
+      },
+      category: 'footwear',
+      subcategory,
+      productType: 'Basketball Shoe',
+      price: Number(price),
+      wholesalePrice: Math.round(Number(price) * 0.82),
+      wholesaleMin: 6,
+      sizes: SHOES,
+      colors: [C.black, C.white, C.red],
+      image: '/images/catalog/shoe.svg',
+      readyToShip,
+      newArrival: true,
+    }),
+  ),
+  normalizeCatalogProduct({
+    id: 's030',
+    slug: 'nike-off-court-basketball-shoe',
+    sku: 'SHA-LIFE-NIK',
+    name: 'Nike Off-Court Basketball Shoe',
+    brand: 'Nike',
+    description: {
+      en: 'Basketball lifestyle footwear for travel and everyday wear.',
+      ar: 'حذاء لايف ستايل لكرة السلة للسفر والاستخدام اليومي.',
+    },
+    category: 'footwear',
+    subcategory: 'off-court',
+    productType: 'Lifestyle Shoe',
+    price: 125,
+    wholesalePrice: 102,
+    wholesaleMin: 6,
+    sizes: SHOES,
+    colors: [C.black, C.white, C.grey],
+    image: '/images/catalog/lifestyle-shoe.svg',
+    readyToShip: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's031',
+    slug: 'shababuna-recovery-slides',
+    sku: 'SHA-SLD-REC',
+    name: 'Shababuna Recovery Slides',
+    description: {
+      en: 'Comfort slides for recovery, travel and team use.',
+      ar: 'شبشب مريح للاستشفاء والسفر واستخدام الفرق.',
+    },
+    category: 'footwear',
+    subcategory: 'off-court',
+    productType: 'Slides',
+    price: 42,
+    wholesalePrice: 29,
+    wholesaleMin: 10,
+    sizes: ['7', '8', '9', '10', '11', '12', '13'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/lifestyle-shoe.svg',
+    readyToShip: true,
+    customizable: true,
+  }),
 
-  normalizeCatalogProduct({ id:'s040', slug:'shababuna-elite-basketball-backpack', sku:'SHA-BAG-ELT', name:'Shababuna Elite Basketball Backpack', description:{en:'Large basketball backpack with dedicated ball and shoe storage.',ar:'حقيبة ظهر كبيرة لكرة السلة بمكان مخصص للكرة والحذاء.'}, category:'accessories', subcategory:'bags', productType:'Basketball Backpack', price:68, wholesalePrice:49, wholesaleMin:10, sizes:['OS'], colors:[C.black,C.grey,C.red], image:'/images/catalog/bag.svg', readyToShip:true, customizable:true, bestSeller:true }),
-  normalizeCatalogProduct({ id:'s041', slug:'shababuna-team-duffle', sku:'SHA-BAG-DUF', name:'Shababuna Team Duffle', description:{en:'Team travel duffle available in retail, wholesale and custom club production.',ar:'حقيبة سفر للفرق متوفرة بالقطعة والجملة والتصنيع المخصص.'}, category:'accessories', subcategory:'bags', productType:'Duffle Bag', price:72, wholesalePrice:52, wholesaleMin:10, sizes:['OS'], colors:[C.black,C.navy], image:'/images/catalog/bag.svg', readyToShip:false, customizable:true }),
-  normalizeCatalogProduct({ id:'s042', slug:'shababuna-performance-arm-sleeve', sku:'SHA-SLV-ARM', name:'Shababuna Performance Arm Sleeve', description:{en:'Stretch performance arm sleeve for practice and games.',ar:'سليف ذراع مرن للأداء في التمرين والمباريات.'}, category:'accessories', subcategory:'sleeves', productType:'Arm Sleeve', price:18, wholesalePrice:12, wholesaleMin:12, sizes:['S/M','L/XL'], colors:[C.black,C.white,C.red,C.blue], image:'/images/catalog/sleeve.svg', readyToShip:true, customizable:true }),
-  normalizeCatalogProduct({ id:'s043', slug:'basketball-ankle-support', sku:'SHA-SUP-ANK', name:'Basketball Ankle Support', brand:'Shababuna', description:{en:'Supportive basketball ankle brace for training and competition.',ar:'دعامة كاحل داعمة لكرة السلة للتمرين والمنافسة.'}, category:'accessories', subcategory:'supports', productType:'Ankle Support', price:29, wholesalePrice:22, wholesaleMin:6, sizes:['S','M','L','XL'], colors:[C.black], image:'/images/catalog/sleeve.svg', readyToShip:true }),
-  normalizeCatalogProduct({ id:'s044', slug:'shababuna-team-towel', sku:'SHA-TWL-TEAM', name:'Shababuna Team Towel', description:{en:'Performance towel available individually or with custom team branding from ten pieces.',ar:'منشفة أداء متوفرة بالقطعة أو بشعار الفريق ابتداءً من عشر قطع.'}, category:'accessories', subcategory:'towels', productType:'Team Towel', price:16, wholesalePrice:10, wholesaleMin:10, sizes:['OS'], colors:[C.black,C.white], image:'/images/catalog/accessories.svg', readyToShip:true, customizable:true }),
-  normalizeCatalogProduct({ id:'s045', slug:'custom-team-sticker-pack', sku:'SHA-STK-TEAM', name:'Custom Team Sticker Pack', description:{en:'Durable custom club and academy sticker packs.',ar:'حزم لاصقات متينة بتصميم مخصص للأندية والأكاديميات.'}, category:'accessories', subcategory:'stickers-patches', productType:'Stickers', price:12, wholesalePrice:7, wholesaleMin:20, sizes:['OS'], colors:[C.black,C.white], image:'/images/catalog/accessories.svg', readyToShip:false, customizable:true }),
-  normalizeCatalogProduct({ id:'s046', slug:'basketball-training-cone-set', sku:'SHA-TRN-CONE', name:'Basketball Training Cone Set', description:{en:'Compact court cone set for skills and footwork sessions.',ar:'مجموعة أقماع مدمجة لتدريبات المهارات وحركة القدمين.'}, category:'accessories', subcategory:'training-accessories', productType:'Training Cones', price:24, wholesalePrice:18, wholesaleMin:6, sizes:['OS'], colors:[C.orange], image:'/images/catalog/equipment.svg', readyToShip:true }),
-  normalizeCatalogProduct({ id:'s047', slug:'shababuna-court-cap', sku:'SHA-CAP-CRT', name:'Shababuna Court Cap', description:{en:'Structured basketball lifestyle cap available by the piece, wholesale and with team customization.',ar:'قبعة بطابع كرة السلة متوفرة بالقطعة والجملة وبتخصيص الفرق.'}, category:'accessories', subcategory:'headwear', productType:'Cap', price:26, wholesalePrice:18, wholesaleMin:10, sizes:['OS'], colors:[C.black,C.white], image:'/images/catalog/accessories.svg', readyToShip:true, customizable:true }),
-  normalizeCatalogProduct({ id:'s048', slug:'shababuna-performance-bottle', sku:'SHA-BTL-PRO', name:'Shababuna Performance Bottle', description:{en:'Reusable court bottle available individually and with custom team identity from ten pieces.',ar:'قنينة رياضية قابلة لإعادة الاستخدام، متوفرة بالقطعة وبتصميم الفريق ابتداءً من عشر قطع.'}, category:'accessories', subcategory:'bottles', productType:'Water Bottle', price:18, wholesalePrice:12, wholesaleMin:10, sizes:['750ML'], colors:[C.black,C.white], image:'/images/catalog/accessories.svg', readyToShip:true, customizable:true }),
-  normalizeCatalogProduct({ id:'s049', slug:'custom-woven-team-patch', sku:'SHA-PAT-WOV', name:'Custom Woven Team Patch', description:{en:'Premium woven patch for clubs, academies and branded apparel, produced from twenty pieces.',ar:'باتش منسوج فاخر للأندية والأكاديميات والملابس المخصصة، يبدأ من عشرين قطعة.'}, category:'accessories', subcategory:'stickers-patches', productType:'Woven Patch', price:9, wholesalePrice:5, wholesaleMin:20, minimumOrder:20, sizes:['OS'], colors:[C.black,C.white], image:'/images/catalog/accessories.svg', readyToShip:false, customizable:true }),
+  normalizeCatalogProduct({
+    id: 's040',
+    slug: 'shababuna-elite-basketball-backpack',
+    sku: 'SHA-BAG-ELT',
+    name: 'Shababuna Elite Basketball Backpack',
+    description: {
+      en: 'Large basketball backpack with dedicated ball and shoe storage.',
+      ar: 'حقيبة ظهر كبيرة لكرة السلة بمكان مخصص للكرة والحذاء.',
+    },
+    category: 'accessories',
+    subcategory: 'bags',
+    productType: 'Basketball Backpack',
+    price: 68,
+    wholesalePrice: 49,
+    wholesaleMin: 10,
+    sizes: ['OS'],
+    colors: [C.black, C.grey, C.red],
+    image: '/images/catalog/bag.svg',
+    readyToShip: true,
+    customizable: true,
+    bestSeller: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's041',
+    slug: 'shababuna-team-duffle',
+    sku: 'SHA-BAG-DUF',
+    name: 'Shababuna Team Duffle',
+    description: {
+      en: 'Team travel duffle available in retail, wholesale and custom club production.',
+      ar: 'حقيبة سفر للفرق متوفرة بالقطعة والجملة والتصنيع المخصص.',
+    },
+    category: 'accessories',
+    subcategory: 'bags',
+    productType: 'Duffle Bag',
+    price: 72,
+    wholesalePrice: 52,
+    wholesaleMin: 10,
+    sizes: ['OS'],
+    colors: [C.black, C.navy],
+    image: '/images/catalog/bag.svg',
+    readyToShip: false,
+    customizable: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's042',
+    slug: 'shababuna-performance-arm-sleeve',
+    sku: 'SHA-SLV-ARM',
+    name: 'Shababuna Performance Arm Sleeve',
+    description: {
+      en: 'Stretch performance arm sleeve for practice and games.',
+      ar: 'سليف ذراع مرن للأداء في التمرين والمباريات.',
+    },
+    category: 'accessories',
+    subcategory: 'sleeves',
+    productType: 'Arm Sleeve',
+    price: 18,
+    wholesalePrice: 12,
+    wholesaleMin: 12,
+    sizes: ['S/M', 'L/XL'],
+    colors: [C.black, C.white, C.red, C.blue],
+    image: '/images/catalog/sleeve.svg',
+    readyToShip: true,
+    customizable: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's043',
+    slug: 'basketball-ankle-support',
+    sku: 'SHA-SUP-ANK',
+    name: 'Basketball Ankle Support',
+    brand: 'Shababuna',
+    description: {
+      en: 'Supportive basketball ankle brace for training and competition.',
+      ar: 'دعامة كاحل داعمة لكرة السلة للتمرين والمنافسة.',
+    },
+    category: 'accessories',
+    subcategory: 'supports',
+    productType: 'Ankle Support',
+    price: 29,
+    wholesalePrice: 22,
+    wholesaleMin: 6,
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: [C.black],
+    image: '/images/catalog/sleeve.svg',
+    readyToShip: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's044',
+    slug: 'shababuna-team-towel',
+    sku: 'SHA-TWL-TEAM',
+    name: 'Shababuna Team Towel',
+    description: {
+      en: 'Performance towel available individually or with custom team branding from ten pieces.',
+      ar: 'منشفة أداء متوفرة بالقطعة أو بشعار الفريق ابتداءً من عشر قطع.',
+    },
+    category: 'accessories',
+    subcategory: 'towels',
+    productType: 'Team Towel',
+    price: 16,
+    wholesalePrice: 10,
+    wholesaleMin: 10,
+    sizes: ['OS'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/accessories.svg',
+    readyToShip: true,
+    customizable: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's045',
+    slug: 'custom-team-sticker-pack',
+    sku: 'SHA-STK-TEAM',
+    name: 'Custom Team Sticker Pack',
+    description: {
+      en: 'Durable custom club and academy sticker packs.',
+      ar: 'حزم لاصقات متينة بتصميم مخصص للأندية والأكاديميات.',
+    },
+    category: 'accessories',
+    subcategory: 'stickers-patches',
+    productType: 'Stickers',
+    price: 12,
+    wholesalePrice: 7,
+    wholesaleMin: 20,
+    sizes: ['OS'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/accessories.svg',
+    readyToShip: false,
+    customizable: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's046',
+    slug: 'basketball-training-cone-set',
+    sku: 'SHA-TRN-CONE',
+    name: 'Basketball Training Cone Set',
+    description: {
+      en: 'Compact court cone set for skills and footwork sessions.',
+      ar: 'مجموعة أقماع مدمجة لتدريبات المهارات وحركة القدمين.',
+    },
+    category: 'accessories',
+    subcategory: 'training-accessories',
+    productType: 'Training Cones',
+    price: 24,
+    wholesalePrice: 18,
+    wholesaleMin: 6,
+    sizes: ['OS'],
+    colors: [C.orange],
+    image: '/images/catalog/equipment.svg',
+    readyToShip: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's047',
+    slug: 'shababuna-court-cap',
+    sku: 'SHA-CAP-CRT',
+    name: 'Shababuna Court Cap',
+    description: {
+      en: 'Structured basketball lifestyle cap available by the piece, wholesale and with team customization.',
+      ar: 'قبعة بطابع كرة السلة متوفرة بالقطعة والجملة وبتخصيص الفرق.',
+    },
+    category: 'accessories',
+    subcategory: 'headwear',
+    productType: 'Cap',
+    price: 26,
+    wholesalePrice: 18,
+    wholesaleMin: 10,
+    sizes: ['OS'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/accessories.svg',
+    readyToShip: true,
+    customizable: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's048',
+    slug: 'shababuna-performance-bottle',
+    sku: 'SHA-BTL-PRO',
+    name: 'Shababuna Performance Bottle',
+    description: {
+      en: 'Reusable court bottle available individually and with custom team identity from ten pieces.',
+      ar: 'قنينة رياضية قابلة لإعادة الاستخدام، متوفرة بالقطعة وبتصميم الفريق ابتداءً من عشر قطع.',
+    },
+    category: 'accessories',
+    subcategory: 'bottles',
+    productType: 'Water Bottle',
+    price: 18,
+    wholesalePrice: 12,
+    wholesaleMin: 10,
+    sizes: ['750ML'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/accessories.svg',
+    readyToShip: true,
+    customizable: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's049',
+    slug: 'custom-woven-team-patch',
+    sku: 'SHA-PAT-WOV',
+    name: 'Custom Woven Team Patch',
+    description: {
+      en: 'Premium woven patch for clubs, academies and branded apparel, produced from twenty pieces.',
+      ar: 'باتش منسوج فاخر للأندية والأكاديميات والملابس المخصصة، يبدأ من عشرين قطعة.',
+    },
+    category: 'accessories',
+    subcategory: 'stickers-patches',
+    productType: 'Woven Patch',
+    price: 9,
+    wholesalePrice: 5,
+    wholesaleMin: 20,
+    minimumOrder: 20,
+    sizes: ['OS'],
+    colors: [C.black, C.white],
+    image: '/images/catalog/accessories.svg',
+    readyToShip: false,
+    customizable: true,
+  }),
 
-  normalizeCatalogProduct({ id:'s050', slug:'molten-indoor-game-basketball', sku:'SHA-BAL-MOL', name:'Molten Indoor Game Basketball', brand:'Molten', description:{en:'Indoor basketball available by the piece and at a lower wholesale price from six balls.',ar:'كرة سلة داخلية متوفرة بالقطعة وبسعر جملة أقل ابتداءً من ست كرات.'}, category:'basketballs', subcategory:'indoor', productType:'Basketball', price:78, wholesalePrice:65, wholesaleMin:6, sizes:['6','7'], colors:[C.orange], image:'/images/catalog/ball.svg', readyToShip:true, bestSeller:true }),
-  normalizeCatalogProduct({ id:'s051', slug:'wilson-indoor-outdoor-basketball', sku:'SHA-BAL-WIL', name:'Wilson Indoor / Outdoor Basketball', brand:'Wilson', description:{en:'Versatile basketball sold individually and in six-ball wholesale quantities.',ar:'كرة متعددة الاستخدامات متوفرة بالقطعة وبالجملة ابتداءً من ست كرات.'}, category:'basketballs', subcategory:'indoor-outdoor', productType:'Basketball', price:52, wholesalePrice:41, wholesaleMin:6, sizes:['5','6','7'], colors:[C.orange], image:'/images/catalog/ball.svg', readyToShip:true }),
-  normalizeCatalogProduct({ id:'s052', slug:'spalding-outdoor-basketball', sku:'SHA-BAL-SPA', name:'Spalding Outdoor Basketball', brand:'Spalding', description:{en:'Outdoor basketball available individually or by the case.',ar:'كرة سلة خارجية متوفرة بالقطعة أو بالكرتونة.'}, category:'basketballs', subcategory:'outdoor', productType:'Basketball', price:39, wholesalePrice:30, wholesaleMin:6, sizes:['5','6','7'], colors:[C.orange], image:'/images/catalog/ball.svg', readyToShip:true }),
-  normalizeCatalogProduct({ id:'s053', slug:'shababuna-custom-team-basketball', sku:'SHA-BAL-CUS', name:'Shababuna Custom Team Basketball', description:{en:'Custom basketball with club identity, available from six balls.',ar:'كرة سلة بتصميم وهوية النادي متوفرة ابتداءً من ست كرات.'}, category:'basketballs', subcategory:'custom-balls', productType:'Custom Basketball', price:62, wholesalePrice:48, wholesaleMin:6, minimumOrder:6, sizes:['5','6','7'], colors:[C.orange,C.black], image:'/images/catalog/custom.svg', readyToShip:false, customizable:true }),
+  normalizeCatalogProduct({
+    id: 's050',
+    slug: 'molten-indoor-game-basketball',
+    sku: 'SHA-BAL-MOL',
+    name: 'Molten Indoor Game Basketball',
+    brand: 'Molten',
+    description: {
+      en: 'Indoor basketball available by the piece and at a lower wholesale price from six balls.',
+      ar: 'كرة سلة داخلية متوفرة بالقطعة وبسعر جملة أقل ابتداءً من ست كرات.',
+    },
+    category: 'basketballs',
+    subcategory: 'indoor',
+    productType: 'Basketball',
+    price: 78,
+    wholesalePrice: 65,
+    wholesaleMin: 6,
+    sizes: ['6', '7'],
+    colors: [C.orange],
+    image: '/images/catalog/ball.svg',
+    readyToShip: true,
+    bestSeller: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's051',
+    slug: 'wilson-indoor-outdoor-basketball',
+    sku: 'SHA-BAL-WIL',
+    name: 'Wilson Indoor / Outdoor Basketball',
+    brand: 'Wilson',
+    description: {
+      en: 'Versatile basketball sold individually and in six-ball wholesale quantities.',
+      ar: 'كرة متعددة الاستخدامات متوفرة بالقطعة وبالجملة ابتداءً من ست كرات.',
+    },
+    category: 'basketballs',
+    subcategory: 'indoor-outdoor',
+    productType: 'Basketball',
+    price: 52,
+    wholesalePrice: 41,
+    wholesaleMin: 6,
+    sizes: ['5', '6', '7'],
+    colors: [C.orange],
+    image: '/images/catalog/ball.svg',
+    readyToShip: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's052',
+    slug: 'spalding-outdoor-basketball',
+    sku: 'SHA-BAL-SPA',
+    name: 'Spalding Outdoor Basketball',
+    brand: 'Spalding',
+    description: {
+      en: 'Outdoor basketball available individually or by the case.',
+      ar: 'كرة سلة خارجية متوفرة بالقطعة أو بالكرتونة.',
+    },
+    category: 'basketballs',
+    subcategory: 'outdoor',
+    productType: 'Basketball',
+    price: 39,
+    wholesalePrice: 30,
+    wholesaleMin: 6,
+    sizes: ['5', '6', '7'],
+    colors: [C.orange],
+    image: '/images/catalog/ball.svg',
+    readyToShip: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's053',
+    slug: 'shababuna-custom-team-basketball',
+    sku: 'SHA-BAL-CUS',
+    name: 'Shababuna Custom Team Basketball',
+    description: {
+      en: 'Custom basketball with club identity, available from six balls.',
+      ar: 'كرة سلة بتصميم وهوية النادي متوفرة ابتداءً من ست كرات.',
+    },
+    category: 'basketballs',
+    subcategory: 'custom-balls',
+    productType: 'Custom Basketball',
+    price: 62,
+    wholesalePrice: 48,
+    wholesaleMin: 6,
+    minimumOrder: 6,
+    sizes: ['5', '6', '7'],
+    colors: [C.orange, C.black],
+    image: '/images/catalog/custom.svg',
+    readyToShip: false,
+    customizable: true,
+  }),
 
-  normalizeCatalogProduct({ id:'s060', slug:'competition-basketball-hoop-system', sku:'SHA-HOP-CMP', name:'Competition Basketball Hoop System', description:{en:'Competition hoop system supplied by quotation. One unit minimum; shipping and installation are calculated separately.',ar:'منظومة سلة منافسات متوفرة بعرض سعر. الحد الأدنى وحدة واحدة، ويتم حساب الشحن والتركيب بشكل منفصل.'}, category:'equipment', subcategory:'hoops-backboards', productType:'Basketball Hoop', price:1800, wholesalePrice:1650, wholesaleMin:1, minimumOrder:1, sizes:['OS'], colors:[C.black], image:'/images/catalog/hoop.svg', readyToShip:false, largeEquipment:true, quoteOnly:true, featured:true }),
-  normalizeCatalogProduct({ id:'s061', slug:'tempered-glass-backboard', sku:'SHA-BRD-GLS', name:'Tempered Glass Backboard', description:{en:'Tempered-glass backboard supplied by quotation with technical specifications available on request.',ar:'بورد زجاج مقوى متوفر بعرض سعر، مع المواصفات الفنية عند الطلب.'}, category:'equipment', subcategory:'hoops-backboards', productType:'Backboard', price:490, wholesalePrice:450, wholesaleMin:1, minimumOrder:1, sizes:['OS'], colors:[C.white], image:'/images/catalog/hoop.svg', largeEquipment:true, quoteOnly:true }),
-  normalizeCatalogProduct({ id:'s062', slug:'professional-spring-rim', sku:'SHA-RIM-PRO', name:'Professional Spring Rim', description:{en:'Solid professional spring rim with net and mounting hardware.',ar:'ريم احترافي قوي بنظام زنبرك مع الشبكة وملحقات التركيب.'}, category:'equipment', subcategory:'rims-nets', productType:'Rim', price:165, wholesalePrice:145, wholesaleMin:2, sizes:['OS'], colors:[C.orange], image:'/images/catalog/hoop.svg', readyToShip:false }),
-  normalizeCatalogProduct({ id:'s063', slug:'24-second-shot-clock-set', sku:'SHA-CLK-24', name:'24-Second Shot Clock Set', description:{en:'Basketball shot-clock set supplied by quotation and prepared for future payment and shipping integration.',ar:'طقم ساعات 24 ثانية لكرة السلة متوفر بعرض سعر ومجهز للربط المستقبلي بالدفع والشحن.'}, category:'equipment', subcategory:'scoreboards-shot-clocks', productType:'Shot Clock', price:2400, wholesalePrice:2200, wholesaleMin:1, sizes:['OS'], colors:[C.black], image:'/images/catalog/shot-clock.svg', largeEquipment:true, quoteOnly:true }),
-  normalizeCatalogProduct({ id:'s064', slug:'basketball-ball-cart', sku:'SHA-CART-BAL', name:'Basketball Ball Cart', description:{en:'Portable basketball cart for teams, academies and training facilities.',ar:'عربة كرات متنقلة للفرق والأكاديميات ومراكز التدريب.'}, category:'equipment', subcategory:'ball-carts', productType:'Ball Cart', price:260, wholesalePrice:220, wholesaleMin:2, sizes:['OS'], colors:[C.black], image:'/images/catalog/equipment.svg', readyToShip:false }),
-  normalizeCatalogProduct({ id:'s066', slug:'professional-court-padding-set', sku:'SHA-CRT-PAD', name:'Professional Court Padding Set', description:{en:'Protective court and hoop padding supplied for clubs and facilities, with custom branding available by quotation.',ar:'حماية احترافية للملعب والسلة مخصصة للأندية والمنشآت، مع إمكانية إضافة الهوية بعرض سعر.'}, category:'equipment', subcategory:'court-equipment', productType:'Court Padding', price:620, wholesalePrice:560, wholesaleMin:1, minimumOrder:1, sizes:['OS'], colors:[C.black,C.blue,C.red], image:'/images/catalog/equipment.svg', readyToShip:false, customizable:true, largeEquipment:true, quoteOnly:true }),
-  normalizeCatalogProduct({ id:'s065', slug:'electric-ball-pump-kit', sku:'SHA-PMP-ELC', name:'Electric Ball Pump Kit', description:{en:'Electric pump kit with needles and pressure accessories.',ar:'طقم مضخة كهربائية مع الإبر وملحقات قياس الضغط.'}, category:'equipment', subcategory:'pumps-needles', productType:'Pump Kit', price:58, wholesalePrice:42, wholesaleMin:6, sizes:['OS'], colors:[C.black], image:'/images/catalog/equipment.svg', readyToShip:true }),
+  normalizeCatalogProduct({
+    id: 's060',
+    slug: 'competition-basketball-hoop-system',
+    sku: 'SHA-HOP-CMP',
+    name: 'Competition Basketball Hoop System',
+    description: {
+      en: 'Competition hoop system supplied by quotation. One unit minimum; shipping and installation are calculated separately.',
+      ar: 'منظومة سلة منافسات متوفرة بعرض سعر. الحد الأدنى وحدة واحدة، ويتم حساب الشحن والتركيب بشكل منفصل.',
+    },
+    category: 'equipment',
+    subcategory: 'hoops-backboards',
+    productType: 'Basketball Hoop',
+    price: 1800,
+    wholesalePrice: 1650,
+    wholesaleMin: 1,
+    minimumOrder: 1,
+    sizes: ['OS'],
+    colors: [C.black],
+    image: '/images/catalog/hoop.svg',
+    readyToShip: false,
+    largeEquipment: true,
+    quoteOnly: true,
+    featured: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's061',
+    slug: 'tempered-glass-backboard',
+    sku: 'SHA-BRD-GLS',
+    name: 'Tempered Glass Backboard',
+    description: {
+      en: 'Tempered-glass backboard supplied by quotation with technical specifications available on request.',
+      ar: 'بورد زجاج مقوى متوفر بعرض سعر، مع المواصفات الفنية عند الطلب.',
+    },
+    category: 'equipment',
+    subcategory: 'hoops-backboards',
+    productType: 'Backboard',
+    price: 490,
+    wholesalePrice: 450,
+    wholesaleMin: 1,
+    minimumOrder: 1,
+    sizes: ['OS'],
+    colors: [C.white],
+    image: '/images/catalog/hoop.svg',
+    largeEquipment: true,
+    quoteOnly: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's062',
+    slug: 'professional-spring-rim',
+    sku: 'SHA-RIM-PRO',
+    name: 'Professional Spring Rim',
+    description: {
+      en: 'Solid professional spring rim with net and mounting hardware.',
+      ar: 'ريم احترافي قوي بنظام زنبرك مع الشبكة وملحقات التركيب.',
+    },
+    category: 'equipment',
+    subcategory: 'rims-nets',
+    productType: 'Rim',
+    price: 165,
+    wholesalePrice: 145,
+    wholesaleMin: 2,
+    sizes: ['OS'],
+    colors: [C.orange],
+    image: '/images/catalog/hoop.svg',
+    readyToShip: false,
+  }),
+  normalizeCatalogProduct({
+    id: 's063',
+    slug: '24-second-shot-clock-set',
+    sku: 'SHA-CLK-24',
+    name: '24-Second Shot Clock Set',
+    description: {
+      en: 'Basketball shot-clock set supplied by quotation and prepared for future payment and shipping integration.',
+      ar: 'طقم ساعات 24 ثانية لكرة السلة متوفر بعرض سعر ومجهز للربط المستقبلي بالدفع والشحن.',
+    },
+    category: 'equipment',
+    subcategory: 'scoreboards-shot-clocks',
+    productType: 'Shot Clock',
+    price: 2400,
+    wholesalePrice: 2200,
+    wholesaleMin: 1,
+    sizes: ['OS'],
+    colors: [C.black],
+    image: '/images/catalog/shot-clock.svg',
+    largeEquipment: true,
+    quoteOnly: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's064',
+    slug: 'basketball-ball-cart',
+    sku: 'SHA-CART-BAL',
+    name: 'Basketball Ball Cart',
+    description: {
+      en: 'Portable basketball cart for teams, academies and training facilities.',
+      ar: 'عربة كرات متنقلة للفرق والأكاديميات ومراكز التدريب.',
+    },
+    category: 'equipment',
+    subcategory: 'ball-carts',
+    productType: 'Ball Cart',
+    price: 260,
+    wholesalePrice: 220,
+    wholesaleMin: 2,
+    sizes: ['OS'],
+    colors: [C.black],
+    image: '/images/catalog/equipment.svg',
+    readyToShip: false,
+  }),
+  normalizeCatalogProduct({
+    id: 's066',
+    slug: 'professional-court-padding-set',
+    sku: 'SHA-CRT-PAD',
+    name: 'Professional Court Padding Set',
+    description: {
+      en: 'Protective court and hoop padding supplied for clubs and facilities, with custom branding available by quotation.',
+      ar: 'حماية احترافية للملعب والسلة مخصصة للأندية والمنشآت، مع إمكانية إضافة الهوية بعرض سعر.',
+    },
+    category: 'equipment',
+    subcategory: 'court-equipment',
+    productType: 'Court Padding',
+    price: 620,
+    wholesalePrice: 560,
+    wholesaleMin: 1,
+    minimumOrder: 1,
+    sizes: ['OS'],
+    colors: [C.black, C.blue, C.red],
+    image: '/images/catalog/equipment.svg',
+    readyToShip: false,
+    customizable: true,
+    largeEquipment: true,
+    quoteOnly: true,
+  }),
+  normalizeCatalogProduct({
+    id: 's065',
+    slug: 'electric-ball-pump-kit',
+    sku: 'SHA-PMP-ELC',
+    name: 'Electric Ball Pump Kit',
+    description: {
+      en: 'Electric pump kit with needles and pressure accessories.',
+      ar: 'طقم مضخة كهربائية مع الإبر وملحقات قياس الضغط.',
+    },
+    category: 'equipment',
+    subcategory: 'pumps-needles',
+    productType: 'Pump Kit',
+    price: 58,
+    wholesalePrice: 42,
+    wholesaleMin: 6,
+    sizes: ['OS'],
+    colors: [C.black],
+    image: '/images/catalog/equipment.svg',
+    readyToShip: true,
+  }),
 ];
 
 const subcategoryMap = {
@@ -196,7 +1055,8 @@ export function normalizeLhaCatalogProduct(item) {
     stock: inventoryTracking ? Math.max(0, Number(variant.stock) || 0) : 0,
     active: variant.active !== false,
     inventoryTracking,
-    availabilityState: inventoryTracking && Number(variant.stock) <= 0 ? 'out_of_stock' : 'in_stock',
+    availabilityState:
+      inventoryTracking && Number(variant.stock) <= 0 ? 'out_of_stock' : 'in_stock',
     readyToShip: inventoryTracking && item.readyToShip === true && Number(variant.stock) > 0,
     unitPrice: price,
     wholesalePrice: price > 0 ? Math.round(price * 0.82 * 100) / 100 : null,
@@ -204,7 +1064,7 @@ export function normalizeLhaCatalogProduct(item) {
   const stock = inventoryTracking ? variants.reduce((sum, variant) => sum + variant.stock, 0) : 0;
   const readyToShip = inventoryTracking && item.readyToShip === true && stock > 0;
   const fallbackImage = item.image || '/images/catalog/apparel.svg';
-  return ({
+  return {
     ...item,
     id: `lha-${item.id}`,
     legacySourceId: item.id,
@@ -212,7 +1072,10 @@ export function normalizeLhaCatalogProduct(item) {
     brand: 'LHA',
     collection: 'lha',
     storefronts: ['shop', 'lha'],
-    category: item.category === 'accessories' && item.subcategory === 'balls' ? 'basketballs' : item.category,
+    category:
+      item.category === 'accessories' && item.subcategory === 'balls'
+        ? 'basketballs'
+        : item.category,
     subcategory: subcategoryMap[item.subcategory] || item.subcategory,
     readyToShip,
     retailAvailable: true,
@@ -230,7 +1093,7 @@ export function normalizeLhaCatalogProduct(item) {
     inventoryVerified: inventoryTracking,
     inventorySource: inventoryTracking ? 'verified_inventory' : 'supplier_order',
     inventoryLocation: readyToShip ? 'LY' : null,
-    deliveryProfile: readyToShip ? 'ready' : (quoteOnly ? 'custom' : 'standard'),
+    deliveryProfile: readyToShip ? 'ready' : quoteOnly ? 'custom' : 'standard',
     status: 'active',
     available: true,
     comingSoon: false,
@@ -241,7 +1104,7 @@ export function normalizeLhaCatalogProduct(item) {
     mediaStatus: item.image ? 'supplied' : 'placeholder',
     related: [],
     alt: { en: `${item.name.en} — LHA Official Store`, ar: `${item.name.en} — متجر LHA الرسمي` },
-  });
+  };
 }
 
 const lhaProducts = sourceLhaProducts.map(normalizeLhaCatalogProduct);
@@ -250,24 +1113,47 @@ export const catalogProducts = [...shababunaProducts, ...lhaProducts];
 export const products = catalogProducts.filter(isProductVisible);
 export const getProduct = (slug) => products.find((p) => p.slug === slug);
 export const getProductById = (id) => products.find((p) => p.id === id);
-export const featuredProducts = (catalog = products) => catalog.filter((p) => p.featured && !p.legacyLha);
-export const newArrivals = (catalog = products) => catalog.filter((p) => p.newArrival && !p.legacyLha);
-export const bestSellers = (catalog = products) => catalog.filter((p) => p.bestSeller && !p.legacyLha);
+export const featuredProducts = (catalog = products) =>
+  catalog.filter((p) => p.featured && !p.legacyLha);
+export const newArrivals = (catalog = products) =>
+  catalog.filter((p) => p.newArrival && !p.legacyLha);
+export const bestSellers = (catalog = products) =>
+  catalog.filter((p) => p.bestSeller && !p.legacyLha);
 export const readyToShipProducts = () => products.filter((p) => isReadyToShipEligible(p, 'LY'));
 export const lhaStoreProducts = () => products.filter((p) => p.storefronts?.includes('lha'));
-export const productsByCategory = (cat) => cat === 'ready-to-ship' ? readyToShipProducts() : products.filter((p) => p.category === cat);
-export const productsBySubcategory = (cat, sub) => products.filter((p) => p.category === cat && p.subcategory === sub);
+export const productsByCategory = (cat) =>
+  cat === 'ready-to-ship' ? readyToShipProducts() : products.filter((p) => p.category === cat);
+export const productsBySubcategory = (cat, sub) =>
+  products.filter((p) => p.category === cat && p.subcategory === sub);
 export const relatedProducts = (item, limit = 4) => getRelatedProducts(item, products, limit);
 export const isLowStock = (p) =>
   Boolean(p.inventoryTracking) &&
   p.inventoryVerified === true &&
   Number(p.stock) > 0 &&
   Number(p.stock) <= Number(p.lowStockThreshold || 0);
-export const collectColors = (catalog = products) => Array.from(new Map(catalog.flatMap((p) => p.colors || []).map((c) => [c.key, c])).values());
-export const collectSizes = (catalog = products) => Array.from(new Set(catalog.flatMap((p) => p.sizes || [])));
+export const collectColors = (catalog = products) =>
+  Array.from(new Map(catalog.flatMap((p) => p.colors || []).map((c) => [c.key, c])).values());
+export const collectSizes = (catalog = products) =>
+  Array.from(new Set(catalog.flatMap((p) => p.sizes || [])));
 export const allColors = collectColors();
 export const allSizes = collectSizes();
-export const BRAND_PRIORITY = ['Nike', 'Jordan', 'adidas', 'Under Armour', 'Puma', 'New Balance', 'Li-Ning', 'ANTA', 'Peak', '361°', 'Shababuna', 'Molten', 'Wilson', 'Spalding', 'LHA'];
+export const BRAND_PRIORITY = [
+  'Nike',
+  'Jordan',
+  'adidas',
+  'Under Armour',
+  'Puma',
+  'New Balance',
+  'Li-Ning',
+  'ANTA',
+  'Peak',
+  '361°',
+  'Shababuna',
+  'Molten',
+  'Wilson',
+  'Spalding',
+  'LHA',
+];
 export function compareBrands(a, b) {
   const ai = BRAND_PRIORITY.indexOf(a);
   const bi = BRAND_PRIORITY.indexOf(b);
@@ -276,5 +1162,9 @@ export function compareBrands(a, b) {
   if (bi === -1) return -1;
   return ai - bi;
 }
-export const allBrands = Array.from(new Set(products.map((p) => p.brand).filter(Boolean))).sort(compareBrands);
-export const allProductTypes = Array.from(new Set(products.map((p) => p.productType).filter(Boolean))).sort();
+export const allBrands = Array.from(new Set(products.map((p) => p.brand).filter(Boolean))).sort(
+  compareBrands,
+);
+export const allProductTypes = Array.from(
+  new Set(products.map((p) => p.productType).filter(Boolean)),
+).sort();

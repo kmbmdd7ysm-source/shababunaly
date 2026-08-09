@@ -36,9 +36,7 @@ const STANDARD_DISPLAY_SIZES = ['S', 'M', 'L', 'XL', 'XXL', '3XL'];
 export function SizeSelector({ sizes, value, onChange, stockFor }) {
   const { t } = useLanguage();
   if (!sizes || (sizes.length === 1 && sizes[0] === 'OS')) return null;
-  const displaySizes = STANDARD_DISPLAY_SIZES.includes(sizes[0])
-    ? STANDARD_DISPLAY_SIZES
-    : sizes;
+  const displaySizes = STANDARD_DISPLAY_SIZES.includes(sizes[0]) ? STANDARD_DISPLAY_SIZES : sizes;
   return (
     <div className="variant-group size-selector-group">
       <div className="size-row" role="radiogroup" aria-label={t.a11y.selectSize}>

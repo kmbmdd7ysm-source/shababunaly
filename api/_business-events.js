@@ -2,24 +2,53 @@ import { createHash } from 'node:crypto';
 import { supabaseAdminRequest } from './_supabase-admin.js';
 
 const ALLOWED_EVENTS = new Set([
-  'checkout_started', 'checkout_abandoned', 'order_created', 'purchase_completed',
-  'payment_failed', 'payment_recovered', 'deposit_paid', 'final_payment_paid',
-  'refund_requested', 'refund_completed', 'return_requested', 'return_completed',
-  'quote_created', 'quote_approved', 'quote_rejected', 'production_started',
-  'shipment_created', 'shipment_delivered', 'inventory_stockout', 'ready_to_ship_conversion',
+  'checkout_started',
+  'checkout_abandoned',
+  'order_created',
+  'purchase_completed',
+  'payment_failed',
+  'payment_recovered',
+  'deposit_paid',
+  'final_payment_paid',
+  'refund_requested',
+  'refund_completed',
+  'return_requested',
+  'return_completed',
+  'quote_created',
+  'quote_approved',
+  'quote_rejected',
+  'production_started',
+  'shipment_created',
+  'shipment_delivered',
+  'inventory_stockout',
+  'ready_to_ship_conversion',
 ]);
-const clean = (value, max = 160) => String(value ?? '').trim().replace(/[\0\r\n]/g, ' ').slice(0, max);
-const safeNumber = (value) => Number.isFinite(Number(value)) ? Number(value) : null;
+const clean = (value, max = 160) =>
+  String(value ?? '')
+    .trim()
+    .replace(/[\0\r\n]/g, ' ')
+    .slice(0, max);
+const safeNumber = (value) => (Number.isFinite(Number(value)) ? Number(value) : null);
 function analyticsSalt() {
   const value = clean(process.env.ANALYTICS_HASH_SALT, 5000);
-  if (process.env.NODE_ENV === 'production' && value.length < 32) throw new Error('analytics_hash_salt_not_configured');
+  if (process.env.NODE_ENV === 'production' && value.length < 32)
+    throw new Error('analytics_hash_salt_not_configured');
   return value || 'development-only-analytics-salt-not-for-production';
 }
-const hashIdentifier = (value) => value ? createHash('sha256').update(`${analyticsSalt()}:${String(value).trim().toLowerCase()}`).digest('hex') : null;
+const hashIdentifier = (value) =>
+  value
+    ? createHash('sha256')
+        .update(`${analyticsSalt()}:${String(value).trim().toLowerCase()}`)
+        .digest('hex')
+    : null;
 const sanitizeProperties = (input = {}) => {
   const output = {};
   for (const [key, value] of Object.entries(input)) {
-    if (/email|phone|address|name|token|secret|password|authorization|cookie/i.test(key) || value == null) continue;
+    if (
+      /email|phone|address|name|token|secret|password|authorization|cookie/i.test(key) ||
+      value == null
+    )
+      continue;
     const safeKey = clean(key, 80);
     if (!safeKey) continue;
     if (typeof value === 'number' || typeof value === 'boolean') output[safeKey] = value;

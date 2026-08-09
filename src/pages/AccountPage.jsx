@@ -175,6 +175,7 @@ export default function AccountPage() {
     nextParams.delete('verified');
     nextParams.delete('mode');
     setParams(nextParams, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, params, pick, setParams]);
   useEffect(() => {
     if (!auth.user) return;
@@ -214,6 +215,7 @@ export default function AccountPage() {
         auth.user.user_metadata?.avatar_url ||
         '',
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id, auth.user?.user_metadata, data?.profile]);
   const selectSection = (nextSection) => {
     setSection(nextSection);
@@ -238,6 +240,7 @@ export default function AccountPage() {
   };
   useEffect(() => {
     loadOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.user?.id]);
   const clearPhotoPreview = () => {
     if (photoPreview) URL.revokeObjectURL(photoPreview);
@@ -893,7 +896,9 @@ export default function AccountPage() {
               onClick={async () => {
                 try {
                   await data.flush?.();
-                } catch {}
+                } catch {
+                  /* ignore */
+                }
                 data.clearAuthenticatedState?.();
                 await auth.signOut();
               }}

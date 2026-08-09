@@ -7,7 +7,9 @@ export const integrations = Object.freeze({
   onlineCard: Object.freeze({
     provider: String(import.meta.env.VITE_PAYMENTS_PROVIDER || '').trim(),
     publishableKey: String(
-      import.meta.env.VITE_PAYMENTS_PUBLISHABLE_KEY || import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '',
+      import.meta.env.VITE_PAYMENTS_PUBLISHABLE_KEY ||
+        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
+        '',
     ).trim(),
     apiBase: String(import.meta.env.VITE_CHECKOUT_API_BASE || '/api').trim(),
   }),

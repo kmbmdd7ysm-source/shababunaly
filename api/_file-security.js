@@ -1,24 +1,41 @@
 import { createHash } from 'node:crypto';
 
 const TYPES = Object.freeze({
-  jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp',
-  pdf: 'application/pdf', csv: 'text/csv', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+  pdf: 'application/pdf',
+  csv: 'text/csv',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 });
-const IMAGE_EXTENSIONS = new Set(['jpg','jpeg','png','webp']);
+const IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp']);
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 3 * 1024 * 1024;
 const MAX_FILES = 5;
 
-const safeName = (value) => String(value).normalize('NFKC').replace(/[\u0000-\u001f\u007f]/g, '').replace(/[^A-Za-z0-9._ -]/g, '_').slice(0, 180);
+const safeName = (value) =>
+  String(value)
+    .normalize('NFKC')
+    // Strip C0 controls deliberately — required for upload filename hygiene.
+    // eslint-disable-next-line no-control-regex -- intentional control-character removal
+    .replace(/[\u0000-\u001f\u007f]/g, '')
+    .replace(/[^A-Za-z0-9._ -]/g, '_')
+    .slice(0, 180);
 const extensionOf = (name) => safeName(name).split('.').pop().toLowerCase();
 const starts = (buffer, bytes) => bytes.every((value, index) => buffer[index] === value);
 
 function detectMime(buffer, extension) {
-  if (starts(buffer,[0xff,0xd8,0xff])) return 'image/jpeg';
-  if (starts(buffer,[0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])) return 'image/png';
-  if (buffer.length >= 12 && buffer.subarray(0,4).toString('ascii') === 'RIFF' && buffer.subarray(8,12).toString('ascii') === 'WEBP') return 'image/webp';
-  if (buffer.subarray(0,5).toString('ascii') === '%PDF-') return 'application/pdf';
-  if (extension === 'xlsx' && starts(buffer,[0x50,0x4b,0x03,0x04])) return TYPES.xlsx;
+  if (starts(buffer, [0xff, 0xd8, 0xff])) return 'image/jpeg';
+  if (starts(buffer, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return 'image/png';
+  if (
+    buffer.length >= 12 &&
+    buffer.subarray(0, 4).toString('ascii') === 'RIFF' &&
+    buffer.subarray(8, 12).toString('ascii') === 'WEBP'
+  )
+    return 'image/webp';
+  if (buffer.subarray(0, 5).toString('ascii') === '%PDF-') return 'application/pdf';
+  if (extension === 'xlsx' && starts(buffer, [0x50, 0x4b, 0x03, 0x04])) return TYPES.xlsx;
   if (extension === 'csv' && !buffer.includes(0x00)) {
     const text = buffer.subarray(0, Math.min(buffer.length, 4096)).toString('utf8');
     if (!text.includes('\ufffd')) return 'text/csv';
@@ -35,20 +52,40 @@ export function validateEncodedFiles(inputFiles) {
     const extension = extensionOf(name);
     if (!TYPES[extension] || extension === 'svg') throw new Error('unsupported_file_type');
     const value = String(file?.base64 || '').replace(/^data:[^;]+;base64,/, '');
-    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value) || value.length % 4 !== 0) throw new Error('invalid_file_encoding');
+    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value) || value.length % 4 !== 0)
+      throw new Error('invalid_file_encoding');
     const buffer = Buffer.from(value, 'base64');
     if (!buffer.length || buffer.length > MAX_FILE_BYTES) throw new Error('invalid_file_size');
     total += buffer.length;
     if (total > MAX_TOTAL_BYTES) throw new Error('files_too_large');
-    if (starts(buffer,[0x4d,0x5a]) || starts(buffer,[0x7f,0x45,0x4c,0x46]) || buffer.subarray(0,2).toString('ascii') === '#!') throw new Error('executable_file_rejected');
+    if (
+      starts(buffer, [0x4d, 0x5a]) ||
+      starts(buffer, [0x7f, 0x45, 0x4c, 0x46]) ||
+      buffer.subarray(0, 2).toString('ascii') === '#!'
+    )
+      throw new Error('executable_file_rejected');
     const detectedMime = detectMime(buffer, extension);
-    if (!detectedMime || detectedMime !== TYPES[extension]) throw new Error('file_signature_mismatch');
-    const declaredMime = String(file?.mime || '').toLowerCase().slice(0,160);
-    if (declaredMime && declaredMime !== detectedMime && !(extension === 'jpg' && declaredMime === 'image/jpg')) throw new Error('file_mime_mismatch');
+    if (!detectedMime || detectedMime !== TYPES[extension])
+      throw new Error('file_signature_mismatch');
+    const declaredMime = String(file?.mime || '')
+      .toLowerCase()
+      .slice(0, 160);
+    if (
+      declaredMime &&
+      declaredMime !== detectedMime &&
+      !(extension === 'jpg' && declaredMime === 'image/jpg')
+    )
+      throw new Error('file_mime_mismatch');
     const role = file?.role === 'product_image' ? 'product_image' : 'additional_file';
-    if (role === 'product_image' && !IMAGE_EXTENSIONS.has(extension)) throw new Error('product_image_must_be_image');
+    if (role === 'product_image' && !IMAGE_EXTENSIONS.has(extension))
+      throw new Error('product_image_must_be_image');
     return {
-      name, extension, declaredMime: declaredMime || detectedMime, detectedMime, buffer, role,
+      name,
+      extension,
+      declaredMime: declaredMime || detectedMime,
+      detectedMime,
+      buffer,
+      role,
       byteSize: buffer.length,
       sha256: createHash('sha256').update(buffer).digest('hex'),
     };

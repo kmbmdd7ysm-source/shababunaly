@@ -247,7 +247,9 @@ export default function TeamsWholesalePage() {
             <div className="container">
               <div className="gw-teams-intro">
                 <div>
-                  <p className="gw-spec">{pick({ en: 'Custom is built in', ar: 'التخصيص جزء من النظام' })}</p>
+                  <p className="gw-spec">
+                    {pick({ en: 'Custom is built in', ar: 'التخصيص جزء من النظام' })}
+                  </p>
                   <h2 id="stage-build-t" className="gw-teams-title">
                     {pick({
                       en: 'Every team order can be customized',
@@ -301,8 +303,7 @@ export default function TeamsWholesalePage() {
             className="gw-stage-block gw-stage-block--dark"
             aria-label={pick({ en: 'Quote and approval', ar: 'عرض السعر والاعتماد' })}
           >
-            <p className="gw-stage-mark">{pick({ en: 'Quote', ar: 'عرض السعر' })}
-            </p>
+            <p className="gw-stage-mark">{pick({ en: 'Quote', ar: 'عرض السعر' })}</p>
             <div className="gw-lifecycle">
               <div className="gw-lifecycle-inner">
                 {[
@@ -353,8 +354,7 @@ export default function TeamsWholesalePage() {
           </section>
 
           <section id="stage-approve" className="gw-stage-block" aria-labelledby="stage-approve-t">
-            <p className="gw-stage-mark">{pick({ en: 'Approve', ar: 'الاعتماد' })}
-            </p>
+            <p className="gw-stage-mark">{pick({ en: 'Approve', ar: 'الاعتماد' })}</p>
             <div className="container account-capabilities">
               <div>
                 <p className="section-label">ORGANIZATION ACCOUNT</p>
@@ -393,7 +393,8 @@ export default function TeamsWholesalePage() {
           </section>
 
           <section id="stage-produce" className="gw-stage-block gw-stage-block--muted">
-            <p className="gw-stage-mark">{' '}
+            <p className="gw-stage-mark">
+              {' '}
               {pick({ en: 'Produce & complete', ar: 'التصنيع والإكمال' })}
             </p>
             <div id="quote">

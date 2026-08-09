@@ -4,7 +4,9 @@ import { sendFormspree } from './formspree';
 const STAFF_ROLES = new Set(['super_admin', 'admin', 'operations', 'sales']);
 
 export function getStaffRole(user) {
-  const role = String(user?.app_metadata?.role || '').trim().toLowerCase();
+  const role = String(user?.app_metadata?.role || '')
+    .trim()
+    .toLowerCase();
   return STAFF_ROLES.has(role) ? role : '';
 }
 
@@ -23,20 +25,107 @@ async function notify(payload, subject) {
 export async function loadOperationsDashboard() {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const [ordersResult, quotesResult, designsResult, returnsResult, refundsResult, specialRequestsResult, catalogResult, settingsResult, shippingRatesResult, siteContentResult, brandsResult, categoriesResult, collectionsResult, warehousesResult, suppliersResult, carriersResult, couponsResult, taxRulesResult, invoicesResult, purchaseOrdersResult, shipmentsResult, shipmentItemsResult, notificationsResult, auditResult, mediaResult, contractsResult, paymentProofsResult, reordersResult, lockersResult, messagesResult, securityResult, stockMovementsResult, organizationsResult, lockerProductsResult, warehouseInventoryResult, inventoryImportsResult] = await Promise.all([
+  const [
+    ordersResult,
+    quotesResult,
+    designsResult,
+    returnsResult,
+    refundsResult,
+    specialRequestsResult,
+    catalogResult,
+    settingsResult,
+    shippingRatesResult,
+    siteContentResult,
+    brandsResult,
+    categoriesResult,
+    collectionsResult,
+    warehousesResult,
+    suppliersResult,
+    carriersResult,
+    couponsResult,
+    taxRulesResult,
+    invoicesResult,
+    purchaseOrdersResult,
+    shipmentsResult,
+    shipmentItemsResult,
+    notificationsResult,
+    auditResult,
+    mediaResult,
+    contractsResult,
+    paymentProofsResult,
+    reordersResult,
+    lockersResult,
+    messagesResult,
+    securityResult,
+    stockMovementsResult,
+    organizationsResult,
+    lockerProductsResult,
+    warehouseInventoryResult,
+    inventoryImportsResult,
+  ] = await Promise.all([
     client.from('orders').select('*').order('created_at', { ascending: false }).limit(300),
-    client.from('quote_requests').select('*').not('status', 'in', '(completed,cancelled)').order('created_at', { ascending: false }).limit(150),
-    client.from('custom_designs').select('*').in('status', ['quote_requested', 'under_review', 'changes_requested', 'proof_ready', 'approved']).order('updated_at', { ascending: false }).limit(150),
-    client.from('return_requests').select('*').not('status', 'in', '(closed,cancelled,rejected)').order('created_at', { ascending: false }).limit(150),
+    client
+      .from('quote_requests')
+      .select('*')
+      .not('status', 'in', '(completed,cancelled)')
+      .order('created_at', { ascending: false })
+      .limit(150),
+    client
+      .from('custom_designs')
+      .select('*')
+      .in('status', [
+        'quote_requested',
+        'under_review',
+        'changes_requested',
+        'proof_ready',
+        'approved',
+      ])
+      .order('updated_at', { ascending: false })
+      .limit(150),
+    client
+      .from('return_requests')
+      .select('*')
+      .not('status', 'in', '(closed,cancelled,rejected)')
+      .order('created_at', { ascending: false })
+      .limit(150),
     client.from('refund_events').select('*').order('created_at', { ascending: false }).limit(100),
-    client.from('special_requests').select('*').not('status', 'in', '(closed,rejected)').order('created_at', { ascending: false }).limit(200),
-    client.from('product_catalog').select('variant_id,product_id,canonical_slug,sku,product_name,active,unit_price,availability_state,inventory_tracking,inventory_quantity,variant_data,updated_at').order('product_name', { ascending: true }).limit(1000),
-    client.from('commerce_settings').select('setting_key,numeric_value').eq('setting_key', 'usd_to_lyd_rate').maybeSingle(),
-    client.from('shipping_country_rates').select('country_code,rate_usd,active,note,updated_at').order('country_code', { ascending: true }),
-    client.from('site_content').select('content_key,content_value,public_read,updated_at').order('content_key', { ascending: true }),
+    client
+      .from('special_requests')
+      .select('*')
+      .not('status', 'in', '(closed,rejected)')
+      .order('created_at', { ascending: false })
+      .limit(200),
+    client
+      .from('product_catalog')
+      .select(
+        'variant_id,product_id,canonical_slug,sku,product_name,active,unit_price,availability_state,inventory_tracking,inventory_quantity,variant_data,updated_at',
+      )
+      .order('product_name', { ascending: true })
+      .limit(1000),
+    client
+      .from('commerce_settings')
+      .select('setting_key,numeric_value')
+      .eq('setting_key', 'usd_to_lyd_rate')
+      .maybeSingle(),
+    client
+      .from('shipping_country_rates')
+      .select('country_code,rate_usd,active,note,updated_at')
+      .order('country_code', { ascending: true }),
+    client
+      .from('site_content')
+      .select('content_key,content_value,public_read,updated_at')
+      .order('content_key', { ascending: true }),
     client.from('catalog_brands').select('*').order('sort_order', { ascending: true }).limit(300),
-    client.from('catalog_categories').select('*').order('sort_order', { ascending: true }).limit(300),
-    client.from('catalog_collections').select('*').order('sort_order', { ascending: true }).limit(300),
+    client
+      .from('catalog_categories')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .limit(300),
+    client
+      .from('catalog_collections')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .limit(300),
     client.from('warehouses').select('*').order('name', { ascending: true }).limit(100),
     client.from('suppliers').select('*').order('name', { ascending: true }).limit(300),
     client.from('carriers').select('*').order('name', { ascending: true }).limit(100),
@@ -46,22 +135,102 @@ export async function loadOperationsDashboard() {
     client.from('purchase_orders').select('*').order('created_at', { ascending: false }).limit(100),
     client.from('shipments').select('*').order('created_at', { ascending: false }).limit(100),
     client.from('shipment_items').select('*').limit(500),
-    client.from('commerce_notifications').select('id,event_type,entity_type,entity_id,delivery_status,attempts,last_error,created_at,updated_at').order('created_at', { ascending: false }).limit(100),
-    client.from('operations_audit_log').select('*').order('created_at', { ascending: false }).limit(100),
+    client
+      .from('commerce_notifications')
+      .select(
+        'id,event_type,entity_type,entity_id,delivery_status,attempts,last_error,created_at,updated_at',
+      )
+      .order('created_at', { ascending: false })
+      .limit(100),
+    client
+      .from('operations_audit_log')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100),
     client.from('media_assets').select('*').order('created_at', { ascending: false }).limit(100),
-    client.from('organization_contracts').select('*').order('created_at', { ascending: false }).limit(150),
+    client
+      .from('organization_contracts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(150),
     client.from('payment_proofs').select('*').order('created_at', { ascending: false }).limit(150),
-    client.from('reorder_requests').select('*').order('created_at', { ascending: false }).limit(150),
-    client.from('team_locker_stores').select('*').order('created_at', { ascending: false }).limit(150),
-    client.from('project_messages').select('*').order('created_at', { ascending: false }).limit(150),
+    client
+      .from('reorder_requests')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(150),
+    client
+      .from('team_locker_stores')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(150),
+    client
+      .from('project_messages')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(150),
     client.from('security_events').select('*').order('created_at', { ascending: false }).limit(100),
-    client.from('stock_movement_ledger').select('*').order('created_at', { ascending: false }).limit(200),
+    client
+      .from('stock_movement_ledger')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(200),
     client.from('organizations').select('*').order('created_at', { ascending: false }).limit(300),
-    client.from('team_locker_products').select('*').order('sort_order', { ascending: true }).limit(500),
-    client.from('warehouse_inventory').select('*,warehouse:warehouses(code,name),variant:product_catalog(sku,product_name)').order('updated_at', { ascending: false }).limit(2000),
-    client.from('inventory_import_batches').select('*').order('created_at', { ascending: false }).limit(50),
+    client
+      .from('team_locker_products')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .limit(500),
+    client
+      .from('warehouse_inventory')
+      .select('*,warehouse:warehouses(code,name),variant:product_catalog(sku,product_name)')
+      .order('updated_at', { ascending: false })
+      .limit(2000),
+    client
+      .from('inventory_import_batches')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(50),
   ]);
-  for (const result of [ordersResult, quotesResult, designsResult, returnsResult, refundsResult, specialRequestsResult, catalogResult, settingsResult, shippingRatesResult, siteContentResult, brandsResult, categoriesResult, collectionsResult, warehousesResult, suppliersResult, carriersResult, couponsResult, taxRulesResult, invoicesResult, purchaseOrdersResult, shipmentsResult, shipmentItemsResult, notificationsResult, auditResult, mediaResult, contractsResult, paymentProofsResult, reordersResult, lockersResult, messagesResult, securityResult, stockMovementsResult, organizationsResult, lockerProductsResult, warehouseInventoryResult, inventoryImportsResult]) if (result.error) throw result.error;
+  for (const result of [
+    ordersResult,
+    quotesResult,
+    designsResult,
+    returnsResult,
+    refundsResult,
+    specialRequestsResult,
+    catalogResult,
+    settingsResult,
+    shippingRatesResult,
+    siteContentResult,
+    brandsResult,
+    categoriesResult,
+    collectionsResult,
+    warehousesResult,
+    suppliersResult,
+    carriersResult,
+    couponsResult,
+    taxRulesResult,
+    invoicesResult,
+    purchaseOrdersResult,
+    shipmentsResult,
+    shipmentItemsResult,
+    notificationsResult,
+    auditResult,
+    mediaResult,
+    contractsResult,
+    paymentProofsResult,
+    reordersResult,
+    lockersResult,
+    messagesResult,
+    securityResult,
+    stockMovementsResult,
+    organizationsResult,
+    lockerProductsResult,
+    warehouseInventoryResult,
+    inventoryImportsResult,
+  ])
+    if (result.error) throw result.error;
   return {
     orders: ordersResult.data || [],
     quotes: quotesResult.data || [],
@@ -73,25 +242,57 @@ export async function loadOperationsDashboard() {
     exchangeRate: Number(settingsResult.data?.numeric_value || 9),
     shippingRates: shippingRatesResult.data || [],
     siteContent: siteContentResult.data || [],
-    brands: brandsResult.data || [], categories: categoriesResult.data || [], collections: collectionsResult.data || [], warehouses: warehousesResult.data || [],
-    suppliers: suppliersResult.data || [], carriers: carriersResult.data || [], coupons: couponsResult.data || [], taxRules: taxRulesResult.data || [], invoices: invoicesResult.data || [],
-    purchaseOrders: purchaseOrdersResult.data || [], shipments: shipmentsResult.data || [], shipmentItems: shipmentItemsResult.data || [], notifications: notificationsResult.data || [],
-    auditLog: auditResult.data || [], mediaAssets: mediaResult.data || [],
-    contracts: contractsResult.data || [], paymentProofs: paymentProofsResult.data || [],
-    reorders: reordersResult.data || [], lockers: lockersResult.data || [], messages: messagesResult.data || [],
-    securityEvents: securityResult.data || [], stockMovements: stockMovementsResult.data || [], organizations: organizationsResult.data || [], lockerProducts: lockerProductsResult.data || [], warehouseInventory: warehouseInventoryResult.data || [], inventoryImports: inventoryImportsResult.data || [],
+    brands: brandsResult.data || [],
+    categories: categoriesResult.data || [],
+    collections: collectionsResult.data || [],
+    warehouses: warehousesResult.data || [],
+    suppliers: suppliersResult.data || [],
+    carriers: carriersResult.data || [],
+    coupons: couponsResult.data || [],
+    taxRules: taxRulesResult.data || [],
+    invoices: invoicesResult.data || [],
+    purchaseOrders: purchaseOrdersResult.data || [],
+    shipments: shipmentsResult.data || [],
+    shipmentItems: shipmentItemsResult.data || [],
+    notifications: notificationsResult.data || [],
+    auditLog: auditResult.data || [],
+    mediaAssets: mediaResult.data || [],
+    contracts: contractsResult.data || [],
+    paymentProofs: paymentProofsResult.data || [],
+    reorders: reordersResult.data || [],
+    lockers: lockersResult.data || [],
+    messages: messagesResult.data || [],
+    securityEvents: securityResult.data || [],
+    stockMovements: stockMovementsResult.data || [],
+    organizations: organizationsResult.data || [],
+    lockerProducts: lockerProductsResult.data || [],
+    warehouseInventory: warehouseInventoryResult.data || [],
+    inventoryImports: inventoryImportsResult.data || [],
   };
 }
 
-
-export async function updateSpecialRequest({ requestId, status, productCost = null, shippingCost = null, taxTotal = 0, discountTotal = 0, currency = 'USD', estimatedArrivalDays = null, staffNotes = '', paymentUrl = '', quoteExpiresAt = null }) {
+export async function updateSpecialRequest({
+  requestId,
+  status,
+  productCost = null,
+  shippingCost = null,
+  taxTotal = 0,
+  discountTotal = 0,
+  currency = 'USD',
+  estimatedArrivalDays = null,
+  staffNotes = '',
+  paymentUrl = '',
+  quoteExpiresAt = null,
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const numeric = (value) => value === '' || value == null ? null : Number(value);
+  const numeric = (value) => (value === '' || value == null ? null : Number(value));
   const values = [productCost, shippingCost, taxTotal, discountTotal].map(numeric);
-  if (values.some((value) => value != null && (!Number.isFinite(value) || value < 0))) throw new Error('invalid_quote_amount');
+  if (values.some((value) => value != null && (!Number.isFinite(value) || value < 0)))
+    throw new Error('invalid_quote_amount');
   const days = numeric(estimatedArrivalDays);
-  if (days != null && (!Number.isInteger(days) || days < 1 || days > 365)) throw new Error('invalid_arrival_days');
+  if (days != null && (!Number.isInteger(days) || days < 1 || days > 365))
+    throw new Error('invalid_arrival_days');
   const { data, error } = await client.rpc('staff_update_special_request', {
     p_request_id: requestId,
     p_status: status,
@@ -120,15 +321,28 @@ export async function setShippingQuote({ orderId, amountUsd, note = '' }) {
     p_note: String(note || '').slice(0, 500),
   });
   if (error) throw error;
-  await notify({
-    event: 'shipping_quote_ready', orderNumber: data?.order_number, customerEmail: data?.customer_email,
-    shippingUsd: data?.shipping_total, totalUsd: data?.total, amountDueNowUsd: data?.amount_due_now,
-    paymentPlan: data?.payment_plan, note,
-  }, `Shipping quote ready — ${data?.order_number || orderId}`);
+  await notify(
+    {
+      event: 'shipping_quote_ready',
+      orderNumber: data?.order_number,
+      customerEmail: data?.customer_email,
+      shippingUsd: data?.shipping_total,
+      totalUsd: data?.total,
+      amountDueNowUsd: data?.amount_due_now,
+      paymentPlan: data?.payment_plan,
+      note,
+    },
+    `Shipping quote ready — ${data?.order_number || orderId}`,
+  );
   return data;
 }
 
-export async function updateOrderWorkflow({ orderId, orderStatus = null, paymentStatus = null, fulfillmentStatus = null }) {
+export async function updateOrderWorkflow({
+  orderId,
+  orderStatus = null,
+  paymentStatus = null,
+  fulfillmentStatus = null,
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_update_order_workflow', {
@@ -138,15 +352,29 @@ export async function updateOrderWorkflow({ orderId, orderStatus = null, payment
     p_fulfillment_status: fulfillmentStatus || null,
   });
   if (error) throw error;
-  await notify({
-    event: 'order_status_update', orderNumber: data?.order_number, customerEmail: data?.customer_email,
-    orderStatus: data?.order_status, paymentStatus: data?.payment_status, fulfillmentStatus: data?.fulfillment_status,
-    amountDueNowUsd: data?.amount_due_now, remainingBalanceUsd: data?.remaining_balance,
-  }, `Order update — ${data?.order_number || orderId}`);
+  await notify(
+    {
+      event: 'order_status_update',
+      orderNumber: data?.order_number,
+      customerEmail: data?.customer_email,
+      orderStatus: data?.order_status,
+      paymentStatus: data?.payment_status,
+      fulfillmentStatus: data?.fulfillment_status,
+      amountDueNowUsd: data?.amount_due_now,
+      remainingBalanceUsd: data?.remaining_balance,
+    },
+    `Order update — ${data?.order_number || orderId}`,
+  );
   return data;
 }
 
-export async function recordManualPayment({ orderId, amountUsd, method = 'cash', reference = '', note = '' }) {
+export async function recordManualPayment({
+  orderId,
+  amountUsd,
+  method = 'cash',
+  reference = '',
+  note = '',
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -159,26 +387,53 @@ export async function recordManualPayment({ orderId, amountUsd, method = 'cash',
     p_note: String(note || '').slice(0, 1000),
   });
   if (error) throw error;
-  await notify({
-    event: 'manual_payment_recorded', orderNumber: data?.order_number, customerEmail: data?.customer_email,
-    amountUsd: amount, paymentStatus: data?.payment_status, amountPaidUsd: data?.amount_paid,
-    remainingBalanceUsd: data?.remaining_balance, method, reference, note,
-  }, `Payment recorded — ${data?.order_number || orderId}`);
+  await notify(
+    {
+      event: 'manual_payment_recorded',
+      orderNumber: data?.order_number,
+      customerEmail: data?.customer_email,
+      amountUsd: amount,
+      paymentStatus: data?.payment_status,
+      amountPaidUsd: data?.amount_paid,
+      remainingBalanceUsd: data?.remaining_balance,
+      method,
+      reference,
+      note,
+    },
+    `Payment recorded — ${data?.order_number || orderId}`,
+  );
   return data;
 }
 
-export async function updateQuoteWorkflow({ quoteId, status, subtotal, shippingTotal, taxTotal = 0, discountTotal = 0 }) {
+export async function updateQuoteWorkflow({
+  quoteId,
+  status,
+  subtotal,
+  shippingTotal,
+  taxTotal = 0,
+  discountTotal = 0,
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const parsedSubtotal = subtotal === '' || subtotal == null ? null : Number(subtotal);
-  const parsedShipping = shippingTotal === '' || shippingTotal == null ? null : Number(shippingTotal);
+  const parsedShipping =
+    shippingTotal === '' || shippingTotal == null ? null : Number(shippingTotal);
   const parsedTax = taxTotal == null ? 0 : Number(taxTotal);
   const parsedDiscount = discountTotal == null ? 0 : Number(discountTotal);
-  if (parsedSubtotal != null && (!Number.isFinite(parsedSubtotal) || parsedSubtotal < 0)) throw new Error('invalid_quote_subtotal');
-  if (parsedShipping != null && (!Number.isFinite(parsedShipping) || parsedShipping < 0)) throw new Error('invalid_quote_shipping');
+  if (parsedSubtotal != null && (!Number.isFinite(parsedSubtotal) || parsedSubtotal < 0))
+    throw new Error('invalid_quote_subtotal');
+  if (parsedShipping != null && (!Number.isFinite(parsedShipping) || parsedShipping < 0))
+    throw new Error('invalid_quote_shipping');
   if (!Number.isFinite(parsedTax) || parsedTax < 0) throw new Error('invalid_quote_tax');
-  if (!Number.isFinite(parsedDiscount) || parsedDiscount < 0) throw new Error('invalid_quote_discount');
-  const total = parsedSubtotal == null || parsedShipping == null ? null : Math.max(0, Math.round((parsedSubtotal + parsedShipping + parsedTax - parsedDiscount) * 100) / 100);
+  if (!Number.isFinite(parsedDiscount) || parsedDiscount < 0)
+    throw new Error('invalid_quote_discount');
+  const total =
+    parsedSubtotal == null || parsedShipping == null
+      ? null
+      : Math.max(
+          0,
+          Math.round((parsedSubtotal + parsedShipping + parsedTax - parsedDiscount) * 100) / 100,
+        );
   const { data, error } = await client.rpc('staff_update_quote', {
     p_quote_id: quoteId,
     p_status: status,
@@ -189,11 +444,22 @@ export async function updateQuoteWorkflow({ quoteId, status, subtotal, shippingT
     p_total: total,
   });
   if (error) throw error;
-  await notify({
-    event: 'quote_update', quoteNumber: data?.quote_number, customerEmail: data?.request_data?.customerEmail || data?.request_data?.email,
-    status: data?.status, subtotalUsd: data?.subtotal, shippingUsd: data?.shipping_total, taxUsd: data?.tax_total, discountUsd: data?.discount_total, totalUsd: data?.total,
-    depositUsd: data?.deposit_amount, remainingUsd: data?.remaining_balance,
-  }, `Quote update — ${data?.quote_number || quoteId}`);
+  await notify(
+    {
+      event: 'quote_update',
+      quoteNumber: data?.quote_number,
+      customerEmail: data?.request_data?.customerEmail || data?.request_data?.email,
+      status: data?.status,
+      subtotalUsd: data?.subtotal,
+      shippingUsd: data?.shipping_total,
+      taxUsd: data?.tax_total,
+      discountUsd: data?.discount_total,
+      totalUsd: data?.total,
+      depositUsd: data?.deposit_amount,
+      remainingUsd: data?.remaining_balance,
+    },
+    `Quote update — ${data?.quote_number || quoteId}`,
+  );
   return data;
 }
 
@@ -204,14 +470,23 @@ export async function setExchangeRate(rate) {
   if (!Number.isFinite(numeric) || numeric <= 0) throw new Error('invalid_exchange_rate');
   const { data, error } = await client.rpc('staff_set_exchange_rate', { p_rate: numeric });
   if (error) throw error;
-  await notify({ event: 'exchange_rate_update', usdToLydRate: numeric }, 'Shababuna exchange rate updated');
+  await notify(
+    { event: 'exchange_rate_update', usdToLydRate: numeric },
+    'Shababuna exchange rate updated',
+  );
   return data;
 }
 
 export async function publishDesignProof({ designId, proofUrls = [], note = '' }) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const urls = [...new Set(proofUrls.map((value) => String(value || '').trim()).filter((value) => /^https:\/\//i.test(value)))].slice(0, 8);
+  const urls = [
+    ...new Set(
+      proofUrls
+        .map((value) => String(value || '').trim())
+        .filter((value) => /^https:\/\//i.test(value)),
+    ),
+  ].slice(0, 8);
   if (!urls.length) throw new Error('proof_url_required');
   const { data, error } = await client.rpc('staff_publish_design_proof', {
     p_design_id: designId,
@@ -219,12 +494,27 @@ export async function publishDesignProof({ designId, proofUrls = [], note = '' }
     p_note: String(note || '').slice(0, 1000),
   });
   if (error) throw error;
-  await notify({ event: 'design_proof_published', designId, designName: data?.name, status: data?.status, proofUrls: urls, note }, `Design proof published — ${data?.name || designId}`);
+  await notify(
+    {
+      event: 'design_proof_published',
+      designId,
+      designName: data?.name,
+      status: data?.status,
+      proofUrls: urls,
+      note,
+    },
+    `Design proof published — ${data?.name || designId}`,
+  );
   return data;
 }
 
-
-export async function recordQuotePayment({ quoteId, amountUsd, method = 'bank_transfer', reference = '', note = '' }) {
+export async function recordQuotePayment({
+  quoteId,
+  amountUsd,
+  method = 'bank_transfer',
+  reference = '',
+  note = '',
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -237,21 +527,38 @@ export async function recordQuotePayment({ quoteId, amountUsd, method = 'bank_tr
     p_note: String(note || '').slice(0, 1000),
   });
   if (error) throw error;
-  await notify({
-    event: 'quote_payment_recorded', quoteNumber: data?.quote_number,
-    customerEmail: data?.request_data?.customerEmail || data?.request_data?.email,
-    amountUsd: amount, paymentStatus: data?.payment_status, status: data?.status,
-    amountPaidUsd: data?.amount_paid, amountDueNowUsd: data?.amount_due_now,
-    remainingBalanceUsd: data?.remaining_balance, method, reference,
-  }, `Quote payment recorded — ${data?.quote_number || quoteId}`);
+  await notify(
+    {
+      event: 'quote_payment_recorded',
+      quoteNumber: data?.quote_number,
+      customerEmail: data?.request_data?.customerEmail || data?.request_data?.email,
+      amountUsd: amount,
+      paymentStatus: data?.payment_status,
+      status: data?.status,
+      amountPaidUsd: data?.amount_paid,
+      amountDueNowUsd: data?.amount_due_now,
+      remainingBalanceUsd: data?.remaining_balance,
+      method,
+      reference,
+    },
+    `Quote payment recorded — ${data?.quote_number || quoteId}`,
+  );
   return data;
 }
 
-export async function updateReturnRequest({ returnId, status, resolution = null, refundAmount = null, staffNote = '', restock = false }) {
+export async function updateReturnRequest({
+  returnId,
+  status,
+  resolution = null,
+  refundAmount = null,
+  staffNote = '',
+  restock = false,
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = refundAmount === '' || refundAmount == null ? null : Number(refundAmount);
-  if (amount != null && (!Number.isFinite(amount) || amount < 0)) throw new Error('invalid_refund_amount');
+  if (amount != null && (!Number.isFinite(amount) || amount < 0))
+    throw new Error('invalid_refund_amount');
   const { data, error } = await client.rpc('staff_update_return_request', {
     p_return_id: returnId,
     p_status: status,
@@ -261,15 +568,30 @@ export async function updateReturnRequest({ returnId, status, resolution = null,
     p_restock: Boolean(restock),
   });
   if (error) throw error;
-  await notify({
-    event: 'return_update', returnNumber: data?.return_number, orderNumber: data?.order_number,
-    customerEmail: data?.customer_email, status: data?.status, resolution: data?.resolution,
-    refundAmountUsd: data?.refund_amount, staffNote: data?.staff_note,
-  }, `Return update — ${data?.return_number || returnId}`);
+  await notify(
+    {
+      event: 'return_update',
+      returnNumber: data?.return_number,
+      orderNumber: data?.order_number,
+      customerEmail: data?.customer_email,
+      status: data?.status,
+      resolution: data?.resolution,
+      refundAmountUsd: data?.refund_amount,
+      staffNote: data?.staff_note,
+    },
+    `Return update — ${data?.return_number || returnId}`,
+  );
   return data;
 }
 
-export async function recordRefund({ orderId, amountUsd, method = 'bank_transfer', reference = '', note = '', returnRequestId = null }) {
+export async function recordRefund({
+  orderId,
+  amountUsd,
+  method = 'bank_transfer',
+  reference = '',
+  note = '',
+  returnRequestId = null,
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -283,36 +605,77 @@ export async function recordRefund({ orderId, amountUsd, method = 'bank_transfer
     p_return_request_id: returnRequestId || null,
   });
   if (error) throw error;
-  await notify({
-    event: 'refund_recorded', orderNumber: data?.order_number, customerEmail: data?.customer_email,
-    refundAmountUsd: amount, amountRefundedUsd: data?.amount_refunded,
-    paymentStatus: data?.payment_status, method, reference, returnRequestId,
-  }, `Refund recorded — ${data?.order_number || orderId}`);
+  await notify(
+    {
+      event: 'refund_recorded',
+      orderNumber: data?.order_number,
+      customerEmail: data?.customer_email,
+      refundAmountUsd: amount,
+      amountRefundedUsd: data?.amount_refunded,
+      paymentStatus: data?.payment_status,
+      method,
+      reference,
+      returnRequestId,
+    },
+    `Refund recorded — ${data?.order_number || orderId}`,
+  );
   return data;
 }
 
-export async function updateCatalogVariant({ variantId, unitPrice, wholesalePrice, inventoryQuantity, active, readyToShip }) {
+export async function updateCatalogVariant({
+  variantId,
+  unitPrice,
+  wholesalePrice,
+  inventoryQuantity,
+  active,
+  readyToShip,
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const payload = {
     p_variant_id: variantId,
     p_unit_price: unitPrice === '' || unitPrice == null ? null : Number(unitPrice),
-    p_wholesale_price: wholesalePrice === '' || wholesalePrice == null ? null : Number(wholesalePrice),
-    p_inventory_quantity: inventoryQuantity === '' || inventoryQuantity == null ? null : Number(inventoryQuantity),
+    p_wholesale_price:
+      wholesalePrice === '' || wholesalePrice == null ? null : Number(wholesalePrice),
+    p_inventory_quantity:
+      inventoryQuantity === '' || inventoryQuantity == null ? null : Number(inventoryQuantity),
     p_active: active == null ? null : Boolean(active),
     p_ready_to_ship: readyToShip == null ? null : Boolean(readyToShip),
   };
   const { data, error } = await client.rpc('staff_update_catalog_variant', payload);
   if (error) throw error;
-  await notify({ event: 'catalog_variant_update', variantId, sku: data?.sku, productName: data?.product_name, unitPriceUsd: data?.unit_price, inventory: data?.inventory_quantity, active: data?.active, readyToShip: data?.variant_data?.readyToShip }, `Catalog updated — ${data?.sku || variantId}`);
+  await notify(
+    {
+      event: 'catalog_variant_update',
+      variantId,
+      sku: data?.sku,
+      productName: data?.product_name,
+      unitPriceUsd: data?.unit_price,
+      inventory: data?.inventory_quantity,
+      active: data?.active,
+      readyToShip: data?.variant_data?.readyToShip,
+    },
+    `Catalog updated — ${data?.sku || variantId}`,
+  );
   return data;
 }
 
-
 export async function updateCatalogProduct({
-  productId, nameEn, nameAr, descriptionEn, descriptionAr, brand, category,
-  subcategory, productType, imageUrl, featured, newArrival, bestSeller,
-  comingSoon, quoteOnly,
+  productId,
+  nameEn,
+  nameAr,
+  descriptionEn,
+  descriptionAr,
+  brand,
+  category,
+  subcategory,
+  productType,
+  imageUrl,
+  featured,
+  newArrival,
+  bestSeller,
+  comingSoon,
+  quoteOnly,
 }) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
@@ -334,21 +697,37 @@ export async function updateCatalogProduct({
     p_quote_only: quoteOnly == null ? null : Boolean(quoteOnly),
   });
   if (error) throw error;
-  await notify({
-    event: 'catalog_product_update', productId, productName: data?.product_name,
-    brand, category, subcategory, productType, imageUrl,
-  }, `Catalog product updated — ${data?.product_name || productId}`);
+  await notify(
+    {
+      event: 'catalog_product_update',
+      productId,
+      productName: data?.product_name,
+      brand,
+      category,
+      subcategory,
+      productType,
+      imageUrl,
+    },
+    `Catalog product updated — ${data?.product_name || productId}`,
+  );
   return data;
 }
 
-
-export async function setCountryShippingRate({ countryCode, rateUsd = null, active = true, note = '' }) {
+export async function setCountryShippingRate({
+  countryCode,
+  rateUsd = null,
+  active = true,
+  note = '',
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const code = String(countryCode || '').trim().toUpperCase();
+  const code = String(countryCode || '')
+    .trim()
+    .toUpperCase();
   const rate = rateUsd === '' || rateUsd == null ? null : Number(rateUsd);
   if (!/^[A-Z]{2}$/.test(code) || code === 'LY') throw new Error('invalid_country_code');
-  if (active && (!Number.isFinite(rate) || rate < 0)) throw new Error('active_shipping_rate_required');
+  if (active && (!Number.isFinite(rate) || rate < 0))
+    throw new Error('active_shipping_rate_required');
   const { data, error } = await client.rpc('staff_set_country_shipping_rate', {
     p_country_code: code,
     p_rate_usd: rate,
@@ -356,35 +735,49 @@ export async function setCountryShippingRate({ countryCode, rateUsd = null, acti
     p_note: String(note || '').slice(0, 500),
   });
   if (error) throw error;
-  await notify({ event: 'country_shipping_rate_update', countryCode: code, rateUsd: rate, active, note }, `Country shipping rate updated — ${code}`);
+  await notify(
+    { event: 'country_shipping_rate_update', countryCode: code, rateUsd: rate, active, note },
+    `Country shipping rate updated — ${code}`,
+  );
   return data;
 }
 
 export async function updateSiteContent({ contentKey, contentValue, publicRead = true }) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const key = String(contentKey || '').trim().toLowerCase();
-  if (!/^[a-z0-9_:-]{2,80}$/.test(key) || !contentValue || typeof contentValue !== 'object') throw new Error('invalid_site_content');
+  const key = String(contentKey || '')
+    .trim()
+    .toLowerCase();
+  if (!/^[a-z0-9_:-]{2,80}$/.test(key) || !contentValue || typeof contentValue !== 'object')
+    throw new Error('invalid_site_content');
   const { data, error } = await client.rpc('staff_update_site_content', {
     p_content_key: key,
     p_content_value: contentValue,
     p_public_read: Boolean(publicRead),
   });
   if (error) throw error;
-  await notify({ event: 'site_content_update', contentKey: key, contentValue }, `Site content updated — ${key}`);
+  await notify(
+    { event: 'site_content_update', contentKey: key, contentValue },
+    `Site content updated — ${key}`,
+  );
   return data;
 }
-
 
 async function adminUsersRequest(accessToken, options = {}) {
   if (!accessToken) throw new Error('staff_session_required');
   const response = await fetch('/api/admin-users', {
     ...options,
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}`, ...(options.headers || {}) },
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      ...(options.headers || {}),
+    },
     cache: 'no-store',
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok || data.ok === false) throw new Error(data.error || 'admin_users_request_failed');
+  if (!response.ok || data.ok === false)
+    throw new Error(data.error || 'admin_users_request_failed');
   return data;
 }
 
@@ -393,51 +786,135 @@ export async function loadAdminUsers(accessToken) {
 }
 
 export async function updateAdminUserRole(accessToken, userId, role) {
-  return adminUsersRequest(accessToken, { method: 'PATCH', body: JSON.stringify({ userId, role }) });
+  return adminUsersRequest(accessToken, {
+    method: 'PATCH',
+    body: JSON.stringify({ userId, role }),
+  });
 }
-
 
 function encodeUploadFile(file, role = 'additional_file') {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader(); reader.onerror = () => reject(new Error('file_read_failed'));
-    reader.onload = () => resolve({ name: file.name, mime: file.type, role, base64: String(reader.result || '').split(',')[1] || '' }); reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('file_read_failed'));
+    reader.onload = () =>
+      resolve({
+        name: file.name,
+        mime: file.type,
+        role,
+        base64: String(reader.result || '').split(',')[1] || '',
+      });
+    reader.readAsDataURL(file);
   });
 }
 
 export async function uploadDesignProofFiles({ accessToken, designId, files }) {
   if (!accessToken) throw new Error('staff_session_required');
-  const list = Array.from(files || []).slice(0, 5); if (!list.length) throw new Error('file_required');
+  const list = Array.from(files || []).slice(0, 5);
+  if (!list.length) throw new Error('file_required');
   const encoded = await Promise.all(list.map((file) => encodeUploadFile(file)));
-  const response = await fetch('/api/admin-media-upload', { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ entityType: 'design', entityId: designId, assetRole: 'proof', files: encoded }), cache: 'no-store' });
-  const data = await response.json().catch(() => ({})); if (!response.ok || !data.ok) throw new Error(data.error || 'proof_upload_failed'); return data.assets || [];
+  const response = await fetch('/api/admin-media-upload', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      entityType: 'design',
+      entityId: designId,
+      assetRole: 'proof',
+      files: encoded,
+    }),
+    cache: 'no-store',
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(data.error || 'proof_upload_failed');
+  return data.assets || [];
 }
 
-
-const OPERATIONAL_TABLES = new Set(['catalog_brands','catalog_categories','catalog_collections','warehouses','suppliers','carriers','coupons','tax_rules','organization_contracts','team_locker_stores','team_locker_products','purchase_orders','invoices','shipments','reorder_requests']);
+const OPERATIONAL_TABLES = new Set([
+  'catalog_brands',
+  'catalog_categories',
+  'catalog_collections',
+  'warehouses',
+  'suppliers',
+  'carriers',
+  'coupons',
+  'tax_rules',
+  'organization_contracts',
+  'team_locker_stores',
+  'team_locker_products',
+  'purchase_orders',
+  'invoices',
+  'shipments',
+  'reorder_requests',
+]);
 export async function upsertOperationalEntity(table, row) {
-  if (!OPERATIONAL_TABLES.has(table) || !row || typeof row !== 'object') throw new Error('invalid_operational_entity');
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const payload = { ...row }; if (!payload.id) delete payload.id;
-  const { data, error } = await client.from(table).upsert(payload).select('*').single(); if (error) throw error; return data;
+  if (!OPERATIONAL_TABLES.has(table) || !row || typeof row !== 'object')
+    throw new Error('invalid_operational_entity');
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const payload = { ...row };
+  if (!payload.id) delete payload.id;
+  const { data, error } = await client.from(table).upsert(payload).select('*').single();
+  if (error) throw error;
+  return data;
 }
 export async function deleteOperationalEntity(table, id) {
   if (!OPERATIONAL_TABLES.has(table) || !id) throw new Error('invalid_operational_entity');
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const { error } = await client.from(table).delete().eq('id', id); if (error) throw error; return true;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const { error } = await client.from(table).delete().eq('id', id);
+  if (error) throw error;
+  return true;
 }
-export async function recordStockMovement({ warehouseId, variantId, movementType, quantityDelta, referenceType = 'manual', referenceId = '', note = '' }) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const quantity = Number(quantityDelta); if (!warehouseId || !variantId || !Number.isInteger(quantity) || quantity === 0) throw new Error('invalid_stock_movement');
-  const { data, error } = await client.rpc('staff_record_stock_movement', { p_warehouse_id: warehouseId, p_variant_id: variantId, p_movement_type: movementType, p_quantity_delta: quantity, p_reference_type: referenceType, p_reference_id: referenceId || null, p_note: String(note || '').slice(0, 1000), p_idempotency_key: crypto.randomUUID() });
-  if (error) throw error; return data;
+export async function recordStockMovement({
+  warehouseId,
+  variantId,
+  movementType,
+  quantityDelta,
+  referenceType = 'manual',
+  referenceId = '',
+  note = '',
+}) {
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const quantity = Number(quantityDelta);
+  if (!warehouseId || !variantId || !Number.isInteger(quantity) || quantity === 0)
+    throw new Error('invalid_stock_movement');
+  const { data, error } = await client.rpc('staff_record_stock_movement', {
+    p_warehouse_id: warehouseId,
+    p_variant_id: variantId,
+    p_movement_type: movementType,
+    p_quantity_delta: quantity,
+    p_reference_type: referenceType,
+    p_reference_id: referenceId || null,
+    p_note: String(note || '').slice(0, 1000),
+    p_idempotency_key: crypto.randomUUID(),
+  });
+  if (error) throw error;
+  return data;
 }
 
 export async function reviewPaymentProof({ proofId, status, note = '' }) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const { data, error } = await client.rpc('staff_review_payment_proof', { p_proof_id: proofId, p_status: status, p_review_note: String(note || '').slice(0, 2000) });
+  const { data, error } = await client.rpc('staff_review_payment_proof', {
+    p_proof_id: proofId,
+    p_status: status,
+    p_review_note: String(note || '').slice(0, 2000),
+  });
   if (error) throw error;
-  await notify({ event: 'payment_proof_reviewed', proofNumber: data?.proof_number, status: data?.status, amount: data?.amount, currency: data?.currency }, `Payment proof ${data?.status || status} — ${data?.proof_number || proofId}`);
+  await notify(
+    {
+      event: 'payment_proof_reviewed',
+      proofNumber: data?.proof_number,
+      status: data?.status,
+      amount: data?.amount,
+      currency: data?.currency,
+    },
+    `Payment proof ${data?.status || status} — ${data?.proof_number || proofId}`,
+  );
   return data;
 }
 
@@ -451,185 +928,332 @@ export function parseInventoryCsv(text) {
   const lines = source.split(/\r?\n/).filter((line) => line.trim());
   if (lines.length < 2 || lines.length > 1001) throw new Error('invalid_inventory_csv_size');
   const parseLine = (line) => {
-    const cells = []; let current = ''; let quoted = false;
+    const cells = [];
+    let current = '';
+    let quoted = false;
     for (let index = 0; index < line.length; index += 1) {
       const char = line[index];
-      if (char === '"' && quoted && line[index + 1] === '"') { current += '"'; index += 1; }
-      else if (char === '"') quoted = !quoted;
-      else if (char === ',' && !quoted) { cells.push(current.trim()); current = ''; }
-      else current += char;
+      if (char === '"' && quoted && line[index + 1] === '"') {
+        current += '"';
+        index += 1;
+      } else if (char === '"') quoted = !quoted;
+      else if (char === ',' && !quoted) {
+        cells.push(current.trim());
+        current = '';
+      } else current += char;
     }
     if (quoted) throw new Error('invalid_inventory_csv_quotes');
-    cells.push(current.trim()); return cells;
+    cells.push(current.trim());
+    return cells;
   };
   const headers = parseLine(lines[0]).map((value) => value.toLowerCase().replace(/\s+/g, '_'));
-  for (const required of ['warehouse_code','sku','on_hand']) if (!headers.includes(required)) throw new Error(`missing_inventory_header:${required}`);
+  for (const required of ['warehouse_code', 'sku', 'on_hand'])
+    if (!headers.includes(required)) throw new Error(`missing_inventory_header:${required}`);
   return lines.slice(1).map((line, rowIndex) => {
-    const cells = parseLine(line); const row = {};
-    headers.forEach((header, index) => { row[header] = cells[index] ?? ''; });
-    return { warehouse_code: row.warehouse_code, sku: row.sku, on_hand: row.on_hand, reorder_point: row.reorder_point || '0', row_number: rowIndex + 2 };
+    const cells = parseLine(line);
+    const row = {};
+    headers.forEach((header, index) => {
+      row[header] = cells[index] ?? '';
+    });
+    return {
+      warehouse_code: row.warehouse_code,
+      sku: row.sku,
+      on_hand: row.on_hand,
+      reorder_point: row.reorder_point || '0',
+      row_number: rowIndex + 2,
+    };
   });
 }
 
 export function createInventoryCsv(rows) {
-  const header = ['warehouse_code','sku','on_hand','reserved','reorder_point','verified_at'];
-  return [header.join(','), ...(rows || []).map((row) => [row.warehouse?.code || '',row.variant?.sku || row.variant_id,row.on_hand,row.reserved,row.reorder_point,row.verified_at || ''].map(csvCell).join(','))].join('\n');
+  const header = ['warehouse_code', 'sku', 'on_hand', 'reserved', 'reorder_point', 'verified_at'];
+  return [
+    header.join(','),
+    ...(rows || []).map((row) =>
+      [
+        row.warehouse?.code || '',
+        row.variant?.sku || row.variant_id,
+        row.on_hand,
+        row.reserved,
+        row.reorder_point,
+        row.verified_at || '',
+      ]
+        .map(csvCell)
+        .join(','),
+    ),
+  ].join('\n');
 }
 
 export async function previewInventoryImport({ sourceName, rows, batchId = crypto.randomUUID() }) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const { data, error } = await client.rpc('staff_apply_inventory_batch', { p_batch_id: batchId, p_source_name: sourceName, p_rows: rows, p_dry_run: true });
-  if (error) throw error; return data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const { data, error } = await client.rpc('staff_apply_inventory_batch', {
+    p_batch_id: batchId,
+    p_source_name: sourceName,
+    p_rows: rows,
+    p_dry_run: true,
+  });
+  if (error) throw error;
+  return data;
 }
 
 export async function applyInventoryImport({ sourceName, rows, batchId }) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const { data, error } = await client.rpc('staff_apply_inventory_batch', { p_batch_id: batchId, p_source_name: sourceName, p_rows: rows, p_dry_run: false });
-  if (error) throw error; return data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const { data, error } = await client.rpc('staff_apply_inventory_batch', {
+    p_batch_id: batchId,
+    p_source_name: sourceName,
+    p_rows: rows,
+    p_dry_run: false,
+  });
+  if (error) throw error;
+  return data;
 }
 
 export async function rollbackInventoryImport(batchId) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const { data, error } = await client.rpc('staff_rollback_inventory_batch', { p_batch_id: batchId });
-  if (error) throw error; return data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const { data, error } = await client.rpc('staff_rollback_inventory_batch', {
+    p_batch_id: batchId,
+  });
+  if (error) throw error;
+  return data;
 }
 
-
 export async function retryCommerceNotification(notificationId) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const id = Number(notificationId); if (!Number.isInteger(id) || id < 1) throw new Error('invalid_notification');
-  const { data, error } = await client.rpc('staff_retry_commerce_notification', { p_notification_id: id });
-  if (error) throw error; return data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const id = Number(notificationId);
+  if (!Number.isInteger(id) || id < 1) throw new Error('invalid_notification');
+  const { data, error } = await client.rpc('staff_retry_commerce_notification', {
+    p_notification_id: id,
+  });
+  if (error) throw error;
+  return data;
 }
 
 export async function resolveSecurityEvent(eventId, resolved = true) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
   if (!eventId) throw new Error('invalid_security_event');
-  const { data, error } = await client.rpc('staff_resolve_security_event', { p_event_id: eventId, p_resolved: Boolean(resolved) });
-  if (error) throw error; return data;
+  const { data, error } = await client.rpc('staff_resolve_security_event', {
+    p_event_id: eventId,
+    p_resolved: Boolean(resolved),
+  });
+  if (error) throw error;
+  return data;
 }
 
-export async function updateMediaAsset({ assetId, altTextEn = null, altTextAr = null, sortOrder = null, visibility = null, retryScan = false }) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
+export async function updateMediaAsset({
+  assetId,
+  altTextEn = null,
+  altTextAr = null,
+  sortOrder = null,
+  visibility = null,
+  retryScan = false,
+}) {
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
   if (!assetId) throw new Error('invalid_media_asset');
   const order = sortOrder === '' || sortOrder == null ? null : Number(sortOrder);
   if (order != null && !Number.isInteger(order)) throw new Error('invalid_media_sort_order');
   const { data, error } = await client.rpc('staff_update_media_asset', {
-    p_asset_id: assetId, p_alt_text_en: altTextEn, p_alt_text_ar: altTextAr,
-    p_sort_order: order, p_visibility: visibility, p_retry_scan: Boolean(retryScan),
+    p_asset_id: assetId,
+    p_alt_text_en: altTextEn,
+    p_alt_text_ar: altTextAr,
+    p_sort_order: order,
+    p_visibility: visibility,
+    p_retry_scan: Boolean(retryScan),
   });
-  if (error) throw error; return data;
+  if (error) throw error;
+  return data;
 }
 
-export async function upsertShipment({ shipmentId = null, shipmentNumber = null, orderId = null, quoteId = null, carrierId = null, trackingNumber = '', status = 'pending', metadata = {} }) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
+export async function upsertShipment({
+  shipmentId = null,
+  shipmentNumber = null,
+  orderId = null,
+  quoteId = null,
+  carrierId = null,
+  trackingNumber = '',
+  status = 'pending',
+  metadata = {},
+}) {
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
   if (Boolean(orderId) === Boolean(quoteId)) throw new Error('shipment_requires_one_parent');
   const { data, error } = await client.rpc('staff_upsert_shipment', {
-    p_shipment_id: shipmentId, p_shipment_number: shipmentNumber, p_order_id: orderId,
-    p_quote_id: quoteId, p_carrier_id: carrierId, p_tracking_number: trackingNumber || null,
-    p_status: status, p_metadata: metadata || {},
+    p_shipment_id: shipmentId,
+    p_shipment_number: shipmentNumber,
+    p_order_id: orderId,
+    p_quote_id: quoteId,
+    p_carrier_id: carrierId,
+    p_tracking_number: trackingNumber || null,
+    p_status: status,
+    p_metadata: metadata || {},
   });
-  if (error) throw error; return data;
+  if (error) throw error;
+  return data;
 }
 
-export async function uploadOperationalMedia({ accessToken, entityType, entityId, assetRole = 'reference', files }) {
+export async function uploadOperationalMedia({
+  accessToken,
+  entityType,
+  entityId,
+  assetRole = 'reference',
+  files,
+}) {
   if (!accessToken) throw new Error('staff_session_required');
-  const list = Array.from(files || []).slice(0, 5); if (!list.length) throw new Error('file_required');
+  const list = Array.from(files || []).slice(0, 5);
+  if (!list.length) throw new Error('file_required');
   const encoded = await Promise.all(list.map((file) => encodeUploadFile(file, assetRole)));
   const response = await fetch('/api/admin-media-upload', {
-    method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
-    body: JSON.stringify({ entityType, entityId, assetRole, files: encoded }), cache: 'no-store',
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ entityType, entityId, assetRole, files: encoded }),
+    cache: 'no-store',
   });
-  const data = await response.json().catch(() => ({})); if (!response.ok || !data.ok) throw new Error(data.error || 'media_upload_failed'); return data.assets || [];
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) throw new Error(data.error || 'media_upload_failed');
+  return data.assets || [];
 }
 
 export async function createCatalogProductDraft(input) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_create_catalog_product_draft', {
-    p_product_id: input.productId, p_slug: input.slug, p_name_en: input.nameEn, p_name_ar: input.nameAr,
-    p_description_en: input.descriptionEn || '', p_description_ar: input.descriptionAr || '', p_brand: input.brand,
-    p_category: input.category, p_subcategory: input.subcategory || '', p_product_type: input.productType || '',
-    p_sku: input.sku, p_color: input.color || 'black', p_size: input.size || 'OS', p_currency: input.currency || 'USD',
+    p_product_id: input.productId,
+    p_slug: input.slug,
+    p_name_en: input.nameEn,
+    p_name_ar: input.nameAr,
+    p_description_en: input.descriptionEn || '',
+    p_description_ar: input.descriptionAr || '',
+    p_brand: input.brand,
+    p_category: input.category,
+    p_subcategory: input.subcategory || '',
+    p_product_type: input.productType || '',
+    p_sku: input.sku,
+    p_color: input.color || 'black',
+    p_size: input.size || 'OS',
+    p_currency: input.currency || 'USD',
   });
-  if (error) throw error; return data;
+  if (error) throw error;
+  return data;
 }
 
 export async function addCatalogVariantDraft({ productId, sku, color = 'black', size = 'OS' }) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const { data, error } = await client.rpc('staff_add_catalog_variant_draft', { p_product_id: productId, p_sku: sku, p_color: color, p_size: size });
-  if (error) throw error; return data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const { data, error } = await client.rpc('staff_add_catalog_variant_draft', {
+    p_product_id: productId,
+    p_sku: sku,
+    p_color: color,
+    p_size: size,
+  });
+  if (error) throw error;
+  return data;
 }
 
 export async function archiveCatalogProduct(productId) {
-  const client = await getSupabase(); if (!client) throw new Error('cloud_not_configured');
-  const { data, error } = await client.rpc('staff_archive_catalog_product', { p_product_id: productId });
-  if (error) throw error; return data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const { data, error } = await client.rpc('staff_archive_catalog_product', {
+    p_product_id: productId,
+  });
+  if (error) throw error;
+  return data;
 }
 
 const operationsSectionCache = new Map();
 const OPERATIONS_CACHE_MS = 30_000;
 const sectionQueries = {
   orders: [
-    ['orders','orders','*',{ order: ['created_at',false], limit:300 }],
-    ['specialRequests','special_requests','*',{ order:['created_at',false], limit:200 }],
+    ['orders', 'orders', '*', { order: ['created_at', false], limit: 300 }],
+    ['specialRequests', 'special_requests', '*', { order: ['created_at', false], limit: 200 }],
   ],
   payments: [
-    ['refunds','refund_events','*',{ order:['created_at',false], limit:200 }],
-    ['paymentProofs','payment_proofs','*',{ order:['created_at',false], limit:200 }],
-    ['invoices','invoices','*',{ order:['created_at',false], limit:200 }],
+    ['refunds', 'refund_events', '*', { order: ['created_at', false], limit: 200 }],
+    ['paymentProofs', 'payment_proofs', '*', { order: ['created_at', false], limit: 200 }],
+    ['invoices', 'invoices', '*', { order: ['created_at', false], limit: 200 }],
   ],
   b2b: [
-    ['quotes','quote_requests','*',{ order:['created_at',false], limit:200 }],
-    ['designs','custom_designs','*',{ order:['updated_at',false], limit:200 }],
-    ['contracts','organization_contracts','*',{ order:['created_at',false], limit:200 }],
-    ['organizations','organizations','*',{ order:['created_at',false], limit:300 }],
+    ['quotes', 'quote_requests', '*', { order: ['created_at', false], limit: 200 }],
+    ['designs', 'custom_designs', '*', { order: ['updated_at', false], limit: 200 }],
+    ['contracts', 'organization_contracts', '*', { order: ['created_at', false], limit: 200 }],
+    ['organizations', 'organizations', '*', { order: ['created_at', false], limit: 300 }],
   ],
   shipping: [
-    ['shippingRates','shipping_country_rates','*',{ order:['country_code',true], limit:300 }],
-    ['carriers','carriers','*',{ order:['name',true], limit:100 }],
-    ['shipments','shipments','*',{ order:['created_at',false], limit:200 }],
-    ['shipmentItems','shipment_items','*',{ limit:1000 }],
+    ['shippingRates', 'shipping_country_rates', '*', { order: ['country_code', true], limit: 300 }],
+    ['carriers', 'carriers', '*', { order: ['name', true], limit: 100 }],
+    ['shipments', 'shipments', '*', { order: ['created_at', false], limit: 200 }],
+    ['shipmentItems', 'shipment_items', '*', { limit: 1000 }],
   ],
   catalog: [
-    ['catalog','product_catalog','*',{ order:['product_name',true], limit:2000 }],
-    ['brands','catalog_brands','*',{ order:['sort_order',true], limit:300 }],
-    ['categories','catalog_categories','*',{ order:['sort_order',true], limit:300 }],
-    ['collections','catalog_collections','*',{ order:['sort_order',true], limit:300 }],
+    ['catalog', 'product_catalog', '*', { order: ['product_name', true], limit: 2000 }],
+    ['brands', 'catalog_brands', '*', { order: ['sort_order', true], limit: 300 }],
+    ['categories', 'catalog_categories', '*', { order: ['sort_order', true], limit: 300 }],
+    ['collections', 'catalog_collections', '*', { order: ['sort_order', true], limit: 300 }],
   ],
   inventory: [
-    ['warehouses','warehouses','*',{ order:['name',true], limit:100 }],
-    ['warehouseInventory','warehouse_inventory','*',{ order:['updated_at',false], limit:2000 }],
-    ['stockMovements','stock_movement_ledger','*',{ order:['created_at',false], limit:500 }],
-    ['inventoryImports','inventory_import_batches','*',{ order:['created_at',false], limit:100 }],
+    ['warehouses', 'warehouses', '*', { order: ['name', true], limit: 100 }],
+    [
+      'warehouseInventory',
+      'warehouse_inventory',
+      '*',
+      { order: ['updated_at', false], limit: 2000 },
+    ],
+    ['stockMovements', 'stock_movement_ledger', '*', { order: ['created_at', false], limit: 500 }],
+    [
+      'inventoryImports',
+      'inventory_import_batches',
+      '*',
+      { order: ['created_at', false], limit: 100 },
+    ],
   ],
-  media: [['mediaAssets','media_assets','*',{ order:['created_at',false], limit:300 }]],
+  media: [['mediaAssets', 'media_assets', '*', { order: ['created_at', false], limit: 300 }]],
   security: [
-    ['securityEvents','security_events','*',{ order:['created_at',false], limit:300 }],
-    ['auditLog','operations_audit_log','*',{ order:['created_at',false], limit:300 }],
-    ['notifications','commerce_notifications','*',{ order:['created_at',false], limit:300 }],
+    ['securityEvents', 'security_events', '*', { order: ['created_at', false], limit: 300 }],
+    ['auditLog', 'operations_audit_log', '*', { order: ['created_at', false], limit: 300 }],
+    ['notifications', 'commerce_notifications', '*', { order: ['created_at', false], limit: 300 }],
   ],
   users: [
-    ['organizations','organizations','*',{ order:['created_at',false], limit:300 }],
-    ['lockers','team_locker_stores','*',{ order:['created_at',false], limit:200 }],
-    ['lockerProducts','team_locker_products','*',{ order:['sort_order',true], limit:500 }],
+    ['organizations', 'organizations', '*', { order: ['created_at', false], limit: 300 }],
+    ['lockers', 'team_locker_stores', '*', { order: ['created_at', false], limit: 200 }],
+    ['lockerProducts', 'team_locker_products', '*', { order: ['sort_order', true], limit: 500 }],
   ],
   settings: [
-    ['siteContent','site_content','*',{ order:['content_key',true], limit:300 }],
-    ['coupons','coupons','*',{ order:['created_at',false], limit:300 }],
-    ['taxRules','tax_rules','*',{ order:['country_code',true], limit:300 }],
+    ['siteContent', 'site_content', '*', { order: ['content_key', true], limit: 300 }],
+    ['coupons', 'coupons', '*', { order: ['created_at', false], limit: 300 }],
+    ['taxRules', 'tax_rules', '*', { order: ['country_code', true], limit: 300 }],
   ],
 };
-export function invalidateOperationsCache(section = null) { if (section) operationsSectionCache.delete(section); else operationsSectionCache.clear(); }
+export function invalidateOperationsCache(section = null) {
+  if (section) operationsSectionCache.delete(section);
+  else operationsSectionCache.clear();
+}
 export async function loadOperationsSection(section, { force = false } = {}) {
-  const key=String(section||'').toLowerCase(); const definitions=sectionQueries[key];
-  if(!definitions) throw new Error('unknown_operations_section');
-  const cached=operationsSectionCache.get(key); if(!force&&cached&&Date.now()-cached.createdAt<OPERATIONS_CACHE_MS)return cached.data;
-  const client=await getSupabase(); if(!client)throw new Error('cloud_not_configured');
-  const entries=await Promise.all(definitions.map(async([name,table,select,options])=>{
-    let query=client.from(table).select(select);
-    if(options?.order) query=query.order(options.order[0],{ascending:options.order[1]});
-    if(options?.limit) query=query.limit(options.limit);
-    const result=await query; if(result.error)throw result.error; return [name,result.data||[]];
-  }));
-  const data=Object.fromEntries(entries); operationsSectionCache.set(key,{createdAt:Date.now(),data}); return data;
+  const key = String(section || '').toLowerCase();
+  const definitions = sectionQueries[key];
+  if (!definitions) throw new Error('unknown_operations_section');
+  const cached = operationsSectionCache.get(key);
+  if (!force && cached && Date.now() - cached.createdAt < OPERATIONS_CACHE_MS) return cached.data;
+  const client = await getSupabase();
+  if (!client) throw new Error('cloud_not_configured');
+  const entries = await Promise.all(
+    definitions.map(async ([name, table, select, options]) => {
+      let query = client.from(table).select(select);
+      if (options?.order) query = query.order(options.order[0], { ascending: options.order[1] });
+      if (options?.limit) query = query.limit(options.limit);
+      const result = await query;
+      if (result.error) throw result.error;
+      return [name, result.data || []];
+    }),
+  );
+  const data = Object.fromEntries(entries);
+  operationsSectionCache.set(key, { createdAt: Date.now(), data });
+  return data;
 }

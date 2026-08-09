@@ -34,14 +34,23 @@ for (const token of [
   'security definer set search_path',
   'revoke insert, update, delete on public.orders',
   'consume_edge_rate_limit',
-]) if (!baseMigration.includes(token.toLowerCase())) errors.push(`Base migration missing: ${token}`);
+])
+  if (!baseMigration.includes(token.toLowerCase())) errors.push(`Base migration missing: ${token}`);
 
 const atomic = fs.readFileSync(required[1], 'utf8').toLowerCase();
-for (const token of ['inventory_tracking boolean not null default true', 'for update', 'inventory_quantity = pc.inventory_quantity - requested.quantity', 'v_updated_count <> v_tracked_count']) {
-  if (!atomic.includes(token.toLowerCase())) errors.push(`Atomic inventory migration missing: ${token}`);
+for (const token of [
+  'inventory_tracking boolean not null default true',
+  'for update',
+  'inventory_quantity = pc.inventory_quantity - requested.quantity',
+  'v_updated_count <> v_tracked_count',
+]) {
+  if (!atomic.includes(token.toLowerCase()))
+    errors.push(`Atomic inventory migration missing: ${token}`);
 }
 
-const commerce = fs.readFileSync('supabase/migrations/20260731020000_shababuna_global_commerce.sql', 'utf8').toLowerCase();
+const commerce = fs
+  .readFileSync('supabase/migrations/20260731020000_shababuna_global_commerce.sql', 'utf8')
+  .toLowerCase();
 for (const token of [
   "values ('usd_to_lyd_rate', 9)",
   "v_order_number := 'shb-'",
@@ -52,16 +61,27 @@ for (const token of [
   '20.00 / v_usd_to_lyd_rate',
   "v_payment_plan := 'half'",
   "v_payment_plan := 'pending_shipping_quote'",
-]) if (!commerce.includes(token)) errors.push(`Shababuna commerce migration missing: ${token}`);
+])
+  if (!commerce.includes(token)) errors.push(`Shababuna commerce migration missing: ${token}`);
 
 const generated = fs.readFileSync('supabase/generated/product_catalog.sql', 'utf8');
-if (!generated.includes('on conflict(variant_id) do update')) errors.push('Catalog sync is not deterministic/upserting');
-if (!generated.includes("product_status='archived'")) errors.push('Catalog sync does not archive removed variants');
-if (!generated.includes('"wholesalePrice"')) errors.push('Catalog metadata does not include wholesale prices');
-if (!generated.includes('"minimumOrder"')) errors.push('Catalog metadata does not include custom minimums');
+if (!generated.includes('on conflict(variant_id) do update'))
+  errors.push('Catalog sync is not deterministic/upserting');
+if (!generated.includes("product_status='archived'"))
+  errors.push('Catalog sync does not archive removed variants');
+if (!generated.includes('"wholesalePrice"'))
+  errors.push('Catalog metadata does not include wholesale prices');
+if (!generated.includes('"minimumOrder"'))
+  errors.push('Catalog metadata does not include custom minimums');
 
 const paymentApi = fs.readFileSync('api/create-session.js', 'utf8');
-for (const token of ['SUPABASE_SERVICE_ROLE_KEY', 'loadTrustedOrder', 'order_not_payable', 'amountMinor', 'shipping_quote_required']) {
+for (const token of [
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'loadTrustedOrder',
+  'order_not_payable',
+  'amountMinor',
+  'shipping_quote_required',
+]) {
   if (!paymentApi.includes(token)) errors.push(`Payment session security missing: ${token}`);
 }
 if (/\.\.\.body/.test(paymentApi)) errors.push('Payment endpoint forwards untrusted browser body');
@@ -77,24 +97,41 @@ function walk(directory) {
 walk('src');
 for (const file of frontendFiles) {
   const text = fs.readFileSync(file, 'utf8');
-  if (/SUPABASE_SERVICE_ROLE_KEY|service[_-]?role/i.test(text)) errors.push(`Server secret reference in frontend: ${file}`);
+  if (/SUPABASE_SERVICE_ROLE_KEY|service[_-]?role/i.test(text))
+    errors.push(`Server secret reference in frontend: ${file}`);
 }
 
 const env = fs.readFileSync('.env.example', 'utf8');
 for (const name of [
-  'VITE_SUPABASE_URL','VITE_SUPABASE_ANON_KEY','SUPABASE_URL','SUPABASE_SERVICE_ROLE_KEY',
-  'VITE_CHECKOUT_API_BASE','PAYMENTS_SESSION_URL','LIBYAN_BANK_CARD_SESSION_URL',
-  'PAYMENTS_WEBHOOK_SECRET','LIBYAN_BANK_CARD_WEBHOOK_SECRET','CRON_SECRET','GUEST_ORDER_ACCESS_SECRET','SITE_URL',
-  'MALWARE_SCAN_API_URL','MALWARE_SCAN_API_KEY','VITE_TURNSTILE_SITE_KEY','TURNSTILE_SECRET_KEY',
-]) if (!env.includes(name)) errors.push(`Undocumented environment variable: ${name}`);
+  'VITE_SUPABASE_URL',
+  'VITE_SUPABASE_ANON_KEY',
+  'SUPABASE_URL',
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'VITE_CHECKOUT_API_BASE',
+  'PAYMENTS_SESSION_URL',
+  'LIBYAN_BANK_CARD_SESSION_URL',
+  'PAYMENTS_WEBHOOK_SECRET',
+  'LIBYAN_BANK_CARD_WEBHOOK_SECRET',
+  'CRON_SECRET',
+  'GUEST_ORDER_ACCESS_SECRET',
+  'SITE_URL',
+  'MALWARE_SCAN_API_URL',
+  'MALWARE_SCAN_API_KEY',
+  'VITE_TURNSTILE_SITE_KEY',
+  'TURNSTILE_SECRET_KEY',
+])
+  if (!env.includes(name)) errors.push(`Undocumented environment variable: ${name}`);
 
 const checkout = fs.readFileSync('src/pages/CheckoutPage.jsx', 'utf8');
 const saveIndex = checkout.indexOf('const confirmation = await savePendingOrder(payload)');
 const sessionIndex = checkout.indexOf('createCheckoutSession({', saveIndex);
-if (saveIndex < 0 || sessionIndex < saveIndex) errors.push('Checkout does not save a trusted order before opening card payment');
+if (saveIndex < 0 || sessionIndex < saveIndex)
+  errors.push('Checkout does not save a trusted order before opening card payment');
 
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
-console.info('Cloud source-readiness validation passed: trusted catalogue, atomic inventory, shipping/payment rules, secure order-first checkout and deployment documentation are present. This is not a live cloud verification.');
+console.info(
+  'Cloud source-readiness validation passed: trusted catalogue, atomic inventory, shipping/payment rules, secure order-first checkout and deployment documentation are present. This is not a live cloud verification.',
+);

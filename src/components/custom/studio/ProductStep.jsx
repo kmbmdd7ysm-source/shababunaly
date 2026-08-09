@@ -27,7 +27,11 @@ export default function ProductStep({
           </p>
         </div>
         {productFamily && (
-          <button type="button" className="gw-btn gw-btn--ghost" onClick={() => setProductFamily(null)}>
+          <button
+            type="button"
+            className="gw-btn gw-btn--ghost"
+            onClick={() => setProductFamily(null)}
+          >
             {pick({ en: 'All families', ar: 'كل العائلات' })}
           </button>
         )}
@@ -37,7 +41,11 @@ export default function ProductStep({
         <ul className="gw-family-grid">
           {PRODUCT_FAMILIES.map((family) => (
             <li key={family.key}>
-              <button type="button" className="gw-family-card" onClick={() => setProductFamily(family.key)}>
+              <button
+                type="button"
+                className="gw-family-card"
+                onClick={() => setProductFamily(family.key)}
+              >
                 <span className="gw-family-card-name">{pick(family.label)}</span>
                 <span className="gw-family-card-copy">{pick(family.copy)}</span>
               </button>

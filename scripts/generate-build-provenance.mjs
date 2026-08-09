@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { execSync } from 'node:child_process';
+import { execSync, execFileSync } from 'node:child_process';
 
 /** Git may be unavailable in some CI images; provenance must not break a build. */
 const execSyncSafe = (cmd) => {
@@ -11,7 +11,6 @@ const execSyncSafe = (cmd) => {
 };
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const dist = join(root, 'dist');

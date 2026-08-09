@@ -116,3 +116,12 @@
 .gw-viewer[data-tier='B'] .gw-viewer-tab.is-active {
   background: var(--sh-ink);
 }
+
+.gw-viewer-stage--3d,
+.gw-model-viewer {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 420px;
+  background: transparent;
+}

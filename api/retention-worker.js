@@ -1,10 +1,15 @@
 import { supabaseAdminRequest } from './_supabase-admin.js';
 import { applyApiHeaders } from './_request-security.js';
 
-const clean = (value, max = 1000) => String(value ?? '').replace(/\0/g, '').trim().slice(0, max);
+const clean = (value, max = 1000) =>
+  String(value ?? '')
+    .replace(/\0/g, '')
+    .trim()
+    .slice(0, max);
 const json = (res, status, body) => res.status(status).json(body);
-const authorized = (req) => Boolean(process.env.CRON_SECRET)
-  && clean(req.headers.authorization, 800) === `Bearer ${clean(process.env.CRON_SECRET, 500)}`;
+const authorized = (req) =>
+  Boolean(process.env.CRON_SECRET) &&
+  clean(req.headers.authorization, 800) === `Bearer ${clean(process.env.CRON_SECRET, 500)}`;
 
 export default async function handler(req, res) {
   applyApiHeaders(res);
@@ -25,18 +30,31 @@ export default async function handler(req, res) {
 
     const jobs = [
       supabaseAdminRequest(`/rest/v1/design_share_links?expires_at=lt.${encodeURIComponent(now)}`, {
-        method: 'DELETE', headers: { Prefer: 'return=minimal' },
+        method: 'DELETE',
+        headers: { Prefer: 'return=minimal' },
       }),
-      supabaseAdminRequest(`/rest/v1/privacy_export_requests?expires_at=lt.${encodeURIComponent(now)}&status=eq.ready`, {
-        method: 'PATCH', headers: { Prefer: 'return=minimal' },
-        body: JSON.stringify({ status: 'expired', updated_at: now }),
-      }),
-      supabaseAdminRequest(`/rest/v1/security_events?source=neq.browser&created_at=lt.${encodeURIComponent(securityCutoff)}`, {
-        method: 'DELETE', headers: { Prefer: 'return=minimal' },
-      }),
-      supabaseAdminRequest(`/rest/v1/security_events?source=eq.browser&created_at=lt.${encodeURIComponent(telemetryCutoff)}`, {
-        method: 'DELETE', headers: { Prefer: 'return=minimal' },
-      }),
+      supabaseAdminRequest(
+        `/rest/v1/privacy_export_requests?expires_at=lt.${encodeURIComponent(now)}&status=eq.ready`,
+        {
+          method: 'PATCH',
+          headers: { Prefer: 'return=minimal' },
+          body: JSON.stringify({ status: 'expired', updated_at: now }),
+        },
+      ),
+      supabaseAdminRequest(
+        `/rest/v1/security_events?source=neq.browser&created_at=lt.${encodeURIComponent(securityCutoff)}`,
+        {
+          method: 'DELETE',
+          headers: { Prefer: 'return=minimal' },
+        },
+      ),
+      supabaseAdminRequest(
+        `/rest/v1/security_events?source=eq.browser&created_at=lt.${encodeURIComponent(telemetryCutoff)}`,
+        {
+          method: 'DELETE',
+          headers: { Prefer: 'return=minimal' },
+        },
+      ),
     ];
 
     const results = await Promise.allSettled(jobs);

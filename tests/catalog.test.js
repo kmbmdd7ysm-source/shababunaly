@@ -6,9 +6,16 @@ import { getProductPublishIssues, isProductVisible } from '../src/utils/productE
 
 describe('SHABABUNA catalogue', () => {
   it('contains every required shop department', () => {
-    expect(categories.map((category) => category.slug)).toEqual(expect.arrayContaining([
-      'ready-to-ship', 'clothing', 'footwear', 'accessories', 'basketballs', 'equipment',
-    ]));
+    expect(categories.map((category) => category.slug)).toEqual(
+      expect.arrayContaining([
+        'ready-to-ship',
+        'clothing',
+        'footwear',
+        'accessories',
+        'basketballs',
+        'equipment',
+      ]),
+    );
   });
 
   it('keeps product names English in both interfaces while descriptions are bilingual', () => {
@@ -20,8 +27,23 @@ describe('SHABABUNA catalogue', () => {
   });
 
   it('publishes every catalogue brand with safe supplier-order handling', () => {
-    const visibleBrands = new Set(catalogProducts.filter(isProductVisible).map((item) => item.brand));
-    for (const brand of ['Nike', 'Jordan', 'adidas', 'Under Armour', 'Puma', 'New Balance', 'Li-Ning', 'ANTA', 'Peak', '361°', 'Shababuna', 'LHA']) {
+    const visibleBrands = new Set(
+      catalogProducts.filter(isProductVisible).map((item) => item.brand),
+    );
+    for (const brand of [
+      'Nike',
+      'Jordan',
+      'adidas',
+      'Under Armour',
+      'Puma',
+      'New Balance',
+      'Li-Ning',
+      'ANTA',
+      'Peak',
+      '361°',
+      'Shababuna',
+      'LHA',
+    ]) {
       expect(visibleBrands.has(brand)).toBe(true);
     }
     expect(products).toHaveLength(catalogProducts.length);
@@ -33,12 +55,17 @@ describe('SHABABUNA catalogue', () => {
       expect(product.wholesalePrice).toBeLessThan(product.price);
       expect(product.wholesaleMin).toBeGreaterThan(0);
     }
-    expect(catalogProducts.find((item) => item.slug === 'shababuna-pro-game-set').wholesaleMin).toBe(10);
-    expect(catalogProducts.find((item) => item.slug === 'shababuna-custom-team-basketball').wholesaleMin).toBe(6);
+    expect(
+      catalogProducts.find((item) => item.slug === 'shababuna-pro-game-set').wholesaleMin,
+    ).toBe(10);
+    expect(
+      catalogProducts.find((item) => item.slug === 'shababuna-custom-team-basketball').wholesaleMin,
+    ).toBe(6);
   });
 
   it('never exposes an unverified manufacturing claim', () => {
-    for (const product of products) expect(getProductPublishIssues(product)).not.toContain('unverified_manufacturing_claim');
+    for (const product of products)
+      expect(getProductPublishIssues(product)).not.toContain('unverified_manufacturing_claim');
     expect(products.filter((item) => item.madeInUSA)).toHaveLength(0);
   });
 

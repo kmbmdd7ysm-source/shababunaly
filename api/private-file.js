@@ -1,7 +1,14 @@
 import { applyApiHeaders } from './_request-security.js';
-import { getSupabaseAdminConfig, resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
+import {
+  getSupabaseAdminConfig,
+  resolveSupabaseUser,
+  supabaseAdminRequest,
+} from './_supabase-admin.js';
 
-const clean = (value, max = 1000) => String(value ?? '').trim().slice(0, max);
+const clean = (value, max = 1000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
 const STAFF_ROLES = new Set(['super_admin', 'admin', 'operations', 'sales']);
 
 async function signedStorageUrl(bucket, path) {
@@ -37,7 +44,8 @@ export default async function handler(req, res) {
     const user = await resolveSupabaseUser(req.headers.authorization);
     if (!user) return res.status(401).json({ ok: false, error: 'authentication_required' });
     const fileId = clean(req.query?.id || req.query?.assetId, 80);
-    if (!/^[0-9a-f-]{36}$/i.test(fileId)) return res.status(400).json({ ok: false, error: 'invalid_file_id' });
+    if (!/^[0-9a-f-]{36}$/i.test(fileId))
+      return res.status(400).json({ ok: false, error: 'invalid_file_id' });
 
     const role = clean(user.app_metadata?.role, 80);
     const staff = STAFF_ROLES.has(role);
@@ -47,8 +55,10 @@ export default async function handler(req, res) {
     ).catch(() => []);
     const special = Array.isArray(specialRows) ? specialRows[0] : null;
     if (special) {
-      if (!staff && special.special_requests?.user_id !== user.id) return res.status(403).json({ ok: false, error: 'forbidden' });
-      if (special.quarantine_status !== 'clean') return res.status(423).json({ ok: false, error: 'file_not_cleared' });
+      if (!staff && special.special_requests?.user_id !== user.id)
+        return res.status(403).json({ ok: false, error: 'forbidden' });
+      if (special.quarantine_status !== 'clean')
+        return res.status(423).json({ ok: false, error: 'file_not_cleared' });
       return res.status(200).json({
         ok: true,
         url: await signedStorageUrl(special.storage_bucket, special.storage_path),
@@ -63,8 +73,10 @@ export default async function handler(req, res) {
     ).catch(() => []);
     const asset = Array.isArray(assetRows) ? assetRows[0] : null;
     if (!asset) return res.status(404).json({ ok: false, error: 'file_not_found' });
-    if (!staff && asset.owner_user_id !== user.id) return res.status(403).json({ ok: false, error: 'forbidden' });
-    if (asset.scan_status !== 'clean') return res.status(423).json({ ok: false, error: 'file_not_cleared' });
+    if (!staff && asset.owner_user_id !== user.id)
+      return res.status(403).json({ ok: false, error: 'forbidden' });
+    if (asset.scan_status !== 'clean')
+      return res.status(423).json({ ok: false, error: 'file_not_cleared' });
 
     return res.status(200).json({
       ok: true,

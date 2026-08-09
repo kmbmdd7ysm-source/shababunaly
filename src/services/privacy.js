@@ -11,7 +11,11 @@ export async function requestPrivacyExport() {
 export async function listPrivacyExports() {
   const client = await getSupabase();
   if (!client) throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
-  const { data, error } = await client.from('privacy_export_requests').select('*').order('created_at', { ascending: false }).limit(20);
+  const { data, error } = await client
+    .from('privacy_export_requests')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(20);
   if (error) throw error;
   return data || [];
 }

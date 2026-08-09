@@ -29,5 +29,13 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": ["types/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "api/**/*.ts"],
-  "exclude": ["dist", "node_modules", "reports", "coverage", "coverage-project", "brand-quarantine", "vendor"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "reports",
+    "coverage",
+    "coverage-project",
+    "brand-quarantine",
+    "vendor"
+  ]
 }

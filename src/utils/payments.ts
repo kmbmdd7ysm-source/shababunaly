@@ -6,13 +6,17 @@ import type { PaymentVerificationState } from '../domain/types.ts';
 
 const GENERIC_PROVIDER = String(import.meta.env.VITE_PAYMENTS_PROVIDER || '').trim() || '';
 const GENERIC_PUBLISHABLE = String(
-  import.meta.env.VITE_PAYMENTS_PUBLISHABLE_KEY || import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '',
+  import.meta.env.VITE_PAYMENTS_PUBLISHABLE_KEY ||
+    import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
+    '',
 ).trim();
 const GENERIC_API_BASE = String(import.meta.env.VITE_CHECKOUT_API_BASE || '').trim() || '';
 
 const LIBYAN_PROVIDER = String(import.meta.env.VITE_LIBYAN_BANK_CARD_PROVIDER || '').trim() || '';
-const LIBYAN_PUBLISHABLE = String(import.meta.env.VITE_LIBYAN_BANK_CARD_PUBLISHABLE_KEY || '').trim() || '';
-const LIBYAN_API_BASE = String(import.meta.env.VITE_LIBYAN_BANK_CARD_CHECKOUT_API_BASE || '').trim() || '';
+const LIBYAN_PUBLISHABLE =
+  String(import.meta.env.VITE_LIBYAN_BANK_CARD_PUBLISHABLE_KEY || '').trim() || '';
+const LIBYAN_API_BASE =
+  String(import.meta.env.VITE_LIBYAN_BANK_CARD_CHECKOUT_API_BASE || '').trim() || '';
 
 type PaymentMethod = 'online_card' | 'libyan_bank_card' | string;
 
@@ -44,11 +48,14 @@ export function paymentProviderName(method: PaymentMethod = 'online_card'): stri
 }
 
 /** Unconfigured providers must never claim LIVE_VERIFIED. */
-export function paymentVerificationState(method: PaymentMethod = 'online_card'): PaymentVerificationState {
+export function paymentVerificationState(
+  method: PaymentMethod = 'online_card',
+): PaymentVerificationState {
   if (!isPaymentMethodConfigured(method)) return 'UNCONFIGURED';
   const mode = String(import.meta.env.MODE || '');
   if (mode === 'test' || import.meta.env.VITE_PAYMENTS_MOCK === 'true') return 'MOCK_VERIFIED';
-  if (String(import.meta.env.VITE_PAYMENTS_SANDBOX || '').toLowerCase() === 'true') return 'SANDBOX_VERIFIED';
+  if (String(import.meta.env.VITE_PAYMENTS_SANDBOX || '').toLowerCase() === 'true')
+    return 'SANDBOX_VERIFIED';
   // Live credentials may exist, but live verification requires external provider proof.
   return 'UNCONFIGURED';
 }
@@ -75,7 +82,9 @@ export interface CheckoutSessionPayload {
   [key: string]: unknown;
 }
 
-export async function createCheckoutSession(payload: CheckoutSessionPayload): Promise<{ url: string }> {
+export async function createCheckoutSession(
+  payload: CheckoutSessionPayload,
+): Promise<{ url: string }> {
   const method = payload?.paymentMethod || 'online_card';
   if (!isPaymentMethodConfigured(method)) {
     const error: AppError = new Error('PAYMENTS_NOT_CONFIGURED');
@@ -96,7 +105,10 @@ export async function createCheckoutSession(payload: CheckoutSessionPayload): Pr
     throw error;
   }
   const result: unknown = await response.json();
-  const url = typeof result === 'object' && result && 'url' in result ? String((result as { url: unknown }).url) : '';
+  const url =
+    typeof result === 'object' && result && 'url' in result
+      ? String((result as { url: unknown }).url)
+      : '';
   if (!url || !/^https:\/\//i.test(url)) {
     const error: AppError = new Error('INVALID_CHECKOUT_REDIRECT');
     error.code = 'invalid_redirect';

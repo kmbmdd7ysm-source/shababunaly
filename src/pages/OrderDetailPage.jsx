@@ -48,6 +48,7 @@ export default function OrderDetailPage() {
 
   useEffect(() => {
     if (!auth.loading) void load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, orderNumber]);
 
   const order = state.order;

@@ -1,12 +1,15 @@
 import { getSupabase } from './supabase';
 import { normalizeRoster } from '../data/customization';
 
-const allowLocalPersistence = Boolean(import.meta.env.DEV) || ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
+const allowLocalPersistence =
+  Boolean(import.meta.env.DEV) ||
+  ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
 const STORAGE_PREFIX = 'shababuna-b2b-v2';
 const MAX_LOCAL_ROWS = 80;
 
 const nowIso = () => new Date().toISOString();
-const newId = (prefix) => `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`}`;
+const newId = (prefix) =>
+  `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`}`;
 const storageKey = (kind, userId) => `${STORAGE_PREFIX}:${kind}:${userId || 'guest'}`;
 
 function readLocal(kind, userId) {
@@ -22,7 +25,10 @@ function readLocal(kind, userId) {
 function writeLocal(kind, userId, rows) {
   if (!allowLocalPersistence) return rows;
   try {
-    globalThis.localStorage?.setItem(storageKey(kind, userId), JSON.stringify(rows.slice(0, MAX_LOCAL_ROWS)));
+    globalThis.localStorage?.setItem(
+      storageKey(kind, userId),
+      JSON.stringify(rows.slice(0, MAX_LOCAL_ROWS)),
+    );
   } catch {
     // The cloud path remains authoritative when local storage is unavailable.
   }
@@ -31,7 +37,9 @@ function writeLocal(kind, userId, rows) {
 
 function upsertLocal(kind, userId, row) {
   const rows = readLocal(kind, userId);
-  const next = [row, ...rows.filter((item) => item.id !== row.id)].sort((a, b) => String(b.updated_at || b.created_at).localeCompare(String(a.updated_at || a.created_at)));
+  const next = [row, ...rows.filter((item) => item.id !== row.id)].sort((a, b) =>
+    String(b.updated_at || b.created_at).localeCompare(String(a.updated_at || a.created_at)),
+  );
   writeLocal(kind, userId, next);
   return row;
 }
@@ -76,7 +84,11 @@ async function cloudUpsert(table, row) {
     if (allowLocalPersistence) return null;
     throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
   }
-  const { data, error } = await client.from(table).upsert(row, { onConflict: 'id' }).select('*').single();
+  const { data, error } = await client
+    .from(table)
+    .upsert(row, { onConflict: 'id' })
+    .select('*')
+    .single();
   if (error) throw error;
   return data;
 }
@@ -92,7 +104,9 @@ export async function ensureOrganization({ userId, name, type = 'club', countryC
     const { data, error } = await client.rpc('create_or_get_my_organization', {
       p_name: String(name).trim().slice(0, 160),
       p_organization_type: String(type || 'club'),
-      p_country_code: String(countryCode || 'LY').toUpperCase().slice(0, 2),
+      p_country_code: String(countryCode || 'LY')
+        .toUpperCase()
+        .slice(0, 2),
     });
     if (error) throw error;
     return data || null;
@@ -114,17 +128,30 @@ export async function listSavedDesigns(userId) {
   return readLocal('designs', userId);
 }
 
-export async function saveCustomDesign({ userId, design, name, organizationId = null, status = 'draft' }) {
+export async function saveCustomDesign({
+  userId,
+  design,
+  name,
+  organizationId = null,
+  status = 'draft',
+}) {
   const previousId = design.id || null;
   const row = {
     id: previousId || newId('design'),
     user_id: userId || null,
     organization_id: organizationId,
-    name: String(name || design.teamName || 'Untitled design').trim().slice(0, 120),
+    name: String(name || design.teamName || 'Untitled design')
+      .trim()
+      .slice(0, 120),
     product_type: design.productType,
     status,
     version: Math.max(1, Number(design.version || 0) + (previousId ? 1 : 0)),
-    design_data: { ...design, id: undefined, version: undefined, logoPreview: design.logoPreview?.startsWith('data:') ? null : design.logoPreview || null },
+    design_data: {
+      ...design,
+      id: undefined,
+      version: undefined,
+      logoPreview: design.logoPreview?.startsWith('data:') ? null : design.logoPreview || null,
+    },
     preview_data: {
       primary: design.primary,
       secondary: design.secondary,
@@ -166,13 +193,21 @@ export async function listRosters(userId) {
   return readLocal('rosters', userId);
 }
 
-export async function saveRoster({ userId, name, organizationId = null, rows = [], rosterId = null }) {
+export async function saveRoster({
+  userId,
+  name,
+  organizationId = null,
+  rows = [],
+  rosterId = null,
+}) {
   const normalized = normalizeRoster(rows);
   const row = {
     id: rosterId || newId('roster'),
     user_id: userId || null,
     organization_id: organizationId,
-    name: String(name || 'Team roster').trim().slice(0, 120),
+    name: String(name || 'Team roster')
+      .trim()
+      .slice(0, 120),
     players: normalized,
     player_count: normalized.length,
     validation_errors: normalized.reduce((sum, player) => sum + player.errors.length, 0),
@@ -233,7 +268,12 @@ export async function listProductionUpdates(userId) {
       const quotes = await cloudList('quote_requests', userId, 'created_at');
       const quoteIds = (quotes || []).map((row) => row.id).filter(Boolean);
       if (!quoteIds.length) return [];
-      const { data, error } = await client.from('production_updates').select('*').in('quote_id', quoteIds).order('created_at', { ascending: false }).limit(100);
+      const { data, error } = await client
+        .from('production_updates')
+        .select('*')
+        .in('quote_id', quoteIds)
+        .order('created_at', { ascending: false })
+        .limit(100);
       if (error) throw error;
       writeLocal('production', userId, data || []);
       return data || [];
@@ -245,7 +285,8 @@ export async function listProductionUpdates(userId) {
 }
 
 export function saveLocalProductionUpdate(userId, update) {
-  if (!allowLocalPersistence) throw Object.assign(new Error('cloud_required'), { code: 'CLOUD_REQUIRED' });
+  if (!allowLocalPersistence)
+    throw Object.assign(new Error('cloud_required'), { code: 'CLOUD_REQUIRED' });
   return upsertLocal('production', userId, {
     id: update.id || newId('production'),
     created_at: update.created_at || nowIso(),
@@ -256,7 +297,11 @@ export function saveLocalProductionUpdate(userId, update) {
 export function clearB2bLocalState(userId) {
   if (!allowLocalPersistence) return;
   for (const kind of ['designs', 'rosters', 'quotes', 'production']) {
-    try { globalThis.localStorage?.removeItem(storageKey(kind, userId)); } catch {}
+    try {
+      globalThis.localStorage?.removeItem(storageKey(kind, userId));
+    } catch {
+      /* ignore */
+    }
   }
 }
 
@@ -312,14 +357,19 @@ export async function startQuotePayment({ quoteNumber, customerEmail, paymentMet
   });
   const text = await response.text().catch(() => '');
   let result = {};
-  try { result = text ? JSON.parse(text) : {}; } catch {}
+  try {
+    result = text ? JSON.parse(text) : {};
+  } catch {
+    /* ignore */
+  }
   if (!response.ok || !result.url) throw new Error(result.error || 'quote_payment_session_failed');
   window.location.assign(result.url);
   return result;
 }
 
 async function requireCloudUser(userId) {
-  if (!userId || userId === 'guest') throw Object.assign(new Error('authentication_required'), { code: 'AUTH_REQUIRED' });
+  if (!userId || userId === 'guest')
+    throw Object.assign(new Error('authentication_required'), { code: 'AUTH_REQUIRED' });
   const client = await getSupabase();
   if (!client) throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
   return client;
@@ -327,7 +377,12 @@ async function requireCloudUser(userId) {
 
 async function listForOrganizations(client, table, organizationIds, order = 'created_at') {
   if (!organizationIds.length) return [];
-  const { data, error } = await client.from(table).select('*').in('organization_id', organizationIds).order(order, { ascending: false }).limit(200);
+  const { data, error } = await client
+    .from(table)
+    .select('*')
+    .in('organization_id', organizationIds)
+    .order(order, { ascending: false })
+    .limit(200);
   if (error) throw error;
   return data || [];
 }
@@ -335,31 +390,53 @@ async function listForOrganizations(client, table, organizationIds, order = 'cre
 export async function loadEnterpriseWorkspace(userId) {
   const client = await requireCloudUser(userId);
   const organizations = await membershipIds(client, userId);
-  const [orders, quotes, invoices, contracts, reorders, paymentProofs, lockers, messages] = await Promise.all([
-    cloudList('orders', userId, 'created_at').catch(() => []),
-    cloudList('quote_requests', userId, 'created_at').catch(() => []),
-    listForOrganizations(client, 'invoices', organizations).catch(() => []),
-    listForOrganizations(client, 'organization_contracts', organizations).catch(() => []),
-    listForOrganizations(client, 'reorder_requests', organizations).catch(() => []),
-    listForOrganizations(client, 'payment_proofs', organizations).catch(() => []),
-    listForOrganizations(client, 'team_locker_stores', organizations).catch(() => []),
-    listForOrganizations(client, 'project_messages', organizations).catch(() => []),
-  ]);
+  const [orders, quotes, invoices, contracts, reorders, paymentProofs, lockers, messages] =
+    await Promise.all([
+      cloudList('orders', userId, 'created_at').catch(() => []),
+      cloudList('quote_requests', userId, 'created_at').catch(() => []),
+      listForOrganizations(client, 'invoices', organizations).catch(() => []),
+      listForOrganizations(client, 'organization_contracts', organizations).catch(() => []),
+      listForOrganizations(client, 'reorder_requests', organizations).catch(() => []),
+      listForOrganizations(client, 'payment_proofs', organizations).catch(() => []),
+      listForOrganizations(client, 'team_locker_stores', organizations).catch(() => []),
+      listForOrganizations(client, 'project_messages', organizations).catch(() => []),
+    ]);
   const orderIds = orders.map((row) => row.id).filter(Boolean);
   const quoteIds = quotes.map((row) => row.id).filter(Boolean);
   let shipments = [];
   if (orderIds.length || quoteIds.length) {
-    let query = client.from('shipments').select('*,carrier:carriers(name,tracking_url_template)');
+    const query = client.from('shipments').select('*,carrier:carriers(name,tracking_url_template)');
     const filters = [];
     if (orderIds.length) filters.push(`order_id.in.(${orderIds.join(',')})`);
-    if (quoteIds.length) filters.push(`quote_id.in.(${quoteIds.map((id) => `"${String(id).replaceAll('"', '')}"`).join(',')})`);
-    const result = await query.or(filters.join(',')).order('created_at', { ascending: false }).limit(200);
+    if (quoteIds.length)
+      filters.push(
+        `quote_id.in.(${quoteIds.map((id) => `"${String(id).replaceAll('"', '')}"`).join(',')})`,
+      );
+    const result = await query
+      .or(filters.join(','))
+      .order('created_at', { ascending: false })
+      .limit(200);
     if (!result.error) shipments = result.data || [];
   }
-  return { organizations, invoices, contracts, reorders, paymentProofs, lockers, messages, shipments };
+  return {
+    organizations,
+    invoices,
+    contracts,
+    reorders,
+    paymentProofs,
+    lockers,
+    messages,
+    shipments,
+  };
 }
 
-export async function createProjectMessage({ organizationId, quoteId = null, orderId = null, body, attachmentIds = [] }) {
+export async function createProjectMessage({
+  organizationId,
+  quoteId = null,
+  orderId = null,
+  body,
+  attachmentIds = [],
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const message = String(body || '').trim();
@@ -375,7 +452,16 @@ export async function createProjectMessage({ organizationId, quoteId = null, ord
   return data;
 }
 
-export async function createReorderRequest({ organizationId, sourceOrderId = null, sourceQuoteId = null, sourceDesignId = null, requestType = 'full_reorder', items = [], playerDetails = {}, note = '' }) {
+export async function createReorderRequest({
+  organizationId,
+  sourceOrderId = null,
+  sourceQuoteId = null,
+  sourceDesignId = null,
+  requestType = 'full_reorder',
+  items = [],
+  playerDetails = {},
+  note = '',
+}) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_create_reorder_request', {
@@ -394,25 +480,58 @@ export async function createReorderRequest({ organizationId, sourceOrderId = nul
   return data;
 }
 
-export async function startExternalContractSignature({ accessToken, contractId, signerName, signerEmail }) {
+export async function startExternalContractSignature({
+  accessToken,
+  contractId,
+  signerName,
+  signerEmail,
+}) {
   if (!accessToken) throw new Error('authentication_required');
   const response = await fetch('/api/signature-envelope', {
-    method: 'POST', credentials: 'same-origin', cache: 'no-store',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: `Bearer ${accessToken}` },
+    method: 'POST',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: JSON.stringify({ contractId, signerName, signerEmail }),
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.ok || !/^https:\/\//i.test(String(data.signingUrl || ''))) throw new Error(data.error || 'signature_provider_unavailable');
+  if (!response.ok || !data.ok || !/^https:\/\//i.test(String(data.signingUrl || '')))
+    throw new Error(data.error || 'signature_provider_unavailable');
   window.location.assign(data.signingUrl);
   return data;
 }
 
-export async function signOrganizationContract({ accessToken, contractId, signerName, signerEmail, signatureValue, signatureType = 'typed', consentVersion = '1.0' }) {
+export async function signOrganizationContract({
+  accessToken,
+  contractId,
+  signerName,
+  signerEmail,
+  signatureValue,
+  signatureType = 'typed',
+  consentVersion = '1.0',
+}) {
   if (!accessToken) throw new Error('authentication_required');
   const response = await fetch('/api/contract-sign', {
-    method: 'POST', credentials: 'same-origin', cache: 'no-store',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: `Bearer ${accessToken}` },
-    body: JSON.stringify({ contractId, signerName, signerEmail, signatureValue, signatureType, consentVersion }),
+    method: 'POST',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      contractId,
+      signerName,
+      signerEmail,
+      signatureValue,
+      signatureType,
+      consentVersion,
+    }),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || !data.ok) throw new Error(data.error || 'contract_sign_unavailable');
@@ -421,23 +540,55 @@ export async function signOrganizationContract({ accessToken, contractId, signer
 
 function encodePaymentProof(file) {
   return new Promise((resolve, reject) => {
-    if (!(file instanceof File) || !file.size || file.size > 2 * 1024 * 1024) return reject(new Error('invalid_file_size'));
-    const allowed = new Set(['image/jpeg','image/png','image/webp','application/pdf']);
+    if (!(file instanceof File) || !file.size || file.size > 2 * 1024 * 1024)
+      return reject(new Error('invalid_file_size'));
+    const allowed = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
     if (!allowed.has(file.type)) return reject(new Error('unsupported_file_type'));
     const reader = new FileReader();
     reader.onerror = () => reject(new Error('file_read_failed'));
-    reader.onload = () => resolve({ name: file.name, mime: file.type, role: 'additional_file', base64: String(reader.result || '').split(',')[1] || '' });
+    reader.onload = () =>
+      resolve({
+        name: file.name,
+        mime: file.type,
+        role: 'additional_file',
+        base64: String(reader.result || '').split(',')[1] || '',
+      });
     reader.readAsDataURL(file);
   });
 }
 
-export async function submitPaymentProof({ accessToken, entityType, entityId, file, amount, currency = 'USD', paymentMethod = 'bank_transfer', reference = '', note = '' }) {
+export async function submitPaymentProof({
+  accessToken,
+  entityType,
+  entityId,
+  file,
+  amount,
+  currency = 'USD',
+  paymentMethod = 'bank_transfer',
+  reference = '',
+  note = '',
+}) {
   if (!accessToken) throw new Error('authentication_required');
   const encoded = await encodePaymentProof(file);
   const response = await fetch('/api/payment-proof', {
-    method: 'POST', credentials: 'same-origin', cache: 'no-store',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: `Bearer ${accessToken}` },
-    body: JSON.stringify({ entityType, entityId, files: [encoded], amount, currency, paymentMethod, reference, note }),
+    method: 'POST',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      entityType,
+      entityId,
+      files: [encoded],
+      amount,
+      currency,
+      paymentMethod,
+      reference,
+      note,
+    }),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || !data.ok) throw new Error(data.error || 'payment_proof_unavailable');
@@ -447,12 +598,23 @@ export async function submitPaymentProof({ accessToken, entityType, entityId, fi
 export async function getTeamLocker(slug) {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const cleanSlug = String(slug || '').trim().toLowerCase();
+  const cleanSlug = String(slug || '')
+    .trim()
+    .toLowerCase();
   if (!/^[a-z0-9-]{2,100}$/.test(cleanSlug)) throw new Error('invalid_team_locker');
-  const { data: store, error: storeError } = await client.from('team_locker_stores').select('*').eq('slug', cleanSlug).maybeSingle();
+  const { data: store, error: storeError } = await client
+    .from('team_locker_stores')
+    .select('*')
+    .eq('slug', cleanSlug)
+    .maybeSingle();
   if (storeError) throw storeError;
   if (!store || store.status !== 'active') throw new Error('team_locker_unavailable');
-  const { data: products, error: productsError } = await client.from('team_locker_products').select('*').eq('locker_store_id', store.id).eq('status', 'active').order('sort_order', { ascending: true });
+  const { data: products, error: productsError } = await client
+    .from('team_locker_products')
+    .select('*')
+    .eq('locker_store_id', store.id)
+    .eq('status', 'active')
+    .order('sort_order', { ascending: true });
   if (productsError) throw productsError;
   return { store, products: products || [] };
 }

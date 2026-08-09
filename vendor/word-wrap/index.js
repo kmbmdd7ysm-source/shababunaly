@@ -6,9 +6,12 @@ function trimEnd(str) {
   return str.substring(0, lastCharPos + 1);
 }
 function trimTabAndSpaces(str) {
-  return str.split('\n').map((line) => trimEnd(line)).join('\n');
+  return str
+    .split('\n')
+    .map((line) => trimEnd(line))
+    .join('\n');
 }
-module.exports = function(str, options) {
+module.exports = function (str, options) {
   options = options || {};
   if (str == null) return str;
   var width = options.width || 50;
@@ -19,11 +22,17 @@ module.exports = function(str, options) {
   if (options.cut !== true) regexString += '([\\s\u200B]+|$)|[^\\s\u200B]+?([\\s\u200B]+|$)';
   var re = new RegExp(regexString, 'g');
   var lines = str.match(re) || [];
-  var result = indent + lines.map(function(line) {
-    if (line.slice(-1) === '\n') line = line.slice(0, line.length - 1);
-    return escape(line);
-  }).join(newline);
+  var result =
+    indent +
+    lines
+      .map(function (line) {
+        if (line.slice(-1) === '\n') line = line.slice(0, line.length - 1);
+        return escape(line);
+      })
+      .join(newline);
   if (options.trim === true) result = trimTabAndSpaces(result);
   return result;
 };
-function identity(str) { return str; }
+function identity(str) {
+  return str;
+}

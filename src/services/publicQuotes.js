@@ -1,6 +1,9 @@
 import { getSupabase } from './supabase';
 
-const clean = (value, max = 3000) => String(value ?? '').trim().slice(0, max);
+const clean = (value, max = 3000) =>
+  String(value ?? '')
+    .trim()
+    .slice(0, max);
 
 async function authorizationHeader() {
   const client = await getSupabase();
@@ -10,7 +13,12 @@ async function authorizationHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-export async function submitPublicQuote({ payload, organizationId = null, turnstileToken, idempotencyKey }) {
+export async function submitPublicQuote({
+  payload,
+  organizationId = null,
+  turnstileToken,
+  idempotencyKey,
+}) {
   const key = clean(idempotencyKey, 36) || globalThis.crypto?.randomUUID?.();
   if (!key) throw new Error('idempotency_unavailable');
   const response = await fetch('/api/public-quote-request', {

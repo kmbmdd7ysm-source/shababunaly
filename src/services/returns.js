@@ -1,7 +1,11 @@
 import { getSupabase } from './supabase';
 import { sendFormspree } from './formspree';
 
-const clean = (value, max = 3000) => String(value ?? '').replace(/[<>]/g, '').trim().slice(0, max);
+const clean = (value, max = 3000) =>
+  String(value ?? '')
+    .replace(/[<>]/g, '')
+    .trim()
+    .slice(0, max);
 
 export async function listMyReturns(userId) {
   if (!userId) return [];
@@ -40,22 +44,24 @@ export async function createReturnRequest({ orderNumber, reason, details = '', i
   });
   if (error) throw error;
   try {
-    await sendFormspree({
-      formType: 'return_request',
-      event: 'new_return_request',
-      returnNumber: data?.return_number,
-      orderNumber: data?.order_number,
-      customerEmail: data?.customer_email,
-      reason: data?.reason,
-      details: data?.details,
-      items: data?.requested_items,
-    }, `New return request — ${data?.return_number || orderNumber}`);
+    await sendFormspree(
+      {
+        formType: 'return_request',
+        event: 'new_return_request',
+        returnNumber: data?.return_number,
+        orderNumber: data?.order_number,
+        customerEmail: data?.customer_email,
+        reason: data?.reason,
+        details: data?.details,
+        items: data?.requested_items,
+      },
+      `New return request — ${data?.return_number || orderNumber}`,
+    );
   } catch {
     // The database notification outbox retries independently.
   }
   return data;
 }
-
 
 export async function cancelReturnRequest({ returnId, note = '' }) {
   const client = await getSupabase();
@@ -66,14 +72,17 @@ export async function cancelReturnRequest({ returnId, note = '' }) {
   });
   if (error) throw error;
   try {
-    await sendFormspree({
-      formType: 'return_request',
-      event: 'return_cancelled',
-      returnNumber: data?.return_number,
-      orderNumber: data?.order_number,
-      customerEmail: data?.customer_email,
-      note: data?.customer_note,
-    }, `Return cancelled — ${data?.return_number || returnId}`);
+    await sendFormspree(
+      {
+        formType: 'return_request',
+        event: 'return_cancelled',
+        returnNumber: data?.return_number,
+        orderNumber: data?.order_number,
+        customerEmail: data?.customer_email,
+        note: data?.customer_note,
+      },
+      `Return cancelled — ${data?.return_number || returnId}`,
+    );
   } catch {
     // The outbox remains the reliable retry path.
   }

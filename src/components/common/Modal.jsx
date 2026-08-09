@@ -50,8 +50,12 @@ export default function Modal({ open, onClose, title = '', children = null, labe
   return (
     <div
       className="modal-backdrop"
+      role="presentation"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') onClose();
       }}
     >
       <div

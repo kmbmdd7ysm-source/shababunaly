@@ -33,7 +33,9 @@ export function getRelatedProducts(
     .map((id) => byId.get(id))
     .filter((entry): entry is RelatedCandidate => Boolean(entry && entry.id !== product.id));
 
-  const rest = catalog.filter((entry) => entry.id !== product.id && !curated.some((c) => c.id === entry.id));
+  const rest = catalog.filter(
+    (entry) => entry.id !== product.id && !curated.some((c) => c.id === entry.id),
+  );
   const price = Number(product.price);
   const scored = rest
     .map((entry) => {
@@ -50,7 +52,8 @@ export function getRelatedProducts(
         else if (ratio >= 0.5 && ratio <= 1.6) score += 8;
       }
       // Brand alone is insufficient — only a small boost when category already matches.
-      if (entry.brand && entry.brand === product.brand && entry.category === product.category) score += 4;
+      if (entry.brand && entry.brand === product.brand && entry.category === product.category)
+        score += 4;
       return { entry, score };
     })
     .filter((row) => row.score >= 40)

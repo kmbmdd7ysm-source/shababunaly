@@ -16,7 +16,8 @@ export function getProductionReadiness() {
   const missing = [];
   if (!validHttps(import.meta.env.VITE_SUPABASE_URL)) missing.push('account_service');
   if (!String(import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim()) missing.push('account_key');
-  if (!String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim()) missing.push('request_verification');
+  if (!String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim())
+    missing.push('request_verification');
   if (!validHttps(import.meta.env.VITE_FORM_ENDPOINT || 'https://formspree.io/f/mqerbqvd')) {
     missing.push('message_delivery');
   }

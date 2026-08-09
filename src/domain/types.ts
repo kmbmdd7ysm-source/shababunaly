@@ -50,7 +50,8 @@ export type FactoryApprovalState =
   | 'FACTORY_APPROVED'
   | 'PRODUCTION_READY';
 
-export type PaymentVerificationState = 'MOCK_VERIFIED' | 'SANDBOX_VERIFIED' | 'LIVE_VERIFIED' | 'UNCONFIGURED';
+export type PaymentVerificationState =
+  'MOCK_VERIFIED' | 'SANDBOX_VERIFIED' | 'LIVE_VERIFIED' | 'UNCONFIGURED';
 
 export type UnknownCommercialField = null | 'unknown' | 'pending_verification';
 
@@ -61,7 +62,8 @@ export interface ProductMasterFields {
   warehouse: string | UnknownCommercialField;
   leadTime: string | UnknownCommercialField;
   weight: number | UnknownCommercialField;
-  dimensions: { length: number; width: number; height: number; unit: string } | UnknownCommercialField;
+  dimensions:
+    { length: number; width: number; height: number; unit: string } | UnknownCommercialField;
   HSCode: string | UnknownCommercialField;
   countryOfOrigin: string | UnknownCommercialField;
   variantOrigin: string | UnknownCommercialField;

@@ -29,6 +29,7 @@ export default function MediaLightbox({
       unlock();
       if (old instanceof HTMLElement) old.focus();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [open, i]);
   if (!open) return null;
   const go = (n) => {
@@ -56,7 +57,11 @@ export default function MediaLightbox({
       </button>
       <div
         className="lightbox-stage"
+        role="presentation"
         onDoubleClick={() => setZoom((z) => (z === 1 ? 2 : 1))}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') setZoom((z) => (z === 1 ? 2 : 1));
+        }}
         onWheel={(e) => {
           e.preventDefault();
           setZoom((z) => Math.max(1, Math.min(3, z + (e.deltaY < 0 ? 0.25 : -0.25))));

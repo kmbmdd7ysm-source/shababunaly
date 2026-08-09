@@ -1,10 +1,11 @@
 import { applyApiHeaders, guardPublicPost } from './_request-security.js';
 import { supabaseAdminRequest } from './_supabase-admin.js';
 
-const clean = (value, max = 600) => String(value ?? '')
-  .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[email]')
-  .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, '[phone]')
-  .slice(0, max);
+const clean = (value, max = 600) =>
+  String(value ?? '')
+    .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[email]')
+    .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, '[phone]')
+    .slice(0, max);
 const json = (res, status, body) => {
   applyApiHeaders(res);
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -13,7 +14,12 @@ const json = (res, status, body) => {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { ok: false, error: 'method_not_allowed' });
-  const guarded = await guardPublicPost(req, res, { maxBytes: 20_000, limit: 20, windowMs: 60_000, bucket: 'client-error' });
+  const guarded = await guardPublicPost(req, res, {
+    maxBytes: 20_000,
+    limit: 20,
+    windowMs: 60_000,
+    bucket: 'client-error',
+  });
   if (!guarded) return;
   try {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
@@ -29,7 +35,11 @@ export default async function handler(req, res) {
       occurred_at: body.occurredAt || new Date().toISOString(),
     };
     try {
-      await supabaseAdminRequest('/rest/v1/security_events', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(row) });
+      await supabaseAdminRequest('/rest/v1/security_events', {
+        method: 'POST',
+        headers: { Prefer: 'return=minimal' },
+        body: JSON.stringify(row),
+      });
     } catch {
       // Monitoring must never break the customer flow. External ingest below
       // remains available even when the database is temporarily unavailable.
@@ -38,8 +48,13 @@ export default async function handler(req, res) {
     const token = clean(process.env.ERROR_MONITORING_TOKEN, 5000);
     if (endpoint && /^https:\/\//i.test(endpoint)) {
       await fetch(endpoint, {
-        method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify(row), signal: AbortSignal.timeout(4000),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(row),
+        signal: AbortSignal.timeout(4000),
       }).catch(() => null);
     }
     return json(res, 202, { ok: true });

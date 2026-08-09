@@ -127,10 +127,10 @@ export default function MainHeader() {
       }
     };
     document.addEventListener('keydown', key);
+    const trigger = menuButton.current;
     return () => {
       document.removeEventListener('keydown', key);
       unlock();
-      const trigger = menuButton.current;
       // The panel is still visible on this tick; focus lands nowhere unless we
       // wait for it to be hidden.
       requestAnimationFrame(() => trigger?.focus());
@@ -157,96 +157,90 @@ export default function MainHeader() {
   return (
     <>
       <header className="gw-head" data-condensed={condensed ? 'yes' : 'no'}>
-          <div className="gw-head-inner">
-            <Link to="/" className="gw-head-brand" aria-label={SITE.name}>
-              {/* Two files rather than a CSS filter: the wordmark is a raster, and
+        <div className="gw-head-inner">
+          <Link to="/" className="gw-head-brand" aria-label={SITE.name}>
+            {/* Two files rather than a CSS filter: the wordmark is a raster, and
                   inverting it produces grey mush against both grounds. */}
-              <img className="gw-head-brand-light" src={wordmark} alt="" width="168" height="42" />
-              <img
-                className="gw-head-brand-dark"
-                src={wordmarkDark}
-                alt=""
-                width="168"
-                height="42"
-              />
+            <img className="gw-head-brand-light" src={wordmark} alt="" width="168" height="42" />
+            <img className="gw-head-brand-dark" src={wordmarkDark} alt="" width="168" height="42" />
+          </Link>
+
+          <nav className="gw-head-nav" aria-label={t.a11y.mainNav}>
+            {mainNav
+              .filter((item) => item.key !== 'home')
+              .map((item) => (
+                <NavLink key={item.to} to={item.to} className="gw-head-link">
+                  {navLabel(item)}
+                </NavLink>
+              ))}
+          </nav>
+
+          <div className="gw-head-tools">
+            <button
+              ref={searchButton}
+              className="gw-tool"
+              onClick={() => setSearchOpen(true)}
+              aria-label={t.a11y.openSearch}
+            >
+              <Icon name="search" />
+            </button>
+            <Link
+              className="gw-tool gw-tool--wide"
+              to="/favorites"
+              aria-label={pick({
+                en: `Favorites, ${wishlist.ids.length} items`,
+                ar: `المفضلة، ${wishlist.ids.length}`,
+              })}
+            >
+              <Icon name="heart" />
             </Link>
+            <Link
+              className="gw-tool gw-tool--wide"
+              to="/compare"
+              aria-label={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
+            >
+              <Icon name="compare" />
+              {compare.count > 0 && <b className="gw-tally">{compare.count}</b>}
+            </Link>
+            <Link
+              className="gw-tool gw-tool--wide"
+              to="/account"
+              aria-label={pick({ en: 'Account', ar: 'الحساب' })}
+              onClick={() => trackEvent('account_header_click')}
+            >
+              <Icon name="user" />
+            </Link>
+            <button
+              className="gw-tool"
+              onClick={() => {
+                trackEvent('bag_header_click');
+                openDrawer();
+              }}
+              aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
+            >
+              <Icon name="bag" />
+              {count > 0 && <b className="gw-tally">{count}</b>}
+            </button>
 
-            <nav className="gw-head-nav" aria-label={t.a11y.mainNav}>
-              {mainNav
-                .filter((item) => item.key !== 'home')
-                .map((item) => (
-                  <NavLink key={item.to} to={item.to} className="gw-head-link">
-                    {navLabel(item)}
-                  </NavLink>
-                ))}
-            </nav>
-
-            <div className="gw-head-tools">
-              <button
-                ref={searchButton}
-                className="gw-tool"
-                onClick={() => setSearchOpen(true)}
-                aria-label={t.a11y.openSearch}
-              >
-                <Icon name="search" />
-              </button>
-              <Link
-                className="gw-tool gw-tool--wide"
-                to="/favorites"
-                aria-label={pick({
-                  en: `Favorites, ${wishlist.ids.length} items`,
-                  ar: `المفضلة، ${wishlist.ids.length}`,
-                })}
-              >
-                <Icon name="heart" />
-              </Link>
-              <Link
-                className="gw-tool gw-tool--wide"
-                to="/compare"
-                aria-label={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
-              >
-                <Icon name="compare" />
-                {compare.count > 0 && <b className="gw-tally">{compare.count}</b>}
-              </Link>
-              <Link
-                className="gw-tool gw-tool--wide"
-                to="/account"
-                aria-label={pick({ en: 'Account', ar: 'الحساب' })}
-                onClick={() => trackEvent('account_header_click')}
-              >
-                <Icon name="user" />
-              </Link>
-              <button
-                className="gw-tool"
-                onClick={() => {
-                  trackEvent('bag_header_click');
-                  openDrawer();
-                }}
-                aria-label={`${t.a11y.openCart}${count ? `, ${count}` : ''}`}
-              >
-                <Icon name="bag" />
-                {count > 0 && <b className="gw-tally">{count}</b>}
-              </button>
-
-              <button
-                ref={menuButton}
-                className="gw-menu-key"
-                onClick={() => {
-                  setSearchOpen(false);
-                  setNavOpen(true);
-                }}
-                aria-expanded={navOpen}
-                aria-controls="gw-nav-overlay"
-                aria-label={t.a11y.openMenu}
-              >
-                <span className="gw-menu-key-bars" aria-hidden="true">
-                  <i />
-                  <i />
-                </span>
-                <span className="gw-menu-key-word">{pick({ en: 'Menu', ar: 'القائمة' })}</span>
-              </button>
-            </div>
+            <button
+              ref={menuButton}
+              className="gw-menu-key"
+              onClick={() => {
+                setSearchOpen(false);
+                setNavOpen(true);
+              }}
+              aria-expanded={navOpen}
+              aria-controls="gw-nav-overlay"
+              aria-label={t.a11y.openMenu}
+            >
+              <span className="gw-menu-key-bars" aria-hidden="true">
+                <i />
+                <i />
+              </span>
+              <span className="gw-menu-key-word">{pick({ en: 'Menu', ar: 'القائمة' })}</span>
+            </button>
           </div>
+        </div>
       </header>
 
       {/* ── THE OVERLAY ────────────────────────────────────────────────── */}

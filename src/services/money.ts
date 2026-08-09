@@ -86,7 +86,10 @@ export function convertPrice(
   return toCurrency === 'LYD' ? roundLydPrice(converted) : converted;
 }
 
-export function sumMoney(values: Array<Money | number>, currency: Currency = commerceConfig.baseCurrency): Money {
+export function sumMoney(
+  values: Array<Money | number>,
+  currency: Currency = commerceConfig.baseCurrency,
+): Money {
   assertCurrency(currency);
   let total = new Money(0, currency);
   for (const value of values) {

@@ -67,10 +67,16 @@ export default class AppErrorBoundary extends Component {
           <p className="section-label">SHABABUNA</p>
           <h1>{t.title}</h1>
           <p>{t.body}</p>
-          <p className="error-reference"><strong>{t.reference}:</strong> {this.state.eventId}</p>
+          <p className="error-reference">
+            <strong>{t.reference}:</strong> {this.state.eventId}
+          </p>
           <div className="error-boundary-actions">
-            <button type="button" className="btn-primary" onClick={this.retry}>{t.retry}</button>
-            <a className="btn-secondary" href="/">{t.home}</a>
+            <button type="button" className="btn-primary" onClick={this.retry}>
+              {t.retry}
+            </button>
+            <a className="btn-secondary" href="/">
+              {t.home}
+            </a>
           </div>
         </div>
       </section>

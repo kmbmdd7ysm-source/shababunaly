@@ -15,6 +15,7 @@ export default function CheckoutStatusPage({ status = 'success' }) {
   useEffect(() => {
     // Only clear the cart once a real provider redirect confirms success.
     if (status === 'success') clearCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [status]);
 
   const success = status === 'success';

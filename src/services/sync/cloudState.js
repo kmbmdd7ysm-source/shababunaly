@@ -57,14 +57,16 @@ export async function upsertProfile(userId, profile) {
     avatar_url: profile.avatarUrl ?? profile.avatar_url ?? null,
     phone: profile.phone ?? null,
     account_type:
-      (profile.accountType ?? profile.account_type) === 'organization' ? 'organization' : 'customer',
+      (profile.accountType ?? profile.account_type) === 'organization'
+        ? 'organization'
+        : 'customer',
     organization_name:
       (profile.accountType ?? profile.account_type) === 'organization'
-        ? profile.organizationName ?? profile.organization_name ?? null
+        ? (profile.organizationName ?? profile.organization_name ?? null)
         : null,
     organization_type:
       (profile.accountType ?? profile.account_type) === 'organization'
-        ? profile.organizationType ?? profile.organization_type ?? 'club'
+        ? (profile.organizationType ?? profile.organization_type ?? 'club')
         : null,
     preferred_language: profile.preferredLanguage || profile.preferred_language || 'en',
     preferred_currency: profile.preferredCurrency || profile.preferred_currency || 'USD',

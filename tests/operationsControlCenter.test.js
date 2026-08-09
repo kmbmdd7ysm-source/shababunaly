@@ -7,7 +7,9 @@ const read = (path) => readFile(new URL(path, root), 'utf8');
 
 test.describe('operations control center', () => {
   test('provides audited notification retry and security resolution', async () => {
-    const sql = await read('supabase/migrations/20260801023000_shababuna_operations_control_center.sql');
+    const sql = await read(
+      'supabase/migrations/20260801023000_shababuna_operations_control_center.sql',
+    );
     assert.match(sql, /staff_retry_commerce_notification/);
     assert.match(sql, /retry_notification/);
     assert.match(sql, /staff_resolve_security_event/);
@@ -15,7 +17,9 @@ test.describe('operations control center', () => {
   });
 
   test('blocks public media until a clean malware verdict', async () => {
-    const sql = await read('supabase/migrations/20260801023000_shababuna_operations_control_center.sql');
+    const sql = await read(
+      'supabase/migrations/20260801023000_shababuna_operations_control_center.sql',
+    );
     const worker = await read('api/media-scan-worker.js');
     assert.match(sql, /v_visibility='public' and before_row\.scan_status<>'clean'/);
     assert.match(worker, /MALWARE_SCAN_API_URL/);
@@ -23,7 +27,9 @@ test.describe('operations control center', () => {
   });
 
   test('enforces a shipment state machine and queues customer notifications', async () => {
-    const sql = await read('supabase/migrations/20260801023000_shababuna_operations_control_center.sql');
+    const sql = await read(
+      'supabase/migrations/20260801023000_shababuna_operations_control_center.sql',
+    );
     assert.match(sql, /is_valid_shipment_status_transition/);
     assert.match(sql, /invalid_shipment_status_transition/);
     assert.match(sql, /enqueue_commerce_notification/);

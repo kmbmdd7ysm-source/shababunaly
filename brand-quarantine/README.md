@@ -19,17 +19,17 @@ only so the owner can confirm what was found and remove them deliberately.
 
 ## Files
 
-| File | Contains |
-|---|---|
-| `shababuna-mark-black.png` | the silhouette alone |
-| `shababuna-mark-white.png` | the silhouette alone |
-| `shababuna-full-en-black.png` | script wordmark + silhouette |
-| `shababuna-full-en-white.png` | script wordmark + silhouette |
-| `shababuna-full-ar-black.png` | Arabic wordmark + silhouette |
-| `shababuna-full-ar-white.png` | Arabic wordmark + silhouette |
-| `shababuna-social.png` | OG card built around the lockup |
-| `favicon-legacy.svg` | a hand-drawn approximation of the same figure |
-| `favicon-legacy.png` | raster of the same |
+| File                          | Contains                                      |
+| ----------------------------- | --------------------------------------------- |
+| `shababuna-mark-black.png`    | the silhouette alone                          |
+| `shababuna-mark-white.png`    | the silhouette alone                          |
+| `shababuna-full-en-black.png` | script wordmark + silhouette                  |
+| `shababuna-full-en-white.png` | script wordmark + silhouette                  |
+| `shababuna-full-ar-black.png` | Arabic wordmark + silhouette                  |
+| `shababuna-full-ar-white.png` | Arabic wordmark + silhouette                  |
+| `shababuna-social.png`        | OG card built around the lockup               |
+| `favicon-legacy.svg`          | a hand-drawn approximation of the same figure |
+| `favicon-legacy.png`          | raster of the same                            |
 
 ## What is genuine and still in use
 

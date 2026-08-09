@@ -33,13 +33,13 @@ export default function Realtime3DEngine({ model, fallbackSrc, alt, eager, pick 
   return (
     <div className="gw-viewer-stage gw-viewer-stage--3d">
       <model-viewer
+        className="gw-model-viewer"
         src={model}
         alt={alt}
         camera-controls
         touch-action="pan-y"
         shadow-intensity="0.6"
         exposure="1"
-        style={{ width: '100%', height: '100%', minHeight: '420px', background: 'transparent' }}
       />
     </div>
   );

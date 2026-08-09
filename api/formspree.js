@@ -14,7 +14,10 @@ export function sanitize(value, max = 12000) {
 }
 
 export function sanitizeKey(value) {
-  return String(value || '').trim().replace(/[^A-Za-z0-9_.:-]/g, '_').slice(0, 80);
+  return String(value || '')
+    .trim()
+    .replace(/[^A-Za-z0-9_.:-]/g, '_')
+    .slice(0, 80);
 }
 
 export function buildCleanFormPayload(payload) {
@@ -39,9 +42,13 @@ export default async function handler(request, response) {
   }
   if (!(await guardPublicPost(request, response, { maxBytes: 64000, limit: 10 }))) return;
   const endpoint = resolveFormspreeEndpoint();
-  if (!endpoint || !/^https:\/\//i.test(endpoint)) return response.status(503).json({ ok: false, error: 'formspree_not_configured' });
+  if (!endpoint || !/^https:\/\//i.test(endpoint))
+    return response.status(503).json({ ok: false, error: 'formspree_not_configured' });
   const payload = request.body && typeof request.body === 'object' ? request.body : {};
-  const captchaOk = await verifyTurnstileToken(payload.turnstileToken, request.headers['x-forwarded-for'] || request.socket?.remoteAddress || '');
+  const captchaOk = await verifyTurnstileToken(
+    payload.turnstileToken,
+    request.headers['x-forwarded-for'] || request.socket?.remoteAddress || '',
+  );
   if (!captchaOk) return response.status(400).json({ ok: false, error: 'captcha_failed' });
   const clean = buildCleanFormPayload(payload);
   const body = new URLSearchParams(clean).toString();
@@ -58,9 +65,19 @@ export default async function handler(request, response) {
       signal,
     });
     const text = await upstream.text();
-    if (!upstream.ok) return response.status(502).json({ ok: false, error: 'formspree_rejected', status: upstream.status, detail: text.slice(0, 500) });
+    if (!upstream.ok)
+      return response.status(502).json({
+        ok: false,
+        error: 'formspree_rejected',
+        status: upstream.status,
+        detail: text.slice(0, 500),
+      });
     return response.status(200).json({ ok: true, provider: 'formspree' });
   } catch (error) {
-    return response.status(502).json({ ok: false, error: 'formspree_delivery_failed', detail: String(error?.message || error).slice(0, 500) });
+    return response.status(502).json({
+      ok: false,
+      error: 'formspree_delivery_failed',
+      detail: String(error?.message || error).slice(0, 500),
+    });
   }
 }

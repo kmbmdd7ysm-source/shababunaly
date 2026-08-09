@@ -2,10 +2,15 @@ import { randomUUID } from 'node:crypto';
 import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.js';
 import { applyApiHeaders } from './_request-security.js';
 
-const clean = (value, max = 1000) => String(value ?? '').replace(/\0/g, '').trim().slice(0, max);
+const clean = (value, max = 1000) =>
+  String(value ?? '')
+    .replace(/\0/g, '')
+    .trim()
+    .slice(0, max);
 const json = (res, status, body) => res.status(status).json(body);
-const authorized = (req) => Boolean(process.env.CRON_SECRET)
-  && clean(req.headers.authorization, 800) === `Bearer ${clean(process.env.CRON_SECRET, 500)}`;
+const authorized = (req) =>
+  Boolean(process.env.CRON_SECRET) &&
+  clean(req.headers.authorization, 800) === `Bearer ${clean(process.env.CRON_SECRET, 500)}`;
 
 async function fetchRows(table, userId, foreign = 'user_id') {
   try {
@@ -20,22 +25,37 @@ async function fetchRows(table, userId, foreign = 'user_id') {
 async function upload(bucket, path, bytes) {
   const { base, serviceKey } = getSupabaseAdminConfig();
   const encodedPath = path.split('/').map(encodeURIComponent).join('/');
-  const response = await fetch(`${base}/storage/v1/object/${encodeURIComponent(bucket)}/${encodedPath}`, {
-    method: 'POST',
-    headers: {
-      apikey: serviceKey,
-      Authorization: `Bearer ${serviceKey}`,
-      'Content-Type': 'application/json',
-      'x-upsert': 'false',
+  const response = await fetch(
+    `${base}/storage/v1/object/${encodeURIComponent(bucket)}/${encodedPath}`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+        'Content-Type': 'application/json',
+        'x-upsert': 'false',
+      },
+      body: bytes,
     },
-    body: bytes,
-  });
+  );
   if (!response.ok) throw new Error(`privacy_export_upload_failed:${response.status}`);
 }
 
 async function buildExport(userId) {
-  const [profiles, userState, addresses, orders, quotes, designs, rosters, returns, specialRequests,
-    organizations, organizationMemberships, privacyRequests] = await Promise.all([
+  const [
+    profiles,
+    userState,
+    addresses,
+    orders,
+    quotes,
+    designs,
+    rosters,
+    returns,
+    specialRequests,
+    organizations,
+    organizationMemberships,
+    privacyRequests,
+  ] = await Promise.all([
     fetchRows('profiles', userId, 'id'),
     fetchRows('user_state', userId),
     fetchRows('addresses', userId),

@@ -18,7 +18,9 @@ function presentNumber(value: unknown): number | UnknownCommercialField {
  * Normalize Product Master commercial fields without inventing business values.
  * Missing values become `pending_verification` (or null where quantity is unknown).
  */
-export function normalizeProductMaster(product: Record<string, unknown> | null | undefined): ProductMasterFields {
+export function normalizeProductMaster(
+  product: Record<string, unknown> | null | undefined,
+): ProductMasterFields {
   const source = product ?? {};
   return {
     supplierSKU: presentString(source.supplierSKU ?? source.supplierSku),
@@ -50,7 +52,9 @@ export function normalizeVariantInventory(
     inventoryVerified: verified,
     inventoryTracking: tracking,
     inventoryLocation: presentString(variant?.inventoryLocation ?? product?.inventoryLocation),
-    warehouse: presentString(variant?.warehouse ?? product?.warehouse ?? product?.inventoryLocation),
+    warehouse: presentString(
+      variant?.warehouse ?? product?.warehouse ?? product?.inventoryLocation,
+    ),
     readyToShip: Boolean(
       product?.readyToShip === true && verified && tracking && variant?.readyToShip !== false,
     ),
@@ -65,6 +69,8 @@ export function normalizeVariantInventory(
 
 export function missingMasterFields(master: ProductMasterFields): string[] {
   return Object.entries(master)
-    .filter(([, value]) => value === null || value === 'unknown' || value === 'pending_verification')
+    .filter(
+      ([, value]) => value === null || value === 'unknown' || value === 'pending_verification',
+    )
     .map(([key]) => key);
 }

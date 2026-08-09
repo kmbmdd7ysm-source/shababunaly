@@ -123,6 +123,7 @@ export default function ShopPage() {
         if (subcategory && product.subcategory !== subcategory) return false;
         return true;
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
     [category, subcategory],
   );
 
@@ -145,13 +146,21 @@ export default function ShopPage() {
       if (max != null && product.price > max) return false;
       if (
         filters.inStock &&
-        !(product.inventoryVerified === true && product.inventoryTracking === true && Number(product.stock) > 0)
+        !(
+          product.inventoryVerified === true &&
+          product.inventoryTracking === true &&
+          Number(product.stock) > 0
+        )
       ) {
         return false;
       }
       if (
         filters.readyOnly &&
-        !(product.readyToShip === true && product.inventoryVerified === true && product.inventoryTracking === true)
+        !(
+          product.readyToShip === true &&
+          product.inventoryVerified === true &&
+          product.inventoryTracking === true
+        )
       ) {
         return false;
       }
@@ -181,8 +190,7 @@ export default function ShopPage() {
     return list;
   }, [baseProducts, filters, pick, sort]);
 
-  useEffect(() => {
-  }, [category, navigate]);
+  useEffect(() => {}, [category, navigate]);
 
   useEffect(() => {
     if (!drawerOpen) return undefined;
@@ -190,10 +198,11 @@ export default function ShopPage() {
     drawerRef.current?.querySelector('button,input')?.focus();
     const onKey = (event) => event.key === 'Escape' && setDrawerOpen(false);
     document.addEventListener('keydown', onKey);
+    const trigger = triggerRef.current;
     return () => {
       unlock();
       document.removeEventListener('keydown', onKey);
-      triggerRef.current?.focus();
+      trigger?.focus();
     };
   }, [drawerOpen]);
 
@@ -661,7 +670,12 @@ export default function ShopPage() {
             aria-modal="true"
             aria-label={t.common.filters}
           >
-            <div className="gw-filter-sheet-scrim" onClick={() => setDrawerOpen(false)} />
+            <button
+              type="button"
+              className="gw-filter-sheet-scrim"
+              aria-label={t.common.close}
+              onClick={() => setDrawerOpen(false)}
+            />
             <div ref={drawerRef} className="gw-filter-sheet-panel">
               <div className="gw-filter-sheet-head">
                 <h2>{t.common.filters}</h2>

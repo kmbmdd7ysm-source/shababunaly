@@ -29,7 +29,10 @@ const localUser = (record) => ({
   user_metadata: record.metadata || {},
   app_metadata: { provider: 'local' },
 });
-const normalizeEmail = (email) => String(email || '').trim().toLowerCase();
+const normalizeEmail = (email) =>
+  String(email || '')
+    .trim()
+    .toLowerCase();
 const cloudError = () =>
   new Error(
     'Account service is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Vercel Environment Variables.',
@@ -118,9 +121,10 @@ export function AuthProvider({ children }) {
     const directAuthRoute = /^\/(account|checkout|orders|order-tracking)(?:\/|$)/.test(path);
     const authCallback = Boolean(
       location &&
-        (/[#?](?:access_token|refresh_token|code|token_hash|error)=/.test(
-          `${location.search}${location.hash}`,
-        ) || new URLSearchParams(location.search).has('verified')),
+      (/[#?](?:access_token|refresh_token|code|token_hash|error)=/.test(
+        `${location.search}${location.hash}`,
+      ) ||
+        new URLSearchParams(location.search).has('verified')),
     );
     let storedCloudSession = false;
     try {
@@ -216,7 +220,9 @@ export function AuthProvider({ children }) {
           .trim()
           .slice(0, 100);
         const requestedAccountType =
-          String(metadata.account_type || '').trim() === 'organization' ? 'organization' : 'customer';
+          String(metadata.account_type || '').trim() === 'organization'
+            ? 'organization'
+            : 'customer';
         const allowedOrganizationTypes = new Set([
           'club',
           'academy',
@@ -227,17 +233,24 @@ export function AuthProvider({ children }) {
         ]);
         const requestedOrganizationType = String(metadata.organization_type || '').trim();
         const safeMetadata = {
-          first_name: String(metadata.first_name || '').trim().slice(0, 80),
-          last_name: String(metadata.last_name || '').trim().slice(0, 80),
+          first_name: String(metadata.first_name || '')
+            .trim()
+            .slice(0, 80),
+          last_name: String(metadata.last_name || '')
+            .trim()
+            .slice(0, 80),
           display_name: normalizedName,
           fullName: normalizedName,
           account_type: requestedAccountType,
           organization_name:
             requestedAccountType === 'organization'
-              ? String(metadata.organization_name || '').trim().slice(0, 160)
+              ? String(metadata.organization_name || '')
+                  .trim()
+                  .slice(0, 160)
               : '',
           organization_type:
-            requestedAccountType === 'organization' && allowedOrganizationTypes.has(requestedOrganizationType)
+            requestedAccountType === 'organization' &&
+            allowedOrganizationTypes.has(requestedOrganizationType)
               ? requestedOrganizationType
               : '',
         };
@@ -272,9 +285,7 @@ export function AuthProvider({ children }) {
       resendVerification: async (email) => {
         const s = await client();
         if (!s) {
-          return allowLocalAuth
-            ? { data: {}, error: null }
-            : { data: null, error: cloudError() };
+          return allowLocalAuth ? { data: {}, error: null } : { data: null, error: cloudError() };
         }
         return s.auth.resend({
           type: 'signup',
@@ -396,10 +407,11 @@ export function AuthProvider({ children }) {
       listMfaFactors: async () => {
         const s = await client();
         if (!s) throw cloudError();
-        const [{ data: factors, error: factorsError }, { data: aal, error: aalError }] = await Promise.all([
-          s.auth.mfa.listFactors(),
-          s.auth.mfa.getAuthenticatorAssuranceLevel(),
-        ]);
+        const [{ data: factors, error: factorsError }, { data: aal, error: aalError }] =
+          await Promise.all([
+            s.auth.mfa.listFactors(),
+            s.auth.mfa.getAuthenticatorAssuranceLevel(),
+          ]);
         if (factorsError) throw factorsError;
         if (aalError) throw aalError;
         return { factors: factors?.totp || [], aal };
@@ -414,7 +426,12 @@ export function AuthProvider({ children }) {
       verifyMfaTotp: async (factorId, code) => {
         const s = await client();
         if (!s) throw cloudError();
-        const { data, error } = await s.auth.mfa.challengeAndVerify({ factorId, code: String(code || '').replace(/\D/g, '').slice(0, 6) });
+        const { data, error } = await s.auth.mfa.challengeAndVerify({
+          factorId,
+          code: String(code || '')
+            .replace(/\D/g, '')
+            .slice(0, 6),
+        });
         if (error) throw error;
         const refreshed = await s.auth.refreshSession();
         if (refreshed.error) throw refreshed.error;
@@ -430,16 +447,7 @@ export function AuthProvider({ children }) {
         return data;
       },
     }),
-    [
-      user,
-      session,
-      loading,
-      cloudConfigured,
-      configStatus,
-      client,
-      localSignIn,
-      localSignUp,
-    ],
+    [user, session, loading, cloudConfigured, configStatus, client, localSignIn, localSignUp],
   );
 
   return <C.Provider value={api}>{children}</C.Provider>;

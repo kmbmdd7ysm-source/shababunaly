@@ -52,7 +52,9 @@ export function createChannel(name, onMessage) {
     if (e.key !== `__bc__:${name}` || !e.newValue) return;
     try {
       dispatch(JSON.parse(e.newValue));
-    } catch {}
+    } catch {
+      /* ignore */
+    }
   };
   globalThis.addEventListener?.('storage', storageListener);
   return {
@@ -71,7 +73,9 @@ export function createChannel(name, onMessage) {
       try {
         localStorage.setItem(`__bc__:${name}`, JSON.stringify(msg));
         localStorage.removeItem(`__bc__:${name}`);
-      } catch {}
+      } catch {
+        /* ignore */
+      }
       return msg;
     },
     close() {

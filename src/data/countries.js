@@ -110,7 +110,10 @@ export function normalizeCountryCode(value, fallback = commerceConfig.defaultCou
 export function getCountryName(code, lang = 'en') {
   const safeCode = normalizeCountryCode(code);
   try {
-    return new Intl.DisplayNames([lang === 'ar' ? 'ar' : 'en'], { type: 'region' }).of(safeCode) || safeCode;
+    return (
+      new Intl.DisplayNames([lang === 'ar' ? 'ar' : 'en'], { type: 'region' }).of(safeCode) ||
+      safeCode
+    );
   } catch {
     return safeCode;
   }

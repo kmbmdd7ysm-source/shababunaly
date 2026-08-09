@@ -6,10 +6,10 @@ This document is the final technical gate before publishing `shababuna.ly`. A gr
 
 The release validator is configured to reject reports below:
 
-| Mode | Performance | Accessibility | Best Practices | SEO |
-|---|---:|---:|---:|---:|
-| Mobile | 99 | 100 | 100 | 100 |
-| Desktop | 100 | 100 | 100 | 100 |
+| Mode    | Performance | Accessibility | Best Practices | SEO |
+| ------- | ----------: | ------------: | -------------: | --: |
+| Mobile  |          99 |           100 |            100 | 100 |
+| Desktop |         100 |           100 |            100 | 100 |
 
 Core budgets:
 

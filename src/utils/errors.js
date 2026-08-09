@@ -77,7 +77,10 @@ export function mapError(error) {
     code = 'email_exists';
   else if (text.includes('signup is disabled') || text.includes('signups not allowed'))
     code = 'signup_disabled';
-  else if (text.includes('database error saving new user') || text.includes('error saving new user'))
+  else if (
+    text.includes('database error saving new user') ||
+    text.includes('error saving new user')
+  )
     code = 'signup_database';
   else if (
     text.includes('error sending confirmation') ||
@@ -99,7 +102,8 @@ export function mapError(error) {
     text.includes('temporarily unavailable')
   )
     code = 'auth_network';
-  else if (text.includes('password should be') || text.includes('weak password')) code = 'weak_password';
+  else if (text.includes('password should be') || text.includes('weak password'))
+    code = 'weak_password';
   else if (text.includes('rate limit') || text.includes('too many requests')) code = 'rate_limit';
   else if (text.includes('email not confirmed')) code = 'auth_unverified';
   else if (

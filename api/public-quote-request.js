@@ -4,7 +4,11 @@ import { verifyTurnstileToken } from './_turnstile.js';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
 import { recordBusinessEvent } from './_business-events.js';
 
-const clean = (value, max = 2000) => String(value ?? '').trim().replace(/\0/g, '').slice(0, max);
+const clean = (value, max = 2000) =>
+  String(value ?? '')
+    .trim()
+    .replace(/\0/g, '')
+    .slice(0, max);
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TYPES = new Set(['teams_wholesale_quote', 'custom_design_quote']);
@@ -36,21 +40,28 @@ function normalizePayload(body) {
     submittedAt: new Date().toISOString(),
   };
   if (!TYPES.has(formType)) throw new Error('invalid_quote_type');
-  if (payload.customerName.length < 2 || !EMAIL.test(payload.customerEmail)) throw new Error('invalid_customer_details');
-  if (!/^[A-Z]{2}$/.test(payload.country) || payload.organization.length < 2) throw new Error('invalid_organization_details');
-  if (!Number.isFinite(payload.quantity) || payload.quantity < 1 || payload.quantity > 100000) throw new Error('invalid_quantity');
+  if (payload.customerName.length < 2 || !EMAIL.test(payload.customerEmail))
+    throw new Error('invalid_customer_details');
+  if (!/^[A-Z]{2}$/.test(payload.country) || payload.organization.length < 2)
+    throw new Error('invalid_organization_details');
+  if (!Number.isFinite(payload.quantity) || payload.quantity < 1 || payload.quantity > 100000)
+    throw new Error('invalid_quantity');
   if (!payload.productGroup && !payload.requirements) throw new Error('quote_details_required');
   return payload;
 }
 
 async function verifiedOrganizationId(userId, requestedId) {
   if (!userId || !UUID.test(clean(requestedId, 36))) return null;
-  const rows = await supabaseAdminRequest(`/rest/v1/organization_members?select=organization_id&organization_id=eq.${encodeURIComponent(requestedId)}&user_id=eq.${encodeURIComponent(userId)}&limit=1`);
+  const rows = await supabaseAdminRequest(
+    `/rest/v1/organization_members?select=organization_id&organization_id=eq.${encodeURIComponent(requestedId)}&user_id=eq.${encodeURIComponent(userId)}&limit=1`,
+  );
   return Array.isArray(rows) && rows[0]?.organization_id ? rows[0].organization_id : null;
 }
 
 async function findDuplicate(idempotencyKey) {
-  const rows = await supabaseAdminRequest(`/rest/v1/quote_requests?select=id,quote_number,status,created_at&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&limit=1`);
+  const rows = await supabaseAdminRequest(
+    `/rest/v1/quote_requests?select=id,quote_number,status,created_at&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&limit=1`,
+  );
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
@@ -60,10 +71,21 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(req, res, { maxBytes: 96_000, limit: 6, windowMs: 10 * 60_000, bucket: 'public-quote' }))) return;
+  if (
+    !(await guardPublicPost(req, res, {
+      maxBytes: 96_000,
+      limit: 6,
+      windowMs: 10 * 60_000,
+      bucket: 'public-quote',
+    }))
+  )
+    return;
   try {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
-    const captchaOk = await verifyTurnstileToken(clean(body.turnstileToken, 3000), req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '');
+    const captchaOk = await verifyTurnstileToken(
+      clean(body.turnstileToken, 3000),
+      req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '',
+    );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const payload = normalizePayload(body);
     const user = await resolveSupabaseUser(req.headers.authorization);
@@ -91,18 +113,42 @@ export default async function handler(req, res) {
       deposit_percent: 50,
       request_data: payload,
     };
-    const created = await supabaseAdminRequest('/rest/v1/quote_requests?select=id,quote_number,status,created_at', {
-      method: 'POST',
-      headers: { Prefer: 'return=representation' },
-      body: JSON.stringify(row),
-    });
+    const created = await supabaseAdminRequest(
+      '/rest/v1/quote_requests?select=id,quote_number,status,created_at',
+      {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify(row),
+      },
+    );
     const quote = Array.isArray(created) ? created[0] : created;
     if (!quote?.id) throw new Error('quote_create_failed');
-    await recordBusinessEvent('quote_created', { entityType: 'quote', entityReference: quote.quote_number, organizationId, actorUserId: user?.id || null, customerIdentifier: payload.customerEmail, channel: 'web', sourceEventId: quote.id, properties: { form_type: payload.formType, product_group: payload.productGroup, quantity: payload.quantity } });
+    await recordBusinessEvent('quote_created', {
+      entityType: 'quote',
+      entityReference: quote.quote_number,
+      organizationId,
+      actorUserId: user?.id || null,
+      customerIdentifier: payload.customerEmail,
+      channel: 'web',
+      sourceEventId: quote.id,
+      properties: {
+        form_type: payload.formType,
+        product_group: payload.productGroup,
+        quantity: payload.quantity,
+      },
+    });
     return res.status(201).json({ ok: true, duplicate: false, quote });
   } catch (error) {
     const code = clean(error?.message || error, 160);
-    const client = new Set(['invalid_quote_type', 'invalid_customer_details', 'invalid_organization_details', 'invalid_quantity', 'quote_details_required']);
-    return res.status(client.has(code) ? 400 : 503).json({ ok: false, error: client.has(code) ? code : 'quote_request_unavailable' });
+    const client = new Set([
+      'invalid_quote_type',
+      'invalid_customer_details',
+      'invalid_organization_details',
+      'invalid_quantity',
+      'quote_details_required',
+    ]);
+    return res
+      .status(client.has(code) ? 400 : 503)
+      .json({ ok: false, error: client.has(code) ? code : 'quote_request_unavailable' });
   }
 }
