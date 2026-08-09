@@ -5,7 +5,7 @@ import {
   getSubcategory,
   allSubcategories,
   findSubcategoryAnywhere,
-} from '../src/data/categories.js';
+} from '../src/data/categories.ts';
 import {
   countries,
   countryByCode,

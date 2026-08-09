@@ -52,7 +52,7 @@ describe('teams, wholesale and operations architecture', () => {
     expect(operationsPage).toContain('lazy(');
     expect(operationsPage).toContain('OperationsDashboardPage');
     expect(operationsPage).toContain('path="orders"');
-    const navigation = readFileSync('src/data/navigation.js', 'utf8');
+    const navigation = readFileSync('src/data/navigation.ts', 'utf8');
     expect(navigation).not.toContain('/operations');
   });
 });

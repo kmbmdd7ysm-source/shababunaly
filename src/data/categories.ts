@@ -200,14 +200,11 @@ export const categories = [
   },
 ];
 
-/** @param {string} slug */
-export const getCategory = (slug) => categories.find((c) => c.slug === slug);
-/** @param {string} categorySlug @param {string} subSlug */
-export const getSubcategory = (categorySlug, subSlug) =>
+export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
+export const getSubcategory = (categorySlug: string, subSlug: string) =>
   getCategory(categorySlug)?.subcategories.find((s) => s.slug === subSlug);
 export const allSubcategories = categories.flatMap((c) =>
   c.subcategories.map((s) => ({ ...s, category: c.slug, categoryName: c.name })),
 );
-/** @param {string} subSlug */
-export const findSubcategoryAnywhere = (subSlug) =>
+export const findSubcategoryAnywhere = (subSlug: string) =>
   allSubcategories.find((s) => s.slug === subSlug);

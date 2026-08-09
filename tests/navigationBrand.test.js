@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from './test-api.js';
 import { SITE } from '../src/config.ts';
-import { mainNav } from '../src/data/navigation.js';
+import { mainNav } from '../src/data/navigation.ts';
 
 describe('brand and navigation', () => {
   it('uses the approved brand identity and contact data', () => {

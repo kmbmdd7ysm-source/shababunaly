@@ -7,7 +7,7 @@ import {
 } from '../src/data/products.js';
 import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.ts';
 import { products as sourceLhaProducts } from '../src/data/lhaProducts.js';
-import { categories } from '../src/data/categories.js';
+import { categories } from '../src/data/categories.ts';
 
 let errors = 0;
 const warnings = 0;
