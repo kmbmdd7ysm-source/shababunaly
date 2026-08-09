@@ -184,7 +184,7 @@ for (const token of [
 if (/user_metadata\?\.role|user_metadata\.role/u.test(adminUsersApi))
   fail.push('Admin authorization trusts editable user_metadata.role');
 const formApi = read('api/formspree.ts');
-const orderApi = read('api/order-notification.js');
+const orderApi = read('api/order-notification.ts');
 for (const source of [formApi, orderApi]) {
   has(source, 'guardPublicPost', 'public API security guard');
   has(source, 'formspree_not_configured', 'fail-closed Formspree configuration');

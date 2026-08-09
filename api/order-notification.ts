@@ -1,16 +1,27 @@
 import { guardPublicPost } from './_request-security.ts';
-export const resolveOrderNotificationEndpoint = () =>
+
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+export const resolveOrderNotificationEndpoint = (): string =>
   String(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT || '').trim();
 
-const safe = (value, max = 12000) =>
+const safe = (value: unknown, max = 12000): string =>
   String(value ?? '')
     .replace(/\0/g, '')
     .slice(0, max);
 
-async function loadTrustedOrder(orderNumber) {
+async function loadTrustedOrder(orderNumber: string) {
   const base = safe(process.env.SUPABASE_URL, 1000).replace(/\/$/, '');
   const key = safe(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
-  if (!base || !key) return { configured: false, order: null };
+  if (!base || !key) return { configured: false, order: null as Record<string, unknown> | null };
   const select = [
     'order_number',
     'customer_email',
@@ -37,24 +48,28 @@ async function loadTrustedOrder(orderNumber) {
     },
   );
   if (!response.ok) throw new Error('trusted_order_lookup_failed');
-  const rows = await response.json();
+  const rows = (await response.json()) as Array<Record<string, unknown>>;
   return { configured: true, order: Array.isArray(rows) ? rows[0] || null : null };
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(req, res, { maxBytes: 32000, limit: 6 }))) return;
+  if (!(await guardPublicPost(req as never, res as never, { maxBytes: 32000, limit: 6 })))
+    return;
   const endpoint = resolveOrderNotificationEndpoint();
   if (!endpoint || !/^https:\/\//i.test(endpoint))
     return res.status(503).json({ ok: false, error: 'formspree_not_configured' });
-  const input = req.body && typeof req.body === 'object' ? req.body : {};
+  const input = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+    string,
+    unknown
+  >;
   if (!input.orderNumber || !input.message) {
     return res.status(400).json({ ok: false, error: 'missing_order_payload' });
   }
-  let lookup;
+  let lookup: { configured: boolean; order: Record<string, unknown> | null };
   try {
     lookup = await loadTrustedOrder(safe(input.orderNumber, 80).toUpperCase());
   } catch {
@@ -93,7 +108,7 @@ export default async function handler(req, res) {
       )
     : safe(input.message);
   const params = new URLSearchParams({
-    _subject: safe(input._subject || `New Shababuna order ${input.orderNumber}`, 180),
+    _subject: safe(input._subject || `New Shababuna order ${String(input.orderNumber)}`, 180),
     _template: 'table',
     form_type: 'order',
     order_number: safe(input.orderNumber, 80),
@@ -131,11 +146,15 @@ export default async function handler(req, res) {
     return res
       .status(200)
       .json({ ok: true, provider: 'formspree', orderNumber: input.orderNumber });
-  } catch (error) {
+  } catch (error: unknown) {
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
     return res.status(502).json({
       ok: false,
       error: 'formspree_delivery_failed',
-      detail: safe(error?.message || error, 500),
+      detail: safe(message || error, 500),
     });
   } finally {
     clearTimeout(timeout);
