@@ -12,7 +12,7 @@ import {
   deltaE76,
   readRasterDimensions,
   runProductionPreflight,
-} from '../src/services/productionPreflight.js';
+} from '../src/services/productionPreflight.ts';
 import { CUSTOM_PRODUCT_TYPES, DEFAULT_CUSTOM_DESIGN } from '../src/data/customization.ts';
 import { createDefaultStudio } from '../src/services/designStudio.ts';
 

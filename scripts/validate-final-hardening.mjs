@@ -267,7 +267,7 @@ for (const token of [
 ])
   has(coverageRunner, token, `runtime coverage gate ${token}`);
 
-const preflight = read('src/services/productionPreflight.js');
+const preflight = read('src/services/productionPreflight.ts');
 for (const token of [
   'FACTORY_TEMPLATE_SPECS',
   'minimumRasterDpi',

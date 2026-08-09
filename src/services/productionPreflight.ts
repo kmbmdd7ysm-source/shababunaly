@@ -103,17 +103,17 @@ export const FACTORY_TEMPLATE_SPECS = Object.freeze(
         ...TEMPLATE_BASE,
         productType: product.key,
         productLabel: product.label.en,
-        ...PRODUCT_DIMENSIONS[product.key],
+        ...(PRODUCT_DIMENSIONS as Record<string, { widthMm: number; heightMm: number; views: string[]; panels: string[] }>)[product.key] || {},
       }),
     ]),
   ),
 );
 
-export function getFactoryTemplateSpec(productType) {
+export function getFactoryTemplateSpec(productType: string) {
   return FACTORY_TEMPLATE_SPECS[productType] || FACTORY_TEMPLATE_SPECS['game-set'];
 }
 
-export function hexToRgb(value) {
+export function hexToRgb(value: unknown): { r: number; g: number; b: number } | null {
   const hex = String(value || '');
   if (!HEX.test(hex)) return null;
   return {
@@ -123,7 +123,7 @@ export function hexToRgb(value) {
   };
 }
 
-export function rgbToCmyk(rgb) {
+export function rgbToCmyk(rgb: { r: number; g: number; b: number } | null | undefined) {
   if (
     !rgb ||
     ![rgb.r, rgb.g, rgb.b].every((value) => Number.isFinite(value) && value >= 0 && value <= 255)
@@ -142,16 +142,16 @@ export function rgbToCmyk(rgb) {
   };
 }
 
-export function hexToCmyk(value) {
+export function hexToCmyk(value: unknown) {
   return rgbToCmyk(hexToRgb(value));
 }
 
-function srgbChannelToLinear(value) {
+function srgbChannelToLinear(value: number): number {
   const channel = value / 255;
   return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
 }
 
-export function rgbToLab(rgb) {
+export function rgbToLab(rgb: { r: number; g: number; b: number } | null | undefined) {
   if (
     !rgb ||
     ![rgb.r, rgb.g, rgb.b].every((value) => Number.isFinite(value) && value >= 0 && value <= 255)
@@ -163,7 +163,7 @@ export function rgbToLab(rgb) {
   const x = (r * 0.4124564 + g * 0.3575761 + b * 0.1804375) / 0.95047;
   const y = r * 0.2126729 + g * 0.7151522 + b * 0.072175;
   const z = (r * 0.0193339 + g * 0.119192 + b * 0.9503041) / 1.08883;
-  const f = (value) => (value > 216 / 24389 ? Math.cbrt(value) : ((24389 / 27) * value + 16) / 116);
+  const f = (value: number) => (value > 216 / 24389 ? Math.cbrt(value) : ((24389 / 27) * value + 16) / 116);
   return {
     l: Number((116 * f(y) - 16).toFixed(3)),
     a: Number((500 * (f(x) - f(y))).toFixed(3)),
@@ -171,11 +171,11 @@ export function rgbToLab(rgb) {
   };
 }
 
-export function deltaE76(first, second) {
+export function deltaE76(first: { l: number; a: number; b: number } | null | undefined, second: { l: number; a: number; b: number } | null | undefined) {
   if (
     !first ||
     !second ||
-    !['l', 'a', 'b'].every(
+    !(['l', 'a', 'b'] as const).every(
       (key) => Number.isFinite(Number(first[key])) && Number.isFinite(Number(second[key])),
     )
   )
@@ -189,7 +189,7 @@ export function deltaE76(first, second) {
   );
 }
 
-function decodeImageDataUri(value) {
+function decodeImageDataUri(value: unknown): { format: string; buffer: Uint8Array } | null {
   const match = String(value || '').match(
     /^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=]*)$/i,
   );
@@ -197,38 +197,39 @@ function decodeImageDataUri(value) {
   try {
     const binary = globalThis.atob(match[2]);
     return {
-      format: match[1].toLowerCase(),
-      buffer: Uint8Array.from(binary, (character) => character.charCodeAt(0)),
+      format: (match[1] || '').toLowerCase(),
+      buffer: Uint8Array.from(binary, (character: string) => character.charCodeAt(0)),
     };
   } catch {
     return null;
   }
 }
 
-export function readRasterDimensions(value) {
+export function readRasterDimensions(value: unknown) {
   const decoded = decodeImageDataUri(value);
   if (!decoded) return null;
   const { format, buffer } = decoded;
-  const ascii = (start, end) => String.fromCharCode(...buffer.slice(start, end));
-  const u16be = (offset) => (buffer[offset] << 8) | buffer[offset + 1];
-  const u32be = (offset) =>
-    (buffer[offset] * 0x1000000 +
-      (buffer[offset + 1] << 16) +
-      (buffer[offset + 2] << 8) +
-      buffer[offset + 3]) >>>
-    0;
-  const u24le = (offset) => buffer[offset] | (buffer[offset + 1] << 8) | (buffer[offset + 2] << 16);
+  const ascii = (start: number, end: number) => String.fromCharCode(...buffer.slice(start, end));
+  const u16be = (offset: number) => ((buffer[offset] ?? 0) << 8) | (buffer[offset + 1] ?? 0);
+  const u32be = (offset: number) =>
+    (((buffer[offset] ?? 0) * 0x1000000 +
+      ((buffer[offset + 1] ?? 0) << 16) +
+      ((buffer[offset + 2] ?? 0) << 8) +
+      (buffer[offset + 3] ?? 0)) >>>
+    0);
+  const u24le = (offset: number) =>
+    (buffer[offset] ?? 0) | ((buffer[offset + 1] ?? 0) << 8) | ((buffer[offset + 2] ?? 0) << 16);
   if (format === 'png' && buffer.length >= 24 && ascii(1, 4) === 'PNG') {
     return { pixelWidth: u32be(16), pixelHeight: u32be(20), format, source: 'embedded_header' };
   }
   if (format === 'jpeg' && buffer.length > 4 && buffer[0] === 0xff && buffer[1] === 0xd8) {
     let offset = 2;
     while (offset + 9 < buffer.length) {
-      if (buffer[offset] !== 0xff) {
+      if ((buffer[offset] ?? 0) !== 0xff) {
         offset += 1;
         continue;
       }
-      const marker = buffer[offset + 1];
+      const marker = buffer[offset + 1] ?? 0;
       const length = u16be(offset + 2);
       if (
         [0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf].includes(
@@ -264,7 +265,7 @@ export function readRasterDimensions(value) {
 }
 
 /** @param {any} [design] */
-export function buildColorSpecifications(design = {}) {
+export function buildColorSpecifications(design: Record<string, unknown> = {}) {
   return ['primary', 'secondary', 'accent'].map((role) => {
     const hex = HEX.test(String(design[role] || '')) ? String(design[role]).toUpperCase() : null;
     return {
@@ -279,7 +280,7 @@ export function buildColorSpecifications(design = {}) {
 }
 
 /** @param {any} [design] */
-export function buildColorSpecificationsCsv(design = {}) {
+export function buildColorSpecificationsCsv(design: Record<string, unknown> = {}) {
   const rows = buildColorSpecifications(design).map((color) => {
     const rgb = color.rgb || { r: '', g: '', b: '' };
     const cmyk = color.cmyk || { c: '', m: '', y: '', k: '' };
@@ -301,17 +302,19 @@ export function buildColorSpecificationsCsv(design = {}) {
   return ['"Role","HEX","R","G","B","C","M","Y","K","Spot color status"', ...rows].join('\n');
 }
 
-function layerOutsideSafeArea(layer, safePercent) {
+function layerOutsideSafeArea(layer: Record<string, unknown>, safePercent: number): boolean {
   const halfWidth = Number(layer.width) / 2;
+  const x = Number(layer.x);
+  const y = Number(layer.y);
   return (
-    layer.x - halfWidth < safePercent ||
-    layer.x + halfWidth > 100 - safePercent ||
-    layer.y < safePercent ||
-    layer.y > 100 - safePercent
+    x - halfWidth < safePercent ||
+    x + halfWidth > 100 - safePercent ||
+    y < safePercent ||
+    y > 100 - safePercent
   );
 }
 
-function inspectRasterLayer(layer, template) {
+function inspectRasterLayer(layer: Record<string, unknown>, template: Record<string, unknown>) {
   if (layer.type !== 'logo' || !/^data:image\/(png|jpeg|webp);base64,/i.test(String(layer.content)))
     return null;
   const intendedWidthMm = Math.max(10, (Number(layer.width) / 100) * Number(template.widthMm));
@@ -319,9 +322,10 @@ function inspectRasterLayer(layer, template) {
   const pixelWidth = Math.max(0, Number(parsedDimensions?.pixelWidth || layer.pixelWidth) || 0);
   const pixelHeight = Math.max(0, Number(parsedDimensions?.pixelHeight || layer.pixelHeight) || 0);
   const actualDpi = pixelWidth > 0 ? Math.round(pixelWidth / (intendedWidthMm / MM_PER_INCH)) : 0;
-  const encodedPayload = String(layer.content).split(',')[1];
+  const encodedPayload = String(layer.content).split(',')[1] || '';
   const approximateBytes = Math.floor(encodedPayload.length * 0.75);
-  const requiredPixels = Math.ceil((intendedWidthMm / MM_PER_INCH) * template.minimumRasterDpi);
+  const minimumDpi = Number(template.minimumRasterDpi) || 300;
+  const requiredPixels = Math.ceil((intendedWidthMm / MM_PER_INCH) * minimumDpi);
   return {
     pixelWidth,
     pixelHeight,
@@ -329,7 +333,7 @@ function inspectRasterLayer(layer, template) {
     requiredPixels,
     intendedWidthMm: Number(intendedWidthMm.toFixed(2)),
     actualDpi,
-    minimumDpi: template.minimumRasterDpi,
+    minimumDpi,
     sourceFileName: String(layer.sourceFileName || ''),
     sourceSha256: String(layer.sourceSha256 || ''),
     dimensionSource:
@@ -337,13 +341,13 @@ function inspectRasterLayer(layer, template) {
     status:
       !pixelWidth || !pixelHeight
         ? 'missing_pixel_dimensions'
-        : actualDpi < template.minimumRasterDpi
+        : actualDpi < minimumDpi
           ? 'below_minimum_dpi'
           : 'passed',
   };
 }
 
-function inspectVectorLayer(layer) {
+function inspectVectorLayer(layer: Record<string, unknown>) {
   if (layer.type !== 'logo') return null;
   const content = String(layer.content || '');
   const fileName = String(layer.sourceFileName || '').toLowerCase();
@@ -362,71 +366,91 @@ function inspectVectorLayer(layer) {
   };
 }
 
-function validateFactoryApproval(factoryApproval, template, productType, colors) {
-  const errors = [];
-  if (!(factoryApproval?.approved && factoryApproval?.approvalStatus === 'approved'))
+function validateFactoryApproval(
+  factoryApproval: unknown,
+  template: unknown,
+  productType: unknown,
+  colors: unknown,
+) {
+  const approval = (factoryApproval && typeof factoryApproval === 'object'
+    ? factoryApproval
+    : {}) as Record<string, unknown>;
+  const tpl = (template && typeof template === 'object' ? template : {}) as Record<string, unknown>;
+  const errors: string[] = [];
+  if (!(approval.approved && approval.approvalStatus === 'approved'))
     errors.push('approval_missing');
-  if (!factoryApproval?.manufacturer || !factoryApproval?.manufacturerLegalId)
+  if (!approval.manufacturer || !approval.manufacturerLegalId)
     errors.push('manufacturer_identity_missing');
   if (
-    !factoryApproval?.certificateReference ||
-    !/^[a-f0-9]{64}$/i.test(String(factoryApproval?.certificateSha256 || ''))
+    !approval.certificateReference ||
+    !/^[a-f0-9]{64}$/i.test(String(approval.certificateSha256 || ''))
   )
     errors.push('certificate_evidence_missing');
   if (
-    factoryApproval?.templateVersion !== template.templateVersion ||
-    !factoryApproval?.productTypes?.includes(productType)
+    approval.templateVersion !== tpl.templateVersion ||
+    !Array.isArray(approval.productTypes) || !(approval.productTypes as unknown[]).includes(productType)
   )
     errors.push('product_template_not_approved');
   if (
-    !factoryApproval?.iccProfileReference ||
-    !/^[a-f0-9]{64}$/i.test(String(factoryApproval?.iccProfileSha256 || ''))
+    !approval.iccProfileReference ||
+    !/^[a-f0-9]{64}$/i.test(String(approval.iccProfileSha256 || ''))
   )
     errors.push('icc_evidence_missing');
   if (
-    !factoryApproval?.pantoneLibrary ||
-    !factoryApproval?.pantoneLibraryVersion ||
-    !/^[a-f0-9]{64}$/i.test(String(factoryApproval?.pantoneLibrarySha256 || ''))
+    !approval.pantoneLibrary ||
+    !approval.pantoneLibraryVersion ||
+    !/^[a-f0-9]{64}$/i.test(String(approval.pantoneLibrarySha256 || ''))
   )
     errors.push('pantone_evidence_missing');
   if (!(
-    Number(factoryApproval?.deltaETolerance) > 0 && Number(factoryApproval?.deltaETolerance) <= 2
+    Number(approval.deltaETolerance) > 0 && Number(approval.deltaETolerance) <= 2
   ))
     errors.push('delta_e_tolerance_invalid');
+  const materialProfile =
+    approval.materialProfile && typeof approval.materialProfile === 'object'
+      ? (approval.materialProfile as Record<string, unknown>)
+      : {};
   if (
-    !factoryApproval?.gradedPatternSha256 ||
-    !factoryApproval?.materialProfile?.fabricCode ||
-    !(Number(factoryApproval?.materialProfile?.stretchPercent) >= 0) ||
-    !(Number(factoryApproval?.materialProfile?.shrinkagePercent) >= 0)
+    !approval.gradedPatternSha256 ||
+    !materialProfile.fabricCode ||
+    !(Number(materialProfile.stretchPercent) >= 0) ||
+    !(Number(materialProfile.shrinkagePercent) >= 0)
   )
     errors.push('pattern_or_material_evidence_missing');
-  const measurements = Array.isArray(factoryApproval?.colorMeasurements)
-    ? factoryApproval.colorMeasurements
+  const measurements = Array.isArray(approval.colorMeasurements)
+    ? (approval.colorMeasurements as Array<Record<string, unknown>>)
     : [];
-  for (const color of colors.filter((row) => row.hex)) {
+  const colorRows = Array.isArray(colors) ? (colors as Array<Record<string, unknown>>) : [];
+  for (const color of colorRows.filter((row) => row.hex)) {
     const measurement = measurements.find((row) => row.role === color.role);
-    const target = measurement?.targetLab || rgbToLab(color.rgb);
-    const measured = measurement?.measuredLab;
+    const target =
+      (measurement?.targetLab as { l: number; a: number; b: number } | undefined) ||
+      rgbToLab(color.rgb as { r: number; g: number; b: number } | null | undefined);
+    const measured = measurement?.measuredLab as { l: number; a: number; b: number } | undefined;
     const difference = deltaE76(target, measured);
-    if (difference === null || difference > Number(factoryApproval?.deltaETolerance))
-      errors.push(`color_measurement_failed:${color.role}`);
+    if (difference === null || difference > Number(approval.deltaETolerance))
+      errors.push(`color_measurement_failed:${String(color.role)}`);
   }
   return { approved: errors.length === 0, errors };
 }
 
-/** @param {{design?:any,studio?:any,roster?:any[],factoryApproval?:any}} [options] */
 export function runProductionPreflight({
   design = {},
   studio = {},
   roster = [],
   factoryApproval = null,
+}: {
+  design?: Record<string, unknown>;
+  studio?: unknown;
+  roster?: unknown[];
+  factoryApproval?: Record<string, unknown> | null;
 } = {}) {
-  const product = getCustomProductType(design.productType);
-  const template = getFactoryTemplateSpec(product.key);
+  const product = getCustomProductType(String(design.productType || ''));
+  const template = getFactoryTemplateSpec(product.key) as Record<string, unknown>;
   const normalizedStudio = normalizeStudio(studio, design);
-  const normalizedRoster = normalizeRoster(roster);
-  const blockers = [];
-  const warnings = [];
+  const normalizedRoster = normalizeRoster(roster as import('../data/customization.ts').RosterInput[]);
+  const blockers: Array<{ code: string; detail: string }> = [];
+  const warnings: Array<{ code: string; detail: string }> = [];
   const quantity = Number(design.quantity || 0);
 
   if (quantity < product.minimum)
@@ -439,17 +463,17 @@ export function runProductionPreflight({
   if (product.supportsRoster && normalizedRoster.some((row) => row.errors.length))
     blockers.push({ code: 'roster_validation', detail: 'Resolve every roster error' });
 
-  const safePercent = Math.max(
-    3,
-    Math.round((template.safeInsetMm / Math.max(template.widthMm, 1)) * 100),
-  );
-  const rasterAssets = [];
-  const vectorAssets = [];
+  const widthMm = Number(template.widthMm) || 1;
+  const safeInsetMm = Number(template.safeInsetMm) || 0;
+  const safePercent = Math.max(3, Math.round((safeInsetMm / Math.max(widthMm, 1)) * 100));
+  const rasterAssets: Array<Record<string, unknown>> = [];
+  const vectorAssets: Array<Record<string, unknown>> = [];
   for (const layer of normalizedStudio.layers.filter((item) => item.visible)) {
-    if (layerOutsideSafeArea(layer, safePercent))
+    const layerRecord = layer as unknown as Record<string, unknown>;
+    if (layerOutsideSafeArea(layerRecord, safePercent))
       warnings.push({ code: 'layer_outside_safe_area', detail: layer.id });
-    const raster = inspectRasterLayer(layer, template);
-    const vector = inspectVectorLayer(layer);
+    const raster = inspectRasterLayer(layerRecord, template);
+    const vector = inspectVectorLayer(layerRecord);
     if (vector) {
       vectorAssets.push({ layerId: layer.id, ...vector });
       if (vector.status !== 'passed')
@@ -490,7 +514,10 @@ export function runProductionPreflight({
   );
   const approvedFactory = factoryValidation.approved;
   if (!approvedFactory)
-    warnings.push({ code: 'factory_approval_required', detail: template.templateVersion });
+    warnings.push({
+      code: 'factory_approval_required',
+      detail: String(template.templateVersion || ''),
+    });
   if (factoryApproval?.approved && factoryValidation.errors.length)
     blockers.push(
       ...factoryValidation.errors.map((detail) => ({ code: 'factory_evidence_invalid', detail })),

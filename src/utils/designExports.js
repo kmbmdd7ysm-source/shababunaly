@@ -4,7 +4,7 @@ import {
   buildColorSpecificationsCsv,
   getFactoryTemplateSpec,
   runProductionPreflight,
-} from '../services/productionPreflight.js';
+} from '../services/productionPreflight.ts';
 
 const enc = new TextEncoder();
 export const escapeXml = (value) =>
