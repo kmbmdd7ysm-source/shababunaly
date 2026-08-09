@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from './test-api.js';
 import guestAccessHandler from '../api/guest-order-access.ts';
 import publicQuoteHandler from '../api/public-quote-request.ts';
 import retryPaymentHandler from '../api/retry-order-payment.ts';
-import specialRequestHandler from '../api/special-request.js';
+import specialRequestHandler from '../api/special-request.ts';
 import formspreeHandler, {
   resolveFormspreeEndpoint,
   sanitize,

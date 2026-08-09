@@ -4,14 +4,36 @@ import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts'
 import { validateEncodedFiles } from './_file-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 
-const clean = (value, max = 5000) =>
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+type EncodedFile = {
+  name: string;
+  sha256: string;
+  detectedMime: string;
+  declaredMime?: string;
+  extension: string;
+  byteSize: number;
+  buffer: Uint8Array | Buffer;
+  role?: string;
+};
+
+const clean = (value: unknown, max = 5000): string =>
   String(value ?? '')
     .trim()
     .replace(/\0/g, '')
     .slice(0, max);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function isMalwareScannerConfigured() {
+export function isMalwareScannerConfigured(): boolean {
   const endpoint = clean(process.env.MALWARE_SCAN_API_URL, 1500);
   const token = clean(process.env.MALWARE_SCAN_API_KEY, 5000);
   const testMode =
@@ -24,10 +46,10 @@ export function isMalwareScannerConfigured() {
   }
 }
 
-function normalizePayload(body, hasProductImage) {
+function normalizePayload(body: Record<string, unknown>, hasProductImage: boolean) {
   const productUrl = clean(body.productUrl, 1500);
   if (productUrl) {
-    let parsed;
+    let parsed: URL;
     try {
       parsed = new URL(productUrl);
     } catch {
@@ -80,7 +102,7 @@ function normalizePayload(body, hasProductImage) {
   return payload;
 }
 
-async function uploadFile(requestId, file) {
+async function uploadFile(requestId: string, file: EncodedFile) {
   const path = `${requestId}/${file.sha256.slice(0, 24)}-${file.name}`;
   try {
     await supabaseAdminRequest(
@@ -91,8 +113,12 @@ async function uploadFile(requestId, file) {
         body: new Uint8Array(file.buffer),
       },
     );
-  } catch (error) {
-    if (error.status !== 409) throw error;
+  } catch (error: unknown) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status)
+        : 0;
+    if (status !== 409) throw error;
   }
   const rows = await supabaseAdminRequest(
     '/rest/v1/special_request_files?on_conflict=storage_path',
@@ -116,14 +142,14 @@ async function uploadFile(requestId, file) {
   return Array.isArray(rows) ? rows[0] : rows;
 }
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: 4_200_000,
       limit: 5,
       windowMs: 10 * 60_000,
@@ -132,8 +158,11 @@ export default async function handler(req, res) {
   )
     return;
   try {
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
-    const files = validateEncodedFiles(body.files);
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+      string,
+      unknown
+    >;
+    const files = validateEncodedFiles(body.files) as EncodedFile[];
     if (
       files.length > 0 &&
       process.env.NODE_ENV === 'production' &&
@@ -144,12 +173,20 @@ export default async function handler(req, res) {
     const productImages = files.filter((file) => file.role === 'product_image');
     if (productImages.length > 1) throw new Error('one_product_image_allowed');
     const payload = normalizePayload(body, productImages.length === 1);
+    const forwarded = req.headers?.['x-forwarded-for'];
     const captchaOk = await verifyTurnstileToken(
       clean(body.turnstileToken, 3000),
-      req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '',
+      String(
+        (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
+          req.socket?.remoteAddress ||
+          '',
+      ),
     );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
-    const user = await resolveSupabaseUser(req.headers.authorization);
+    const authHeader = req.headers?.authorization;
+    const user = await resolveSupabaseUser(
+      Array.isArray(authHeader) ? authHeader[0] : authHeader,
+    );
     const idempotencyKey = /^[0-9a-f-]{36}$/i.test(clean(body.idempotencyKey, 36))
       ? clean(body.idempotencyKey, 36)
       : randomUUID();
@@ -161,10 +198,12 @@ export default async function handler(req, res) {
         p_payload: payload,
       }),
     });
-    const requestRow = Array.isArray(created) ? created[0] : created;
+    const requestRow = (
+      Array.isArray(created) ? created[0] : created
+    ) as Record<string, unknown> | null;
     if (!requestRow?.id) throw new Error('special_request_create_failed');
     const uploaded = [];
-    for (const file of files) uploaded.push(await uploadFile(requestRow.id, file));
+    for (const file of files) uploaded.push(await uploadFile(String(requestRow.id), file));
     return res.status(201).json({
       ok: true,
       request: {
@@ -175,8 +214,13 @@ export default async function handler(req, res) {
       },
       filesReceived: uploaded.length,
     });
-  } catch (error) {
-    const code = clean(error?.message || error, 200);
+  } catch (error: unknown) {
+    const code = clean(
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error,
+      200,
+    );
     const clientErrors = new Set([
       'too_many_files',
       'unsupported_file_type',

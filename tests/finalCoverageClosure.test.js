@@ -49,7 +49,7 @@ import readinessHandler, {
   optionalCapabilities,
   requiredEnvironment,
 } from '../api/readiness.ts';
-import specialRequestHandler, { isMalwareScannerConfigured } from '../api/special-request.js';
+import specialRequestHandler, { isMalwareScannerConfigured } from '../api/special-request.ts';
 import {
   buildNotificationTemplate,
   notificationReference,

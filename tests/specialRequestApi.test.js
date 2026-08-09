@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import handler from '../api/special-request.js';
+import handler from '../api/special-request.ts';
 
 const envKeys = [
   'SUPABASE_URL',

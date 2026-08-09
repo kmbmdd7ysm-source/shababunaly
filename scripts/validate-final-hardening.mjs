@@ -240,7 +240,7 @@ for (const token of [
   'inventory_movements',
 ])
   has(specialMigration, token, `special request/catalog safety ${token}`);
-const specialApi = read('api/special-request.js');
+const specialApi = read('api/special-request.ts');
 for (const token of [
   'guardPublicPost',
   'verifyTurnstile',

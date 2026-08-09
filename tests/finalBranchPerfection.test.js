@@ -1,6 +1,6 @@
 import './setup.js';
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import specialRequest from '../api/special-request.js';
+import specialRequest from '../api/special-request.ts';
 import {
   createDefaultStudio,
   normalizeStudio,
