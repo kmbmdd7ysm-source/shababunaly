@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T22:47:24.074Z",
-  "sourceFiles": 269,
-  "strictFiles": 252,
-  "strictCoveragePercent": 93.68,
+  "generatedAt": "2026-08-09T22:48:57.861Z",
+  "sourceFiles": 270,
+  "strictFiles": 253,
+  "strictCoveragePercent": 93.7,
   "legacyFiles": [
     "src/components/account/OrganizationWorkspace.jsx",
     "src/components/custom/ProductionDesignEditor.jsx",

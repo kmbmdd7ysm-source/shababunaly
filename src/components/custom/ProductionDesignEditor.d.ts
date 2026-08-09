@@ -1,14 +1,9 @@
 import type { ReactElement } from 'react';
-
-export type ProductionDesignEditorProps = {
+export default function ProductionDesignEditor(props: {
   design?: unknown;
   value?: unknown;
-  onChange?: (next: unknown) => void;
+  onChange?: (studio: unknown) => void;
   readOnly?: boolean;
-  onCanvasPoint?: (point: { view?: string; x?: number; y?: number }) => void;
+  onCanvasPoint?: ((point: { view?: string; x?: number; y?: number }) => void) | null;
   [key: string]: unknown;
-};
-
-export default function ProductionDesignEditor(
-  props: ProductionDesignEditorProps,
-): ReactElement;
+}): ReactElement;
