@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function RouteExperience({ children }) {
+export default function RouteExperience({ children }: { children?: ReactNode }) {
   const location = useLocation();
-  const shellRef = useRef(null);
+  const shellRef = useRef<HTMLDivElement | null>(null);
   const firstRoute = useRef(true);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function RouteExperience({ children }) {
     }
 
     const heading = document.querySelector('h1');
-    if (heading) {
+    if (heading instanceof HTMLElement) {
       heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
     }
