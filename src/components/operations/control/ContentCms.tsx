@@ -3,8 +3,6 @@ import { useMemo, useState } from 'react';
 import { updateSiteContent } from '../../../services/operations';
 import { safeJson } from './shared';
 
-type LocalePick = (value: { en: string; ar: string }) => string;
-
 export default function ContentCms({
   state,
   pick,
@@ -12,9 +10,9 @@ export default function ContentCms({
   run,
 }: {
   state: unknown;
-  pick: LocalePick;
-  saving?: string | boolean;
-  run: (key: string, action: () => Promise<unknown>, success: string) => unknown;
+  pick: (value: unknown) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
 }): ReactElement {
   const stateRecord = (state || {}) as Record<string, unknown>;
   const defaults = useMemo(
@@ -68,15 +66,17 @@ export default function ContentCms({
           className="btn-primary compact"
           disabled={saving === `content-${key}`}
           onClick={() => {
-            void run(
-              `content-${key}`,
-              () =>
-                updateSiteContent({
-                  contentKey: key,
-                  contentValue: safeJson(text),
-                  publicRead: true,
-                }),
-              pick({ en: 'Content configuration saved.', ar: 'تم حفظ إعداد المحتوى.' }),
+            void Promise.resolve(
+              run(
+                `content-${key}`,
+                () =>
+                  updateSiteContent({
+                    contentKey: key,
+                    contentValue: safeJson(text),
+                    publicRead: true,
+                  }),
+                pick({ en: 'Content configuration saved.', ar: 'تم حفظ إعداد المحتوى.' }),
+              ),
             );
           }}
         >

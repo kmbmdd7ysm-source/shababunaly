@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { normalizeProductMaster, missingMasterFields } from '../../../domain/productMaster.ts';
 
@@ -5,11 +6,17 @@ import { normalizeProductMaster, missingMasterFields } from '../../../domain/pro
  * Operations input surface for real commercial fields.
  * Never invents values — empty fields stay pending_verification until staff enter them.
  */
-export default function ProductMasterFields({ product, onChange }) {
+export default function ProductMasterFields({
+  product,
+  onChange,
+}: {
+  product?: Record<string, unknown>;
+  onChange?: (next: Record<string, unknown>) => void;
+}): ReactElement {
   const { pick } = useLanguage();
-  const master = normalizeProductMaster(product);
-  const missing = missingMasterFields(master);
-  const fields = [
+  const master = normalizeProductMaster(product) as Record<string, unknown>;
+  const missing = missingMasterFields(master as never);
+  const fields: Array<[string, string, string]> = [
     ['supplierSKU', 'Supplier SKU', 'رمز المورد'],
     ['barcode', 'Barcode', 'الباركود'],
     ['warehouse', 'Warehouse', 'المستودع'],
@@ -35,11 +42,13 @@ export default function ProductMasterFields({ product, onChange }) {
             <input
               value={
                 typeof master[key] === 'string' && master[key] !== 'pending_verification'
-                  ? master[key]
+                  ? String(master[key])
                   : ''
               }
               placeholder={pick({ en: 'pending verification', ar: 'بانتظار التحقق' })}
-              onChange={(event) => onChange?.({ ...product, [key]: event.target.value || null })}
+              onChange={(event) =>
+                onChange?.({ ...(product || {}), [key]: event.target.value || null })
+              }
             />
           </label>
         ))}
@@ -47,13 +56,13 @@ export default function ProductMasterFields({ product, onChange }) {
           <span>{pick({ en: 'Cost', ar: 'التكلفة' })}</span>
           <input
             type="number"
-            min="0"
-            step="0.01"
+            min={0}
+            step={0.01}
             value={typeof master.cost === 'number' ? master.cost : ''}
             placeholder={pick({ en: 'pending verification', ar: 'بانتظار التحقق' })}
             onChange={(event) =>
               onChange?.({
-                ...product,
+                ...(product || {}),
                 cost: event.target.value === '' ? null : Number(event.target.value),
               })
             }
