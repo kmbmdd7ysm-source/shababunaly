@@ -1,10 +1,10 @@
 import { useLanguage } from '../context/LanguageContext';
-import Seo from '../components/common/Seo';
+import Seo from '../components/common/Seo.jsx';
 import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier';
+import Dossier from '../components/composition/Dossier.jsx';
 import Accordion from '../components/common/Accordion';
 import EmptyState from '../components/common/EmptyState';
-import { faqCategories } from '../data/faqs';
+import { faqCategories } from '../data/faqs.ts';
 import '../styles/content.css';
 
 /*
@@ -22,23 +22,25 @@ import '../styles/content.css';
  */
 export default function FaqPage() {
   const { t, pick } = useLanguage();
+  const faq = (t.faq || {}) as Record<string, string>;
+  const common = (t.common || {}) as Record<string, string>;
   const questionCount = faqCategories.reduce((total, cat) => total + cat.items.length, 0);
 
   if (faqCategories.length === 0) {
     return (
       <>
-        <Seo title={t.faq.title} description={t.faq.sub} path="/faq" />
+        <Seo title={faq.title} description={faq.sub} path="/faq" />
         <RouteMasthead
-          eyebrow={t.faq.label}
-          title={t.faq.title}
-          lede={t.faq.sub}
-          trail={[{ label: t.faq.title }]}
+          eyebrow={faq.label}
+          title={faq.title}
+          lede={faq.sub}
+          trail={[{ label: faq.title || 'FAQ' }]}
         />
         <div className="gw-terminal">
           <div className="gw-terminal-inner">
             <EmptyState
-              message={t.faq.empty}
-              action={{ label: t.common.contactUs, to: '/contact' }}
+              message={faq.empty || ''}
+              action={{ label: common.contactUs || 'Contact', to: '/contact' }}
             />
           </div>
         </div>
@@ -48,12 +50,12 @@ export default function FaqPage() {
 
   return (
     <>
-      <Seo title={t.faq.title} description={t.faq.sub} path="/faq" />
+      <Seo title={faq.title} description={faq.sub} path="/faq" />
       <RouteMasthead
-        eyebrow={t.faq.label}
-        title={t.faq.title}
-        lede={t.faq.sub}
-        trail={[{ label: t.faq.title }]}
+        eyebrow={faq.label}
+        title={faq.title}
+        lede={faq.sub}
+        trail={[{ label: faq.title || 'FAQ' }]}
         figure={{ value: questionCount, label: pick({ en: 'answers', ar: 'إجابة' }) }}
       />
       <Dossier

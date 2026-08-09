@@ -1,8 +1,9 @@
+import type { ReactElement } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import Seo from '../components/common/Seo';
+import Seo from '../components/common/Seo.jsx';
 import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier';
-import { sizeGuides, sizeUnitNote } from '../data/sizeGuide';
+import Dossier from '../components/composition/Dossier.jsx';
+import { sizeGuides, sizeUnitNote } from '../data/sizeGuide.ts';
 
 /*
  * The size guide, rebuilt as a DOSSIER of specifications.
@@ -16,17 +17,18 @@ import { sizeGuides, sizeUnitNote } from '../data/sizeGuide';
  *
  * Same `sizeGuides` data, same columns, same rows, same unit note.
  */
-export default function SizeGuidePage() {
+export default function SizeGuidePage(): ReactElement {
   const { t, pick, lang } = useLanguage();
+  const sizeGuide = (t.sizeGuide || {}) as Record<string, string>;
 
   return (
     <>
-      <Seo title={t.sizeGuide.title} description={t.sizeGuide.sub} path="/size-guide" />
+      <Seo title={sizeGuide.title} description={sizeGuide.sub} path="/size-guide" />
       <RouteMasthead
-        eyebrow={t.sizeGuide.label}
-        title={t.sizeGuide.title}
-        lede={t.sizeGuide.sub}
-        trail={[{ label: t.sizeGuide.title }]}
+        eyebrow={sizeGuide.label}
+        title={sizeGuide.title}
+        lede={sizeGuide.sub}
+        trail={[{ label: sizeGuide.title || '' }]}
         figure={{ value: sizeGuides.length, label: pick({ en: 'guides', ar: 'أدلة' }) }}
       />
       <Dossier

@@ -2,12 +2,13 @@ import { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
-import Seo from '../components/common/Seo';
+import Seo from '../components/common/Seo.jsx';
 import Icon from '../components/icons/Icon';
 import '../styles/composition.css';
 
 export default function CheckoutStatusPage({ status = 'success' }) {
   const { t } = useLanguage();
+  const checkoutStatus = (t.checkoutStatus || {}) as Record<string, string>;
   const { clearCart } = useCart();
   const [params] = useSearchParams();
   const ref = params.get('ref') || params.get('session_id') || '';
@@ -23,7 +24,7 @@ export default function CheckoutStatusPage({ status = 'success' }) {
   return (
     <>
       <Seo
-        title={success ? t.checkoutStatus.successTitle : t.checkoutStatus.cancelledTitle}
+        title={success ? checkoutStatus.successTitle : checkoutStatus.cancelledTitle}
         description=""
         path={`/checkout/${success ? 'success' : 'cancelled'}`}
         noindex
@@ -38,23 +39,23 @@ export default function CheckoutStatusPage({ status = 'success' }) {
           </span>
           <span className="gw-terminal-rule" aria-hidden="true" />
           <h1 className="gw-terminal-title">
-            {success ? t.checkoutStatus.successTitle : t.checkoutStatus.cancelledTitle}
+            {success ? checkoutStatus.successTitle : checkoutStatus.cancelledTitle}
           </h1>
           <p className="gw-terminal-copy">
-            {success ? t.checkoutStatus.successText : t.checkoutStatus.cancelledText}
+            {success ? checkoutStatus.successText : checkoutStatus.cancelledText}
           </p>
           {success && ref && (
             <p className="gw-terminal-ref">
-              {t.checkoutStatus.orderRef}: <strong className="gw-isolate-ltr">{ref}</strong>
+              {checkoutStatus.orderRef}: <strong className="gw-isolate-ltr">{ref}</strong>
             </p>
           )}
           <div className="gw-terminal-actions">
             <Link to="/shop" className="gw-btn gw-btn--primary">
-              {t.checkoutStatus.backShop}
+              {checkoutStatus.backShop}
             </Link>
             {!success && (
               <Link to="/cart" className="gw-btn gw-btn--secondary">
-                {t.checkoutStatus.viewBag}
+                {checkoutStatus.viewBag}
               </Link>
             )}
           </div>
