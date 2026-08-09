@@ -32,7 +32,7 @@ export default function BusinessIntelligencePanel({
   }>({ loading: true, data: EMPTY, error: '' });
   useEffect(() => {
     let active = true;
-    (async () => {
+    void (async () => {
       try {
         const client = await getSupabase();
         if (!client) throw new Error('cloud_not_configured');
