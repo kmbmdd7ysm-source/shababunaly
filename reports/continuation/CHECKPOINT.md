@@ -1,25 +1,36 @@
 # Continuation checkpoint
 
-- SHA: `336abfee0f483750154df6481142caedc3d8d38a`
-- TypeScript: **56.76%** (147/259)
+- SHA: `725970f440b7468214b0b2636313ff61192b1e38`
+- Branch: `cursor/shababuna-redesign-master-plan-dc14`
+- PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
+- TypeScript: **57.14%** (148/259)
 - CSS: global 5657L / !important 238 (was 7252/348)
-- premium !important 53 · shababuna !important 0
+- premium !important 53 · shababuna 0
 
-## Completed this continuation stretch
-- designStudio · productionPreflight · supabase · Commerce/Cart/contexts
-- CSS unused cull + safe !important strip
-- Footer commerce rebuild · Homepage rebalance · Product card borderless
-- Many pages to TSX (content, Favorites, About, OurWork, TeamLocker, Ops, LHA, AnnouncementBar)
+## Phase status
+| Phase | Status |
+| --- | --- |
+| 0–2,5 | PASS |
+| A / 3 TypeScript | **IN PROGRESS 57.14%** |
+| B CSS debt | PASS pass1+2 (legacy still loaded; ownership not fully removed) |
+| C Chrome | PARTIAL (structure exists; MainHeader floating shell present) |
+| D Footer | **PASS** commerce rebuild |
+| E Home | PARTIAL commerce rebalance |
+| G Product cards | PARTIAL borderless image-first |
+| F,H–Z | PENDING |
 
 ## Exact next
-1. AuthContext / UserDataContext / CatalogContext full migration
-2. Account / Customize / Checkout / Shop / Product / Teams pages
-3. Customize 3D + media engines verification
-4. Phases H–Z evidence + release verdict
+1. AuthContext / UserDataContext / CatalogContext → full TS
+2. Remaining large pages (Account, Customize, Checkout, Shop, Product, Teams)
+3. Stop loading legacy CSS ownership when new system covers routes
+4. Customize 3D + media engines verification
+5. E2E / a11y / visual / perf / PWA / coverage / verdict
 
 ## Next command
 ```bash
 cd /workspace && git rev-parse HEAD
-# Migrate AuthContext.jsx carefully OR CatalogContext.jsx
+# AuthContext.jsx → AuthContext.tsx (careful typed rewrite)
 npm run typecheck && npm run lint && npm run test:node
 ```
+
+Do not restart from Phase 0.
