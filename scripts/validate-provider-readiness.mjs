@@ -77,7 +77,7 @@ const codeChecks = {
   ),
   paymentWebhook: existsSync('api/payment-webhook.js'),
   paymentRefund: existsSync('api/refund.ts'),
-  paymentRetrieve: existsSync('api/retry-order-payment.js'),
+  paymentRetrieve: existsSync('api/retry-order-payment.ts'),
 };
 const codeReady = Object.values(codeChecks).every(Boolean);
 const productionReady = codeReady && paymentReady && signatureReady;

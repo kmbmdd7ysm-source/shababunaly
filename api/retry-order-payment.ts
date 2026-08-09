@@ -34,21 +34,23 @@ const select = [
   'delivery_profile',
 ].join(',');
 
-async function loadOrder(number) {
+async function loadOrder(number: string) {
   const rows = await supabaseAdminRequest(
     `/rest/v1/orders?select=${encodeURIComponent(select)}&order_number=eq.${encodeURIComponent(number)}&limit=1`,
   );
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
-export default async function handler(req, res) {
-  applyApiHeaders(res);
+type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined> };
+type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+export default async function handler(req: ApiReq, res: ApiRes) {
+  applyApiHeaders(res as never);
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: 16_000,
       limit: 8,
       windowMs: 10 * 60_000,
@@ -58,12 +60,12 @@ export default async function handler(req, res) {
   )
     return;
   try {
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     const orderNumber = normalizeGuestOrderNumber(body.orderNumber);
     if (!orderNumber) return res.status(400).json({ ok: false, error: 'invalid_payment_recovery' });
     const order = await loadOrder(orderNumber);
     if (!order) return res.status(404).json({ ok: false, error: 'order_not_found' });
-    const user = await resolveSupabaseUser(req.headers.authorization);
+    const user = await resolveSupabaseUser(req.headers?.authorization);
     let authorized = Boolean(user?.id && order.user_id && user.id === order.user_id);
     if (!authorized && !order.user_id) {
       const token = verifyGuestOrderToken(body.accessToken, orderNumber);
@@ -96,7 +98,7 @@ export default async function handler(req, res) {
       return res.status(409).json({ ok: false, error: 'order_not_payable' });
     }
     const site = clean(process.env.SITE_URL || 'https://shababuna.ly', 1000).replace(/\/$/, '');
-    const session = await adapter.createSession({
+    const session = await (adapter.createSession || (async () => { throw new Error("payment_provider_not_connected"); }))({
       trustedOrder: {
         id: order.id,
         orderNumber: order.order_number,
@@ -121,9 +123,9 @@ export default async function handler(req, res) {
       amountDue: due,
       currency: order.currency,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     return res
-      .status(Number(error?.status) || 503)
+      .status(Number((error && typeof error === 'object' && 'status' in error ? Number((error as {status?:unknown}).status) : undefined)) || 503)
       .json({ ok: false, error: 'payment_recovery_unavailable' });
   }
 }

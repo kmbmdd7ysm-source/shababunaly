@@ -4,7 +4,7 @@ import designShare from '../api/design-share.js';
 import formspree, { resolveFormspreeEndpoint } from '../api/formspree.ts';
 import guestOrderAccess from '../api/guest-order-access.ts';
 import publicQuote from '../api/public-quote-request.js';
-import retryPayment from '../api/retry-order-payment.js';
+import retryPayment from '../api/retry-order-payment.ts';
 import specialRequest from '../api/special-request.js';
 import { createGuestOrderToken } from '../api/_guest-order-token.ts';
 import { parseRosterCsv, rosterToCsv } from '../src/data/customization.ts';

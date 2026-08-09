@@ -19,7 +19,7 @@ const required = [
   'api/payment-webhook.js',
   'api/notification-worker.js',
   'api/guest-order-access.ts',
-  'api/retry-order-payment.js',
+  'api/retry-order-payment.ts',
   'api/public-quote-request.js',
   'docs/ORDER_BACKEND_DEPLOYMENT.md',
   'docs/PRODUCTION_ACTIVATION.md',
