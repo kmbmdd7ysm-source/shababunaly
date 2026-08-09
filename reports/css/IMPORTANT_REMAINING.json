@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-08-09T20:34:17.590700+00:00",
+  "totalImportant": 214,
+  "files": {
+    "global.css": {
+      "count": 173,
+      "byProperty": {
+        "width": 30,
+        "height": 19,
+        "transform": 14,
+        "max-width": 12,
+        "min-width": 8,
+        "font-size": 5,
+        "overflow-wrap": 5,
+        "max-height": 5,
+        "inline-size": 5,
+        "max-inline-size": 5,
+        "border": 4,
+        "word-break": 4,
+        "inset-inline": 4,
+        "padding": 4,
+        "animation-duration": 3,
+        "animation-iteration-count": 3,
+        "transition-duration": 3,
+        "scroll-behavior": 3,
+        "color": 3,
+        "border-radius": 3,
+        "min-height": 3,
+        "inset": 3,
+        "margin-inline": 3,
+        "right": 3,
+        "background": 2,
+        "top": 2,
+        "fill": 1,
+        "stroke": 1,
+        "hyphens": 1,
+        "margin": 1
+      },
+      "lines": 5070
+    },
+    "premium.css": {
+      "count": 41,
+      "byProperty": {
+        "transition": 8,
+        "transition-duration": 4,
+        "max-width": 3,
+        "transform": 3,
+        "animation-duration": 3,
+        "animation-iteration-count": 3,
+        "background": 2,
+        "padding-block": 2,
+        "scroll-behavior": 2,
+        "letter-spacing": 1,
+        "box-shadow": 1,
+        "font-size": 1,
+        "animation": 1,
+        "border-radius": 1,
+        "filter": 1,
+        "content": 1,
+        "inset": 1,
+        "width": 1,
+        "height": 1,
+        "max-height": 1
+      },
+      "lines": 1631
+    },
+    "shababuna.css": {
+      "count": 0,
+      "byProperty": {},
+      "lines": 3067
+    }
+  },
+  "policy": "Every remaining !important must be exceptional (override third-party, a11y focus, or temporary bridge). Further reductions continue with cascade ownership moves."
+}

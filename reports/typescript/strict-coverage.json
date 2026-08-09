@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T20:29:30.454078+00:00",
-  "commitSha": "d1e585d7dc3dd131959f9e75dd2eb55593b11171",
+  "generatedAt": "2026-08-09T20:34:17.657329+00:00",
+  "commitSha": "934271bbb064e440aa1851a28fe032e2a0e73b7d",
   "sourceFiles": 259,
-  "strictFiles": 197,
-  "strictCoveragePercent": 76.06,
+  "strictFiles": 199,
+  "strictCoveragePercent": 76.83,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,
@@ -19,6 +19,7 @@
     }
   },
   "remainingApiJs": 0,
-  "remainingSrcJsx": 62,
-  "apiJsComplete": true
+  "remainingSrcJsx": 60,
+  "apiJsComplete": true,
+  "legacyCssDeferredFromMain": true
 }
