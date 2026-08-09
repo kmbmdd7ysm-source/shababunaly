@@ -36,7 +36,7 @@ describe('enterprise production completion', () => {
     expect(scan).toContain('MALWARE_SCAN_API_URL');
   });
   it('provides privacy export and retention workers', async () => {
-    const privacy = await read('api/privacy-worker.js');
+    const privacy = await read('api/privacy-worker.ts');
     const retention = await read('api/retention-worker.ts');
     const vercel = await read('vercel.json');
     expect(privacy).toContain('privacy_export_requests');
