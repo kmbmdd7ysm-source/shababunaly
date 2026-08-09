@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { getPaymentAdapter } from './payments/registry.js';
-import { recordBusinessEvent } from './_business-events.js';
+import { recordBusinessEvent } from './_business-events.ts';
 export const config = { api: { bodyParser: false } };
 const MAX_BODY_BYTES = 128_000;
 const clean = (value, max = 500) =>

@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { guardPublicPost } from './_request-security.js';
-import { recordBusinessEvent } from './_business-events.js';
+import { recordBusinessEvent } from './_business-events.ts';
 
 const PUBLIC_EVENTS = new Set(['checkout_started', 'checkout_abandoned', 'payment_failed']);
 const clean = (value, max = 200) =>

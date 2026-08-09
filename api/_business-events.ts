@@ -23,26 +23,26 @@ const ALLOWED_EVENTS = new Set([
   'inventory_stockout',
   'ready_to_ship_conversion',
 ]);
-const clean = (value, max = 160) =>
+const clean = (value: unknown, max = 160) =>
   String(value ?? '')
     .trim()
     .replace(/[\0\r\n]/g, ' ')
     .slice(0, max);
-const safeNumber = (value) => (Number.isFinite(Number(value)) ? Number(value) : null);
+const safeNumber = (value: unknown) => (Number.isFinite(Number(value)) ? Number(value) : null);
 function analyticsSalt() {
   const value = clean(process.env.ANALYTICS_HASH_SALT, 5000);
   if (process.env.NODE_ENV === 'production' && value.length < 32)
     throw new Error('analytics_hash_salt_not_configured');
   return value || 'development-only-analytics-salt-not-for-production';
 }
-const hashIdentifier = (value) =>
+const hashIdentifier = (value: unknown) =>
   value
     ? createHash('sha256')
         .update(`${analyticsSalt()}:${String(value).trim().toLowerCase()}`)
         .digest('hex')
     : null;
-const sanitizeProperties = (input = {}) => {
-  const output = {};
+const sanitizeProperties = (input: Record<string, unknown> = {}): Record<string, unknown> => {
+  const output: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(input)) {
     if (
       /email|phone|address|name|token|secret|password|authorization|cookie/i.test(key) ||
@@ -57,11 +57,18 @@ const sanitizeProperties = (input = {}) => {
   return output;
 };
 
-export async function recordBusinessEvent(eventName, details = {}) {
+export async function recordBusinessEvent(
+  eventName: unknown,
+  details: Record<string, unknown> = {},
+): Promise<boolean> {
   const normalized = clean(eventName, 80).toLowerCase();
   if (!ALLOWED_EVENTS.has(normalized)) throw new Error('unsupported_business_event');
   const sourceEventId = clean(details.sourceEventId, 200);
   if (!sourceEventId) throw new Error('business_event_source_id_required');
+  const properties =
+    details.properties && typeof details.properties === 'object'
+      ? sanitizeProperties(details.properties as Record<string, unknown>)
+      : {};
   const row = {
     event_name: normalized,
     entity_type: clean(details.entityType, 40) || null,
@@ -72,7 +79,7 @@ export async function recordBusinessEvent(eventName, details = {}) {
     value_usd: safeNumber(details.valueUsd),
     currency: clean(details.currency || 'USD', 3).toUpperCase(),
     channel: clean(details.channel || 'web', 40),
-    properties: sanitizeProperties(details.properties),
+    properties,
     source_event_id: sourceEventId,
   };
   try {
