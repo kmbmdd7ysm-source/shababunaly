@@ -1,10 +1,18 @@
-import { useId, useState } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 
 // Accessible accordion. items: [{ title, content }]. `single` collapses others.
-export default function Accordion({ items, single = false, defaultOpen = [] }) {
-  const [open, setOpen] = useState(new Set(defaultOpen));
+export default function Accordion({
+  items,
+  single = false,
+  defaultOpen = [],
+}: {
+  items: Array<{ title: ReactNode; content: ReactNode }>;
+  single?: boolean;
+  defaultOpen?: number[];
+}) {
+  const [open, setOpen] = useState(() => new Set<number>(defaultOpen));
   const baseId = useId();
-  const toggle = (i) =>
+  const toggle = (i: number) =>
     setOpen((prev) => {
       const isOpen = prev.has(i);
       if (single) return isOpen ? new Set() : new Set([i]);
