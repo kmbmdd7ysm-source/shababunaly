@@ -235,76 +235,58 @@ body {
 }
 
 @keyframes heroReveal {
-  to {
+to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes markDrift {
-  to {
+to {
     transform: translate3d(0, -12px, 0) rotate(0.8deg);
   }
 }
 
 @keyframes lhaFloat {
-  to {
+to {
     transform: translate3d(4vw, -2vw, 0) scale(1.08);
   }
 }
 
 @keyframes heartPulse {
-  0%,
+0%,
   100% {
     transform: scale(1);
-  }
-  50% {
+  }50% {
     transform: scale(1.32);
   }
 }
 
 @keyframes overlayIn {
-  from {
+from {
     opacity: 0;
-  }
-  to {
+  }to {
     opacity: 1;
   }
 }
 
 @keyframes searchIn {
-  from {
+from {
     opacity: 0;
     transform: translateY(-20px);
-  }
-  to {
+  }to {
     opacity: 1;
     transform: none;
   }
 }
 
 @media (max-width: 760px) {
-  .brand-proof-grid {
-    min-height: 92px;
-    display: grid;
-    align-content: center;
-    gap: 4px;
-  }
-  .brand-proof span {
-    font-size: 0.55rem;
-    letter-spacing: 0.14em;
-  }
-  .hero-gridline {
-    background-size: 42px 42px;
-  }
-  .section {
+.section {
     padding-block: 88px !important;
-  }
-  .quick-add {
+  }.quick-add {
     transform: none;
     opacity: 1;
-  }
-  .section-heading .section-title {
+  }.section-heading .section-title {
     font-size: clamp(2.15rem, 11vw, 3.8rem) !important;
     line-height: 0.94 !important;
     max-width: 13ch !important;
@@ -312,17 +294,13 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
+*,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
-  }
-  .premium-cursor-dot,
-  .premium-cursor-ring {
-    display: none;
   }
 }
 
@@ -356,11 +334,10 @@ body {
 }
 
 @keyframes route-enter {
-  from {
+from {
     opacity: 0;
     transform: translateY(10px);
-  }
-  to {
+  }to {
     opacity: 1;
     transform: none;
   }
@@ -381,18 +358,17 @@ body {
 }
 
 @keyframes hero-rise {
-  from {
+from {
     opacity: 0;
     transform: translateY(24px);
-  }
-  to {
+  }to {
     opacity: 1;
     transform: none;
   }
 }
 
 @keyframes scroll-dot {
-  50% {
+50% {
     transform: translateY(17px);
     opacity: 0.2;
   }
@@ -633,63 +609,28 @@ body {
 }
 
 @media (max-width: 640px) {
-  .hero-media > video,
-  .hero-poster {
-    object-position: 58% center;
-  }
-  .cinematic-hero .hero-inner {
-    padding-top: 18vh;
-  }
-  .hero-video-control {
-    right: 18px;
-    bottom: 18px;
-  }
-  .hero-scroll {
-    display: none;
-  }
-  .media-lightbox {
+.media-lightbox {
     grid-template-columns: 44px 1fr 44px;
-  }
-  .lightbox-nav {
+  }.lightbox-nav {
     width: 40px;
     height: 60px;
-  }
-  .compare-head {
-    align-items: start;
-    flex-direction: column;
-  }
-  .pwa-toast {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-  }
-  .compare-table thead th:first-child,
+  }.compare-table thead th:first-child,
   .compare-table tbody th {
     left: 0;
-  }
-  .lightbox-stage img {
+  }.lightbox-stage img {
     max-width: 100vw;
-  }
-  .gallery-open > span {
-    font-size: 0.7rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
+*,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  .hero-webgl,
-  .hero-media > video,
-  .hero-scroll {
-    display: none;
-  }
-  .reveal {
+  }.reveal {
     opacity: 1;
     transform: none;
   }
@@ -814,35 +755,26 @@ body {
 }
 
 @media (max-width: 768px) {
-  .account-heading {
+.account-heading {
     align-items: start;
     flex-direction: column;
-  }
-  .account-layout {
+  }.account-layout {
     grid-template-columns: 1fr;
-  }
-  .account-nav {
+  }.account-nav {
     flex-direction: row;
     overflow-x: auto;
     border-inline-end: 0;
     border-bottom: 1px solid #ddd;
     scrollbar-width: none;
-  }
-  .account-nav button {
+  }.account-nav button {
     white-space: nowrap;
     border-inline-start: 0;
     border-bottom: 3px solid transparent;
-  }
-  .account-nav button.active {
+  }.account-nav button.active {
     border-bottom-color: currentColor;
-  }
-  .account-grid {
-    grid-template-columns: 1fr;
-  }
-  .pwa-stack {
+  }.pwa-stack {
     inset-inline: 8px;
-  }
-  .pwa-banner {
+  }.pwa-banner {
     flex-wrap: wrap;
   }
 }
@@ -912,10 +844,9 @@ body {
 }
 
 @media (max-width: 700px) {
-  .form-grid {
+.form-grid {
     grid-template-columns: 1fr;
-  }
-  .address-card {
+  }.address-card {
     padding: 20px;
   }
 }
@@ -1032,7 +963,7 @@ body {
 }
 
 @media (max-width: 640px) {
-  .country-combobox__list {
+.country-combobox__list {
     position: fixed;
     z-index: 1000;
     inset: auto 12px max(12px, env(safe-area-inset-bottom));
@@ -1126,13 +1057,12 @@ body {
 }
 
 @media (max-width: 600px) {
-  .country-combobox__popover {
+.country-combobox__popover {
     position: fixed;
     inset: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px);
     max-height: none;
     padding: 16px;
-  }
-  .country-combobox__list {
+  }.country-combobox__list {
     max-height: calc(100dvh - 150px);
   }
 }
@@ -1171,7 +1101,7 @@ button:disabled,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .product-card:hover {
+.product-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-raised);
   }
@@ -1193,7 +1123,7 @@ button:disabled,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .product-card-media:hover .product-card-img--main,
+.product-card-media:hover .product-card-img--main,
   .gallery-open:hover .gallery-image {
     transform: scale(1.018);
   }
@@ -1208,28 +1138,25 @@ button:disabled,
 }
 
 @keyframes route-premium-in {
-  from {
+from {
     opacity: 0;
     transform: translateY(8px);
-  }
-  to {
+  }to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
+html {
     scroll-behavior: auto;
-  }
-  *,
+  }*,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-  .product-card:hover,
+  }.product-card:hover,
   .product-card-media:hover .product-card-img--main,
   .gallery-open:hover .gallery-image {
     transform: none;
@@ -1237,16 +1164,13 @@ button:disabled,
 }
 
 @media (max-width: 639px) {
-  .product-grid {
+.product-grid {
     gap: 12px;
-  }
-  .product-card-body {
+  }.product-card-body {
     padding: 12px 10px 14px;
-  }
-  .product-card-name {
+  }.product-card-name {
     line-height: 1.28;
-  }
-  .hero-actions > * {
+  }.hero-actions > * {
     min-height: 48px;
   }
 }
@@ -1282,7 +1206,7 @@ button:disabled,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .smart-img,
+.smart-img,
   .product-card-img,
   .route-enter {
     animation: none !important;
@@ -1426,42 +1350,33 @@ main,
 }
 
 @media (max-width: 999px) {
-  :root {
+:root {
     --header-h: 72px;
-  }
-  .header-inner {
+  }.header-inner {
     gap: 0.45rem;
     padding-inline: 12px;
     width: 100%;
-  }
-  .header-inner .brand {
+  }.header-inner .brand {
     position: static;
     inset-inline-start: auto;
     transform: none;
     max-width: calc(100% - 176px);
     gap: 0.4rem;
-  }
-  [dir='rtl'] .header-inner .brand {
+  }[dir='rtl'] .header-inner .brand {
     transform: none;
-  }
-  .header-inner .brand-logo {
+  }.header-inner .brand-logo {
     height: 42px;
-  }
-  .header-inner .brand-text {
+  }.header-inner .brand-text {
     font-size: clamp(0.68rem, 3vw, 0.9rem);
     overflow: hidden;
-  }
-  .header-actions {
+  }.header-actions {
     margin-inline-start: auto;
-  }
-  .desktop-utilities {
+  }.desktop-utilities {
     display: none;
-  }
-  .header-actions .icon-btn {
+  }.header-actions .icon-btn {
     width: 42px;
     height: 42px;
-  }
-  .mobile-menu .brand {
+  }.mobile-menu .brand {
     position: static;
     transform: none !important;
     max-width: none;
@@ -1469,49 +1384,38 @@ main,
 }
 
 @media (max-width: 360px) {
-  .header-inner .brand {
+.header-inner .brand {
     max-width: calc(100% - 164px);
-  }
-  .header-inner .brand-text {
+  }.header-inner .brand-text {
     display: none;
-  }
-  .header-inner .brand-logo {
+  }.header-inner .brand-logo {
     height: 44px;
   }
 }
 
 @media (max-width: 640px) {
-  .section {
+.section {
     padding-inline: 0;
-  }
-  .compare-head {
-    margin-bottom: 20px;
-  }
-  .compare-scroll {
+  }.compare-scroll {
     margin-inline: 0;
     border-inline: 0;
-  }
-  .compare-table th,
+  }.compare-table th,
   .compare-table td {
     padding: 12px;
     font-size: 0.9rem;
     overflow-wrap: anywhere;
-  }
-  .compare-table thead th {
+  }.compare-table thead th {
     width: 176px;
     min-width: 176px;
     max-width: 176px;
-  }
-  .compare-table thead th:first-child,
+  }.compare-table thead th:first-child,
   .compare-table tbody th {
     width: 96px;
     min-width: 96px;
     max-width: 96px;
-  }
-  .auth-form {
+  }.auth-form {
     padding-inline: 16px;
-  }
-  .account-switch {
+  }.account-switch {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -1522,12 +1426,10 @@ main,
    never shrink into each other or widen the page. */
 
 @media (max-width: 768px) {
-  .account-layout {
+.account-layout {
     min-width: 0;
     overflow: visible;
-  }
-
-  .account-nav {
+  }.account-nav {
     box-sizing: border-box;
     display: flex;
     flex-flow: row nowrap;
@@ -1543,13 +1445,9 @@ main,
     scrollbar-width: none;
     touch-action: pan-x pan-y;
     scroll-snap-type: inline proximity;
-  }
-
-  .account-nav::-webkit-scrollbar {
+  }.account-nav::-webkit-scrollbar {
     display: none;
-  }
-
-  .account-nav button {
+  }.account-nav button {
     box-sizing: border-box;
     flex: 0 0 auto;
     width: auto;
@@ -1561,19 +1459,13 @@ main,
     scroll-snap-align: start;
     padding-inline: 18px;
   }
-
-  .account-content {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
 }
 
 /* iOS Safari can preserve :hover/:active paint after a tap. On coarse touch
    pointers the menu trigger and logo must remain visually neutral after taps. */
 
 @media (hover: none) and (pointer: coarse) {
-  .header-actions .mobile-more-action,
+.header-actions .mobile-more-action,
   .header-actions .mobile-more-action:hover,
   .header-actions .mobile-more-action:active,
   .header-actions .mobile-more-action:focus,
@@ -1591,9 +1483,7 @@ main,
     transform: none !important;
     filter: none !important;
     -webkit-tap-highlight-color: transparent !important;
-  }
-
-  .header-actions .mobile-more-action::before,
+  }.header-actions .mobile-more-action::before,
   .header-actions .mobile-more-action::after,
   .mobile-menu-head .brand::before,
   .mobile-menu-head .brand::after {
@@ -1643,16 +1533,6 @@ main,
 
 .home-deferred-anchor.is-ready {
   min-height: 0;
-}
-
-@media (max-width: 767px) {
-  .cinematic-hero .hero-title,
-  .cinematic-hero .hero-kicker,
-  .cinematic-hero .hero-text,
-  .cinematic-hero .hero-actions {
-    animation: none !important;
-    will-change: auto;
-  }
 }
 
 .deferred-footer {
@@ -1742,11 +1622,10 @@ main,
 }
 
 @media (max-width: 640px) {
-  .account-type-choice-grid,
+.account-type-choice-grid,
   .organization-signup-fields {
     grid-template-columns: 1fr;
-  }
-  .account-type-choice-grid > button {
+  }.account-type-choice-grid > button {
     min-height: 92px;
   }
 }

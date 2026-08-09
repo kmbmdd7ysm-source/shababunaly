@@ -1,0 +1,23 @@
+{
+  "global.css": {
+    "before": 5657,
+    "after": 5070,
+    "removedTop": 0,
+    "removedNested": 62,
+    "important": 235
+  },
+  "premium.css": {
+    "before": 1752,
+    "after": 1631,
+    "removedTop": 0,
+    "removedNested": 15,
+    "important": 52
+  },
+  "shababuna.css": {
+    "before": 3227,
+    "after": 3067,
+    "removedTop": 0,
+    "removedNested": 26,
+    "important": 0
+  }
+}
