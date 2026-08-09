@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import '../../styles/buildmarker.css';
 
@@ -25,14 +26,15 @@ const BUILD = {
   dist: 'loading…',
 };
 
-export default function BuildMarker() {
+export default function BuildMarker(): ReactElement | null {
   const [open, setOpen] = useState(false);
   const [dist, setDist] = useState('loading…');
   const [builtAt, setBuiltAt] = useState(BUILD.at);
 
   useEffect(() => {
+    const runtime = globalThis as unknown as Record<string, unknown>;
     document.documentElement.dataset.buildSha = BUILD.sha;
-    globalThis.__SHABABUNA_BUILD__ = BUILD;
+    runtime.__SHABABUNA_BUILD__ = BUILD;
     if (!import.meta.env.VITE_SHOW_BUILD_MARKER) return;
     // cache: 'no-store' so this can never be answered from a stale HTTP cache.
     fetch('/build-info.json', { cache: 'no-store' })
@@ -53,7 +55,7 @@ export default function BuildMarker() {
           BUILD.at = String(info.builtAt);
           setBuiltAt(String(info.builtAt));
         }
-        globalThis.__SHABABUNA_BUILD__ = { ...BUILD, dist: value };
+        runtime.__SHABABUNA_BUILD__ = { ...BUILD, dist: value };
         document.documentElement.dataset.buildDist = value;
       })
       .catch(() => setDist('unavailable'));

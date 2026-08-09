@@ -1,4 +1,4 @@
-import { SITE } from '../config';
+import { SITE } from '../config.ts';
 const iconPaths = {
   instagram: (
     <>
