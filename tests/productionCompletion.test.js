@@ -38,7 +38,7 @@ describe('production completion safeguards', () => {
     const sql = await read(
       'supabase/migrations/20260801010000_shababuna_production_completion.sql',
     );
-    const auth = await read('api/_staff-auth.js');
+    const auth = await read('api/_staff-auth.ts');
     expect(sql).toContain("coalesce(auth.jwt()->>'aal','aal1')='aal2'");
     expect(auth).toContain("String(payload.aal || 'aal1') !== 'aal2'");
   });

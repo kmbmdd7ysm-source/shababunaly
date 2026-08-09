@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T02:20:45.992Z",
+  "generatedAt": "2026-08-09T02:21:12.737Z",
   "sourceFiles": 259,
-  "strictFiles": 66,
-  "strictCoveragePercent": 25.48,
+  "strictFiles": 67,
+  "strictCoveragePercent": 25.87,
   "legacyFiles": [
     "src/App.jsx",
     "src/components/account/AccountOverview.jsx",
@@ -157,7 +157,6 @@
     "src/utils/simplePdf.js",
     "api/_business-events.js",
     "api/_file-security.js",
-    "api/_guest-order-token.js",
     "api/_notification-templates.js",
     "api/_request-security.js",
     "api/_staff-auth.js",
