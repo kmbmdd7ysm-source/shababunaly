@@ -4,23 +4,25 @@ import { verifyTurnstileToken } from './_turnstile.ts';
 
 import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 const ENDPOINT = resolveFormspreeEndpoint();
-const clean = (value, max = 12000) =>
+const clean = (value: unknown, max = 12000): string =>
   String(value ?? '')
     .replace(/\0/g, '')
     .slice(0, max);
-const keyOf = (value) =>
+const keyOf = (value: unknown): string =>
   String(value || '')
     .trim()
     .replace(/[^A-Za-z0-9_.:-]/g, '_')
     .slice(0, 80);
 
-export default async function handler(req, res) {
+type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
+type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
   if (
-    !(await guardPublicPost(req, res, {
+    !(await guardPublicPost(req as never, res as never, {
       maxBytes: 4_200_000,
       limit: 5,
       windowMs: 10 * 60_000,
@@ -29,11 +31,17 @@ export default async function handler(req, res) {
   )
     return;
   try {
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     if (
       !(await verifyTurnstileToken(
         body.turnstileToken,
-        req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '',
+        String(
+          (Array.isArray(req.headers?.['x-forwarded-for'])
+            ? req.headers?.['x-forwarded-for'][0]
+            : req.headers?.['x-forwarded-for']) ||
+            req.socket?.remoteAddress ||
+            '',
+        ),
       ))
     )
       return res.status(400).json({ ok: false, error: 'captcha_failed' });
@@ -76,8 +84,8 @@ export default async function handler(req, res) {
     } finally {
       clearTimeout(timeout);
     }
-  } catch (error) {
-    const code = clean(error?.message || error, 160);
+  } catch (error: unknown) {
+    const code = clean((error && typeof error === 'object' && 'message' in error ? (error as {message?:unknown}).message : error) || error, 160);
     const clientErrors = new Set([
       'too_many_files',
       'unsupported_file_type',
