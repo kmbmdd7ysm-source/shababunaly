@@ -1,14 +1,36 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { updateMediaAsset, uploadOperationalMedia } from '../../../services/operations';
 
-export default function MediaLibrary({ state, accessToken, pick, saving, run }) {
-  const [upload, setUpload] = useState({
+export default function MediaLibrary({
+  state,
+  accessToken,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  accessToken?: string | undefined;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const stateRecord = (state || {}) as Record<string, unknown>;
+  const mediaAssets = Array.isArray(stateRecord.mediaAssets)
+    ? (stateRecord.mediaAssets as Array<Record<string, unknown>>)
+    : [];
+  const [upload, setUpload] = useState<{
+    entityType: string;
+    entityId: string;
+    assetRole: string;
+    files: FileList | null;
+  }>({
     entityType: 'site_content',
     entityId: 'home',
     assetRole: 'reference',
     files: null,
   });
-  const [edits, setEdits] = useState({});
+  const [edits, setEdits] = useState<Record<string, Record<string, unknown>>>({});
   const doUpload = () => uploadOperationalMedia({ accessToken, ...upload });
   return (
     <section className="operations-subsection">
@@ -21,12 +43,14 @@ export default function MediaLibrary({ state, accessToken, pick, saving, run }) 
       </p>
       <form
         className="enterprise-action-card"
-        onSubmit={(event) => {
+        onSubmit={(event: FormEvent<HTMLFormElement>) => {
           event.preventDefault();
-          run(
-            'media-upload',
-            doUpload,
-            pick({ en: 'Media uploaded to quarantine.', ar: 'تم رفع الوسائط إلى الحجر.' }),
+          void Promise.resolve(
+            run(
+              'media-upload',
+              doUpload,
+              pick({ en: 'Media uploaded to quarantine.', ar: 'تم رفع الوسائط إلى الحجر.' }),
+            ),
           );
         }}
       >
@@ -67,62 +91,67 @@ export default function MediaLibrary({ state, accessToken, pick, saving, run }) 
         </button>
       </form>
       <div className="workspace-list">
-        {state.mediaAssets.slice(0, 50).map((asset) => {
-          const edit = edits[asset.id] || {
-            altTextEn: asset.alt_text_en || '',
-            altTextAr: asset.alt_text_ar || '',
-            sortOrder: asset.sort_order || 0,
-            visibility: asset.visibility || 'private',
+        {mediaAssets.slice(0, 50).map((asset: Record<string, unknown>) => {
+          const assetId = String(asset.id || '');
+          const edit = edits[assetId] || {
+            altTextEn: String(asset.alt_text_en || ''),
+            altTextAr: String(asset.alt_text_ar || ''),
+            sortOrder: Number(asset.sort_order) || 0,
+            visibility: String(asset.visibility || 'private'),
           };
           return (
-            <article key={asset.id}>
+            <article key={assetId}>
               <div>
-                <span className="workspace-status-dot" data-status={asset.scan_status} />
+                <span
+                  className="workspace-status-dot"
+                  data-status={String(asset.scan_status || '')}
+                />
                 <div>
-                  <h3>{asset.original_name}</h3>
+                  <h3>{String(asset.original_name || '')}</h3>
                   <p>
-                    {asset.entity_type || 'media'} · {asset.scan_status} · {asset.visibility}
+                    {String(asset.entity_type || 'media')} · {String(asset.scan_status || '')} ·{' '}
+                    {String(asset.visibility || '')}
                   </p>
                   <div className="operations-form-grid">
                     <input
                       aria-label="English alt text"
-                      value={edit.altTextEn}
+                      value={String(edit.altTextEn || '')}
                       onChange={(event) =>
                         setEdits({
                           ...edits,
-                          [asset.id]: { ...edit, altTextEn: event.target.value },
+                          [assetId]: { ...edit, altTextEn: event.target.value },
                         })
                       }
                       placeholder="Alt text EN"
                     />
                     <input
                       aria-label="Arabic alt text"
-                      value={edit.altTextAr}
+                      value={String(edit.altTextAr || '')}
                       onChange={(event) =>
                         setEdits({
                           ...edits,
-                          [asset.id]: { ...edit, altTextAr: event.target.value },
+                          [assetId]: { ...edit, altTextAr: event.target.value },
                         })
                       }
                       placeholder="النص البديل"
                     />
                     <input
                       type="number"
-                      value={edit.sortOrder}
+                      value={Number(edit.sortOrder) || 0}
                       onChange={(event) =>
                         setEdits({
                           ...edits,
-                          [asset.id]: { ...edit, sortOrder: event.target.value },
+                          [assetId]: { ...edit, sortOrder: Number(event.target.value) || 0 },
                         })
                       }
                     />
                     <select
-                      value={edit.visibility}
+                      value={String(edit.visibility || 'private')}
                       disabled={asset.scan_status !== 'clean'}
                       onChange={(event) =>
                         setEdits({
                           ...edits,
-                          [asset.id]: { ...edit, visibility: event.target.value },
+                          [assetId]: { ...edit, visibility: event.target.value },
                         })
                       }
                     >
@@ -137,35 +166,39 @@ export default function MediaLibrary({ state, accessToken, pick, saving, run }) 
                   type="button"
                   className="btn-secondary compact"
                   disabled={Boolean(saving)}
-                  onClick={() =>
-                    run(
-                      `media-${asset.id}`,
-                      () => updateMediaAsset({ assetId: asset.id, ...edit }),
-                      pick({ en: 'Media metadata saved.', ar: 'تم حفظ بيانات الوسائط.' }),
-                    )
-                  }
+                  onClick={() => {
+                    void Promise.resolve(
+                      run(
+                        `media-${assetId}`,
+                        () => updateMediaAsset({ assetId, ...edit }),
+                        pick({ en: 'Media metadata saved.', ar: 'تم حفظ بيانات الوسائط.' }),
+                      ),
+                    );
+                  }}
                 >
                   {pick({ en: 'Save', ar: 'حفظ' })}
                 </button>
-                {asset.scan_status === 'failed' && (
+                {asset.scan_status === 'failed' ? (
                   <button
                     type="button"
                     className="btn-secondary compact"
                     disabled={Boolean(saving)}
-                    onClick={() =>
-                      run(
-                        `media-retry-${asset.id}`,
-                        () => updateMediaAsset({ assetId: asset.id, retryScan: true }),
-                        pick({
-                          en: 'Media scan queued again.',
-                          ar: 'تمت إعادة الملف لقائمة الفحص.',
-                        }),
-                      )
-                    }
+                    onClick={() => {
+                      void Promise.resolve(
+                        run(
+                          `media-retry-${assetId}`,
+                          () => updateMediaAsset({ assetId, retryScan: true }),
+                          pick({
+                            en: 'Media scan queued again.',
+                            ar: 'تمت إعادة الملف لقائمة الفحص.',
+                          }),
+                        ),
+                      );
+                    }}
                   >
                     {pick({ en: 'Retry scan', ar: 'إعادة الفحص' })}
                   </button>
-                )}
+                ) : null}
               </div>
             </article>
           );
