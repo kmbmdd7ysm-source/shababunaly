@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `2ccca4fcce3a0514cf333b8cf5130dd2052d5ced`
+- Full SHA: `c907d0e6caf2e4c64daf00917ef8c8d9b99c1ca2`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -11,7 +11,7 @@
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
 | 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **32.82%** (85/259 executable) |
+| 3 | Complete TypeScript migration | **IN PROGRESS** — **33.59%** (87/259 executable) |
 | 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
 | 6–25 | Remaining | NOT STARTED / PARTIAL |
@@ -21,7 +21,7 @@
 1. Port `src/services/designStudio.js` → `.ts`
 2. Port `productionPreflight.js` → `.ts`
 3. Port `supabase.js` + contexts
-4. Continue TSX (ProductMediaViewer engines need care around model-viewer types)
+4. ProductMediaViewer + Realtime3DEngine (model-viewer types now have @types/three)
 5. Remain in Phase 3 until project-wide or exclusions documented
 
 ## Next command
