@@ -1,8 +1,25 @@
+import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { upsertShipment } from '../../../services/operations';
 import { SHIPMENT_STATUSES } from './shared';
 
-export default function FulfillmentManager({ state, pick, saving, run }) {
+export default function FulfillmentManager({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const stateRecord = (state || {}) as Record<string, unknown>;
+  const asRows = (value: unknown) =>
+    Array.isArray(value) ? (value as Array<Record<string, unknown>>) : [];
+  const orders = asRows(stateRecord.orders);
+  const carriers = asRows(stateRecord.carriers);
+  const shipments = asRows(stateRecord.shipments);
   const [shipment, setShipment] = useState({
     orderId: '',
     carrierId: '',
@@ -19,21 +36,23 @@ export default function FulfillmentManager({ state, pick, saving, run }) {
       </h3>
       <form
         className="enterprise-action-card"
-        onSubmit={(event) => {
+        onSubmit={(event: FormEvent<HTMLFormElement>) => {
           event.preventDefault();
-          run(
-            'shipment-create',
-            () =>
-              upsertShipment({
-                orderId: shipment.orderId,
-                carrierId: shipment.carrierId || null,
-                trackingNumber: shipment.trackingNumber,
-                status: shipment.status,
+          void Promise.resolve(
+            run(
+              'shipment-create',
+              () =>
+                upsertShipment({
+                  orderId: shipment.orderId,
+                  carrierId: shipment.carrierId || null,
+                  trackingNumber: shipment.trackingNumber,
+                  status: shipment.status,
+                }),
+              pick({
+                en: 'Shipment created and notification queued.',
+                ar: 'تم إنشاء الشحنة وإضافة الإشعار.',
               }),
-            pick({
-              en: 'Shipment created and notification queued.',
-              ar: 'تم إنشاء الشحنة وإضافة الإشعار.',
-            }),
+            ),
           );
         }}
       >
@@ -44,9 +63,9 @@ export default function FulfillmentManager({ state, pick, saving, run }) {
             required
           >
             <option value="">{pick({ en: 'Select order', ar: 'اختر الطلب' })}</option>
-            {state.orders.map((row) => (
-              <option key={row.id} value={row.id}>
-                {row.order_number}
+            {orders.map((row) => (
+              <option key={String(row.id)} value={String(row.id || '')}>
+                {String(row.order_number || '')}
               </option>
             ))}
           </select>
@@ -55,11 +74,11 @@ export default function FulfillmentManager({ state, pick, saving, run }) {
             onChange={(event) => setShipment({ ...shipment, carrierId: event.target.value })}
           >
             <option value="">{pick({ en: 'Carrier', ar: 'شركة الشحن' })}</option>
-            {state.carriers
-              .filter((row) => row.active)
+            {carriers
+              .filter((row) => Boolean(row.active))
               .map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.name}
+                <option key={String(row.id)} value={String(row.id || '')}>
+                  {String(row.name || '')}
                 </option>
               ))}
           </select>
@@ -82,11 +101,11 @@ export default function FulfillmentManager({ state, pick, saving, run }) {
         </button>
       </form>
       <div className="workspace-list">
-        {state.shipments.map((row) => (
+        {shipments.map((row) => (
           <ShipmentRow
-            key={row.id}
+            key={String(row.id)}
             row={row}
-            carriers={state.carriers}
+            carriers={carriers}
             pick={pick}
             saving={saving}
             run={run}
@@ -97,18 +116,30 @@ export default function FulfillmentManager({ state, pick, saving, run }) {
   );
 }
 
-function ShipmentRow({ row, carriers, pick, saving, run }) {
-  const [status, setStatus] = useState(row.status);
-  const [carrierId, setCarrierId] = useState(row.carrier_id || '');
-  const [trackingNumber, setTrackingNumber] = useState(row.tracking_number || '');
+function ShipmentRow({
+  row,
+  carriers,
+  pick,
+  saving,
+  run,
+}: {
+  row: Record<string, unknown>;
+  carriers: Array<Record<string, unknown>>;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: (...args: unknown[]) => unknown;
+}): ReactElement {
+  const [status, setStatus] = useState(String(row.status || 'pending'));
+  const [carrierId, setCarrierId] = useState(String(row.carrier_id || ''));
+  const [trackingNumber, setTrackingNumber] = useState(String(row.tracking_number || ''));
   return (
     <article>
       <div>
-        <span className="workspace-status-dot" data-status={row.status} />
+        <span className="workspace-status-dot" data-status={String(row.status || '')} />
         <div>
-          <h3>{row.shipment_number}</h3>
+          <h3>{String(row.shipment_number || '')}</h3>
           <p>
-            {row.tracking_number || '—'} · {row.status}
+            {String(row.tracking_number || '—')} · {String(row.status || '')}
           </p>
         </div>
       </div>
@@ -116,8 +147,8 @@ function ShipmentRow({ row, carriers, pick, saving, run }) {
         <select value={carrierId} onChange={(event) => setCarrierId(event.target.value)}>
           <option value="">—</option>
           {carriers.map((carrier) => (
-            <option key={carrier.id} value={carrier.id}>
-              {carrier.name}
+            <option key={String(carrier.id)} value={String(carrier.id || '')}>
+              {String(carrier.name || '')}
             </option>
           ))}
         </select>
@@ -130,22 +161,24 @@ function ShipmentRow({ row, carriers, pick, saving, run }) {
         <button
           type="button"
           className="btn-secondary compact"
-          disabled={saving === `shipment-${row.id}`}
-          onClick={() =>
-            run(
-              `shipment-${row.id}`,
-              () =>
-                upsertShipment({
-                  shipmentId: row.id,
-                  orderId: row.order_id,
-                  quoteId: row.quote_id,
-                  carrierId: carrierId || null,
-                  trackingNumber,
-                  status,
-                }),
-              pick({ en: 'Shipment updated.', ar: 'تم تحديث الشحنة.' }),
-            )
-          }
+          disabled={saving === `shipment-${String(row.id || '')}`}
+          onClick={() => {
+            void Promise.resolve(
+              run(
+                `shipment-${String(row.id || '')}`,
+                () =>
+                  upsertShipment({
+                    shipmentId: row.id,
+                    orderId: row.order_id,
+                    quoteId: row.quote_id,
+                    carrierId: carrierId || null,
+                    trackingNumber,
+                    status,
+                  }),
+                pick({ en: 'Shipment updated.', ar: 'تم تحديث الشحنة.' }),
+              ),
+            );
+          }}
         >
           {pick({ en: 'Update', ar: 'تحديث' })}
         </button>
