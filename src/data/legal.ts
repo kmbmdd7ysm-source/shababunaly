@@ -206,4 +206,5 @@ export const legal = {
     ],
   },
 };
-export const getLegal = (key: keyof typeof legal) => legal[key];
+export const getLegal = (key: string) =>
+  (legal as Record<string, (typeof legal)[keyof typeof legal]>)[key];
