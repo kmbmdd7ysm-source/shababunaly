@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-09T19:32:25.733141+00:00",
-  "commitSha": "98defae5cab418cb7a72453706e616fc655b4de3",
+  "generatedAt": "2026-08-09T19:33:35.404342+00:00",
+  "commitSha": "e8fa397db2a626640cc01052471fce1ef68b4d43",
   "sourceFiles": 259,
-  "strictFiles": 190,
-  "strictCoveragePercent": 73.36,
+  "strictFiles": 191,
+  "strictCoveragePercent": 73.75,
   "cssLegacy": {
     "global.css": {
       "lines": 5070,
@@ -18,6 +18,6 @@
       "important": 0
     }
   },
-  "remainingApiJs": 7,
+  "remainingApiJs": 6,
   "remainingSrcJsx": 62
 }
