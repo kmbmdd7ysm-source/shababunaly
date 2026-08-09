@@ -1,7 +1,7 @@
 # Continuation checkpoint — Final Zero-Excuses Completion
 
 - Branch: `cursor/shababuna-redesign-master-plan-dc14`
-- Full SHA: `d5a3a6d07457cf560b7a9d93dcb258d047338b4d`
+- Full SHA: `f5e598b15e3d29876d418ba94d44e192874e858e`
 - PR: https://github.com/kmbmdd7ysm-source/shababunaly/pull/8
 
 ## Phase status
@@ -11,12 +11,10 @@
 | 0 | Freeze starting state | **PASS** |
 | 1 | Clean toolchain / npm ci | **PASS** |
 | 2 | Build provenance full-SHA match | **PASS** |
-| 3 | Complete TypeScript migration | **IN PROGRESS** — **24.71%** (64/259 executable) |
+| 3 | Complete TypeScript migration | **IN PROGRESS** — **25.48%** (66/259 executable) |
 | 4 | Destroy legacy CSS debt | NOT STARTED |
 | 5 | 500 LYD → 630/70 customer text | **PASS** |
-| 6 | Unify release evidence | NOT STARTED |
-| 7 | Modularize Account | **IN PROGRESS** |
-| 8–25 | Remaining | NOT STARTED / PARTIAL |
+| 6–25 | Remaining | NOT STARTED / PARTIAL |
 
 ## Green verification
 
@@ -24,20 +22,20 @@
 
 ## Exact next (Phase 3)
 
-1. **Port `src/services/designStudio.js` → `.ts`** (StudioState interface; prior attempt ~62 errors)
+1. Port `src/services/designStudio.js` → `.ts` with StudioState (highest priority)
 2. Port `productionPreflight.js` → `.ts`
 3. Port `supabase.js` → `.ts`
-4. Contexts: LanguageContext, CommerceContext, CartContext, AuthContext (ambient → full)
-5. Components that use `react-router` need a types workaround (RR type conflict with `skipLibCheck: false`)
-6. Remain in Phase 3 until project-wide or every exclusion documented
+4. Full context migrations (Language/Commerce/Cart/Auth)
+5. React Router types workaround for components importing `react-router-dom` under `skipLibCheck: false`
+6. Do not leave Phase 3 until project-wide or exclusions documented
 
 ## Next command
 
 ```bash
 cd /workspace && git rev-parse HEAD
-# Finish designStudio.ts with StudioState
+# Finish designStudio.ts
 npm run typecheck && npm run test:node && npm run lint
 ```
 
 ## Do not restart from Phase 0
-Resume Phase 3 TypeScript migration only.
+Resume Phase 3 only.
