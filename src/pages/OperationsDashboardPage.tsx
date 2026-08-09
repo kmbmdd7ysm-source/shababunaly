@@ -341,7 +341,7 @@ export default function OperationsPage(): ReactElement | null {
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-                run(
+                void run(
                   'rate',
                   () => setExchangeRate(rate),
                   pick({
@@ -550,7 +550,7 @@ export default function OperationsPage(): ReactElement | null {
               <section className="operations-section">
                 <div className="section-heading-row">
                   <h2>{pick({ en: 'International shipping queue', ar: 'قائمة الشحن الدولي' })}</h2>
-                  <button className="btn-secondary" onClick={load}>
+                  <button className="btn-secondary" onClick={() => { void load(); }}>
                     {pick({ en: 'Refresh', ar: 'تحديث' })}
                   </button>
                 </div>
