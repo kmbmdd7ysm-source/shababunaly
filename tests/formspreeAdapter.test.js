@@ -4,7 +4,7 @@ import handler, {
   resolveFormspreeEndpoint,
   sanitize,
   sanitizeKey,
-} from '../api/formspree.js';
+} from '../api/formspree.ts';
 
 function responseMock() {
   return {

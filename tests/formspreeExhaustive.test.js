@@ -1,4 +1,4 @@
-import handler from '../api/formspree.js';
+import handler from '../api/formspree.ts';
 import { afterEach, describe, expect, it, vi } from './test-api.js';
 
 const ENV = [

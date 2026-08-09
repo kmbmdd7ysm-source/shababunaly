@@ -1,20 +1,27 @@
 import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
 import { supabaseAdminRequest } from './_supabase-admin.ts';
 
-const clean = (value, max = 600) =>
+type ApiReq = { method?: string; body?: unknown };
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+const clean = (value: unknown, max = 600): string =>
   String(value ?? '')
     .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[email]')
     .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, '[phone]')
     .slice(0, max);
-const json = (res, status, body) => {
-  applyApiHeaders(res);
+
+const json = (res: ApiRes, status: number, body: unknown) => {
+  applyApiHeaders(res as never);
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   return res.status(status).json(body);
 };
 
-export default async function handler(req, res) {
+export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') return json(res, 405, { ok: false, error: 'method_not_allowed' });
-  const guarded = await guardPublicPost(req, res, {
+  const guarded = await guardPublicPost(req as never, res as never, {
     maxBytes: 20_000,
     limit: 20,
     windowMs: 60_000,
@@ -22,7 +29,7 @@ export default async function handler(req, res) {
   });
   if (!guarded) return;
   try {
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const body = req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
     const row = {
       severity: 'error',
       source: 'browser',
@@ -41,24 +48,28 @@ export default async function handler(req, res) {
         body: JSON.stringify(row),
       });
     } catch {
-      // Monitoring must never break the customer flow. External ingest below
-      // remains available even when the database is temporarily unavailable.
+      /* monitoring must never break customer flow */
     }
     const endpoint = clean(process.env.ERROR_MONITORING_INGEST_URL, 1000);
     const token = clean(process.env.ERROR_MONITORING_TOKEN, 5000);
     if (endpoint && /^https:\/\//i.test(endpoint)) {
-      await fetch(endpoint, {
+      const init: RequestInit = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(row),
-        signal: AbortSignal.timeout(4000),
-      }).catch(() => null);
+      };
+      if (typeof AbortSignal?.timeout === 'function') init.signal = AbortSignal.timeout(4000);
+      await fetch(endpoint, init).catch(() => null);
     }
     return json(res, 202, { ok: true });
   } catch (error) {
-    return json(res, 400, { ok: false, error: clean(error.message || 'invalid_request', 200) });
+    const message =
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error;
+    return json(res, 400, { ok: false, error: clean(message || 'invalid_request', 200) });
   }
 }

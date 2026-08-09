@@ -183,7 +183,7 @@ for (const token of [
   has(adminUsersApi, token, `admin users ${token}`);
 if (/user_metadata\?\.role|user_metadata\.role/u.test(adminUsersApi))
   fail.push('Admin authorization trusts editable user_metadata.role');
-const formApi = read('api/formspree.js');
+const formApi = read('api/formspree.ts');
 const orderApi = read('api/order-notification.js');
 for (const source of [formApi, orderApi]) {
   has(source, 'guardPublicPost', 'public API security guard');
