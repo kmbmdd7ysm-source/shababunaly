@@ -1,22 +1,20 @@
 # CSS extinction status
 
 ## Live
-- Foundation tokens/typography/layout/shell (eager)
-- Route/component sheets
-- `legacy-retained.css` — used-only island extracted from former triad
+- Foundation tokens/typography/layout/shell/motion
+- Route + component owned extract sheets
+- \`legacy-island.css\` — **97 lines** of clean document utilities only
 
-## Archived (not imported)
-- `src/styles/_archive/global.css`
-- `src/styles/_archive/premium.css`
-- `src/styles/_archive/shababuna.css`
+## Archived
+- \`src/styles/_archive/global.css\`
+- \`src/styles/_archive/premium.css\`
+- \`src/styles/_archive/shababuna.css\`
 
 ## Removed
-- `requestIdleCallback` post-first-paint legacy injection (cascade flash)
+- Idle/post-paint legacy CSS injection
+- Corrupted fused selectors / orphan keyframe fragments from automated culls
 
-## Next
-Continue moving retained rules into route/component ownership until `legacy-retained.css` can shrink further or vanish.
+## !important
+- Total across live \`src/styles/*.css\`: **57**
 
-
-## Related gates
-- PWA A→B: PASS
-- Idle legacy load: removed
+Started from ~9660-line triad. Ownership migration continues if island can go to zero.
