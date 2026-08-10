@@ -1,14 +1,13 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `0107d1217e88cf196ac390173a0196ef66df54d9`
-- TypeScript: **97.99%** (292/298) · 6 legacy remain
-- Build GREEN · tsc GREEN · 81 visual screenshots in artifacts
-- Shipped UX: QuickAddSheet, PDP stage CTA, cart Libya gate, dismiss sentence-case, no emoji empties, mobile AR RTL
-- Documented BLOCKED: Ready-to-Ship inventory, Teams quote local API
-- Remaining legacy: Realtime3DEngine.jsx, b2b.js, orders.js, operations.js, designExports.js, simplePdf.js
+- SHA: `1544b1275dae4b47702b492d95cd7b8d5b026985`
+- TypeScript: **97.99%** · catalog fully TS · Shop Ready-to-Ship uses `isReadyToShipEligible`
+- Build/tsc GREEN · QuickAddSheet · PDP CTA · cart/dismiss · mobile AR RTL
+- Legacy (6): Realtime3DEngine.jsx, b2b.js, orders.js, operations.js, designExports.js, simplePdf.js
+- BLOCKED docs: Ready-to-Ship inventory, Teams quote local API
 
 ## Exact next unfinished
-1. Service/util TS migrations (orders/b2b/operations/designExports/simplePdf) in smaller slices
-2. Deployed API verification for quotes/orders
-3. Final 35-group full-site audit + FINAL COMPLETE gate
+1. Slice remaining service/util TS migrations
+2. Deployed API verification
+3. Final 35-group audit → FINAL COMPLETE only when truly done
 **NOT FINAL COMPLETE**
