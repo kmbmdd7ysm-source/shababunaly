@@ -174,7 +174,9 @@ function MasterEntityCard({
         <button
           className="btn-primary compact"
           disabled={saving === key || !Object.values(values)[0]}
-          onClick={() => { void save(); }}
+          onClick={() => {
+            void save();
+          }}
         >
           {pick({ en: 'Save', ar: 'حفظ' })}
         </button>
