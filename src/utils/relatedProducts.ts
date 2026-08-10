@@ -1,6 +1,6 @@
 import type { ProductLike } from './productEligibility.ts';
 
-interface RelatedCandidate extends ProductLike {
+export interface RelatedCandidate extends ProductLike {
   id: string;
   slug?: string;
   category?: string;
