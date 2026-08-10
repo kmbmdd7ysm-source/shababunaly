@@ -506,14 +506,14 @@
 }
 
 /* Open editorial product cards — circular actions, no rectangular chrome. */
-.product-card {
-  border: 0 !important;
+article.product-card.product-card {
+  border: 0;
   background: transparent;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
-.product-card-media {
-  border: 0 !important;
+article.product-card .product-card-media {
+  border: 0;
   border-radius: var(--sh-r-1);
   overflow: hidden;
   position: relative;
