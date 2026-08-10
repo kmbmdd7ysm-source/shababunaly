@@ -205,7 +205,7 @@ export default function HomePage(): ReactElement {
         <link
           rel="preload"
           as="image"
-          href="/media/atmosphere/arena-wide-1600.webp"
+          href="/media/atmosphere/arena-wide-1024.webp"
           type="image/webp"
           imageSrcSet="/media/atmosphere/arena-wide-1024.webp 1024w, /media/atmosphere/arena-wide-1600.webp 1600w, /media/atmosphere/arena-wide-2048.webp 2048w"
           imageSizes="100vw"
@@ -262,10 +262,10 @@ export default function HomePage(): ReactElement {
               sizes="100vw"
             />
             <img
-              src="/media/atmosphere/arena-wide-1600.webp"
+              src="/media/atmosphere/arena-wide-1024.webp"
               alt=""
-              width="1600"
-              height="1067"
+              width="1024"
+              height="683"
               fetchPriority="high"
               decoding="async"
             />
