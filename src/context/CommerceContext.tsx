@@ -298,7 +298,11 @@ export function CommerceProvider({ children }: { children?: ReactNode }) {
     [currency, usdToLydRate],
   );
   const format = useCallback(
-    (amount: number | string, lang = 'en', sourceCurrency: string = commerceConfig.baseCurrency) => {
+    (
+      amount: number | string,
+      lang = 'en',
+      sourceCurrency: string = commerceConfig.baseCurrency,
+    ) => {
       if (sourceCurrency !== currency && !usdToLydRate)
         return lang === 'ar' ? 'السعر غير متاح' : 'Price unavailable';
       return formatMoney(

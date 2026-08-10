@@ -103,7 +103,12 @@ export const FACTORY_TEMPLATE_SPECS = Object.freeze(
         ...TEMPLATE_BASE,
         productType: product.key,
         productLabel: product.label.en,
-        ...(PRODUCT_DIMENSIONS as Record<string, { widthMm: number; heightMm: number; views: string[]; panels: string[] }>)[product.key] || {},
+        ...((
+          PRODUCT_DIMENSIONS as Record<
+            string,
+            { widthMm: number; heightMm: number; views: string[]; panels: string[] }
+          >
+        )[product.key] || {}),
       }),
     ]),
   ),
@@ -163,7 +168,8 @@ export function rgbToLab(rgb: { r: number; g: number; b: number } | null | undef
   const x = (r * 0.4124564 + g * 0.3575761 + b * 0.1804375) / 0.95047;
   const y = r * 0.2126729 + g * 0.7151522 + b * 0.072175;
   const z = (r * 0.0193339 + g * 0.119192 + b * 0.9503041) / 1.08883;
-  const f = (value: number) => (value > 216 / 24389 ? Math.cbrt(value) : ((24389 / 27) * value + 16) / 116);
+  const f = (value: number) =>
+    value > 216 / 24389 ? Math.cbrt(value) : ((24389 / 27) * value + 16) / 116;
   return {
     l: Number((116 * f(y) - 16).toFixed(3)),
     a: Number((500 * (f(x) - f(y))).toFixed(3)),
@@ -171,7 +177,10 @@ export function rgbToLab(rgb: { r: number; g: number; b: number } | null | undef
   };
 }
 
-export function deltaE76(first: { l: number; a: number; b: number } | null | undefined, second: { l: number; a: number; b: number } | null | undefined) {
+export function deltaE76(
+  first: { l: number; a: number; b: number } | null | undefined,
+  second: { l: number; a: number; b: number } | null | undefined,
+) {
   if (
     !first ||
     !second ||
@@ -212,11 +221,11 @@ export function readRasterDimensions(value: unknown) {
   const ascii = (start: number, end: number) => String.fromCharCode(...buffer.slice(start, end));
   const u16be = (offset: number) => ((buffer[offset] ?? 0) << 8) | (buffer[offset + 1] ?? 0);
   const u32be = (offset: number) =>
-    (((buffer[offset] ?? 0) * 0x1000000 +
+    ((buffer[offset] ?? 0) * 0x1000000 +
       ((buffer[offset + 1] ?? 0) << 16) +
       ((buffer[offset + 2] ?? 0) << 8) +
       (buffer[offset + 3] ?? 0)) >>>
-    0);
+    0;
   const u24le = (offset: number) =>
     (buffer[offset] ?? 0) | ((buffer[offset + 1] ?? 0) << 8) | ((buffer[offset + 2] ?? 0) << 16);
   if (format === 'png' && buffer.length >= 24 && ascii(1, 4) === 'PNG') {
@@ -372,9 +381,9 @@ function validateFactoryApproval(
   productType: unknown,
   colors: unknown,
 ) {
-  const approval = (factoryApproval && typeof factoryApproval === 'object'
-    ? factoryApproval
-    : {}) as Record<string, unknown>;
+  const approval = (
+    factoryApproval && typeof factoryApproval === 'object' ? factoryApproval : {}
+  ) as Record<string, unknown>;
   const tpl = (template && typeof template === 'object' ? template : {}) as Record<string, unknown>;
   const errors: string[] = [];
   if (!(approval.approved && approval.approvalStatus === 'approved'))
@@ -388,7 +397,8 @@ function validateFactoryApproval(
     errors.push('certificate_evidence_missing');
   if (
     approval.templateVersion !== tpl.templateVersion ||
-    !Array.isArray(approval.productTypes) || !(approval.productTypes as unknown[]).includes(productType)
+    !Array.isArray(approval.productTypes) ||
+    !(approval.productTypes as unknown[]).includes(productType)
   )
     errors.push('product_template_not_approved');
   if (
@@ -402,9 +412,7 @@ function validateFactoryApproval(
     !/^[a-f0-9]{64}$/i.test(String(approval.pantoneLibrarySha256 || ''))
   )
     errors.push('pantone_evidence_missing');
-  if (!(
-    Number(approval.deltaETolerance) > 0 && Number(approval.deltaETolerance) <= 2
-  ))
+  if (!(Number(approval.deltaETolerance) > 0 && Number(approval.deltaETolerance) <= 2))
     errors.push('delta_e_tolerance_invalid');
   const materialProfile =
     approval.materialProfile && typeof approval.materialProfile === 'object'
@@ -448,7 +456,9 @@ export function runProductionPreflight({
   const product = getCustomProductType(String(design.productType || ''));
   const template = getFactoryTemplateSpec(product.key) as Record<string, unknown>;
   const normalizedStudio = normalizeStudio(studio, design);
-  const normalizedRoster = normalizeRoster(roster as import('../data/customization.ts').RosterInput[]);
+  const normalizedRoster = normalizeRoster(
+    roster as import('../data/customization.ts').RosterInput[],
+  );
   const blockers: Array<{ code: string; detail: string }> = [];
   const warnings: Array<{ code: string; detail: string }> = [];
   const quantity = Number(design.quantity || 0);

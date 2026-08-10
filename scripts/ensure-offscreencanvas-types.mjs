@@ -9,8 +9,11 @@ if (!existsSync(join(dir, 'index.d.ts'))) {
   writeFileSync(join(dir, 'index.d.ts'), 'export {};\n');
   writeFileSync(
     join(dir, 'package.json'),
-    JSON.stringify({ name: '@types/offscreencanvas', version: '0.0.0', types: 'index.d.ts' }, null, 2) +
-      '\n',
+    JSON.stringify(
+      { name: '@types/offscreencanvas', version: '0.0.0', types: 'index.d.ts' },
+      null,
+      2,
+    ) + '\n',
   );
   console.info('Created @types/offscreencanvas stub');
 }

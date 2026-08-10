@@ -103,7 +103,9 @@ export default function Footer() {
             <p className="gw-colophon-column-head gw-colophon-column-head--desktop">
               <span>{column.title}</span>
             </p>
-            <ul className={openGroup === column.id ? 'is-open' : undefined}>{renderLinks(column.items)}</ul>
+            <ul className={openGroup === column.id ? 'is-open' : undefined}>
+              {renderLinks(column.items)}
+            </ul>
           </nav>
         ))}
 

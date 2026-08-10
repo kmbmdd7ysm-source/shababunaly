@@ -1,10 +1,8 @@
 /* Domain CSS: domain-content.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: content-from-global.css ---- */
 
 /* content global */
-
 
 .contact-info {
   background: var(--surface);
@@ -76,28 +74,28 @@
   hyphens: none;
 }
 .contact-info {
-    padding: 1.25rem;
-  }
+  padding: 1.25rem;
+}
 .contact-info .section-title {
-    font-size: clamp(2rem, 11vw, 3.15rem);
-    line-height: 0.94;
-  }
+  font-size: clamp(2rem, 11vw, 3.15rem);
+  line-height: 0.94;
+}
 .contact-form-wrap,
-  .contact-form,
-  .contact-info {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }
+.contact-form,
+.contact-info {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
 .contact-info .section-title {
-    max-width: 100%;
-    font-size: clamp(2rem, 9.5vw, 2.75rem);
-    line-height: 0.98;
-    letter-spacing: -0.035em;
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: none;
-  }
+  max-width: 100%;
+  font-size: clamp(2rem, 9.5vw, 2.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
 
 .contact-section > .container,
 .contact-form-wrap,
@@ -119,7 +117,7 @@
 }
 
 .contact-form .contact-consent {
-  display:grid;
+  display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: start;
   column-gap: 0.75rem;
@@ -158,27 +156,25 @@ html[dir='rtl'] .contact-form .contact-consent span {
   grid-column: 1;
 }
 .contact-section .container {
-    padding-inline: var(--gutter);
-  }
+  padding-inline: var(--gutter);
+}
 .contact-form input,
-  .contact-form select,
-  .contact-form textarea,
-  .contact-form button {
-    width: 100%;
-    max-width: 100%;
-  }
+.contact-form select,
+.contact-form textarea,
+.contact-form button {
+  width: 100%;
+  max-width: 100%;
+}
 .contact-info .section-title {
-    font-size: clamp(1.65rem, 2.7vw, 3rem);
-    line-height: 1;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
-
+  font-size: clamp(1.65rem, 2.7vw, 3rem);
+  line-height: 1;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
 
 /* ---- source: content-from-shababuna.css ---- */
 
 /* content shababuna */
-
 
 .contact-info {
   background: #050505;

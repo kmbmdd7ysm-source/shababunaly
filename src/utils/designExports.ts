@@ -38,7 +38,13 @@ export const escapeXml = (value: unknown): string =>
 export const safeHex = (value: unknown, fallback: string): string =>
   /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value) : fallback;
 
-export function productShape(preview: string, fill: string, stroke: string, accent: string, view: string): string {
+export function productShape(
+  preview: string,
+  fill: string,
+  stroke: string,
+  accent: string,
+  view: string,
+): string {
   const side = view === 'side';
   const transform = side ? 'translate(165 50) scale(.58 1)' : 'translate(55 38)';
   const top = `<g transform="${transform}"><path d="M126 20L190 60H300L364 20L456 96L416 180L374 152V548H116V152L74 180L34 96Z" fill="${fill}" stroke="${stroke}" stroke-width="7"/><path d="M190 60Q245 132 300 60" fill="none" stroke="${stroke}" stroke-width="14"/></g>`;
@@ -239,7 +245,11 @@ export function buildProductionPackage({
     reference,
     brand: 'SHABABUNA',
     tagline: 'BUILT DIFFERENT',
-    product: productLabel || String((getCustomProductType(String(design.productType || '')).label as { en?: string }).en || ''),
+    product:
+      productLabel ||
+      String(
+        (getCustomProductType(String(design.productType || '')).label as { en?: string }).en || '',
+      ),
     design: {
       productType: design.productType,
       variant: design.variant,

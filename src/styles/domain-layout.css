@@ -1,10 +1,8 @@
 /* Domain CSS: domain-layout.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: layout-legacy-from-global.css ---- */
 
 /* layout legacy global */
-
 
 .section-title {
   font-family: var(--font-display);
@@ -82,13 +80,13 @@
   max-width: 18ch;
 }
 .section-title {
-    font-size: clamp(2rem, 11vw, 3.45rem);
-    line-height: 1;
-  }
+  font-size: clamp(2rem, 11vw, 3.45rem);
+  line-height: 1;
+}
 [dir='rtl'] .section-title {
-    font-size: clamp(1.8rem, 9.5vw, 3rem);
-    line-height: 1.28;
-  }
+  font-size: clamp(1.8rem, 9.5vw, 3rem);
+  line-height: 1.28;
+}
 
 .display-title,
 .section-heading .section-title {
@@ -99,20 +97,20 @@
 }
 .display-title,
 .section-heading .section-title {
-    font-size: clamp(2.15rem, 10vw, 3.5rem);
-  }
+  font-size: clamp(2.15rem, 10vw, 3.5rem);
+}
 
 html[dir='rtl'] .section-title,
 html[dir='rtl'] .page-hero h1 {
   font-size: clamp(1.9rem, 8vw, 3.8rem);
 }
 .container {
-    width: 100%;
-    max-width: 100%;
-    margin-inline: auto;
-    padding-left: max(var(--gutter), env(safe-area-inset-left));
-    padding-right: max(var(--gutter), env(safe-area-inset-right));
-  }
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
+}
 
 #root,
 main,
@@ -127,11 +125,9 @@ section,
   padding-block: clamp(3rem, 8vw, 7rem);
 }
 
-
 /* ---- source: layout-legacy-from-premium.css ---- */
 
 /* layout legacy premium */
-
 
 .section-heading .section-title {
   max-width: 18ch;
@@ -143,16 +139,14 @@ section,
   letter-spacing: 0.18em;
 }
 .section-heading .section-title {
-    font-size: clamp(2.15rem, 11vw, 3.8rem);
-    line-height: 0.94;
-    max-width: 13ch;
-  }
-
+  font-size: clamp(2.15rem, 11vw, 3.8rem);
+  line-height: 0.94;
+  max-width: 13ch;
+}
 
 /* ---- source: layout-legacy-from-shababuna.css ---- */
 
 /* layout legacy shababuna */
-
 
 .container {
   width: min(calc(100% - clamp(32px, 6vw, 96px)), var(--sha-wide));
@@ -179,5 +173,5 @@ section,
   gap: 18px;
 }
 .container {
-    width: min(calc(100% - 32px), var(--sha-wide));
-  }
+  width: min(calc(100% - 32px), var(--sha-wide));
+}

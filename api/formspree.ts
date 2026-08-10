@@ -20,10 +20,12 @@ export function sanitizeKey(value: unknown): string {
     .slice(0, 80);
 }
 
-export function buildCleanFormPayload(payload: Record<string, unknown> | null | undefined): Record<string, string> {
+export function buildCleanFormPayload(
+  payload: Record<string, unknown> | null | undefined,
+): Record<string, string> {
   const cleanPayload: Record<string, string> = {};
   let count = 0;
-  for (const [rawKey, value] of Object.entries(payload || {} as Record<string, unknown>)) {
+  for (const [rawKey, value] of Object.entries(payload || ({} as Record<string, unknown>))) {
     if (rawKey === 'turnstileToken') continue;
     const key = sanitizeKey(rawKey);
     if (!key) continue;
@@ -34,22 +36,36 @@ export function buildCleanFormPayload(payload: Record<string, unknown> | null | 
   return cleanPayload;
 }
 
-type ApiReq = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
 export default async function handler(request: ApiReq, response: ApiRes) {
   if (request.method !== 'POST') {
     response.setHeader('Allow', 'POST');
     return response.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(request as never, response as never, { maxBytes: 64000, limit: 10 }))) return;
+  if (!(await guardPublicPost(request as never, response as never, { maxBytes: 64000, limit: 10 })))
+    return;
   const endpoint = resolveFormspreeEndpoint();
   if (!endpoint || !/^https:\/\//i.test(endpoint))
     return response.status(503).json({ ok: false, error: 'formspree_not_configured' });
-  const payload = (request.body && typeof request.body === 'object' ? request.body : {}) as Record<string, unknown>;
+  const payload = (request.body && typeof request.body === 'object' ? request.body : {}) as Record<
+    string,
+    unknown
+  >;
   const forwarded = request.headers['x-forwarded-for'];
   const captchaOk = await verifyTurnstileToken(
     String(payload.turnstileToken || ''),
-    String((Array.isArray(forwarded) ? forwarded[0] : forwarded) || request.socket?.remoteAddress || ''),
+    String(
+      (Array.isArray(forwarded) ? forwarded[0] : forwarded) || request.socket?.remoteAddress || '',
+    ),
   );
   if (!captchaOk) return response.status(400).json({ ok: false, error: 'captcha_failed' });
   const clean = buildCleanFormPayload(payload);

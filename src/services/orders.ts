@@ -37,7 +37,10 @@ export function normalizeOrder(order: Row = {}): Row {
   );
   const originalShippingAmount = Math.max(
     0,
-    safeNumber((order.shippingRate as Row | undefined)?.originalAmount ?? (order.shipping_rate as Row | undefined)?.original_amount),
+    safeNumber(
+      (order.shippingRate as Row | undefined)?.originalAmount ??
+        (order.shipping_rate as Row | undefined)?.original_amount,
+    ),
   );
   const inferredDisplayRate =
     displayCurrency !== currency && canonicalShippingTotal > 0 && originalShippingAmount > 0
@@ -113,7 +116,10 @@ export function normalizeOrder(order: Row = {}): Row {
     orderNumber: clean(order.orderNumber || order.order_number),
     userId: order.userId || order.user_id || null,
     email: emailKey(
-      order.email || order.customerEmail || order.customer_email || (order.customer as Row | undefined)?.email,
+      order.email ||
+        order.customerEmail ||
+        order.customer_email ||
+        (order.customer as Row | undefined)?.email,
     ),
     createdAt: order.createdAt || order.created_at || new Date().toISOString(),
     updatedAt: order.updatedAt || order.updated_at || new Date().toISOString(),
@@ -392,7 +398,9 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
   const candidateItems = Array.isArray(candidate.items) ? (candidate.items as Row[]) : [];
   if (!candidate.orderNumber || !candidate.email || !candidateItems.length)
     throw new Error('invalid_order');
-  const isCash = ['cash', 'cash_on_delivery', 'cod'].includes(String(candidate.paymentMethod || ''));
+  const isCash = ['cash', 'cash_on_delivery', 'cod'].includes(
+    String(candidate.paymentMethod || ''),
+  );
   const allowLocalPendingQuote = Boolean(options.allowPending && candidate.shippingQuoteRequired);
   if (options.cloud !== false) {
     const payload = {
@@ -401,7 +409,9 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
       paymentMethod: candidate.paymentMethod,
       email: candidate.email,
       shipping: {
-        ...((candidate.shipping && typeof candidate.shipping === 'object' ? candidate.shipping : {}) as Row),
+        ...((candidate.shipping && typeof candidate.shipping === 'object'
+          ? candidate.shipping
+          : {}) as Row),
         paymentPlan: candidate.paymentPlan,
         shippingQuoteRequired: candidate.shippingQuoteRequired,
         deliveryProfile: candidate.deliveryProfile,
@@ -518,7 +528,9 @@ function mapCloudOrder(row: Row) {
   });
 }
 
-export async function getMyOrders(userId: string): Promise<{ state: string; orders: Row[]; error?: unknown; source?: string }> {
+export async function getMyOrders(
+  userId: string,
+): Promise<{ state: string; orders: Row[]; error?: unknown; source?: string }> {
   if (!userId) return { state: 'success', orders: [], source: 'none', error: null };
   const local = readLocalOrders();
   const localOrders = local.orders.filter((order) => (order as Row).userId === userId) as Row[];
@@ -627,7 +639,9 @@ export async function lookupGuestOrder(
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const error = new Error(String((data as Row)?.error || `guest_order_lookup_failed:${response.status}`)) as Error & {
+      const error = new Error(
+        String((data as Row)?.error || `guest_order_lookup_failed:${response.status}`),
+      ) as Error & {
         status?: number;
       };
       error.status = response.status;
@@ -663,8 +677,7 @@ export async function lookupGuestOrder(
       local.orders.find((item) => {
         const row = item as Row;
         return (
-          clean(row.orderNumber).toUpperCase() === number &&
-          emailKey(row.email) === normalizedEmail
+          clean(row.orderNumber).toUpperCase() === number && emailKey(row.email) === normalizedEmail
         );
       }) || null;
     if (order)

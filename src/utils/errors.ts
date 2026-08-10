@@ -87,7 +87,10 @@ export function mapError(error: unknown): {
     code = 'email_exists';
   else if (text.includes('signup is disabled') || text.includes('signups not allowed'))
     code = 'signup_disabled';
-  else if (text.includes('database error saving new user') || text.includes('error saving new user'))
+  else if (
+    text.includes('database error saving new user') ||
+    text.includes('error saving new user')
+  )
     code = 'signup_database';
   else if (
     text.includes('error sending confirmation') ||
@@ -124,7 +127,10 @@ export function mapError(error: unknown): {
   else if (!globalThis.navigator?.onLine) code = 'offline';
   const mapped = MAP[code] || MAP.generic;
   if (!mapped) {
-    return { code: 'generic', message: { en: 'Something went wrong. Please try again.', ar: 'حدث خطأ ما. حاول مرة أخرى.' } };
+    return {
+      code: 'generic',
+      message: { en: 'Something went wrong. Please try again.', ar: 'حدث خطأ ما. حاول مرة أخرى.' },
+    };
   }
   const result: { code: string; message: LangPair; debug?: string } = {
     code,

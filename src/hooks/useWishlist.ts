@@ -12,8 +12,6 @@ export function useWishlist(): {
       ? (d.toggleWishlist as (id: string) => void)
       : () => undefined;
   const has =
-    typeof d.hasWishlist === 'function'
-      ? (d.hasWishlist as (id: string) => boolean)
-      : () => false;
+    typeof d.hasWishlist === 'function' ? (d.hasWishlist as (id: string) => boolean) : () => false;
   return { ids, toggle, has };
 }

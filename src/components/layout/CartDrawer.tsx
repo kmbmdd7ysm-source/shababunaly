@@ -157,7 +157,10 @@ export default function CartDrawer(): ReactElement | null {
               {items.map((item) => (
                 <li key={item.key} className="cart-line">
                   <Link to={item.href || '#'} className="cart-line-media" onClick={closeDrawer}>
-                    <SmartImage src={String(item.image || '')} alt={pick(item.name as { en?: string; ar?: string })} />
+                    <SmartImage
+                      src={String(item.image || '')}
+                      alt={pick(item.name as { en?: string; ar?: string })}
+                    />
                   </Link>
                   <div className="cart-line-info">
                     <Link to={item.href || '#'} className="cart-line-name" onClick={closeDrawer}>

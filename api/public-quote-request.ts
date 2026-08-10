@@ -72,9 +72,7 @@ async function verifiedOrganizationId(
   const rows = (await supabaseAdminRequest(
     `/rest/v1/organization_members?select=organization_id&organization_id=eq.${encodeURIComponent(String(requestedId))}&user_id=eq.${encodeURIComponent(userId)}&limit=1`,
   )) as Array<Record<string, unknown>>;
-  return Array.isArray(rows) && rows[0]?.organization_id
-    ? String(rows[0].organization_id)
-    : null;
+  return Array.isArray(rows) && rows[0]?.organization_id ? String(rows[0].organization_id) : null;
 }
 
 async function findDuplicate(idempotencyKey: string) {
@@ -108,17 +106,13 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const captchaOk = await verifyTurnstileToken(
       clean(body.turnstileToken, 3000),
       String(
-        (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
-          req.socket?.remoteAddress ||
-          '',
+        (Array.isArray(forwarded) ? forwarded[0] : forwarded) || req.socket?.remoteAddress || '',
       ),
     );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const payload = normalizePayload(body);
     const authHeader = req.headers?.authorization;
-    const user = await resolveSupabaseUser(
-      Array.isArray(authHeader) ? authHeader[0] : authHeader,
-    );
+    const user = await resolveSupabaseUser(Array.isArray(authHeader) ? authHeader[0] : authHeader);
     const requestedKey = clean(body.idempotencyKey, 36);
     const idempotencyKey = UUID.test(requestedKey) ? requestedKey : randomUUID();
     const duplicate = await findDuplicate(idempotencyKey);
@@ -155,9 +149,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         body: JSON.stringify(row),
       },
     );
-    const quote = (
-      Array.isArray(created) ? created[0] : created
-    ) as Record<string, unknown> | null;
+    const quote = (Array.isArray(created) ? created[0] : created) as Record<string, unknown> | null;
     if (!quote?.id) throw new Error('quote_create_failed');
     await recordBusinessEvent('quote_created', {
       entityType: 'quote',

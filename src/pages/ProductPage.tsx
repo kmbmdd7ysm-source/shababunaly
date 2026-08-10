@@ -36,7 +36,12 @@ import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productE
 import '../styles/catalog.css';
 import '../styles/domain-misc.css';
 
-type ColorEntry = { key: string; hex?: string; name?: { en?: string; ar?: string }; image?: string };
+type ColorEntry = {
+  key: string;
+  hex?: string;
+  name?: { en?: string; ar?: string };
+  image?: string;
+};
 type SizeEntry = string;
 type VariantEntry = Record<string, unknown> & {
   color?: string;
@@ -87,7 +92,10 @@ export default function ProductPage(): ReactElement {
   useEffect(() => {
     if (!product) return;
     record(product.id);
-    trackEvent('view_item', { item_id: product.id, item_name: pick(product.name as { en?: string; ar?: string }) });
+    trackEvent('view_item', {
+      item_id: product.id,
+      item_name: pick(product.name as { en?: string; ar?: string }),
+    });
     const colors = asColors(product);
     const sizes = asSizes(product);
     const requestedColor = searchParams.get('color');
@@ -267,9 +275,18 @@ export default function ProductPage(): ReactElement {
           });
 
   const details = [
-    product.material && { title: productCopy.material, content: <p>{pick(product.material as { en?: string; ar?: string })}</p> },
-    product.fit && { title: productCopy.fit, content: <p>{pick(product.fit as { en?: string; ar?: string })}</p> },
-    product.care && { title: productCopy.care, content: <p>{pick(product.care as { en?: string; ar?: string })}</p> },
+    product.material && {
+      title: productCopy.material,
+      content: <p>{pick(product.material as { en?: string; ar?: string })}</p>,
+    },
+    product.fit && {
+      title: productCopy.fit,
+      content: <p>{pick(product.fit as { en?: string; ar?: string })}</p>,
+    },
+    product.care && {
+      title: productCopy.care,
+      content: <p>{pick(product.care as { en?: string; ar?: string })}</p>,
+    },
     (Array.isArray(product.features) ? product.features : []).length > 0 && {
       title: productCopy.features,
       content: (
@@ -373,7 +390,9 @@ export default function ProductPage(): ReactElement {
           </h1>
           <p className="gw-kicker gw-stage-sku">
             {productCopy.sku}:{' '}
-            <span className="gw-isolate-ltr">{String(matchedVariant?.sku || product.sku || '')}</span>
+            <span className="gw-isolate-ltr">
+              {String(matchedVariant?.sku || product.sku || '')}
+            </span>
           </p>
           {stageBadges.length > 0 && (
             <div className="gw-stage-badges">
@@ -417,7 +436,9 @@ export default function ProductPage(): ReactElement {
               )}
             </div>
 
-            <p className="gw-deck-desc">{pick(product.description as { en?: string; ar?: string })}</p>
+            <p className="gw-deck-desc">
+              {pick(product.description as { en?: string; ar?: string })}
+            </p>
 
             {purchasable && Boolean(product.wholesaleAvailable) && (
               <div
@@ -658,7 +679,7 @@ export default function ProductPage(): ReactElement {
             </div>
             <div className="gw-catalogue-grid">
               {related.map((item) => (
-                <ProductCard key={String(item?.id)} product={(item || {})} />
+                <ProductCard key={String(item?.id)} product={item || {}} />
               ))}
             </div>
           </div>
@@ -674,7 +695,7 @@ export default function ProductPage(): ReactElement {
             </div>
             <div className="gw-catalogue-grid">
               {recent.map((item) => (
-                <ProductCard key={String(item?.id)} product={(item || {})} />
+                <ProductCard key={String(item?.id)} product={item || {}} />
               ))}
             </div>
           </div>

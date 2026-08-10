@@ -53,9 +53,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const orders = await supabaseAdminRequest(
       `/rest/v1/orders?select=id,order_number,total,amount_paid,amount_refunded,currency,payment_provider,payment_reference,customer_email&order_number=eq.${encodeURIComponent(orderNumber)}&limit=1`,
     );
-    const order = (
-      Array.isArray(orders) ? orders[0] : null
-    ) as Record<string, unknown> | null;
+    const order = (Array.isArray(orders) ? orders[0] : null) as Record<string, unknown> | null;
     if (!order) return res.status(404).json({ ok: false, error: 'order_not_found' });
     const refundable = Math.max(
       0,

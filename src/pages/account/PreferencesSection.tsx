@@ -80,9 +80,7 @@ export default function PreferencesSection({
         <input
           type="checkbox"
           checked={Boolean(profile.marketingConsent)}
-          onChange={(event) =>
-            setProfile({ ...profile, marketingConsent: event.target.checked })
-          }
+          onChange={(event) => setProfile({ ...profile, marketingConsent: event.target.checked })}
         />
         {pick({
           en: 'Receive academy and product updates',
@@ -92,11 +90,7 @@ export default function PreferencesSection({
       <button className="btn-primary" type="submit">
         {pick({ en: 'Save preferences', ar: 'حفظ التفضيلات' })}
       </button>
-      <button
-        type="button"
-        className="btn-secondary"
-        onClick={() => data.clearPersonalization?.()}
-      >
+      <button type="button" className="btn-secondary" onClick={() => data.clearPersonalization?.()}>
         {pick({ en: 'Clear personalization history', ar: 'مسح سجل التخصيص' })}
       </button>
     </form>

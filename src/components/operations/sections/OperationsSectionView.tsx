@@ -55,8 +55,7 @@ export default function OperationsSectionView({
           setState({
             loading: false,
             data: null,
-            error:
-              error instanceof Error ? error.message : 'operations_section_unavailable',
+            error: error instanceof Error ? error.message : 'operations_section_unavailable',
           });
       });
     return () => {

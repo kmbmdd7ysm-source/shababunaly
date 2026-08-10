@@ -16,12 +16,12 @@ export default function LegalPage({ docKey }: { docKey: string }) {
 
   if (!doc) return <NotFoundPage />;
 
-  const chapters = (
-    doc as { sections: Array<{ h: unknown; p: unknown }> }
-  ).sections.map((section) => ({
-    title: pick(section.h as { en?: string; ar?: string }),
-    body: <p>{pick(section.p as { en?: string; ar?: string })}</p>,
-  }));
+  const chapters = (doc as { sections: Array<{ h: unknown; p: unknown }> }).sections.map(
+    (section) => ({
+      title: pick(section.h as { en?: string; ar?: string }),
+      body: <p>{pick(section.p as { en?: string; ar?: string })}</p>,
+    }),
+  );
 
   const typed = doc as {
     title: { en?: string; ar?: string };
@@ -39,10 +39,7 @@ export default function LegalPage({ docKey }: { docKey: string }) {
       <RouteMasthead
         eyebrow={footer.legal}
         title={pick(typed.title) || ''}
-        trail={[
-          { label: footer.legal || 'Legal' },
-          { label: pick(typed.title) || '' },
-        ]}
+        trail={[{ label: footer.legal || 'Legal' }, { label: pick(typed.title) || '' }]}
         figure={{
           value: typed.sections.length,
           label: pick({ en: 'sections', ar: 'أقسام' }),

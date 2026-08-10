@@ -30,7 +30,11 @@ export default function Filters({
 }): ReactElement {
   const catalog = useCatalog();
   const allSizes = (catalog.allSizes || []) as string[];
-  const allColors = (catalog.allColors || []) as Array<{ key: string; hex?: string; name?: { en?: string; ar?: string } }>;
+  const allColors = (catalog.allColors || []) as Array<{
+    key: string;
+    hex?: string;
+    name?: { en?: string; ar?: string };
+  }>;
   const allBrands = (catalog.allBrands || []) as string[];
   const allProductTypes = (catalog.allProductTypes || []) as string[];
   const { t, pick } = useLanguage();

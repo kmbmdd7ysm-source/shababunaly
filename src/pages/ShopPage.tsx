@@ -162,15 +162,22 @@ export default function ShopPage(): ReactElement {
     const max = numberOrNull(filters.priceMax);
     const query = filters.q.trim().toLowerCase();
     let list = baseProducts.filter((product) => {
-      if (filters.sizes.length && !(product.sizes || []).some((size) => filters.sizes.includes(String(size))))
+      if (
+        filters.sizes.length &&
+        !(product.sizes || []).some((size) => filters.sizes.includes(String(size)))
+      )
         return false;
       if (
         filters.colors.length &&
         !(product.colors || []).some((color) => filters.colors.includes(String(color.key)))
       )
         return false;
-      if (filters.brands.length && !filters.brands.includes(String(product.brand || ''))) return false;
-      if (filters.productTypes.length && !filters.productTypes.includes(String(product.productType || '')))
+      if (filters.brands.length && !filters.brands.includes(String(product.brand || '')))
+        return false;
+      if (
+        filters.productTypes.length &&
+        !filters.productTypes.includes(String(product.productType || ''))
+      )
         return false;
       if (min != null && Number(product.price || 0) < min) return false;
       if (max != null && Number(product.price || 0) > max) return false;
@@ -197,8 +204,10 @@ export default function ShopPage(): ReactElement {
       }
       return true;
     });
-    if (sort === 'price-asc') list = [...list].sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
-    else if (sort === 'price-desc') list = [...list].sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+    if (sort === 'price-asc')
+      list = [...list].sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+    else if (sort === 'price-desc')
+      list = [...list].sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
     else if (sort === 'name-asc')
       list = [...list].sort((a, b) => nameEn(a.name).localeCompare(nameEn(b.name)));
     else if (sort === 'name-desc')
@@ -219,7 +228,9 @@ export default function ShopPage(): ReactElement {
     if (!drawerOpen) return undefined;
     const unlock = lockDocumentScroll();
     (drawerRef.current?.querySelector('button,input') as HTMLElement | null)?.focus();
-    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setDrawerOpen(false); };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setDrawerOpen(false);
+    };
     document.addEventListener('keydown', onKey);
     const trigger = triggerRef.current;
     return () => {
@@ -240,7 +251,9 @@ export default function ShopPage(): ReactElement {
           en: 'Basketball clothing, footwear, accessories, balls and equipment — retail, wholesale and custom-ready.',
           ar: 'ملابس وأحذية وإكسسوارات وكرات ومعدات كرة السلة — بالقطعة والجملة وقابلة للتخصيص.',
         });
-  const crumbs: Array<{ label: string; to?: string }> = [{ label: nav.shop || 'Shop', to: '/shop' }];
+  const crumbs: Array<{ label: string; to?: string }> = [
+    { label: nav.shop || 'Shop', to: '/shop' },
+  ];
   if (cat)
     crumbs.push(
       sub ? { label: pick(cat.name), to: `/shop/${cat.slug}` } : { label: pick(cat.name) },
@@ -362,10 +375,7 @@ export default function ShopPage(): ReactElement {
   }
 
   const showEntrance = showEntranceValue;
-  const departmentArt = useMemo(
-    () => getDepartmentArt(String(category || 'clothing')),
-    [category],
-  );
+  const departmentArt = useMemo(() => getDepartmentArt(String(category || 'clothing')), [category]);
   // The entrance is a full-bleed dark composition; the working header is light,
   // so the declaration has to follow the state rather than the route.
   useCinematicOpening(showEntrance);
@@ -433,8 +443,9 @@ export default function ShopPage(): ReactElement {
                     </span>
                     <span className="gw-gate-count gw-isolate-ltr">
                       {
-                        products.filter((entry) => isReadyToShipEligible(asProductLike(entry), 'LY'))
-                          .length
+                        products.filter((entry) =>
+                          isReadyToShipEligible(asProductLike(entry), 'LY'),
+                        ).length
                       }
                     </span>
                   </Link>

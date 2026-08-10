@@ -26,9 +26,7 @@ export default function PremiumPlaceholderStage({
       <div className="gw-ph-copy">
         <p className="gw-ph-name">{name}</p>
         {conceptLabel ? (
-          <p className="gw-ph-label">
-            {pick({ en: 'Concept presentation', ar: 'عرض مفاهيمي' })}
-          </p>
+          <p className="gw-ph-label">{pick({ en: 'Concept presentation', ar: 'عرض مفاهيمي' })}</p>
         ) : null}
       </div>
     </div>

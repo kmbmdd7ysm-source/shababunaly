@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { revokeAnalyticsConsent } from '../utils/analytics.ts';
 import { STORAGE_KEYS } from '../config.ts';
 

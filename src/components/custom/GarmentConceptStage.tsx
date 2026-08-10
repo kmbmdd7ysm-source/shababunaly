@@ -51,8 +51,14 @@ export default function GarmentConceptStage({
   }, [applyPreset]);
 
   return (
-    <div className="gw-garment" role="group" aria-label={pick({ en: 'Concept 3D stage', ar: 'مسرح ثلاثي أبعاد مفاهيمي' })}>
-      <div className="gw-garment-badge">{pick({ en: 'CONCEPT 3D', ar: 'ثلاثي أبعاد مفاهيمي' })}</div>
+    <div
+      className="gw-garment"
+      role="group"
+      aria-label={pick({ en: 'Concept 3D stage', ar: 'مسرح ثلاثي أبعاد مفاهيمي' })}
+    >
+      <div className="gw-garment-badge">
+        {pick({ en: 'CONCEPT 3D', ar: 'ثلاثي أبعاد مفاهيمي' })}
+      </div>
       <div
         className="gw-garment-stage"
         onPointerDown={(event) => {
@@ -92,9 +98,18 @@ export default function GarmentConceptStage({
       <p className="gw-garment-caption">
         {productLabel || pick({ en: 'Blank development garment', ar: 'قطعة تطوير فارغة' })}
       </p>
-      <div className="gw-garment-presets" role="toolbar" aria-label={pick({ en: 'Camera presets', ar: 'إعدادات الكاميرا' })}>
+      <div
+        className="gw-garment-presets"
+        role="toolbar"
+        aria-label={pick({ en: 'Camera presets', ar: 'إعدادات الكاميرا' })}
+      >
         {(Object.keys(PRESETS) as ViewPreset[]).map((preset) => (
-          <button key={preset} type="button" className="gw-garment-preset" onClick={() => applyPreset(preset)}>
+          <button
+            key={preset}
+            type="button"
+            className="gw-garment-preset"
+            onClick={() => applyPreset(preset)}
+          >
             {pick({
               en: preset,
               ar:

@@ -64,7 +64,10 @@ function localeOf(payload: Record<string, unknown>): 'en' | 'ar' {
   return clean(payload?.locale || payload?.language, 5).toLowerCase() === 'ar' ? 'ar' : 'en';
 }
 
-export function notificationReference(row: Record<string, unknown> = {}, payload: Record<string, unknown> = {}): string {
+export function notificationReference(
+  row: Record<string, unknown> = {},
+  payload: Record<string, unknown> = {},
+): string {
   return clean(
     payload.orderNumber ||
       payload.quoteNumber ||
@@ -79,21 +82,21 @@ export function buildNotificationTemplate(
   row: Record<string, unknown> = {},
 ): Record<string, unknown> {
   const payload: Record<string, unknown> =
-    row.payload && typeof row.payload === 'object'
-      ? (row.payload as Record<string, unknown>)
-      : {};
+    row.payload && typeof row.payload === 'object' ? (row.payload as Record<string, unknown>) : {};
   const locale = localeOf(payload);
   const eventType = String(row.event_type || '');
-  const copy =
-    (EVENT_COPY as Record<string, { en: { title: string; body: string }; ar: { title: string; body: string } }>)[
-      eventType
-    ]?.[locale] || {
-      title: clean(row.subject, 240) || (locale === 'ar' ? 'تحديث من شبابنا' : 'SHABABUNA update'),
-      body:
-        locale === 'ar'
-          ? 'يوجد تحديث جديد مرتبط بطلبك.'
-          : 'There is a new update related to your request.',
-    };
+  const copy = (
+    EVENT_COPY as Record<
+      string,
+      { en: { title: string; body: string }; ar: { title: string; body: string } }
+    >
+  )[eventType]?.[locale] || {
+    title: clean(row.subject, 240) || (locale === 'ar' ? 'تحديث من شبابنا' : 'SHABABUNA update'),
+    body:
+      locale === 'ar'
+        ? 'يوجد تحديث جديد مرتبط بطلبك.'
+        : 'There is a new update related to your request.',
+  };
   const reference = notificationReference(row, payload);
   const amount = clean(payload.amount ?? payload.total ?? payload.totalUsd, 80);
   const currency = clean(payload.currency || 'USD', 12);

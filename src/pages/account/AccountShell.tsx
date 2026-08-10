@@ -10,20 +10,10 @@ function SectionFallback(): ReactElement {
   return <p role="status">…</p>;
 }
 
-export function LazyAccountSection({
-  children,
-}: {
-  children: ReactNode;
-}): ReactElement {
+export function LazyAccountSection({ children }: { children: ReactNode }): ReactElement {
   return <Suspense fallback={<SectionFallback />}>{children}</Suspense>;
 }
 
-export {
-  SecuritySection,
-  OrdersSection,
-  ProfileSection,
-  PreferencesSection,
-  SavedSection,
-};
+export { SecuritySection, OrdersSection, ProfileSection, PreferencesSection, SavedSection };
 
 export type LazySection = ComponentType<Record<string, unknown>>;

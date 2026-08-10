@@ -41,8 +41,15 @@ async function loadOrder(number: string) {
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
-type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined> };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res as never);
   if (req.method !== 'POST') {
@@ -60,7 +67,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   )
     return;
   try {
-    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+      string,
+      unknown
+    >;
     const orderNumber = normalizeGuestOrderNumber(body.orderNumber);
     if (!orderNumber) return res.status(400).json({ ok: false, error: 'invalid_payment_recovery' });
     const order = await loadOrder(orderNumber);
@@ -98,7 +108,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       return res.status(409).json({ ok: false, error: 'order_not_payable' });
     }
     const site = clean(process.env.SITE_URL || 'https://shababuna.ly', 1000).replace(/\/$/, '');
-    const session = await (adapter.createSession || (async () => { throw new Error("payment_provider_not_connected"); }))({
+    const session = await (
+      adapter.createSession ||
+      (async () => {
+        throw new Error('payment_provider_not_connected');
+      })
+    )({
       trustedOrder: {
         id: order.id,
         orderNumber: order.order_number,
@@ -125,7 +140,13 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     });
   } catch (error: unknown) {
     return res
-      .status(Number((error && typeof error === 'object' && 'status' in error ? Number((error as {status?:unknown}).status) : undefined)) || 503)
+      .status(
+        Number(
+          error && typeof error === 'object' && 'status' in error
+            ? Number((error as { status?: unknown }).status)
+            : undefined,
+        ) || 503,
+      )
       .json({ ok: false, error: 'payment_recovery_unavailable' });
   }
 }

@@ -415,14 +415,18 @@
 }
 
 /* Homepage commerce rebalance — less dossier chrome */
-.gw-acts[data-commerce="true"] .gw-acts-tick { opacity: 0.35; }
-.gw-acts[data-commerce="true"] .gw-acts-label {
+.gw-acts[data-commerce='true'] .gw-acts-tick {
+  opacity: 0.35;
+}
+.gw-acts[data-commerce='true'] .gw-acts-label {
   text-transform: none;
   letter-spacing: 0.01em;
   font-size: 0.78rem;
 }
 @media (max-width: 900px) {
-  .gw-acts[data-commerce="true"] { display: none; }
+  .gw-acts[data-commerce='true'] {
+    display: none;
+  }
 }
 .gw-stages--plain {
   list-style: none;
@@ -437,7 +441,9 @@
   font-weight: 500;
   opacity: 0.9;
 }
-.gw-stages--plain .gw-stages-num { display: none; }
+.gw-stages--plain .gw-stages-num {
+  display: none;
+}
 .gw-open-kicker {
   font-size: 0.8rem;
   letter-spacing: 0.06em;

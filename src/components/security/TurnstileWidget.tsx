@@ -3,10 +3,7 @@ import { useEffect, useRef } from 'react';
 const SITE_KEY = String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim();
 
 type TurnstileApi = {
-  render: (
-    host: HTMLElement,
-    options: Record<string, unknown>,
-  ) => string | number;
+  render: (host: HTMLElement, options: Record<string, unknown>) => string | number;
   remove: (widgetId: string | number) => void;
 };
 

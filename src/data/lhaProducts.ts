@@ -18,9 +18,10 @@ export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, 
   const isPhysicalActive =
     (p.fulfillmentType || 'physical') === 'physical' && p.available !== false && !p.comingSoon;
   const sizes = (Array.isArray(p.sizes) ? p.sizes : DEFAULT_CLOTHING_SIZES) as string[];
-  const colors = (
-    Array.isArray(p.colors) ? p.colors : [C.black]
-  ) as Array<{ key: string; [k: string]: unknown }>;
+  const colors = (Array.isArray(p.colors) ? p.colors : [C.black]) as Array<{
+    key: string;
+    [k: string]: unknown;
+  }>;
   const inventoryTracking = p.inventoryVerified === true;
   const variants: Array<Record<string, unknown>> = [];
   for (const color of colors) {

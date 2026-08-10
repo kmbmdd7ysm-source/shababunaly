@@ -139,14 +139,18 @@ export default function CartPage(): ReactElement {
 
                 <ul className="gw-lines">
                   {items.map((item, index) => {
-                    const product = item.type === 'product' && item.slug ? getProduct(String(item.slug)) : null;
+                    const product =
+                      item.type === 'product' && item.slug ? getProduct(String(item.slug)) : null;
                     return (
                       <li key={item.key} className="gw-line">
                         <span className="gw-line-index" aria-hidden="true">
                           {String(index + 1).padStart(2, '0')}
                         </span>
                         <Link to={item.href || '#'} className="gw-line-media">
-                          <SmartImage src={String(item.image || '')} alt={pick(item.name as { en?: string; ar?: string })} />
+                          <SmartImage
+                            src={String(item.image || '')}
+                            alt={pick(item.name as { en?: string; ar?: string })}
+                          />
                         </Link>
                         <div className="gw-line-body">
                           <Link to={item.href || '#'} className="gw-line-name">
@@ -170,7 +174,9 @@ export default function CartPage(): ReactElement {
                             {item.type === 'product' && item.size && item.size !== 'OS' ? (
                               <span>{` · ${String(item.size)}`}</span>
                             ) : null}
-                            {item.type === 'training' ? <span>{cartCopy.digital || ''}</span> : null}
+                            {item.type === 'training' ? (
+                              <span>{cartCopy.digital || ''}</span>
+                            ) : null}
                             {item.type === 'event' ? <span>{cartCopy.event || ''}</span> : null}
                           </p>
                           <div className="gw-line-controls">

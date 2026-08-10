@@ -14,10 +14,7 @@ import { trackEvent } from '../utils/analytics.ts';
 import { useAuth } from './AuthContext';
 import { useCatalog } from './CatalogContext';
 import { readScoped, writeScoped, createChannel } from '../services/sync/storage.ts';
-import {
-  cartRequiresPhysicalShipping,
-  type FulfillmentItem,
-} from '../utils/fulfillment.ts';
+import { cartRequiresPhysicalShipping, type FulfillmentItem } from '../utils/fulfillment.ts';
 import {
   getVariantPurchaseLimit,
   isVariantPurchasable,
@@ -76,7 +73,6 @@ export type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 function reducer(state: CartItem[], action: CartAction): CartItem[] {
-
   switch (action.type) {
     case 'ADD': {
       const item = action.item,
@@ -130,7 +126,9 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
         if (item.type !== 'product') return item;
         const product = action.byId.get(item.id) as Record<string, unknown> | undefined;
         if (!product) return { ...item, unavailable: true, maxStock: 0 };
-        const variants = Array.isArray(product.variants) ? (product.variants as Array<Record<string, unknown>>) : [];
+        const variants = Array.isArray(product.variants)
+          ? (product.variants as Array<Record<string, unknown>>)
+          : [];
         const variant = variants.find((entry) => entry.sku === item.sku);
         if (!variant) return { ...item, unavailable: true, maxStock: 0 };
         const wholesale = item.purchaseMode === 'wholesale';
@@ -187,14 +185,22 @@ export function CartProvider({ children }: { children?: ReactNode }) {
     if (!ready.current || !catalog.products?.length) return;
     dispatch({
       type: 'RECONCILE_CATALOG',
-      byId: new Map((catalog.products as Array<Record<string, unknown>>).map((product) => [String(product.id), product])),
+      byId: new Map(
+        (catalog.products as Array<Record<string, unknown>>).map((product) => [
+          String(product.id),
+          product,
+        ]),
+      ),
     });
   }, [catalog.products]);
   useEffect(() => {
     channel.current?.close();
     channel.current = createChannel('shababuna-cart-channel', (msg) => {
       if (msg.type === 'cart' && msg.scope === (scope || 'guest'))
-        dispatch({ type: 'REPLACE', items: Array.isArray(msg.payload) ? (msg.payload as CartItem[]) : [] });
+        dispatch({
+          type: 'REPLACE',
+          items: Array.isArray(msg.payload) ? (msg.payload as CartItem[]) : [],
+        });
     });
     return () => channel.current?.close();
   }, [scope]);
@@ -203,18 +209,24 @@ export function CartProvider({ children }: { children?: ReactNode }) {
     writeScoped(STORAGE_KEYS.cart, scope, items);
     channel.current?.post('cart', items, { scope: scope || 'guest', version: Date.now() });
   }, [items, scope]);
-  const addItem = useCallback((item: CartItem, { openDrawer = true }: { openDrawer?: boolean } = {}) => {
-      dispatch({ type: 'ADD', item });
-      trackEvent('add_to_cart', { item_id: item.id, item_type: item.type, value: item.price });
-      if (openDrawer) setDrawerOpen(true);
-    }, []),
+  const addItem = useCallback(
+      (item: CartItem, { openDrawer = true }: { openDrawer?: boolean } = {}) => {
+        dispatch({ type: 'ADD', item });
+        trackEvent('add_to_cart', { item_id: item.id, item_type: item.type, value: item.price });
+        if (openDrawer) setDrawerOpen(true);
+      },
+      [],
+    ),
     updateQuantity = useCallback(
       (key: string, quantity: number) => dispatch({ type: 'UPDATE_QTY', key, quantity }),
       [],
     ),
     removeItem = useCallback((key: string) => dispatch({ type: 'REMOVE', key }), []),
     clearCart = useCallback(() => dispatch({ type: 'CLEAR' }), []),
-    replaceItems = useCallback((next: CartItem[]) => dispatch({ type: 'REPLACE', items: next }), []);
+    replaceItems = useCallback(
+      (next: CartItem[]) => dispatch({ type: 'REPLACE', items: next }),
+      [],
+    );
   const subtotal = useMemo(
       () => items.reduce((s, i) => s + Number(i.price || 0) * Number(i.quantity || 0), 0),
       [items],
@@ -283,4 +295,5 @@ export const useCart = (): CartContextValue => {
   }
   return ctx;
 };
-export const cartKey = (type: string, id: string, variant = ''): string => `${type}:${id}:${variant}`;
+export const cartKey = (type: string, id: string, variant = ''): string =>
+  `${type}:${id}:${variant}`;

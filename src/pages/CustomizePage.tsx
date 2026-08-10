@@ -48,7 +48,6 @@ import ModelStep from '../components/custom/studio/ModelStep';
 import DesignStep from '../components/custom/studio/DesignStep';
 import RosterStep from '../components/custom/studio/RosterStep';
 
-
 function asRecord(value: unknown): Record<string, unknown> {
   return (value && typeof value === 'object' ? value : {}) as Record<string, unknown>;
 }
@@ -149,8 +148,10 @@ export default function CustomizePage(): ReactElement {
   const [params] = useSearchParams();
   const requestedDesignId = params.get('design');
   const initialType =
-    productTypeFromCatalog(params.get('product'), getProduct as (slug: string) => Record<string, unknown> | undefined) ||
-    DEFAULT_CUSTOM_DESIGN.productType;
+    productTypeFromCatalog(
+      params.get('product'),
+      getProduct as (slug: string) => Record<string, unknown> | undefined,
+    ) || DEFAULT_CUSTOM_DESIGN.productType;
   const initialProduct = getCustomProductType(initialType);
   const [step, setStep] = useState('product');
   const [design, setDesign] = useState<Record<string, unknown>>({
@@ -184,7 +185,10 @@ export default function CustomizePage(): ReactElement {
     () => getCustomProductType(String(design.productType || '')),
     [design.productType],
   );
-  const normalizedRoster = useMemo(() => normalizeRoster(roster as import("../data/customization").RosterInput[]), [roster]);
+  const normalizedRoster = useMemo(
+    () => normalizeRoster(roster as import('../data/customization').RosterInput[]),
+    [roster],
+  );
   const rosterErrors = normalizedRoster.reduce(
     (sum: number, row: { errors?: unknown[] }) => sum + (row.errors?.length || 0),
     0,
@@ -276,7 +280,11 @@ export default function CustomizePage(): ReactElement {
     setAutosaveState('waiting');
     const timer = setTimeout(() => {
       setAutosaveState('saving');
-      void autosaveDesignStudio(savedId, design as Record<string, unknown>, design.studio as Record<string, unknown>)
+      void autosaveDesignStudio(
+        savedId,
+        design as Record<string, unknown>,
+        design.studio as Record<string, unknown>,
+      )
         .then(() => setAutosaveState('saved'))
         .catch(() => setAutosaveState('error'));
     }, 1400);
@@ -1008,30 +1016,32 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     type="button"
                     className="btn-secondary"
                     disabled={!savedId || !auth.user?.id}
-                    onClick={() => { void (async () => {
-                      try {
-                        const url = await createSecureDesignShare(
-                          String(savedId || ''),
-                          'comment',
-                          168,
-                        );
-                        setShareUrl(url);
-                        await navigator.clipboard?.writeText(url);
-                        setStatus(
-                          pick({
-                            en: 'Secure design link copied. It expires in seven days.',
-                            ar: 'تم نسخ رابط التصميم الآمن. تنتهي صلاحيته خلال سبعة أيام.',
-                          }),
-                        );
-                      } catch {
-                        setStatus(
-                          pick({
-                            en: 'Save the design and sign in before creating a secure link.',
-                            ar: 'احفظ التصميم وسجّل الدخول قبل إنشاء رابط آمن.',
-                          }),
-                        );
-                      }
-                    })(); }}
+                    onClick={() => {
+                      void (async () => {
+                        try {
+                          const url = await createSecureDesignShare(
+                            String(savedId || ''),
+                            'comment',
+                            168,
+                          );
+                          setShareUrl(url);
+                          await navigator.clipboard?.writeText(url);
+                          setStatus(
+                            pick({
+                              en: 'Secure design link copied. It expires in seven days.',
+                              ar: 'تم نسخ رابط التصميم الآمن. تنتهي صلاحيته خلال سبعة أيام.',
+                            }),
+                          );
+                        } catch {
+                          setStatus(
+                            pick({
+                              en: 'Save the design and sign in before creating a secure link.',
+                              ar: 'احفظ التصميم وسجّل الدخول قبل إنشاء رابط آمن.',
+                            }),
+                          );
+                        }
+                      })();
+                    }}
                   >
                     {pick({ en: 'Secure Share Link', ar: 'رابط مشاركة آمن' })}
                   </button>
@@ -1065,23 +1075,25 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                 onBack={() => setStep('design')}
                 onContinue={() => setStep('review')}
               >
-                  <div className="gw-roster-actions roster-actions">
-                    <label className="btn-secondary file-button">
-                      {pick({ en: 'Import CSV/XLSX', ar: 'استيراد CSV/XLSX' })}
-                      <input
-                        type="file"
-                        accept={ROSTER_FILE_ACCEPT}
-                        onChange={(event) => { void importRoster(event.target.files?.[0]); }}
-                      />
-                    </label>
-                    <button
-                      className="btn-secondary"
-                      type="button"
-                      onClick={() => downloadText('shababuna-roster-template.csv', rosterToCsv([]))}
-                    >
-                      {pick({ en: 'Template', ar: 'النموذج' })}
-                    </button>
-                  </div>
+                <div className="gw-roster-actions roster-actions">
+                  <label className="btn-secondary file-button">
+                    {pick({ en: 'Import CSV/XLSX', ar: 'استيراد CSV/XLSX' })}
+                    <input
+                      type="file"
+                      accept={ROSTER_FILE_ACCEPT}
+                      onChange={(event) => {
+                        void importRoster(event.target.files?.[0]);
+                      }}
+                    />
+                  </label>
+                  <button
+                    className="btn-secondary"
+                    type="button"
+                    onClick={() => downloadText('shababuna-roster-template.csv', rosterToCsv([]))}
+                  >
+                    {pick({ en: 'Template', ar: 'النموذج' })}
+                  </button>
+                </div>
                 <div className="roster-table-wrap">
                   <table className="roster-table">
                     <thead>
@@ -1209,7 +1221,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
               </RosterStep>
             )}
 
-{step === 'review' && (
+            {step === 'review' && (
               <section aria-labelledby="custom-review-title">
                 <p className="section-label">04 — REVIEW</p>
                 <h2 id="custom-review-title" className="section-title">
@@ -1261,7 +1273,12 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     </ul>
                   )}
                 </div>
-                <form className="quote-form studio-review-form" onSubmit={(event) => { void submit(event); }}>
+                <form
+                  className="quote-form studio-review-form"
+                  onSubmit={(event) => {
+                    void submit(event);
+                  }}
+                >
                   <div className="field-row">
                     <label className="field">
                       <span>{pick({ en: 'Name', ar: 'الاسم' })}</span>
@@ -1386,10 +1403,18 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   </button>
                 </form>
                 <div className="studio-actions">
-                  <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('roster')}>
+                  <button
+                    className="gw-btn gw-btn--secondary"
+                    type="button"
+                    onClick={() => setStep('roster')}
+                  >
                     {pick({ en: 'Back', ar: 'رجوع' })}
                   </button>
-                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('proof')}>
+                  <button
+                    className="gw-btn gw-btn--primary"
+                    type="button"
+                    onClick={() => setStep('proof')}
+                  >
                     {pick({ en: 'Continue to Proof', ar: 'متابعة إلى البروفة' })}
                   </button>
                 </div>
@@ -1424,15 +1449,16 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                         reference: savedId || 'DRAFT',
                       });
                       if (docs.proof)
-                        downloadBlob(
-                          docs.proof,
-                          `shababuna-concept-${savedId || 'draft'}.pdf`,
-                        );
+                        downloadBlob(docs.proof, `shababuna-concept-${savedId || 'draft'}.pdf`);
                     }}
                   >
                     {pick({ en: 'Download concept pack', ar: 'تحميل حزمة المفهوم' })}
                   </button>
-                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('quote')}>
+                  <button
+                    className="gw-btn gw-btn--primary"
+                    type="button"
+                    onClick={() => setStep('quote')}
+                  >
                     {pick({ en: 'Continue to Quote', ar: 'متابعة إلى عرض السعر' })}
                   </button>
                 </div>
@@ -1452,10 +1478,18 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   })}
                 </p>
                 <div className="studio-actions">
-                  <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('proof')}>
+                  <button
+                    className="gw-btn gw-btn--secondary"
+                    type="button"
+                    onClick={() => setStep('proof')}
+                  >
                     {pick({ en: 'Back', ar: 'رجوع' })}
                   </button>
-                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('review')}>
+                  <button
+                    className="gw-btn gw-btn--primary"
+                    type="button"
+                    onClick={() => setStep('review')}
+                  >
                     {pick({ en: 'Open Review & submit', ar: 'افتح المراجعة وأرسل' })}
                   </button>
                 </div>
@@ -1472,30 +1506,32 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                 type="button"
                 className="btn-secondary"
                 disabled={busy}
-                onClick={() => { void (async () => {
-                  if (!pendingSubmission) return;
-                  setBusy(true);
-                  const current = pendingSubmission;
-                  const delivered = await deliverQuoteEmail({
-                    quote: (current.quote || {}) as Record<string, unknown>,
-                    quotePayload: (current.quotePayload || {}) as Record<string, unknown>,
-                    attachments: Array.isArray(current.attachments)
-                      ? (current.attachments as File[])
-                      : [],
-                  });
-                  setStatus(
-                    delivered
-                      ? pick({
-                          en: `Email delivery confirmed for ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')}.`,
-                          ar: `تم تأكيد إرسال البريد للطلب ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')}.`,
-                        })
-                      : pick({
-                          en: `Request ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')} remains saved. Email will be retried automatically.`,
-                          ar: `الطلب ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')} ما زال محفوظًا. ستتم إعادة محاولة البريد تلقائيًا.`,
-                        }),
-                  );
-                  setBusy(false);
-                })(); }}
+                onClick={() => {
+                  void (async () => {
+                    if (!pendingSubmission) return;
+                    setBusy(true);
+                    const current = pendingSubmission;
+                    const delivered = await deliverQuoteEmail({
+                      quote: (current.quote || {}) as Record<string, unknown>,
+                      quotePayload: (current.quotePayload || {}) as Record<string, unknown>,
+                      attachments: Array.isArray(current.attachments)
+                        ? (current.attachments as File[])
+                        : [],
+                    });
+                    setStatus(
+                      delivered
+                        ? pick({
+                            en: `Email delivery confirmed for ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')}.`,
+                            ar: `تم تأكيد إرسال البريد للطلب ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')}.`,
+                          })
+                        : pick({
+                            en: `Request ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')} remains saved. Email will be retried automatically.`,
+                            ar: `الطلب ${String((current.quote as Record<string, unknown> | undefined)?.quote_number || '')} ما زال محفوظًا. ستتم إعادة محاولة البريد تلقائيًا.`,
+                          }),
+                    );
+                    setBusy(false);
+                  })();
+                }}
               >
                 {pick({ en: 'Retry email notification', ar: 'إعادة محاولة إشعار البريد' })}
               </button>

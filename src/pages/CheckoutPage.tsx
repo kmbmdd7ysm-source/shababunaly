@@ -505,7 +505,7 @@ export default function CheckoutPage(): ReactElement {
             id: item.id,
             type: item.type,
             sku: item.sku,
-            name: pick((item.name || "") as LocaleText),
+            name: pick((item.name || '') as LocaleText),
             quantity,
             unitPrice: price,
             lineTotal: price * quantity,
@@ -916,11 +916,14 @@ export default function CheckoutPage(): ReactElement {
                   return (
                     <li key={String(item.key)} className="summary-item">
                       <div className="summary-item-media">
-                        <SmartImage src={String(item.image || '')} alt={pick((item.name || "") as LocaleText)} />
+                        <SmartImage
+                          src={String(item.image || '')}
+                          alt={pick((item.name || '') as LocaleText)}
+                        />
                         <span className="summary-item-qty">{quantity}</span>
                       </div>
                       <div className="summary-item-name">
-                        <span>{pick((item.name || "") as LocaleText)}</span>
+                        <span>{pick((item.name || '') as LocaleText)}</span>
                         {item.size && item.size !== 'OS' ? (
                           <small>{String(item.size)}</small>
                         ) : null}

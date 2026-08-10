@@ -50,9 +50,9 @@ function extractArray(file, marker) {
       const slug = o.match(/slug:\s*['"]([^'"]+)['"]/)?.[1];
       const id = o.match(/\bid:\s*['"]([^'"]+)['"]/)?.[1] || slug;
       if (!slug) return null;
-      const images = [...o.matchAll(/['"]((?:\/|https?:\/\/)[^'"]+\.(?:jpe?g|png|webp|avif|glb|gltf))['"]/gi)].map(
-        (m) => m[1],
-      );
+      const images = [
+        ...o.matchAll(/['"]((?:\/|https?:\/\/)[^'"]+\.(?:jpe?g|png|webp|avif|glb|gltf))['"]/gi),
+      ].map((m) => m[1]);
       return { id, slug, images };
     })
     .filter(Boolean);
@@ -144,7 +144,10 @@ const manifest = {
   products: rows,
 };
 
-writeFileSync(join(outDir, 'media-manifest-current.json'), JSON.stringify(manifest, null, 2) + '\n');
+writeFileSync(
+  join(outDir, 'media-manifest-current.json'),
+  JSON.stringify(manifest, null, 2) + '\n',
+);
 writeFileSync(
   join(outDir, 'MISSING_FINAL_PRODUCT_MEDIA.md'),
   `# Missing final product media\n\nSHA: \`${sha}\`\n\nPlaceholder-heavy: **${placeholderHeavy}** / ${rows.length}\n\nSource: \`reports/products/media-manifest-current.json\`\n\n` +

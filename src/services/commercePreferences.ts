@@ -27,7 +27,10 @@ export function readCurrencyPreference(userId: string | null | undefined): Curre
   );
 }
 
-export function writeCurrencyPreference(userId: string | null | undefined, value: unknown): boolean {
+export function writeCurrencyPreference(
+  userId: string | null | undefined,
+  value: unknown,
+): boolean {
   return safeWrite(scopeKey(BASES.currency, userId), normalizeCurrency(value));
 }
 
@@ -76,7 +79,8 @@ export function readPendingCommercePreference(userId: string | null | undefined)
   } = {
     updatedAt: Number(value.updatedAt) || 0,
   };
-  if (value.preferredCurrency) result.preferredCurrency = normalizeCurrency(value.preferredCurrency);
+  if (value.preferredCurrency)
+    result.preferredCurrency = normalizeCurrency(value.preferredCurrency);
   if (value.preferredCountry && isSupportedCountryCode(value.preferredCountry)) {
     result.preferredCountry = String(value.preferredCountry).toUpperCase();
   }

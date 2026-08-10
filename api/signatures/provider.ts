@@ -121,10 +121,10 @@ export function verifySignatureWebhook(
     100,
   ).toLowerCase();
   const headerValue = headers[headerName] || headers['x-shababuna-signature'];
-  const received = clean(
-    Array.isArray(headerValue) ? headerValue[0] : headerValue,
-    1000,
-  ).replace(/^sha256=/i, '');
+  const received = clean(Array.isArray(headerValue) ? headerValue[0] : headerValue, 1000).replace(
+    /^sha256=/i,
+    '',
+  );
   if (!/^[0-9a-f]{64}$/i.test(received)) return false;
   const expected = createHmac('sha256', webhookSecret).update(rawBody).digest('hex');
   return timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(received, 'hex'));
@@ -188,9 +188,7 @@ export function normalizeSignatureEvent(payload: unknown): Record<string, unknow
       new Date().toISOString(),
     signedDocumentUrl:
       clean(
-        evidence.signedDocumentUrl ||
-          evidence.signed_document_url ||
-          eventSource.signedDocumentUrl,
+        evidence.signedDocumentUrl || evidence.signed_document_url || eventSource.signedDocumentUrl,
         2000,
       ) || null,
     signedDocumentSha256:

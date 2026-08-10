@@ -12,7 +12,10 @@ export function getSupabaseAdminConfig(): { base: string; serviceKey: string } {
   return { base, serviceKey };
 }
 
-export async function supabaseAdminRequest(path: string, options: FetchOptions = {}): Promise<unknown> {
+export async function supabaseAdminRequest(
+  path: string,
+  options: FetchOptions = {},
+): Promise<unknown> {
   const { base, serviceKey } = getSupabaseAdminConfig();
   const response = await fetch(`${base}${path}`, {
     ...options,

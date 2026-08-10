@@ -70,8 +70,17 @@ function orderEmail(row: Record<string, unknown>): string {
   return normalizeGuestEmail(row.customer_email || shipping.email || '');
 }
 
-type ApiReq = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined>; query?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown } };
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers: Record<string, string | string[] | undefined>;
+  query?: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown };
+};
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res as never);
   if (req.method !== 'POST') {
@@ -88,7 +97,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   )
     return;
   try {
-    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+      string,
+      unknown
+    >;
     const orderNumber = normalizeGuestOrderNumber(body.orderNumber);
     if (!orderNumber) return res.status(200).json({ ok: true, order: null });
     const existing = verifyGuestOrderToken(body.accessToken, orderNumber);
@@ -110,7 +122,9 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const forwarded = req.headers['x-forwarded-for'];
     const captchaOk = await verifyTurnstileToken(
       clean(body.turnstileToken, 3000),
-      String((Array.isArray(forwarded) ? forwarded[0] : forwarded) || req.socket?.remoteAddress || ''),
+      String(
+        (Array.isArray(forwarded) ? forwarded[0] : forwarded) || req.socket?.remoteAddress || '',
+      ),
     );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const storedEmail = orderEmail(order);

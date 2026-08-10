@@ -283,7 +283,6 @@ export default function TeamsWholesalePage(): ReactElement {
         </nav>
 
         <div className="gw-teams-body">
-
           <section id="stage-build" className="gw-stage-block" aria-labelledby="stage-build-t">
             <p className="gw-stage-mark">{pick({ en: 'Build', ar: 'جهّز' })}</p>
             <div className="container">

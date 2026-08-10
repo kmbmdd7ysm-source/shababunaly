@@ -5,14 +5,11 @@ type Row = Record<string, unknown>;
 type StaffUser = unknown;
 type Money = string | number | null | undefined;
 
-
 const STAFF_ROLES = new Set(['super_admin', 'admin', 'operations', 'sales']);
 
 export function getStaffRole(user: StaffUser): string {
   const meta =
-    user && typeof user === 'object'
-      ? ((user as Row).app_metadata as Row | undefined)
-      : undefined;
+    user && typeof user === 'object' ? ((user as Row).app_metadata as Row | undefined) : undefined;
   const role = String(meta?.role || '')
     .trim()
     .toLowerCase();
@@ -894,10 +891,18 @@ async function adminUsersRequest(accessToken?: string, options: Row = {}) {
 
 export async function loadAdminUsers(accessToken?: string): Promise<unknown[]> {
   const data = await adminUsersRequest(accessToken, { method: 'GET' });
-  return Array.isArray(data.users) ? (data.users as unknown[]) : Array.isArray(data) ? (data as unknown[]) : [];
+  return Array.isArray(data.users)
+    ? (data.users as unknown[])
+    : Array.isArray(data)
+      ? (data as unknown[])
+      : [];
 }
 
-export async function updateAdminUserRole(accessToken: string, userId: string, role: string): Promise<unknown> {
+export async function updateAdminUserRole(
+  accessToken: string,
+  userId: string,
+  role: string,
+): Promise<unknown> {
   return adminUsersRequest(accessToken, {
     method: 'PATCH',
     body: JSON.stringify({ userId, role }),
@@ -1434,9 +1439,7 @@ export async function loadOperationsSection(
   const key = String(section || '').toLowerCase();
   const definitions = (sectionQueries as Record<string, unknown[][]>)[key];
   if (!definitions) throw new Error('unknown_operations_section');
-  const cached = operationsSectionCache.get(key) as
-    | { createdAt: number; data: Row }
-    | undefined;
+  const cached = operationsSectionCache.get(key) as { createdAt: number; data: Row } | undefined;
   if (!options.force && cached && Date.now() - cached.createdAt < OPERATIONS_CACHE_MS) {
     return cached.data;
   }

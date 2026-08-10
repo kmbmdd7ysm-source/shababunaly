@@ -87,9 +87,12 @@ export default function CinematicHero(): ReactElement {
           });
         })
         .catch(() => {});
-    const idle = globalThis.requestIdleCallback?.(() => {
-      void load();
-    }, { timeout: 2200 });
+    const idle = globalThis.requestIdleCallback?.(
+      () => {
+        void load();
+      },
+      { timeout: 2200 },
+    );
     const timer =
       idle == null
         ? setTimeout(() => {
@@ -215,9 +218,7 @@ export default function CinematicHero(): ReactElement {
       </div>
 
       <a className="gw-hero-scroll" href="#game">
-        <span className="sr-only">
-          {pick({ en: 'Scroll to shop', ar: 'انتقل إلى المتجر' })}
-        </span>
+        <span className="sr-only">{pick({ en: 'Scroll to shop', ar: 'انتقل إلى المتجر' })}</span>
         <span className="gw-hero-scroll-tick" aria-hidden="true" />
       </a>
     </section>

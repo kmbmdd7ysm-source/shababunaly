@@ -53,15 +53,7 @@ const minimumFor = (key: string): number => {
  * delivery promise, so every range is isolated — the same discipline
  * `services/money.ts` already applies to currency.
  */
-function Range({
-  from,
-  to,
-  unit,
-}: {
-  from: string | number;
-  to: string | number;
-  unit: string;
-}) {
+function Range({ from, to, unit }: { from: string | number; to: string | number; unit: string }) {
   return (
     <>
       <span className="gw-isolate-ltr">
@@ -281,7 +273,9 @@ export default function LabHomePage(): ReactElement {
               >
                 <span className="gw-spec">
                   {pick(
-                    (ZONE_LABELS as Record<string, { en: string; ar: string }>)[department.slug] || {
+                    (ZONE_LABELS as Record<string, { en: string; ar: string }>)[
+                      department.slug
+                    ] || {
                       en: department.slug,
                       ar: department.slug,
                     },

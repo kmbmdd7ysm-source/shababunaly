@@ -57,8 +57,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(req as never, res as never, { maxBytes: 32000, limit: 6 })))
-    return;
+  if (!(await guardPublicPost(req as never, res as never, { maxBytes: 32000, limit: 6 }))) return;
   const endpoint = resolveOrderNotificationEndpoint();
   if (!endpoint || !/^https:\/\//i.test(endpoint))
     return res.status(503).json({ ok: false, error: 'formspree_not_configured' });

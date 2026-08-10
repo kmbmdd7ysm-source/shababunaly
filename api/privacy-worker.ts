@@ -8,7 +8,10 @@ const clean = (value: unknown, max = 1000): string =>
     .trim()
     .slice(0, max);
 type ApiReq = { method?: string; headers?: Record<string, string | string[] | undefined> };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
 const json = (res: ApiRes, status: number, body: unknown) => res.status(status).json(body);
 const authorized = (req: ApiReq) =>
   Boolean(process.env.CRON_SECRET) &&
@@ -106,7 +109,9 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     let ready = 0;
     let failed = 0;
 
-    for (const request of (Array.isArray(requests) ? requests : []) as Array<Record<string, unknown>>) {
+    for (const request of (Array.isArray(requests) ? requests : []) as Array<
+      Record<string, unknown>
+    >) {
       try {
         const now = new Date().toISOString();
         await supabaseAdminRequest(`/rest/v1/privacy_export_requests?id=eq.${request.id}`, {
@@ -147,7 +152,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
           headers: { Prefer: 'return=minimal' },
           body: JSON.stringify({
             status: 'ready',
-            export_asset_id: (Array.isArray(assets) ? (assets[0] as Record<string, unknown> | undefined)?.id : undefined) || assetId,
+            export_asset_id:
+              (Array.isArray(assets)
+                ? (assets[0] as Record<string, unknown> | undefined)?.id
+                : undefined) || assetId,
             expires_at: new Date(Date.now() + 7 * 86_400_000).toISOString(),
             error_message: null,
             updated_at: new Date().toISOString(),
@@ -160,7 +168,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
           headers: { Prefer: 'return=minimal' },
           body: JSON.stringify({
             status: 'failed',
-            error_message: clean((error && typeof error === 'object' && 'message' in error ? (error as { message?: unknown }).message : error) || error, 1000),
+            error_message: clean(
+              (error && typeof error === 'object' && 'message' in error
+                ? (error as { message?: unknown }).message
+                : error) || error,
+              1000,
+            ),
             updated_at: new Date().toISOString(),
           }),
         });
@@ -168,8 +181,21 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       }
     }
 
-    return json(res, 200, { ok: true, processed: (Array.isArray(requests) ? requests : []).length, ready, failed });
+    return json(res, 200, {
+      ok: true,
+      processed: (Array.isArray(requests) ? requests : []).length,
+      ready,
+      failed,
+    });
   } catch (error: unknown) {
-    return json(res, 503, { ok: false, error: clean((error && typeof error === 'object' && 'message' in error ? (error as { message?: unknown }).message : error) || error, 200) });
+    return json(res, 503, {
+      ok: false,
+      error: clean(
+        (error && typeof error === 'object' && 'message' in error
+          ? (error as { message?: unknown }).message
+          : error) || error,
+        200,
+      ),
+    });
   }
 }

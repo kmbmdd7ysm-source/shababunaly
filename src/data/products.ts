@@ -17,7 +17,15 @@ const C = {
 const APPAREL = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
 const SHOES = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12', '13', '14'];
 
-export function verifiedVariantStock({ input, color, size }: { input: Record<string, unknown>; color: { key: string }; size: string }): number {
+export function verifiedVariantStock({
+  input,
+  color,
+  size,
+}: {
+  input: Record<string, unknown>;
+  color: { key: string };
+  size: string;
+}): number {
   if (input.inventoryVerified !== true) return 0;
   const directKey = `${color.key}:${size}`;
   const stockByVariant = (input.stockByVariant || {}) as Record<string, unknown>;
@@ -30,8 +38,12 @@ export function verifiedVariantStock({ input, color, size }: { input: Record<str
 }
 
 export function normalizeCatalogProduct(input: Record<string, unknown>): Record<string, unknown> {
-  const colors = Array.isArray(input.colors) && input.colors.length ? (input.colors as Array<{ key: string; [k: string]: unknown }>) : [C.black];
-  const sizes = Array.isArray(input.sizes) && input.sizes.length ? (input.sizes as string[]) : ['OS'];
+  const colors =
+    Array.isArray(input.colors) && input.colors.length
+      ? (input.colors as Array<{ key: string; [k: string]: unknown }>)
+      : [C.black];
+  const sizes =
+    Array.isArray(input.sizes) && input.sizes.length ? (input.sizes as string[]) : ['OS'];
   const inventoryVerified = input.inventoryVerified === true;
   const inventoryTracking =
     inventoryVerified && (input.inventoryTracking ?? Boolean(input.readyToShip));
@@ -53,7 +65,9 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
       });
     });
   });
-  const stock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0) : 0;
+  const stock = inventoryTracking
+    ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0)
+    : 0;
   const name =
     typeof input.name === 'string'
       ? { en: input.name, ar: input.name }
@@ -1051,7 +1065,9 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
   const inventoryTracking = item.inventoryVerified === true;
   const price = Number(item.price || 0);
   const quoteOnly = price <= 0;
-  const variants = (Array.isArray(item.variants) ? item.variants as Array<Record<string, unknown>> : []).map((variant) => ({
+  const variants = (
+    Array.isArray(item.variants) ? (item.variants as Array<Record<string, unknown>>) : []
+  ).map((variant) => ({
     ...variant,
     stock: inventoryTracking ? Math.max(0, Number(variant.stock) || 0) : 0,
     active: variant.active !== false,
@@ -1062,7 +1078,9 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
     unitPrice: price,
     wholesalePrice: price > 0 ? Math.round(price * 0.82 * 100) / 100 : null,
   }));
-  const stock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0) : 0;
+  const stock = inventoryTracking
+    ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0)
+    : 0;
   const readyToShip = inventoryTracking && item.readyToShip === true && stock > 0;
   const fallbackImage = item.image || '/images/catalog/apparel.svg';
   return {
@@ -1077,7 +1095,9 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
       item.category === 'accessories' && item.subcategory === 'balls'
         ? 'basketballs'
         : item.category,
-    subcategory: (subcategoryMap as Record<string, string>)[String(item.subcategory || '')] || item.subcategory,
+    subcategory:
+      (subcategoryMap as Record<string, string>)[String(item.subcategory || '')] ||
+      item.subcategory,
     readyToShip,
     retailAvailable: true,
     wholesaleAvailable: price > 0,
@@ -1154,7 +1174,9 @@ export const collectColors = (catalog = products) =>
     ).values(),
   );
 export const collectSizes = (catalog = products) =>
-  Array.from(new Set(catalog.flatMap((p) => (Array.isArray(p.sizes) ? (p.sizes as string[]) : []))));
+  Array.from(
+    new Set(catalog.flatMap((p) => (Array.isArray(p.sizes) ? (p.sizes as string[]) : []))),
+  );
 export const allColors = collectColors();
 export const allSizes = collectSizes();
 export const BRAND_PRIORITY = [

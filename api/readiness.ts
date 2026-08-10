@@ -106,7 +106,9 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutM
   });
 }
 
-export async function connectivityChecks(required: Record<string, unknown> = requiredEnvironment()) {
+export async function connectivityChecks(
+  required: Record<string, unknown> = requiredEnvironment(),
+) {
   const requestedSkip = process.env.READINESS_SKIP_NETWORK_CHECKS === 'true';
   const skipAllowed = !productionMode() || process.env.ALLOW_READINESS_NETWORK_SKIP === 'true';
   if (requestedSkip && skipAllowed) {

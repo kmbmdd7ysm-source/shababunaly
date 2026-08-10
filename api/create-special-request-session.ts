@@ -65,7 +65,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     }))
   )
     return;
-  const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+  const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+    string,
+    unknown
+  >;
   const requestNumber = clean(body.requestNumber, 80).toUpperCase();
   const method = clean(body.paymentMethod, 40).toLowerCase();
   const adapter = getPaymentAdapter(method);

@@ -29,9 +29,7 @@ export function verifiedIdentity(value: unknown): boolean {
   const record = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
   return (
     record.verified === true ||
-    ['verified', 'passed', 'complete', 'completed'].includes(
-      clean(record.status, 40).toLowerCase(),
-    )
+    ['verified', 'passed', 'complete', 'completed'].includes(clean(record.status, 40).toLowerCase())
   );
 }
 

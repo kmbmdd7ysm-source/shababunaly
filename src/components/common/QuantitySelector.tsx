@@ -15,7 +15,8 @@ export default function QuantitySelector({
   compact?: boolean;
 }) {
   const { t } = useLanguage();
-  const a11y = (t.a11y as { quantity?: string; decrease?: string; increase?: string } | undefined) || {};
+  const a11y =
+    (t.a11y as { quantity?: string; decrease?: string; increase?: string } | undefined) || {};
   return (
     <div
       className={`qty-selector${compact ? ' qty-selector--compact' : ''}`}

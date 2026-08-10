@@ -1,19 +1,18 @@
 /* Domain CSS: domain-teams.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: teams-from-shababuna.css ---- */
 
 /* teams shababuna */
 .package-grid,
-  .process-grid,
-  .capability-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.process-grid,
+.capability-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
 .package-grid,
-  .process-grid,
-  .capability-grid {
-    grid-template-columns: 1fr;
-  }
+.process-grid,
+.capability-grid {
+  grid-template-columns: 1fr;
+}
 
 /* Public Teams sales experience — hero + horizontal journey (not admin sidebar) */
 .gw-teams-sales {

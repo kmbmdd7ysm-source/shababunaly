@@ -140,13 +140,15 @@ export function validateAddress(input: AddressInput | Record<string, unknown>): 
     if (!address[key]) errors[label] = 'required';
   }
   const requirements = getAddressRequirements(address.country) as
-    | { regionRequired?: boolean; postalCodeRequired?: boolean }
-    | null
-    | undefined;
+    { regionRequired?: boolean; postalCodeRequired?: boolean } | null | undefined;
   if (!requirements) errors.country = 'invalid';
   if (requirements?.regionRequired && !address.region) errors.region = 'required';
   if (requirements?.postalCodeRequired && !address.postal_code) errors.postalCode = 'required';
-  if (address.country === 'US' && address.postal_code && !/^\d{5}(-\d{4})?$/.test(address.postal_code)) {
+  if (
+    address.country === 'US' &&
+    address.postal_code &&
+    !/^\d{5}(-\d{4})?$/.test(address.postal_code)
+  ) {
     errors.postalCode = 'invalid';
   }
   if (

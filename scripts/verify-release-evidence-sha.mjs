@@ -17,10 +17,7 @@ const recent = execSync('git rev-list -n 5 HEAD', { encoding: 'utf8' })
   .split('\n')
   .filter(Boolean);
 
-const required = [
-  'reports/release/current.json',
-  'reports/release/PRODUCTION_RELEASE_VERDICT.md',
-];
+const required = ['reports/release/current.json', 'reports/release/PRODUCTION_RELEASE_VERDICT.md'];
 
 const shaRe = /\b[0-9a-f]{40}\b/g;
 const failures = [];
@@ -53,9 +50,7 @@ if (!/^[0-9a-f]{40}$/.test(canonical)) {
 }
 
 if (!recent.includes(canonical)) {
-  failures.push(
-    `canonical sha ${canonical} is not among recent commits (${recent.join(', ')})`,
-  );
+  failures.push(`canonical sha ${canonical} is not among recent commits (${recent.join(', ')})`);
 }
 
 for (const file of required) {
@@ -84,7 +79,11 @@ for (const dir of checkDirs) {
   for (const file of walk(dir)) {
     if (file.includes('/archive/')) continue;
     const base = file.split('/').pop() || '';
-    if (!/current|VERDICT|e2e-result|lighthouse-current|type-quality-current|media-manifest-current|commercial-master-current/i.test(base + file)) {
+    if (
+      !/current|VERDICT|e2e-result|lighthouse-current|type-quality-current|media-manifest-current|commercial-master-current/i.test(
+        base + file,
+      )
+    ) {
       continue;
     }
     const text = readFileSync(file, 'utf8');
@@ -104,4 +103,6 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.info(`Release evidence SHA consistency PASS for implementation ${canonical} (HEAD ${head})`);
+console.info(
+  `Release evidence SHA consistency PASS for implementation ${canonical} (HEAD ${head})`,
+);

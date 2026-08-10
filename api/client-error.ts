@@ -29,7 +29,8 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   });
   if (!guarded) return;
   try {
-    const body = req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
+    const body =
+      req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
     const row = {
       severity: 'error',
       source: 'browser',

@@ -571,28 +571,28 @@ export default function AccountPage(): ReactElement {
                       accept="image/*"
                       onChange={(e) => {
                         void (async () => {
-                        const f = e.target.files?.[0];
-                        if (!f) return;
-                        const result = await validateProfileImage(f);
-                        if (!result.valid) {
-                          const message =
-                            result.reason === 'signature'
-                              ? pick({
-                                  en: 'This file is not a valid image.',
-                                  ar: 'هذا الملف ليس صورة صالحة.',
-                                })
-                              : pick({
-                                  en: 'Choose a JPG, PNG, or WebP image.',
-                                  ar: 'اختر صورة بصيغة JPG أو PNG أو WebP.',
-                                });
-                          setMsg(message);
-                          e.target.value = '';
-                          focusField(photoRef);
-                          return;
-                        }
-                        if (photoPreview) URL.revokeObjectURL(photoPreview);
-                        setPhotoPreview(URL.createObjectURL(f));
-                        setMsg('');
+                          const f = e.target.files?.[0];
+                          if (!f) return;
+                          const result = await validateProfileImage(f);
+                          if (!result.valid) {
+                            const message =
+                              result.reason === 'signature'
+                                ? pick({
+                                    en: 'This file is not a valid image.',
+                                    ar: 'هذا الملف ليس صورة صالحة.',
+                                  })
+                                : pick({
+                                    en: 'Choose a JPG, PNG, or WebP image.',
+                                    ar: 'اختر صورة بصيغة JPG أو PNG أو WebP.',
+                                  });
+                            setMsg(message);
+                            e.target.value = '';
+                            focusField(photoRef);
+                            return;
+                          }
+                          if (photoPreview) URL.revokeObjectURL(photoPreview);
+                          setPhotoPreview(URL.createObjectURL(f));
+                          setMsg('');
                         })();
                       }}
                     />
@@ -863,71 +863,71 @@ export default function AccountPage(): ReactElement {
                 aria-label={pick({ en: 'Choose profile photo', ar: 'اختر صورة شخصية' })}
                 onChange={(event) => {
                   void (async () => {
-                  const input = event.currentTarget;
-                  const file = input.files?.[0];
-                  if (!file) return;
+                    const input = event.currentTarget;
+                    const file = input.files?.[0];
+                    if (!file) return;
 
-                  const previousAvatar = profile.avatarUrl;
-                  const previewUrl = URL.createObjectURL(file);
-                  clearPhotoPreview();
-                  setPhotoPreview(previewUrl);
-                  setBusy(true);
-                  setMsg(pick({ en: 'Saving profile photo…', ar: 'جارٍ حفظ الصورة الشخصية…' }));
+                    const previousAvatar = profile.avatarUrl;
+                    const previewUrl = URL.createObjectURL(file);
+                    clearPhotoPreview();
+                    setPhotoPreview(previewUrl);
+                    setBusy(true);
+                    setMsg(pick({ en: 'Saving profile photo…', ar: 'جارٍ حفظ الصورة الشخصية…' }));
 
-                  try {
-                    const validation = await validateProfileImage(file);
-                    if (!validation.valid) throw new Error('invalid_profile_image');
-                    const avatarUrl = await createProfileImageDataUrl(file);
-                    const nextProfile = {
-                      ...profile,
-                      avatarUrl,
-                      avatar_url: avatarUrl,
-                    };
+                    try {
+                      const validation = await validateProfileImage(file);
+                      if (!validation.valid) throw new Error('invalid_profile_image');
+                      const avatarUrl = await createProfileImageDataUrl(file);
+                      const nextProfile = {
+                        ...profile,
+                        avatarUrl,
+                        avatar_url: avatarUrl,
+                      };
 
-                    // Save to both durable profile storage and auth metadata. Either source can
-                    // restore the avatar on another device, and the UI updates immediately.
-                    const saveProfile = data.saveProfile;
-                    if (!saveProfile) throw new Error('profile_save_unavailable');
-                    const [profileResult, metadataResult] = await Promise.allSettled([
-                      saveProfile(nextProfile),
-                      auth.updateMetadata({ avatar_url: avatarUrl }),
-                    ]);
-                    if (
-                      profileResult.status === 'rejected' &&
-                      metadataResult.status === 'rejected'
-                    ) {
-                      throw profileResult.reason || metadataResult.reason;
-                    }
-                    if (metadataResult.status === 'fulfilled') {
-                      const metaValue = metadataResult.value as AuthResult;
-                      if (metaValue?.error && profileResult.status === 'rejected') {
-                        throw metaValue.error;
+                      // Save to both durable profile storage and auth metadata. Either source can
+                      // restore the avatar on another device, and the UI updates immediately.
+                      const saveProfile = data.saveProfile;
+                      if (!saveProfile) throw new Error('profile_save_unavailable');
+                      const [profileResult, metadataResult] = await Promise.allSettled([
+                        saveProfile(nextProfile),
+                        auth.updateMetadata({ avatar_url: avatarUrl }),
+                      ]);
+                      if (
+                        profileResult.status === 'rejected' &&
+                        metadataResult.status === 'rejected'
+                      ) {
+                        throw profileResult.reason || metadataResult.reason;
                       }
-                    }
+                      if (metadataResult.status === 'fulfilled') {
+                        const metaValue = metadataResult.value as AuthResult;
+                        if (metaValue?.error && profileResult.status === 'rejected') {
+                          throw metaValue.error;
+                        }
+                      }
 
-                    setProfile((current) => ({ ...current, avatarUrl }));
-                    clearPhotoPreview();
-                    setMsg(
-                      pick({
-                        en: 'Profile photo updated and saved on every device.',
-                        ar: 'تم تحديث الصورة الشخصية وحفظها على جميع الأجهزة.',
-                      }),
-                    );
-                  } catch (error) {
-                    setProfile((current) => ({ ...current, avatarUrl: previousAvatar }));
-                    clearPhotoPreview();
-                    setMsg(
-                      error instanceof Error && error.message === 'invalid_profile_image'
-                        ? pick({
-                            en: 'Choose a valid photo under 8 MB. JPG, PNG, WebP, HEIC, and HEIF are supported by compatible devices.',
-                            ar: 'اختر صورة صالحة أقل من 8 ميجابايت. يدعم الجهاز الصيغ المتوافقة مثل JPG وPNG وWebP وHEIC وHEIF.',
-                          })
-                        : errorText(error, lang),
-                    );
-                  } finally {
-                    setBusy(false);
-                    input.value = '';
-                  }
+                      setProfile((current) => ({ ...current, avatarUrl }));
+                      clearPhotoPreview();
+                      setMsg(
+                        pick({
+                          en: 'Profile photo updated and saved on every device.',
+                          ar: 'تم تحديث الصورة الشخصية وحفظها على جميع الأجهزة.',
+                        }),
+                      );
+                    } catch (error) {
+                      setProfile((current) => ({ ...current, avatarUrl: previousAvatar }));
+                      clearPhotoPreview();
+                      setMsg(
+                        error instanceof Error && error.message === 'invalid_profile_image'
+                          ? pick({
+                              en: 'Choose a valid photo under 8 MB. JPG, PNG, WebP, HEIC, and HEIF are supported by compatible devices.',
+                              ar: 'اختر صورة صالحة أقل من 8 ميجابايت. يدعم الجهاز الصيغ المتوافقة مثل JPG وPNG وWebP وHEIC وHEIF.',
+                            })
+                          : errorText(error, lang),
+                      );
+                    } finally {
+                      setBusy(false);
+                      input.value = '';
+                    }
                   })();
                 }}
               />

@@ -4,8 +4,7 @@
   padding: 1rem;
   border-radius: 1.25rem;
   background:
-    radial-gradient(80% 60% at 50% 20%, rgb(255 255 255 / 0.08), transparent 55%),
-    #0d0d0d;
+    radial-gradient(80% 60% at 50% 20%, rgb(255 255 255 / 0.08), transparent 55%), #0d0d0d;
   color: #f5f1e8;
 }
 

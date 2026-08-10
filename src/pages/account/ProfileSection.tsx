@@ -160,18 +160,14 @@ export default function ProfileSection({
               required
               autoComplete="organization"
               value={String(profile.organizationName || '')}
-              onChange={(event) =>
-                setProfile({ ...profile, organizationName: event.target.value })
-              }
+              onChange={(event) => setProfile({ ...profile, organizationName: event.target.value })}
             />
           </label>
           <label>
             {pick({ en: 'Organization type', ar: 'نوع المؤسسة' })}
             <select
               value={String(profile.organizationType || 'club')}
-              onChange={(event) =>
-                setProfile({ ...profile, organizationType: event.target.value })
-              }
+              onChange={(event) => setProfile({ ...profile, organizationType: event.target.value })}
             >
               {ORGANIZATION_TYPES.map((item) => (
                 <option key={item.value} value={item.value}>
@@ -227,10 +223,7 @@ export default function ProfileSection({
                   data.saveProfile?.(nextProfile) ?? Promise.resolve(),
                   auth.updateMetadata?.({ avatar_url: null }) ?? Promise.resolve(),
                 ]);
-                if (
-                  profileResult.status === 'rejected' &&
-                  metadataResult.status === 'rejected'
-                ) {
+                if (profileResult.status === 'rejected' && metadataResult.status === 'rejected') {
                   throw profileResult.reason || metadataResult.reason;
                 }
                 if (

@@ -136,7 +136,8 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     order.shipping_quote_required === true ||
     (order.shipping_quote_expires_at &&
       new Date(String(order.shipping_quote_expires_at)).getTime() <= Date.now()) ||
-    (order.payment_expires_at && new Date(String(order.payment_expires_at)).getTime() <= Date.now()) ||
+    (order.payment_expires_at &&
+      new Date(String(order.payment_expires_at)).getTime() <= Date.now()) ||
     order.currency !== 'USD' ||
     !Number.isFinite(due) ||
     due <= 0 ||

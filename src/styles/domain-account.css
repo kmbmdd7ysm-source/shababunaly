@@ -1,30 +1,28 @@
 /* Domain CSS: domain-account.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: account-workspace-from-global.css ---- */
 
 /* account/workspace from global */
 :where(
-    .shop-category-scroll,
-    .shop-subcategory-scroll,
-    .mobile-filter-pills,
-    .account-tabs,
-    .compare-scroll
-  ) {
-    max-inline-size: 100%;
-    overscroll-behavior-inline: contain;
-    touch-action: pan-x pan-y;
-    -webkit-overflow-scrolling: touch;
-  }:where(.order-number, .order-card, .order-detail, .account-page, .contact-section) {
-    overflow-wrap: anywhere;
-    word-break: normal;
-  }
-
+  .shop-category-scroll,
+  .shop-subcategory-scroll,
+  .mobile-filter-pills,
+  .account-tabs,
+  .compare-scroll
+) {
+  max-inline-size: 100%;
+  overscroll-behavior-inline: contain;
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+:where(.order-number, .order-card, .order-detail, .account-page, .contact-section) {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
 
 /* ---- source: account-workspace-from-premium.css ---- */
 
 /* account/workspace from premium */
-
 
 .account-panel {
   max-width: 640px;
@@ -81,8 +79,8 @@
   gap: 8px;
 }
 .account-nav button.active {
-    border-bottom-color: currentColor;
-  }
+  border-bottom-color: currentColor;
+}
 
 .auth-form input,
 .account-form input {
@@ -95,9 +93,9 @@
   margin: 20px 0;
 }
 .account-switch {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 .account-type-choice {
   min-width: 0;
@@ -169,18 +167,16 @@
   font: inherit;
 }
 .account-type-choice-grid,
-  .organization-signup-fields {
-    grid-template-columns: 1fr;
-  }
+.organization-signup-fields {
+  grid-template-columns: 1fr;
+}
 .account-type-choice-grid > button {
-    min-height: 92px;
-  }
-
+  min-height: 92px;
+}
 
 /* ---- source: account-workspace-from-shababuna.css ---- */
 
 /* account/workspace from shababuna */
-
 
 .workspace-heading-actions {
   display: flex;
@@ -344,36 +340,36 @@
   box-shadow: 0 0 0 6px #e1f4e8;
 }
 .account-capabilities,
-  .operations-section {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 760px;
-  }
+.operations-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 760px;
+}
 .design-control-grid,
-  .design-copy-grid,
-  .design-upload-grid,
-  .review-facts,
-  .workspace-card-grid {
-    grid-template-columns: 1fr;
-  }
+.design-copy-grid,
+.design-upload-grid,
+.review-facts,
+.workspace-card-grid {
+  grid-template-columns: 1fr;
+}
 .workspace-tabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .workspace-card {
-    grid-template-columns: 84px 1fr;
-  }
+  grid-template-columns: 84px 1fr;
+}
 .workspace-card > a {
-    grid-column: 1/-1;
-  }
+  grid-column: 1/-1;
+}
 .workspace-design-swatch {
-    width: 84px;
-    height: 84px;
-  }
+  width: 84px;
+  height: 84px;
+}
 .workspace-design-swatch span {
-    font-size: 2.5rem;
-  }
+  font-size: 2.5rem;
+}
 .workspace-list article {
-    align-items: flex-start;
-  }
+  align-items: flex-start;
+}
 
 .workspace-card--actionable {
   grid-template-columns: 120px minmax(0, 1fr) auto;
@@ -409,14 +405,14 @@
   align-items: flex-start;
 }
 .workspace-card--actionable {
-    grid-template-columns: 84px 1fr;
-  }
+  grid-template-columns: 84px 1fr;
+}
 .workspace-card--actionable > a {
-    grid-column: 1/-1;
-  }
+  grid-column: 1/-1;
+}
 .workspace-list article.workspace-list-actionable {
-    flex-direction: column;
-  }
+  flex-direction: column;
+}
 
 .workspace-money {
   display: flex;
@@ -429,25 +425,23 @@
   white-space: nowrap;
 }
 .workspace-money {
-    align-items: flex-start;
-  }
+  align-items: flex-start;
+}
 
 .operations-control-center .workspace-list article {
   align-items: flex-start;
   gap: 1rem;
 }
 .operations-control-center .workspace-list article {
-    display: grid;
-  }
-
+  display: grid;
+}
 
 /* ---- source: island-account.css ---- */
 
 /* from island */
 
-
 .check-row {
-  display:flex;
+  display: flex;
   align-items: center;
   gap: 12px;
 }
@@ -479,12 +473,12 @@
   margin-bottom: 50px;
 }
 .store-toolbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+  align-items: flex-start;
+  flex-direction: column;
+}
 
 .manual-payment-panel {
-  display:grid;
+  display: grid;
   gap: 10px;
   padding-top: 14px;
   border-top: 1px solid #dfdfd8;

@@ -41,7 +41,9 @@ export async function submitPublicQuote({
     error?: string;
   };
   if (!response.ok || !data?.quote?.id) {
-    const error = new Error(clean(data?.error || `quote_request_failed:${response.status}`, 180)) as Error & {
+    const error = new Error(
+      clean(data?.error || `quote_request_failed:${response.status}`, 180),
+    ) as Error & {
       status?: number;
     };
     error.status = response.status;

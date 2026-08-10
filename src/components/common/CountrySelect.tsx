@@ -103,8 +103,7 @@ export default function CountrySelect({
   useEffect(() => {
     if (!open) return undefined;
     const onPointerDown = (event: MouseEvent) => {
-      if (!(event.target instanceof Node) || !rootRef.current?.contains(event.target))
-        close(false);
+      if (!(event.target instanceof Node) || !rootRef.current?.contains(event.target)) close(false);
     };
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {

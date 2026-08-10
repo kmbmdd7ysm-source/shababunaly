@@ -174,11 +174,12 @@ export default function StudioStage({
         },
       };
 
-  const current = VIEWS[index] ?? VIEWS[0] ?? {
-    key: 'front',
-    label: { en: 'Front', ar: 'أمام' },
-    azimuth: 0,
-  };
+  const current = VIEWS[index] ??
+    VIEWS[0] ?? {
+      key: 'front',
+      label: { en: 'Front', ar: 'أمام' },
+      azimuth: 0,
+    };
 
   return (
     <div

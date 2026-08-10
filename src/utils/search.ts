@@ -30,7 +30,6 @@ export interface SearchCandidate {
   id?: string;
 }
 
-
 export const SEARCH_PAGES = [
   {
     type: 'page',
@@ -169,7 +168,9 @@ interface SuggestionRecord {
   index?: number;
 }
 
-export function suggestionCandidates(catalog: CatalogItem[] = products as CatalogItem[]): SuggestionRecord[] {
+export function suggestionCandidates(
+  catalog: CatalogItem[] = products as CatalogItem[],
+): SuggestionRecord[] {
   const out: SuggestionRecord[] = [];
   catalog.forEach((item) => {
     out.push({
@@ -215,7 +216,11 @@ export function suggestionCandidates(catalog: CatalogItem[] = products as Catalo
   return out;
 }
 const candidateCache = new WeakMap<object, SuggestionRecord[]>();
-export function getSearchSuggestions(query: string, limit = 8, catalog: CatalogItem[] = products as CatalogItem[]) {
+export function getSearchSuggestions(
+  query: string,
+  limit = 8,
+  catalog: CatalogItem[] = products as CatalogItem[],
+) {
   const q = normalizeSearchText(query);
   if (!q) return [];
   let candidates = candidateCache.get(catalog as object);
@@ -237,7 +242,12 @@ export function getSearchSuggestions(query: string, limit = 8, catalog: CatalogI
     .slice(0, limit);
 }
 
-export function searchSite(query = '', limit = 999, filters: Record<string, unknown> = {}, catalog: CatalogItem[] = products as CatalogItem[]) {
+export function searchSite(
+  query = '',
+  limit = 999,
+  filters: Record<string, unknown> = {},
+  catalog: CatalogItem[] = products as CatalogItem[],
+) {
   const types = (Array.isArray(filters.types) ? filters.types : []) as string[];
   const allow = (type: string) => !types.length || types.includes(type);
   const colors = (Array.isArray(filters.colors) ? filters.colors : []) as string[];

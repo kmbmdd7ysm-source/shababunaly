@@ -85,7 +85,8 @@ load('Provider readiness', 'reports/providers/provider-readiness.tson', (v) =>
     : 'payment and signature providers are not fully approved',
 );
 load('Build', 'reports/build/build-provenance.json', (v) => {
-  if (v.status !== 'passed' || !v.distSha256 || !v.commitSha) return 'build provenance is not passed';
+  if (v.status !== 'passed' || !v.distSha256 || !v.commitSha)
+    return 'build provenance is not passed';
   let head = '';
   try {
     head = execFileSync('git', ['rev-parse', 'HEAD'], {
@@ -95,7 +96,8 @@ load('Build', 'reports/build/build-provenance.json', (v) => {
   } catch {
     return 'unable to read current HEAD for provenance comparison';
   }
-  if (!/^[0-9a-f]{40}$/i.test(String(v.commitSha))) return 'build provenance commitSha is not a full SHA';
+  if (!/^[0-9a-f]{40}$/i.test(String(v.commitSha)))
+    return 'build provenance commitSha is not a full SHA';
   if (String(v.commitSha) !== head) {
     return `build provenance SHA ${v.commitSha} != current HEAD ${head}`;
   }

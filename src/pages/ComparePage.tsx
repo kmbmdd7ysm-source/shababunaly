@@ -34,14 +34,19 @@ export default function ComparePage(): ReactElement {
           .map((x) => pick((x.name as { en?: string; ar?: string }) || { en: '', ar: '' }))
           .join(', '),
     ],
-    [pick({ en: 'Sizes', ar: 'المقاسات' }), (p) => (Array.isArray(p.sizes) ? p.sizes : []).join(', ')],
-    [pick({ en: 'Material', ar: 'الخامة' }), (p) => pick(p.material as { en?: string; ar?: string })],
+    [
+      pick({ en: 'Sizes', ar: 'المقاسات' }),
+      (p) => (Array.isArray(p.sizes) ? p.sizes : []).join(', '),
+    ],
+    [
+      pick({ en: 'Material', ar: 'الخامة' }),
+      (p) => pick(p.material as { en?: string; ar?: string }),
+    ],
     [pick({ en: 'Fit', ar: 'القَصّة' }), (p) => pick(p.fit as { en?: string; ar?: string })],
     [pick({ en: 'Availability', ar: 'التوفر' }), (p) => p.availability],
     [
       pick({ en: 'Features', ar: 'المزايا' }),
-      (p) =>
-        (Array.isArray(p.features) ? p.features : []).map(String).join(' · '),
+      (p) => (Array.isArray(p.features) ? p.features : []).map(String).join(' · '),
     ],
   ];
   return (
@@ -152,8 +157,13 @@ export default function ComparePage(): ReactElement {
                           height={1250}
                           sizes="(min-width: 900px) 260px, 62vw"
                         />
-                        <Link to={`/products/${String(p.slug || '')}`}>{pick(p.name as { en?: string; ar?: string })}</Link>
-                        <Price amount={Number(p.price || 0)} compareAt={p.compareAt == null ? null : Number(p.compareAt)} />
+                        <Link to={`/products/${String(p.slug || '')}`}>
+                          {pick(p.name as { en?: string; ar?: string })}
+                        </Link>
+                        <Price
+                          amount={Number(p.price || 0)}
+                          compareAt={p.compareAt == null ? null : Number(p.compareAt)}
+                        />
                         {(() => {
                           const action = getCompareAction(p);
                           const label =

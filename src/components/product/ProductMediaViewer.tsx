@@ -81,7 +81,12 @@ export default function ProductMediaViewer({
 
   if (showDevSpin) {
     return (
-      <div className="gw-viewer" data-tier="B" data-engine="SpinsetEngine" data-fixture="development">
+      <div
+        className="gw-viewer"
+        data-tier="B"
+        data-engine="SpinsetEngine"
+        data-fixture="development"
+      >
         <SpinsetEngine
           allowDevelopmentFixture
           productName={String(

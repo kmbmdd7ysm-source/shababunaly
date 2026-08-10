@@ -28,8 +28,7 @@ export default function Avatar({
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [src]);
   const initials = useMemo(() => getInitials(name), [name]);
-  const dimension =
-    AVATAR_DIMENSIONS[size as AvatarSize] || AVATAR_DIMENSIONS.medium;
+  const dimension = AVATAR_DIMENSIONS[size as AvatarSize] || AVATAR_DIMENSIONS.medium;
   const label = pick({
     en: `${name || 'User'} profile photo`,
     ar: `الصورة الشخصية لـ ${name || 'المستخدم'}`,

@@ -63,7 +63,9 @@ export default function QuickAddSheet({
     [product],
   );
   const colors = useMemo(() => {
-    const keys = [...new Set(variants.map((variant) => String(variant.color || '')).filter(Boolean))];
+    const keys = [
+      ...new Set(variants.map((variant) => String(variant.color || '')).filter(Boolean)),
+    ];
     return keys.map((key) => {
       const meta = (product.colors || []).find((color) => color.key === key);
       return {
@@ -76,15 +78,14 @@ export default function QuickAddSheet({
   }, [product.colors, variants]);
   const [color, setColor] = useState(String(colors[0]?.key || ''));
   const sizes = useMemo(
-    () =>
-      [
-        ...new Set(
-          variants
-            .filter((variant) => !color || String(variant.color || '') === color)
-            .map((variant) => String(variant.size || ''))
-            .filter(Boolean),
-        ),
-      ],
+    () => [
+      ...new Set(
+        variants
+          .filter((variant) => !color || String(variant.color || '') === color)
+          .map((variant) => String(variant.size || ''))
+          .filter(Boolean),
+      ),
+    ],
     [variants, color],
   );
   const [size, setSize] = useState(String(sizes[0] || ''));
@@ -114,12 +115,10 @@ export default function QuickAddSheet({
 
   const selected =
     variants.find(
-      (variant) =>
-        String(variant.color || '') === color && String(variant.size || '') === size,
+      (variant) => String(variant.color || '') === color && String(variant.size || '') === size,
     ) || null;
   const unitPrice = Number(selected?.unitPrice ?? product.price ?? 0);
-  const image =
-    colors.find((entry) => entry.key === color)?.image || product.image || '';
+  const image = colors.find((entry) => entry.key === color)?.image || product.image || '';
 
   const commit = () => {
     if (!selected || status === 'adding') return;
@@ -133,12 +132,13 @@ export default function QuickAddSheet({
       image: String(image || ''),
       price: unitPrice,
       retailPrice: unitPrice,
-      wholesalePrice:
-        Number(selected.wholesalePrice ?? product.wholesalePrice ?? 0) || null,
+      wholesalePrice: Number(selected.wholesalePrice ?? product.wholesalePrice ?? 0) || null,
       size,
       color,
       sku: String(selected.sku || ''),
-      maxStock: getVariantPurchaseLimit(selected as import('../../utils/productEligibility').VariantLike),
+      maxStock: getVariantPurchaseLimit(
+        selected as import('../../utils/productEligibility').VariantLike,
+      ),
       inventoryTracking: selected.inventoryTracking !== false,
       href: `/products/${String(product.slug || '')}`,
       quantity: 1,

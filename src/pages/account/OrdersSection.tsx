@@ -21,9 +21,7 @@ export default function OrdersSection({
   return (
     <section aria-labelledby="account-orders-title">
       <div className="section-heading-row">
-        <h2 id="account-orders-title">
-          {pick({ en: 'Recent Orders', ar: 'الطلبات الأخيرة' })}
-        </h2>
+        <h2 id="account-orders-title">{pick({ en: 'Recent Orders', ar: 'الطلبات الأخيرة' })}</h2>
         {['error', 'partial'].includes(ordersState.state) ? (
           <button
             className="btn-secondary"
@@ -57,11 +55,7 @@ export default function OrdersSection({
         ordersState.orders.length ? (
           <div className="orders-list">
             {ordersState.orders.slice(0, 5).map((order) => (
-              <OrderCard
-                key={String(order.id)}
-                order={order}
-                compact
-              />
+              <OrderCard key={String(order.id)} order={order} compact />
             ))}
           </div>
         ) : (

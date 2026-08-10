@@ -144,7 +144,7 @@ export default function ProductCard({
         <Link to={to} aria-label={pick((p.name || '') as LocaleText)}>
           <SmartImage
             src={String(cardImage || '')}
-            alt={String(pick(((p.alt || p.name) || '') as LocaleText) || '')}
+            alt={String(pick((p.alt || p.name || '') as LocaleText) || '')}
             width={900}
             height={1200}
             sizes="(min-width: 1040px) 25vw, (min-width: 700px) 33vw, 50vw"

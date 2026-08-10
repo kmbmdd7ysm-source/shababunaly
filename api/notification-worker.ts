@@ -59,9 +59,7 @@ async function deliver(row: Record<string, unknown>) {
   if (!/^https:\/\/formspree\.io\/f\/[A-Za-z0-9_-]+$/u.test(endpoint))
     throw new Error('formspree_not_configured');
   const payload =
-    row.payload && typeof row.payload === 'object'
-      ? (row.payload as Record<string, unknown>)
-      : {};
+    row.payload && typeof row.payload === 'object' ? (row.payload as Record<string, unknown>) : {};
   const template = buildNotificationTemplate(row) as Record<string, string>;
   const params = new URLSearchParams({
     _subject: clean(row.subject || template.title, 240),
@@ -137,16 +135,19 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     for (const row of rows || []) {
       try {
         await deliver(row);
-        await supabaseRequest(`commerce_notifications?id=eq.${encodeURIComponent(String(row.id))}`, {
-          method: 'PATCH',
-          headers: { Prefer: 'return=minimal' },
-          body: JSON.stringify({
-            delivery_status: 'sent',
-            sent_at: new Date().toISOString(),
-            last_error: null,
-            updated_at: new Date().toISOString(),
-          }),
-        });
+        await supabaseRequest(
+          `commerce_notifications?id=eq.${encodeURIComponent(String(row.id))}`,
+          {
+            method: 'PATCH',
+            headers: { Prefer: 'return=minimal' },
+            body: JSON.stringify({
+              delivery_status: 'sent',
+              sent_at: new Date().toISOString(),
+              last_error: null,
+              updated_at: new Date().toISOString(),
+            }),
+          },
+        );
         sent += 1;
       } catch (error: unknown) {
         const message =
@@ -156,19 +157,22 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         const attempts = Math.max(1, Number(row.attempts || 1));
         const exhausted = attempts >= 8;
         const delayMinutes = Math.min(360, 2 ** Math.min(attempts, 8));
-        await supabaseRequest(`commerce_notifications?id=eq.${encodeURIComponent(String(row.id))}`, {
-          method: 'PATCH',
-          headers: { Prefer: 'return=minimal' },
-          body: JSON.stringify({
-            delivery_status: exhausted ? 'dead_letter' : 'failed',
-            last_error: clean(message, 1000),
-            available_at: exhausted
-              ? new Date('9999-12-31T23:59:59.000Z').toISOString()
-              : new Date(Date.now() + delayMinutes * 60_000).toISOString(),
-            dead_letter_at: exhausted ? new Date().toISOString() : null,
-            updated_at: new Date().toISOString(),
-          }),
-        });
+        await supabaseRequest(
+          `commerce_notifications?id=eq.${encodeURIComponent(String(row.id))}`,
+          {
+            method: 'PATCH',
+            headers: { Prefer: 'return=minimal' },
+            body: JSON.stringify({
+              delivery_status: exhausted ? 'dead_letter' : 'failed',
+              last_error: clean(message, 1000),
+              available_at: exhausted
+                ? new Date('9999-12-31T23:59:59.000Z').toISOString()
+                : new Date(Date.now() + delayMinutes * 60_000).toISOString(),
+              dead_letter_at: exhausted ? new Date().toISOString() : null,
+              updated_at: new Date().toISOString(),
+            }),
+          },
+        );
         if (exhausted) {
           try {
             await supabaseRequest('security_events', {

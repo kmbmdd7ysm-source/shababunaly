@@ -14,7 +14,9 @@ const walk = (directory) => {
 };
 for (const directory of ['src', 'api']) walk(directory);
 
-const strictFiles = sourceFiles.filter((file) => /\.(?:ts|tsx)$/.test(file) && !file.endsWith('.d.ts'));
+const strictFiles = sourceFiles.filter(
+  (file) => /\.(?:ts|tsx)$/.test(file) && !file.endsWith('.d.ts'),
+);
 const legacy = sourceFiles.filter((file) => !strictFiles.includes(file));
 const violations = [];
 for (const file of strictFiles) {

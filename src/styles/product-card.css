@@ -71,7 +71,6 @@ a.product-card-name {
   color: var(--sh-chalk);
 }
 
-
 /* Phase G — image-first fashion/sports retail cards */
 article.product-card.product-card {
   border: 0;
@@ -228,5 +227,7 @@ a.product-card-name {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gw-quick-sheet-panel { transition: none; }
+  .gw-quick-sheet-panel {
+    transition: none;
+  }
 }

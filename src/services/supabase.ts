@@ -217,7 +217,9 @@ export async function completeAuthRedirect(client: SupabaseClient | null | undef
   return result;
 }
 
-export function __setSupabaseBuildEnvForTests(env: Record<string, string> | null | undefined): void {
+export function __setSupabaseBuildEnvForTests(
+  env: Record<string, string> | null | undefined,
+): void {
   buildEnvOverride = env ?? undefined;
   clientPromise = undefined;
   configPromise = undefined;

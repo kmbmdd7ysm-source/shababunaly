@@ -14,7 +14,10 @@ export default function ModelStep({
   onContinue: () => void;
 }): ReactElement {
   return (
-    <section className="gw-toolbench gw-toolbench--stage-first" aria-labelledby="custom-model-title">
+    <section
+      className="gw-toolbench gw-toolbench--stage-first"
+      aria-labelledby="custom-model-title"
+    >
       <header className="gw-toolbench-head">
         <div>
           <p className="gw-kicker">{pick({ en: 'Model', ar: 'النموذج' })}</p>

@@ -52,10 +52,7 @@ export function enqueueMutation(
   return next;
 }
 
-export function removeMutation(
-  userIdOrId: string | null,
-  maybeId?: string,
-): QueueMutation[] {
+export function removeMutation(userIdOrId: string | null, maybeId?: string): QueueMutation[] {
   const legacy = maybeId === undefined;
   const userId = legacy ? null : userIdOrId;
   const id = legacy ? userIdOrId : maybeId;

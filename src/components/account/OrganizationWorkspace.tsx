@@ -39,7 +39,6 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-
 const STATUS_LABELS = {
   draft: { en: 'Draft', ar: 'مسودة' },
   quote_requested: { en: 'Quote requested', ar: 'تم طلب عرض السعر' },
@@ -147,7 +146,9 @@ export default function OrganizationWorkspace(): ReactElement {
       const enterprise = asRecord(enterpriseRaw);
       const documents: Row[] = [
         ...asRows(enterprise.invoices).map((row) => ({ ...row, document_kind: 'invoice' }) as Row),
-        ...asRows(enterprise.contracts).map((row) => ({ ...row, document_kind: 'contract' }) as Row),
+        ...asRows(enterprise.contracts).map(
+          (row) => ({ ...row, document_kind: 'contract' }) as Row,
+        ),
         ...asRows(enterprise.paymentProofs).map(
           (row) => ({ ...row, document_kind: 'payment_proof' }) as Row,
         ),
@@ -229,7 +230,14 @@ export default function OrganizationWorkspace(): ReactElement {
           <Link to="/customize" className="btn-primary">
             {pick({ en: 'New Design', ar: 'تصميم جديد' })}
           </Link>
-          <button type="button" className="btn-secondary" onClick={() => { void load(); }} disabled={state.loading}>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={() => {
+              void load();
+            }}
+            disabled={state.loading}
+          >
             {state.loading
               ? pick({ en: 'Refreshing…', ar: 'جاري التحديث…' })
               : pick({ en: 'Refresh', ar: 'تحديث' })}
@@ -414,7 +422,17 @@ export default function OrganizationWorkspace(): ReactElement {
   );
 }
 
-function DesignWorkspaceCard({ item, pick, lang, onSaved }: { item: Row; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+function DesignWorkspaceCard({
+  item,
+  pick,
+  lang,
+  onSaved,
+}: {
+  item: Row;
+  pick: PickFn;
+  lang: string;
+  onSaved: () => void | Promise<void>;
+}): ReactElement {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState('');
   const preview = asRecord(item.preview_data);
@@ -478,7 +496,12 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }: { item: Row; pick: P
         {proofUrls.length > 0 && (
           <div className="proof-link-row">
             {proofUrls.map((url: unknown, index: number) => (
-              <a key={`${String(url)}-${index}`} href={String(url)} target="_blank" rel="noreferrer">
+              <a
+                key={`${String(url)}-${index}`}
+                href={String(url)}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {pick({ en: `Proof ${index + 1}`, ar: `البروفة ${index + 1}` })}
               </a>
             ))}
@@ -500,7 +523,9 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }: { item: Row; pick: P
                 type="button"
                 className="btn-primary compact"
                 disabled={Boolean(busy)}
-                onClick={() => { void respond('approved'); }}
+                onClick={() => {
+                  void respond('approved');
+                }}
               >
                 {busy === 'approved'
                   ? pick({ en: 'Approving…', ar: 'جاري الاعتماد…' })
@@ -510,7 +535,9 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }: { item: Row; pick: P
                 type="button"
                 className="btn-secondary compact"
                 disabled={Boolean(busy)}
-                onClick={() => { void respond('changes_requested'); }}
+                onClick={() => {
+                  void respond('changes_requested');
+                }}
               >
                 {pick({ en: 'Request Changes', ar: 'طلب تعديلات' })}
               </button>
@@ -528,7 +555,17 @@ function DesignWorkspaceCard({ item, pick, lang, onSaved }: { item: Row; pick: P
   );
 }
 
-function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+function QuoteWorkspaceRow({
+  item,
+  pick,
+  lang,
+  onSaved,
+}: {
+  item: Row;
+  pick: PickFn;
+  lang: string;
+  onSaved: () => void | Promise<void>;
+}): ReactElement {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState('');
@@ -581,10 +618,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
           heading: 'Customer',
           rows: [
             ['Email', customerEmail || '—'],
-            [
-              'Organization',
-              String(requestData.organizationName || requestData.teamName || '—'),
-            ],
+            ['Organization', String(requestData.organizationName || requestData.teamName || '—')],
             ['Status', String(item.status || '—')],
             ['Created', formatDate(item.created_at, lang)],
           ],
@@ -668,7 +702,9 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
                   type="button"
                   className="btn-primary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => { void respond('accepted'); }}
+                  onClick={() => {
+                    void respond('accepted');
+                  }}
                 >
                   {pick({ en: 'Accept Quote', ar: 'قبول العرض' })}
                 </button>
@@ -676,7 +712,9 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
                   type="button"
                   className="btn-secondary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => { void respond('changes_requested'); }}
+                  onClick={() => {
+                    void respond('changes_requested');
+                  }}
                 >
                   {pick({ en: 'Request Changes', ar: 'طلب تعديل' })}
                 </button>
@@ -690,7 +728,9 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
                   type="button"
                   className="btn-primary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => { void pay('online_card'); }}
+                  onClick={() => {
+                    void pay('online_card');
+                  }}
                 >
                   {pick({ en: 'Pay by Card', ar: 'الدفع بالبطاقة' })}
                 </button>
@@ -700,7 +740,9 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
                   type="button"
                   className="btn-secondary compact"
                   disabled={Boolean(busy)}
-                  onClick={() => { void pay('libyan_bank_card'); }}
+                  onClick={() => {
+                    void pay('libyan_bank_card');
+                  }}
                 >
                   {pick({ en: 'Libyan Bank Card', ar: 'بطاقة مصرفية ليبية' })}
                 </button>
@@ -744,7 +786,23 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
   );
 }
 
-function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSaved }: { rows: Row[]; quotes: Row[]; accessToken?: string | undefined; user?: unknown; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+function EnterpriseDocuments({
+  rows,
+  quotes,
+  accessToken,
+  user,
+  pick,
+  lang,
+  onSaved,
+}: {
+  rows: Row[];
+  quotes: Row[];
+  accessToken?: string | undefined;
+  user?: unknown;
+  pick: PickFn;
+  lang: string;
+  onSaved: () => void | Promise<void>;
+}): ReactElement {
   const [entityType, setEntityType] = useState('quote');
   const [entityId, setEntityId] = useState(String(quotes[0]?.id || ''));
   const [amount, setAmount] = useState('');
@@ -792,7 +850,12 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
   };
   return (
     <div className="enterprise-panel-stack">
-      <form className="enterprise-action-card" onSubmit={(event) => { void upload(event); }}>
+      <form
+        className="enterprise-action-card"
+        onSubmit={(event) => {
+          void upload(event);
+        }}
+      >
         <div>
           <p className="section-label">PAYMENT PROOF</p>
           <h3>{pick({ en: 'Submit bank-transfer proof', ar: 'إرسال إثبات التحويل المصرفي' })}</h3>
@@ -806,14 +869,23 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
         <div className="operations-form-grid">
           <label>
             <span>{pick({ en: 'Document type', ar: 'نوع المستند' })}</span>
-            <select value={entityType} onChange={(event: ChangeEvent<HTMLSelectElement>) => setEntityType(event.target.value)}>
+            <select
+              value={entityType}
+              onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+                setEntityType(event.target.value)
+              }
+            >
               <option value="quote">{pick({ en: 'Quote', ar: 'عرض سعر' })}</option>
               <option value="invoice">{pick({ en: 'Invoice', ar: 'فاتورة' })}</option>
             </select>
           </label>
           <label>
             <span>{pick({ en: 'Reference document', ar: 'المستند المرجعي' })}</span>
-            <select value={entityId} onChange={(event: ChangeEvent<HTMLSelectElement>) => setEntityId(event.target.value)} required>
+            <select
+              value={entityId}
+              onChange={(event: ChangeEvent<HTMLSelectElement>) => setEntityId(event.target.value)}
+              required
+            >
               <option value="">—</option>
               {entityOptions.map((row) => (
                 <option key={String(row.id)} value={String(row.id || '')}>
@@ -882,7 +954,12 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
       </div>
       <div className="workspace-list">
         {invoices.map((invoice) => (
-          <InvoiceWorkspaceRow key={String(invoice.id)} invoice={invoice} pick={pick} lang={String(lang)} />
+          <InvoiceWorkspaceRow
+            key={String(invoice.id)}
+            invoice={invoice}
+            pick={pick}
+            lang={String(lang)}
+          />
         ))}
         {proofs.map((proof) => (
           <article key={String(proof.id)}>
@@ -908,7 +985,21 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
   );
 }
 
-function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSaved }: { contract: Row; accessToken?: string | undefined; user?: unknown; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+function ContractWorkspaceCard({
+  contract,
+  accessToken,
+  user,
+  pick,
+  lang,
+  onSaved,
+}: {
+  contract: Row;
+  accessToken?: string | undefined;
+  user?: unknown;
+  pick: PickFn;
+  lang: string;
+  onSaved: () => void | Promise<void>;
+}): ReactElement {
   const authUser = asRecord(user);
   const userMetadata = asRecord(authUser.user_metadata);
   const [name, setName] = useState(
@@ -982,7 +1073,9 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
             {!externalRequired && (
               <input
                 value={signature}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setSignature(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setSignature(event.target.value)
+                }
                 placeholder={pick({
                   en: 'Type your full legal name as signature',
                   ar: 'اكتب اسمك القانوني الكامل كتوقيع',
@@ -993,7 +1086,9 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
               <input
                 type="checkbox"
                 checked={consent}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setConsent(event.target.checked)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setConsent(event.target.checked)
+                }
               />
               <span>
                 {pick({
@@ -1020,7 +1115,9 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
                 (!externalRequired && signature.trim().length < 2) ||
                 (externalRequired && !externalProviderConfigured)
               }
-              onClick={() => { void sign(); }}
+              onClick={() => {
+                void sign();
+              }}
             >
               {busy
                 ? pick({ en: 'Opening secure signature…', ar: 'جاري فتح التوقيع الآمن…' })
@@ -1051,7 +1148,15 @@ function ContractWorkspaceCard({ contract, accessToken, user, pick, lang, onSave
   );
 }
 
-function InvoiceWorkspaceRow({ invoice, pick, lang }: { invoice: Row; pick: PickFn; lang: string }): ReactElement {
+function InvoiceWorkspaceRow({
+  invoice,
+  pick,
+  lang,
+}: {
+  invoice: Row;
+  pick: PickFn;
+  lang: string;
+}): ReactElement {
   const currency = String(invoice.currency || 'USD');
   const download = () => {
     const blob = createTextPdf({
@@ -1104,7 +1209,15 @@ function InvoiceWorkspaceRow({ invoice, pick, lang }: { invoice: Row; pick: Pick
   );
 }
 
-function ShipmentWorkspace({ rows, pick, lang }: { rows: Row[]; pick: PickFn; lang: string }): ReactElement | null {
+function ShipmentWorkspace({
+  rows,
+  pick,
+  lang,
+}: {
+  rows: Row[];
+  pick: PickFn;
+  lang: string;
+}): ReactElement | null {
   if (!rows.length) return null;
   return (
     <div className="workspace-list">
@@ -1152,7 +1265,19 @@ function ShipmentWorkspace({ rows, pick, lang }: { rows: Row[]; pick: PickFn; la
   );
 }
 
-function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }: { rows: Row[]; organizationId?: string | undefined; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+function MessageWorkspace({
+  rows,
+  organizationId,
+  pick,
+  lang,
+  onSaved,
+}: {
+  rows: Row[];
+  organizationId?: string | undefined;
+  pick: PickFn;
+  lang: string;
+  onSaved: () => void | Promise<void>;
+}): ReactElement {
   const [body, setBody] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
@@ -1175,7 +1300,12 @@ function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }: { rows:
   };
   return (
     <div className="enterprise-panel-stack">
-      <form className="enterprise-action-card" onSubmit={(event) => { void submit(event); }}>
+      <form
+        className="enterprise-action-card"
+        onSubmit={(event) => {
+          void submit(event);
+        }}
+      >
         <h3>{pick({ en: 'Message the Shababuna project team', ar: 'راسل فريق مشروع شبابنا' })}</h3>
         <textarea
           rows={4}
@@ -1215,7 +1345,23 @@ function MessageWorkspace({ rows, organizationId, pick, lang, onSaved }: { rows:
   );
 }
 
-function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, onSaved }: { rows: Row[]; organizationId?: string | undefined; designs: Row[]; quotes: Row[]; pick: PickFn; lang: string; onSaved: () => void | Promise<void> }): ReactElement {
+function ReorderWorkspace({
+  rows,
+  organizationId,
+  designs,
+  quotes,
+  pick,
+  lang,
+  onSaved,
+}: {
+  rows: Row[];
+  organizationId?: string | undefined;
+  designs: Row[];
+  quotes: Row[];
+  pick: PickFn;
+  lang: string;
+  onSaved: () => void | Promise<void>;
+}): ReactElement {
   const sources = [
     ...quotes.map((row) => ({
       kind: 'quote',
@@ -1259,12 +1405,21 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
   };
   return (
     <div className="enterprise-panel-stack">
-      <form className="enterprise-action-card" onSubmit={(event) => { void submit(event); }}>
+      <form
+        className="enterprise-action-card"
+        onSubmit={(event) => {
+          void submit(event);
+        }}
+      >
         <h3>{pick({ en: 'Reorder an approved project', ar: 'إعادة طلب مشروع معتمد' })}</h3>
         <div className="operations-form-grid">
           <label>
             <span>{pick({ en: 'Source', ar: 'المصدر' })}</span>
-            <select value={source} onChange={(event: ChangeEvent<HTMLSelectElement>) => setSource(event.target.value)} required>
+            <select
+              value={source}
+              onChange={(event: ChangeEvent<HTMLSelectElement>) => setSource(event.target.value)}
+              required
+            >
               <option value="">—</option>
               {sources.map((row) => (
                 <option key={`${row.kind}:${row.id}`} value={`${row.kind}:${row.id}`}>
@@ -1275,7 +1430,10 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
           </label>
           <label>
             <span>{pick({ en: 'Request type', ar: 'نوع الطلب' })}</span>
-            <select value={type} onChange={(event: ChangeEvent<HTMLSelectElement>) => setType(event.target.value)}>
+            <select
+              value={type}
+              onChange={(event: ChangeEvent<HTMLSelectElement>) => setType(event.target.value)}
+            >
               <option value="full_reorder">
                 {pick({ en: 'Full reorder', ar: 'إعادة الطلب كاملًا' })}
               </option>
@@ -1350,7 +1508,15 @@ function ReorderWorkspace({ rows, organizationId, designs, quotes, pick, lang, o
   );
 }
 
-function TeamLockerWorkspace({ rows, pick, lang }: { rows: Row[]; pick: PickFn; lang: string }): ReactElement | null {
+function TeamLockerWorkspace({
+  rows,
+  pick,
+  lang,
+}: {
+  rows: Row[];
+  pick: PickFn;
+  lang: string;
+}): ReactElement | null {
   if (!rows.length) return null;
   return (
     <div className="workspace-card-grid">

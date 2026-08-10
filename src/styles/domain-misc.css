@@ -1,10 +1,8 @@
 /* Domain CSS: domain-misc.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: island-extract-2.css ---- */
 
 /* island peel 2 */
-
 
 .lead {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
@@ -316,9 +314,9 @@
   flex: 0 0 auto;
 }
 .ready-badge {
-    padding: 6px 8px;
-    font-size: 0.53rem;
-  }
+  padding: 6px 8px;
+  font-size: 0.53rem;
+}
 
 .proof-link-row {
   display: flex;
@@ -356,8 +354,8 @@
   letter-spacing: 0.08em;
 }
 .configured-rate-list {
-    gap: 7px;
-  }
+  gap: 7px;
+}
 
 .secure-share-output {
   margin-top: 10px;
@@ -374,9 +372,8 @@
   text-transform: uppercase;
 }
 .secure-review-badge {
-    justify-self: start;
-  }
-
+  justify-self: start;
+}
 
 /* ---- source: island-extract.css ---- */
 
@@ -559,14 +556,12 @@ html[dir='rtl'] .brand {
   gap: 1rem;
 }
 .returns-history {
-    grid-template-columns: 1fr;
-  }
-
+  grid-template-columns: 1fr;
+}
 
 /* ---- source: misc-from-global.css ---- */
 
 /* misc global */
-
 
 .section {
   padding-block: clamp(48px, 8vw, 104px);
@@ -841,8 +836,8 @@ html[dir='rtl'] .brand {
   min-width: 210px;
 }
 .hero-actions .block {
-    width: 100%;
-  }
+  width: 100%;
+}
 
 .section {
   background: #fff;
@@ -916,7 +911,7 @@ html[dir='rtl'] .brand {
 }
 
 .size-row {
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
@@ -927,8 +922,8 @@ html[dir='rtl'] .brand {
   color: #111;
 }
 .size-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 
 .purchase-actions,
 .detail-cta .purchase-actions {
@@ -972,11 +967,9 @@ html[dir='rtl'] .brand {
   margin-top: 0;
 }
 
-
 /* ---- source: misc-from-premium.css ---- */
 
 /* misc premium */
-
 
 .section {
   position: relative;
@@ -991,8 +984,8 @@ html[dir='rtl'] .brand {
   animation: heartPulse 0.45s var(--ease-premium);
 }
 .section {
-    padding-block: 88px;
-  }
+  padding-block: 88px;
+}
 
 .country-combobox {
   position: relative;
@@ -1043,12 +1036,12 @@ html[dir='rtl'] .brand {
   color: #555;
 }
 .country-combobox__list {
-    position: fixed;
-    z-index: 1000;
-    inset: auto 12px max(12px, env(safe-area-inset-bottom));
-    max-height: min(62dvh, 520px);
-    border-radius: 0;
-  }
+  position: fixed;
+  z-index: 1000;
+  inset: auto 12px max(12px, env(safe-area-inset-bottom));
+  max-height: min(62dvh, 520px);
+  border-radius: 0;
+}
 
 .country-combobox {
   position: relative;
@@ -1126,14 +1119,14 @@ html[dir='rtl'] .brand {
   color: #666;
 }
 .country-combobox__popover {
-    position: fixed;
-    inset: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px);
-    max-height: none;
-    padding: 16px;
-  }
+  position: fixed;
+  inset: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px);
+  max-height: none;
+  padding: 16px;
+}
 .country-combobox__list {
-    max-height: calc(100dvh - 150px);
-  }
+  max-height: calc(100dvh - 150px);
+}
 
 .accordion-header {
   min-width: 0;
@@ -1150,14 +1143,12 @@ html[dir='rtl'] .brand {
   margin-inline-start: auto;
 }
 .section {
-    padding-inline: 0;
-  }
-
+  padding-inline: 0;
+}
 
 /* ---- source: misc-from-shababuna.css ---- */
 
 /* misc shababuna */
-
 
 .section {
   padding-block: clamp(76px, 9vw, 150px);
@@ -1270,22 +1261,22 @@ html[dir='rtl'] .brand {
   font-size: 1.2rem;
 }
 .section {
-    padding-block: 72px;
-  }
+  padding-block: 72px;
+}
 .quote-layout {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 .section {
-    padding-block: 62px;
-  }
+  padding-block: 62px;
+}
 .payment-balance-card {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 .payment-balance-card > div + div {
-    border-left: 0;
-    border-right: 0;
-    border-top: 1px solid var(--sha-line);
-  }
+  border-left: 0;
+  border-right: 0;
+  border-top: 1px solid var(--sha-line);
+}
 
 .quote-rule-card {
   display: grid;
@@ -1324,8 +1315,8 @@ html[dir='rtl'] .brand {
   padding: 0 10px;
 }
 .quote-response input {
-    min-width: 100%;
-  }
+  min-width: 100%;
+}
 
 .return-history-card {
   display: grid;
@@ -1393,8 +1384,8 @@ html[dir='rtl'] .brand {
   padding-inline-start: 1.2rem;
 }
 .return-item-row {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 
 .quote-payment-breakdown {
   display: flex;
@@ -1425,9 +1416,9 @@ html[dir='rtl'] .brand {
   background: #fff;
 }
 .shipping-rate-manager,
-  .hero-content-manager {
-    padding: 16px;
-  }
+.hero-content-manager {
+  padding: 16px;
+}
 
 .special-request-info {
   position: sticky;
@@ -1559,11 +1550,11 @@ html[dir='rtl'] .brand {
   gap: 8px;
 }
 .special-request-info {
-    position: static;
-  }
+  position: static;
+}
 .special-request-form {
-    padding: 18px;
-  }
+  padding: 18px;
+}
 
 .enterprise-panel-stack {
   display: grid;
@@ -1599,9 +1590,8 @@ html[dir='rtl'] .brand {
   width: 100%;
 }
 .enterprise-action-card {
-    padding: 16px;
-  }
-
+  padding: 16px;
+}
 
 /* ---- source: remain-from-global.css ---- */
 
@@ -1650,11 +1640,9 @@ html[dir='rtl'] .brand {
   padding: 13px 15px;
 }
 
-
 /* ---- source: remain-from-premium.css ---- */
 
 /* remain premium */
-
 
 .page-hero {
   position: relative;
@@ -1677,16 +1665,13 @@ html[dir='rtl'] .brand {
   left: -0.05em;
 }
 
-
 /* ---- source: remain-from-shababuna.css ---- */
 
 /* remain shababuna */
 
-
 /* ---- source: tail-from-global.css ---- */
 
 /* tail global */
-
 
 .display-title {
   font-family: var(--font-display);
@@ -1946,11 +1931,11 @@ html[dir='rtl'] .brand {
   font-size: clamp(3.2rem, 8vw, 8.5rem);
 }
 .hero {
-    min-height: 760px;
-  }
+  min-height: 760px;
+}
 .hero::before {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.97), rgba(0, 0, 0, 0.64));
-  }
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.97), rgba(0, 0, 0, 0.64));
+}
 
 .mobile-accordion-btn,
 .hero {
@@ -1973,8 +1958,8 @@ html[dir='rtl'] .brand {
   color: #fff;
 }
 .hero {
-    min-height: 760px;
-  }
+  min-height: 760px;
+}
 
 .share-buttons {
   display: flex;
@@ -2056,11 +2041,9 @@ html[dir='rtl'] .hero {
   overflow: hidden;
 }
 
-
 /* ---- source: tail-from-premium.css ---- */
 
 /* tail premium */
-
 
 .hero {
   overflow: hidden;
@@ -2102,11 +2085,11 @@ html[dir='rtl'] .hero {
   color: inherit;
 }
 .pwa-stack {
-    inset-inline: 8px;
-  }
+  inset-inline: 8px;
+}
 .pwa-banner {
-    flex-wrap: wrap;
-  }
+  flex-wrap: wrap;
+}
 
 .address-grid {
   display: grid;
@@ -2139,19 +2122,17 @@ html[dir='rtl'] .hero {
   padding: 8px;
 }
 .address-card {
-    padding: 20px;
-  }
+  padding: 20px;
+}
 
 [dir='rtl'] .address-card,
 [dir='rtl'] .address-form {
   text-align: right;
 }
 
-
 /* ---- source: tail-from-shababuna.css ---- */
 
 /* tail shababuna */
-
 
 .display-title {
   font-size: clamp(2.8rem, 7.2vw, 7.6rem);
@@ -2247,8 +2228,8 @@ html[dir='rtl'] .hero {
   padding-block: 15px;
 }
 .lha-store-hero {
-    min-height: 440px;
-  }
+  min-height: 440px;
+}
 
 .review-facts {
   display: grid;
@@ -2290,5 +2271,3 @@ html[dir='rtl'] .hero {
   margin-top: 4px;
   color: #5d5d57;
 }
-
-

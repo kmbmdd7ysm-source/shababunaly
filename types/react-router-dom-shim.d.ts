@@ -43,7 +43,10 @@ declare module 'react-router-dom' {
   }>;
   export const Outlet: ComponentType;
 
-  export function useNavigate(): (to: To | number, options?: { replace?: boolean; state?: unknown }) => void;
+  export function useNavigate(): (
+    to: To | number,
+    options?: { replace?: boolean; state?: unknown },
+  ) => void;
   export function useLocation(): {
     pathname: string;
     search: string;
@@ -51,7 +54,9 @@ declare module 'react-router-dom' {
     state: unknown;
     key: string;
   };
-  export function useParams<T extends Record<string, string | undefined> = Record<string, string | undefined>>(): T;
+  export function useParams<
+    T extends Record<string, string | undefined> = Record<string, string | undefined>,
+  >(): T;
   export function useSearchParams(): [
     URLSearchParams,
     (next: URLSearchParams | Record<string, string>) => void,

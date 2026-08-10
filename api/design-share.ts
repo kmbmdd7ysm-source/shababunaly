@@ -59,15 +59,17 @@ export function mapDesignShareError(error: unknown): number {
 function remoteAddress(req: ApiReq): string {
   const forwarded = req.headers?.['x-forwarded-for'];
   const realIp = req.headers?.['x-real-ip'];
-  return clean(
-    (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
-      (Array.isArray(realIp) ? realIp[0] : realIp) ||
-      req.socket?.remoteAddress ||
-      '',
-    200,
-  )
-    .split(',')[0]
-    ?.trim() || '';
+  return (
+    clean(
+      (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
+        (Array.isArray(realIp) ? realIp[0] : realIp) ||
+        req.socket?.remoteAddress ||
+        '',
+      200,
+    )
+      .split(',')[0]
+      ?.trim() || ''
+  );
 }
 
 export default async function handler(req: ApiReq, res: ApiRes) {

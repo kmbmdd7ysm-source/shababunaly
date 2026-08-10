@@ -10,8 +10,15 @@ const clean = (value: unknown, max = 1000): string =>
     .slice(0, max);
 const sha = (value: unknown) => createHash('sha256').update(String(value)).digest('hex');
 
-type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined> };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res as never);
   if (req.method !== 'POST') {
@@ -31,7 +38,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const authorization = clean(req.headers?.authorization, 6000);
     const user = await resolveSupabaseUser(authorization);
     if (!user) return res.status(401).json({ ok: false, error: 'authentication_required' });
-    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+      string,
+      unknown
+    >;
     const contractId = clean(body.contractId, 80);
     const signerName = clean(body.signerName, 160);
     const signerEmail = clean(body.signerEmail || user.email, 320).toLowerCase();
@@ -86,17 +96,21 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     );
     return res.status(200).json({ ok: true, signingUrl: envelope.signingUrl, envelope: saved });
   } catch (error: unknown) {
-    const raw = clean((error && typeof error === 'object' && 'message' in error ? (error as {message?:unknown}).message : error) || error, 500);
+    const raw = clean(
+      (error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error) || error,
+      500,
+    );
     const client =
       /contract_not_found|contract_not_signable|contract_expired|invalid_signature|signer_details/.test(
         raw,
       );
-    const statusCode =
-      client
-        ? 400
-        : error && typeof error === 'object' && 'status' in error
-          ? Number((error as { status?: unknown }).status || 503)
-          : 503;
+    const statusCode = client
+      ? 400
+      : error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status || 503)
+        : 503;
     return res
       .status(statusCode)
       .json({ ok: false, error: client ? raw.split(':').pop() : 'signature_provider_unavailable' });

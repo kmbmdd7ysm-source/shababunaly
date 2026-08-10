@@ -59,8 +59,7 @@ export default function MfaSecurityPanel({
       return;
     }
     try {
-      const result = await (auth.listMfaFactors?.() ??
-        Promise.resolve({ factors: [], aal: null }));
+      const result = await (auth.listMfaFactors?.() ?? Promise.resolve({ factors: [], aal: null }));
       setState({
         loading: false,
         factors: Array.isArray(result.factors)
@@ -81,7 +80,8 @@ export default function MfaSecurityPanel({
   const begin = async () => {
     setBusy(true);
     try {
-      const result = (await (auth.enrollMfaTotp?.() ?? Promise.reject(new Error('MFA unavailable')))) as Enrollment;
+      const result = (await (auth.enrollMfaTotp?.() ??
+        Promise.reject(new Error('MFA unavailable')))) as Enrollment;
       setEnrollment(result);
       setCode('');
       setState((current) => ({ ...current, error: '' }));

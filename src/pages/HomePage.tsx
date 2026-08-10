@@ -111,15 +111,7 @@ const minimumFor = (key: string): number => {
 };
 
 /** Numeric ranges are bidi-isolated so `24–72` cannot render as `72–24`. */
-function Range({
-  from,
-  to,
-  unit,
-}: {
-  from: string | number;
-  to: string | number;
-  unit: string;
-}) {
+function Range({ from, to, unit }: { from: string | number; to: string | number; unit: string }) {
   return (
     <>
       <span className="gw-isolate-ltr">
@@ -252,7 +244,6 @@ export default function HomePage(): ReactElement {
         data-snap={reduced ? 'off' : 'on'}
         data-capability={capability}
       >
-
         {/* ── THE GAME — culture and performance, court atmosphere ──────── */}
         <section id="game" className="gw-act gw-act--game" aria-labelledby="gw-game-title">
           <picture className="gw-game-atmos" aria-hidden="true">
@@ -422,7 +413,9 @@ export default function HomePage(): ReactElement {
                 loading="lazy"
                 decoding="async"
               />
-              <p className="gw-open-kicker">{pick({ en: 'Concept preview', ar: 'معاينة المفهوم' })}</p>
+              <p className="gw-open-kicker">
+                {pick({ en: 'Concept preview', ar: 'معاينة المفهوم' })}
+              </p>
             </div>
           </div>
         </section>
@@ -431,7 +424,9 @@ export default function HomePage(): ReactElement {
         <section id="roster" className="gw-act gw-act--roster" aria-labelledby="gw-roster-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-kicker">{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</p>
+              <p className="gw-kicker">
+                {pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
+              </p>
               <h2 id="gw-roster-title" className="gw-act-title">
                 {pick({ en: 'One order. The whole organization.', ar: 'طلب واحد. المؤسسة كاملة.' })}
               </h2>

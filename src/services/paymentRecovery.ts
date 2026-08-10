@@ -33,7 +33,9 @@ export async function retryOrderPayment({
     error?: string;
   };
   if (!response.ok || !data?.url) {
-    const error = new Error(data?.error || `payment_recovery_failed:${response.status}`) as Error & {
+    const error = new Error(
+      data?.error || `payment_recovery_failed:${response.status}`,
+    ) as Error & {
       status?: number;
     };
     error.status = response.status;

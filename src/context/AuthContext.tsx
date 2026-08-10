@@ -194,31 +194,34 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
 
   const client = useCallback(async () => await getSupabase(), []);
 
-  const localSignUp = useCallback(async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
-    const normalized = normalizeEmail(email);
-    const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-    if (accounts.some((item) => item.email === normalized)) {
-      return { data: null, error: new Error('An account with this email already exists.') };
-    }
-    const record = {
-      id: crypto.randomUUID?.() || `local-${Date.now()}`,
-      email: normalized,
-      passwordHash: await hashPassword(password),
-      metadata,
-      createdAt: new Date().toISOString(),
-    };
-    writeJson(LOCAL_ACCOUNTS_KEY, [...accounts, record]);
-    const nextUser = localUser(record);
-    const nextSession = { user: nextUser, access_token: `local-${record.id}` };
-    writeJson(LOCAL_SESSION_KEY, nextSession);
-    setUser(nextUser);
-    setSession(nextSession);
-    return { data: { user: nextUser, session: nextSession }, error: null };
-  }, []);
+  const localSignUp = useCallback(
+    async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
+      const normalized = normalizeEmail(email);
+      const accounts = readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[];
+      if (accounts.some((item) => item.email === normalized)) {
+        return { data: null, error: new Error('An account with this email already exists.') };
+      }
+      const record = {
+        id: crypto.randomUUID?.() || `local-${Date.now()}`,
+        email: normalized,
+        passwordHash: await hashPassword(password),
+        metadata,
+        createdAt: new Date().toISOString(),
+      };
+      writeJson(LOCAL_ACCOUNTS_KEY, [...accounts, record]);
+      const nextUser = localUser(record);
+      const nextSession = { user: nextUser, access_token: `local-${record.id}` };
+      writeJson(LOCAL_SESSION_KEY, nextSession);
+      setUser(nextUser);
+      setSession(nextSession);
+      return { data: { user: nextUser, session: nextSession }, error: null };
+    },
+    [],
+  );
 
   const localSignIn = useCallback(async (email: string, password: string) => {
     const normalized = normalizeEmail(email);
-    const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
+    const accounts = readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[];
     const record = accounts.find((item: LocalAccount) => item.email === normalized);
     if (!record || record.passwordHash !== (await hashPassword(password))) {
       return { data: null, error: new Error('Invalid email or password.') };
@@ -232,270 +235,273 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
   }, []);
 
   const api = useMemo(
-    () => ({
-      user,
-      session,
-      loading,
-      configured: cloudConfigured || allowLocalAuth,
-      cloudConfigured,
-      configStatus,
-      signIn: async (email: string, password: string) => {
-        const s = await client();
-        if (!s && !allowLocalAuth) return { data: null, error: cloudError() };
-        return s
-          ? s.auth.signInWithPassword({ email: normalizeEmail(email), password })
-          : localSignIn(email, password);
-      },
-      signUp: async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
-        const s = await client();
-        if (!s && !allowLocalAuth) return { data: null, error: cloudError() };
-        if (!s) return localSignUp(email, password, metadata);
+    () =>
+      ({
+        user,
+        session,
+        loading,
+        configured: cloudConfigured || allowLocalAuth,
+        cloudConfigured,
+        configStatus,
+        signIn: async (email: string, password: string) => {
+          const s = await client();
+          if (!s && !allowLocalAuth) return { data: null, error: cloudError() };
+          return s
+            ? s.auth.signInWithPassword({ email: normalizeEmail(email), password })
+            : localSignIn(email, password);
+        },
+        signUp: async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
+          const s = await client();
+          if (!s && !allowLocalAuth) return { data: null, error: cloudError() };
+          if (!s) return localSignUp(email, password, metadata);
 
-        const normalizedEmail = normalizeEmail(email);
-        const normalizedName = String(
-          metadata.full_name || metadata.fullName || metadata.display_name || metadata.name || '',
-        )
-          .trim()
-          .slice(0, 100);
-        const requestedAccountType =
-          String(metadata.account_type || '').trim() === 'organization'
-            ? 'organization'
-            : 'customer';
-        const allowedOrganizationTypes = new Set([
-          'club',
-          'academy',
-          'federation',
-          'school_university',
-          'wholesale',
-          'distributor',
-        ]);
-        const requestedOrganizationType = String(metadata.organization_type || '').trim();
-        const safeMetadata = {
-          first_name: String(metadata.first_name || '')
+          const normalizedEmail = normalizeEmail(email);
+          const normalizedName = String(
+            metadata.full_name || metadata.fullName || metadata.display_name || metadata.name || '',
+          )
             .trim()
-            .slice(0, 80),
-          last_name: String(metadata.last_name || '')
-            .trim()
-            .slice(0, 80),
-          display_name: normalizedName,
-          fullName: normalizedName,
-          account_type: requestedAccountType,
-          organization_name:
-            requestedAccountType === 'organization'
-              ? String(metadata.organization_name || '')
-                  .trim()
-                  .slice(0, 160)
-              : '',
-          organization_type:
-            requestedAccountType === 'organization' &&
-            allowedOrganizationTypes.has(requestedOrganizationType)
-              ? requestedOrganizationType
-              : '',
-        };
-        let lastResult;
+            .slice(0, 100);
+          const requestedAccountType =
+            String(metadata.account_type || '').trim() === 'organization'
+              ? 'organization'
+              : 'customer';
+          const allowedOrganizationTypes = new Set([
+            'club',
+            'academy',
+            'federation',
+            'school_university',
+            'wholesale',
+            'distributor',
+          ]);
+          const requestedOrganizationType = String(metadata.organization_type || '').trim();
+          const safeMetadata = {
+            first_name: String(metadata.first_name || '')
+              .trim()
+              .slice(0, 80),
+            last_name: String(metadata.last_name || '')
+              .trim()
+              .slice(0, 80),
+            display_name: normalizedName,
+            fullName: normalizedName,
+            account_type: requestedAccountType,
+            organization_name:
+              requestedAccountType === 'organization'
+                ? String(metadata.organization_name || '')
+                    .trim()
+                    .slice(0, 160)
+                : '',
+            organization_type:
+              requestedAccountType === 'organization' &&
+              allowedOrganizationTypes.has(requestedOrganizationType)
+                ? requestedOrganizationType
+                : '',
+          };
+          let lastResult;
 
-        for (let attempt = 0; attempt < 3; attempt += 1) {
-          lastResult = await s.auth.signUp({
-            email: normalizedEmail,
-            password,
-            options: {
-              data: safeMetadata,
-              emailRedirectTo: authRedirectUrl('confirm'),
-            },
-          });
+          for (let attempt = 0; attempt < 3; attempt += 1) {
+            lastResult = await s.auth.signUp({
+              email: normalizedEmail,
+              password,
+              options: {
+                data: safeMetadata,
+                emailRedirectTo: authRedirectUrl('confirm'),
+              },
+            });
 
-          if (!lastResult?.error) {
-            const identities = lastResult?.data?.user?.identities;
-            if (Array.isArray(identities) && identities.length === 0) {
-              return {
-                data: lastResult.data,
-                error: new Error('An account with this email already exists.'),
-              };
+            if (!lastResult?.error) {
+              const identities = lastResult?.data?.user?.identities;
+              if (Array.isArray(identities) && identities.length === 0) {
+                return {
+                  data: lastResult.data,
+                  error: new Error('An account with this email already exists.'),
+                };
+              }
+              return lastResult;
             }
-            return lastResult;
-          }
 
-          if (!isTransientAuthError(lastResult.error) || attempt === 2) return lastResult;
-          await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)));
-        }
-        return lastResult;
-      },
-      resendVerification: async (email: string) => {
-        const s = await client();
-        if (!s) {
-          return allowLocalAuth ? { data: {}, error: null } : { data: null, error: cloudError() };
-        }
-        return s.auth.resend({
-          type: 'signup',
-          email: normalizeEmail(email),
-          options: { emailRedirectTo: authRedirectUrl('confirm') },
-        });
-      },
-      updateMetadata: async (metadata: Record<string, unknown> = {}) => {
-        const s = await client();
-        if (s) return s.auth.updateUser({ data: metadata });
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-        let updatedRecord: LocalAccount | null = null;
-        const updated = accounts.map((item) => {
-          if (item.email !== user.email) return item;
-          updatedRecord = { ...item, metadata: { ...(item.metadata || {}), ...metadata } };
-          return updatedRecord;
-        });
-        writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        const nextUser = localUser(
-          updatedRecord || {
-            id: String(user.id || `local-${user.email}`),
-            email: String(user.email),
-            passwordHash: '',
-            metadata,
-          },
-        );
-        const nextSession = { ...(session || {}), user: nextUser };
-        writeJson(LOCAL_SESSION_KEY, nextSession);
-        setUser(nextUser);
-        setSession(nextSession);
-        return { data: { user: nextUser }, error: null };
-      },
-      reset: async (email: string) => {
-        const s = await client();
-        if (s) {
-          return s.auth.resetPasswordForEmail(normalizeEmail(email), {
-            redirectTo: authRedirectUrl('recovery'),
+            if (!isTransientAuthError(lastResult.error) || attempt === 2) return lastResult;
+            await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)));
+          }
+          return lastResult;
+        },
+        resendVerification: async (email: string) => {
+          const s = await client();
+          if (!s) {
+            return allowLocalAuth ? { data: {}, error: null } : { data: null, error: cloudError() };
+          }
+          return s.auth.resend({
+            type: 'signup',
+            email: normalizeEmail(email),
+            options: { emailRedirectTo: authRedirectUrl('confirm') },
           });
-        }
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        const exists = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).some(
-          (item) => item.email === normalizeEmail(email),
-        );
-        return exists
-          ? { data: {}, error: null }
-          : { data: null, error: new Error('No account was found for this email.') };
-      },
-      updatePassword: async (password: string) => {
-        const s = await client();
-        if (s) return s.auth.updateUser({ password });
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-        const updated = await Promise.all(
-          accounts.map(async (item) =>
-            item.email === user.email
-              ? { ...item, passwordHash: await hashPassword(password) }
-              : item,
-          ),
-        );
-        writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        return { data: { user }, error: null };
-      },
-      updateEmail: async (email: string) => {
-        const s = await client();
-        if (s) return s.auth.updateUser({ email: normalizeEmail(email) });
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const normalized = normalizeEmail(email);
-        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-        if (accounts.some((item) => item.email === normalized && item.email !== user.email)) {
-          return { data: null, error: new Error('An account with this email already exists.') };
-        }
-        let updatedRecord: LocalAccount | null = null;
-        const updated = accounts.map((item) => {
-          if (item.email !== user.email) return item;
-          updatedRecord = { ...item, email: normalized, emailConfirmedAt: null };
-          return updatedRecord;
-        });
-        writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        if (!updatedRecord) return { data: null, error: new Error('Account not found.') };
-        const nextUser = localUser(updatedRecord);
-        const nextSession = { ...(session || {}), user: nextUser };
-        writeJson(LOCAL_SESSION_KEY, nextSession);
-        setUser(nextUser);
-        setSession(nextSession);
-        return { data: { user: nextUser }, error: null };
-      },
-      signOut: async (scope?: string) => {
-        const s = await client();
-        if (s)
-          return s.auth.signOut(
-            scope ? ({ scope } as { scope: 'global' | 'local' | 'others' }) : undefined,
+        },
+        updateMetadata: async (metadata: Record<string, unknown> = {}) => {
+          const s = await client();
+          if (s) return s.auth.updateUser({ data: metadata });
+          if (!allowLocalAuth) return { data: null, error: cloudError() };
+          if (!user?.email) return { data: null, error: new Error('Sign in first.') };
+          const accounts = readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[];
+          let updatedRecord: LocalAccount | null = null;
+          const updated = accounts.map((item) => {
+            if (item.email !== user.email) return item;
+            updatedRecord = { ...item, metadata: { ...(item.metadata || {}), ...metadata } };
+            return updatedRecord;
+          });
+          writeJson(LOCAL_ACCOUNTS_KEY, updated);
+          const nextUser = localUser(
+            updatedRecord || {
+              id: String(user.id || `local-${user.email}`),
+              email: String(user.email),
+              passwordHash: '',
+              metadata,
+            },
           );
-        if (!allowLocalAuth) return { error: cloudError() };
-        localStorage.removeItem(LOCAL_SESSION_KEY);
-        setUser(null);
-        setSession(null);
-        return { error: null };
-      },
-      deleteAccount: async () => {
-        const s = await client();
-        if (s) {
-          const { error } = await s.rpc('delete_own_account');
-          if (error) throw error;
-          await s.auth.signOut();
-          return;
-        }
-        if (!allowLocalAuth) throw cloudError();
-        writeJson(
-          LOCAL_ACCOUNTS_KEY,
-          (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).filter((item) => item.email !== user?.email),
-        );
-        localStorage.removeItem(LOCAL_SESSION_KEY);
-        setUser(null);
-        setSession(null);
-      },
-      refresh: async () => {
-        const s = await client();
-        if (s) {
-          const { data, error } = await s.auth.refreshSession();
+          const nextSession = { ...(session || {}), user: nextUser };
+          writeJson(LOCAL_SESSION_KEY, nextSession);
+          setUser(nextUser);
+          setSession(nextSession);
+          return { data: { user: nextUser }, error: null };
+        },
+        reset: async (email: string) => {
+          const s = await client();
+          if (s) {
+            return s.auth.resetPasswordForEmail(normalizeEmail(email), {
+              redirectTo: authRedirectUrl('recovery'),
+            });
+          }
+          if (!allowLocalAuth) return { data: null, error: cloudError() };
+          const exists = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).some(
+            (item) => item.email === normalizeEmail(email),
+          );
+          return exists
+            ? { data: {}, error: null }
+            : { data: null, error: new Error('No account was found for this email.') };
+        },
+        updatePassword: async (password: string) => {
+          const s = await client();
+          if (s) return s.auth.updateUser({ password });
+          if (!allowLocalAuth) return { data: null, error: cloudError() };
+          if (!user?.email) return { data: null, error: new Error('Sign in first.') };
+          const accounts = readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[];
+          const updated = await Promise.all(
+            accounts.map(async (item) =>
+              item.email === user.email
+                ? { ...item, passwordHash: await hashPassword(password) }
+                : item,
+            ),
+          );
+          writeJson(LOCAL_ACCOUNTS_KEY, updated);
+          return { data: { user }, error: null };
+        },
+        updateEmail: async (email: string) => {
+          const s = await client();
+          if (s) return s.auth.updateUser({ email: normalizeEmail(email) });
+          if (!allowLocalAuth) return { data: null, error: cloudError() };
+          if (!user?.email) return { data: null, error: new Error('Sign in first.') };
+          const normalized = normalizeEmail(email);
+          const accounts = readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[];
+          if (accounts.some((item) => item.email === normalized && item.email !== user.email)) {
+            return { data: null, error: new Error('An account with this email already exists.') };
+          }
+          let updatedRecord: LocalAccount | null = null;
+          const updated = accounts.map((item) => {
+            if (item.email !== user.email) return item;
+            updatedRecord = { ...item, email: normalized, emailConfirmedAt: null };
+            return updatedRecord;
+          });
+          writeJson(LOCAL_ACCOUNTS_KEY, updated);
+          if (!updatedRecord) return { data: null, error: new Error('Account not found.') };
+          const nextUser = localUser(updatedRecord);
+          const nextSession = { ...(session || {}), user: nextUser };
+          writeJson(LOCAL_SESSION_KEY, nextSession);
+          setUser(nextUser);
+          setSession(nextSession);
+          return { data: { user: nextUser }, error: null };
+        },
+        signOut: async (scope?: string) => {
+          const s = await client();
+          if (s)
+            return s.auth.signOut(
+              scope ? ({ scope } as { scope: 'global' | 'local' | 'others' }) : undefined,
+            );
+          if (!allowLocalAuth) return { error: cloudError() };
+          localStorage.removeItem(LOCAL_SESSION_KEY);
+          setUser(null);
+          setSession(null);
+          return { error: null };
+        },
+        deleteAccount: async () => {
+          const s = await client();
+          if (s) {
+            const { error } = await s.rpc('delete_own_account');
+            if (error) throw error;
+            await s.auth.signOut();
+            return;
+          }
+          if (!allowLocalAuth) throw cloudError();
+          writeJson(
+            LOCAL_ACCOUNTS_KEY,
+            (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).filter(
+              (item) => item.email !== user?.email,
+            ),
+          );
+          localStorage.removeItem(LOCAL_SESSION_KEY);
+          setUser(null);
+          setSession(null);
+        },
+        refresh: async () => {
+          const s = await client();
+          if (s) {
+            const { data, error } = await s.auth.refreshSession();
+            if (error) throw error;
+            return data;
+          }
+          if (!allowLocalAuth) throw cloudError();
+          return { session, user };
+        },
+        listMfaFactors: async () => {
+          const s = await client();
+          if (!s) throw cloudError();
+          const [{ data: factors, error: factorsError }, { data: aal, error: aalError }] =
+            await Promise.all([
+              s.auth.mfa.listFactors(),
+              s.auth.mfa.getAuthenticatorAssuranceLevel(),
+            ]);
+          if (factorsError) throw factorsError;
+          if (aalError) throw aalError;
+          return { factors: factors?.totp || [], aal };
+        },
+        enrollMfaTotp: async (friendlyName = 'SHABABUNA Authenticator') => {
+          const s = await client();
+          if (!s) throw cloudError();
+          const { data, error } = await s.auth.mfa.enroll({ factorType: 'totp', friendlyName });
           if (error) throw error;
           return data;
-        }
-        if (!allowLocalAuth) throw cloudError();
-        return { session, user };
-      },
-      listMfaFactors: async () => {
-        const s = await client();
-        if (!s) throw cloudError();
-        const [{ data: factors, error: factorsError }, { data: aal, error: aalError }] =
-          await Promise.all([
-            s.auth.mfa.listFactors(),
-            s.auth.mfa.getAuthenticatorAssuranceLevel(),
-          ]);
-        if (factorsError) throw factorsError;
-        if (aalError) throw aalError;
-        return { factors: factors?.totp || [], aal };
-      },
-      enrollMfaTotp: async (friendlyName = 'SHABABUNA Authenticator') => {
-        const s = await client();
-        if (!s) throw cloudError();
-        const { data, error } = await s.auth.mfa.enroll({ factorType: 'totp', friendlyName });
-        if (error) throw error;
-        return data;
-      },
-      verifyMfaTotp: async (factorId: string, code: string) => {
-        const s = await client();
-        if (!s) throw cloudError();
-        const { data, error } = await s.auth.mfa.challengeAndVerify({
-          factorId,
-          code: String(code || '')
-            .replace(/\D/g, '')
-            .slice(0, 6),
-        });
-        if (error) throw error;
-        const refreshed = await s.auth.refreshSession();
-        if (refreshed.error) throw refreshed.error;
-        setSession(refreshed.data.session || null);
-        setUser(refreshed.data.user || refreshed.data.session?.user || null);
-        return data;
-      },
-      unenrollMfaFactor: async (factorId: string) => {
-        const s = await client();
-        if (!s) throw cloudError();
-        const { data, error } = await s.auth.mfa.unenroll({ factorId });
-        if (error) throw error;
-        return data;
-      },
-    }) as AuthContextValue,
+        },
+        verifyMfaTotp: async (factorId: string, code: string) => {
+          const s = await client();
+          if (!s) throw cloudError();
+          const { data, error } = await s.auth.mfa.challengeAndVerify({
+            factorId,
+            code: String(code || '')
+              .replace(/\D/g, '')
+              .slice(0, 6),
+          });
+          if (error) throw error;
+          const refreshed = await s.auth.refreshSession();
+          if (refreshed.error) throw refreshed.error;
+          setSession(refreshed.data.session || null);
+          setUser(refreshed.data.user || refreshed.data.session?.user || null);
+          return data;
+        },
+        unenrollMfaFactor: async (factorId: string) => {
+          const s = await client();
+          if (!s) throw cloudError();
+          const { data, error } = await s.auth.mfa.unenroll({ factorId });
+          if (error) throw error;
+          return data;
+        },
+      }) as AuthContextValue,
     [user, session, loading, cloudConfigured, configStatus, client, localSignIn, localSignUp],
   );
 

@@ -100,7 +100,8 @@ export default function SpecialRequestPage(): ReactElement {
       const productName = form.productName.trim();
       if (productUrl && !/^https?:\/\/[^\s]+$/i.test(productUrl))
         throw new Error('product_reference_required');
-      if (!productUrl && !productImage && !productName) throw new Error('product_reference_required');
+      if (!productUrl && !productImage && !productName)
+        throw new Error('product_reference_required');
       const note = form.description.trim();
       const description =
         note ||

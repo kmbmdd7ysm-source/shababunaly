@@ -1,7 +1,12 @@
 type PdfSection = { heading?: string; rows?: Array<string | string[]> };
 type TextPdfInput = { title?: string; subtitle?: string; sections?: PdfSection[] };
 type DesignLike = { [key: string]: unknown };
-type StudioLike = { layers?: Array<Record<string, unknown>>; showSafeArea?: boolean; showBleedArea?: boolean; [key: string]: unknown };
+type StudioLike = {
+  layers?: Array<Record<string, unknown>>;
+  showSafeArea?: boolean;
+  showBleedArea?: boolean;
+  [key: string]: unknown;
+};
 
 const encoder = new TextEncoder();
 export const escapePdf = (value: unknown): string =>
@@ -13,7 +18,8 @@ export const escapePdf = (value: unknown): string =>
     .replace(/\(/g, '\\(')
     .replace(/\)/g, '\\)');
 export const object = (id: number, body: string): string => `${id} 0 obj\n${body}\nendobj\n`;
-export const clamp = (value: unknown, min: number, max: number): number => Math.min(max, Math.max(min, Number(value) || 0));
+export const clamp = (value: unknown, min: number, max: number): number =>
+  Math.min(max, Math.max(min, Number(value) || 0));
 
 export function hexRgb(value: unknown, fallback = '#000000'): number[] {
   const hex = /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value) : fallback;
@@ -23,11 +29,31 @@ export const rgb = (value: unknown, fallback?: string): string =>
   hexRgb(value, fallback)
     .map((part: number) => part.toFixed(4))
     .join(' ');
-export const text = (value: unknown, x: number, y: number, size = 10, font = 'F1', color = '0 0 0'): string =>
-  `BT ${color} rg /${font} ${size} Tf 1 0 0 1 ${x} ${y} Tm (${escapePdf(value)}) Tj ET`;
-export const line = (x1: number, y1: number, x2: number, y2: number, color = '0 0 0', width = 1): string =>
-  `${color} RG ${width} w ${x1} ${y1} m ${x2} ${y2} l S`;
-export const rect = (x: number, y: number, w: number, h: number, color: string, stroke: string | null = null, radius = 0): string => {
+export const text = (
+  value: unknown,
+  x: number,
+  y: number,
+  size = 10,
+  font = 'F1',
+  color = '0 0 0',
+): string => `BT ${color} rg /${font} ${size} Tf 1 0 0 1 ${x} ${y} Tm (${escapePdf(value)}) Tj ET`;
+export const line = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  color = '0 0 0',
+  width = 1,
+): string => `${color} RG ${width} w ${x1} ${y1} m ${x2} ${y2} l S`;
+export const rect = (
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  color: string,
+  stroke: string | null = null,
+  radius = 0,
+): string => {
   if (radius <= 0)
     return `${color} rg ${x} ${y} ${w} ${h} re f${stroke ? ` ${stroke} RG 1 w ${x} ${y} ${w} ${h} re S` : ''}`;
   const k = 0.55228475;
@@ -63,13 +89,13 @@ export function makePdf(pages: string[], metadata: Record<string, unknown> = {})
   pages.forEach((content: string, index: number) => {
     objects.push(
       object(
-        (pageIds[index] as number),
-        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${(contentIds[index] as number)} 0 R >>`,
+        pageIds[index] as number,
+        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${contentIds[index] as number} 0 R >>`,
       ),
     );
     objects.push(
       object(
-        (contentIds[index] as number),
+        contentIds[index] as number,
         `<< /Length ${encoder.encode(content).length} >>\nstream\n${content}\nendstream`,
       ),
     );
@@ -83,12 +109,16 @@ export function makePdf(pages: string[], metadata: Record<string, unknown> = {})
   const xref = encoder.encode(pdf).length;
   pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
   for (let index = 1; index <= objects.length; index += 1)
-    pdf += `${String((offsets[index] ?? 0)).padStart(10, '0')} 00000 n \n`;
+    pdf += `${String(offsets[index] ?? 0).padStart(10, '0')} 00000 n \n`;
   pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R /Info 5 0 R >>\nstartxref\n${xref}\n%%EOF`;
   return new Blob([pdf], { type: 'application/pdf' });
 }
 
-export function createTextPdf({ title = 'SHABABUNA', subtitle = '', sections = [] }: TextPdfInput = {}): Blob {
+export function createTextPdf({
+  title = 'SHABABUNA',
+  subtitle = '',
+  sections = [],
+}: TextPdfInput = {}): Blob {
   const pages: string[] = [];
   let commands = [text(title, 48, 790, 22, 'F2')];
   let y = 758;
@@ -217,7 +247,10 @@ export function artworkPage({
   out.push(`${'.85 .2 .2'} RG 1 w [4 4] 0 d 55 118 485 616 re S [] 0 d`);
   const layers = (studio?.layers || [])
     .filter((layer: Record<string, unknown>) => layer.view === view && layer.visible)
-    .sort((a: Record<string, unknown>, b: Record<string, unknown>) => Number(a.zIndex) - Number(b.zIndex));
+    .sort(
+      (a: Record<string, unknown>, b: Record<string, unknown>) =>
+        Number(a.zIndex) - Number(b.zIndex),
+    );
   for (const layer of layers) {
     const x = 55 + (clamp(layer.x, 0, 100) / 100) * 485;
     const y = 118 + ((100 - clamp(layer.y, 0, 100)) / 100) * 616;
@@ -316,7 +349,9 @@ export function downloadDesignDocuments({
     }),
   ];
   for (const view of ['front', 'back', 'side'])
-    proofPages.push(artworkPage({ design: designDoc, studio: normalizedStudio, view, productLabel }));
+    proofPages.push(
+      artworkPage({ design: designDoc, studio: normalizedStudio, view, productLabel }),
+    );
   const rosterRows = safeRoster.length
     ? safeRoster.map((row, index) => {
         const r = row as Record<string, unknown>;
@@ -342,7 +377,10 @@ export function downloadDesignDocuments({
 
   const layerRows = (normalizedStudio.layers || [])
     .filter((layer: Record<string, unknown>) => layer.visible)
-    .sort((a: Record<string, unknown>, b: Record<string, unknown>) => String(a.view).localeCompare(String(b.view)) || Number(a.zIndex) - Number(b.zIndex))
+    .sort(
+      (a: Record<string, unknown>, b: Record<string, unknown>) =>
+        String(a.view).localeCompare(String(b.view)) || Number(a.zIndex) - Number(b.zIndex),
+    )
     .map((layer) => [
       String(layer.view || '').toUpperCase(),
       `${layer.label}: ${String(layer.content || '').startsWith('data:') ? '[embedded artwork]' : String(layer.content || '').slice(0, 55)}`,

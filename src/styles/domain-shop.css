@@ -1,10 +1,8 @@
 /* Domain CSS: domain-shop.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: island-product.css ---- */
 
 /* from island */
-
 
 .crumb {
   display: inline-flex;
@@ -101,11 +99,9 @@
   min-height: 65px;
 }
 
-
 /* ---- source: shop-from-global.css ---- */
 
 /* shop extract global */
-
 
 .product-grid {
   display: grid;
@@ -113,11 +109,11 @@
   grid-template-columns: repeat(2, 1fr);
 }
 .product-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(3, 1fr);
+}
 .product-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  grid-template-columns: repeat(4, 1fr);
+}
 
 .product-card {
   position: relative;
@@ -220,9 +216,9 @@
   gap: 0.5rem;
 }
 .quick-add {
-    opacity: 1;
-    transform: none;
-  }
+  opacity: 1;
+  transform: none;
+}
 
 .shop-toolbar .sort-select {
   margin-inline-start: auto;
@@ -239,8 +235,8 @@
   letter-spacing: 0;
 }
 .product-card:hover .product-card-img--main {
-    transform: none;
-  }
+  transform: none;
+}
 
 .product-card-media {
   border-radius: 0;
@@ -286,8 +282,8 @@ html[dir='rtl'] .page-hero h1 {
   text-wrap: balance;
 }
 .shop-toolbar .sort-select {
-    display:none;
-  }
+  display: none;
+}
 
 body,
 #root,
@@ -315,22 +311,22 @@ section,
 }
 .shop-grid,
 .product-grid {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(8px, 3vw, 14px);
-  }
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 3vw, 14px);
+}
 .product-grid > *,
-  .product-card,
-  .product-card-media,
-  .product-card-info {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
+.product-card,
+.product-card-media,
+.product-card-info {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
 .product-grid {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 
 .product-card-meta {
   display: flex;
@@ -350,11 +346,9 @@ section,
   background: #fff;
 }
 
-
 /* ---- source: shop-from-premium.css ---- */
 
 /* shop extract premium */
-
 
 .product-card,
 .product-card:hover {
@@ -391,9 +385,9 @@ section,
 }
 
 .quick-add {
-    transform: none;
-    opacity: 1;
-  }
+  transform: none;
+  opacity: 1;
+}
 
 .product-card {
   transition:
@@ -424,9 +418,9 @@ section,
     box-shadow var(--motion-base) var(--ease-standard);
 }
 .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-raised);
-  }
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-raised);
+}
 
 .product-card-media,
 .gallery-main {
@@ -440,27 +434,27 @@ section,
   }
 }
 .product-card-media:hover .product-card-img--main {
-    transform: scale(1.018);
-  }
+  transform: scale(1.018);
+}
 .product-card:hover,
-  .product-card-media:hover .product-card-img--main {
-    transform: none;
-  }
+.product-card-media:hover .product-card-img--main {
+  transform: none;
+}
 .product-grid {
-    gap: 12px;
-  }
+  gap: 12px;
+}
 .product-card-body {
-    padding: 12px 10px 14px;
-  }
+  padding: 12px 10px 14px;
+}
 .product-card-name {
-    line-height: 1.28;
-  }
+  line-height: 1.28;
+}
 .smart-img,
-  .product-card-img,
-  .route-enter {
-    animation: none;
-    transition-duration: 0.01ms;
-  }
+.product-card-img,
+.route-enter {
+  animation: none;
+  transition-duration: 0.01ms;
+}
 
 .product-card-media,
 .gallery-main,
@@ -473,11 +467,9 @@ section,
   min-height: 0;
 }
 
-
 /* ---- source: shop-from-shababuna.css ---- */
 
 /* shop extract shababuna */
-
 
 .product-grid.product-grid--airy {
   display: grid;
@@ -535,20 +527,20 @@ section,
   backdrop-filter: blur(10px);
 }
 .product-grid.product-grid--airy {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(3, 1fr);
+}
 .product-grid.product-grid--airy {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(2, 1fr);
+}
 .product-grid.product-grid--airy {
-    gap: 30px 12px;
-  }
+  gap: 30px 12px;
+}
 .product-card-body {
-    padding-top: 12px;
-  }
+  padding-top: 12px;
+}
 .product-card-name {
-    font-size: 0.88rem;
-  }
+  font-size: 0.88rem;
+}
 
 .catalog-operations-table input[type='checkbox'] {
   width: 20px;
@@ -570,11 +562,9 @@ section,
   margin-top: 24px;
 }
 
-
 /* ---- source: shop2-from-global.css ---- */
 
 /* shop2 global */
-
 
 .icon-btn {
   /* WCAG 2.2 AA 2.5.8 requires 24x24 CSS px. These buttons were being squeezed
@@ -692,12 +682,12 @@ section,
   background: #f3f3f3;
 }
 .filters-drawer.open .filters-drawer-panel {
-    transform: translateY(0);
-  }
+  transform: translateY(0);
+}
 
 .filters-drawer-panel,
 .filters-drawer.open .filters-drawer-panel {
-  position:absolute;
+  position: absolute;
   inset-inline: 0;
   inset-block: auto 0;
   z-index: 1;
@@ -707,21 +697,19 @@ section,
   max-height: calc(100dvh - env(safe-area-inset-top));
   margin-inline: auto;
   transform: none;
-  visibility:visible;
+  visibility: visible;
   opacity: 1;
   background: #fff;
   color: #111;
   box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.22);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-
 
 /* ---- source: shop2-from-premium.css ---- */
 
 /* shop2 premium */
-
 
 .brand:hover .brand-logo {
   transform: scale(0.96) rotate(-1deg);
@@ -737,11 +725,9 @@ section,
   transform: translateY(-2px);
 }
 
-
 /* ---- source: shop2-from-shababuna.css ---- */
 
 /* shop2 shababuna */
-
 
 .icon-btn {
   width: 44px;

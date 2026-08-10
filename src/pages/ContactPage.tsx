@@ -102,7 +102,13 @@ export default function ContactPage(): ReactElement {
                 </p>
               </div>
             ) : (
-              <form className="contact-form" onSubmit={(e) => { void submit(e); }} noValidate>
+              <form
+                className="contact-form"
+                onSubmit={(e) => {
+                  void submit(e);
+                }}
+                noValidate
+              >
                 <label className="field">
                   <span>{pick({ en: 'Inquiry type', ar: 'نوع الاستفسار' })}</span>
                   <select value={form.type} onChange={set('type')}>

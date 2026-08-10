@@ -323,13 +323,13 @@ export default function SearchOverlay({
                       >
                         <SmartImage
                           src={String(product.image || '')}
-                          alt={String(pick((product.name || "") as LocaleText) || '')}
+                          alt={String(pick((product.name || '') as LocaleText) || '')}
                           width={320}
                           height={320}
                         />
                         <strong>
                           <Highlight
-                            text={String(pick((product.name || "") as LocaleText) || '')}
+                            text={String(pick((product.name || '') as LocaleText) || '')}
                             query={query}
                           />
                         </strong>

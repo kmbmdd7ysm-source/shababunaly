@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "allowJs": false,
@@ -33,24 +29,12 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "react-router-dom": [
-        "types/react-router-dom-shim.d.ts"
-      ],
-      "react-router": [
-        "types/react-router-dom-shim.d.ts"
-      ],
-      "@google/model-viewer": [
-        "src/shims/model-viewer-module.ts"
-      ]
+      "react-router-dom": ["types/react-router-dom-shim.d.ts"],
+      "react-router": ["types/react-router-dom-shim.d.ts"],
+      "@google/model-viewer": ["src/shims/model-viewer-module.ts"]
     }
   },
-  "include": [
-    "types/**/*.d.ts",
-    "src/**/*.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "api/**/*.ts"
-  ],
+  "include": ["types/**/*.d.ts", "src/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "api/**/*.ts"],
   "compilerOptions_NOTE": "offscreencanvas ambient lives in types/",
   "exclude": [
     "dist",

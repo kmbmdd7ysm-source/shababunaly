@@ -35,9 +35,15 @@ const url = `${base}/api/public-quote-request`;
 const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
 const text = await res.text();
 let json = {};
-try { json = JSON.parse(text); } catch { json = { raw: text.slice(0, 400) }; }
+try {
+  json = JSON.parse(text);
+} catch {
+  json = { raw: text.slice(0, 400) };
+}
 
-console.log(JSON.stringify({ url, status: res.status, bypassProvided: Boolean(bypass), body: json }, null, 2));
+console.log(
+  JSON.stringify({ url, status: res.status, bypassProvided: Boolean(bypass), body: json }, null, 2),
+);
 
 if (res.status === 401 && json?.protection?.vercel_auth_enabled) {
   console.error('BLOCKED_EXTERNAL_VERCEL_PROTECTION');

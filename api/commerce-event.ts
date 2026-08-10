@@ -30,7 +30,8 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     }))
   )
     return;
-  const body = req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
+  const body =
+    req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
   const eventName = clean(body.eventName, 80).toLowerCase();
   if (!PUBLIC_EVENTS.has(eventName))
     return res.status(400).json({ ok: false, error: 'unsupported_public_event' });

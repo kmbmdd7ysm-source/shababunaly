@@ -1,10 +1,8 @@
 /* Domain CSS: domain-pwa-cookie.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: pwa-cookie-from-global.css ---- */
 
 /* from global */
-
 
 .cookie-banner {
   position: fixed;
@@ -27,8 +25,8 @@
   align-items: center;
 }
 .cookie-banner-inner {
-    grid-template-columns: 1fr auto;
-  }
+  grid-template-columns: 1fr auto;
+}
 
 .cookie-banner-text h2 {
   font-size: 1.05rem;
@@ -80,8 +78,8 @@
   text-transform: uppercase;
 }
 .site-header,
-  .site-footer,
-  .cookie-banner,
-  .announcement-bar {
-    display: none;
-  }
+.site-footer,
+.cookie-banner,
+.announcement-bar {
+  display: none;
+}

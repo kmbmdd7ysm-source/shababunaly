@@ -70,7 +70,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     }))
   )
     return;
-  const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+  const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+    string,
+    unknown
+  >;
   const quoteNumber = clean(body.quoteNumber, 80).toUpperCase();
   const method = clean(body.paymentMethod, 40).toLowerCase();
   const adapter = getPaymentAdapter(method);
@@ -82,10 +85,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const quote = await loadQuote(quoteNumber);
     const due = Number(quote.amount_due_now);
     const requestData = (quote.request_data || {}) as Record<string, unknown>;
-    const customerEmail = clean(
-      requestData.customerEmail || requestData.email,
-      320,
-    ).toLowerCase();
+    const customerEmail = clean(requestData.customerEmail || requestData.email, 320).toLowerCase();
     if (
       !PAYABLE_STATUSES.has(String(quote.status || '')) ||
       quote.currency !== 'USD' ||

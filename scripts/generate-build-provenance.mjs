@@ -62,14 +62,18 @@ const branch =
 const dirty = git(['status', '--porcelain'], '') !== '';
 const lockfileHash = (() => {
   try {
-    return createHash('sha256').update(readFileSync(join(root, 'package-lock.json'))).digest('hex');
+    return createHash('sha256')
+      .update(readFileSync(join(root, 'package-lock.json')))
+      .digest('hex');
   } catch {
     return 'missing';
   }
 })();
 let viteVersion = 'unknown';
 try {
-  viteVersion = JSON.parse(readFileSync(join(root, 'node_modules/vite/package.json'), 'utf8')).version;
+  viteVersion = JSON.parse(
+    readFileSync(join(root, 'node_modules/vite/package.json'), 'utf8'),
+  ).version;
 } catch {
   /* optional */
 }

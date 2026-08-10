@@ -5,11 +5,7 @@ import { resolveProductViewer } from '../../utils/productViewerTier.ts';
  * States, in the interface, what a product's imagery actually is.
  */
 
-export default function ViewingTierNote({
-  product,
-}: {
-  product?: Record<string, unknown> | null;
-}) {
+export default function ViewingTierNote({ product }: { product?: Record<string, unknown> | null }) {
   const { pick } = useLanguage();
   const { tier, images, frames, placeholder } = resolveProductViewer(product);
 

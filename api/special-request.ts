@@ -177,16 +177,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const captchaOk = await verifyTurnstileToken(
       clean(body.turnstileToken, 3000),
       String(
-        (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
-          req.socket?.remoteAddress ||
-          '',
+        (Array.isArray(forwarded) ? forwarded[0] : forwarded) || req.socket?.remoteAddress || '',
       ),
     );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const authHeader = req.headers?.authorization;
-    const user = await resolveSupabaseUser(
-      Array.isArray(authHeader) ? authHeader[0] : authHeader,
-    );
+    const user = await resolveSupabaseUser(Array.isArray(authHeader) ? authHeader[0] : authHeader);
     const idempotencyKey = /^[0-9a-f-]{36}$/i.test(clean(body.idempotencyKey, 36))
       ? clean(body.idempotencyKey, 36)
       : randomUUID();
@@ -198,9 +194,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         p_payload: payload,
       }),
     });
-    const requestRow = (
-      Array.isArray(created) ? created[0] : created
-    ) as Record<string, unknown> | null;
+    const requestRow = (Array.isArray(created) ? created[0] : created) as Record<
+      string,
+      unknown
+    > | null;
     if (!requestRow?.id) throw new Error('special_request_create_failed');
     const uploaded = [];
     for (const file of files) uploaded.push(await uploadFile(String(requestRow.id), file));

@@ -165,12 +165,11 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const client = /invalid_|required|unsupported_file|file_signature|file_mime|one_payment/.test(
       raw,
     );
-    const status =
-      client
-        ? 400
-        : error && typeof error === 'object' && 'status' in error
-          ? Number((error as { status?: unknown }).status || 503)
-          : 503;
+    const status = client
+      ? 400
+      : error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status || 503)
+        : 503;
     return res
       .status(status)
       .json({ ok: false, error: client ? raw.split(':').pop() : 'payment_proof_unavailable' });

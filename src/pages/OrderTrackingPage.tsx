@@ -17,8 +17,16 @@ export default function OrderTrackingPage(): ReactElement {
   const navigate = useNavigate();
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [lookup, setLookup] = useState<{ state: string; order: Record<string, unknown> | null; error: string | null }>({ state: 'idle', order: null, error: null });
-  const [ordersState, setOrdersState] = useState<{ state: string; orders: unknown[]; error: string | null }>({ state: 'idle', orders: [], error: null });
+  const [lookup, setLookup] = useState<{
+    state: string;
+    order: Record<string, unknown> | null;
+    error: string | null;
+  }>({ state: 'idle', order: null, error: null });
+  const [ordersState, setOrdersState] = useState<{
+    state: string;
+    orders: unknown[];
+    error: string | null;
+  }>({ state: 'idle', orders: [], error: null });
   const [turnstileToken, setTurnstileToken] = useState('');
 
   const load = useCallback(async () => {
@@ -67,12 +75,7 @@ export default function OrderTrackingPage(): ReactElement {
 
   return (
     <>
-      <Seo
-        title={ot.title || ''}
-        description={ot.sub || ''}
-        path="/order-tracking"
-        noindex
-      />
+      <Seo title={ot.title || ''} description={ot.sub || ''} path="/order-tracking" noindex />
       <section className="gw-world-headband" aria-labelledby="tracking-title">
         <div className="gw-cat-head-inner">
           <p className="gw-kicker">{ot.label}</p>
@@ -186,9 +189,7 @@ export default function OrderTrackingPage(): ReactElement {
                 <input
                   type="email"
                   value={email}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    setEmail(event.target.value)
-                  }
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
                   autoComplete="email"
                   required
                 />

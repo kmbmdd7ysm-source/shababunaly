@@ -93,7 +93,8 @@ const MAX_LOCAL_ROWS = 80;
 const nowIso = () => new Date().toISOString();
 const newId = (prefix: string): string =>
   `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`}`;
-const storageKey = (kind: string, userId?: string | null): string => `${STORAGE_PREFIX}:${kind}:${userId || 'guest'}`;
+const storageKey = (kind: string, userId?: string | null): string =>
+  `${STORAGE_PREFIX}:${kind}:${userId || 'guest'}`;
 
 function readLocal(kind: string, userId?: string | null): Row[] {
   if (!allowLocalPersistence) return [];
@@ -136,15 +137,15 @@ async function membershipIds(client: Supa | null, userId?: string | null): Promi
     .limit(20);
   if (error) return [];
   return [
-    ...new Set(
-      (data || [])
-        .map((row: Row) => String(row.organization_id || ''))
-        .filter(Boolean),
-    ),
+    ...new Set((data || []).map((row: Row) => String(row.organization_id || '')).filter(Boolean)),
   ];
 }
 
-async function cloudList(table: string, userId: string, order = 'updated_at'): Promise<Row[] | null> {
+async function cloudList(
+  table: string,
+  userId: string,
+  order = 'updated_at',
+): Promise<Row[] | null> {
   const client = await getSupabase();
   if (!userId || userId === 'guest') {
     if (allowLocalPersistence) return null;
@@ -157,7 +158,9 @@ async function cloudList(table: string, userId: string, order = 'updated_at'): P
   const organizations = await membershipIds(client, userId);
   let query = client.from(table).select('*');
   if (organizations.length) {
-    const organizationFilter = organizations.map((id: string) => `organization_id.eq.${id}`).join(',');
+    const organizationFilter = organizations
+      .map((id: string) => `organization_id.eq.${id}`)
+      .join(',');
     query = query.or(`user_id.eq.${userId},${organizationFilter}`) as typeof query;
   } else {
     query = query.eq('user_id', userId);
@@ -244,7 +247,9 @@ export async function saveCustomDesign({
       ...design,
       id: undefined,
       version: undefined,
-      logoPreview: String(design.logoPreview || '').startsWith('data:') ? null : design.logoPreview || null,
+      logoPreview: String(design.logoPreview || '').startsWith('data:')
+        ? null
+        : design.logoPreview || null,
     },
     preview_data: {
       primary: design.primary,
@@ -266,7 +271,13 @@ export async function saveCustomDesign({
   return upsertLocal('designs', userId, row);
 }
 
-export async function duplicateCustomDesign({ userId, design }: { userId: string; design: Row }): Promise<Row> {
+export async function duplicateCustomDesign({
+  userId,
+  design,
+}: {
+  userId: string;
+  design: Row;
+}): Promise<Row> {
   return saveCustomDesign({
     userId,
     design: { ...design, id: undefined, version: 1, created_at: undefined } as Row,
@@ -294,7 +305,7 @@ export async function saveRoster({
   rows = [],
   rosterId = null,
 }: SaveRosterInput): Promise<Row> {
-  const normalized = normalizeRoster(rows as import("../data/customization").RosterInput[]);
+  const normalized = normalizeRoster(rows as import('../data/customization').RosterInput[]);
   const row = {
     id: rosterId || newId('roster'),
     user_id: userId || null,
@@ -304,7 +315,10 @@ export async function saveRoster({
       .slice(0, 120),
     players: normalized,
     player_count: normalized.length,
-    validation_errors: normalized.reduce((sum: number, player: { errors: unknown[] }) => sum + player.errors.length, 0),
+    validation_errors: normalized.reduce(
+      (sum: number, player: { errors: unknown[] }) => sum + player.errors.length,
+      0,
+    ),
     created_at: nowIso(),
     updated_at: nowIso(),
   };
@@ -421,7 +435,11 @@ export async function listDesignVersions(designId: string): Promise<Row[]> {
   }
 }
 
-export async function respondToDesign({ designId, decision, note = '' }: RespondDesignInput): Promise<unknown> {
+export async function respondToDesign({
+  designId,
+  decision,
+  note = '',
+}: RespondDesignInput): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_respond_to_design', {
@@ -433,7 +451,11 @@ export async function respondToDesign({ designId, decision, note = '' }: Respond
   return data;
 }
 
-export async function respondToQuote({ quoteId, decision, note = '' }: RespondQuoteInput): Promise<unknown> {
+export async function respondToQuote({
+  quoteId,
+  decision,
+  note = '',
+}: RespondQuoteInput): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_respond_to_quote', {
@@ -464,7 +486,8 @@ export async function startQuotePayment({
   } catch {
     /* ignore */
   }
-  if (!response.ok || !result.url) throw new Error(String(result.error || 'quote_payment_session_failed'));
+  if (!response.ok || !result.url)
+    throw new Error(String(result.error || 'quote_payment_session_failed'));
   window.location.assign(String(result.url));
   return result;
 }
@@ -477,7 +500,12 @@ async function requireCloudUser(userId: string): Promise<Supa> {
   return client;
 }
 
-async function listForOrganizations(client: Supa, table: string, organizationIds: string[], order = 'created_at'): Promise<Row[]> {
+async function listForOrganizations(
+  client: Supa,
+  table: string,
+  organizationIds: string[],
+  order = 'created_at',
+): Promise<Row[]> {
   if (!organizationIds.length) return [];
   const { data, error } = await client
     .from(table)
@@ -497,7 +525,9 @@ export async function loadEnterpriseWorkspace(userId: string): Promise<Row> {
       cloudList('orders', userId, 'created_at').catch(() => [] as Row[]),
       cloudList('quote_requests', userId, 'created_at').catch(() => [] as Row[]),
       listForOrganizations(client, 'invoices', organizations).catch(() => [] as Row[]),
-      listForOrganizations(client, 'organization_contracts', organizations).catch(() => [] as Row[]),
+      listForOrganizations(client, 'organization_contracts', organizations).catch(
+        () => [] as Row[],
+      ),
       listForOrganizations(client, 'reorder_requests', organizations).catch(() => [] as Row[]),
       listForOrganizations(client, 'payment_proofs', organizations).catch(() => [] as Row[]),
       listForOrganizations(client, 'team_locker_stores', organizations).catch(() => [] as Row[]),
@@ -699,7 +729,9 @@ export async function submitPaymentProof({
   return data.proof;
 }
 
-export async function getTeamLocker(slug: string | undefined): Promise<{ store: Row | null; products: Row[] }> {
+export async function getTeamLocker(
+  slug: string | undefined,
+): Promise<{ store: Row | null; products: Row[] }> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const cleanSlug = String(slug || '')

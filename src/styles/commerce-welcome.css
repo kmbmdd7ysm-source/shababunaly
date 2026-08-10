@@ -1,6 +1,5 @@
 /* Currency welcome — owned by CurrencyWelcome */
 
-
 .commerce-welcome {
   position: fixed;
   inset: 0;
@@ -84,8 +83,8 @@
   font-size: 0.68rem;
 }
 .currency-welcome-options {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 .commerce-welcome-panel {
-    padding: 34px 22px;
-  }
+  padding: 34px 22px;
+}

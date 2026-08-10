@@ -434,12 +434,7 @@ export default function OperationsPage(): ReactElement | null {
                     ar: 'إدارة البراندات والتصنيفات والمستودعات والموردين وشركات الشحن من سجلات قاعدة بيانات محمية.',
                   })}
                 </p>
-                <MasterDataManager
-                  data={state}
-                  pick={pick}
-                  saving={Boolean(saving)}
-                  run={run}
-                />
+                <MasterDataManager data={state} pick={pick} saving={Boolean(saving)} run={run} />
               </section>
               <section className="operations-section">
                 <h2>{pick({ en: 'Warehouse stock ledger', ar: 'سجل حركة مخزون المستودعات' })}</h2>
@@ -450,12 +445,7 @@ export default function OperationsPage(): ReactElement | null {
                   saving={Boolean(saving)}
                   run={run}
                 />
-                <InventoryCsvManager
-                  state={state}
-                  pick={pick}
-                  saving={Boolean(saving)}
-                  run={run}
-                />
+                <InventoryCsvManager state={state} pick={pick} saving={Boolean(saving)} run={run} />
               </section>
               <section className="operations-section">
                 <h2>{pick({ en: 'Operations health', ar: 'صحة العمليات' })}</h2>
@@ -550,7 +540,12 @@ export default function OperationsPage(): ReactElement | null {
               <section className="operations-section">
                 <div className="section-heading-row">
                   <h2>{pick({ en: 'International shipping queue', ar: 'قائمة الشحن الدولي' })}</h2>
-                  <button className="btn-secondary" onClick={() => { void load(); }}>
+                  <button
+                    className="btn-secondary"
+                    onClick={() => {
+                      void load();
+                    }}
+                  >
                     {pick({ en: 'Refresh', ar: 'تحديث' })}
                   </button>
                 </div>

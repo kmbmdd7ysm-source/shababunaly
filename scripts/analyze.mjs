@@ -1,9 +1,18 @@
 import { build } from 'vite';
+import { existsSync } from 'node:fs';
 import { brotliCompressSync, gzipSync } from 'node:zlib';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
-await build();
+// Prefer analyzing the existing production dist. A second vite build here used to
+// wipe postbuild artifacts (dist/BUILD_PROVENANCE.json) and fail CI provenance checks.
+if (!existsSync('dist/index.html')) {
+  await build();
+  spawnSync(process.execPath, ['scripts/generate-build-provenance.mjs'], {
+    stdio: 'inherit',
+  });
+}
 
 const rows = [];
 async function walk(directory) {

@@ -92,7 +92,6 @@ const REFRESH_MS = 5 * 60 * 1000;
 const asRecord = (value: unknown): Record<string, unknown> =>
   value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
 
-
 const finiteNumber = (value: unknown): number | null => {
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
@@ -159,15 +158,14 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
   const wholesalePrices = variants
     .map((variant) => variant.wholesalePrice)
     .filter((value): value is number => value != null && Number.isFinite(value) && value > 0);
-  const unitPrice = retailPrices.length
-    ? Math.min(...retailPrices)
-    : Number(product.price);
+  const unitPrice = retailPrices.length ? Math.min(...retailPrices) : Number(product.price);
   const compareAt = comparePrices.length ? Math.min(...comparePrices) : product.compareAt;
   const wholesalePrice = wholesalePrices.length
     ? Math.min(...wholesalePrices)
     : Number(product.wholesalePrice);
 
-  const comingSoon = data.comingSoon == null ? Boolean(product.comingSoon) : Boolean(data.comingSoon);
+  const comingSoon =
+    data.comingSoon == null ? Boolean(product.comingSoon) : Boolean(data.comingSoon);
   const productName =
     data.nameEn || data.nameAr
       ? {
@@ -248,17 +246,12 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       ? Boolean(product.wholesaleAvailable)
       : Boolean(data.wholesaleAvailable);
   next.retailAvailable =
-    data.retailAvailable == null
-      ? Boolean(product.retailAvailable)
-      : Boolean(data.retailAvailable);
+    data.retailAvailable == null ? Boolean(product.retailAvailable) : Boolean(data.retailAvailable);
   next.customizable =
     data.customizable == null ? Boolean(product.customizable) : Boolean(data.customizable);
   next.largeEquipment =
-    data.largeEquipment == null
-      ? Boolean(product.largeEquipment)
-      : Boolean(data.largeEquipment);
-  next.madeInUSA =
-    data.madeInUSA == null ? Boolean(product.madeInUSA) : Boolean(data.madeInUSA);
+    data.largeEquipment == null ? Boolean(product.largeEquipment) : Boolean(data.largeEquipment);
+  next.madeInUSA = data.madeInUSA == null ? Boolean(product.madeInUSA) : Boolean(data.madeInUSA);
   next.deliveryProfile = readyToShip
     ? 'ready'
     : data.deliveryProfile || product.deliveryProfile || 'standard';
@@ -312,10 +305,7 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       const { data, error: queryError } = await client.rpc('get_public_product_catalog');
       if (queryError) throw queryError;
       if (!Array.isArray(data) || !data.length) throw new Error('catalog_empty');
-      const merged = mergeCatalogProducts(
-        staticProducts as CatalogProduct[],
-        data as CatalogRow[],
-      );
+      const merged = mergeCatalogProducts(staticProducts as CatalogProduct[], data as CatalogRow[]);
       if (!merged.length) throw new Error('catalog_empty');
       setProducts(merged);
       setStatus('ready');
@@ -393,7 +383,9 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       readyToShipProducts: () =>
         products.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY')),
       lhaStoreProducts: () =>
-        products.filter((product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha')),
+        products.filter(
+          (product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha'),
+        ),
       productsByCategory: (category: string) =>
         category === 'ready-to-ship'
           ? products.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY'))

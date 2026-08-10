@@ -28,17 +28,26 @@ export default function TeamLockerPage(): ReactElement | null {
     if (!auth.user?.id) return undefined;
     setState((current) => ({ ...current, loading: true, error: '' }));
     getTeamLocker(slug)
-      .then((result: { store: Record<string, unknown> | null; products: Array<Record<string, unknown>> }) => {
-        if (active)
-          setState({ loading: false, store: result.store, rows: result.products, error: '' });
-      })
+      .then(
+        (result: {
+          store: Record<string, unknown> | null;
+          products: Array<Record<string, unknown>>;
+        }) => {
+          if (active)
+            setState({ loading: false, store: result.store, rows: result.products, error: '' });
+        },
+      )
       .catch((error: unknown) => {
         if (active)
           setState({
             loading: false,
             store: null,
             rows: [],
-            error: String((error && typeof error === 'object' && 'message' in error ? (error as { message?: unknown }).message : error) || 'team_locker_unavailable'),
+            error: String(
+              (error && typeof error === 'object' && 'message' in error
+                ? (error as { message?: unknown }).message
+                : error) || 'team_locker_unavailable',
+            ),
           });
       });
     return () => {

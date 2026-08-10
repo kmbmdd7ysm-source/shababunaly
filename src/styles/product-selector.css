@@ -66,7 +66,9 @@
   gap: 0.55rem;
   align-content: start;
   cursor: pointer;
-  transition: transform 160ms ease, filter 160ms ease;
+  transition:
+    transform 160ms ease,
+    filter 160ms ease;
 }
 
 .gw-product-tile:hover,

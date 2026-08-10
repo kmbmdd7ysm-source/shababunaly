@@ -10,10 +10,15 @@ import {
 } from 'react';
 import { STORAGE_KEYS } from '../config.ts';
 import { useAuth } from './AuthContext';
-import { useCart } from './CartContext'
+import { useCart } from './CartContext';
 import type { CartItem } from './CartContext';
 import { useCompare } from './CompareContext';
-import { readScoped, writeScoped, createChannel, clearUserScope } from '../services/sync/storage.ts';
+import {
+  readScoped,
+  writeScoped,
+  createChannel,
+  clearUserScope,
+} from '../services/sync/storage.ts';
 import {
   fetchCloudState,
   upsertCloudState,
@@ -51,15 +56,13 @@ export type UserDataContextValue = {
 
 const C = createContext<UserDataContextValue | null>(null);
 const BASES = [
-    STORAGE_KEYS.cart,
-    STORAGE_KEYS.wishlist,
-    STORAGE_KEYS.compare,
-    STORAGE_KEYS.recentlyViewed,
-  ];
+  STORAGE_KEYS.cart,
+  STORAGE_KEYS.wishlist,
+  STORAGE_KEYS.compare,
+  STORAGE_KEYS.recentlyViewed,
+];
 const ids = (x: Array<string | IdItem> | null | undefined): string[] =>
-  (x || [])
-    .map((v) => (typeof v === 'string' ? v : v.id))
-    .filter((v): v is string => Boolean(v));
+  (x || []).map((v) => (typeof v === 'string' ? v : v.id)).filter((v): v is string => Boolean(v));
 export function UserDataProvider({ children }: { children?: ReactNode }) {
   const auth = useAuth(),
     cart = useCart(),
@@ -91,7 +94,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
   }, [cart.items, wishlist, compare.ids, recent, profile]);
   const apply = useCallback(
     (s: Record<string, unknown>) => {
-      cart.replaceItems(((s.cart as CartItem[]) || []));
+      cart.replaceItems((s.cart as CartItem[]) || []);
       compare.replace(ids(s.compare as Array<string | IdItem>).slice(0, MAX_COMPARE));
       setWishlist(normalizeIds((s.wishlist as Array<string | IdItem>) || []) as IdItem[]);
       setRecent(
@@ -109,9 +112,14 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
     channel.current?.close();
     channel.current = createChannel('shababuna-user-data-channel', (m) => {
       if (m.scope !== (uid || 'guest')) return;
-      if (m.type === 'wishlist') setWishlist(normalizeIds(m.payload as Array<string | IdItem>) as IdItem[]);
-      if (m.type === 'recent') setRecent(normalizeIds(m.payload as Array<string | IdItem>).slice(0, MAX_RECENT) as IdItem[]);
-      if (m.type === 'auth-signout' && uid && typeof auth.signOut === 'function') void auth.signOut();
+      if (m.type === 'wishlist')
+        setWishlist(normalizeIds(m.payload as Array<string | IdItem>) as IdItem[]);
+      if (m.type === 'recent')
+        setRecent(
+          normalizeIds(m.payload as Array<string | IdItem>).slice(0, MAX_RECENT) as IdItem[],
+        );
+      if (m.type === 'auth-signout' && uid && typeof auth.signOut === 'function')
+        void auth.signOut();
     });
     return () => channel.current?.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
@@ -149,10 +157,16 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
         const cloud = cloudResult.value || {};
         const profileResultValue =
           profileResult.status === 'fulfilled' ? profileResult.value || {} : {};
-        const { state, notices: nextNotices } = reconcileState(local as Record<string, unknown>, cloud as Record<string, unknown>);
+        const { state, notices: nextNotices } = reconcileState(
+          local as Record<string, unknown>,
+          cloud as Record<string, unknown>,
+        );
         apply({ ...state, profile: profileResultValue });
         setNotices(nextNotices);
-        await upsertCloudState(uid, { ...state, version: state.version } as Record<string, unknown>);
+        await upsertCloudState(uid, { ...state, version: state.version } as Record<
+          string,
+          unknown
+        >);
         version.current = Number(state.version || 0);
         hydrated.current = true;
         setStatus('synced');
@@ -250,7 +264,10 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
         if (m.type === 'state') await upsertCloudState(uid, m.payload as Record<string, unknown>);
       });
       const cloud = await fetchCloudState(uid);
-      const { state, notices: nextNotices } = reconcileState(snapshot() as Record<string, unknown>, (cloud || {}) as Record<string, unknown>);
+      const { state, notices: nextNotices } = reconcileState(
+        snapshot() as Record<string, unknown>,
+        (cloud || {}) as Record<string, unknown>,
+      );
       apply(state);
       setNotices(nextNotices);
       await persist(state as Record<string, unknown>);

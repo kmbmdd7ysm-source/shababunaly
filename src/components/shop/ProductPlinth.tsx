@@ -85,9 +85,7 @@ export default function ProductPlinth({
           ) : (
             <Price
               amount={Number(product.price) || 0}
-              compareAt={
-                product.compareAt == null ? null : Number(product.compareAt) || null
-              }
+              compareAt={product.compareAt == null ? null : Number(product.compareAt) || null}
             />
           )}
         </p>

@@ -14,8 +14,16 @@ const keyOf = (value: unknown): string =>
     .replace(/[^A-Za-z0-9_.:-]/g, '_')
     .slice(0, 80);
 
-type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
 export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -31,7 +39,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   )
     return;
   try {
-    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+      string,
+      unknown
+    >;
     if (
       !(await verifyTurnstileToken(
         body.turnstileToken,
@@ -85,7 +96,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       clearTimeout(timeout);
     }
   } catch (error: unknown) {
-    const code = clean((error && typeof error === 'object' && 'message' in error ? (error as {message?:unknown}).message : error) || error, 160);
+    const code = clean(
+      (error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error) || error,
+      160,
+    );
     const clientErrors = new Set([
       'too_many_files',
       'unsupported_file_type',

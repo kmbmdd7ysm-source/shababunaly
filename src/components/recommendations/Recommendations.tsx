@@ -6,11 +6,7 @@ import { useWishlist } from '../../hooks/useWishlist';
 import { useCart } from '../../context/CartContext';
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function Recommendations({
-  current,
-}: {
-  current?: RecommendProduct | null;
-}) {
+export default function Recommendations({ current }: { current?: RecommendProduct | null }) {
   const { products } = useCatalog();
   const { ids } = useRecentlyViewed(),
     w = useWishlist(),

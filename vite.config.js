@@ -52,7 +52,11 @@ export default defineConfig({
           // Keep react/helmet as shared early chunks.
           // Do NOT force `three` into a global chunk — that caused modulepreload
           // of WebGL on Home/Shop. Three must stay behind Customize dynamic import.
-          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/react-router')) {
+          if (
+            id.includes('node_modules/react-dom') ||
+            id.includes('node_modules/react/') ||
+            id.includes('node_modules/react-router')
+          ) {
             return 'react';
           }
           if (id.includes('node_modules/react-helmet-async')) return 'helmet';

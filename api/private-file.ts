@@ -32,8 +32,15 @@ async function signedStorageUrl(bucket: string, path: string) {
   return `${base}/storage/v1${data.signedURL}`;
 }
 
-type ApiReq = { method?: string; query?: Record<string, string | string[] | undefined>; headers: Record<string, string | string[] | undefined> };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown } };
+type ApiReq = {
+  method?: string;
+  query?: Record<string, string | string[] | undefined>;
+  headers: Record<string, string | string[] | undefined>;
+};
+type ApiRes = {
+  setHeader: (n: string, v: string) => void;
+  status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown };
+};
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res as never);
   res.setHeader('Cache-Control', 'no-store, private');

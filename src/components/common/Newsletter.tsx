@@ -84,7 +84,11 @@ export default function Newsletter({ compact = false }: { compact?: boolean } = 
         </button>
       </div>
       <label className="newsletter-consent">
-        <input type="checkbox" checked={consent} onChange={(e: ChangeEvent<HTMLInputElement>) => setConsent(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setConsent(e.target.checked)}
+        />
         <span>{newsletter.consent}</span>
       </label>
       <TurnstileWidget

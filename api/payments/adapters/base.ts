@@ -5,11 +5,7 @@ export const clean = (value: unknown, max = 1000): string =>
     .trim()
     .slice(0, max);
 
-export function verifyHmacSha256(
-  raw: Buffer | string,
-  secret: string,
-  header: unknown,
-): boolean {
+export function verifyHmacSha256(raw: Buffer | string, secret: string, header: unknown): boolean {
   if (!secret || !header) return false;
   const candidate = clean(header, 5000).replace(/^sha256=/i, '');
   const expectedHex = crypto.createHmac('sha256', secret).update(raw).digest('hex');
@@ -29,9 +25,7 @@ export function normalizeProviderEvent(
 ) {
   const source = payload && typeof payload === 'object' ? (payload as Record<string, unknown>) : {};
   const dataObj =
-    source.data && typeof source.data === 'object'
-      ? (source.data as Record<string, unknown>)
-      : {};
+    source.data && typeof source.data === 'object' ? (source.data as Record<string, unknown>) : {};
   const object =
     dataObj.object && typeof dataObj.object === 'object'
       ? (dataObj.object as Record<string, unknown>)
@@ -155,7 +149,12 @@ async function providerRequest({
     return data;
   } catch (error: unknown) {
     clearTimeout(timeout);
-    if (error && typeof error === 'object' && 'name' in error && (error as { name?: string }).name === 'AbortError')
+    if (
+      error &&
+      typeof error === 'object' &&
+      'name' in error &&
+      (error as { name?: string }).name === 'AbortError'
+    )
       throw Object.assign(new Error('provider_timeout'), { status: 504 });
     throw error;
   }
