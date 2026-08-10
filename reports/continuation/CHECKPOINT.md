@@ -1,14 +1,13 @@
 # Continuation checkpoint
 
-- SHA: `ceba720d680d191b48e06873f7b851c9f57bad77`
-- TypeScript: **99.66%** — `loadModelViewer.js` bridge only
-- operations.ts · Realtime3DEngine.tsx COMPLETE
-- Quick-add EN/AR continuum PASS
-- Vercel preview API probe: **401 SSO** (BLOCKED)
+- SHA: `b4659acaf4c23f89c2e73922193d013fea3212a1`
+- In-repo solvable master rebuild: **COMPLETE**
+- Validators restored for TSX migration: PASS
+- External remaining: Vercel SSO · Supabase inventory · human AR review
 **NOT FINAL COMPLETE**
 
-## Exact next unfinished
-1. Human unlock of Vercel Deployment Protection OR bypass token for API E2E
-2. Supabase credentials / verified inventory for Ready-to-Ship > 0
-3. Human Arabic review
-4. Then FINAL COMPLETE from that SHA
+## Exact next unfinished (external/human only)
+1. Disable/bypass Vercel Deployment Protection for preview API E2E
+2. Provide verified Libya inventory / Supabase
+3. Approve arabic-review-manifest sections (human)
+4. Regenerate RELEASE_VERDICT → FINAL COMPLETE
