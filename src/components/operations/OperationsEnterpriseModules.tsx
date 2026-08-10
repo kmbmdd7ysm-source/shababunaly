@@ -77,7 +77,7 @@ export function EnterpriseOperationsPanel({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'enterprise-contract',
               createContract,
               pick({ en: 'Contract created.', ar: 'تم إنشاء العقد.' }),
@@ -137,7 +137,7 @@ export function EnterpriseOperationsPanel({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'enterprise-locker',
               createLocker,
               pick({ en: 'Team locker created.', ar: 'تم إنشاء متجر الفريق.' }),
@@ -214,7 +214,7 @@ export function EnterpriseOperationsPanel({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'enterprise-locker-product',
               addLockerProduct,
               pick({ en: 'Locker product added.', ar: 'تمت إضافة المنتج للمتجر.' }),
@@ -324,7 +324,7 @@ export function EnterpriseOperationsPanel({
                 aria-label={pick({ en: 'Reorder status', ar: 'حالة إعادة الطلب' })}
                 value={String(row.status ?? '')}
                 onChange={(event) =>
-                  run(
+                  void run(
                     `reorder-${row.id}`,
                     () =>
                       upsertOperationalEntity('reorder_requests', {
@@ -365,7 +365,7 @@ function PaymentProofReviewCard({
 }): ReactElement {
   const [note, setNote] = useState('');
   const review = (status: string) =>
-    run(
+    void run(
       `payment-proof-${String(proof.id ?? '')}-${status}`,
       () => reviewPaymentProof({ proofId: String(proof.id || ''), status, note }),
       pick({

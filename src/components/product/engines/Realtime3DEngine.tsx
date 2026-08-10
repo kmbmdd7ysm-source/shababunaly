@@ -1,5 +1,11 @@
 import './loadModelViewer.ts';
-import { useEffect, useState, type ReactElement } from 'react';
+import {
+  useEffect,
+  useState,
+  type DetailedHTMLProps,
+  type HTMLAttributes,
+  type ReactElement,
+} from 'react';
 import type { LocaleValue } from '../../../context/LanguageContext';
 import StaticMediaEngine from './StaticMediaEngine';
 
@@ -13,11 +19,12 @@ type Realtime3DEngineProps = {
   pick: PickFn;
 };
 
+/* eslint-disable @typescript-eslint/no-namespace -- model-viewer custom element typing */
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
+      'model-viewer': DetailedHTMLProps<
+        HTMLAttributes<HTMLElement> & {
           src?: string;
           alt?: string;
           'camera-controls'?: boolean;
@@ -31,6 +38,7 @@ declare global {
     }
   }
 }
+/* eslint-enable @typescript-eslint/no-namespace */
 
 /**
  * Level A — verified real-time 3D from .glb/.gltf.

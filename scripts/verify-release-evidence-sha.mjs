@@ -61,7 +61,6 @@ for (const file of required) {
   const text = readFileSync(file, 'utf8');
   const found = [...new Set([...text.matchAll(shaRe)].map((m) => m[0]))];
   if (!found.includes(canonical)) failures.push(`${file}: missing canonical sha`);
-  const bad = found.filter((s) => s !== canonical && s !== head);
   // Allow HEAD itself if evidence commit differs from implementation sha
   const unexpected = found.filter((s) => s !== canonical && !recent.includes(s));
   if (unexpected.length) failures.push(`${file}: unexpected SHAs ${unexpected.join(', ')}`);

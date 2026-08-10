@@ -100,8 +100,8 @@ export function ReturnOperationsCard({
       <button
         className="btn-secondary"
         disabled={saving === updateKey || status === request.status}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             updateKey,
             () =>
               updateReturnRequest({
@@ -116,8 +116,8 @@ export function ReturnOperationsCard({
               en: 'Return updated and customer notified.',
               ar: 'تم تحديث الإرجاع وإشعار العميل.',
             }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Save Return', ar: 'حفظ الإرجاع' })}
       </button>
@@ -142,8 +142,8 @@ export function ReturnOperationsCard({
           <button
             className="btn-primary compact"
             disabled={saving === refundKey || !refundAmount || Number(refundAmount) > refundable}
-            onClick={() =>
-              run(
+            onClick={() => {
+              void run(
                 refundKey,
                 () =>
                   recordRefund({
@@ -157,8 +157,8 @@ export function ReturnOperationsCard({
                   en: 'Refund completed and customer notified.',
                   ar: 'تم رد المبلغ وإشعار العميل.',
                 }),
-              )
-            }
+              );
+            }}
           >
             {pick({ en: 'Confirm Refund', ar: 'تأكيد رد المبلغ' })}
           </button>

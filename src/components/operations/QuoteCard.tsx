@@ -114,8 +114,8 @@ export function QuoteCard({
       <button
         className="btn-secondary"
         disabled={saving === key}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             key,
             () =>
               updateQuoteWorkflow({
@@ -127,8 +127,8 @@ export function QuoteCard({
                 discountTotal: values.discount as string | number,
               }),
             pick({ en: 'Quote saved with verified total.', ar: 'تم حفظ العرض بإجمالي متحقق منه.' }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Save Quote', ar: 'حفظ العرض' })}
       </button>
@@ -161,8 +161,8 @@ export function QuoteCard({
           <button
             className="btn-primary compact"
             disabled={saving === paymentKey || Number(payment) !== Number(quote.amount_due_now)}
-            onClick={() =>
-              run(
+            onClick={() => {
+              void run(
                 paymentKey,
                 () =>
                   recordQuotePayment({
@@ -172,8 +172,8 @@ export function QuoteCard({
                     reference,
                   }),
                 pick({ en: 'Quote payment recorded securely.', ar: 'تم تسجيل دفعة العرض بأمان.' }),
-              )
-            }
+              );
+            }}
           >
             {pick({ en: 'Confirm Payment', ar: 'تأكيد الدفع' })}
           </button>

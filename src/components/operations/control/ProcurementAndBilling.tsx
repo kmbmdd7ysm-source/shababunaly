@@ -59,7 +59,7 @@ export default function ProcurementAndBilling({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'purchase-order',
               () =>
                 upsertOperationalEntity('purchase_orders', {
@@ -117,7 +117,7 @@ export default function ProcurementAndBilling({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'invoice',
               () =>
                 upsertOperationalEntity('invoices', {

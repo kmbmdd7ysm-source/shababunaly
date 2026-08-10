@@ -59,8 +59,8 @@ export function DesignProofCard({
         type="button"
         className="btn-secondary compact"
         disabled={locked || saving === `${key}-upload` || !proofFiles.length}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             `${key}-upload`,
             () =>
               uploadDesignProofFiles({
@@ -72,8 +72,8 @@ export function DesignProofCard({
               en: 'Proof files uploaded to private quarantine for malware scanning.',
               ar: 'تم رفع ملفات البروفة إلى الحجر الخاص لفحصها.',
             }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Upload & Scan', ar: 'رفع وفحص' })}
       </button>
@@ -97,8 +97,8 @@ export function DesignProofCard({
       <button
         className="btn-secondary"
         disabled={locked || saving === key || !proofUrls.trim()}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             key,
             () =>
               publishDesignProof({
@@ -110,8 +110,8 @@ export function DesignProofCard({
               en: 'Proof published and email notification queued.',
               ar: 'تم نشر البروفة وإضافة إشعار البريد.',
             }),
-          )
-        }
+          );
+        }}
       >
         {locked
           ? pick({ en: 'Approved & locked', ar: 'معتمد ومقفل' })

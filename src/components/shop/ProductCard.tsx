@@ -15,10 +15,9 @@ import ColorSwatch from '../common/ColorSwatch';
 import QuickAddSheet from './QuickAddSheet';
 import '../../styles/product-card.css';
 import { getCompareAction } from '../../utils/productOptions';
-import { getVariantPurchaseLimit, type VariantLike } from '../../utils/productEligibility';
 import type { LocaleText } from '../../types/i18n';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability.ts';
-import type { ProductLike } from '../../utils/productEligibility.ts';
+import { getVariantPurchaseLimit, type ProductLike, type VariantLike } from '../../utils/productEligibility.ts';
 import '../../styles/domain-media.css';
 
 type CardColor = {

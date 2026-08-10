@@ -56,7 +56,7 @@ export default function CatalogDraftManager({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'catalog-product-create',
               () => createCatalogProductDraft(product),
               pick({ en: 'Draft product created safely.', ar: 'تم إنشاء المنتج كمسودة آمنة.' }),
@@ -160,7 +160,7 @@ export default function CatalogDraftManager({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'catalog-variant-create',
               () => addCatalogVariantDraft(variant),
               pick({ en: 'Draft variant added.', ar: 'تمت إضافة الخيار كمسودة.' }),
@@ -211,13 +211,13 @@ export default function CatalogDraftManager({
                 type="button"
                 className="btn-text danger"
                 disabled={saving === `archive-${String(id)}`}
-                onClick={() =>
-                  run(
+                onClick={() => {
+                  void run(
                     `archive-${String(id)}`,
                     () => archiveCatalogProduct(id),
                     pick({ en: 'Product archived.', ar: 'تمت أرشفة المنتج.' }),
-                  )
-                }
+                  );
+                }}
               >
                 {pick({ en: 'Archive', ar: 'أرشفة' })}
               </button>

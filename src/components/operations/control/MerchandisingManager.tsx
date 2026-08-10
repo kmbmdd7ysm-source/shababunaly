@@ -51,7 +51,7 @@ export default function MerchandisingManager({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'collection',
               () => upsertOperationalEntity('catalog_collections', collection),
               pick({ en: 'Collection saved.', ar: 'تم حفظ المجموعة.' }),
@@ -98,7 +98,7 @@ export default function MerchandisingManager({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'coupon',
               () =>
                 upsertOperationalEntity('coupons', {
@@ -147,7 +147,7 @@ export default function MerchandisingManager({
           className="operations-card"
           onSubmit={(event) => {
             event.preventDefault();
-            run(
+            void run(
               'tax-rule',
               () =>
                 upsertOperationalEntity('tax_rules', {

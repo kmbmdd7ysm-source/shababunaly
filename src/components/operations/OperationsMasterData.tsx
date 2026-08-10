@@ -174,7 +174,7 @@ function MasterEntityCard({
         <button
           className="btn-primary compact"
           disabled={saving === key || !Object.values(values)[0]}
-          onClick={save}
+          onClick={() => { void save(); }}
         >
           {pick({ en: 'Save', ar: 'حفظ' })}
         </button>
@@ -182,13 +182,13 @@ function MasterEntityCard({
           <button
             className="btn-secondary compact"
             disabled={saving === `${key}-delete`}
-            onClick={() =>
-              run(
+            onClick={() => {
+              void run(
                 `${key}-delete`,
                 () => deleteOperationalEntity(table, selected),
                 pick({ en: 'Record deleted.', ar: 'تم حذف السجل.' }),
-              )
-            }
+              );
+            }}
           >
             {pick({ en: 'Delete', ar: 'حذف' })}
           </button>
@@ -269,8 +269,8 @@ export function StockMovementManager({
       <button
         className="btn-primary compact"
         disabled={saving === 'stock-movement' || !warehouseId || !variantId || !quantity}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             'stock-movement',
             () =>
               recordStockMovement({
@@ -284,8 +284,8 @@ export function StockMovementManager({
               en: 'Stock movement recorded in the immutable ledger.',
               ar: 'تم تسجيل حركة المخزون في السجل غير القابل للتلاعب.',
             }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Record Movement', ar: 'تسجيل الحركة' })}
       </button>
@@ -361,13 +361,13 @@ export function ShippingRatesManager({
       <button
         className="btn-primary compact"
         disabled={saving === key || (active && rate === '')}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             key,
             () => setCountryShippingRate({ countryCode, rateUsd: rate, active, note }),
             pick({ en: 'Country shipping rate saved.', ar: 'تم حفظ سعر شحن الدولة.' }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Save Country Rate', ar: 'حفظ سعر الدولة' })}
       </button>
@@ -454,8 +454,8 @@ export function HeroContentManager({
       <button
         className="btn-primary compact"
         disabled={saving === 'site-home-hero' || !valid(desktopVideoUrl) || !valid(mobileVideoUrl)}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             'site-home-hero',
             () =>
               updateSiteContent({
@@ -464,8 +464,8 @@ export function HeroContentManager({
                 publicRead: true,
               }),
             pick({ en: 'Hero media settings saved.', ar: 'تم حفظ إعدادات وسائط الهيرو.' }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Save Hero Media', ar: 'حفظ وسائط الهيرو' })}
       </button>

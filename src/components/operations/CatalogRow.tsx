@@ -85,8 +85,8 @@ export function CatalogRow({
         <button
           className="btn-secondary compact"
           disabled={saving === key}
-          onClick={() =>
-            run(
+          onClick={() => {
+            void run(
               key,
               () =>
                 updateCatalogVariant({
@@ -98,8 +98,8 @@ export function CatalogRow({
                   active: values.active,
                 }),
               pick({ en: 'Catalog variant saved.', ar: 'تم حفظ خيار المنتج.' }),
-            )
-          }
+            );
+          }}
         >
           {pick({ en: 'Save', ar: 'حفظ' })}
         </button>

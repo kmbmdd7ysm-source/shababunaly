@@ -155,6 +155,11 @@ export default function SpinsetEngine({
       <div
         ref={stage}
         className="gw-spin-stage"
+        role="slider"
+        aria-valuemin={1}
+        aria-valuemax={sequence.length}
+        aria-valuenow={index + 1}
+        aria-label={pick({ en: 'Spin frame', ar: 'إطار الدوران' })}
         tabIndex={0}
         onKeyDown={(event) => {
           if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {

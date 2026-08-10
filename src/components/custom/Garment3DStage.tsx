@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property -- R3F/Three.js host props (args, castShadow, etc.) */
 import type { ReactElement } from 'react';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';

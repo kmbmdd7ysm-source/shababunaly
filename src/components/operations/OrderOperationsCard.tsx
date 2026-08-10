@@ -71,8 +71,8 @@ export function OrderOperationsCard({
       <button
         className="btn-secondary"
         disabled={saving === workflowKey || nextStatus === order.order_status}
-        onClick={() =>
-          run(
+        onClick={() => {
+          void run(
             workflowKey,
             () =>
               updateOrderWorkflow({
@@ -85,8 +85,8 @@ export function OrderOperationsCard({
               en: 'Order status saved and notification queued.',
               ar: 'تم حفظ حالة الطلب وإضافة الإشعار.',
             }),
-          )
-        }
+          );
+        }}
       >
         {pick({ en: 'Update Status', ar: 'تحديث الحالة' })}
       </button>
@@ -116,8 +116,8 @@ export function OrderOperationsCard({
           <button
             className="btn-primary compact"
             disabled={saving === paymentKey || !payment}
-            onClick={() =>
-              run(
+            onClick={() => {
+              void run(
                 paymentKey,
                 () =>
                   recordManualPayment({
@@ -127,8 +127,8 @@ export function OrderOperationsCard({
                     reference,
                   }),
                 pick({ en: 'Payment recorded securely.', ar: 'تم تسجيل الدفعة بأمان.' }),
-              )
-            }
+              );
+            }}
           >
             {pick({ en: 'Confirm Payment', ar: 'تأكيد الدفع' })}
           </button>
@@ -156,8 +156,8 @@ export function OrderOperationsCard({
           <button
             className="btn-secondary compact"
             disabled={saving === refundKey || !refund || Number(refund) > refundable}
-            onClick={() =>
-              run(
+            onClick={() => {
+              void run(
                 refundKey,
                 () =>
                   recordRefund({
@@ -170,8 +170,8 @@ export function OrderOperationsCard({
                   en: 'Refund recorded and customer notification queued.',
                   ar: 'تم تسجيل الاسترداد وإضافة إشعار العميل.',
                 }),
-              )
-            }
+              );
+            }}
           >
             {pick({ en: 'Confirm Refund', ar: 'تأكيد الاسترداد' })}
           </button>
