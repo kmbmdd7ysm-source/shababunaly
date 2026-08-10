@@ -11,9 +11,14 @@ vi.mock('../../src/context/LanguageContext', () => ({
   }),
 }));
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render as rtlRender, screen } from '@testing-library/react';
 import { within } from '@testing-library/dom';
+import { MemoryRouter } from 'react-router-dom';
 import ProductViewer from '../../src/components/product/ProductViewer';
+
+function renderViewer(ui) {
+  return rtlRender(<MemoryRouter>{ui}</MemoryRouter>);
+}
 import {
   MIN_SPIN_FRAMES,
   isPlaceholderMedia,
@@ -115,7 +120,7 @@ describe('product-viewing tier resolution', () => {
 describe('ProductViewer', () => {
   test('a single verified image offers no rotation and says what it is', () => {
     activeLanguage = 'en';
-    const { container } = render(<ProductViewer product={{ ...base, image: '/a.webp' }} />);
+    const { container } = renderViewer(<ProductViewer product={{ ...base, image: '/a.webp' }} />);
     expect(container.querySelector('.gw-viewer')).toHaveAttribute('data-tier', 'D');
     expect(screen.getByText('Single verified photograph')).toBeVisible();
     // No fake rotation controls are offered.
@@ -124,7 +129,7 @@ describe('ProductViewer', () => {
 
   test('multi-angle is labelled as NOT a 360 and switches views', () => {
     activeLanguage = 'en';
-    render(
+    renderViewer(
       <ProductViewer
         product={{ ...base, image: '/a.webp', hoverImage: '/b.webp', gallery: ['/c.webp'] }}
       />,
@@ -139,7 +144,7 @@ describe('ProductViewer', () => {
 
   test('a real turntable is labelled as a 360 and is keyboard operable', () => {
     activeLanguage = 'en';
-    render(
+    renderViewer(
       <ProductViewer product={{ ...base, image: '/a.webp', spin360: frames(MIN_SPIN_FRAMES) }} />,
     );
     expect(screen.getByText(/360° photographed turntable/i)).toBeVisible();
@@ -164,7 +169,7 @@ describe('ProductViewer', () => {
 
   test('arrow keys follow the reading direction in Arabic', () => {
     activeLanguage = 'ar';
-    render(<ProductViewer product={{ ...base, image: '/a.webp', hoverImage: '/b.webp' }} eager />);
+    renderViewer(<ProductViewer product={{ ...base, image: '/a.webp', hoverImage: '/b.webp' }} eager />);
     expect(screen.getByText(/ليست نموذجًا/)).toBeVisible();
     const stage = screen.getByRole('group', { name: 'عروض المنتج' });
     // In RTL, "forward" is ArrowLeft.
@@ -179,7 +184,7 @@ describe('ProductViewer', () => {
     activeLanguage = 'en';
     // No verified assets at all: the viewer must fall back to whatever the
     // product does have, and must never offer rotation controls.
-    const { container } = render(
+    const { container } = renderViewer(
       <ProductViewer product={{ ...base, image: '/images/catalog/apparel.svg' }} />,
     );
     expect(container.querySelector('.gw-viewer')).toHaveAttribute('data-tier', 'D');
@@ -193,7 +198,7 @@ describe('ProductViewer', () => {
 
   test('view labels fall back gracefully beyond the named set', () => {
     activeLanguage = 'en';
-    render(
+    renderViewer(
       <ProductViewer
         product={{
           ...base,
