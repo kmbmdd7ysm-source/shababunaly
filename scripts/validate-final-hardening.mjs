@@ -304,7 +304,7 @@ for (const token of [
   'DecompressionStream',
 ])
   has(spreadsheet, token, `XLSX roster ${token}`);
-const designExports = read('src/utils/designExports.js');
+const designExports = read('src/utils/designExports.ts');
 for (const token of [
   'buildProductionPackage',
   'artwork/${view}.svg',

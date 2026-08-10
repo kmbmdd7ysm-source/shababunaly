@@ -14,7 +14,7 @@ import {
   parseRosterFile,
   ROSTER_FILE_ACCEPT,
 } from '../src/utils/rosterSpreadsheet.ts';
-import { createStoreZip } from '../src/utils/designExports.js';
+import { createStoreZip } from '../src/utils/designExports.ts';
 import { createTextPdf, downloadBlob, downloadDesignDocuments } from '../src/utils/simplePdf.ts';
 import { createDefaultStudio } from '../src/services/designStudio.ts';
 import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';

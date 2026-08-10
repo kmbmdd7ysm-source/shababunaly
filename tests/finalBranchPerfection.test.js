@@ -25,7 +25,7 @@ import {
   __setSupabaseBuildEnvForTests,
   __setSupabaseClientFactoryForTests,
 } from '../src/services/supabase.ts';
-import { productShape, buildDesignViewSvg, createStoreZip } from '../src/utils/designExports.js';
+import { productShape, buildDesignViewSvg, createStoreZip } from '../src/utils/designExports.ts';
 import {
   parseWorksheet,
   resolveFirstWorksheet,

@@ -1,3 +1,24 @@
+type DesignLike = { [key: string]: unknown };
+type LayerLike = {
+  view?: string;
+  visible?: boolean;
+  zIndex?: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  type?: string;
+  content?: string;
+  color?: string;
+  rotation?: number;
+  label?: string;
+};
+type StudioLike = {
+  layers?: LayerLike[];
+  showSafeArea?: boolean;
+  showBleedArea?: boolean;
+  comments?: unknown;
+};
+
 import { getCustomProductType, rosterToCsv } from '../data/customization.ts';
 import { DESIGN_VIEWS, normalizeStudio } from '../services/designStudio.ts';
 import {
@@ -7,17 +28,17 @@ import {
 } from '../services/productionPreflight.ts';
 
 const enc = new TextEncoder();
-export const escapeXml = (value) =>
+export const escapeXml = (value: unknown): string =>
   String(value ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
-export const safeHex = (value, fallback) =>
-  /^#[0-9a-f]{6}$/i.test(String(value || '')) ? value : fallback;
+export const safeHex = (value: unknown, fallback: string): string =>
+  /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value) : fallback;
 
-export function productShape(preview, fill, stroke, accent, view) {
+export function productShape(preview: string, fill: string, stroke: string, accent: string, view: string): string {
   const side = view === 'side';
   const transform = side ? 'translate(165 50) scale(.58 1)' : 'translate(55 38)';
   const top = `<g transform="${transform}"><path d="M126 20L190 60H300L364 20L456 96L416 180L374 152V548H116V152L74 180L34 96Z" fill="${fill}" stroke="${stroke}" stroke-width="7"/><path d="M190 60Q245 132 300 60" fill="none" stroke="${stroke}" stroke-width="14"/></g>`;
@@ -42,30 +63,37 @@ export function productShape(preview, fill, stroke, accent, view) {
   return top;
 }
 
-/** @param {{design?:any,studio?:any,view?:string,productLabel?:string}} [options] */
 export function buildDesignViewSvg({
   design = {},
   studio = {},
   view = 'front',
   productLabel = '',
-} = {}) {
-  const normalized = normalizeStudio(studio, design);
-  const product = getCustomProductType(design.productType);
+}: {
+  design?: DesignLike;
+  studio?: StudioLike;
+  view?: string;
+  productLabel?: string;
+} = {}): string {
+  const normalized = normalizeStudio(studio as never, design as never);
+  const product = getCustomProductType(String(design.productType || ''));
   const primary = safeHex(design.primary, '#050505');
   const secondary = safeHex(design.secondary, '#ffffff');
   const accent = safeHex(design.accent, '#d6d6d6');
-  const visible = normalized.layers
+  const visible = ((normalized.layers || []) as unknown as LayerLike[])
     .filter((layer) => layer.view === view && layer.visible)
-    .sort((a, b) => a.zIndex - b.zIndex);
+    .sort((a, b) => Number(a.zIndex) - Number(b.zIndex));
   const layers = visible
-    .map((layer) => {
-      const x = layer.x * 6;
-      const y = layer.y * 7.2;
-      const width = layer.width * 6;
-      if (layer.type === 'logo' && /^data:image\/(png|jpeg|webp);base64,/i.test(layer.content))
-        return `<image href="${escapeXml(layer.content)}" x="${x - width / 2}" y="${y - width / 2}" width="${width}" height="${width}" preserveAspectRatio="xMidYMid meet" transform="rotate(${layer.rotation} ${x} ${y})"/>`;
+    .map((layer: LayerLike) => {
+      const x = Number(layer.x) * 6;
+      const y = Number(layer.y) * 7.2;
+      const width = Number(layer.width) * 6;
+      if (
+        layer.type === 'logo' &&
+        /^data:image\/(png|jpeg|webp);base64,/i.test(String(layer.content || ''))
+      )
+        return `<image href="${escapeXml(layer.content || '')}" x="${x - width / 2}" y="${y - width / 2}" width="${width}" height="${width}" preserveAspectRatio="xMidYMid meet" transform="rotate(${Number(layer.rotation) || 0} ${x} ${y})"/>`;
       const size = Math.max(14, width * (layer.type === 'number' ? 0.72 : 0.28));
-      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" fill="${safeHex(layer.color, secondary)}" font-family="Arial Black,Arial,sans-serif" font-size="${size}" font-weight="900" transform="rotate(${layer.rotation} ${x} ${y})">${escapeXml(layer.content || '')}</text>`;
+      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" fill="${safeHex(layer.color || secondary, secondary)}" font-family="Arial Black,Arial,sans-serif" font-size="${size}" font-weight="900" transform="rotate(${Number(layer.rotation) || 0} ${x} ${y})">${escapeXml(layer.content || '')}</text>`;
     })
     .join('');
   const safe = normalized.showSafeArea
@@ -74,7 +102,7 @@ export function buildDesignViewSvg({
   const bleed = normalized.showBleedArea
     ? '<rect x="20" y="20" width="560" height="680" fill="none" stroke="#d94141" stroke-width="2" stroke-dasharray="8 7" opacity=".8"/>'
     : '';
-  return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 720" width="600" height="720"><title>${escapeXml(productLabel || product.label.en)} — ${escapeXml(view)}</title><rect width="600" height="720" fill="#111111"/>${productShape(product.preview, primary, secondary, accent, view)}${bleed}${safe}${layers}<text x="300" y="700" text-anchor="middle" fill="#ffffff" opacity=".55" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">SHABABUNA · ${escapeXml(view.toUpperCase())} · PRODUCTION ARTWORK</text></svg>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 720" width="600" height="720"><title>${escapeXml(productLabel || String((product.label as { en?: string }).en || ''))} — ${escapeXml(view)}</title><rect width="600" height="720" fill="#111111"/>${productShape(product.preview, primary, secondary, accent, view)}${bleed}${safe}${layers}<text x="300" y="700" text-anchor="middle" fill="#ffffff" opacity=".55" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">SHABABUNA · ${escapeXml(view.toUpperCase())} · PRODUCTION ARTWORK</text></svg>`;
 }
 
 const CRC_TABLE = (() => {
@@ -86,21 +114,21 @@ const CRC_TABLE = (() => {
   }
   return table;
 })();
-export function crc32(bytes) {
+export function crc32(bytes: Uint8Array | number[]): number {
   let c = 0xffffffff;
-  for (const byte of bytes) c = CRC_TABLE[(c ^ byte) & 0xff] ^ (c >>> 8);
+  for (const byte of bytes) c = Number(CRC_TABLE[(c ^ byte) & 0xff] ?? 0) ^ (c >>> 8);
   return (c ^ 0xffffffff) >>> 0;
 }
-export function u16(value) {
+export function u16(value: number): number[] {
   return [value & 255, (value >>> 8) & 255];
 }
-export function u32(value) {
+export function u32(value: number): number[] {
   return [value & 255, (value >>> 8) & 255, (value >>> 16) & 255, (value >>> 24) & 255];
 }
 
-export function createStoreZip(files) {
-  const localParts = [];
-  const centralParts = [];
+export function createStoreZip(files: Array<{ name: string; data: Uint8Array | string }>): Blob {
+  const localParts: Uint8Array[] = [];
+  const centralParts: Uint8Array[] = [];
   let offset = 0;
   for (const file of files) {
     const name = enc.encode(String(file.name).replace(/^\/+/, ''));
@@ -170,7 +198,7 @@ export function createStoreZip(files) {
     centralParts.push(central);
     offset += local.length;
   }
-  const centralSize = centralParts.reduce((sum, part) => sum + part.length, 0);
+  const centralSize = centralParts.reduce((sum: number, part) => sum + part.length, 0);
   const end = new Uint8Array([
     80,
     75,
@@ -187,26 +215,31 @@ export function createStoreZip(files) {
     0,
     0,
   ]);
-  return new Blob([...localParts, ...centralParts, end], { type: 'application/zip' });
+  return new Blob([...localParts, ...centralParts, end] as BlobPart[], { type: 'application/zip' });
 }
 
-/** @param {{design?:any,studio?:any,roster?:any[],reference?:string,productLabel?:string}} [options] */
 export function buildProductionPackage({
   design = {},
   studio = {},
   roster = [],
   reference = 'DRAFT',
   productLabel = '',
-} = {}) {
-  const normalized = normalizeStudio(studio, design);
-  const factorySpecification = getFactoryTemplateSpec(design.productType);
+}: {
+  design?: DesignLike;
+  studio?: StudioLike;
+  roster?: unknown[];
+  reference?: string;
+  productLabel?: string;
+} = {}): Blob {
+  const normalized = normalizeStudio(studio as never, design as never);
+  const factorySpecification = getFactoryTemplateSpec(String(design.productType || ''));
   const preflight = runProductionPreflight({ design, studio: normalized, roster });
   const manifest = {
     schemaVersion: 2,
     reference,
     brand: 'SHABABUNA',
     tagline: 'BUILT DIFFERENT',
-    product: productLabel || getCustomProductType(design.productType).label.en,
+    product: productLabel || String((getCustomProductType(String(design.productType || '')).label as { en?: string }).en || ''),
     design: {
       productType: design.productType,
       variant: design.variant,
@@ -230,9 +263,14 @@ export function buildProductionPackage({
     rosterCount: roster.length,
     generatedAt: new Date().toISOString(),
   };
-  const files = DESIGN_VIEWS.map((view) => ({
+  const files: Array<{ name: string; data: string }> = DESIGN_VIEWS.map((view: string) => ({
     name: `artwork/${view}.svg`,
-    data: buildDesignViewSvg({ design, studio: normalized, view, productLabel }),
+    data: buildDesignViewSvg({
+      design,
+      studio: normalized as unknown as StudioLike,
+      view,
+      productLabel,
+    }),
   }));
   files.push({ name: 'manifest.json', data: JSON.stringify(manifest, null, 2) });
   files.push({ name: 'preflight.json', data: JSON.stringify(preflight, null, 2) });
@@ -241,7 +279,7 @@ export function buildProductionPackage({
     data: JSON.stringify(factorySpecification, null, 2),
   });
   files.push({ name: 'color-specifications.csv', data: buildColorSpecificationsCsv(design) });
-  files.push({ name: 'roster.csv', data: rosterToCsv(roster) });
+  files.push({ name: 'roster.csv', data: rosterToCsv(roster as never) });
   files.push({
     name: 'README.txt',
     data: 'SHABABUNA production artwork package.\nReview every view, layer, color, preflight note and roster entry before manufacturing.\nThe included template is a generic manufacturing specification and must be validated against the selected factory pattern.\nThis package becomes production-authorized only after the factory proof, manufacturing claim evidence and commercial quote are approved.\n',

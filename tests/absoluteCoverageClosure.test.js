@@ -37,7 +37,7 @@ import {
   getSupabase,
   completeAuthRedirect,
 } from '../src/services/supabase.ts';
-import { productShape, buildDesignViewSvg } from '../src/utils/designExports.js';
+import { productShape, buildDesignViewSvg } from '../src/utils/designExports.ts';
 import {
   parseRosterFile,
   parseWorksheet,

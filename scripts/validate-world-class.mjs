@@ -28,7 +28,7 @@ const lighthouse = requireFile('scripts/lighthouse/validate-lighthouse.mjs');
 const sharePage = requireFile('src/pages/DesignSharePage.tsx');
 const shareApi = requireFile('api/design-share.ts');
 const spreadsheet = requireFile('src/utils/rosterSpreadsheet.ts');
-const exportsSource = requireFile('src/utils/designExports.js');
+const exportsSource = requireFile('src/utils/designExports.ts');
 const readinessApi = requireFile('api/readiness.ts');
 const secureShareMigration = requireFile(
   'supabase/migrations/20260801025000_secure_design_sharing.sql',

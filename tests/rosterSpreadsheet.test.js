@@ -1,7 +1,7 @@
 import './setup.js';
 import { describe, expect, it } from './test-api.js';
 import { parseRosterFile, parseRosterXlsxBuffer } from '../src/utils/rosterSpreadsheet.ts';
-import { createStoreZip } from '../src/utils/designExports.js';
+import { createStoreZip } from '../src/utils/designExports.ts';
 
 async function minimalRosterXlsx() {
   const files = [

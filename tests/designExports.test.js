@@ -6,7 +6,7 @@ import {
   buildDesignViewSvg,
   buildProductionPackage,
   productShape,
-} from '../src/utils/designExports.js';
+} from '../src/utils/designExports.ts';
 import { downloadDesignDocuments } from '../src/utils/simplePdf.ts';
 
 describe('production artwork exports', () => {

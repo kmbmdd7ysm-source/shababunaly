@@ -34,7 +34,7 @@ import {
   safeHex,
   u16,
   u32,
-} from '../src/utils/designExports.js';
+} from '../src/utils/designExports.ts';
 import {
   createGuestOrderToken,
   guestEmailHash,

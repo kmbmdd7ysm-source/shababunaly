@@ -15,7 +15,7 @@ import {
   rosterToCsv,
 } from '../src/data/customization.ts';
 import { ROSTER_FILE_ACCEPT } from '../src/utils/rosterSpreadsheet.ts';
-import { buildProductionPackage } from '../src/utils/designExports.js';
+import { buildProductionPackage } from '../src/utils/designExports.ts';
 
 const byType = Object.fromEntries(CUSTOM_PRODUCT_TYPES.map((item) => [item.key, item]));
 assert.equal(byType['game-set'].minimum, 10);

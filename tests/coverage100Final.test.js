@@ -78,7 +78,7 @@ import {
   buildProductionPackage,
   createStoreZip,
   escapeXml,
-} from '../src/utils/designExports.js';
+} from '../src/utils/designExports.ts';
 import {
   parseRosterFile,
   parseWorksheet,
