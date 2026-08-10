@@ -1,25 +1,18 @@
 # CHECKPOINT — Absolute World-Class Final Rebuild
 
-- TIME: 2026-08-10T15:50:57Z
-- BRANCH: cursor/shababuna-redesign-master-plan-dc14
-- SHA: ef10637313eac5e0707f25a7061554ddeec25502
-- PREVIEW: http://127.0.0.1:3000 (Vite, VITE_SHOW_BUILD_MARKER=1)
+- TIME: 2026-08-10T15:55:15Z
+- SHA: cd5bbdc8b57a0516d84f9bd0fd97aef86dd69850
+- PREVIEW DEV: http://127.0.0.1:3000
+- PREVIEW PROD: http://127.0.0.1:4173
 
-## DONE THIS RUN
-- Evidence NON_FINAL + verify-release-evidence-sha.mjs
-- All *-from-* CSS deleted → domain-* owned sheets + cull
-- Real WebGL CONCEPT 3D (Three/R3F) primary on Customize Model
-- CinematicHero on Home; Shop visual gates; Teams sales hero
-- ProductStep silhouette rail; media manifest SSOT (59/36)
-- SpinsetEngine ?devSpin=1; E2E 10/10; 48 visual baselines
-- Build marker tracks live HEAD
+## DONE
+Evidence NON_FINAL; *-from-* CSS extinct; WebGL primary Customize; CinematicHero; Shop/Teams visual; media SSOT; spin fixture; E2E 10/10; 48 baselines; Lighthouse improved (no three preload); as-never ~88
 
 ## NEXT
-1. Continue as-never reduction (Account/Operations/Customize)
-2. Further CSS byte reduction / component modules
-3. Lighthouse desktop+mobile current preview
-4. Arabic technical QA refresh + human review manifest
-5. Design-step floating tools; more modularization
-6. Final freeze SHA + full verification stack ONLY after internals done
+1. Push LCP ≤2.5s (CSS/JS initial path, critical CSS)
+2. Continue as-never + modularize Account/Checkout/DesignStep
+3. Arabic QA refresh
+4. More visual creative director pass
+5. Final freeze SHA only after internals done
 
 ## NOT FINAL
