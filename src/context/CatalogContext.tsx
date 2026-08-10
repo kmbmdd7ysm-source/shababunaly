@@ -16,7 +16,7 @@ import {
 } from '../data/products.ts';
 import { getSupabase } from '../services/supabase.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
-import { isReadyToShipEligible } from '../utils/productEligibility.ts';
+import { isReadyToShipEligible, type ProductLike } from '../utils/productEligibility.ts';
 
 type LocaleText = { en?: string; ar?: string } | string | null | undefined;
 
@@ -391,19 +391,23 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       bestSellers: () =>
         products.filter((product) => Boolean(product.bestSeller) && !product.legacyLha),
       readyToShipProducts: () =>
-        products.filter((product) => isReadyToShipEligible(product as never, 'LY')),
+        products.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY')),
       lhaStoreProducts: () =>
         products.filter((product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha')),
       productsByCategory: (category: string) =>
         category === 'ready-to-ship'
-          ? products.filter((product) => isReadyToShipEligible(product as never, 'LY'))
+          ? products.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY'))
           : products.filter((product) => product.category === category),
       productsBySubcategory: (category: string, subcategory: string) =>
         products.filter(
           (product) => product.category === category && product.subcategory === subcategory,
         ),
       relatedProducts: (item: unknown, limit = 4) =>
-        getRelatedProducts(item as never, products as never, limit) as CatalogProduct[],
+        getRelatedProducts(
+          item as import('../utils/relatedProducts').RelatedCandidate | null | undefined,
+          products as import('../utils/relatedProducts').RelatedCandidate[],
+          limit,
+        ) as CatalogProduct[],
       isLowStock: (product: unknown) => {
         const row = asRecord(product);
         return (
