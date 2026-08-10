@@ -40,16 +40,17 @@ type VariantLike = {
 };
 
 type QuickAddSheetProps = {
-  product: ProductLike;
+  product: unknown;
   open: boolean;
   onClose: () => void;
 };
 
 export default function QuickAddSheet({
-  product,
+  product: productInput,
   open,
   onClose,
 }: QuickAddSheetProps): ReactElement | null {
+  const product = productInput as ProductLike;
   const { pick, lang } = useLanguage();
   const { addItem } = useCart();
   const titleId = useId();

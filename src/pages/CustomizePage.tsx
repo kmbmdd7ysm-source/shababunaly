@@ -42,6 +42,7 @@ import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
 import '../styles/studio.css';
 import ProductStep from '../components/custom/studio/ProductStep';
+import ModelStep from '../components/custom/studio/ModelStep';
 
 const Garment3DStage = lazy(() => import('../components/custom/Garment3DStage'));
 
@@ -701,47 +702,28 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
             )}
 
             {step === 'model' && (
-              <section className="gw-toolbench" aria-labelledby="custom-model-title">
-                <header className="gw-toolbench-head">
-                  <div>
-                    <p className="gw-kicker">{pick({ en: 'Model', ar: 'النموذج' })}</p>
-                    <h2 id="custom-model-title" className="gw-toolbench-title">
-                      {pick({ en: 'Choose the garment stage', ar: 'اختر مسرح القطعة' })}
-                    </h2>
-                    <p className="gw-toolbench-lede">
-                      {pick({
-                        en: 'Concept 3D and blank templates are for design direction. Factory-accurate geometry is only used after a verified factory model is attached — never invented here.',
-                        ar: 'النموذج ثلاثي الأبعاد المفاهيمي والقوالب الفارغة لاتجاه التصميم فقط. هندسة المصنع الدقيقة تُستخدم بعد ربط نموذج مصنع موثّق — ولا تُختلق هنا.',
-                      })}
-                    </p>
-                  </div>
-                </header>
-                <Suspense
-                  fallback={
-                    <p className="gw-garment-help" role="status">
-                      {pick({ en: 'Loading 3D stage…', ar: 'جاري تحميل المسرح ثلاثي الأبعاد…' })}
-                    </p>
-                  }
-                >
-                  <Garment3DStage
-                    productLabel={pick(selected.label)}
-                    baseColor={String(
-                      (design as { primaryColor?: string }).primaryColor || '#1a1a1a',
-                    )}
-                    accentColor={String(
-                      (design as { accentColor?: string }).accentColor || '#c4a35a',
-                    )}
-                  />
-                </Suspense>
-                <div className="studio-actions">
-                  <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('product')}>
-                    {pick({ en: 'Back', ar: 'رجوع' })}
-                  </button>
-                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('design')}>
-                    {pick({ en: 'Continue to Design', ar: 'متابعة إلى التصميم' })}
-                  </button>
-                </div>
-              </section>
+              <ModelStep
+                pick={pick}
+                onBack={() => setStep('product')}
+                onContinue={() => setStep('design')}
+                stage={
+                  <Suspense
+                    fallback={
+                      <p className="gw-garment-help" role="status">
+                        {pick({ en: 'Loading 3D stage…', ar: 'جاري تحميل المسرح ثلاثي الأبعاد…' })}
+                      </p>
+                    }
+                  >
+                    <Garment3DStage
+                      productLabel={pick(selected.label)}
+                      baseColor={String(design.primary || design.primaryColor || '#1a1a1a')}
+                      accentColor={String(
+                        design.accent || design.secondary || design.accentColor || '#c4a35a',
+                      )}
+                    />
+                  </Suspense>
+                }
+              />
             )}
 
             {step === 'design' && (

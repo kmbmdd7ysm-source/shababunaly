@@ -4,14 +4,6 @@
 /* ---- source: teams-from-shababuna.css ---- */
 
 /* teams shababuna */
-
-
-.package-grid,
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
 .package-grid,
   .process-grid,
   .capability-grid {
@@ -136,19 +128,6 @@
   gap: 0.85rem;
   list-style: none;
   padding: 0;
-}
-
-.gw-package-card {
-  border: 0;
-  border-radius: 1.25rem;
-  padding: 1.35rem 1.2rem;
-  text-align: start;
-  background: linear-gradient(160deg, #171717, #0c0c0c);
-  color: #f4f1ea;
-  min-block-size: 11rem;
-  display: grid;
-  gap: 0.55rem;
-  cursor: pointer;
 }
 
 .gw-package-card.is-active {

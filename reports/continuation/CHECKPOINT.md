@@ -1,39 +1,28 @@
 # CHECKPOINT — Absolute World-Class Final Rebuild
 
-- TIME: 2026-08-10T15:30:08Z
 - BRANCH: cursor/shababuna-redesign-master-plan-dc14
-- SHA: 8d9f248a3dbaf8b75ebb818ff0208a7e3d47b3a3
-- PREVIEW: http://127.0.0.1:3000 (Vite)
+- PREVIEW: http://127.0.0.1:3000
 
-## COMPLETED THIS RUN
-1. Evidence architecture reset — NON_FINAL; stale archived; verify-release-evidence-sha.mjs
-2. Deleted all live *-from-global/premium/shababuna CSS; domain-* ownership + route imports
-3. WebGL CONCEPT 3D Garment3DStage (Three.js/R3F) lazy; canvas verified
-4. CinematicHero wired into Home
-5. Shop visual gates + commerce entrance; department art diversity
-6. Teams public sales hero + horizontal journey
-7. Customize ProductStep silhouette rail → Model step
-8. Authoritative media-manifest-current.json (59 products, 36 placeholder-heavy)
-9. Development SpinsetEngine fixture (?devSpin=1)
+## COMPLETED
+1. Evidence NON_FINAL + verify-release-evidence-sha.mjs
+2. Deleted all *-from-* CSS; domain ownership + cull
+3. WebGL Garment3DStage (R3F) verified canvas
+4. CinematicHero wired on Home
+5. Shop visual gates + Teams sales hero + ProductStep silhouettes
+6. media-manifest-current.json SSOT (59 products / 36 placeholder-heavy)
+7. SpinsetEngine development fixture (?devSpin=1)
+8. Playwright e2e-result.json 10/10 local journeys PASS
+9. ModelStep extraction; ProductCard type cleanup in progress
+10. Type quality: any=0, as never≈97 (reduced from ~159)
 
 ## NEXT EXACT TASK
-- Continue TRUE CSS extinction: fold domain-*.css into component/route modules; cull domain-misc
-- Continue visual QA on Customize stage layout (floating tools)
-- Modularize Customize/Account/Checkout further
-- Type quality (as never / any) report
-- Full Playwright E2E → reports/browser/e2e-result.json
-- Current-SHA visual baselines
-- Lighthouse current SHA
-- Final one-SHA release evidence ONLY after all internal solvable items
-
-## VERIFIED
-- tsc clean (latest)
-- build clean
-- WebGL canvas on /customize Model
-- CinematicHero on /
-- Shop visual gates
-- Teams hero
-- Spin fixture on product ?devSpin=1
+1. Continue as-never reduction in OperationsDashboardPage, AccountPage, CustomizePage
+2. Fold remaining domain-*.css into component CSS modules; reduce CSS bytes from ~341KB
+3. Capture CURRENT-SHA visual baselines (desktop/mobile EN/AR)
+4. Lighthouse desktop+mobile against current preview
+5. Arabic technical QA refresh + human review manifest
+6. More Customize modularization (DesignStep/RosterStep)
+7. Only then: clean tree FINAL SHA + full verification stack + one-SHA verdict
 
 ## NOT FINAL
-Release verdict remains NON_FINAL until command complete.
+Do not claim SOFTWARE_VERIFIED / PRODUCTION_VERIFIED yet.

@@ -38,42 +38,6 @@
   border: 1px solid var(--sha-line);
 }
 
-.studio-steps {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: clamp(22px, 4vw, 48px);
-}
-
-.studio-steps button {
-  min-height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px solid #d7d7d0;
-  background: #fff;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-radius: 10px;
-  transition:
-    border-color 0.18s ease,
-    background 0.18s ease,
-    transform 0.18s ease;
-}
-
-.studio-steps button span {
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  color: #76766f;
-}
-
-.studio-steps button:hover {
-  transform: translateY(-1px);
-  border-color: #7f7f78;
-}
-
 .studio-steps button.active {
   background: #080808;
   color: #fff;
@@ -82,14 +46,6 @@
 
 .studio-steps button.active span {
   color: #bdbdb6;
-}
-
-.studio-preview-column {
-  position: sticky;
-  top: calc(var(--header-h) + 24px);
-  display: grid;
-  gap: 16px;
-  min-width: 0;
 }
 
 .custom-product-grid button.active {
@@ -102,41 +58,6 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 28px;
-}
-
-.studio-contract-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px solid #d9d9d2;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fff;
-}
-
-.studio-contract-card > div {
-  padding: 16px;
-  display: grid;
-  gap: 4px;
-  min-height: 78px;
-}
-
-.studio-contract-card > div:nth-child(odd) {
-  border-inline-end: 1px solid #e0e0da;
-}
-
-.studio-contract-card > div:nth-child(-n + 2) {
-  border-bottom: 1px solid #e0e0da;
-}
-
-.studio-contract-card span {
-  color: #6a6a64;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.studio-contract-card strong {
-  font-size: 1.05rem;
 }
 
 .roster-actions {
@@ -209,21 +130,6 @@
 .studio-status {
   margin-top: 24px;
 }
-.studio-preview-column {
-    position: static;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr);
-    align-items: start;
-  }
-.studio-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-.studio-steps button {
-    min-height: 56px;
-    font-size: 0.78rem;
-  }
-.studio-preview-column {
-    grid-template-columns: 1fr;
-  }
 .organization-upgrade-card,
   .roster-summary {
     align-items: stretch;
@@ -333,24 +239,6 @@
 /* ---- source: studio2-from-premium.css ---- */
 
 /* studio2 premium */
-
-
-.compare-btn {
-  position: absolute;
-  inset-inline-end: 8px;
-  top: 52px;
-  z-index: 4;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.92);
-  font-size: 16px;
-  line-height: 1;
-}
 
 .compare-btn.active {
   background: #050505;

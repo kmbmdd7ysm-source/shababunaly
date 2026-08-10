@@ -17,6 +17,37 @@ import '../../styles/product-card.css';
 import { getCompareAction } from '../../utils/productOptions';
 import { getVariantPurchaseLimit } from '../../utils/productEligibility';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability.ts';
+import type { ProductLike } from '../../utils/productEligibility.ts';
+
+type CardColor = {
+  key?: string;
+  image?: string;
+  name?: unknown;
+  hex?: string;
+};
+
+type CardProduct = ProductLike & {
+  id?: string;
+  slug?: string;
+  price?: number;
+  compareAt?: number | null;
+  image?: string;
+  hoverImage?: string;
+  alt?: { en?: string; ar?: string } | string;
+  name?: { en?: string; ar?: string } | string;
+  brand?: { en?: string; ar?: string } | string;
+  colors?: CardColor[];
+  inventoryVerified?: boolean;
+  wholesalePrice?: number | null;
+  largeEquipment?: boolean;
+  newArrival?: boolean;
+  bestSeller?: boolean;
+  readyToShip?: boolean;
+};
+
+function asCardProduct(product: unknown): CardProduct {
+  return (product || {}) as CardProduct;
+}
 
 export default function ProductCard({
   product,
@@ -27,17 +58,7 @@ export default function ProductCard({
   eager?: boolean;
   displayColor?: string | null;
 }): ReactElement {
-  const p = product as {
-    slug?: string;
-    price?: number;
-    compareAt?: number | null;
-    image?: string;
-    name?: unknown;
-    colors?: Array<{ key?: string; image?: string; name?: unknown; [k: string]: unknown }>;
-    inventoryVerified?: boolean;
-    wholesalePrice?: number | null;
-    [k: string]: unknown;
-  };
+  const p = asCardProduct(product);
   const { t, pick, lang } = useLanguage();
   const common = (t.common || {}) as Record<string, string>;
   const badge = (t.badge || {}) as Record<string, string>;
@@ -50,16 +71,16 @@ export default function ProductCard({
   const navigate = useNavigate();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [addState, setAddState] = useState<'idle' | 'adding' | 'added'>('idle');
-  const availability = resolveAvailabilityState(p as never, { countryCode });
+  const availability = resolveAvailabilityState(p, { countryCode });
   const comingSoon = availability === 'COMING_SOON';
   const soldOut = availability === 'OUT_OF_STOCK';
   const onSale = Boolean(p.compareAt && Number(p.compareAt) > Number(p.price || 0));
-  const low = isLowStock(p as never) && p.inventoryVerified === true;
+  const low = isLowStock(p) && p.inventoryVerified === true;
   const availabilityCopy = availabilityLabel(availability, lang === 'ar' ? 'ar' : 'en');
   const to = `/products/${String(p.slug || '')}${displayColor ? `?color=${displayColor}` : ''}`;
   const cardColor = (p.colors || []).find((c) => c.key === displayColor);
   const cardImage = cardColor?.image || p.image;
-  const action = getCompareAction(p as never);
+  const action = getCompareAction(p);
 
   const runPrimaryAction = () => {
     if (comingSoon || soldOut || action.type === 'unavailable') return;
@@ -206,7 +227,7 @@ export default function ProductCard({
       <div className="product-card-body">
         <span className="product-card-brand">{String(p.brand || '')}</span>
         <Link to={to} className="product-card-name">
-          {pick(p.name as never)}
+          {pick((p.name as { en?: string; ar?: string } | string) || '')}
         </Link>
         <div className="product-card-meta">
           {p.quoteOnly ? (
