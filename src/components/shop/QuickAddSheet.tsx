@@ -229,7 +229,7 @@ export default function QuickAddSheet({
           </div>
         )}
 
-        <div className="gw-quick-sheet-foot">
+        <div className="gw-quick-sheet-foot" aria-live="polite">
           <Price amount={unitPrice} size="sm" />
           <button
             type="button"
