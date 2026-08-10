@@ -1,11 +1,11 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "99606f519913b0d3bc90fca88607814884a9dff7",
+  "sha": "75da1b8c703291eba5bafaef8f3dcc8860b743c5",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T07:21:21.460Z",
+  "generatedAt": "2026-08-10T07:21:22.931Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
-  "workingTree": "dirty",
+  "workingTree": "clean",
   "typescript": {
     "coveragePercent": 100.0,
     "legacyFiles": []
@@ -41,5 +41,6 @@
   "arabicTechnicalQa": "PASS",
   "arabicHumanReview": "REQUIRED",
   "status": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
-  "verdict": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS"
+  "verdict": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
+  "evidenceBundleCommit": "75da1b8c703291eba5bafaef8f3dcc8860b743c5"
 }
