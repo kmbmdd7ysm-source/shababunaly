@@ -1,15 +1,15 @@
 # Absolute final checkpoint
 
-- SHA: `631f6ca74e3145a504c34dd495870c485c1b06ad`
-- **CSS triad EXTINCT live** (archived only) · !important **57**
-- CLS ~0.11 LH · TS **100%** · PWA **PASS** · LCP ~3.2s
-- Ready-to-Ship global · Customize 7-step+concept3D · Special Request simplified
+- SHA: `00028b10a347fe85c9a32303f84835c188728ef9`
+- **CSS triad EXTINCT live** · !important **57**
+- LH: perf 85 / CLS 0.111 / LCP 3326ms
+- TS 100% · PWA PASS · Ready-to-Ship global · Customize 7-step+concept3D
 - API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 - ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
 
 ## Next
-1. LCP ≤2.5s / CLS ≤0.10 on LH
-2. Reduce remaining !important with documented reasons
+1. CLS ≤0.10 / LCP ≤2.5s on LH
+2. Document/reduce remaining !important
 3. Clean-tree final verdict
 
 **NOT FINAL COMPLETE**

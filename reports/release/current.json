@@ -1,34 +1,33 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "0919bcd93429909d8678e09fefe4e073527195f4",
+  "sha": "00028b10a347fe85c9a32303f84835c188728ef9",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T06:12:05.040Z",
+  "generatedAt": "2026-08-10T07:11:54.695Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
-  "workingTree": "dirty",
+  "workingTree": "clean",
   "typescript": {
     "coveragePercent": 100.0,
     "legacyFiles": []
   },
   "css": {
-    "legacyTriadLines": 9292,
-    "importantTotal": 77,
+    "triadLive": false,
+    "archivedTriad": true,
+    "importantTotal": 57,
     "idleLegacyLoadRemoved": true
   },
   "pwaUpgrade": "passed",
-  "readyToShip": "global_nav_and_eligibility",
+  "lighthouseLocal": {
+    "sha": "247306a39b20907b0b85c3e5b1a333957aa09e3c",
+    "generatedAt": "2026-08-10T07:11:23.713848+00:00",
+    "performance": 85,
+    "accessibility": 100,
+    "lcpMs": 3326,
+    "cls": 0.111
+  },
   "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
   "arabicTechnicalQa": "PASS",
   "arabicHumanReview": "REQUIRED",
-  "lighthouseLocal": {
-    "sha": "0919bcd93429909d8678e09fefe4e073527195f4",
-    "generatedAt": "2026-08-10T06:12:05.036511+00:00",
-    "performance": 78,
-    "accessibility": 100,
-    "lcpMs": 3083,
-    "cls": 0.0,
-    "note": "CLS fixed by reserving readiness banner from first paint. LCP still ~3.1s local preview."
-  },
   "status": "in_progress",
   "verdict": null
 }
