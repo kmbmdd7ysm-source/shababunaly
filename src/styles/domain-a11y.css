@@ -1,3 +1,8 @@
+/* Domain CSS: domain-a11y.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: a11y-from-global.css ---- */
+
 /* a11y global */
 
 
@@ -36,4 +41,21 @@
   border: 1px solid #111;
   box-shadow: none;
   transform: none;
+}
+
+
+/* ---- source: a11y-from-premium.css ---- */
+
+/* a11y premium */
+
+
+.country-combobox > input[role='combobox']:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+
+.country-combobox__trigger:focus-visible,
+.country-combobox__search input:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
 }

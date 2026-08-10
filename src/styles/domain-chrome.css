@@ -1,3 +1,199 @@
+/* Domain CSS: domain-chrome.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: chrome-from-global.css ---- */
+
+/* chrome global */
+
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid transparent;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    background 0.25s;
+}
+
+.site-header.scrolled {
+  border-bottom-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-link {
+  padding: 0.5em 0.85em;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--text);
+  position: relative;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+.nav-link:hover {
+  background: var(--surface-2);
+}
+
+.nav-link[aria-current='page'] {
+  color: var(--accent);
+}
+
+.mega-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.footer-slogan .accent {
+  color: var(--accent);
+}
+
+.site-header {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.nav-link {
+  border-radius: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.nav-link:hover {
+  background: transparent;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0.85em;
+  right: 0.85em;
+  bottom: 0.15em;
+  height: 1px;
+  background: #000;
+  transform: scaleX(0);
+  transition: transform 0.2s var(--ease);
+}
+
+.nav-link:hover::after,
+.nav-link[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+.nav-link[aria-current='page'] {
+  color: var(--text);
+}
+
+.site-header {
+  background: rgba(255, 255, 255, 0.97);
+  color: #050505;
+  border-bottom: 1px solid #deded8;
+}
+
+.icon-btn,
+.nav-link {
+  color: #050505;
+}
+
+html[dir='rtl'] .hero,
+html[dir='rtl'] .page-hero,
+html[dir='rtl'] .announcement-bar,
+html[dir='rtl'] .site-header {
+  inset-inline: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+#root[dir='rtl'] main,
+#root[dir='rtl'] .hero,
+#root[dir='rtl'] .page-hero,
+#root[dir='rtl'] .site-header,
+#root[dir='rtl'] .announcement-bar {
+  left: 0;
+  right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: 100%;
+  transform: none;
+}
+
+
+/* ---- source: chrome-from-premium.css ---- */
+
+/* chrome premium */
+
+
+.site-header {
+  transition:
+    height var(--motion-med) var(--ease-premium),
+    background var(--motion-med),
+    box-shadow var(--motion-med),
+    transform var(--motion-med);
+}
+
+.site-header:not(.scrolled) {
+  box-shadow: none;
+}
+
+.site-header.scrolled .header-inner {
+  height: 66px;
+}
+
+.nav-link::after {
+  transform-origin: left center;
+  transition: transform 0.35s var(--ease-premium);
+}
+
+[dir='rtl'] .nav-link::after {
+  transform-origin: right center;
+}
+
+#root,
+main,
+.site-header,
+.container {
+  width: min(100%, var(--container));
+  min-width: 0;
+}
+
+
+/* ---- source: chrome-from-shababuna.css ---- */
+
+/* chrome shababuna */
+
+
+.site-header {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--sha-line);
+  backdrop-filter: blur(18px);
+}
+
+.nav-link {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.nav-link::after {
+  height: 1px;
+}
+.nav-link {
+    font-size: 0.69rem;
+  }
+
+
+/* ---- source: chrome2-from-global.css ---- */
+
 /* chrome2 global */
 
 
@@ -746,4 +942,133 @@ html[dir='rtl'] .header-inner .brand-logo--header {
   }
 html[dir='rtl'] .header-inner > .brand {
     justify-content: flex-end;
+  }
+
+
+/* ---- source: chrome2-from-premium.css ---- */
+
+/* chrome2 premium */
+
+
+.header-inner {
+  transition: height var(--motion-med) var(--ease-premium);
+}
+
+.search-overlay {
+  background: rgba(5, 5, 5, 0.72);
+  backdrop-filter: blur(18px) saturate(130%);
+  animation: overlayIn 0.3s ease both;
+}
+
+.search-overlay-inner {
+  animation: searchIn 0.55s var(--ease-premium) both;
+}
+
+.header-actions,
+.desktop-utilities {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.mobile-menu {
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+}
+
+.mobile-menu-head .brand {
+  min-width: 0;
+}
+.header-inner {
+    gap: 0.45rem;
+    padding-inline: 12px;
+    width: 100%;
+  }
+.header-inner .brand {
+    position: static;
+    inset-inline-start: auto;
+    transform: none;
+    max-width: calc(100% - 176px);
+    gap: 0.4rem;
+  }
+[dir='rtl'] .header-inner .brand {
+    transform: none;
+  }
+.header-inner .brand-logo {
+    height: 42px;
+  }
+.header-inner .brand-text {
+    font-size: clamp(0.68rem, 3vw, 0.9rem);
+    overflow: hidden;
+  }
+.header-actions {
+    margin-inline-start: auto;
+  }
+.header-actions .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+.mobile-menu .brand {
+    position: static;
+    transform: none;
+    max-width: none;
+  }
+.header-inner .brand {
+    max-width: calc(100% - 164px);
+  }
+.header-inner .brand-text {
+    display: none;
+  }
+.header-inner .brand-logo {
+    height: 44px;
+  }
+.header-actions .mobile-more-action,
+  .header-actions .mobile-more-action:hover,
+  .header-actions .mobile-more-action:active,
+  .header-actions .mobile-more-action:focus,
+  .header-actions .mobile-more-action[aria-expanded='true'],
+  .mobile-menu-head .brand,
+  .mobile-menu-head .brand:hover,
+  .mobile-menu-head .brand:active,
+  .mobile-menu-head .brand:focus {
+    background: transparent;
+    color: inherit;
+    border-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    outline: 0;
+    transform: none;
+    filter: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+.header-actions .mobile-more-action::before,
+  .header-actions .mobile-more-action::after,
+  .mobile-menu-head .brand::before,
+  .mobile-menu-head .brand::after {
+    display:none;
+    content: none;
+  }
+
+
+/* ---- source: chrome2-from-shababuna.css ---- */
+
+/* chrome2 shababuna */
+
+
+.header-inner {
+  min-height: 84px;
+  gap: clamp(24px, 4vw, 68px);
+}
+
+.header-actions {
+  gap: 4px;
+}
+
+.mobile-menu {
+  width: min(92vw, 460px);
+  background: #fff;
+}
+.header-inner {
+    min-height: 72px;
   }

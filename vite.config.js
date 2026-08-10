@@ -51,6 +51,7 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
           helmet: ['react-helmet-async'],
+          three: ['three', '@react-three/fiber'],
         },
       },
     },

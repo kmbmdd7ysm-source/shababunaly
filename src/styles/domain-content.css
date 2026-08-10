@@ -1,3 +1,8 @@
+/* Domain CSS: domain-content.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: content-from-global.css ---- */
+
 /* content global */
 
 
@@ -168,3 +173,43 @@ html[dir='rtl'] .contact-form .contact-consent span {
     max-width: 100%;
     overflow-wrap: anywhere;
   }
+
+
+/* ---- source: content-from-shababuna.css ---- */
+
+/* content shababuna */
+
+
+.contact-info {
+  background: #050505;
+  color: #fff;
+  padding: clamp(30px, 4vw, 55px);
+}
+
+.contact-info h2 {
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  letter-spacing: -0.07em;
+}
+
+.contact-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 40px 0 0;
+  display: grid;
+  gap: 0;
+}
+
+.contact-info li {
+  padding-block: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.contact-info li span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.67rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

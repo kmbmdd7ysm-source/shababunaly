@@ -1,5 +1,5 @@
-import '../styles/teams-from-shababuna.css';
-import '../styles/customize-from-shababuna.css';
+import '../styles/domain-teams.css';
+import '../styles/domain-customize.css';
 import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

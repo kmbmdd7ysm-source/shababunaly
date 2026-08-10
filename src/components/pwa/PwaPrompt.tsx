@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactElement } from 'react';
 import Icon from '../icons/Icon';
 import { useLanguage } from '../../context/LanguageContext';
 import { onPwaEvent, promptInstall, applyPwaUpdate, isStandalone } from '../../utils/registerPwa.ts';
-import '../../styles/pwa-cookie-from-global.css';
+import '../../styles/domain-pwa-cookie.css';
 export default function PwaPrompt(): ReactElement | null {
   const { pick } = useLanguage();
   // Guards against any possibility of a reload loop.

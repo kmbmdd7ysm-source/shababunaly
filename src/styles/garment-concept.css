@@ -34,6 +34,18 @@
   overflow: hidden;
 }
 
+.gw-garment-stage--canvas {
+  min-block-size: min(52vh, 420px);
+  border-radius: 1rem;
+  overflow: hidden;
+  perspective: none;
+}
+
+.gw-garment-preset.is-active {
+  border-color: rgb(255 255 255 / 0.7);
+  background: rgb(255 255 255 / 0.12);
+}
+
 .gw-garment-stage:active {
   cursor: grabbing;
 }

@@ -1,6 +1,4 @@
-import '../../styles/chrome-from-shababuna.css';
-import '../../styles/chrome-from-premium.css';
-import '../../styles/chrome-from-global.css';
+import '../../styles/domain-chrome.css';
 import type { ReactElement } from 'react';
 import AnnouncementStack from './AnnouncementStack';
 import MainHeader from './MainHeader';

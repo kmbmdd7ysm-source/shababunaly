@@ -14,53 +14,26 @@ import { installGlobalErrorMonitoring } from './services/telemetry';
 import ProductionReadinessGate from './components/security/ProductionReadinessGate';
 import { STORAGE_KEYS } from './config';
 /*
- * CSS architecture (extinction in progress):
- * Eager foundation + remaining shared legacy islands (no idle/post-paint inject —
- * deferred legacy caused cascade flash / CLS). Route sheets stay with routes.
- * Continue deleting unused rules from global/premium/shababuna until empty.
+ * CSS architecture — ownership migration:
+ * Foundation + shared domain utilities only at boot.
+ * Route/domain sheets import from the pages/components that own them.
+ * No *-from-global/premium/shababuna live files. No idle legacy inject.
  */
 import './styles/foundation.css';
-import './styles/a11y-from-premium.css';
-import './styles/a11y-from-global.css';
 import './styles/tokens.css';
 import './styles/fonts.css';
 import './styles/typography.css';
 import './styles/motion.css';
 import './styles/geometry.css';
 import './styles/layout.css';
+import './styles/domain-layout.css';
+import './styles/domain-a11y.css';
 import './styles/shell.css';
-import './styles/island-extract-2.css';
-import './styles/island-extract.css';
-import './styles/tail-from-shababuna.css';
-import './styles/tail-from-premium.css';
-import './styles/tail-from-global.css';
-import './styles/remain-from-shababuna.css';
-import './styles/remain-from-premium.css';
-import './styles/remain-from-global.css';
-import './styles/misc-from-shababuna.css';
-import './styles/misc-from-premium.css';
-import './styles/misc-from-global.css';
-import './styles/studio2-from-shababuna.css';
-import './styles/studio2-from-premium.css';
-import './styles/studio2-from-global.css';
-import './styles/shop2-from-shababuna.css';
-import './styles/shop2-from-premium.css';
-import './styles/shop2-from-global.css';
-import './styles/chrome2-from-shababuna.css';
-import './styles/chrome2-from-premium.css';
-import './styles/chrome2-from-global.css';
-import './styles/media-from-premium.css';
-import './styles/media-from-global.css';
-import './styles/layout-legacy-from-shababuna.css';
-import './styles/layout-legacy-from-premium.css';
-import './styles/layout-legacy-from-global.css';
-import './styles/overlays-from-global.css';
-import './styles/forms-from-shababuna.css';
-import './styles/forms-from-premium.css';
-import './styles/forms-from-global.css';
-/* shell.nav / colophon / masthead load with Header, Footer, and route shells.
-   Legacy triad stays eager until ownership migration finishes — load-deferred
-   secondary sheets did not improve LCP and risked route flash. */
+import './styles/domain-forms.css';
+import './styles/domain-overlays.css';
+import './styles/domain-media.css';
+import './styles/domain-misc.css';
+/* chrome/shop/customize/account/commerce/content/teams/pwa import with owners */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,
 // so importing App above the stylesheets placed every page-level sheet it

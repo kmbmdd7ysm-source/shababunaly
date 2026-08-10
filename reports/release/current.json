@@ -1,26 +1,7 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "447fc57a01d64758f981f3e16a6661093dd4bd5d",
-  "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T07:22:11.055Z",
-  "nodeVersion": "v22.14.0",
-  "npmVersion": "10.9.7",
-  "workingTree": "clean",
-  "typescript": {
-    "coveragePercent": 100.0,
-    "legacyFiles": []
-  },
-  "css": {
-    "triadLive": false,
-    "importantLive": 4,
-    "importantReason": "reduced-motion-only",
-    "idleLegacyLoadRemoved": true
-  },
-  "pwaUpgrade": "passed",
-  "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
-  "arabicTechnicalQa": "PASS",
-  "arabicHumanReview": "REQUIRED",
-  "status": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
-  "verdict": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
-  "note": "SHA in this file is updated to the commit that lands this verdict document."
+  "status": "NON_FINAL_IN_PROGRESS",
+  "verdict": null,
+  "note": "Evidence architecture reset. Prior final claims archived. Do not report verified until verify-release-evidence-sha.mjs passes against clean HEAD after full rebuild.",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14"
 }

@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import '../styles/customize-from-shababuna.css';
+import '../styles/domain-customize.css';
 import '../styles/composition.css';
 import StudioStage from '../components/custom/StudioStage';
 import ProductionDesignEditor from '../components/custom/ProductionDesignEditor';
@@ -42,7 +42,8 @@ import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
 import '../styles/studio.css';
 import ProductStep from '../components/custom/studio/ProductStep';
-import GarmentConceptStage from '../components/custom/GarmentConceptStage';
+
+const Garment3DStage = lazy(() => import('../components/custom/Garment3DStage'));
 
 const STEPS = [
   { key: 'product', en: 'Product', ar: 'المنتج' },
@@ -715,7 +716,23 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     </p>
                   </div>
                 </header>
-                <GarmentConceptStage productLabel={pick(selected.label)} />
+                <Suspense
+                  fallback={
+                    <p className="gw-garment-help" role="status">
+                      {pick({ en: 'Loading 3D stage…', ar: 'جاري تحميل المسرح ثلاثي الأبعاد…' })}
+                    </p>
+                  }
+                >
+                  <Garment3DStage
+                    productLabel={pick(selected.label)}
+                    baseColor={String(
+                      (design as { primaryColor?: string }).primaryColor || '#1a1a1a',
+                    )}
+                    accentColor={String(
+                      (design as { accentColor?: string }).accentColor || '#c4a35a',
+                    )}
+                  />
+                </Suspense>
                 <div className="studio-actions">
                   <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('product')}>
                     {pick({ en: 'Back', ar: 'رجوع' })}
