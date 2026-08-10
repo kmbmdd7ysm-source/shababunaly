@@ -169,7 +169,9 @@ describe('ProductViewer', () => {
 
   test('arrow keys follow the reading direction in Arabic', () => {
     activeLanguage = 'ar';
-    renderViewer(<ProductViewer product={{ ...base, image: '/a.webp', hoverImage: '/b.webp' }} eager />);
+    renderViewer(
+      <ProductViewer product={{ ...base, image: '/a.webp', hoverImage: '/b.webp' }} eager />,
+    );
     expect(screen.getByText(/ليست نموذجًا/)).toBeVisible();
     const stage = screen.getByRole('group', { name: 'عروض المنتج' });
     // In RTL, "forward" is ArrowLeft.
