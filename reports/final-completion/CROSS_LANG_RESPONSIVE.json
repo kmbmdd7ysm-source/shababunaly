@@ -1,0 +1,82 @@
+[
+  {
+    "viewport": "1440x900",
+    "lang": "en",
+    "route": "/",
+    "dir": "ltr",
+    "overflowX": false,
+    "h1": "BuiltDifferent."
+  },
+  {
+    "viewport": "1440x900",
+    "lang": "en",
+    "route": "/shop",
+    "dir": "ltr",
+    "overflowX": false,
+    "h1": ""
+  },
+  {
+    "viewport": "1440x900",
+    "lang": "en",
+    "route": "/cart",
+    "dir": "ltr",
+    "overflowX": false,
+    "h1": "Shopping Bag"
+  },
+  {
+    "viewport": "1440x900",
+    "lang": "en",
+    "route": "/customize",
+    "dir": "ltr",
+    "overflowX": false,
+    "h1": "Customize Everything"
+  },
+  {
+    "viewport": "1440x900",
+    "lang": "en",
+    "route": "/checkout",
+    "dir": "ltr",
+    "overflowX": false,
+    "h1": ""
+  },
+  {
+    "viewport": "390x844",
+    "lang": "ar",
+    "route": "/",
+    "dir": "rtl",
+    "overflowX": false,
+    "h1": "نبنيمختلفين."
+  },
+  {
+    "viewport": "390x844",
+    "lang": "ar",
+    "route": "/shop",
+    "dir": "rtl",
+    "overflowX": false,
+    "h1": "الكتالوج"
+  },
+  {
+    "viewport": "390x844",
+    "lang": "ar",
+    "route": "/cart",
+    "dir": "rtl",
+    "overflowX": false,
+    "h1": "حقيبة التسوق"
+  },
+  {
+    "viewport": "390x844",
+    "lang": "ar",
+    "route": "/customize",
+    "dir": "rtl",
+    "overflowX": false,
+    "h1": "صمّم كل شيء"
+  },
+  {
+    "viewport": "390x844",
+    "lang": "ar",
+    "route": "/checkout",
+    "dir": "rtl",
+    "overflowX": false,
+    "h1": ""
+  }
+]
