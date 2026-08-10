@@ -54,6 +54,7 @@ const clean = (s: unknown) =>
     .slice(0, 100);
 export default function AccountPage(): ReactElement {
   const { pick, lang } = useLanguage();
+  const pickLoose = pick as (value: unknown) => string;
   type AuthLike = {
     user:
       | (Record<string, unknown> & {
@@ -972,7 +973,7 @@ export default function AccountPage(): ReactElement {
               {section === 'orders' && (
                 <LazyAccountSection>
                   <OrdersSection
-                    pick={pick as never}
+                    pick={pickLoose}
                     ordersState={ordersState as never}
                     loadOrders={() => {
                       void loadOrders();
@@ -998,7 +999,7 @@ export default function AccountPage(): ReactElement {
               {section === 'profile' && (
                 <LazyAccountSection>
                   <ProfileSection
-                    pick={pick as never}
+                    pick={pickLoose}
                     lang={lang}
                     auth={auth as never}
                     profile={profile}
@@ -1017,7 +1018,7 @@ export default function AccountPage(): ReactElement {
               {section === 'saved' && (
                 <LazyAccountSection>
                   <SavedSection
-                    pick={pick as never}
+                    pick={pickLoose}
                     wishlistCount={(data.wishlist || []).length}
                     recentlyViewedCount={(data.recentlyViewed || []).length}
                     compareCount={Number(compare.count) || 0}
@@ -1027,14 +1028,14 @@ export default function AccountPage(): ReactElement {
               {section === 'addresses' && (
                 <AddressesSection
                   userId={String(auth.user?.id || '')}
-                  pick={pick as never}
+                  pick={pickLoose}
                   language={lang}
                 />
               )}{' '}
               {section === 'preferences' && (
                 <LazyAccountSection>
                   <PreferencesSection
-                    pick={pick as never}
+                    pick={pickLoose}
                     profile={profile}
                     setProfile={setProfile}
                     save={save}
@@ -1045,7 +1046,7 @@ export default function AccountPage(): ReactElement {
               )}
               {section === 'security' && (
                 <LazyAccountSection>
-                  <SecuritySection auth={auth as never} pick={pick as never} lang={lang} />
+                  <SecuritySection auth={auth as never} pick={pickLoose} lang={lang} />
                 </LazyAccountSection>
               )}
               {msg && (
