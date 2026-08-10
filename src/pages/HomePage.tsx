@@ -14,6 +14,7 @@ import { useDeviceCapability } from '../hooks/useDeviceCapability';
 import { SITE } from '../config';
 import { shippingConfig } from '../config/shipping';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
+import '../styles/geometry.css';
 import '../styles/journey.css';
 import '../styles/home.css';
 

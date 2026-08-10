@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import { lazy, Suspense } from 'react';
 import BuildMarker from './components/dev/BuildMarker';
-import Home from './pages/HomePage';
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import GlobalChrome from './components/layout/GlobalChrome';
 import DeferredFooter from './components/layout/DeferredFooter';
@@ -17,6 +16,9 @@ import PwaPrompt from './components/pwa/PwaPrompt';
 import AppErrorBoundary from './components/errors/AppErrorBoundary';
 import './styles/domain-layout.css';
 import './styles/domain-a11y.css';
+import './styles/motion.css';
+/* geometry.css stays with Home/CinematicHero */
+const Home = lazy(() => import('./pages/HomePage'));
 const About = lazy(() => import('./pages/AboutPage'));
 const Shop = lazy(() => import('./pages/ShopPage'));
 const Product = lazy(() => import('./pages/ProductPage'));
