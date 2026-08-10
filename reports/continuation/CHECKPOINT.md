@@ -1,14 +1,13 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `b31c28beafb045bcfa60c88ecd0781c3885abb78`
-- TypeScript: **96%+** · `tsc` GREEN
-- Quick-add variant sheet shipped · PDP stage CTA · dismiss sentence-case · cart Libya gate
-- Customize product→design→roster→review verified · Teams quote form present · AR RTL verified
+- SHA: `f3751a1005ad226ee1633a99d62a438f983079c4`
+- TS ~96% · tsc GREEN · build GREEN (dist SHA in provenance)
+- Quick-add sheet · PDP CTA · dismiss sentence-case · cart Libya gate · Ready-to-Ship inventory BLOCKED documented
+- Customize / Teams form UI / AR RTL verified
 
 ## Exact next unfinished
-1. Teams quote submit path (Formspree/staging constraints)
-2. Further CSS extinction
-3. Remaining audited groups / a11y / perf / final evidence
+1. Teams quote live submit against Formspree when configured
+2. Fix Teams duplicate React key warning
+3. Broader a11y / perf passes
+4. Remaining audited groups + final evidence
 NOT FINAL COMPLETE
-
-Hero slots preserved. No fabricated inventory.
