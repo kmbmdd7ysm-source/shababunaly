@@ -231,7 +231,7 @@ export default function TeamsWholesalePage(): ReactElement {
           <p className="gw-spec">{pick({ en: 'Order lifecycle', ar: 'دورة الطلب' })}</p>
           <ol>
             {LIFECYCLE.map((stage, position) => (
-              <li key={stage.id}>
+              <li key={`${stage.id}-${position}`}>
                 <a href={`#stage-${stage.id}`}>
                   <span aria-hidden="true">{String(position + 1).padStart(2, '0')}</span>
                   {pick(stage.title)}
@@ -425,6 +425,7 @@ export default function TeamsWholesalePage(): ReactElement {
           </section>
 
           <section id="stage-produce" className="gw-stage-block gw-stage-block--muted">
+            <div id="stage-complete" tabIndex={-1} />
             <p className="gw-stage-mark">
               {' '}
               {pick({ en: 'Produce & complete', ar: 'التصنيع والإكمال' })}
