@@ -918,8 +918,11 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     className="btn-secondary"
                     onClick={() => {
                       const docs = downloadDesignDocuments({
-                        design,
-                        studio: design.studio || createDefaultStudio(design),
+                        design: design as Record<string, unknown>,
+                        studio: (design.studio || createDefaultStudio(design)) as Record<
+                          string,
+                          unknown
+                        >,
                         productLabel: pick(selected.label),
                         roster: normalizedRoster,
                         reference: savedId || 'DRAFT',
@@ -938,8 +941,11 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     className="btn-secondary"
                     onClick={() => {
                       const docs = downloadDesignDocuments({
-                        design,
-                        studio: design.studio || createDefaultStudio(design),
+                        design: design as Record<string, unknown>,
+                        studio: (design.studio || createDefaultStudio(design)) as Record<
+                          string,
+                          unknown
+                        >,
                         productLabel: pick(selected.label),
                         roster: normalizedRoster,
                         reference: savedId || 'DRAFT',

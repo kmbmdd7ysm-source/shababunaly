@@ -83,7 +83,7 @@ import {
   makePdf,
   rect,
   tablePages,
-} from '../src/utils/simplePdf.js';
+} from '../src/utils/simplePdf.ts';
 
 const ENV_KEYS = [
   'NODE_ENV',

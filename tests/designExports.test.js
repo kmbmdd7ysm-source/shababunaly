@@ -7,7 +7,7 @@ import {
   buildProductionPackage,
   productShape,
 } from '../src/utils/designExports.js';
-import { downloadDesignDocuments } from '../src/utils/simplePdf.js';
+import { downloadDesignDocuments } from '../src/utils/simplePdf.ts';
 
 describe('production artwork exports', () => {
   it('creates dedicated vector artwork for every custom product and view', () => {

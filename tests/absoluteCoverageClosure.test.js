@@ -44,7 +44,7 @@ import {
   resolveFirstWorksheet,
   unzipEntries,
 } from '../src/utils/rosterSpreadsheet.ts';
-import { createTextPdf, downloadDesignDocuments } from '../src/utils/simplePdf.js';
+import { createTextPdf, downloadDesignDocuments } from '../src/utils/simplePdf.ts';
 
 const ENV = [
   'NODE_ENV',

@@ -14,7 +14,7 @@ import {
   rgb,
   tablePages,
   text,
-} from '../src/utils/simplePdf.js';
+} from '../src/utils/simplePdf.ts';
 
 const decode = async (blob) => new TextDecoder().decode(await blob.arrayBuffer());
 

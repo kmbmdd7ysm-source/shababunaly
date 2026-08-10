@@ -1,5 +1,10 @@
+type PdfSection = { heading?: string; rows?: Array<string | string[]> };
+type TextPdfInput = { title?: string; subtitle?: string; sections?: PdfSection[] };
+type DesignLike = { [key: string]: unknown };
+type StudioLike = { layers?: Array<Record<string, unknown>>; showSafeArea?: boolean; showBleedArea?: boolean; [key: string]: unknown };
+
 const encoder = new TextEncoder();
-export const escapePdf = (value) =>
+export const escapePdf = (value: unknown): string =>
   String(value ?? '')
     .replace(/[\r\n]+/g, ' ')
     .normalize('NFKD')
@@ -7,22 +12,22 @@ export const escapePdf = (value) =>
     .replace(/\\/g, '\\\\')
     .replace(/\(/g, '\\(')
     .replace(/\)/g, '\\)');
-export const object = (id, body) => `${id} 0 obj\n${body}\nendobj\n`;
-export const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
+export const object = (id: number, body: string): string => `${id} 0 obj\n${body}\nendobj\n`;
+export const clamp = (value: unknown, min: number, max: number): number => Math.min(max, Math.max(min, Number(value) || 0));
 
-export function hexRgb(value, fallback = '#000000') {
+export function hexRgb(value: unknown, fallback = '#000000'): number[] {
   const hex = /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value) : fallback;
   return [1, 3, 5].map((index) => Number.parseInt(hex.slice(index, index + 2), 16) / 255);
 }
-export const rgb = (value, fallback) =>
+export const rgb = (value: unknown, fallback?: string): string =>
   hexRgb(value, fallback)
-    .map((part) => part.toFixed(4))
+    .map((part: number) => part.toFixed(4))
     .join(' ');
-export const text = (value, x, y, size = 10, font = 'F1', color = '0 0 0') =>
+export const text = (value: unknown, x: number, y: number, size = 10, font = 'F1', color = '0 0 0'): string =>
   `BT ${color} rg /${font} ${size} Tf 1 0 0 1 ${x} ${y} Tm (${escapePdf(value)}) Tj ET`;
-export const line = (x1, y1, x2, y2, color = '0 0 0', width = 1) =>
+export const line = (x1: number, y1: number, x2: number, y2: number, color = '0 0 0', width = 1): string =>
   `${color} RG ${width} w ${x1} ${y1} m ${x2} ${y2} l S`;
-export const rect = (x, y, w, h, color, stroke = null, radius = 0) => {
+export const rect = (x: number, y: number, w: number, h: number, color: string, stroke: string | null = null, radius = 0): string => {
   if (radius <= 0)
     return `${color} rg ${x} ${y} ${w} ${h} re f${stroke ? ` ${stroke} RG 1 w ${x} ${y} ${w} ${h} re S` : ''}`;
   const k = 0.55228475;
@@ -31,10 +36,10 @@ export const rect = (x, y, w, h, color, stroke = null, radius = 0) => {
   return `${color} rg ${x + r} ${y} m ${x + w - r} ${y} l ${x + w - r + c} ${y} ${x + w} ${y + r - c} ${x + w} ${y + r} c ${x + w} ${y + h - r} l ${x + w} ${y + h - r + c} ${x + w - r + c} ${y + h} ${x + w - r} ${y + h} c ${x + r} ${y + h} l ${x + r - c} ${y + h} ${x} ${y + h - r + c} ${x} ${y + h - r} c ${x} ${y + r} l ${x} ${y + r - c} ${x + r - c} ${y} ${x + r} ${y} c f`;
 };
 
-export function makePdf(pages, metadata = {}) {
-  const objects = [];
-  const pageIds = [];
-  const contentIds = [];
+export function makePdf(pages: string[], metadata: Record<string, unknown> = {}): Blob {
+  const objects: string[] = [];
+  const pageIds: number[] = [];
+  const contentIds: number[] = [];
   let nextId = 6;
   for (let index = 0; index < pages.length; index += 1) {
     pageIds.push(nextId++);
@@ -44,7 +49,7 @@ export function makePdf(pages, metadata = {}) {
   objects.push(
     object(
       2,
-      `<< /Type /Pages /Count ${pages.length} /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] >>`,
+      `<< /Type /Pages /Count ${pages.length} /Kids [${pageIds.map((id: number) => `${id} 0 R`).join(' ')}] >>`,
     ),
   );
   objects.push(object(3, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'));
@@ -55,22 +60,22 @@ export function makePdf(pages, metadata = {}) {
       `<< /Title (${escapePdf(metadata.title || 'SHABABUNA')}) /Author (SHABABUNA) /Subject (${escapePdf(metadata.subject || 'Production document')}) /Creator (SHABABUNA Production System) >>`,
     ),
   );
-  pages.forEach((content, index) => {
+  pages.forEach((content: string, index: number) => {
     objects.push(
       object(
-        pageIds[index],
-        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${contentIds[index]} 0 R >>`,
+        (pageIds[index] as number),
+        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${(contentIds[index] as number)} 0 R >>`,
       ),
     );
     objects.push(
       object(
-        contentIds[index],
+        (contentIds[index] as number),
         `<< /Length ${encoder.encode(content).length} >>\nstream\n${content}\nendstream`,
       ),
     );
   });
   let pdf = '%PDF-1.4\n';
-  const offsets = [0];
+  const offsets: number[] = [0];
   for (const entry of objects) {
     offsets.push(encoder.encode(pdf).length);
     pdf += entry;
@@ -78,20 +83,20 @@ export function makePdf(pages, metadata = {}) {
   const xref = encoder.encode(pdf).length;
   pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
   for (let index = 1; index <= objects.length; index += 1)
-    pdf += `${String(offsets[index]).padStart(10, '0')} 00000 n \n`;
+    pdf += `${String((offsets[index] ?? 0)).padStart(10, '0')} 00000 n \n`;
   pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R /Info 5 0 R >>\nstartxref\n${xref}\n%%EOF`;
   return new Blob([pdf], { type: 'application/pdf' });
 }
 
-export function createTextPdf({ title = 'SHABABUNA', subtitle = '', sections = [] } = {}) {
-  const pages = [];
+export function createTextPdf({ title = 'SHABABUNA', subtitle = '', sections = [] }: TextPdfInput = {}): Blob {
+  const pages: string[] = [];
   let commands = [text(title, 48, 790, 22, 'F2')];
   let y = 758;
   if (subtitle) {
     commands.push(text(subtitle, 48, y, 12));
     y -= 28;
   }
-  for (const section of sections) {
+  for (const section of sections as PdfSection[]) {
     if (y < 100) {
       pages.push(commands.join('\n'));
       commands = [];
@@ -99,7 +104,7 @@ export function createTextPdf({ title = 'SHABABUNA', subtitle = '', sections = [
     }
     commands.push(text(section.heading || '', 48, y, 15, 'F2'));
     y -= 22;
-    for (const row of section.rows || []) {
+    for (const row of (section.rows || []) as Array<string | string[]>) {
       if (y < 55) {
         pages.push(commands.join('\n'));
         commands = [];
@@ -114,7 +119,19 @@ export function createTextPdf({ title = 'SHABABUNA', subtitle = '', sections = [
   return makePdf(pages, { title, subject: subtitle });
 }
 
-export function coverPage({ title, subtitle, design, productLabel, reference }) {
+export function coverPage({
+  title,
+  subtitle,
+  design,
+  productLabel,
+  reference,
+}: {
+  title: string;
+  subtitle: string;
+  design: DesignLike;
+  productLabel: string;
+  reference: string;
+}): string {
   const primary = rgb(design.primary, '#050505');
   const secondary = rgb(design.secondary, '#ffffff');
   const accent = rgb(design.accent, '#d6d6d6');
@@ -137,18 +154,20 @@ export function coverPage({ title, subtitle, design, productLabel, reference }) 
     text(subtitle, 42, 660, 11, 'F1', '.2 .2 .2'),
   ];
   out.push(text('APPROVED COLOR SYSTEM', 42, 616, 11, 'F2'));
-  [
-    [primary, design.primary || '#050505', 42],
-    [secondary, design.secondary || '#ffffff', 188],
-    [accent, design.accent || '#d6d6d6', 334],
-  ].forEach(([color, label, x]) => {
+  (
+    [
+      [primary, String(design.primary || '#050505'), 42],
+      [secondary, String(design.secondary || '#ffffff'), 188],
+      [accent, String(design.accent || '#d6d6d6'), 334],
+    ] as Array<[string, string, number]>
+  ).forEach(([color, label, x]) => {
     out.push(rect(x, 555, 112, 44, color, '.55 .55 .55', 5));
     out.push(text(label, x, 536, 9, 'F2'));
   });
   let y = 488;
   out.push(text('PROJECT SPECIFICATION', 42, y, 13, 'F2'));
   y -= 28;
-  rows.forEach(([label, value]) => {
+  (rows as Array<[string, string]>).forEach(([label, value]) => {
     out.push(text(label, 42, y, 9, 'F2', '.3 .3 .3'));
     out.push(text(value, 180, y, 10, 'F1'));
     out.push(line(42, y - 8, 550, y - 8, '.86 .86 .86', 0.5));
@@ -170,7 +189,17 @@ export function coverPage({ title, subtitle, design, productLabel, reference }) 
   return out.join('\n');
 }
 
-export function artworkPage({ design, studio, view, productLabel }) {
+export function artworkPage({
+  design,
+  studio,
+  view,
+  productLabel,
+}: {
+  design: DesignLike;
+  studio: StudioLike;
+  view: string;
+  productLabel: string;
+}): string {
   const out = [
     rect(0, 0, 595, 842, '1 1 1'),
     text(`${productLabel} - ${view.toUpperCase()} VIEW`, 36, 805, 17, 'F2'),
@@ -187,8 +216,8 @@ export function artworkPage({ design, studio, view, productLabel }) {
   out.push(`${'0 .7 .35'} RG 1 w [5 4] 0 d 78 142 439 568 re S [] 0 d`);
   out.push(`${'.85 .2 .2'} RG 1 w [4 4] 0 d 55 118 485 616 re S [] 0 d`);
   const layers = (studio?.layers || [])
-    .filter((layer) => layer.view === view && layer.visible)
-    .sort((a, b) => a.zIndex - b.zIndex);
+    .filter((layer: Record<string, unknown>) => layer.view === view && layer.visible)
+    .sort((a: Record<string, unknown>, b: Record<string, unknown>) => Number(a.zIndex) - Number(b.zIndex));
   for (const layer of layers) {
     const x = 55 + (clamp(layer.x, 0, 100) / 100) * 485;
     const y = 118 + ((100 - clamp(layer.y, 0, 100)) / 100) * 616;
@@ -219,8 +248,18 @@ export function artworkPage({ design, studio, view, productLabel }) {
   return out.join('\n');
 }
 
-export function tablePages({ heading, rows, columns = [150, 370], startY = 780 }) {
-  const pages = [];
+export function tablePages({
+  heading,
+  rows,
+  columns = [150, 370],
+  startY = 780,
+}: {
+  heading: string;
+  rows: Array<string[]>;
+  columns?: number[];
+  startY?: number;
+}): string[] {
+  const pages: string[] = [];
   let out = [text(heading, 38, 810, 17, 'F2')];
   let y = startY;
   for (const row of rows) {
@@ -230,8 +269,8 @@ export function tablePages({ heading, rows, columns = [150, 370], startY = 780 }
       y = 780;
     }
     out.push(text(row[0], 38, y, 8.5, 'F2', '.25 .25 .25'));
-    out.push(text(row[1], columns[0], y, 8.5));
-    if (row[2] != null) out.push(text(row[2], columns[1], y, 8.5));
+    out.push(text(row[1], Number(columns[0] || 150), y, 8.5));
+    if (row[2] != null) out.push(text(row[2], Number(columns[1] || 370), y, 8.5));
     out.push(line(38, y - 7, 557, y - 7, '.88 .88 .88', 0.4));
     y -= 22;
   }
@@ -239,7 +278,7 @@ export function tablePages({ heading, rows, columns = [150, 370], startY = 780 }
   return pages;
 }
 
-export function downloadBlob(blob, filename) {
+export function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;
@@ -254,27 +293,38 @@ export function downloadDesignDocuments({
   design,
   studio,
   productLabel = 'Custom Product',
-  roster = [],
   reference = 'DRAFT',
-}) {
-  const normalizedStudio = studio || { layers: [] };
+  roster = [],
+}: {
+  design?: DesignLike;
+  studio?: StudioLike;
+  productLabel?: string;
+  reference?: string;
+  roster?: unknown[];
+} = {}): { proof?: Blob; tech?: Blob; [key: string]: unknown } {
+  const designDoc: DesignLike = design || {};
+  const studioDoc: StudioLike = studio || { layers: [] };
+  const normalizedStudio = studioDoc;
   const safeRoster = Array.isArray(roster) ? roster : [];
   const proofPages = [
     coverPage({
       title: 'DESIGN PROOF',
       subtitle: 'Customer visual review and approval document',
-      design,
+      design: designDoc,
       productLabel,
       reference,
     }),
   ];
   for (const view of ['front', 'back', 'side'])
-    proofPages.push(artworkPage({ design, studio: normalizedStudio, view, productLabel }));
+    proofPages.push(artworkPage({ design: designDoc, studio: normalizedStudio, view, productLabel }));
   const rosterRows = safeRoster.length
-    ? safeRoster.map((row, index) => [
-        `${index + 1}. ${row.jerseyName || row.name}`,
-        `#${row.number} | Jersey ${row.jerseySize || '-'} | Shorts ${row.shortsSize || '-'}`,
-      ])
+    ? safeRoster.map((row, index) => {
+        const r = row as Record<string, unknown>;
+        return [
+          `${index + 1}. ${String(r.jerseyName || r.name || '')}`,
+          `#${String(r.number || '')} | Jersey ${String(r.jerseySize || '-')} | Shorts ${String(r.shortsSize || '-')}`,
+        ];
+      })
     : [['Roster', 'No roster attached']];
   proofPages.push(...tablePages({ heading: 'ROSTER AND PERSONALIZATION', rows: rosterRows }));
   proofPages.push(
@@ -291,8 +341,8 @@ export function downloadDesignDocuments({
   );
 
   const layerRows = (normalizedStudio.layers || [])
-    .filter((layer) => layer.visible)
-    .sort((a, b) => String(a.view).localeCompare(String(b.view)) || a.zIndex - b.zIndex)
+    .filter((layer: Record<string, unknown>) => layer.visible)
+    .sort((a: Record<string, unknown>, b: Record<string, unknown>) => String(a.view).localeCompare(String(b.view)) || Number(a.zIndex) - Number(b.zIndex))
     .map((layer) => [
       String(layer.view || '').toUpperCase(),
       `${layer.label}: ${String(layer.content || '').startsWith('data:') ? '[embedded artwork]' : String(layer.content || '').slice(0, 55)}`,
@@ -302,7 +352,7 @@ export function downloadDesignDocuments({
     coverPage({
       title: 'PRODUCTION TECH PACK',
       subtitle: 'Manufacturing specification and artwork-control document',
-      design,
+      design: designDoc,
       productLabel,
       reference,
     }),
@@ -320,13 +370,13 @@ export function downloadDesignDocuments({
       rows: [
         ['Safe area', '8% inside artwork boundary'],
         ['Bleed area', '3% outside final trim'],
-        ['Primary color', design.primary || '-'],
-        ['Secondary color', design.secondary || '-'],
-        ['Accent color', design.accent || '-'],
-        ['Pattern', design.pattern || '-'],
-        ['Neckline', design.neckline || '-'],
-        ['Font system', design.font || '-'],
-        ['Production notes', design.notes || 'No production notes supplied'],
+        ['Primary color', String(designDoc.primary || '-')],
+        ['Secondary color', String(designDoc.secondary || '-')],
+        ['Accent color', String(designDoc.accent || '-')],
+        ['Pattern', String(designDoc.pattern || '-')],
+        ['Neckline', String(designDoc.neckline || '-')],
+        ['Font system', String(designDoc.font || '-')],
+        ['Production notes', String(designDoc.notes || 'No production notes supplied')],
         ['Artwork package', 'SVG views + manifest JSON + roster CSV supplied separately'],
       ],
     }),

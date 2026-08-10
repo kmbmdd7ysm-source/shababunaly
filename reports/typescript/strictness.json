@@ -1,15 +1,14 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-10T01:19:09.910Z",
-  "sourceFiles": 297,
+  "generatedAt": "2026-08-10T01:20:56.217Z",
+  "sourceFiles": 296,
   "strictFiles": 292,
-  "strictCoveragePercent": 98.32,
+  "strictCoveragePercent": 98.65,
   "legacyFiles": [
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/services/operations.js",
     "src/services/orders.js",
-    "src/utils/designExports.js",
-    "src/utils/simplePdf.js"
+    "src/utils/designExports.js"
   ],
   "violations": [],
   "compilerGuarantees": {
