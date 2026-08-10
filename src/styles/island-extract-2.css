@@ -331,7 +331,8 @@
   background: var(--sha-green);
   box-shadow: 0 0 0 4px rgba(32, 164, 90, 0.12);
   flex: 0 0 auto;
-}.ready-badge {
+}
+.ready-badge {
     padding: 6px 8px;
     font-size: 0.53rem;
   }
@@ -370,7 +371,8 @@
 
 .configured-rate-list strong {
   letter-spacing: 0.08em;
-}.configured-rate-list {
+}
+.configured-rate-list {
     gap: 7px;
   }
 
@@ -387,6 +389,7 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}.secure-review-badge {
+}
+.secure-review-badge {
     justify-self: start;
   }

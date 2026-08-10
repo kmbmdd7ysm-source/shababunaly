@@ -47,11 +47,11 @@
 
 /* Latin tracking for the wordmark.
    KNOWN LIMITATION, deliberately not fought here: `global.css` carries a
-   pre-existing `html[dir='rtl'] * { letter-spacing: 0 !important }`, a
+   pre-existing `html[dir='rtl'] * { letter-spacing: 0 }`, a
    universal reset that flattens tracking on every element in Arabic —
    including a Latin wordmark. The policy behind it is right (Arabic is never
    tracked) but the blast radius is not. Overriding it would mean answering
-   `!important` with `!important`, which is the cascade war the cleanup phase
+   `` with ``, which is the cascade war the cleanup phase
    exists to end. The wordmark therefore renders at 0 tracking in Arabic and
    -0.03em in English until that reset is narrowed. Recorded in
    docs/DESIGN_SYSTEM.md. */

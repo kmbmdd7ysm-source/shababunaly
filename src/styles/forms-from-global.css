@@ -217,14 +217,16 @@
 .button-row,
 .help-result-count {
   color: var(--muted);
-}.button-row,
+}
+.button-row,
 .button-row > * {
     width: 100%;
   }
 
 .filter-sheet-actions .btn-primary {
   min-height: 54px;
-}.mobile-account-panel .btn-primary,
+}
+.mobile-account-panel .btn-primary,
   .mobile-account-panel .btn-secondary {
     min-height: 44px;
     padding: 10px 16px;
@@ -257,11 +259,13 @@
 }
 
 .contact-form .field-check span {
-  overflow-wrap: break-word !important;
+  overflow-wrap: break-word;
   word-break: normal;
-}.contact-form .field-row {
+}
+.contact-form .field-row {
     grid-template-columns:minmax(0, 1fr);
-  }.contact-form .field,
+  }
+.contact-form .field,
   .contact-form .field-check,
   .contact-form input,
   .contact-form select,

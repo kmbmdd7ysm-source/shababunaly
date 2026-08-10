@@ -32,7 +32,8 @@
   align-items: end;
   gap: 30px;
   margin-bottom: 50px;
-}.store-toolbar {
+}
+.store-toolbar {
     align-items: flex-start;
     flex-direction: column;
   }

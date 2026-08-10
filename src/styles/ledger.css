@@ -495,7 +495,7 @@
 }
 
 .gw-btn {
-  border-radius: 999px !important;
+  border-radius: 999px;
 }
 
 .gw-btn--ghost {

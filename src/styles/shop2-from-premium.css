@@ -8,7 +8,7 @@
 .icon-btn {
   transition:
     transform var(--motion-fast),
-    background var(--motion-fast) !important;
+    background var(--motion-fast);
 }
 
 .icon-btn:hover {

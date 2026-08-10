@@ -138,13 +138,17 @@
 }
 .section {
     padding-block: 72px;
-  }.quote-layout {
+  }
+.quote-layout {
     grid-template-columns: 1fr;
-  }.section {
+  }
+.section {
     padding-block: 62px;
-  }.payment-balance-card {
+  }
+.payment-balance-card {
     grid-template-columns: 1fr;
-  }.payment-balance-card > div + div {
+  }
+.payment-balance-card > div + div {
     border-left: 0;
     border-right: 0;
     border-top: 1px solid var(--sha-line);
@@ -185,7 +189,8 @@
   border: 1px solid #d2d2cc;
   border-radius: 7px;
   padding: 0 10px;
-}.quote-response input {
+}
+.quote-response input {
     min-width: 100%;
   }
 
@@ -429,9 +434,11 @@
 }
 .special-request-layout {
     grid-template-columns: 1fr;
-  }.special-request-info {
+  }
+.special-request-info {
     position: static;
-  }.special-request-form {
+  }
+.special-request-form {
     padding: 18px;
   }
 
@@ -467,6 +474,7 @@
 .enterprise-action-card select,
 .enterprise-action-card textarea {
   width: 100%;
-}.enterprise-action-card {
+}
+.enterprise-action-card {
     padding: 16px;
   }

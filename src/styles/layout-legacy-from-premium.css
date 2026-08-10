@@ -9,7 +9,8 @@
 
 .section-label {
   letter-spacing: 0.18em;
-}.section-heading .section-title {
+}
+.section-heading .section-title {
     font-size: clamp(2.15rem, 11vw, 3.8rem);
     line-height: 0.94;
     max-width: 13ch;

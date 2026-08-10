@@ -12,10 +12,12 @@
 }
 .desktop-nav {
     gap: 16px;
-  }.desktop-utilities .lang-text-btn,
+  }
+.desktop-utilities .lang-text-btn,
   .desktop-utilities .currency-selector {
     display: none;
-  }.desktop-nav,
+  }
+.desktop-nav,
   .desktop-utilities {
     display: none;
   }

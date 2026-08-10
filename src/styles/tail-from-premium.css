@@ -39,9 +39,11 @@
   border: 1px solid currentColor;
   background: transparent;
   color: inherit;
-}.pwa-stack {
+}
+.pwa-stack {
     inset-inline: 8px;
-  }.pwa-banner {
+  }
+.pwa-banner {
     flex-wrap: wrap;
   }
 
@@ -74,7 +76,8 @@
   text-decoration: underline;
   min-height: 44px;
   padding: 8px;
-}.address-card {
+}
+.address-card {
     padding: 20px;
   }
 

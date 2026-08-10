@@ -411,7 +411,7 @@
 }
 
 .gw-fulfilment-origin {
-  margin-block-start: 6px !important;
+  margin-block-start: 6px;
 }
 
 .gw-fulfilment-link {
@@ -869,7 +869,7 @@
   outline-offset: 3px;
 }
 
-/* global.css carries `.smart-img { background: #fff !important }` — a legacy
+/* global.css carries `.smart-img { background: #fff }` — a legacy
    guard so photographs shot on white do not show a seam against a light card.
    On the lit product stage it punches a hard white rectangle straight through
    the backdrop, and it makes the transparent concept plates invisible. Scoped
@@ -877,7 +877,7 @@
    on white are unaffected, because the white is in their own pixels. */
 .gw-stage-frame .smart-img,
 .gw-stage-frame img {
-  background: transparent !important;
+  background: transparent;
 }
 
 /* Verified photography is nearly always shot on white, so on the night stage it

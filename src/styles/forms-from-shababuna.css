@@ -58,10 +58,12 @@
   font-weight: 850;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}.field-row,
+}
+.field-row,
   .payment-plan-grid {
     grid-template-columns: 1fr;
-  }.form-block {
+  }
+.form-block {
     padding: 22px 18px;
   }
 

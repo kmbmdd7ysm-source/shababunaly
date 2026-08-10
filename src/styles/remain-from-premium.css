@@ -20,6 +20,7 @@
 [dir='rtl'] .page-hero::after {
   right: auto;
   left: -0.05em;
-}.desktop-utilities {
+}
+.desktop-utilities {
     display: none;
   }

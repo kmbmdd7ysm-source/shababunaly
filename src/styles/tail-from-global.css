@@ -280,9 +280,11 @@
 
 .cta-inner .display-title {
   font-size: clamp(3.2rem, 8vw, 8.5rem);
-}.hero {
+}
+.hero {
     min-height: 760px;
-  }.hero::before {
+  }
+.hero::before {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.97), rgba(0, 0, 0, 0.64));
   }
 
@@ -305,7 +307,8 @@
 
 .cta-band .display-title {
   color: #fff;
-}.hero {
+}
+.hero {
     min-height: 760px;
   }
 

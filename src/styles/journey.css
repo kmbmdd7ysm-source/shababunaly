@@ -586,7 +586,7 @@
 @media (max-width: 999px) {
   .gw-floor-zone {
     position: static;
-    transform: none !important;
+    transform: none;
     min-inline-size: 0;
     flex-direction: row;
     align-items: baseline;

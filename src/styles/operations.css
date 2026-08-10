@@ -325,7 +325,7 @@
    Operations gets state feedback and nothing else. */
 
 .operations-page * {
-  animation: none !important;
+  animation: none;
 }
 
 .operations-page a,

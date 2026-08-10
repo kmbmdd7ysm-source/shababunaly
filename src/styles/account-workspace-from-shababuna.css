@@ -166,24 +166,31 @@
   .operations-section {
     content-visibility: auto;
     contain-intrinsic-size: 1px 760px;
-  }.design-control-grid,
+  }
+.design-control-grid,
   .design-copy-grid,
   .design-upload-grid,
   .review-facts,
   .workspace-card-grid {
     grid-template-columns: 1fr;
-  }.workspace-tabs {
+  }
+.workspace-tabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }.workspace-card {
+  }
+.workspace-card {
     grid-template-columns: 84px 1fr;
-  }.workspace-card > a {
+  }
+.workspace-card > a {
     grid-column: 1/-1;
-  }.workspace-design-swatch {
+  }
+.workspace-design-swatch {
     width: 84px;
     height: 84px;
-  }.workspace-design-swatch span {
+  }
+.workspace-design-swatch span {
     font-size: 2.5rem;
-  }.workspace-list article {
+  }
+.workspace-list article {
     align-items: flex-start;
   }
 
@@ -222,9 +229,11 @@
 }
 .workspace-card--actionable {
     grid-template-columns: 84px 1fr;
-  }.workspace-card--actionable > a {
+  }
+.workspace-card--actionable > a {
     grid-column: 1/-1;
-  }.workspace-list article.workspace-list-actionable {
+  }
+.workspace-list article.workspace-list-actionable {
     flex-direction: column;
   }
 
@@ -245,6 +254,7 @@
 .operations-control-center .workspace-list article {
   align-items: flex-start;
   gap: 1rem;
-}.operations-control-center .workspace-list article {
+}
+.operations-control-center .workspace-list article {
     display: grid;
   }

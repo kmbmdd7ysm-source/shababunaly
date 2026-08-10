@@ -7,7 +7,7 @@
    rewrite their markup and risk their behaviour.
 
    It loads last, so it wins over `global.css`, `premium.css` and
-   `shababuna.css` without needing `!important`.
+   `shababuna.css` without needing ``.
 
    Rules it still obeys: tokens only (no raw colours), logical properties only
    (no physical left/right), and no change to any interactive behaviour.

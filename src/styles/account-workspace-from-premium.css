@@ -77,19 +77,23 @@
 .security-stack form {
   display: grid;
   gap: 8px;
-}.account-layout {
+}
+.account-layout {
     grid-template-columns: 1fr;
-  }.account-nav {
+  }
+.account-nav {
     flex-direction: row;
     overflow-x: auto;
     border-inline-end: 0;
     border-bottom: 1px solid #ddd;
     scrollbar-width: none;
-  }.account-nav button {
+  }
+.account-nav button {
     white-space: nowrap;
     border-inline-start: 0;
     border-bottom: 3px solid transparent;
-  }.account-nav button.active {
+  }
+.account-nav button.active {
     border-bottom-color: currentColor;
   }
 
@@ -102,14 +106,16 @@
   border: 1px dashed #aaa;
   padding: 32px;
   margin: 20px 0;
-}.account-switch {
+}
+.account-switch {
     flex-direction: column;
     align-items: flex-start;
   }
 .account-layout {
     min-width: 0;
     overflow: visible;
-  }.account-nav {
+  }
+.account-nav {
     box-sizing: border-box;
     display: flex;
     flex-flow: row nowrap;
@@ -125,9 +131,11 @@
     scrollbar-width: none;
     touch-action: pan-x pan-y;
     scroll-snap-type: inline proximity;
-  }.account-nav::-webkit-scrollbar {
+  }
+.account-nav::-webkit-scrollbar {
     display: none;
-  }.account-nav button {
+  }
+.account-nav button {
     box-sizing: border-box;
     flex: 0 0 auto;
     width: auto;
@@ -212,6 +220,7 @@
 .account-type-choice-grid,
   .organization-signup-fields {
     grid-template-columns: 1fr;
-  }.account-type-choice-grid > button {
+  }
+.account-type-choice-grid > button {
     min-height: 92px;
   }

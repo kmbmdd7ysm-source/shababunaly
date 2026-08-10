@@ -6,7 +6,7 @@
     height var(--motion-med) var(--ease-premium),
     background var(--motion-med),
     box-shadow var(--motion-med),
-    transform var(--motion-med) !important;
+    transform var(--motion-med);
 }
 
 .site-header:not(.scrolled) {
@@ -19,7 +19,7 @@
 
 .nav-link::after {
   transform-origin: left center;
-  transition: transform 0.35s var(--ease-premium) !important;
+  transition: transform 0.35s var(--ease-premium);
 }
 
 [dir='rtl'] .nav-link::after {

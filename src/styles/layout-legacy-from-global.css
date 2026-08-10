@@ -75,10 +75,12 @@
 
 [dir='rtl'] .section-title {
   max-width: 18ch;
-}.section-title {
+}
+.section-title {
     font-size: clamp(2rem, 11vw, 3.45rem);
     line-height: 1;
-  }[dir='rtl'] .section-title {
+  }
+[dir='rtl'] .section-title {
     font-size: clamp(1.8rem, 9.5vw, 3rem);
     line-height: 1.28;
   }

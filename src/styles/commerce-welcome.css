@@ -82,8 +82,10 @@
 .currency-welcome-options small {
   color: #0b7b42;
   font-size: 0.68rem;
-}.currency-welcome-options {
+}
+.currency-welcome-options {
     grid-template-columns: 1fr;
-  }.commerce-welcome-panel {
+  }
+.commerce-welcome-panel {
     padding: 34px 22px;
   }

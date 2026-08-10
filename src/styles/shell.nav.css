@@ -19,7 +19,7 @@
 /* The rail used to inset the document. Nothing does now — the header floats
    over the content and each route decides its own top offset. */
 #root {
-  padding-inline-start: 0 !important;
+  padding-inline-start: 0;
 }
 
 /* ---------- The floating header --------------------------------------------- */

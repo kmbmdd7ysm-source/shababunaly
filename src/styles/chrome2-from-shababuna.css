@@ -13,6 +13,7 @@
 .mobile-menu {
   width: min(92vw, 460px);
   background: #fff;
-}.header-inner {
+}
+.header-inner {
     min-height: 72px;
   }

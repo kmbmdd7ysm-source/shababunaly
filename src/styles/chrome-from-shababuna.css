@@ -17,6 +17,7 @@
 
 .nav-link::after {
   height: 1px;
-}.nav-link {
+}
+.nav-link {
     font-size: 0.69rem;
   }

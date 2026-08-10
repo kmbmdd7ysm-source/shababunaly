@@ -162,14 +162,16 @@
 .sort-sheet .filters-drawer-panel {
   height: auto;
   max-height: 82dvh;
-}.filters-drawer-panel {
+}
+.filters-drawer-panel {
     width: 100%;
     max-width: none;
     inset-inline: 0;
     inset-block-end: 0;
     inset-block-start: auto;
     transform: translateY(100%);
-  }.filters-drawer.open .filters-drawer-panel {
+  }
+.filters-drawer.open .filters-drawer-panel {
     transform: translateY(0);
   }
 
@@ -207,7 +209,7 @@
   opacity: 1;
   background: #fff;
   color: #111;
-  box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.22);
   overflow:hidden;
   display:flex;
   flex-direction:column;

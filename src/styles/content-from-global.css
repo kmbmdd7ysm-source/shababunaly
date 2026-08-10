@@ -66,29 +66,32 @@
 .contact-info .section-title {
   font-size: clamp(2rem, 8vw, 4.5rem);
   line-height: 0.92;
-  overflow-wrap: normal !important;
+  overflow-wrap: normal;
   word-break: keep-all;
   hyphens: none;
 }
 .contact-info {
     padding: 1.25rem;
-  }.contact-info .section-title {
+  }
+.contact-info .section-title {
     font-size: clamp(2rem, 11vw, 3.15rem);
     line-height: 0.94;
-  }.contact-form-wrap,
+  }
+.contact-form-wrap,
   .contact-form,
   .contact-info {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-  }.contact-info .section-title {
+  }
+.contact-info .section-title {
     max-width: 100%;
     font-size: clamp(2rem, 9.5vw, 2.75rem);
     line-height: 0.98;
     letter-spacing: -0.035em;
-    overflow-wrap: normal !important;
+    overflow-wrap: normal;
     word-break: normal;
-    hyphens: none !important;
+    hyphens: none;
   }
 
 .contact-section > .container,
@@ -134,7 +137,7 @@
   min-width: 0;
   max-width: 100%;
   white-space: normal;
-  overflow-wrap: normal !important;
+  overflow-wrap: normal;
   word-break: normal;
 }
 
@@ -151,7 +154,8 @@ html[dir='rtl'] .contact-form .contact-consent span {
 }
 .contact-section .container {
     padding-inline: var(--gutter);
-  }.contact-form input,
+  }
+.contact-form input,
   .contact-form select,
   .contact-form textarea,
   .contact-form button {
@@ -162,5 +166,5 @@ html[dir='rtl'] .contact-form .contact-consent span {
     font-size: clamp(1.65rem, 2.7vw, 3rem);
     line-height: 1;
     max-width: 100%;
-    overflow-wrap: anywhere !important;
+    overflow-wrap: anywhere;
   }

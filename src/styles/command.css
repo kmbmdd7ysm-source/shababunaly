@@ -186,7 +186,7 @@
 
 /* Operations gets state feedback and nothing else. */
 .gw-command * {
-  animation: none !important;
+  animation: none;
 }
 
 /* ---------- Module header ----------------------------------------------------------

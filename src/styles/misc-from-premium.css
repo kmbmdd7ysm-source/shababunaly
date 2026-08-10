@@ -13,7 +13,7 @@
 .wishlist-btn {
   transition:
     transform 0.25s var(--ease-premium),
-    background 0.25s !important;
+    background 0.25s;
 }
 
 .wishlist-btn:active {
@@ -163,7 +163,8 @@
     inset: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px);
     max-height: none;
     padding: 16px;
-  }.country-combobox__list {
+  }
+.country-combobox__list {
     max-height: calc(100dvh - 150px);
   }
 

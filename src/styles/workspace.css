@@ -326,7 +326,7 @@
 }
 
 /* The footer is a dark chapter and its copy is deliberately light, enforced
-   with `!important` by the legacy sheet. Putting a chalk plate behind that copy
+   with `` by the legacy sheet. Putting a chalk plate behind that copy
    produced white-on-light at 1.3:1 on every route with a newsletter form. The
    status keeps its rule and its meaning inside the footer, but not the plate. */
 .site-footer .form-status {

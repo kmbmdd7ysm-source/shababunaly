@@ -98,9 +98,11 @@
 
 .field textarea {
   padding-block: 15px;
-}.gallery-main {
+}
+.gallery-main {
     min-height: 520px;
-  }.lha-store-hero {
+  }
+.lha-store-hero {
     min-height: 440px;
   }
 

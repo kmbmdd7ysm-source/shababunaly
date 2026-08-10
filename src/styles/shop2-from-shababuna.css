@@ -90,15 +90,19 @@
   font-weight: 850;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}.department-card {
+}
+.department-card {
     grid-column: span 6;
-  }.department-card:last-child {
+  }
+.department-card:last-child {
     grid-column: span 12;
-  }.department-grid {
+  }
+.department-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-  }.department-card,
+  }
+.department-card,
   .department-card:nth-child(4),
   .department-card:nth-child(5),
   .department-card:last-child {

@@ -9,7 +9,7 @@
     transform 0.3s var(--ease-premium),
     background 0.3s,
     color 0.3s,
-    box-shadow 0.3s !important;
+    box-shadow 0.3s;
 }
 
 .hero .btn-primary::after,

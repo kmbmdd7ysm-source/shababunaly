@@ -71,15 +71,20 @@
   font-size: clamp(2.4rem, 4vw, 5.3rem);
   line-height: 0.92;
   letter-spacing: -0.06em;
-}.product-grid.product-grid--airy {
+}
+.product-grid.product-grid--airy {
     grid-template-columns: repeat(3, 1fr);
-  }.product-grid.product-grid--airy {
+  }
+.product-grid.product-grid--airy {
     grid-template-columns: repeat(2, 1fr);
-  }.product-grid.product-grid--airy {
+  }
+.product-grid.product-grid--airy {
     gap: 30px 12px;
-  }.product-card-body {
+  }
+.product-card-body {
     padding-top: 12px;
-  }.product-card-name {
+  }
+.product-card-name {
     font-size: 0.88rem;
   }
 

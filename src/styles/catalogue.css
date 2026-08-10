@@ -605,8 +605,8 @@ article.product-card .product-card-media {
 }
 
 a.product-card-name {
-  display: inline-flex !important;
+  display: inline-flex;
   align-items: center;
-  min-block-size: 24px !important;
+  min-block-size: 24px;
   padding-block: 4px;
 }

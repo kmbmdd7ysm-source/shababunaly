@@ -211,12 +211,15 @@
   }
 .studio-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }.studio-steps button {
+  }
+.studio-steps button {
     min-height: 56px;
     font-size: 0.78rem;
-  }.studio-preview-column {
+  }
+.studio-preview-column {
     grid-template-columns: 1fr;
-  }.organization-upgrade-card,
+  }
+.organization-upgrade-card,
   .roster-summary {
     align-items: stretch;
     flex-direction: column;
