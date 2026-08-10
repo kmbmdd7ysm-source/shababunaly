@@ -1,0 +1,19 @@
+<!--
+  INTERIM MARK — not the Shababuna identity.
+
+  The asset previously used as the Shababuna symbol was a reproduction of the
+  NBA Logoman and has been quarantined. A script wordmark is illegible at
+  favicon size, so a compact mark is structurally required.
+
+  This is deliberately a plain typographic plate: the initial set in the site's
+  own display face on the brand ground, over a single baseline rule. No pictorial
+  element, nothing that could be mistaken for anyone's logo. It is a placeholder
+  until the owner supplies a designed symbol.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Shababuna">
+  <rect width="512" height="512" rx="104" fill="#0A0B0D"/>
+  <text x="256" y="352" text-anchor="middle"
+        font-family="Archivo, 'Archivo Expanded', 'Helvetica Neue', Arial, sans-serif"
+        font-size="304" font-weight="800" font-stretch="112%" letter-spacing="-8" fill="#F7F5F0">S</text>
+  <rect x="120" y="398" width="272" height="12" fill="#F7F5F0" fill-opacity="0.38"/>
+</svg>

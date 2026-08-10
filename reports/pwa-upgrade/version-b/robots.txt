@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /checkout
+Disallow: /cart
+Disallow: /lab
+
+Sitemap: https://shababuna.ly/sitemap.xml

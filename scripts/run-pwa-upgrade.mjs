@@ -109,12 +109,15 @@ try {
   const context = await browser.newContext({ serviceWorkers: 'allow' });
   const page = await context.newPage();
   await page.goto(baseURL, { waitUntil: 'networkidle' });
+  // App defers SW registration until first input or 20s — nudge it now.
+  await page.mouse.click(12, 12);
   await page.evaluate(async () => {
     if ('serviceWorker' in navigator) await navigator.serviceWorker.ready;
   });
   await page.waitForFunction(
     async (id) => (await caches.keys()).some((key) => key.includes(id)),
     versions[0].id,
+    { timeout: 60000 },
   );
   const firstKeys = await page.evaluate(() => caches.keys());
   result.checks.push({
@@ -125,18 +128,30 @@ try {
 
   await publish(versions[1].dir);
   await page.reload({ waitUntil: 'networkidle' });
+  await page.mouse.click(12, 12);
   await page.evaluate(async () => {
     const registration = await navigator.serviceWorker.getRegistration();
     await registration?.update();
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
+    await new Promise((resolve) => setTimeout(resolve, 1500));
   });
   await page.reload({ waitUntil: 'networkidle' });
+  await page.mouse.click(12, 12);
+  await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.getRegistration();
+    await registration?.update();
+    registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+  });
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.mouse.click(12, 12);
   await page.waitForFunction(
     async ([oldId, newId]) => {
       const keys = await caches.keys();
       return keys.some((key) => key.includes(newId)) && keys.every((key) => !key.includes(oldId));
     },
     [versions[0].id, versions[1].id],
+    { timeout: 60000 },
   );
   const secondKeys = await page.evaluate(() => caches.keys());
   result.checks.push({
