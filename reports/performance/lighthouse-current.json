@@ -1,63 +1,63 @@
 {
   "schema": "shababuna.performance.lighthouse.v1",
-  "sha": "a705cef6291b9fa6a68bcc9a05add299c0d50f57",
-  "generatedAt": "2026-08-10T16:37:22.810598Z",
+  "sha": "e1831cf12b34f2fbfeb1655506327d6356afd8f1",
+  "generatedAt": "2026-08-10T16:47:34.023316Z",
   "target": "vite preview :4173",
   "results": {
     "desktop": {
-      "performance": 0.68,
+      "performance": 0.58,
       "FCP": {
-        "ms": 1929.5874,
+        "ms": 1930.0015,
         "display": "1.9\u00a0s",
         "score": 0.32
       },
       "LCP": {
-        "ms": 3128.52795,
-        "display": "3.1\u00a0s",
-        "score": 0.31
+        "ms": 3293.252625,
+        "display": "3.3\u00a0s",
+        "score": 0.27
       },
       "CLS": {
-        "ms": 0.002297,
-        "display": "0.002",
+        "ms": 0.002522,
+        "display": "0.003",
         "score": 1
       },
       "TBT": {
-        "ms": 176,
-        "display": "180\u00a0ms",
-        "score": 0.85
+        "ms": 315,
+        "display": "320\u00a0ms",
+        "score": 0.56
       },
       "SI": {
-        "ms": 1929.5874,
-        "display": "1.9\u00a0s",
-        "score": 0.65
+        "ms": 1984.7015512391522,
+        "display": "2.0\u00a0s",
+        "score": 0.63
       }
     },
     "mobile": {
-      "performance": 0.91,
+      "performance": 0.78,
       "FCP": {
-        "ms": 1871.6902,
+        "ms": 1899.663,
         "display": "1.9\u00a0s",
-        "score": 0.88
+        "score": 0.87
       },
       "LCP": {
-        "ms": 2988.1902,
-        "display": "3.0\u00a0s",
-        "score": 0.78
+        "ms": 3203.6629999999996,
+        "display": "3.2\u00a0s",
+        "score": 0.72
       },
       "CLS": {
-        "ms": 0.000681,
-        "display": "0.001",
+        "ms": 0,
+        "display": "0",
         "score": 1
       },
       "TBT": {
-        "ms": 168.5,
-        "display": "170\u00a0ms",
-        "score": 0.93
+        "ms": 559.0842499999999,
+        "display": "560\u00a0ms",
+        "score": 0.53
       },
       "SI": {
-        "ms": 1871.6902,
-        "display": "1.9\u00a0s",
-        "score": 1
+        "ms": 1974.4565241522337,
+        "display": "2.0\u00a0s",
+        "score": 0.99
       }
     }
   }
