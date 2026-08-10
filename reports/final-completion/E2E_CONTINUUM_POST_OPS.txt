@@ -1,0 +1,5 @@
+quick-add navigated or no sheet
+cart h1=Shopping Bag lines=0
+checkout h1=Checkout
+customize h1=Customize Everything
+ar/shop dir=ltr overflow=false
