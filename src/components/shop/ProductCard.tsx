@@ -15,7 +15,8 @@ import ColorSwatch from '../common/ColorSwatch';
 import QuickAddSheet from './QuickAddSheet';
 import '../../styles/product-card.css';
 import { getCompareAction } from '../../utils/productOptions';
-import { getVariantPurchaseLimit } from '../../utils/productEligibility';
+import { getVariantPurchaseLimit, type VariantLike } from '../../utils/productEligibility';
+import type { LocaleText } from '../../types/i18n';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability.ts';
 import type { ProductLike } from '../../utils/productEligibility.ts';
 
@@ -101,7 +102,7 @@ export default function ProductCard({
       type: 'product',
       id: String(p.id || ''),
       slug: String(p.slug || ''),
-      name: p.name as never,
+      name: p.name,
       image: String(cardImage || ''),
       price: unitPrice,
       retailPrice: unitPrice,
@@ -111,7 +112,7 @@ export default function ProductCard({
       size: String(variant.size || ''),
       color: String(variant.color || ''),
       sku: String(variant.sku || ''),
-      maxStock: getVariantPurchaseLimit(variant as never),
+      maxStock: getVariantPurchaseLimit(variant as VariantLike),
       inventoryTracking: variant.inventoryTracking !== false,
       href: to,
       quantity: 1,
@@ -122,7 +123,7 @@ export default function ProductCard({
         p.madeInUSA === true && p.claimVerified === true && Boolean(p.claimEvidenceReference),
       largeEquipment: p.largeEquipment === true,
       deliveryProfile: p.readyToShip ? 'ready' : 'standard',
-    } as never);
+    });
     window.setTimeout(() => {
       setAddState('added');
       window.setTimeout(() => setAddState('idle'), 900);
@@ -139,10 +140,10 @@ export default function ProductCard({
   return (
     <article className="product-card" data-product-id={String(p.id || '')}>
       <div className="product-card-media">
-        <Link to={to} aria-label={pick(p.name as never)}>
+        <Link to={to} aria-label={pick((p.name || '') as LocaleText)}>
           <SmartImage
             src={String(cardImage || '')}
-            alt={String(pick((p.alt || p.name) as never) || '')}
+            alt={String(pick(((p.alt || p.name) || '') as LocaleText) || '')}
             width={900}
             height={1200}
             sizes="(min-width: 1040px) 25vw, (min-width: 700px) 33vw, 50vw"

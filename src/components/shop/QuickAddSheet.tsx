@@ -56,7 +56,10 @@ export default function QuickAddSheet({
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement | null>(null);
   const variants = useMemo(
-    () => getPurchasableVariants(product as never) as VariantLike[],
+    () =>
+      getPurchasableVariants(
+        product as import('../../utils/productEligibility').ProductLike,
+      ) as VariantLike[],
     [product],
   );
   const colors = useMemo(() => {
@@ -126,7 +129,7 @@ export default function QuickAddSheet({
       type: 'product',
       id: String(product.id || ''),
       slug: String(product.slug || ''),
-      name: product.name as never,
+      name: product.name,
       image: String(image || ''),
       price: unitPrice,
       retailPrice: unitPrice,
@@ -135,7 +138,7 @@ export default function QuickAddSheet({
       size,
       color,
       sku: String(selected.sku || ''),
-      maxStock: getVariantPurchaseLimit(selected as never),
+      maxStock: getVariantPurchaseLimit(selected as import('../../utils/productEligibility').VariantLike),
       inventoryTracking: selected.inventoryTracking !== false,
       href: `/products/${String(product.slug || '')}`,
       quantity: 1,
@@ -148,7 +151,7 @@ export default function QuickAddSheet({
         Boolean(product.claimEvidenceReference),
       largeEquipment: product.largeEquipment === true,
       deliveryProfile: product.readyToShip ? 'ready' : 'standard',
-    } as never);
+    });
     window.setTimeout(() => {
       setStatus('added');
       window.setTimeout(() => onClose(), 700);
