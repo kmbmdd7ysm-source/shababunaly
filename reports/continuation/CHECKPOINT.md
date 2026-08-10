@@ -1,11 +1,12 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `763deea1fb3e3087699e987d022338e10ad9532e`
-- TypeScript: **99.32%** — remaining: operations.js + Realtime3DEngine.jsx
-- orders.ts DONE · operations recipe updated (no Row-destructure)
-- Evidence + E2E + a11y continuum green
+- SHA: `dd05aef666382086bb6428ce666d6215a3524e22`
+- TypeScript: **99.32%** — remaining: **operations.js** + Realtime3DEngine.jsx (ambient)
+- orders.ts COMPLETE this stretch
+- operations: multiple probes; requires per-export interfaces (see OPERATIONS_TS_RECIPE.md) — do not use  / bulk OpsInput on destructured staff RPCs
+- Evidence/E2E/a11y continuum green; external API/DB/Vercel BLOCKED documented
 **NOT FINAL COMPLETE**
 
 ## Exact next unfinished
-1. operations.js with per-export interfaces
-2. Final audit from final SHA
+1. operations.js TS with careful per-export interfaces (no bulk Row)
+2. Final full-site audit from final SHA → FINAL COMPLETE only when genuine
