@@ -136,7 +136,7 @@ const readiness = readFileSync('api/readiness.ts', 'utf8');
 assert.match(readiness, /requiredEnvironment/);
 assert.match(readiness, /MALWARE_SCAN_API_URL/);
 
-const orderService = readFileSync('src/services/orders.js', 'utf8');
+const orderService = readFileSync('src/services/orders.ts', 'utf8');
 assert.match(orderService, /deliveredAt: row\.delivered_at/);
 assert.match(orderService, /paymentExpiresAt: row\.payment_expires_at/);
 const resilience = readFileSync(

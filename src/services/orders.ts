@@ -1,5 +1,7 @@
 import { getSupabase } from './supabase';
 
+type Row = Record<string, unknown>;
+
 const STORAGE_KEY = 'shababuna-orders-v4';
 const LEGACY_KEYS = ['shababuna-orders-v3', 'shababuna-orders-v2'];
 const MAX_ORDERS = 50;
@@ -8,12 +10,12 @@ const CLOUD_ORDER_HISTORY_KEY = 'orderHistory';
 const allowLocalOrderStorage =
   Boolean(import.meta.env.DEV) ||
   ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
-const clean = (value = '') => String(value).trim();
-const emailKey = (value = '') => clean(value).toLowerCase();
-const safeNumber = (value) => (Number.isFinite(Number(value)) ? Number(value) : 0);
-const newId = () =>
+const clean = (value: unknown = ''): string => String(value ?? '').trim();
+const emailKey = (value: unknown = ''): string => clean(value).toLowerCase();
+const safeNumber = (value: unknown): number => (Number.isFinite(Number(value)) ? Number(value) : 0);
+const newId = (): string =>
   globalThis.crypto?.randomUUID?.() || `local-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-export const createIdempotencyKey = () => newId();
+export const createIdempotencyKey = (): string => newId();
 
 function storageAvailable() {
   try {
@@ -26,7 +28,7 @@ function storageAvailable() {
   }
 }
 
-export function normalizeOrder(order = {}) {
+export function normalizeOrder(order: Row = {}): Row {
   const currency = clean(order.currency || order.canonicalCurrency || 'USD').toUpperCase();
   const displayCurrency = clean(order.displayCurrency || order.currency || 'USD').toUpperCase();
   const canonicalShippingTotal = Math.max(
@@ -35,22 +37,22 @@ export function normalizeOrder(order = {}) {
   );
   const originalShippingAmount = Math.max(
     0,
-    safeNumber(order.shippingRate?.originalAmount ?? order.shipping_rate?.original_amount),
+    safeNumber((order.shippingRate as Row | undefined)?.originalAmount ?? (order.shipping_rate as Row | undefined)?.original_amount),
   );
   const inferredDisplayRate =
     displayCurrency !== currency && canonicalShippingTotal > 0 && originalShippingAmount > 0
       ? originalShippingAmount / canonicalShippingTotal
       : 1;
-  const needsLegacyDisplayRepair = (displayValue, canonicalValue) =>
+  const needsLegacyDisplayRepair = (displayValue: unknown, canonicalValue: unknown): boolean =>
     displayCurrency !== currency &&
     inferredDisplayRate > 1.01 &&
     Math.abs(safeNumber(displayValue) - safeNumber(canonicalValue)) < 0.01;
-  const repairedDisplayValue = (displayValue, canonicalValue) =>
+  const repairedDisplayValue = (displayValue: unknown, canonicalValue: unknown): number =>
     needsLegacyDisplayRepair(displayValue, canonicalValue)
       ? safeNumber(canonicalValue) * inferredDisplayRate
       : safeNumber(displayValue);
   const items = Array.isArray(order.items)
-    ? order.items.map((item) => ({
+    ? (order.items as Row[]).map((item: Row) => ({
         id: item.id || item.productId || item.product_id || null,
         type: item.type || item.fulfillment_type || null,
         fulfillmentType: item.fulfillmentType || item.fulfillment_type || null,
@@ -67,7 +69,7 @@ export function normalizeOrder(order = {}) {
             : item.sku || null),
         name:
           typeof item.name === 'object'
-            ? item.name.en || item.name.ar || ''
+            ? String((item.name as Row).en || (item.name as Row).ar || '')
             : clean(item.name || item.product_name),
         variant: item.variant || item.variant_snapshot || null,
         quantity: Math.max(1, Math.trunc(safeNumber(item.quantity) || 1)),
@@ -111,7 +113,7 @@ export function normalizeOrder(order = {}) {
     orderNumber: clean(order.orderNumber || order.order_number),
     userId: order.userId || order.user_id || null,
     email: emailKey(
-      order.email || order.customerEmail || order.customer_email || order.customer?.email,
+      order.email || order.customerEmail || order.customer_email || (order.customer as Row | undefined)?.email,
     ),
     createdAt: order.createdAt || order.created_at || new Date().toISOString(),
     updatedAt: order.updatedAt || order.updated_at || new Date().toISOString(),
@@ -201,14 +203,18 @@ export function normalizeOrder(order = {}) {
   };
 }
 
-function parseStored(raw) {
+function parseStored(raw: string | null): Row[] {
   if (!raw) return [];
-  const parsed = JSON.parse(raw);
-  const list = Array.isArray(parsed) ? parsed : Array.isArray(parsed.orders) ? parsed.orders : [];
-  return list.filter(Boolean).map(normalizeOrder);
+  const parsed: unknown = JSON.parse(raw);
+  const list = Array.isArray(parsed)
+    ? parsed
+    : parsed && typeof parsed === 'object' && Array.isArray((parsed as Row).orders)
+      ? ((parsed as Row).orders as unknown[])
+      : [];
+  return list.filter(Boolean).map((entry) => normalizeOrder(entry as Row));
 }
 
-export function readLocalOrders() {
+export function readLocalOrders(): { orders: unknown[]; error?: unknown } {
   if (!allowLocalOrderStorage) return { orders: [], error: null };
   if (!storageAvailable()) return { orders: [], error: new Error('storage_unavailable') };
   try {
@@ -229,7 +235,7 @@ export function readLocalOrders() {
   }
 }
 
-export function writeLocalOrders(orders) {
+export function writeLocalOrders(orders: unknown[]): { ok: boolean; error?: unknown } {
   if (!allowLocalOrderStorage)
     return { ok: false, error: new Error('local_order_storage_disabled') };
   if (!storageAvailable()) return { ok: false, error: new Error('storage_unavailable') };
@@ -244,43 +250,45 @@ export function writeLocalOrders(orders) {
   }
 }
 
-function saveLocal(order) {
+function saveLocal(order: Row) {
   const current = readLocalOrders();
-  const duplicate = current.orders.find(
-    (item) =>
-      item.idempotencyKey === order.idempotencyKey ||
-      (order.orderNumber && item.orderNumber === order.orderNumber),
-  );
-  if (duplicate) return { order: duplicate, duplicate: true, error: current.error };
+  const duplicate = current.orders.find((item) => {
+    const row = item as Row;
+    return (
+      row.idempotencyKey === order.idempotencyKey ||
+      (Boolean(order.orderNumber) && row.orderNumber === order.orderNumber)
+    );
+  });
+  if (duplicate) return { order: duplicate as Row, duplicate: true, error: current.error };
   const write = writeLocalOrders([order, ...current.orders]);
   return { order, duplicate: false, error: write.error || current.error };
 }
 
-async function invokeOrderFunction(name, body) {
+async function invokeOrderFunction(name: string, body: Row) {
   const supabase = await getSupabase();
   if (!supabase) return { data: null, error: new Error('cloud_unconfigured') };
   const { data, error } = await supabase.functions.invoke(name, { body });
   return { data, error: error || null };
 }
 
-function orderIdentity(order) {
+function orderIdentity(order: Row) {
   return clean(
     order?.idempotencyKey || order?.idempotency_key || order?.orderNumber || order?.order_number,
   );
 }
 
-function mergeOrderLists(...groups) {
-  const merged = new Map();
+function mergeOrderLists(...groups: Array<unknown[] | Row[]>) {
+  const merged = new Map<string, Row>();
   groups
     .flat()
     .filter(Boolean)
     .forEach((raw) => {
-      const order = normalizeOrder(raw);
-      const key = orderIdentity(order) || order.id;
+      const order = normalizeOrder(raw as Row);
+      const key = String(orderIdentity(order) || order.id || '');
       const current = merged.get(key);
-      const orderTime = Number(new Date(order.updatedAt || order.createdAt));
+      const orderTime = Number(new Date(String(order.updatedAt || order.createdAt || 0)));
       const currentTime = current
-        ? Number(new Date(current.updatedAt || current.createdAt))
+        ? Number(new Date(String(current.updatedAt || current.createdAt || 0)))
         : Number.NEGATIVE_INFINITY;
       const orderIsSynced = order.syncState === 'synced' || order.source === 'cloud';
       const currentIsSynced = current?.syncState === 'synced' || current?.source === 'cloud';
@@ -293,11 +301,14 @@ function mergeOrderLists(...groups) {
       }
     });
   return [...merged.values()]
-    .sort((a, b) => Number(new Date(b.createdAt)) - Number(new Date(a.createdAt)))
+    .sort(
+      (a, b) =>
+        Number(new Date(String(b.createdAt || 0))) - Number(new Date(String(a.createdAt || 0))),
+    )
     .slice(0, MAX_ORDERS);
 }
 
-async function readCloudOrderHistory(userId) {
+async function readCloudOrderHistory(userId: string) {
   const supabase = await getSupabase();
   if (!supabase || !userId) throw new Error('cloud_unconfigured');
   const { data, error } = await supabase
@@ -316,7 +327,7 @@ async function readCloudOrderHistory(userId) {
   );
 }
 
-async function writeCloudOrderHistory(userId, orders) {
+async function writeCloudOrderHistory(userId: string, orders: Row[]) {
   const supabase = await getSupabase();
   if (!supabase || !userId) throw new Error('cloud_unconfigured');
   const { data: current, error: readError } = await supabase
@@ -361,22 +372,27 @@ async function writeCloudOrderHistory(userId, orders) {
   return preferences[CLOUD_ORDER_HISTORY_KEY];
 }
 
-async function saveCloudHistoryOrder(order) {
+async function saveCloudHistoryOrder(order: Row) {
   if (!order.userId) throw new Error('user_required');
-  const existing = await readCloudOrderHistory(order.userId);
-  const synced = normalizeOrder({ ...order, source: 'cloud', syncState: 'synced' });
-  await writeCloudOrderHistory(order.userId, mergeOrderLists(synced, existing));
+  const existing = (await readCloudOrderHistory(String(order.userId))) as Row[];
+  const synced = normalizeOrder({ ...order, source: 'cloud', syncState: 'synced' } as Row);
+  await writeCloudOrderHistory(
+    String(order.userId),
+    mergeOrderLists([synced], Array.isArray(existing) ? existing : []),
+  );
   return synced;
 }
 
-export async function createOrder(input, options = {}) {
+export async function createOrder(input: unknown, options: Row = {}): Promise<Row> {
+  const inputRow = (input && typeof input === 'object' ? input : {}) as Row;
   const candidate = normalizeOrder({
-    ...input,
-    idempotencyKey: input.idempotencyKey || options.idempotencyKey,
+    ...inputRow,
+    idempotencyKey: inputRow.idempotencyKey || options.idempotencyKey,
   });
-  if (!candidate.orderNumber || !candidate.email || !candidate.items.length)
+  const candidateItems = Array.isArray(candidate.items) ? (candidate.items as Row[]) : [];
+  if (!candidate.orderNumber || !candidate.email || !candidateItems.length)
     throw new Error('invalid_order');
-  const isCash = ['cash', 'cash_on_delivery', 'cod'].includes(candidate.paymentMethod);
+  const isCash = ['cash', 'cash_on_delivery', 'cod'].includes(String(candidate.paymentMethod || ''));
   const allowLocalPendingQuote = Boolean(options.allowPending && candidate.shippingQuoteRequired);
   if (options.cloud !== false) {
     const payload = {
@@ -385,14 +401,14 @@ export async function createOrder(input, options = {}) {
       paymentMethod: candidate.paymentMethod,
       email: candidate.email,
       shipping: {
-        ...(candidate.shipping || {}),
+        ...((candidate.shipping && typeof candidate.shipping === 'object' ? candidate.shipping : {}) as Row),
         paymentPlan: candidate.paymentPlan,
         shippingQuoteRequired: candidate.shippingQuoteRequired,
         deliveryProfile: candidate.deliveryProfile,
         displayCurrency: candidate.displayCurrency,
         allReadyToShip: candidate.deliveryProfile === 'ready',
       },
-      items: candidate.items.map((item) => ({
+      items: candidateItems.map((item: Row) => ({
         productId: item.id,
         variantId: item.sku ? `${item.id}:${item.sku}` : `${item.type}:${item.id}`,
         quantity: item.quantity,
@@ -457,7 +473,7 @@ export async function createOrder(input, options = {}) {
   };
 }
 
-function mapCloudOrder(row) {
+function mapCloudOrder(row: Row) {
   return normalizeOrder({
     ...row,
     orderNumber: row.order_number,
@@ -502,10 +518,10 @@ function mapCloudOrder(row) {
   });
 }
 
-export async function getMyOrders(userId) {
+export async function getMyOrders(userId: string): Promise<{ state: string; orders: Row[]; error?: unknown; source?: string }> {
   if (!userId) return { state: 'success', orders: [], source: 'none', error: null };
   const local = readLocalOrders();
-  const localOrders = local.orders.filter((order) => order.userId === userId);
+  const localOrders = local.orders.filter((order) => (order as Row).userId === userId) as Row[];
   const supabase = await getSupabase();
   if (!supabase)
     return {
@@ -515,8 +531,8 @@ export async function getMyOrders(userId) {
       error: local.error || (localOrders.length ? new Error('cloud_unconfigured') : null),
     };
 
-  let tableOrders = [];
-  let historyOrders = [];
+  let tableOrders: Row[] = [];
+  let historyOrders: Row[] = [];
   let tableError = null;
   let historyError = null;
   try {
@@ -548,8 +564,13 @@ export async function getMyOrders(userId) {
 
   if (!historyError && localOnly.length) {
     try {
-      const promoted = localOnly.map((order) =>
-        normalizeOrder({ ...order, userId, source: 'cloud', syncState: 'synced' }),
+      const promoted = localOnly.map((order: unknown) =>
+        normalizeOrder({
+          ...((order && typeof order === 'object' ? order : {}) as Row),
+          userId,
+          source: 'cloud',
+          syncState: 'synced',
+        }),
       );
       await writeCloudOrderHistory(userId, mergeOrderLists(promoted, cloudOrders));
       cloudOrders = mergeOrderLists(promoted, cloudOrders);
@@ -557,11 +578,12 @@ export async function getMyOrders(userId) {
       if (!allLocal.error) {
         const promotedKeys = new Set(promoted.map((order) => orderIdentity(order)));
         writeLocalOrders(
-          allLocal.orders.map((order) =>
-            promotedKeys.has(orderIdentity(order))
-              ? normalizeOrder({ ...order, source: 'cloud', syncState: 'synced' })
-              : order,
-          ),
+          allLocal.orders.map((order) => {
+            const row = order as Row;
+            return promotedKeys.has(orderIdentity(row))
+              ? normalizeOrder({ ...row, source: 'cloud', syncState: 'synced' })
+              : row;
+          }),
         );
       }
     } catch (error) {
@@ -582,11 +604,11 @@ export async function getMyOrders(userId) {
 }
 
 export async function lookupGuestOrder(
-  orderNumber,
+  orderNumber: string,
   email = '',
   turnstileToken = '',
   accessToken = '',
-) {
+): Promise<Row> {
   const number = clean(orderNumber).toUpperCase();
   const normalizedEmail = emailKey(email);
   if (!number || (!normalizedEmail && !accessToken))
@@ -605,7 +627,9 @@ export async function lookupGuestOrder(
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const error = new Error(data?.error || `guest_order_lookup_failed:${response.status}`);
+      const error = new Error(String((data as Row)?.error || `guest_order_lookup_failed:${response.status}`)) as Error & {
+        status?: number;
+      };
       error.status = response.status;
       return {
         state: response.status === 400 ? 'invalid' : 'error',
@@ -618,7 +642,11 @@ export async function lookupGuestOrder(
     if (data?.order) {
       return {
         state: 'success',
-        order: normalizeOrder({ ...data.order, source: 'cloud', syncState: 'synced' }),
+        order: normalizeOrder({
+          ...(data.order as Row),
+          source: 'cloud',
+          syncState: 'synced',
+        }),
         source: 'cloud',
         error: null,
         accessToken: clean(data.accessToken),
@@ -632,11 +660,13 @@ export async function lookupGuestOrder(
   if (allowLocalOrderStorage && normalizedEmail) {
     const local = readLocalOrders();
     const order =
-      local.orders.find(
-        (item) =>
-          clean(item.orderNumber).toUpperCase() === number &&
-          emailKey(item.email) === normalizedEmail,
-      ) || null;
+      local.orders.find((item) => {
+        const row = item as Row;
+        return (
+          clean(row.orderNumber).toUpperCase() === number &&
+          emailKey(row.email) === normalizedEmail
+        );
+      }) || null;
     if (order)
       return { state: 'success', order, source: 'local', error: local.error, accessToken: '' };
   }
@@ -649,7 +679,13 @@ export async function getOrderDetails({
   email = '',
   turnstileToken = '',
   accessToken = '',
-}) {
+}: {
+  orderNumber?: string;
+  userId?: string | null;
+  email?: string;
+  turnstileToken?: string;
+  accessToken?: string;
+}): Promise<Row> {
   const number = clean(orderNumber).toUpperCase();
   if (!number) return { state: 'not-found', order: null, error: null, accessToken: '' };
   if (userId) {

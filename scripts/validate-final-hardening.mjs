@@ -61,7 +61,7 @@ for (const token of [
 ])
   has(env, token, `.env ${token}`);
 
-const ordersService = read('src/services/orders.js');
+const ordersService = read('src/services/orders.ts');
 for (const token of [
   'allowLocalPendingQuote',
   'online_payment_requires_server',
