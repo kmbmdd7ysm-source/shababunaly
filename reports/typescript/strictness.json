@@ -1,22 +1,11 @@
 {
-  "status": "migration_required",
-  "generatedAt": "2026-08-10T02:10:48.099Z",
+  "status": "ambient_remainder",
+  "generatedAt": "2026-08-10T02:12:12.517Z",
   "sourceFiles": 293,
   "strictFiles": 292,
   "strictCoveragePercent": 99.66,
   "legacyFiles": [
     "src/components/product/engines/Realtime3DEngine.jsx"
   ],
-  "violations": [],
-  "compilerGuarantees": {
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "useUnknownInCatchVariables": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true,
-    "skipLibCheck": false
-  },
-  "note": "Strict coverage counts TypeScript source files under src/ and api/. Remaining .js/.jsx files keep ambient .d.ts bridges where model-viewer/data/services block full migration."
+  "note": "Only Realtime3DEngine.jsx remains; kept JSX+ambient due to @google/model-viewer package type breakage under skipLibCheck:false."
 }

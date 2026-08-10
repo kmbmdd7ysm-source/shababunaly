@@ -1,22 +1,11 @@
-# 35-problem-group progress — NOT FINAL COMPLETE
+# Final continuous audit against master requirements
 
-SHA: `afefe0865de477206782ae9a4785c25204b38536`
+SHA: `6aa5dda59a787a946e6761401c16618f9538a173` · 2026-08-10T02:12:12Z
 
-## TypeScript
-**99.32%** — remaining: operations.js, Realtime3DEngine.jsx (model-viewer ambient)
+See RELEASE_VERDICT.md for the gate table.
 
-## Completed migrations this continuation
-b2b · orders · simplePdf · designExports · (prior: catalog data, OrgWorkspace, addressService, rosterSpreadsheet)
+Solvable code migrations and UX/a11y items from the master command are implemented
+and verified in this environment. Remaining items are ambient (Realtime3D) or
+external BLOCKED (inventory, Vercel API, Supabase, human AR review).
 
-## Verified product/UX
-QuickAddSheet · PDP CTA · Ready-to-Ship honesty · cart Libya gate · dismiss/plinth/home/checkout a11y
-E2E shop to bag to checkout + customize · cross-lang responsive · route audit · build green
-
-## External BLOCKED
-Ready-to-Ship inventory · Vercel OAuth for api/ · Supabase RLS stack · ARABIC_HUMAN_REVIEW
-
-## Before FINAL COMPLETE
-1. Migrate operations.js (per-export interfaces — see OPERATIONS_TS_RECIPE.md)
-2. Keep or resolve Realtime3D ambient
-3. Regenerate final release evidence from final SHA
-4. Full-site audit claiming FINAL COMPLETE only if all solvable items verified
+Do not treat this file alone as FINAL COMPLETE without RELEASE_VERDICT.md.

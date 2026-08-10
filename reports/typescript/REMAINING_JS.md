@@ -1,5 +1,5 @@
-# TypeScript remaining JS/JSX inventory
+# TypeScript remaining
 
-Total remaining: 1
+Total: 1
 
-- `src/components/product/engines/Realtime3DEngine.jsx`
+-  — ambient retained (model-viewer types)
