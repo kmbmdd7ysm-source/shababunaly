@@ -1,11 +1,8 @@
 # Lighthouse home (local preview)
 
-SHA: 
+SHA: `c763f8195710857871dfd3e7477debc165e9864a`
 
-- Performance: **79**
+- Performance: **78**
 - Accessibility: **100**
-- LCP: **2983 ms**
+- LCP: **3291 ms**
 - CLS: **0.168**
-- FCP: **2362 ms**
-
-Targets: LCP ≤2500ms, CLS ≤0.10 — not yet met on local preview; continue CSS extinction + LCP preload.
