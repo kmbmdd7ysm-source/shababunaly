@@ -401,10 +401,6 @@ body {
   padding-block: 15px;
 }
 
-.payment-methods {
-  gap: 10px;
-}
-
 .payment-choice {
   min-height: 88px;
   border: 1px solid var(--sha-line);
@@ -715,18 +711,6 @@ body {
   color: #b42318;
 }
 
-.file-button {
-  position: relative;
-  overflow: hidden;
-}
-
-.file-button input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
 .review-facts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -857,9 +841,6 @@ body {
 
 /* Render off-screen sections cheaply without changing their visual result. */
 
-@supports (content-visibility: auto) {
-}
-
 @media (max-width: 1080px) {.design-preview {
     grid-row: span 3;
   }
@@ -903,9 +884,6 @@ body {
   padding: 0 10px;
 }
 
-@media (max-width: 1240px) {
-}
-
 @media (max-width: 760px) {.quote-response input {
     min-width: 100%;
   }
@@ -918,9 +896,6 @@ body {
   gap: 10px;
   padding-top: 14px;
   border-top: 1px solid #dfdfd8;
-}
-
-@media (max-width: 900px) {
 }
 
 /* Returns, refunds and final operations hardening */
@@ -1079,29 +1054,12 @@ body {
   letter-spacing: 0.08em;
 }
 
-.staff-access-table td:first-child {
-  min-width: 240px;
-}
-
-.staff-access-table td small {
-  display: block;
-  margin-top: 4px;
-  color: #666;
-  overflow-wrap: anywhere;
-}
-
-.staff-access-table select {
-  min-width: 150px;
-}
-
 @media (max-width: 760px) {
 .shipping-rate-manager,
   .hero-content-manager {
     padding: 16px;
   }.configured-rate-list {
     gap: 7px;
-  }.staff-access-table td:first-child {
-    min-width: 190px;
   }
 }
 
@@ -1246,25 +1204,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.special-request-operations-card > a {
-  overflow-wrap: anywhere;
-}
-
-.special-request-operations-card label {
-  display: grid;
-  gap: 6px;
-}
-
-.special-request-operations-card input,
-.special-request-operations-card textarea,
-.special-request-operations-card select {
-  width: 100%;
-  min-height: 42px;
-  padding: 9px;
-  border: 1px solid #d1d1cb;
-  background: #fff;
 }
 
 @media (max-width: 850px) {
@@ -1575,12 +1514,6 @@ body {
   align-items: center;
 }
 
-.autosave-state {
-  margin-inline-start: auto;
-  font-size: 0.72rem;
-  color: #6d6d67;
-}
-
 .secure-share-output {
   margin-top: 10px;
   font-size: 0.76rem;
@@ -1616,8 +1549,6 @@ body {
   }.production-document-actions {
     display: grid;
     grid-template-columns: 1fr;
-  }.autosave-state {
-    margin: 0;
   }
 }
 
@@ -1663,9 +1594,6 @@ body {
 }
 
 /* Operations control center */
-
-@media (max-width: 760px) {
-}
 
 /* Secure design review */
 
@@ -1788,6 +1716,7 @@ body {
   stroke: #42d17a;
   stroke-width: 4;
 }
+
 
 
 

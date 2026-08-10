@@ -230,20 +230,6 @@ from {
   }
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(var(--motion-distance));
-  transition:
-    opacity var(--motion-section) var(--ease-premium),
-    transform var(--motion-section) var(--ease-premium);
-  transition-delay: var(--reveal-delay);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
 @keyframes hero-rise {
 from {
     opacity: 0;
@@ -452,9 +438,6 @@ from {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }.reveal {
-    opacity: 1;
-    transform: none;
   }
 }
 
@@ -767,9 +750,6 @@ button:disabled,
   opacity: 0.55;
 }
 
-@media (hover: hover) and (pointer: fine) {
-}
-
 .smart-img {
   background: linear-gradient(110deg, var(--surface) 25%, var(--surface-2) 40%, var(--surface) 55%);
 }
@@ -800,9 +780,6 @@ html {
   }
 }
 
-@media (max-width: 639px) {
-}
-
 /* Intentional media-unavailable state: never substitutes unrelated product photography. */
 
 .smart-img--fallback {
@@ -831,9 +808,6 @@ html {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.62;
-}
-
-@media (prefers-reduced-motion: reduce) {
 }
 
 /* ---------- Mobile, RTL, compare, and account layout ownership ---------- */
@@ -1014,9 +988,6 @@ html {
    Keep the account section tabs as an isolated horizontal scrollport so labels
    never shrink into each other or widen the page. */
 
-@media (max-width: 768px) {
-}
-
 /* iOS Safari can preserve :hover/:active paint after a tap. On coarse touch
    pointers the menu trigger and logo must remain visually neutral after taps. */
 
@@ -1081,8 +1052,6 @@ html {
   gap: 1rem;
 }
 
-@media (max-width: 640px) {
-}
 
 
 

@@ -183,22 +183,11 @@ strong {
   background: var(--surface);
 }
 
-@media (min-width: 700px) {
-}
-
-@media (min-width: 1040px) {
-}
-
 /* ---------- Buttons ---------- */
 
 .block {
   display: flex;
   width: 100%;
-}
-
-.compact {
-  padding: 0.6em 1.05em;
-  font-size: 0.82rem;
 }
 
 .link-btn {
@@ -507,13 +496,6 @@ strong {
   border-bottom: 1px solid var(--border);
 }
 
-.page-hero-inner {
-  position: relative;
-  z-index: 2;
-  padding-block: clamp(48px, 8vw, 96px);
-  max-width: 780px;
-}
-
 .page-description {
   font-size: clamp(1rem, 1.8vw, 1.2rem);
   color: var(--muted);
@@ -579,10 +561,6 @@ strong {
   font-weight: 700;
 }
 
-.price-now--sale {
-  color: var(--accent);
-}
-
 .price-was {
   color: var(--muted-2);
   text-decoration: line-through;
@@ -591,16 +569,6 @@ strong {
 }
 
 /* ---------- Quantity selector ---------- */
-
-.qty-selector--compact button {
-  width: 34px;
-  height: 36px;
-  font-size: 1rem;
-}
-
-.qty-selector--compact span {
-  min-width: 32px;
-}
 
 /* ---------- Product card ---------- */
 
@@ -645,20 +613,11 @@ strong {
   border: 1px solid var(--border-strong);
 }
 
-@media (hover: none) {
-}
-
 /* ---------- Category card ---------- */
 
 /* ---------- Event / Program / Training / Coach cards ---------- */
 
 /* ---------- Shop layout + filters ---------- */
-
-@media (min-width: 900px) {
-}
-
-@media (min-width: 900px) {
-}
 
 .filters {
   display: grid;
@@ -916,10 +875,6 @@ strong {
   font-weight: 600;
   font-size: 0.9rem;
   margin: 0;
-}
-
-.add-btn {
-  flex: 1;
 }
 
 /* ---------- Accordion ---------- */
@@ -1190,9 +1145,6 @@ to {
 
 /* ---------- Cart page ---------- */
 
-@media (min-width: 900px) {
-}
-
 .summary-title {
   font-size: 1.15rem;
   text-transform: uppercase;
@@ -1264,9 +1216,6 @@ to {
   min-height: 120px;
 }
 
-@media (min-width: 560px) {
-}
-
 .summary-items {
   display: grid;
   gap: 0.85rem;
@@ -1329,11 +1278,6 @@ to {
   font-variant-numeric: tabular-nums;
 }
 
-.wallets {
-  display: grid;
-  gap: 0.6rem;
-}
-
 /* ---------- Notices ---------- */
 
 .notice {
@@ -1387,47 +1331,7 @@ to {
 
 /* ---------- Home sections ---------- */
 
-.journey {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: 1fr;
-  counter-reset: step;
-}
-
-@media (min-width: 640px) {
-.journey {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1000px) {
-.journey {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 /* ---------- Detail (program/event/training/coach) ---------- */
-
-.fact {
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-  padding: 0.6em 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.fact dt {
-  color: var(--muted-2);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.fact dd {
-  margin: 0;
-  font-weight: 600;
-  text-align: end;
-}
 
 .status-pill {
   display: inline-flex;
@@ -1543,9 +1447,6 @@ from {
   }
 }
 
-@media (min-width: 860px) {
-}
-
 /* ---------- RTL adjustments ---------- */
 
 [dir='rtl'] {
@@ -1575,9 +1476,6 @@ from {
 }
 
 /* ---------- Print ---------- */
-
-@media print {
-}
 
 /* ========================================================================
    LHA 2.0 — PREMIUM BLACK / WHITE PERFORMANCE SYSTEM
@@ -1701,10 +1599,6 @@ body {
 
 .badge {
   border-radius: 0;
-}
-
-.journey {
-  border-top: 1px solid var(--line);
 }
 
 .cta-inner .display-title {
@@ -1876,12 +1770,6 @@ main {
 
 /* Journey is a premium numbered editorial system */
 
-.journey {
-  background: #fff;
-  color: #050505;
-  border-top: 2px solid #050505;
-}
-
 /* Page heroes and CTA own their contrast */
 
 .page-hero {
@@ -1990,11 +1878,6 @@ html[dir='rtl'] * {
   line-height: 0.94;
   max-width: 16ch;
   text-wrap: balance;
-}
-
-.payment-methods {
-  display: grid;
-  gap: 12px;
 }
 
 .payment-choice {
@@ -2204,10 +2087,6 @@ html[dir='rtl'] * {
   white-space: nowrap;
 }
 
-.search-view-all {
-  margin-top: 2rem;
-}
-
 .orders-list {
   display: grid;
   gap: 1rem;
@@ -2264,9 +2143,6 @@ html[dir='rtl'] * {
   }.search-cancel {
     font-size: 0.9rem;
   }
-}
-
-@media (max-width: 520px) {
 }
 
 .search-suggestions li button {
@@ -2936,9 +2812,6 @@ canvas {
   }
 }
 
-@media (max-width: 520px) {
-}
-
 /* Final independent repair: mobile logo, contact containment, and registration clarity. */
 
 @media (max-width: 760px) {
@@ -2976,9 +2849,6 @@ html,
   #root {
     overflow-x: clip;
   }
-}
-
-@media (max-width: 760px) {
 }
 
 /* Production hotfixes: stable mobile sheets, colour metadata and RTL viewport containment. */
@@ -3268,9 +3138,6 @@ html,
   z-index: 2;
 }
 
-@media (min-width: 860px) {
-}
-
 @media (max-width: 760px) {
 .media-lightbox {
     padding: 76px 8px 52px;
@@ -3557,6 +3424,7 @@ body.scroll-locked {
 .lightbox-stage img.lightbox-zoom-300 {
   transform: scale(3) !important;
 }
+
 
 
 
