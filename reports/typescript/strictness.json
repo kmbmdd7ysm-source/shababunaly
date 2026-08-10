@@ -1,9 +1,9 @@
 {
   "status": "complete",
-  "generatedAt": "2026-08-10T07:20:47.058Z",
-  "sha": "8c18ca11a953978ed4467d8a369b1f8370630dae",
+  "generatedAt": "2026-08-10T07:21:00.158Z",
+  "sha": "9fa7acffc24ae5d96b853686baa7684e0b5cd4d5",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "workingTree": "clean",
+  "workingTree": "dirty",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
   "sourceFiles": 299,
