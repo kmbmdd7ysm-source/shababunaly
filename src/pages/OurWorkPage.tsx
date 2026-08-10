@@ -80,7 +80,7 @@ export default function OurWorkPage(): ReactElement {
         </picture>
         <div className="gw-principles-inner gw-principles-inner--wide">
           <div className="gw-principles-head">
-            <p className="gw-spec">{pick({ en: 'Capabilities', ar: 'القدرات' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Capabilities', ar: 'القدرات' })}</p>
             <h2 id="our-work-capabilities" className="gw-principles-title">
               {pick({ en: 'What we build and supply', ar: 'ما نقوم بتصنيعه وتوفيره' })}
             </h2>
@@ -105,7 +105,7 @@ export default function OurWorkPage(): ReactElement {
       <section className="gw-reach">
         <div className="gw-reach-inner">
           <div className="gw-reach-copy">
-            <p className="gw-spec">PROJECT FLOW</p>
+            <p className="gw-kicker">PROJECT FLOW</p>
             <h2 className="gw-reach-title">
               {pick({
                 en: 'Brief. Design. Approval. Production. Delivery.',
@@ -128,7 +128,7 @@ export default function OurWorkPage(): ReactElement {
             </div>
           </div>
           <div className="gw-reach-slot" role="note">
-            <span className="gw-spec">
+            <span className="gw-kicker">
               {pick({ en: 'Project showcase · reserved', ar: 'عرض المشاريع · محجوز' })}
             </span>
             <p>

@@ -1,6 +1,7 @@
 import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { updateMediaAsset, uploadOperationalMedia } from '../../../services/operations';
+import type { OperationsRunFn } from '../../../types/operations';
 
 export default function MediaLibrary({
   state,
@@ -13,7 +14,7 @@ export default function MediaLibrary({
   accessToken?: string | undefined;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const stateRecord = (state || {}) as Record<string, unknown>;
   const mediaAssets = Array.isArray(stateRecord.mediaAssets)

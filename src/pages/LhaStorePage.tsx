@@ -57,7 +57,7 @@ export default function LhaStorePage(): ReactElement {
 
       <section className="gw-partner-world" aria-label="LHA">
         <div className="gw-partner-world-inner">
-          <p className="gw-spec">
+          <p className="gw-kicker">
             {pick({ en: 'Official partner collection', ar: 'مجموعة الشريك الرسمية' })}
           </p>
           <h2 className="gw-partner-world-title">
@@ -68,7 +68,7 @@ export default function LhaStorePage(): ReactElement {
       <div className="gw-catalogue">
         <div className="gw-catalogue-inner gw-catalogue-inner--full">
           <div className="gw-catalogue-bar">
-            <p className="gw-spec">{pick({ en: 'Full collection', ar: 'المجموعة كاملة' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Full collection', ar: 'المجموعة كاملة' })}</p>
             <Link to="/shop" className="gw-btn gw-btn--secondary">
               {pick({ en: 'Back to Shababuna Shop', ar: 'العودة لمتجر شبابنا' })}
             </Link>

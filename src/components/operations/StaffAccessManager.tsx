@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { updateAdminUserRole } from '../../services/operations';
+import type { OperationsRunFn } from '../../types/operations';
 
 export function StaffAccessManager({
   state,
@@ -16,7 +17,7 @@ export function StaffAccessManager({
   currentUserId?: string | undefined;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
   onUpdated?: (user: Record<string, unknown>) => unknown;
 }): ReactElement {
   if (state.loading)
@@ -72,7 +73,7 @@ function StaffAccessRow({
   currentUserId?: string | undefined;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
   onUpdated?: (user: Record<string, unknown>) => unknown;
 }): ReactElement {
   const [role, setRole] = useState(String(user.role || 'customer'));

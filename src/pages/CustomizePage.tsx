@@ -664,7 +664,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
 
         <div className="gw-lab-dock">
           <header className="gw-lab-head">
-            <p className="gw-spec">
+            <p className="gw-kicker">
               {pick({ en: 'Shababuna design studio', ar: 'استوديو تصميم شبابنا' })}
             </p>
             <h1 className="gw-lab-title">
@@ -1095,7 +1095,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
               <section className="gw-roster-desk" aria-labelledby="custom-roster-title">
                 <header className="gw-toolbench-head">
                   <div>
-                    <p className="gw-spec">
+                    <p className="gw-kicker">
                       {pick({ en: 'Roster workspace', ar: 'مساحة القائمة' })}
                     </p>
                     <h2 id="custom-roster-title" className="gw-toolbench-title">

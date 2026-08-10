@@ -624,7 +624,7 @@ export default function CheckoutPage(): ReactElement {
         <section className="gw-checkout gw-checkout--terminal" aria-labelledby="gw-checkout-title">
           <div className="gw-checkout-inner">
             <div className="gw-checkout-head">
-              <p className="gw-spec">{nav.cart}</p>
+              <p className="gw-kicker">{nav.cart}</p>
               <h1 id="gw-checkout-title" className="gw-checkout-title">
                 {checkout.title}
               </h1>
@@ -701,7 +701,7 @@ export default function CheckoutPage(): ReactElement {
       <section className="gw-checkout" aria-labelledby="gw-checkout-title">
         <div className="gw-checkout-inner">
           <div className="gw-checkout-head">
-            <p className="gw-spec">{nav.cart}</p>
+            <p className="gw-kicker">{nav.cart}</p>
             <h1 id="gw-checkout-title" className="gw-checkout-title">
               {checkout.title}
             </h1>

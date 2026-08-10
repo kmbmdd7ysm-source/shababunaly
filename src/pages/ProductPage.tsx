@@ -363,14 +363,14 @@ export default function ProductPage(): ReactElement {
           <div className="gw-stage-trail">
             <Breadcrumbs items={crumbs} />
           </div>
-          <p className="gw-spec gw-stage-origin">
+          <p className="gw-kicker gw-stage-origin">
             {product.brand}
             {sub ? ` \u00b7 ${pick(sub.name)}` : ''}
           </p>
           <h1 id="gw-product-title" className="gw-stage-title">
             {pick(product.name as { en?: string; ar?: string })}
           </h1>
-          <p className="gw-spec gw-stage-sku">
+          <p className="gw-kicker gw-stage-sku">
             {productCopy.sku}:{' '}
             <span className="gw-isolate-ltr">{String(matchedVariant?.sku || product.sku || '')}</span>
           </p>
@@ -430,7 +430,7 @@ export default function ProductPage(): ReactElement {
                   aria-pressed={purchaseMode === 'retail'}
                   onClick={() => changeMode('retail')}
                 >
-                  <span className="gw-spec">{pick({ en: 'By the piece', ar: 'بالقطعة' })}</span>
+                  <span className="gw-kicker">{pick({ en: 'By the piece', ar: 'بالقطعة' })}</span>
                   <Price amount={retailPrice} size="sm" />
                 </button>
                 <button
@@ -439,7 +439,7 @@ export default function ProductPage(): ReactElement {
                   aria-pressed={purchaseMode === 'wholesale'}
                   onClick={() => changeMode('wholesale')}
                 >
-                  <span className="gw-spec">{pick({ en: 'Wholesale', ar: 'جملة' })}</span>
+                  <span className="gw-kicker">{pick({ en: 'Wholesale', ar: 'جملة' })}</span>
                   <span>
                     <Price amount={wholesalePrice || retailPrice} size="sm" />
                     {' · '}
@@ -576,7 +576,7 @@ export default function ProductPage(): ReactElement {
               click to discover the fabric or the delivery window. */}
           <div className="gw-deck-spec">
             <div className={`gw-fulfilment${showReady ? ' is-ready' : ''}`}>
-              <p className="gw-spec">{pick({ en: 'Fulfilment', ar: 'التسليم' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Fulfilment', ar: 'التسليم' })}</p>
               {showReady && (
                 <strong className="gw-fulfilment-ready">
                   <i className="ready-dot" />
@@ -603,7 +603,7 @@ export default function ProductPage(): ReactElement {
 
             {details.map((entry) => (
               <div className="gw-specplate" key={entry.title}>
-                <p className="gw-spec">{entry.title}</p>
+                <p className="gw-kicker">{entry.title}</p>
                 <div className="gw-specplate-body">{entry.content}</div>
               </div>
             ))}
@@ -652,7 +652,7 @@ export default function ProductPage(): ReactElement {
         <section className="gw-continue gw-continue--maple">
           <div className="gw-continue-inner">
             <div className="gw-continue-head">
-              <p className="gw-spec">{pick({ en: 'Continue', ar: 'تابع' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Continue', ar: 'تابع' })}</p>
               <h2 className="gw-continue-title">{productCopy.related}</h2>
             </div>
             <div className="gw-catalogue-grid">
@@ -668,7 +668,7 @@ export default function ProductPage(): ReactElement {
         <section className="gw-continue">
           <div className="gw-continue-inner">
             <div className="gw-continue-head">
-              <p className="gw-spec">{pick({ en: 'Your trail', ar: 'مسارك' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Your trail', ar: 'مسارك' })}</p>
               <h2 className="gw-continue-title">{productCopy.recentlyViewed}</h2>
             </div>
             <div className="gw-catalogue-grid">

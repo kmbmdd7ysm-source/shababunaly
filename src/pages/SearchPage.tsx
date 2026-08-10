@@ -49,7 +49,7 @@ export default function SearchPage(): ReactElement {
           count as a live figure beside it. */}
       <section className="gw-console gw-search-desk" aria-labelledby="gw-search-title">
         <div className="gw-console-inner">
-          <p className="gw-spec">{pick({ en: 'Search', ar: 'البحث' })}</p>
+          <p className="gw-kicker">{pick({ en: 'Search', ar: 'البحث' })}</p>
           <h1 id="gw-search-title" className="gw-console-title">
             {pick({ en: 'Find what you need', ar: 'اعثر على ما تحتاجه' })}
           </h1>
@@ -75,7 +75,7 @@ export default function SearchPage(): ReactElement {
           </form>
           <p className="gw-console-readout" aria-live="polite">
             <span className="gw-figure gw-isolate-ltr">{results.total}</span>
-            <span className="gw-spec">{common.results}</span>
+            <span className="gw-kicker">{common.results}</span>
           </p>
         </div>
       </section>
@@ -84,7 +84,7 @@ export default function SearchPage(): ReactElement {
         <div className="gw-catalogue-inner">
           <aside className="gw-catalogue-rail">
             <div className="gw-facet-head">
-              <p className="gw-spec">{pick({ en: 'Filter results', ar: 'تصفية النتائج' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Filter results', ar: 'تصفية النتائج' })}</p>
               {activeFacets > 0 && (
                 <button
                   type="button"
@@ -153,7 +153,7 @@ export default function SearchPage(): ReactElement {
                 {results.products.length > 0 && (
                   <section className="gw-resultset">
                     <h2 className="gw-resultset-head">
-                      <span className="gw-spec">{pick({ en: 'Products', ar: 'المنتجات' })}</span>
+                      <span className="gw-kicker">{pick({ en: 'Products', ar: 'المنتجات' })}</span>
                       <span className="gw-figure gw-isolate-ltr">{results.products.length}</span>
                     </h2>
                     <div className="gw-catalogue-grid">
@@ -166,7 +166,7 @@ export default function SearchPage(): ReactElement {
                 {results.pages.length > 0 && (
                   <section className="gw-resultset">
                     <h2 className="gw-resultset-head">
-                      <span className="gw-spec">
+                      <span className="gw-kicker">
                         {pick({ en: 'Pages & Services', ar: 'الصفحات والخدمات' })}
                       </span>
                       <span className="gw-figure gw-isolate-ltr">{results.pages.length}</span>
@@ -204,7 +204,7 @@ function Facet({
 }): ReactElement {
   return (
     <fieldset className="gw-facet">
-      <legend className="gw-spec">{title}</legend>
+      <legend className="gw-kicker">{title}</legend>
       {vals.map((value) => (
         <label key={value} className="gw-facet-option">
           <input type="checkbox" checked={active.includes(value)} onChange={() => toggle(value)} />

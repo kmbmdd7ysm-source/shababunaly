@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { deleteOperationalEntity } from '../../../services/operations';
+import type { OperationsRunFn } from '../../../types/operations';
 
 export const SHIPMENT_STATUSES = Object.freeze([
   'pending',
@@ -57,7 +58,7 @@ export function OperationalRow({
   table: string;
   row: Record<string, unknown>;
   label: string;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
   saving?: string | boolean | undefined;
   pick: (value: string | { en?: string; ar?: string }) => string;
 }): ReactElement {

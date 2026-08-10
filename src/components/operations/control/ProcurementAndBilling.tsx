@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { upsertOperationalEntity } from '../../../services/operations';
 import { FinancialInputs, OperationalRow, isoOrNull } from './shared';
+import type { OperationsRunFn } from '../../../types/operations';
 
 export default function ProcurementAndBilling({
   state,
@@ -12,7 +13,7 @@ export default function ProcurementAndBilling({
   state: unknown;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
   [key: string]: unknown;
 }): ReactElement {
   const s = (state || {}) as Record<string, unknown>;

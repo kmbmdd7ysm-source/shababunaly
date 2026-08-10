@@ -32,14 +32,14 @@ export default function FavoritesPage(): ReactElement {
       <Seo title={pick({ en: 'Favorites', ar: 'المفضلة' })} path="/favorites" />
       <section className="gw-world-headband" aria-labelledby="favorites-title">
         <div className="gw-cat-head-inner">
-          <p className="gw-spec">{pick({ en: 'Saved for later', ar: 'محفوظ لاحقًا' })}</p>
+          <p className="gw-kicker">{pick({ en: 'Saved for later', ar: 'محفوظ لاحقًا' })}</p>
           <div className="gw-cat-head-row">
             <h1 id="favorites-title" className="gw-cat-title">
               {pick({ en: 'Favorites', ar: 'المفضلة' })}
             </h1>
             <p className="gw-cat-count">
               <span className="gw-figure gw-isolate-ltr">{savedCount}</span>
-              <span className="gw-spec">{pick({ en: 'saved', ar: 'محفوظ' })}</span>
+              <span className="gw-kicker">{pick({ en: 'saved', ar: 'محفوظ' })}</span>
             </p>
           </div>
         </div>

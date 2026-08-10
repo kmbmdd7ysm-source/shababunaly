@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { setShippingQuote } from '../../services/operations';
+import type { OperationsRunFn } from '../../types/operations';
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -17,7 +18,7 @@ export function ShippingQuoteRow({
   order: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');

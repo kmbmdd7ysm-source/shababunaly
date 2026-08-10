@@ -471,7 +471,7 @@ export default function ShopPage(): ReactElement {
         <section className="gw-world" aria-labelledby="gw-featured-title">
           <div className="gw-world-inner">
             <header className="gw-world-head">
-              <p className="gw-spec">{pick({ en: 'Featured', ar: 'مختارات' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Featured', ar: 'مختارات' })}</p>
               <h2 id="gw-featured-title" className="gw-world-title">
                 {pick({ en: 'On the floor now', ar: 'على الأرض الآن' })}
               </h2>
@@ -517,7 +517,7 @@ export default function ShopPage(): ReactElement {
               </div>
               <p className="gw-cat-count">
                 <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
-                <span className="gw-spec">
+                <span className="gw-kicker">
                   {filtered.length === 1 ? common.result : common.results}
                 </span>
               </p>
@@ -645,7 +645,7 @@ export default function ShopPage(): ReactElement {
             className="gw-console-active"
             aria-label={pick({ en: 'Active filters', ar: 'عوامل التصفية النشطة' })}
           >
-            <p className="gw-spec">{pick({ en: 'Filtering by', ar: 'التصفية حسب' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Filtering by', ar: 'التصفية حسب' })}</p>
             <ul>
               {activeTokens.map((token) => (
                 <li key={token.key}>
@@ -721,7 +721,7 @@ export default function ShopPage(): ReactElement {
 
         <aside className="gw-runs-request">
           <div>
-            <p className="gw-spec">{pick({ en: 'Not listed?', ar: 'غير موجود؟' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Not listed?', ar: 'غير موجود؟' })}</p>
             <p className="gw-runs-request-copy">
               {pick({
                 en: 'Send a link or an image and receive a verified quote.',

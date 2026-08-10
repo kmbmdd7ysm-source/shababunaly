@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateReturnRequest, recordRefund } from '../../services/operations';
 import { RETURN_TRANSITIONS } from './commerceHelpers';
+import type { OperationsRunFn } from '../../types/operations';
 
 export function ReturnOperationsCard({
   request,
@@ -14,7 +15,7 @@ export function ReturnOperationsCard({
   orders?: Array<Record<string, unknown>>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const order = (orders || []).find(
     (item: Record<string, unknown>) => item.id === request.order_id,

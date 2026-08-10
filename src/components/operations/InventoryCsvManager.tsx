@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
+import type { OperationsRunFn } from '../../types/operations';
 import {
   applyInventoryImport,
   createInventoryCsv,
@@ -17,7 +18,7 @@ export function InventoryCsvManager({
   state: unknown;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const s = (state || {}) as Record<string, unknown>;
   const inventoryImports = Array.isArray(s.inventoryImports)

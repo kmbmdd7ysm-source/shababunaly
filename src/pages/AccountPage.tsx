@@ -423,7 +423,7 @@ export default function AccountPage(): ReactElement {
               loading="eager"
               decoding="async"
             />
-            <p className="gw-spec">{pick({ en: 'Built different.', ar: 'مختلفون.' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Built different.', ar: 'مختلفون.' })}</p>
             <ol className="gw-gatewall-list">
               {[
                 { en: 'Orders, tracking and delivery status', ar: 'الطلبات والتتبع وحالة التسليم' },
@@ -452,7 +452,7 @@ export default function AccountPage(): ReactElement {
               }}
               noValidate
             >
-              <p className="gw-spec">SHABABUNA ACCOUNT</p>
+              <p className="gw-kicker">SHABABUNA ACCOUNT</p>
               <h1 className="gw-gate-title">
                 {pick({
                   en:
@@ -931,7 +931,7 @@ export default function AccountPage(): ReactElement {
               />
             </label>
             <div className="gw-account-who">
-              <p className="gw-spec">SHABABUNA ACCOUNT</p>
+              <p className="gw-kicker">SHABABUNA ACCOUNT</p>
               <h1 className="gw-account-title">{pick({ en: 'Your account', ar: 'حسابك' })}</h1>
               <p className="gw-account-meta">
                 <span className="gw-isolate-ltr">{String(auth.user?.email || '')}</span>

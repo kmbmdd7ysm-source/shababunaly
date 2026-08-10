@@ -1,7 +1,6 @@
 {
   "schema": "shababuna.typescript.type-quality.v1",
-  "sha": "30463d1fa938ce43928ea14332e67b29c97ba8f7",
+  "sha": "63c6ccead86c36f95222380421a2ff5ed1a6a5e8",
   "anyCount": 0,
-  "asNeverCount": 81,
-  "note": "Account pickLoose boundary reduced Account as-never; continue domain typing."
+  "asNeverCount": 65
 }

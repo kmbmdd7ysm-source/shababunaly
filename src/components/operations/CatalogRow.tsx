@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateCatalogVariant } from '../../services/operations';
+import type { OperationsRunFn } from '../../types/operations';
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -17,7 +18,7 @@ export function CatalogRow({
   row: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const variantData = asRecord(row.variant_data);
   const [values, setValues] = useState({

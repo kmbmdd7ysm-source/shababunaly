@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useMemo, useState } from 'react';
 import { updateSiteContent } from '../../../services/operations';
 import { safeJson } from './shared';
+import type { OperationsRunFn } from '../../../types/operations';
 
 export default function ContentCms({
   state,
@@ -12,7 +13,7 @@ export default function ContentCms({
   state: unknown;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const stateRecord = (state || {}) as Record<string, unknown>;
   const defaults = useMemo(

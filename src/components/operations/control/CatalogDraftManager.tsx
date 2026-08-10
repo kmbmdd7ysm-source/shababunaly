@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
+import type { OperationsRunFn } from '../../../types/operations';
 import {
   addCatalogVariantDraft,
   archiveCatalogProduct,
@@ -15,7 +16,7 @@ export default function CatalogDraftManager({
   state: unknown;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
   [key: string]: unknown;
 }): ReactElement {
   const s = (state || {}) as Record<string, unknown>;

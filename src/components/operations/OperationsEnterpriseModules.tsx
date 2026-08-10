@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { reviewPaymentProof, upsertOperationalEntity } from '../../services/operations';
+import type { OperationsRunFn } from '../../types/operations';
 
 export { InventoryCsvManager } from './InventoryCsvManager';
 
@@ -13,7 +14,7 @@ export function EnterpriseOperationsPanel({
   state: unknown;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const s = (state || {}) as Record<string, unknown>;
   const rows = (key: string) =>
@@ -360,7 +361,7 @@ function PaymentProofReviewCard({
   proof: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const [note, setNote] = useState('');
   const review = (status: string) =>

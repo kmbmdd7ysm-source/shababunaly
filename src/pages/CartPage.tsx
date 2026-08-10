@@ -209,7 +209,7 @@ export default function CartPage(): ReactElement {
               {/* THE RECKONING — a specification block, with the total set
                   apart by a heavier rule rather than by colour. */}
               <aside className="gw-reckoning" aria-labelledby="gw-reckoning-title">
-                <h2 id="gw-reckoning-title" className="gw-spec gw-reckoning-title">
+                <h2 id="gw-reckoning-title" className="gw-kicker gw-reckoning-title">
                   {cartCopy.title}
                 </h2>
                 <dl className="gw-reckoning-rows">

@@ -389,7 +389,7 @@ export default function OperationsPage(): ReactElement | null {
                   lang={lang}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
               </section>
               <section className="operations-section">
@@ -398,7 +398,7 @@ export default function OperationsPage(): ReactElement | null {
                   row={state.siteContent.find((item) => item.content_key === 'home_hero')}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
               </section>
               {getStaffRole(auth.user) === 'super_admin' && (
@@ -416,7 +416,7 @@ export default function OperationsPage(): ReactElement | null {
                     currentUserId={auth.user.id}
                     pick={pick}
                     saving={Boolean(saving)}
-                    run={run as never}
+                    run={run}
                     onUpdated={(user: OpsRow) =>
                       setAdminUsers((current) => ({
                         ...current,
@@ -438,7 +438,7 @@ export default function OperationsPage(): ReactElement | null {
                   data={state}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
               </section>
               <section className="operations-section">
@@ -448,13 +448,13 @@ export default function OperationsPage(): ReactElement | null {
                   catalog={state.catalog}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
                 <InventoryCsvManager
                   state={state}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
               </section>
               <section className="operations-section">
@@ -533,7 +533,7 @@ export default function OperationsPage(): ReactElement | null {
                   state={state}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
               </section>
               <BusinessIntelligencePanel pick={pick} />
@@ -544,7 +544,7 @@ export default function OperationsPage(): ReactElement | null {
                   accessToken={String(auth.session?.access_token || '')}
                   pick={pick}
                   saving={Boolean(saving)}
-                  run={run as never}
+                  run={run}
                 />
               </section>
               <section className="operations-section">
@@ -572,7 +572,7 @@ export default function OperationsPage(): ReactElement | null {
                           order={order}
                           pick={pick}
                           saving={Boolean(saving)}
-                          run={run as never}
+                          run={run}
                         />
                       ))}
                       {!pendingShipping.length && (
@@ -598,7 +598,7 @@ export default function OperationsPage(): ReactElement | null {
                       request={request}
                       pick={pick}
                       saving={Boolean(saving)}
-                      run={run as never}
+                      run={run}
                     />
                   ))}
                   {!state.specialRequests.length && (
@@ -617,7 +617,7 @@ export default function OperationsPage(): ReactElement | null {
                       order={order}
                       pick={pick}
                       saving={Boolean(saving)}
-                      run={run as never}
+                      run={run}
                     />
                   ))}
                 </div>
@@ -632,7 +632,7 @@ export default function OperationsPage(): ReactElement | null {
                       orders={state.orders}
                       pick={pick}
                       saving={Boolean(saving)}
-                      run={run as never}
+                      run={run}
                     />
                   ))}
                   {!state.returns.length && (
@@ -651,7 +651,7 @@ export default function OperationsPage(): ReactElement | null {
                       quote={quote}
                       pick={pick}
                       saving={Boolean(saving)}
-                      run={run as never}
+                      run={run}
                     />
                   ))}
                 </div>
@@ -665,7 +665,7 @@ export default function OperationsPage(): ReactElement | null {
                       design={design}
                       pick={pick}
                       saving={Boolean(saving)}
-                      run={run as never}
+                      run={run}
                       accessToken={String(auth.session?.access_token || '')}
                     />
                   ))}
@@ -687,7 +687,7 @@ export default function OperationsPage(): ReactElement | null {
                       row={row}
                       pick={pick}
                       saving={Boolean(saving)}
-                      run={run as never}
+                      run={run}
                     />
                   ))}
                 </div>
@@ -725,7 +725,7 @@ export default function OperationsPage(): ReactElement | null {
                           row={row}
                           pick={pick}
                           saving={Boolean(saving)}
-                          run={run as never}
+                          run={run}
                         />
                       ))}
                     </tbody>

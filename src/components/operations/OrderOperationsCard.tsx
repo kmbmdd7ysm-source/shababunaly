@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateOrderWorkflow, recordManualPayment, recordRefund } from '../../services/operations';
 import { ORDER_TRANSITIONS, money } from './commerceHelpers';
+import type { OperationsRunFn } from '../../types/operations';
 
 export function OrderOperationsCard({
   order,
@@ -12,7 +13,7 @@ export function OrderOperationsCard({
   order: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const [nextStatus, setNextStatus] = useState(String(order.order_status || ''));
   const [payment, setPayment] = useState(String(order.amount_due_now || ''));

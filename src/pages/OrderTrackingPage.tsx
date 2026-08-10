@@ -75,7 +75,7 @@ export default function OrderTrackingPage(): ReactElement {
       />
       <section className="gw-world-headband" aria-labelledby="tracking-title">
         <div className="gw-cat-head-inner">
-          <p className="gw-spec">{ot.label}</p>
+          <p className="gw-kicker">{ot.label}</p>
           <div className="gw-cat-head-row">
             <div>
               <h1 id="tracking-title" className="gw-cat-title">
@@ -86,7 +86,7 @@ export default function OrderTrackingPage(): ReactElement {
             {auth.user && ordersState.orders.length ? (
               <p className="gw-cat-count">
                 <span className="gw-figure gw-isolate-ltr">{ordersState.orders.length}</span>
-                <span className="gw-spec">{pick({ en: 'orders', ar: 'طلب' })}</span>
+                <span className="gw-kicker">{pick({ en: 'orders', ar: 'طلب' })}</span>
               </p>
             ) : null}
           </div>

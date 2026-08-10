@@ -6,13 +6,14 @@ import CatalogDraftManager from './control/CatalogDraftManager';
 import MerchandisingManager from './control/MerchandisingManager';
 import FulfillmentManager from './control/FulfillmentManager';
 import ProcurementAndBilling from './control/ProcurementAndBilling';
+import type { OperationsRunFn } from '../../types/operations';
 
 type OpsControlProps = {
   state: unknown;
   accessToken?: string;
   pick: (value: { en?: string; ar?: string } | string) => string;
   saving?: boolean;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 };
 
 export default function OperationsControlCenter({

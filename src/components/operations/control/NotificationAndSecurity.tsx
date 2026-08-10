@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { retryCommerceNotification, resolveSecurityEvent } from '../../../services/operations';
+import type { OperationsRunFn } from '../../../types/operations';
 
 export default function NotificationAndSecurity({
   state,
@@ -10,7 +11,7 @@ export default function NotificationAndSecurity({
   state: unknown;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const stateRecord = (state || {}) as Record<string, unknown>;
   const notifications = Array.isArray(stateRecord.notifications)

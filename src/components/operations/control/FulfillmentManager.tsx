@@ -2,6 +2,7 @@ import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
 import { upsertShipment } from '../../../services/operations';
 import { SHIPMENT_STATUSES } from './shared';
+import type { OperationsRunFn } from '../../../types/operations';
 
 export default function FulfillmentManager({
   state,
@@ -12,7 +13,7 @@ export default function FulfillmentManager({
   state: unknown;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const stateRecord = (state || {}) as Record<string, unknown>;
   const asRows = (value: unknown) =>
@@ -127,7 +128,7 @@ function ShipmentRow({
   carriers: Array<Record<string, unknown>>;
   pick: (value: string | { en?: string; ar?: string }) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const [status, setStatus] = useState(String(row.status || 'pending'));
   const [carrierId, setCarrierId] = useState(String(row.carrier_id || ''));

@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateQuoteWorkflow, recordQuotePayment } from '../../services/operations';
 import { QUOTE_TRANSITIONS, money } from './commerceHelpers';
+import type { OperationsRunFn } from '../../types/operations';
 
 export function QuoteCard({
   quote,
@@ -12,7 +13,7 @@ export function QuoteCard({
   quote: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const [values, setValues] = useState({
     subtotal: quote.subtotal ?? '',

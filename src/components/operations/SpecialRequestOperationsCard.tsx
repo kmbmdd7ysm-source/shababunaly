@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateSpecialRequest } from '../../services/operations';
+import type { OperationsRunFn } from '../../types/operations';
 
 export function SpecialRequestOperationsCard({
   request,
@@ -11,7 +12,7 @@ export function SpecialRequestOperationsCard({
   request: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const [values, setValues] = useState({
     status: String(request.status || 'under_review'),

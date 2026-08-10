@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { publishDesignProof, uploadDesignProofFiles } from '../../services/operations';
+import type { OperationsRunFn } from '../../types/operations';
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -18,7 +19,7 @@ export function DesignProofCard({
   design: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
   accessToken?: string | undefined;
 }): ReactElement {
   const proofData = asRecord(design.proof_data);

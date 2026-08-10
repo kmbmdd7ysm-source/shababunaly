@@ -15,6 +15,7 @@ function asRows(source: unknown, key: string): Array<Record<string, unknown>> {
 import ProductMasterFields from './control/ProductMasterFields';
 import { useEffect, useMemo, useState } from 'react';
 import { getLocalizedCountries } from '../../data/countries';
+import type { OperationsRunFn } from '../../types/operations';
 import {
   deleteOperationalEntity,
   recordStockMovement,
@@ -32,7 +33,7 @@ export function MasterDataManager({
   data?: unknown;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const dataRec = data;
   const configs = [
@@ -111,7 +112,7 @@ function MasterEntityCard({
   config: Record<string, unknown>;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const fields = Array.isArray(config.fields) ? (config.fields as Array<[string, string]>) : [];
   const rows = Array.isArray(config.rows) ? (config.rows as Array<Record<string, unknown>>) : [];
@@ -207,7 +208,7 @@ export function StockMovementManager({
   catalog?: unknown;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const warehouseRows = Array.isArray(warehouses)
     ? (warehouses as Array<Record<string, unknown>>)
@@ -303,7 +304,7 @@ export function ShippingRatesManager({
   lang?: string;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const rateRows = Array.isArray(rows) ? (rows as Array<Record<string, unknown>>) : [];
   const options = useMemo(
@@ -392,7 +393,7 @@ export function HeroContentManager({
   row?: unknown;
   pick: (value: import('../../context/LanguageContext').LocaleValue) => string;
   saving?: string | boolean | undefined;
-  run: (...args: unknown[]) => unknown;
+  run: OperationsRunFn;
 }): ReactElement {
   const contentRow = (row || {}) as Record<string, unknown>;
   const contentValue = asRecordish(contentRow.content_value);
