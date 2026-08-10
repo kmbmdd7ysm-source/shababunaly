@@ -202,10 +202,16 @@ export default function HomePage(): ReactElement {
         <link
           rel="preload"
           as="image"
-          href="/media/atmosphere/arena-wide-1024.webp"
+          href="/media/hero/shababuna-hero-poster.webp"
           type="image/webp"
-          imageSrcSet="/media/atmosphere/arena-wide-1024.webp 1024w, /media/atmosphere/arena-wide-1600.webp 1600w, /media/atmosphere/arena-wide-2048.webp 2048w"
-          imageSizes="100vw"
+          media="(min-width: 768px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/media/hero/shababuna-hero-poster-mobile.webp"
+          type="image/webp"
+          media="(max-width: 767px)"
         />
       </Helmet>
 

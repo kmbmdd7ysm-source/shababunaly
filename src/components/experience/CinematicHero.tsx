@@ -121,7 +121,7 @@ export default function CinematicHero(): ReactElement {
             width="1940"
             height="1024"
             fetchPriority="high"
-            decoding="async"
+            decoding="sync"
           />
         </picture>
         {showFilm && (

@@ -48,10 +48,15 @@ export default defineConfig({
     modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          helmet: ['react-helmet-async'],
-          three: ['three', '@react-three/fiber'],
+        manualChunks(id) {
+          // Keep react/helmet as shared early chunks.
+          // Do NOT force `three` into a global chunk — that caused modulepreload
+          // of WebGL on Home/Shop. Three must stay behind Customize dynamic import.
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/react-router')) {
+            return 'react';
+          }
+          if (id.includes('node_modules/react-helmet-async')) return 'helmet';
+          return undefined;
         },
       },
     },

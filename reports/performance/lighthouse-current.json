@@ -1,0 +1,64 @@
+{
+  "schema": "shababuna.performance.lighthouse.v1",
+  "sha": "8b90a71958fb47bd291ba784cdd0691bc65b8f7c",
+  "generatedAt": "2026-08-10T15:55:00.946526Z",
+  "target": "vite preview :4173",
+  "results": {
+    "desktop": {
+      "performance": 0.69,
+      "FCP": {
+        "ms": 2320.7181,
+        "display": "2.3\u00a0s",
+        "score": 0.18
+      },
+      "LCP": {
+        "ms": 3027.256675,
+        "display": "3.0\u00a0s",
+        "score": 0.33
+      },
+      "CLS": {
+        "ms": 0.002306,
+        "display": "0.002",
+        "score": 1
+      },
+      "TBT": {
+        "ms": 106.5,
+        "display": "110\u00a0ms",
+        "score": 0.96
+      },
+      "SI": {
+        "ms": 2320.7181,
+        "display": "2.3\u00a0s",
+        "score": 0.49
+      }
+    },
+    "mobile": {
+      "performance": 0.89,
+      "FCP": {
+        "ms": 2346.6593,
+        "display": "2.3\u00a0s",
+        "score": 0.73
+      },
+      "LCP": {
+        "ms": 3178.48895,
+        "display": "3.2\u00a0s",
+        "score": 0.73
+      },
+      "CLS": {
+        "ms": 0.000681,
+        "display": "0.001",
+        "score": 1
+      },
+      "TBT": {
+        "ms": 151,
+        "display": "150\u00a0ms",
+        "score": 0.94
+      },
+      "SI": {
+        "ms": 2346.6593,
+        "display": "2.3\u00a0s",
+        "score": 0.98
+      }
+    }
+  }
+}
