@@ -15,3 +15,8 @@
 
 ## Next
 Continue moving retained rules into route/component ownership until `legacy-retained.css` can shrink further or vanish.
+
+
+## Related gates
+- PWA A→B: PASS
+- Idle legacy load: removed
