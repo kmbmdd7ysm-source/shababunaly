@@ -10,3 +10,11 @@ implicit any on destructured params + exactOptional null vs undefined).
 4. Do not bulk-`Record` destructure (same pitfall as b2b)
 
 Keep ambient until green.
+
+## Probe lesson (99.32% stretch)
+Annotating destructured params as `: Row` breaks callers: defaults like
+`orderId = null` cause inferred param types of `null | undefined`, rejecting
+`string` arguments from FulfillmentManager / OrderOperationsCard / etc.
+
+**Required approach:** write explicit interfaces per export (orderId?: string | null)
+matching ambient + callers — never bulk `: Row` on destructured staff RPCs.
