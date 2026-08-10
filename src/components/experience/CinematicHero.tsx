@@ -120,7 +120,7 @@ export default function CinematicHero(): ReactElement {
             alt=""
             width="1940"
             height="1024"
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="async"
           />
         </picture>

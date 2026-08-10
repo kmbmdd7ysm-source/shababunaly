@@ -86,7 +86,7 @@ export default function SmartImage({
       height={height}
       sizes={sizes}
       loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : 'auto'}
+      fetchPriority={eager ? 'high' : 'auto'}
       decoding="async"
       draggable={false}
       onError={() => {
