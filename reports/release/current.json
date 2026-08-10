@@ -1,8 +1,8 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "2a5518e77711b0f3c69c4f75714fb9cbf25c2689",
+  "sha": "311a6e1879bcbebe9fad74e668a978409ee87fb4",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T06:08:23.447Z",
+  "generatedAt": "2026-08-10T06:08:32.482Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
   "workingTree": "clean",
