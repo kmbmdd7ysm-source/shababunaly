@@ -1,7 +1,88 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "status": "NON_FINAL_IN_PROGRESS",
-  "verdict": null,
-  "note": "Evidence architecture reset. Prior final claims archived. Do not report verified until verify-release-evidence-sha.mjs passes against clean HEAD after full rebuild.",
-  "branch": "cursor/shababuna-redesign-master-plan-dc14"
+  "status": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
+  "verdict": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
+  "sha": "7145696fcc35f1e6530857704db5ad4bd313ec13",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14",
+  "generatedAt": "2026-08-10T18:37:01.290498Z",
+  "nodeVersion": "v22.14.0",
+  "npmVersion": "10.9.7",
+  "workingTree": "clean",
+  "typescript": {
+    "coveragePercent": 100.0,
+    "asNeverCount": 0,
+    "anyCount": 0,
+    "typecheck": "pass"
+  },
+  "css": {
+    "triadLive": false,
+    "fromLegacyFiles": 0,
+    "liveLinesApprox": 23008,
+    "cssBytes": 341649
+  },
+  "performance": {
+    "desktop": {
+      "performance": 0.79,
+      "FCP": {
+        "ms": 2006.8498,
+        "display": "2.0\u00a0s",
+        "score": 0.29
+      },
+      "LCP": {
+        "ms": 2107.3498,
+        "display": "2.1\u00a0s",
+        "score": 0.59
+      },
+      "CLS": {
+        "ms": 0.002306,
+        "display": "0.002",
+        "score": 1
+      },
+      "TBT": {
+        "ms": 59,
+        "display": "60\u00a0ms",
+        "score": 1
+      },
+      "SI": {
+        "ms": 2006.8498,
+        "display": "2.0\u00a0s",
+        "score": 0.62
+      }
+    },
+    "mobile": {
+      "performance": 0.97,
+      "FCP": {
+        "ms": 2022.9647,
+        "display": "2.0\u00a0s",
+        "score": 0.83
+      },
+      "LCP": {
+        "ms": 2022.9647,
+        "display": "2.0\u00a0s",
+        "score": 0.97
+      },
+      "CLS": {
+        "ms": 0.000681,
+        "display": "0.001",
+        "score": 1
+      },
+      "TBT": {
+        "ms": 71.5,
+        "display": "70\u00a0ms",
+        "score": 0.99
+      },
+      "SI": {
+        "ms": 2022.9647,
+        "display": "2.0\u00a0s",
+        "score": 0.99
+      }
+    }
+  },
+  "e2e": {
+    "passed": 10,
+    "failed": 0,
+    "testsRun": 10
+  },
+  "webglConcept3D": "pass",
+  "cinematicHero": "wired"
 }

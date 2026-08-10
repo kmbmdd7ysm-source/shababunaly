@@ -1,7 +1,8 @@
 {
   "schema": "shababuna.performance.lighthouse.v1",
-  "sha": "ee3ea56ae63528d6360caab2f50d12fb7da38e04",
-  "generatedAt": "2026-08-10T18:32:02.159278Z",
+  "sha": "7145696fcc35f1e6530857704db5ad4bd313ec13",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14",
+  "generatedAt": "2026-08-10T18:37:01.290498Z",
   "target": "vite preview :4173",
   "results": {
     "desktop": {
@@ -30,8 +31,7 @@
         "ms": 2006.8498,
         "display": "2.0\u00a0s",
         "score": 0.62
-      },
-      "lcpSelector": "section#lcp-shell > img.gw-hero-poster"
+      }
     },
     "mobile": {
       "performance": 0.97,
@@ -59,8 +59,7 @@
         "ms": 2022.9647,
         "display": "2.0\u00a0s",
         "score": 0.99
-      },
-      "lcpSelector": "section#lcp-shell > img.gw-hero-poster"
+      }
     }
   }
 }

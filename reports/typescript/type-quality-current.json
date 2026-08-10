@@ -1,12 +1,8 @@
 {
   "schema": "shababuna.typescript.type-quality.v1",
-  "sha": "ee3ea56ae63528d6360caab2f50d12fb7da38e04",
+  "sha": "7145696fcc35f1e6530857704db5ad4bd313ec13",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14",
   "anyCount": 0,
   "asNeverCount": 0,
-  "strictFlags": {
-    "strict": true,
-    "noImplicitAny": true,
-    "exactOptionalPropertyTypes": true,
-    "skipLibCheck": false
-  }
+  "generatedAt": "2026-08-10T18:37:01.290498Z"
 }
