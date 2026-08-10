@@ -1,13 +1,12 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-10T00:38:53.660Z",
+  "generatedAt": "2026-08-10T00:41:57.329Z",
   "sourceFiles": 299,
-  "strictFiles": 291,
-  "strictCoveragePercent": 97.32,
+  "strictFiles": 292,
+  "strictCoveragePercent": 97.66,
   "legacyFiles": [
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/data/lhaProducts.js",
-    "src/data/products.js",
     "src/services/b2b.js",
     "src/services/operations.js",
     "src/services/orders.js",

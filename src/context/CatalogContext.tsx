@@ -13,7 +13,7 @@ import {
   allColors as staticColors,
   allProductTypes as staticProductTypes,
   allSizes as staticSizes,
-} from '../data/products.js';
+} from '../data/products.ts';
 import { getSupabase } from '../services/supabase.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
 import { isReadyToShipEligible } from '../utils/productEligibility.ts';

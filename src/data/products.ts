@@ -17,29 +17,27 @@ const C = {
 const APPAREL = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
 const SHOES = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12', '13', '14'];
 
-export function verifiedVariantStock({ input, color, size }) {
+export function verifiedVariantStock({ input, color, size }: { input: Record<string, unknown>; color: { key: string }; size: string }): number {
   if (input.inventoryVerified !== true) return 0;
   const directKey = `${color.key}:${size}`;
-  if (
-    input.stockByVariant &&
-    Object.prototype.hasOwnProperty.call(input.stockByVariant, directKey)
-  ) {
-    return Math.max(0, Number(input.stockByVariant[directKey]) || 0);
+  const stockByVariant = (input.stockByVariant || {}) as Record<string, unknown>;
+  if (Object.prototype.hasOwnProperty.call(stockByVariant, directKey)) {
+    return Math.max(0, Number(stockByVariant[directKey]) || 0);
   }
   if (Number.isFinite(Number(input.stockPerVariant)))
     return Math.max(0, Number(input.stockPerVariant));
   return 0;
 }
 
-export function normalizeCatalogProduct(input) {
-  const colors = input.colors?.length ? input.colors : [C.black];
-  const sizes = input.sizes?.length ? input.sizes : ['OS'];
+export function normalizeCatalogProduct(input: Record<string, unknown>): Record<string, unknown> {
+  const colors = Array.isArray(input.colors) && input.colors.length ? (input.colors as Array<{ key: string; [k: string]: unknown }>) : [C.black];
+  const sizes = Array.isArray(input.sizes) && input.sizes.length ? (input.sizes as string[]) : ['OS'];
   const inventoryVerified = input.inventoryVerified === true;
   const inventoryTracking =
     inventoryVerified && (input.inventoryTracking ?? Boolean(input.readyToShip));
-  const variants = [];
-  colors.forEach((color) => {
-    sizes.forEach((size) => {
+  const variants: Array<Record<string, unknown>> = [];
+  colors.forEach((color: { key: string; [k: string]: unknown }) => {
+    sizes.forEach((size: string) => {
       const stock = inventoryTracking ? verifiedVariantStock({ input, color, size }) : 0;
       variants.push({
         size,
@@ -55,9 +53,12 @@ export function normalizeCatalogProduct(input) {
       });
     });
   });
-  const stock = inventoryTracking ? variants.reduce((sum, variant) => sum + variant.stock, 0) : 0;
-  const name = typeof input.name === 'string' ? { en: input.name, ar: input.name } : input.name;
-  const mediaPath = input.image || '/images/catalog/equipment.svg';
+  const stock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0) : 0;
+  const name =
+    typeof input.name === 'string'
+      ? { en: input.name, ar: input.name }
+      : ((input.name || { en: '', ar: '' }) as { en: string; ar: string });
+  const mediaPath = String(input.image || '/images/catalog/equipment.svg');
   const mediaStatus = mediaPath.startsWith('/images/catalog/')
     ? 'placeholder'
     : input.mediaStatus || 'supplied';
@@ -1046,11 +1047,11 @@ const subcategoryMap = {
   other: 'training-accessories',
 };
 
-export function normalizeLhaCatalogProduct(item) {
+export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Record<string, unknown> {
   const inventoryTracking = item.inventoryVerified === true;
   const price = Number(item.price || 0);
   const quoteOnly = price <= 0;
-  const variants = (item.variants || []).map((variant) => ({
+  const variants = (Array.isArray(item.variants) ? item.variants as Array<Record<string, unknown>> : []).map((variant) => ({
     ...variant,
     stock: inventoryTracking ? Math.max(0, Number(variant.stock) || 0) : 0,
     active: variant.active !== false,
@@ -1061,7 +1062,7 @@ export function normalizeLhaCatalogProduct(item) {
     unitPrice: price,
     wholesalePrice: price > 0 ? Math.round(price * 0.82 * 100) / 100 : null,
   }));
-  const stock = inventoryTracking ? variants.reduce((sum, variant) => sum + variant.stock, 0) : 0;
+  const stock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0) : 0;
   const readyToShip = inventoryTracking && item.readyToShip === true && stock > 0;
   const fallbackImage = item.image || '/images/catalog/apparel.svg';
   return {
@@ -1076,7 +1077,7 @@ export function normalizeLhaCatalogProduct(item) {
       item.category === 'accessories' && item.subcategory === 'balls'
         ? 'basketballs'
         : item.category,
-    subcategory: subcategoryMap[item.subcategory] || item.subcategory,
+    subcategory: (subcategoryMap as Record<string, string>)[String(item.subcategory || '')] || item.subcategory,
     readyToShip,
     retailAvailable: true,
     wholesaleAvailable: price > 0,
@@ -1103,16 +1104,21 @@ export function normalizeLhaCatalogProduct(item) {
     socialImage: item.socialImage || fallbackImage,
     mediaStatus: item.image ? 'supplied' : 'placeholder',
     related: [],
-    alt: { en: `${item.name.en} — LHA Official Store`, ar: `${item.name.en} — متجر LHA الرسمي` },
+    alt: {
+      en: `${String((item.name as { en?: string }).en || '')} — LHA Official Store`,
+      ar: `${String((item.name as { en?: string }).en || '')} — متجر LHA الرسمي`,
+    },
   };
 }
 
-const lhaProducts = sourceLhaProducts.map(normalizeLhaCatalogProduct);
+const lhaProducts = (sourceLhaProducts as Array<Record<string, unknown>>).map(
+  normalizeLhaCatalogProduct,
+);
 
 export const catalogProducts = [...shababunaProducts, ...lhaProducts];
 export const products = catalogProducts.filter(isProductVisible);
-export const getProduct = (slug) => products.find((p) => p.slug === slug);
-export const getProductById = (id) => products.find((p) => p.id === id);
+export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
+export const getProductById = (id: string) => products.find((p) => p.id === id);
 export const featuredProducts = (catalog = products) =>
   catalog.filter((p) => p.featured && !p.legacyLha);
 export const newArrivals = (catalog = products) =>
@@ -1120,21 +1126,31 @@ export const newArrivals = (catalog = products) =>
 export const bestSellers = (catalog = products) =>
   catalog.filter((p) => p.bestSeller && !p.legacyLha);
 export const readyToShipProducts = () => products.filter((p) => isReadyToShipEligible(p, 'LY'));
-export const lhaStoreProducts = () => products.filter((p) => p.storefronts?.includes('lha'));
-export const productsByCategory = (cat) =>
+export const lhaStoreProducts = () =>
+  products.filter(
+    (p) => Array.isArray(p.storefronts) && (p.storefronts as string[]).includes('lha'),
+  );
+export const productsByCategory = (cat: string) =>
   cat === 'ready-to-ship' ? readyToShipProducts() : products.filter((p) => p.category === cat);
-export const productsBySubcategory = (cat, sub) =>
+export const productsBySubcategory = (cat: string, sub: string) =>
   products.filter((p) => p.category === cat && p.subcategory === sub);
-export const relatedProducts = (item, limit = 4) => getRelatedProducts(item, products, limit);
-export const isLowStock = (p) =>
+export const relatedProducts = (item: unknown, limit = 4) =>
+  getRelatedProducts(item as never, products as never, limit);
+export const isLowStock = (p: Record<string, unknown>) =>
   Boolean(p.inventoryTracking) &&
   p.inventoryVerified === true &&
   Number(p.stock) > 0 &&
   Number(p.stock) <= Number(p.lowStockThreshold || 0);
 export const collectColors = (catalog = products) =>
-  Array.from(new Map(catalog.flatMap((p) => p.colors || []).map((c) => [c.key, c])).values());
+  Array.from(
+    new Map(
+      catalog
+        .flatMap((p) => (Array.isArray(p.colors) ? (p.colors as Array<{ key: string }>) : []))
+        .map((c) => [c.key, c]),
+    ).values(),
+  );
 export const collectSizes = (catalog = products) =>
-  Array.from(new Set(catalog.flatMap((p) => p.sizes || [])));
+  Array.from(new Set(catalog.flatMap((p) => (Array.isArray(p.sizes) ? (p.sizes as string[]) : []))));
 export const allColors = collectColors();
 export const allSizes = collectSizes();
 export const BRAND_PRIORITY = [
@@ -1154,7 +1170,7 @@ export const BRAND_PRIORITY = [
   'Spalding',
   'LHA',
 ];
-export function compareBrands(a, b) {
+export function compareBrands(a: string, b: string): number {
   const ai = BRAND_PRIORITY.indexOf(a);
   const bi = BRAND_PRIORITY.indexOf(b);
   if (ai === -1 && bi === -1) return a.localeCompare(b);
@@ -1162,9 +1178,9 @@ export function compareBrands(a, b) {
   if (bi === -1) return -1;
   return ai - bi;
 }
-export const allBrands = Array.from(new Set(products.map((p) => p.brand).filter(Boolean))).sort(
-  compareBrands,
-);
+export const allBrands = Array.from(
+  new Set(products.map((p) => String(p.brand || '')).filter(Boolean)),
+).sort(compareBrands);
 export const allProductTypes = Array.from(
   new Set(products.map((p) => p.productType).filter(Boolean)),
 ).sort();

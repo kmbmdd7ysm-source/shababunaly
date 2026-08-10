@@ -1,4 +1,4 @@
-import { products } from '../data/products.js';
+import { products } from '../data/products.ts';
 
 export type LocaleObject = { en?: string; ar?: string };
 export type LocaleText = LocaleObject | string | null | undefined;
