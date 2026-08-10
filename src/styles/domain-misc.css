@@ -632,13 +632,6 @@ html[dir='rtl'] .brand {
   border-color: var(--black);
 }
 
-.size-pill.out,
-.size-pill:disabled {
-  color: var(--border-strong);
-  cursor: not-allowed;
-  text-decoration: line-through;
-}
-
 .accordion {
   border-top: 1px solid var(--border);
 }
@@ -966,20 +959,6 @@ html[dir='rtl'] .brand {
 .favorite-product.active svg {
   fill: #111;
   stroke: #111;
-}
-
-.size-pill.out,
-.size-pill:disabled {
-  opacity: 0.5;
-  text-decoration-thickness: 2px;
-  text-decoration-color: currentColor;
-}
-
-.size-pill.out,
-.size-pill:disabled {
-  opacity: 0.5;
-  text-decoration-thickness: 2px;
-  text-decoration-color: currentColor;
 }
 
 .payment-recovery-card {
@@ -2311,4 +2290,5 @@ html[dir='rtl'] .hero {
   margin-top: 4px;
   color: #5d5d57;
 }
+
 
