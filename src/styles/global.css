@@ -247,17 +247,7 @@ strong {
   flex-shrink: 0;
 }
 
-.desktop-nav {
-  display: none;
-  align-items: center;
-  gap: 0.35rem;
-  margin-inline-start: 0.5rem;
-}
-
 @media (min-width: 1000px) {
-.desktop-nav {
-    display: flex;
-  }
 }
 
 /* ---------- Mega menu ---------- */
@@ -316,19 +306,6 @@ strong {
 /* ---------- Section heading ---------- */
 
 /* ---------- Page hero ---------- */
-
-.page-hero {
-  position: relative;
-  overflow: hidden;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-
-.page-description {
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
-  color: var(--muted);
-  max-width: 62ch;
-}
 
 /* ---------- Breadcrumbs ---------- */
 
@@ -486,10 +463,6 @@ strong {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.gallery-thumb.active {
-  border-color: var(--black);
 }
 
 .variant-group {
@@ -780,16 +753,6 @@ to {
 
 /* ---------- Footer ---------- */
 
-.site-footer {
-  background: var(--black);
-  color: rgba(255, 255, 255, 0.85);
-  padding-top: clamp(48px, 7vw, 88px);
-}
-
-.site-footer a:hover {
-  color: #fff;
-}
-
 /* ---------- Cookie banner ---------- */
 
 @keyframes slideUp {
@@ -912,17 +875,6 @@ body {
   font-size: clamp(3.2rem, 8vw, 8.5rem);
 }
 
-.page-hero {
-  background: #050505;
-  color: #fff;
-  border: 0;
-}
-
-.page-hero .lead,
-.page-hero p {
-  color: rgba(255, 255, 255, 0.65);
-}
-
 @media (max-width: 760px) {.hero {
     min-height: 760px;
   }.hero::before {
@@ -1003,39 +955,11 @@ main {
 
 /* Page heroes and CTA own their contrast */
 
-.page-hero {
-  background: #050505;
-  color: #fff;
-}
-
-.page-hero p,
-.page-hero .lead {
-  color: rgba(255, 255, 255, 0.76);
-}
-
 .cta-band .display-title {
   color: #fff;
 }
 
 /* Footer must not inherit light foreground */
-
-.site-footer {
-  background: #050505;
-  color: #fff;
-}
-
-.site-footer h2,
-.site-footer h3,
-.site-footer h4,
-.site-footer a,
-.site-footer strong {
-  color: #fff;
-}
-
-.site-footer p,
-.site-footer small {
-  color: rgba(255, 255, 255, 0.67);
-}
 
 /* Arabic: readable display rhythm, no collisions */
 
@@ -1090,12 +1014,6 @@ html[dir='rtl'] * {
   gap: 1rem;
 }
 
-@media (max-width: 999px) {
-}
-
-@media (max-width: 360px) {
-}
-
 /* Final visual-correction pass: mobile commerce, search, RTL and product purchase UX */
 
 .quantity-row {
@@ -1114,37 +1032,13 @@ html[dir='rtl'] a {
   letter-spacing: 0;
 }
 
-@media (max-width: 999px) {
-}
-
-@media (max-width: 480px) {
-}
-
-@media (max-width: 340px) {
-}
-
 /* Precision completion: authoritative mobile header/menu/icon rules */
 
 .rotated {
   transform: rotate(180deg);
 }
 
-@media (max-width: 999px) {
-}
-
-@media (max-width: 360px) {
-}
-
 /* Final mandatory correction: integrated mobile menu and measured touch geometry */
-
-@media (max-width: 999px) {
-}
-
-@media (max-width: 480px) {
-}
-
-@media (max-width: 340px) {
-}
 
 /* Responsive layout foundation */
 
@@ -1192,26 +1086,11 @@ canvas {
   max-width: 100%;
 }
 
-@media (max-width: 999px) {
-}
-
-@media (max-width: 374px) {
-}
-
-@media (max-width: 330px) {
-}
-
 /* Final production verification hardening: local containment only. */
 
 /* Final screenshot-backed mobile corrections. */
 
-@media (max-width: 760px) {
-}
-
 /* Final independent repair: mobile logo, contact containment, and registration clarity. */
-
-@media (max-width: 760px) {
-}
 
 /* LASTWEB final screenshot-backed containment corrections. */
 
@@ -1232,9 +1111,6 @@ html,
 }
 
 /* Production hotfixes: stable mobile sheets, colour metadata and RTL viewport containment. */
-
-@media (max-width: 999px) {
-}
 
 .color-dots {
   display: inline-flex;
@@ -1425,13 +1301,7 @@ html,
 
 /* Final launch fixes */
 
-@media (max-width: 760px) {
-}
-
 /* Reliable product image viewer: white, viewport-bound, and immediately visible on mobile/desktop. */
-
-@media (max-width: 760px) {
-}
 
 /* LHA branded 404 */
 
@@ -1446,11 +1316,6 @@ html,
 }
 
 /* Online training access-plan selector */
-
-.training-purchase-option.active {
-  border: 2px solid #111;
-  padding: 13px 15px;
-}
 
 /* Cross-device catalogue media hardening */
 
@@ -1541,6 +1406,8 @@ body.scroll-locked {
   border-radius: 50%;
   overflow: hidden;
 }
+
+
 
 
 

@@ -1,0 +1,83 @@
+/* remain global */
+
+
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  margin-inline-start: 0.5rem;
+}
+.desktop-nav {
+    display: flex;
+  }
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.page-description {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.gallery-thumb.active {
+  border-color: var(--black);
+}
+
+.site-footer {
+  background: var(--black);
+  color: rgba(255, 255, 255, 0.85);
+  padding-top: clamp(48px, 7vw, 88px);
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+.page-hero {
+  background: #050505;
+  color: #fff;
+  border: 0;
+}
+
+.page-hero .lead,
+.page-hero p {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.page-hero {
+  background: #050505;
+  color: #fff;
+}
+
+.page-hero p,
+.page-hero .lead {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.site-footer {
+  background: #050505;
+  color: #fff;
+}
+
+.site-footer h2,
+.site-footer h3,
+.site-footer h4,
+.site-footer a,
+.site-footer strong {
+  color: #fff;
+}
+
+.site-footer p,
+.site-footer small {
+  color: rgba(255, 255, 255, 0.67);
+}
+
+.training-purchase-option.active {
+  border: 2px solid #111;
+  padding: 13px 15px;
+}

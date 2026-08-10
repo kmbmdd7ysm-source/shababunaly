@@ -1,0 +1,25 @@
+/* remain premium */
+
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.page-hero::after {
+  content: 'LHA';
+  position: absolute;
+  right: -0.05em;
+  bottom: -0.35em;
+  font: 900 clamp(8rem, 28vw, 28rem)/1 var(--font-display);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.13);
+  pointer-events: none;
+}
+
+[dir='rtl'] .page-hero::after {
+  right: auto;
+  left: -0.05em;
+}.desktop-utilities {
+    display: none;
+  }

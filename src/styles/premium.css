@@ -42,27 +42,6 @@ body {
   background: linear-gradient(135deg, #030303, #111 70%, #050505);
 }
 
-.page-hero {
-  position: relative;
-  overflow: hidden;
-}
-
-.page-hero::after {
-  content: 'LHA';
-  position: absolute;
-  right: -0.05em;
-  bottom: -0.35em;
-  font: 900 clamp(8rem, 28vw, 28rem)/1 var(--font-display);
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.13);
-  pointer-events: none;
-}
-
-[dir='rtl'] .page-hero::after {
-  right: auto;
-  left: -0.05em;
-}
-
 @keyframes heroReveal {
 to {
     opacity: 1;
@@ -107,9 +86,6 @@ from {
     opacity: 1;
     transform: none;
   }
-}
-
-@media (max-width: 760px) {
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -197,9 +173,6 @@ from {
 .offline-page p {
   max-width: 600px;
   color: #bdbdbd;
-}
-
-@media (max-width: 640px) {
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -341,13 +314,7 @@ from {
 
 /* Accessible searchable country combobox */
 
-@media (max-width: 640px) {
-}
-
 /* Searchable country selector */
-
-@media (max-width: 600px) {
-}
 
 /* ---------- Premium interaction & media refinement ---------- */
 
@@ -432,12 +399,7 @@ html {
 @media (max-width: 999px) {
 :root {
     --header-h: 72px;
-  }.desktop-utilities {
-    display: none;
   }
-}
-
-@media (max-width: 360px) {
 }
 
 @media (max-width: 640px) {.auth-form {
@@ -451,9 +413,6 @@ html {
 
 /* iOS Safari can preserve :hover/:active paint after a tap. On coarse touch
    pointers the menu trigger and logo must remain visually neutral after taps. */
-
-@media (hover: none) and (pointer: coarse) {
-}
 
 /* Product photography must remain on a pure white studio surface. */
 
@@ -474,6 +433,8 @@ html {
   grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
   gap: 1rem;
 }
+
+
 
 
 
