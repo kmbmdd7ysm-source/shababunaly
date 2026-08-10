@@ -226,3 +226,7 @@ a.product-card-name {
   background: var(--sh-ink);
   color: var(--sh-chalk);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-quick-sheet-panel { transition: none; }
+}
