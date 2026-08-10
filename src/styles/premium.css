@@ -69,16 +69,6 @@ body {
   margin-bottom: clamp(36px, 6vw, 72px);
 }
 
-.section-heading .section-title {
-  max-width: 18ch;
-  letter-spacing: -0.055em;
-  line-height: 0.9;
-}
-
-.section-label {
-  letter-spacing: 0.18em;
-}
-
 .wishlist-btn {
   transition:
     transform 0.25s var(--ease-premium),
@@ -173,10 +163,6 @@ from {
 @media (max-width: 760px) {
 .section {
     padding-block: 88px;
-  }.section-heading .section-title {
-    font-size: clamp(2.15rem, 11vw, 3.8rem);
-    line-height: 0.94;
-    max-width: 13ch;
   }
 }
 
@@ -1051,6 +1037,7 @@ html {
   grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
   gap: 1rem;
 }
+
 
 
 

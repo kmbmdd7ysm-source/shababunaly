@@ -139,23 +139,6 @@ strong {
   font-size: clamp(2.4rem, 7vw, 5rem);
 }
 
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.6em;
-}
-
-.section-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-
 .lead {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   color: var(--muted);
@@ -163,17 +146,6 @@ strong {
 }
 
 /* ---------- Layout ---------- */
-
-.container {
-  width: 100%;
-  max-width: var(--container);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
-}
-
-.container.narrow {
-  max-width: 720px;
-}
 
 .section {
   padding-block: clamp(48px, 8vw, 104px);
@@ -1431,19 +1403,6 @@ body {
   background: var(--cream);
 }
 
-.section-label {
-  color: var(--text);
-  letter-spacing: 0.22em;
-  font-size: 0.68rem;
-}
-
-.section-title {
-  font-weight: 900;
-  font-size: clamp(2rem, 4.8vw, 4.8rem);
-  line-height: 0.92;
-  max-width: 14ch;
-}
-
 .display-title {
   font-weight: 900;
   letter-spacing: -0.065em;
@@ -1520,10 +1479,6 @@ body {
   color: rgba(255, 255, 255, 0.68);
 }
 
-.academy-intro .section-label {
-  color: #fff;
-}
-
 .cta-inner .display-title {
   font-size: clamp(3.2rem, 8vw, 8.5rem);
 }
@@ -1537,10 +1492,6 @@ body {
 .page-hero .lead,
 .page-hero p {
   color: rgba(255, 255, 255, 0.65);
-}
-
-.page-hero .section-label {
-  color: #fff;
 }
 
 @media (max-width: 760px) {
@@ -1618,10 +1569,6 @@ main {
   color: #050505;
 }
 
-.section-label {
-  color: #050505;
-}
-
 /* Header: clean, balanced, premium */
 
 .header-inner {
@@ -1653,11 +1600,6 @@ main {
 /* Performance strip */
 
 /* Academy statement: dark, but every child explicitly readable */
-
-.academy-intro .section-title,
-.academy-intro .section-label {
-  color: #fff;
-}
 
 .academy-intro .lead {
   color: rgba(255, 255, 255, 0.74);
@@ -1700,14 +1642,6 @@ main {
   color: #fff;
 }
 
-.page-hero h1,
-.page-hero h2,
-.page-hero .display-title,
-.page-hero .section-title,
-.page-hero .section-label {
-  color: #fff;
-}
-
 .page-hero p,
 .page-hero .lead {
   color: rgba(255, 255, 255, 0.76);
@@ -1743,16 +1677,6 @@ main {
   font-family: var(--sh-font-arabic);
 }
 
-[dir='rtl'] .display-title,
-[dir='rtl'] .section-title {
-  line-height: 1.18;
-  font-weight: 800;
-}
-
-[dir='rtl'] .section-title {
-  max-width: 18ch;
-}
-
 [dir='rtl'] p {
   line-height: 1.9;
 }
@@ -1762,12 +1686,6 @@ main {
     padding-inline: 16px;
   }.hero {
     min-height: 760px;
-  }.section-title {
-    font-size: clamp(2rem, 11vw, 3.45rem);
-    line-height: 1;
-  }[dir='rtl'] .section-title {
-    font-size: clamp(1.8rem, 9.5vw, 3rem);
-    line-height: 1.28;
   }
 }
 
@@ -1793,14 +1711,6 @@ html[dir='rtl'] body {
 
 html[dir='rtl'] * {
   letter-spacing: 0;
-}
-
-.display-title,
-.section-heading .section-title {
-  font-size: clamp(2rem, 5vw, 4.4rem);
-  line-height: 0.94;
-  max-width: 16ch;
-  text-wrap: balance;
 }
 
 .payment-choice {
@@ -1838,10 +1748,6 @@ html[dir='rtl'] * {
 }
 
 @media (max-width: 720px) {
-.display-title,
-.section-heading .section-title {
-    font-size: clamp(2.15rem, 10vw, 3.5rem);
-  }
 }
 
 /* Final mobile utility, search, help and order pass */
@@ -2258,11 +2164,6 @@ html[dir='rtl'] .brand {
   direction: ltr;
 }
 
-html[dir='rtl'] .section-title,
-html[dir='rtl'] .page-hero h1 {
-  font-size: clamp(1.9rem, 8vw, 3.8rem);
-}
-
 html[dir='rtl'] button,
 html[dir='rtl'] a {
   letter-spacing: 0;
@@ -2516,14 +2417,7 @@ canvas {
   width: min(100%, 430px);
 }
 
-@media (max-width: 999px) {
-.container {
-    width: 100%;
-    max-width: 100%;
-    margin-inline: auto;
-    padding-left: max(var(--gutter), env(safe-area-inset-left));
-    padding-right: max(var(--gutter), env(safe-area-inset-right));
-  }.header-inner {
+@media (max-width: 999px) {.header-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
@@ -2817,15 +2711,6 @@ body,
 
 body {
   position: relative;
-}
-
-#root,
-main,
-.page,
-section,
-.container {
-  min-width: 0;
-  max-width: 100%;
 }
 
 @supports (overflow: clip) {
@@ -3194,10 +3079,6 @@ html,
   align-items: center;
 }
 
-.error-boundary .narrow {
-  padding-block: clamp(3rem, 8vw, 7rem);
-}
-
 .error-reference {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.82rem;
@@ -3316,6 +3197,7 @@ body.scroll-locked {
 .lightbox-stage img.lightbox-zoom-300 {
   transform: scale(3) !important;
 }
+
 
 
 
