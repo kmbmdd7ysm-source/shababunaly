@@ -1,0 +1,1257 @@
+{
+  "generatedAt": "2026-08-10T05:09:46.770Z",
+  "products": 69,
+  "variants": 982,
+  "duplicates": [],
+  "structuralIssueCount": 0,
+  "structural": [],
+  "missingCommercialFieldProducts": 69,
+  "missingCommercial": [
+    {
+      "id": "s001",
+      "sku": "SHA-GAME-PRO",
+      "slug": "shababuna-pro-game-set",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s002",
+      "sku": "SHA-JER-ELT",
+      "slug": "shababuna-elite-game-jersey",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s003",
+      "sku": "SHA-SHT-CRT",
+      "slug": "shababuna-court-game-shorts",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s004",
+      "sku": "SHA-PRC-REV",
+      "slug": "shababuna-reversible-practice-jersey",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s005",
+      "sku": "SHA-PRC-SHT",
+      "slug": "shababuna-practice-shorts",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s006",
+      "sku": "SHA-TEE-BD",
+      "slug": "built-different-performance-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s007",
+      "sku": "SHA-HOOD-HVY",
+      "slug": "shababuna-heavyweight-hoodie",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s008",
+      "sku": "SHA-PANT-TRV",
+      "slug": "shababuna-travel-pants",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s009",
+      "sku": "SHA-TRK-PRO",
+      "slug": "shababuna-team-tracksuit",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s010",
+      "sku": "SHA-CMP-TOP",
+      "slug": "shababuna-compression-top",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s011",
+      "sku": "SHA-SOCK-PRO",
+      "slug": "shababuna-pro-basketball-socks",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s020",
+      "sku": "SHA-SHO-NIK",
+      "slug": "nike-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s021",
+      "sku": "SHA-SHO-ADI",
+      "slug": "adidas-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s022",
+      "sku": "SHA-SHO-JOR",
+      "slug": "jordan-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s023",
+      "sku": "SHA-SHO-UA",
+      "slug": "under-armour-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s024",
+      "sku": "SHA-SHO-PUM",
+      "slug": "puma-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s025",
+      "sku": "SHA-SHO-NB",
+      "slug": "new-balance-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s026",
+      "sku": "SHA-SHO-LN",
+      "slug": "li-ning-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s027",
+      "sku": "SHA-SHO-ANT",
+      "slug": "anta-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s028",
+      "sku": "SHA-SHO-PEA",
+      "slug": "peak-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s029",
+      "sku": "SHA-SHO-361",
+      "slug": "361-in-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s030",
+      "sku": "SHA-LIFE-NIK",
+      "slug": "nike-off-court-basketball-shoe",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s031",
+      "sku": "SHA-SLD-REC",
+      "slug": "shababuna-recovery-slides",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s040",
+      "sku": "SHA-BAG-ELT",
+      "slug": "shababuna-elite-basketball-backpack",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s041",
+      "sku": "SHA-BAG-DUF",
+      "slug": "shababuna-team-duffle",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s042",
+      "sku": "SHA-SLV-ARM",
+      "slug": "shababuna-performance-arm-sleeve",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s043",
+      "sku": "SHA-SUP-ANK",
+      "slug": "basketball-ankle-support",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s044",
+      "sku": "SHA-TWL-TEAM",
+      "slug": "shababuna-team-towel",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s045",
+      "sku": "SHA-STK-TEAM",
+      "slug": "custom-team-sticker-pack",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s046",
+      "sku": "SHA-TRN-CONE",
+      "slug": "basketball-training-cone-set",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s047",
+      "sku": "SHA-CAP-CRT",
+      "slug": "shababuna-court-cap",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s048",
+      "sku": "SHA-BTL-PRO",
+      "slug": "shababuna-performance-bottle",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s049",
+      "sku": "SHA-PAT-WOV",
+      "slug": "custom-woven-team-patch",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s050",
+      "sku": "SHA-BAL-MOL",
+      "slug": "molten-indoor-game-basketball",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s051",
+      "sku": "SHA-BAL-WIL",
+      "slug": "wilson-indoor-outdoor-basketball",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s052",
+      "sku": "SHA-BAL-SPA",
+      "slug": "spalding-outdoor-basketball",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s053",
+      "sku": "SHA-BAL-CUS",
+      "slug": "shababuna-custom-team-basketball",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s060",
+      "sku": "SHA-HOP-CMP",
+      "slug": "competition-basketball-hoop-system",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s061",
+      "sku": "SHA-BRD-GLS",
+      "slug": "tempered-glass-backboard",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s062",
+      "sku": "SHA-RIM-PRO",
+      "slug": "professional-spring-rim",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s063",
+      "sku": "SHA-CLK-24",
+      "slug": "24-second-shot-clock-set",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s064",
+      "sku": "SHA-CART-BAL",
+      "slug": "basketball-ball-cart",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s066",
+      "sku": "SHA-CRT-PAD",
+      "slug": "professional-court-padding-set",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "s065",
+      "sku": "SHA-PMP-ELC",
+      "slug": "electric-ball-pump-kit",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p014",
+      "sku": "LHA-TEE-WIN",
+      "slug": "all-i-know-is-win-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p015",
+      "sku": "LHA-TEE-TROOPS",
+      "slug": "hoops-for-troops-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p016",
+      "sku": "LHA-TEE-HOOPERS",
+      "slug": "hoopers-performance-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p017",
+      "sku": "LHA-LS-HOOPERS",
+      "slug": "hoopers-long-sleeve-performance",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p018",
+      "sku": "LHA-SHT-PERF",
+      "slug": "lha-performance-shorts",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p019",
+      "sku": "LHA-TEE-LOGO",
+      "slug": "lha-logo-performance-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p020",
+      "sku": "LHA-TEE-ACADEMY",
+      "slug": "libya-hoops-academy-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p021",
+      "sku": "LHA-TANK-CHEST",
+      "slug": "lha-chest-logo-tank",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p022",
+      "sku": "LHA-TANK-CENTER",
+      "slug": "lha-center-logo-tank",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p023",
+      "sku": "LHA-COMP-LS",
+      "slug": "lha-compression-long-sleeve",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p024",
+      "sku": "LHA-CMP-FULL",
+      "slug": "lha-full-length-compression-tights",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p025",
+      "sku": "LHA-CMP-ONELEG",
+      "slug": "lha-one-leg-compression-tights",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p026",
+      "sku": "LHA-TEE-SLEEVE",
+      "slug": "lha-sleeve-logo-performance-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p027",
+      "sku": "LHA-BAG-ELITE",
+      "slug": "lha-elite-basketball-backpack",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p028",
+      "sku": "LHA-BAG-ACADEMY",
+      "slug": "lha-academy-everyday-backpack",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p030",
+      "sku": "LHA-CMP-SHORTS",
+      "slug": "lha-compression-shorts",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p031",
+      "sku": "LHA-SOCK-PERF",
+      "slug": "lha-performance-basketball-socks",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p029",
+      "sku": "LHA-FLC-PREMIUM",
+      "slug": "lha-premium-fleece-set",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p032",
+      "sku": "LHA-TEE-OTG",
+      "slug": "own-the-game-essential-tee",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p033",
+      "sku": "LHA-TOP-OTG",
+      "slug": "own-the-game-sleeveless-top",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p034",
+      "sku": "LHA-HOOD-ZIP-OTG",
+      "slug": "own-the-game-zip-hoodie",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p035",
+      "sku": "LHA-CREW-OTG",
+      "slug": "own-the-game-crewneck",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p036",
+      "sku": "LHA-SHORT-FLEECE-OTG",
+      "slug": "own-the-game-fleece-shorts",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p037",
+      "sku": "LHA-HOOD-PULL-OTG",
+      "slug": "own-the-game-pullover-hoodie",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "lha-p038",
+      "sku": "LHA-PANT-FLEECE-OTG",
+      "slug": "own-the-game-fleece-pants",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    }
+  ],
+  "notes": [
+    "Commercial fields use pending_verification when unknown — values are never fabricated.",
+    "Ready-to-Ship requires inventoryVerified + inventoryTracking; current catalog may honestly report zero ready items."
+  ]
+}

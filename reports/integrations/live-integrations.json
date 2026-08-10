@@ -1,0 +1,79 @@
+{
+  "commitSha": null,
+  "runId": null,
+  "status": "not_run",
+  "generatedAt": "2026-08-10T05:49:02.470Z",
+  "productionRequired": false,
+  "checks": [
+    {
+      "name": "supabase_service",
+      "status": "failed",
+      "detail": "SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing"
+    },
+    {
+      "name": "production_readiness_endpoint",
+      "status": "failed",
+      "detail": "SITE_URL missing"
+    },
+    {
+      "name": "formspree_submission",
+      "status": "failed",
+      "detail": "explicit ALLOW_LIVE_FORMSPREE_TEST=true required"
+    },
+    {
+      "name": "formspree_admin_delivery",
+      "status": "failed",
+      "detail": "explicit ALLOW_LIVE_FORMSPREE_TEST=true required"
+    },
+    {
+      "name": "formspree_autoresponse_delivery",
+      "status": "failed",
+      "detail": "explicit ALLOW_LIVE_FORMSPREE_TEST=true required"
+    },
+    {
+      "name": "malware_clean",
+      "status": "failed",
+      "detail": "explicit ALLOW_LIVE_MALWARE_TEST=true required"
+    },
+    {
+      "name": "malware_eicar",
+      "status": "failed",
+      "detail": "explicit ALLOW_LIVE_MALWARE_TEST=true required"
+    },
+    {
+      "name": "payment_provider_named",
+      "status": "failed",
+      "detail": "PAYMENTS_PROVIDER missing"
+    },
+    {
+      "name": "payment_provider_contract",
+      "status": "failed",
+      "detail": "session, retrieve and refund endpoints must all be configured"
+    },
+    {
+      "name": "payment_create_session_live",
+      "status": "failed",
+      "detail": "ALLOW_LIVE_PAYMENT_TEST=true and PAYMENTS_SANDBOX_TEST_TRANSACTION_ID required"
+    },
+    {
+      "name": "payment_retrieve_live",
+      "status": "failed",
+      "detail": "ALLOW_LIVE_PAYMENT_TEST=true and PAYMENTS_SANDBOX_TEST_TRANSACTION_ID required"
+    },
+    {
+      "name": "payment_refund_live",
+      "status": "failed",
+      "detail": "sandbox refund test not explicitly enabled"
+    },
+    {
+      "name": "signature_provider_configuration",
+      "status": "failed",
+      "detail": "signature provider configuration missing"
+    },
+    {
+      "name": "signature_completed_envelope_evidence",
+      "status": "failed",
+      "detail": "SIGNATURE_PROVIDER_TEST_ENVELOPE_ID and Supabase credentials required"
+    }
+  ]
+}

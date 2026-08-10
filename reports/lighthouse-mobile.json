@@ -1,0 +1,8 @@
+{
+  "status": "not_run",
+  "generatedAt": "2026-08-02T18:55:42.940006+00:00",
+  "runCount": 0,
+  "categories": null,
+  "metrics": null,
+  "reason": "Not executable in this sandbox: clean registry dependencies and/or isolated external services were unavailable. No pass is claimed."
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "shababuna.release.evidence.v1",
+  "status": "SOURCE_HARDENED_REQUIRES_FRESH_RUNTIME_VERIFICATION",
+  "verdict": "RELEASE_BLOCKED_PENDING_FRESH_VERIFICATION",
+  "generatedAt": "2026-08-10T19:45:00Z",
+  "source": "OpenAI hardening handoff derived from uploaded ZIP without .git metadata",
+  "workingTree": "not_applicable_no_git_metadata",
+  "freshBuild": "blocked_in_current_environment_by_package_registry",
+  "freshBrowserPreview": "not_run_after_hardening",
+  "freshE2E": "not_run_after_hardening",
+  "freshLighthouse": "not_run_after_hardening",
+  "freshVisualBaselines": "required_after_build",
+  "note": "Historical release evidence was archived because source changes after its recorded SHA invalidate any claim that it verifies this handoff. Run the full release pipeline from a clean Git commit after dependency access is restored."
+}

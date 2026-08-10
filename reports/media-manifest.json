@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-08-03T21:10:29.276Z",
+  "note": "Original artwork generated for Shababuna. No third-party marks, no people, no product photography. Atmosphere only.",
+  "assets": [
+    {
+      "src": "/media/atmosphere/arena-wide-1024.webp",
+      "width": 1024,
+      "height": 683,
+      "bytes": 22522,
+      "source": "assets/source/arena-atmosphere-wide.png",
+      "role": "Homepage opening — desktop atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/arena-wide-1600.webp",
+      "width": 1600,
+      "height": 1067,
+      "bytes": 44054,
+      "source": "assets/source/arena-atmosphere-wide.png",
+      "role": "Homepage opening — desktop atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/arena-wide-2048.webp",
+      "width": 2048,
+      "height": 1365,
+      "bytes": 62762,
+      "source": "assets/source/arena-atmosphere-wide.png",
+      "role": "Homepage opening — desktop atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/arena-tall-640.webp",
+      "width": 640,
+      "height": 960,
+      "bytes": 30044,
+      "source": "assets/source/arena-atmosphere-tall.png",
+      "role": "Homepage opening — mobile atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/arena-tall-900.webp",
+      "width": 900,
+      "height": 1350,
+      "bytes": 47754,
+      "source": "assets/source/arena-atmosphere-tall.png",
+      "role": "Homepage opening — mobile atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/arena-tall-1200.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 72084,
+      "source": "assets/source/arena-atmosphere-tall.png",
+      "role": "Homepage opening — mobile atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/court-overhead-1024.webp",
+      "width": 1024,
+      "height": 683,
+      "bytes": 44628,
+      "source": "assets/source/court-overhead.png",
+      "role": "Teams chapter atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/court-overhead-1600.webp",
+      "width": 1600,
+      "height": 1067,
+      "bytes": 78090,
+      "source": "assets/source/court-overhead.png",
+      "role": "Teams chapter atmosphere",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/fabric-macro-900.webp",
+      "width": 900,
+      "height": 600,
+      "bytes": 44142,
+      "source": "assets/source/fabric-macro.png",
+      "role": "Workshop chapter — material texture",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/fabric-macro-1400.webp",
+      "width": 1400,
+      "height": 933,
+      "bytes": 74046,
+      "source": "assets/source/fabric-macro.png",
+      "role": "Workshop chapter — material texture",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/product-stage-900.webp",
+      "width": 900,
+      "height": 600,
+      "bytes": 4852,
+      "source": "assets/source/product-stage-backdrop.png",
+      "role": "Product viewer backdrop",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    },
+    {
+      "src": "/media/atmosphere/product-stage-1400.webp",
+      "width": 1400,
+      "height": 933,
+      "bytes": 9592,
+      "source": "assets/source/product-stage-backdrop.png",
+      "role": "Product viewer backdrop",
+      "kind": "generated-atmosphere",
+      "decorative": true
+    }
+  ]
+}

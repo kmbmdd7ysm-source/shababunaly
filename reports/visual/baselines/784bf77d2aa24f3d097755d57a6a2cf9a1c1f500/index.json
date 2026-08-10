@@ -1,0 +1,394 @@
+{
+  "schema": "shababuna.visual.baselines.v1",
+  "sha": "784bf77d2aa24f3d097755d57a6a2cf9a1c1f500",
+  "generatedAt": "2026-08-10T15:49:15.487Z",
+  "status": "BASELINE_CAPTURED",
+  "automated": "AUTOMATED_BASELINE_CURRENT",
+  "humanApproval": "HUMAN_APPROVAL_REQUIRED",
+  "shots": [
+    {
+      "name": "home-desktop-en",
+      "file": "home-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "shop-desktop-en",
+      "file": "shop-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "ready-desktop-en",
+      "file": "ready-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "category-desktop-en",
+      "file": "category-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "product-desktop-en",
+      "file": "product-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "customize-desktop-en",
+      "file": "customize-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "teams-desktop-en",
+      "file": "teams-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "cart-desktop-en",
+      "file": "cart-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "checkout-desktop-en",
+      "file": "checkout-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "account-desktop-en",
+      "file": "account-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "special-desktop-en",
+      "file": "special-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "customize-model-desktop-en",
+      "file": "customize-model-desktop-en.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "home-desktop-ar",
+      "file": "home-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "shop-desktop-ar",
+      "file": "shop-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "ready-desktop-ar",
+      "file": "ready-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "category-desktop-ar",
+      "file": "category-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "product-desktop-ar",
+      "file": "product-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "customize-desktop-ar",
+      "file": "customize-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "teams-desktop-ar",
+      "file": "teams-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "cart-desktop-ar",
+      "file": "cart-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "checkout-desktop-ar",
+      "file": "checkout-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "account-desktop-ar",
+      "file": "account-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "special-desktop-ar",
+      "file": "special-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "customize-model-desktop-ar",
+      "file": "customize-model-desktop-ar.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "home-mobile-en",
+      "file": "home-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "shop-mobile-en",
+      "file": "shop-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "ready-mobile-en",
+      "file": "ready-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "category-mobile-en",
+      "file": "category-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "product-mobile-en",
+      "file": "product-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "customize-mobile-en",
+      "file": "customize-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "teams-mobile-en",
+      "file": "teams-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "cart-mobile-en",
+      "file": "cart-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "checkout-mobile-en",
+      "file": "checkout-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "account-mobile-en",
+      "file": "account-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "special-mobile-en",
+      "file": "special-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "customize-model-mobile-en",
+      "file": "customize-model-mobile-en.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "home-mobile-ar",
+      "file": "home-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "shop-mobile-ar",
+      "file": "shop-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "ready-mobile-ar",
+      "file": "ready-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "category-mobile-ar",
+      "file": "category-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "product-mobile-ar",
+      "file": "product-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "customize-mobile-ar",
+      "file": "customize-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "teams-mobile-ar",
+      "file": "teams-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "cart-mobile-ar",
+      "file": "cart-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "checkout-mobile-ar",
+      "file": "checkout-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "account-mobile-ar",
+      "file": "account-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "special-mobile-ar",
+      "file": "special-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "customize-model-mobile-ar",
+      "file": "customize-model-mobile-ar.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  ]
+}

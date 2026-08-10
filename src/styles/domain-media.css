@@ -1,0 +1,163 @@
+/* Domain CSS: domain-media.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: media-from-global.css ---- */
+
+/* media global */
+
+
+.media-lightbox {
+  position:fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(0, 0, 0, 0.92);
+  display:grid;
+  place-items:center;
+  padding: 72px 16px 52px;
+  overflow:hidden;
+}
+.media-lightbox {
+    padding: 76px 8px 52px;
+  }
+
+.media-lightbox {
+  position:fixed;
+  inset: 0;
+  z-index: 10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width: 100vw;
+  height: 100dvh;
+  padding: 64px 64px 56px;
+  background: #fff;
+  color: #111;
+  overflow:hidden;
+}
+
+.media-lightbox .lightbox-stage {
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: #fff;
+  overflow:auto;
+  touch-action: pinch-zoom;
+}
+
+.media-lightbox .lightbox-stage img {
+  display:block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit:contain;
+  transform-origin: center;
+}
+
+.media-lightbox .lightbox-close,
+.media-lightbox .lightbox-nav,
+.media-lightbox .lightbox-tools button {
+  color: #111;
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+.media-lightbox .lightbox-close {
+  position:fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+}
+
+.media-lightbox .lightbox-tools {
+  color: #111;
+}
+.media-lightbox {
+    padding: calc(64px + env(safe-area-inset-top)) 8px calc(44px + env(safe-area-inset-bottom));
+  }
+.media-lightbox .lightbox-stage {
+    width: 100%;
+    height: 100%;
+  }
+.media-lightbox .lightbox-stage img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+.media-lightbox .lightbox-nav {
+    display:none;
+  }
+
+.event-card-media > .smart-img,
+.program-card-media > .smart-img,
+.training-card-media > .smart-img {
+  display:block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  opacity: 1;
+  visibility:visible;
+  object-fit:cover;
+  object-position:center;
+  transform: none;
+}
+
+.smart-img--fallback.ratio-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.smart-img--fallback.ratio-3-2 {
+  aspect-ratio: 3 / 2;
+}
+
+.smart-img--fallback.ratio-4-5 {
+  aspect-ratio: 4 / 5;
+}
+
+.smart-img--fallback.ratio-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+
+/* ---- source: media-from-premium.css ---- */
+
+/* media premium */
+
+
+.media-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.96);
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  place-items: center;
+  color: #fff;
+}
+.media-lightbox {
+    grid-template-columns: 44px 1fr 44px;
+  }
+
+.smart-img {
+  background: linear-gradient(110deg, var(--surface) 25%, var(--surface-2) 40%, var(--surface) 55%);
+}
+
+.smart-img-fallback-mark {
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+}
+
+.smart-img-fallback-copy {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.media-lightbox {
+  position:fixed;
+  inset: 0;
+}

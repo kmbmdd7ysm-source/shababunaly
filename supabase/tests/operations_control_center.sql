@@ -1,0 +1,16 @@
+begin;
+select plan(12);
+select has_function('public','staff_retry_commerce_notification',array['bigint'],'notification retry RPC exists');
+select has_function('public','staff_resolve_security_event',array['uuid','boolean'],'security response RPC exists');
+select has_function('public','staff_update_media_asset',array['uuid','text','text','integer','text','boolean'],'media update RPC exists');
+select has_function('public','staff_upsert_shipment',array['uuid','text','uuid','text','uuid','text','text','jsonb'],'shipment RPC exists');
+select has_function('public','is_valid_shipment_status_transition',array['text','text'],'shipment state machine exists');
+select has_table('public','inventory_import_batches','inventory import batches exist');
+select has_table('public','inventory_import_rows','inventory import rows exist');
+select has_table('public','organization_contracts','contracts exist');
+select has_table('public','payment_proofs','payment proofs exist');
+select has_table('public','reorder_requests','reorders exist');
+select has_table('public','team_locker_stores','team lockers exist');
+select has_table('public','payment_ledger','immutable payment ledger exists');
+select * from finish();
+rollback;

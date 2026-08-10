@@ -1,0 +1,84 @@
+/* Build marker — review builds only. Deliberately unobtrusive but always
+   reachable, so a reviewer can confirm the served commit at any moment. */
+.gw-buildmark {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: fixed;
+  /* Trailing edge, not leading: on the homepage the primary calls to action
+     sit at the lower-leading corner and the badge was sitting on top of them
+     in every screenshot. */
+  inset-block-end: 12px;
+  inset-inline-end: 12px;
+  z-index: 2000;
+  font-family: var(--sh-font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-buildmark-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 28px;
+  padding-inline: 10px;
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: 14px;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  cursor: pointer;
+  opacity: 0.86;
+  white-space: nowrap;
+}
+
+.gw-buildmark-toggle:hover,
+.gw-buildmark[data-open='yes'] .gw-buildmark-toggle {
+  opacity: 1;
+}
+
+.gw-buildmark-dot {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--sh-verified);
+}
+
+.gw-buildmark-panel {
+  margin: 8px 0 0;
+  margin-inline-start: auto;
+  padding: 12px;
+  max-inline-size: min(92vw, 30rem);
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  font-size: 0.6875rem;
+}
+
+.gw-buildmark-panel > div {
+  display: flex;
+  gap: 10px;
+  padding-block: 3px;
+}
+
+.gw-buildmark-panel dt {
+  inline-size: 62px;
+  flex: none;
+  color: var(--sh-night-ink-70);
+  text-transform: uppercase;
+  letter-spacing: var(--sh-tr-spec);
+}
+
+.gw-buildmark-panel dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The badge is dev chrome and must never sit on top of real content. It was
+   landing on the navigation overlay's footer text. The overlay is a modal, so
+   the badge simply steps aside while it is open. */
+body:has(.gw-nav.is-open) .gw-buildmark {
+  display: none;
+}

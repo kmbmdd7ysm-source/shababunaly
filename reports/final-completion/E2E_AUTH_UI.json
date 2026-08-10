@@ -1,0 +1,12 @@
+[
+  {
+    "route": "/account",
+    "h1": "Sign in",
+    "emailFields": 2,
+    "passwordFields": 1
+  },
+  {
+    "negativeLoginAlert": "Something went wrong. Please try again.",
+    "status": "PASS"
+  }
+]

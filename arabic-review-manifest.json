@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 2,
+  "locale": "ar-LY",
+  "translationSourceSha256": null,
+  "sourceCommit": "",
+  "sections": {
+    "navigation_and_cta": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "accounts_and_mfa": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "catalog_and_product": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "cart_and_checkout": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "payments_refunds_returns": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "b2b_quotes_production": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "contracts_invoices": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "operations_and_security": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "errors_notifications_email": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    },
+    "rtl_mobile_desktop": {
+      "status": "pending",
+      "reviewer": "",
+      "reviewerRole": "",
+      "reviewedAt": "",
+      "sourceSha256": null,
+      "notes": ""
+    }
+  }
+}

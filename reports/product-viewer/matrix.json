@@ -1,0 +1,1698 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-10T20:14:32.825Z",
+  "minimumSpinFrames": 24,
+  "totalProducts": 69,
+  "currentTierCounts": {
+    "A": 0,
+    "B": 0,
+    "C": 23,
+    "D": 46
+  },
+  "targetTierCounts": {
+    "A": 34,
+    "B": 35
+  },
+  "levelDBreakdown": {
+    "oneVerifiedPhotograph": 2,
+    "placeholderConceptArtOnly": 44
+  },
+  "modelsManifestPresent": false,
+  "products": [
+    {
+      "id": "s001",
+      "slug": "shababuna-pro-game-set",
+      "name": "Shababuna Pro Game Set",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s002",
+      "slug": "shababuna-elite-game-jersey",
+      "name": "Shababuna Elite Game Jersey",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s003",
+      "slug": "shababuna-court-game-shorts",
+      "name": "Shababuna Court Game Shorts",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s004",
+      "slug": "shababuna-reversible-practice-jersey",
+      "name": "Shababuna Reversible Practice Jersey",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s005",
+      "slug": "shababuna-practice-shorts",
+      "name": "Shababuna Practice Shorts",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s006",
+      "slug": "built-different-performance-tee",
+      "name": "Built Different Performance Tee",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s007",
+      "slug": "shababuna-heavyweight-hoodie",
+      "name": "Shababuna Heavyweight Hoodie",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s008",
+      "slug": "shababuna-travel-pants",
+      "name": "Shababuna Travel Pants",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s009",
+      "slug": "shababuna-team-tracksuit",
+      "name": "Shababuna Team Tracksuit",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s010",
+      "slug": "shababuna-compression-top",
+      "name": "Shababuna Compression Top",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s011",
+      "slug": "shababuna-pro-basketball-socks",
+      "name": "Shababuna Pro Basketball Socks",
+      "category": "clothing",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s020",
+      "slug": "nike-in-court-basketball-shoe",
+      "name": "Nike In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s021",
+      "slug": "adidas-in-court-basketball-shoe",
+      "name": "adidas In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "adidas",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s022",
+      "slug": "jordan-in-court-basketball-shoe",
+      "name": "Jordan In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Jordan",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s023",
+      "slug": "under-armour-in-court-basketball-shoe",
+      "name": "Under Armour In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Under Armour",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s024",
+      "slug": "puma-in-court-basketball-shoe",
+      "name": "Puma In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Puma",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s025",
+      "slug": "new-balance-in-court-basketball-shoe",
+      "name": "New Balance In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "New Balance",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s026",
+      "slug": "li-ning-in-court-basketball-shoe",
+      "name": "Li-Ning In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Li-Ning",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s027",
+      "slug": "anta-in-court-basketball-shoe",
+      "name": "ANTA In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "ANTA",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s028",
+      "slug": "peak-in-court-basketball-shoe",
+      "name": "Peak In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Peak",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s029",
+      "slug": "361-in-court-basketball-shoe",
+      "name": "361° In-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "361°",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s030",
+      "slug": "nike-off-court-basketball-shoe",
+      "name": "Nike Off-Court Basketball Shoe",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s031",
+      "slug": "shababuna-recovery-slides",
+      "name": "Shababuna Recovery Slides",
+      "category": "footwear",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s040",
+      "slug": "shababuna-elite-basketball-backpack",
+      "name": "Shababuna Elite Basketball Backpack",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s041",
+      "slug": "shababuna-team-duffle",
+      "name": "Shababuna Team Duffle",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s042",
+      "slug": "shababuna-performance-arm-sleeve",
+      "name": "Shababuna Performance Arm Sleeve",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s043",
+      "slug": "basketball-ankle-support",
+      "name": "Basketball Ankle Support",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s044",
+      "slug": "shababuna-team-towel",
+      "name": "Shababuna Team Towel",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s045",
+      "slug": "custom-team-sticker-pack",
+      "name": "Custom Team Sticker Pack",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s046",
+      "slug": "basketball-training-cone-set",
+      "name": "Basketball Training Cone Set",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s047",
+      "slug": "shababuna-court-cap",
+      "name": "Shababuna Court Cap",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s048",
+      "slug": "shababuna-performance-bottle",
+      "name": "Shababuna Performance Bottle",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s049",
+      "slug": "custom-woven-team-patch",
+      "name": "Custom Woven Team Patch",
+      "category": "accessories",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s050",
+      "slug": "molten-indoor-game-basketball",
+      "name": "Molten Indoor Game Basketball",
+      "category": "basketballs",
+      "brand": "Molten",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s051",
+      "slug": "wilson-indoor-outdoor-basketball",
+      "name": "Wilson Indoor / Outdoor Basketball",
+      "category": "basketballs",
+      "brand": "Wilson",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s052",
+      "slug": "spalding-outdoor-basketball",
+      "name": "Spalding Outdoor Basketball",
+      "category": "basketballs",
+      "brand": "Spalding",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s053",
+      "slug": "shababuna-custom-team-basketball",
+      "name": "Shababuna Custom Team Basketball",
+      "category": "basketballs",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s060",
+      "slug": "competition-basketball-hoop-system",
+      "name": "Competition Basketball Hoop System",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s061",
+      "slug": "tempered-glass-backboard",
+      "name": "Tempered Glass Backboard",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s062",
+      "slug": "professional-spring-rim",
+      "name": "Professional Spring Rim",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s063",
+      "slug": "24-second-shot-clock-set",
+      "name": "24-Second Shot Clock Set",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s064",
+      "slug": "basketball-ball-cart",
+      "name": "Basketball Ball Cart",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s066",
+      "slug": "professional-court-padding-set",
+      "name": "Professional Court Padding Set",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": true,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb",
+        "panel separation matching FACTORY_TEMPLATE_SPECS, print-zone UVs"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "s065",
+      "slug": "electric-ball-pump-kit",
+      "name": "Electric Ball Pump Kit",
+      "category": "equipment",
+      "brand": "Shababuna",
+      "customizable": false,
+      "assetCount": 0,
+      "placeholderMedia": true,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "no verified photography at all"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "lha-p014",
+      "slug": "all-i-know-is-win-tee",
+      "name": "LHA Win Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p015",
+      "slug": "hoops-for-troops-tee",
+      "name": "LHA Troops Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p016",
+      "slug": "hoopers-performance-tee",
+      "name": "LHA Hoopers Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p017",
+      "slug": "hoopers-long-sleeve-performance",
+      "name": "LHA Hoopers Long Sleeve",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p018",
+      "slug": "lha-performance-shorts",
+      "name": "LHA Court Shorts",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "lha-p019",
+      "slug": "lha-logo-performance-tee",
+      "name": "LHA Icon Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p020",
+      "slug": "libya-hoops-academy-tee",
+      "name": "LHA Academy Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p021",
+      "slug": "lha-chest-logo-tank",
+      "name": "LHA Pro Tank",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p022",
+      "slug": "lha-center-logo-tank",
+      "name": "LHA Pro Logo Tank",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p023",
+      "slug": "lha-compression-long-sleeve",
+      "name": "LHA Pro Long Sleeve",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p024",
+      "slug": "lha-full-length-compression-tights",
+      "name": "LHA Pro Tights",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p025",
+      "slug": "lha-one-leg-compression-tights",
+      "name": "LHA Pro One-Leg Tights",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p026",
+      "slug": "lha-sleeve-logo-performance-tee",
+      "name": "LHA Pro Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p027",
+      "slug": "lha-elite-basketball-backpack",
+      "name": "LHA Elite Pack",
+      "category": "accessories",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p028",
+      "slug": "lha-academy-everyday-backpack",
+      "name": "LHA Academy Pack",
+      "category": "accessories",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p030",
+      "slug": "lha-compression-shorts",
+      "name": "LHA Pro Shorts",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p031",
+      "slug": "lha-performance-basketball-socks",
+      "name": "LHA Court Socks",
+      "category": "accessories",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p029",
+      "slug": "lha-premium-fleece-set",
+      "name": "LHA Own The Game Fleece Set",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 4,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p032",
+      "slug": "own-the-game-essential-tee",
+      "name": "LHA Own The Game Tee",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p033",
+      "slug": "own-the-game-sleeveless-top",
+      "name": "LHA Own The Game Sleeveless Top",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p034",
+      "slug": "own-the-game-zip-hoodie",
+      "name": "LHA Own The Game Zip Hoodie",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p035",
+      "slug": "own-the-game-crewneck",
+      "name": "LHA Own The Game Crewneck",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p036",
+      "slug": "own-the-game-fleece-shorts",
+      "name": "LHA Own The Game Fleece Shorts",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 2,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p037",
+      "slug": "own-the-game-pullover-hoodie",
+      "name": "LHA Own The Game Pullover Hoodie",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 3,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "C",
+      "targetTier": "B",
+      "missingAssets": [
+        "24 more turntable frames for a true 360"
+      ],
+      "requiredPhotography": [
+        "turntable sequence, 24–36 frames at 1200 px"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing responsive images, no additional payload",
+      "recommendedPhase": "P6 — spin capture"
+    },
+    {
+      "id": "lha-p038",
+      "slug": "own-the-game-fleece-pants",
+      "name": "LHA Own The Game Fleece Joggers",
+      "category": "clothing",
+      "brand": "LHA",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "B",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [],
+      "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    }
+  ]
+}

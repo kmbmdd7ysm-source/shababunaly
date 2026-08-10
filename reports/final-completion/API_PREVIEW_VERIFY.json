@@ -1,0 +1,17 @@
+{
+  "url": "https://shababunaly-git-cursor-shaba-b40f31-kmbmdd7ysm-sources-projects.vercel.app/api/public-quote-request",
+  "status": 401,
+  "bypassProvided": false,
+  "body": {
+    "protection": {
+      "password_enabled": false,
+      "vercel_auth_enabled": true,
+      "vercel_auth_callback": "https://vercel.com/sso-api?url=https%3A%2F%2Fshababunaly-git-cursor-shaba-b40f31-kmbmdd7ysm-sources-projects.vercel.app%2Fapi%2Fpublic-quote-request&nonce=b438c9c8ee7ff4e0ed36d0d87155406a18127efdfe8fc163ecc2d2a90041b4ae",
+      "auto_vercel_auth_redirect": true
+    },
+    "error": {
+      "code": "401",
+      "message": "Protected deployment"
+    }
+  }
+}

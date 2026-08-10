@@ -1,0 +1,197 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-08-10T20:14:34.015Z",
+  "workflowFiles": 4,
+  "pinnedActions": [
+    {
+      "file": ".github/workflows/codeql.yml",
+      "line": 14,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/codeql.yml",
+      "line": 15,
+      "action": "github/codeql-action/init",
+      "sha": "f205ea1c3313d32999d8d6a48b4f6530d4437b38",
+      "annotation": "v4.37.4"
+    },
+    {
+      "file": ".github/workflows/codeql.yml",
+      "line": 19,
+      "action": "github/codeql-action/analyze",
+      "sha": "f205ea1c3313d32999d8d6a48b4f6530d4437b38",
+      "annotation": "v4.37.4"
+    },
+    {
+      "file": ".github/workflows/osv.yml",
+      "line": 14,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/osv.yml",
+      "line": 15,
+      "action": "google/osv-scanner-action/osv-scanner-action",
+      "sha": "8dded7155905cd666190a12dc9997000e58d163d",
+      "annotation": "v2.0.2"
+    },
+    {
+      "file": ".github/workflows/osv.yml",
+      "line": 21,
+      "action": "github/codeql-action/upload-sarif",
+      "sha": "f205ea1c3313d32999d8d6a48b4f6530d4437b38",
+      "annotation": "v4.37.4"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 97,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 99,
+      "action": "actions/setup-node",
+      "sha": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+      "annotation": "v6.5.0"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 106,
+      "action": "supabase/setup-cli",
+      "sha": "46f7f98c7f948ad727d22c1e67fab04c223a0520",
+      "annotation": "v3.0.0"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 145,
+      "action": "actions/attest-build-provenance",
+      "sha": "0f67c3f4856b2e3261c31976d6725780e5e4c373",
+      "annotation": "v4.1.1"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 149,
+      "action": "actions/attest-build-provenance",
+      "sha": "0f67c3f4856b2e3261c31976d6725780e5e4c373",
+      "annotation": "v4.1.1"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 153,
+      "action": "actions/attest-build-provenance",
+      "sha": "0f67c3f4856b2e3261c31976d6725780e5e4c373",
+      "annotation": "v4.1.1"
+    },
+    {
+      "file": ".github/workflows/production-release.yml",
+      "line": 156,
+      "action": "actions/upload-artifact",
+      "sha": "330a01c490aca151604b8cf639adc76d48f6c5d4",
+      "annotation": "v5.0.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 22,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 24,
+      "action": "actions/setup-node",
+      "sha": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+      "annotation": "v6.5.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 44,
+      "action": "actions/upload-artifact",
+      "sha": "330a01c490aca151604b8cf639adc76d48f6c5d4",
+      "annotation": "v5.0.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 60,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 61,
+      "action": "actions/setup-node",
+      "sha": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+      "annotation": "v6.5.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 67,
+      "action": "supabase/setup-cli",
+      "sha": "46f7f98c7f948ad727d22c1e67fab04c223a0520",
+      "annotation": "v3.0.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 71,
+      "action": "actions/upload-artifact",
+      "sha": "330a01c490aca151604b8cf639adc76d48f6c5d4",
+      "annotation": "v5.0.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 86,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 88,
+      "action": "actions/setup-node",
+      "sha": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+      "annotation": "v6.5.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 98,
+      "action": "actions/upload-artifact",
+      "sha": "330a01c490aca151604b8cf639adc76d48f6c5d4",
+      "annotation": "v5.0.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 126,
+      "action": "actions/checkout",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "annotation": "v4.4.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 128,
+      "action": "actions/setup-node",
+      "sha": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+      "annotation": "v6.5.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 134,
+      "action": "supabase/setup-cli",
+      "sha": "46f7f98c7f948ad727d22c1e67fab04c223a0520",
+      "annotation": "v3.0.0"
+    },
+    {
+      "file": ".github/workflows/world-class-quality.yml",
+      "line": 159,
+      "action": "actions/upload-artifact",
+      "sha": "330a01c490aca151604b8cf639adc76d48f6c5d4",
+      "annotation": "v5.0.0"
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,14 @@
+node_modules
+dist
+.env
+.env.local
+.env.*.local
+.DS_Store
+*.log
+.vercel
+coverage
+coverage-critical
+coverage-project
+
+# Local PWA upgrade harness artifacts
+reports/pwa-upgrade/

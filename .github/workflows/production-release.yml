@@ -1,0 +1,166 @@
+name: SHABABUNA Verified Production Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      staging_url:
+        description: Fully deployed staging URL to verify
+        required: true
+        type: string
+
+concurrency:
+  group: shababuna-production-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  security-events: write
+  id-token: write
+  attestations: write
+
+jobs:
+  verified-release:
+    environment: production
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      CI: 'true'
+      NODE_ENV: production
+      SITE_URL: ${{ inputs.staging_url }}
+      PLAYWRIGHT_BASE_URL: ${{ inputs.staging_url }}
+      VITE_BUILD_ID: ${{ github.sha }}
+      BUILD_ID: ${{ github.sha }}
+      REQUIRE_LIVE_INTEGRATIONS: 'true'
+      REQUIRE_PRODUCTION_CATALOG: 'true'
+      REQUIRE_FINAL_MEDIA: 'true'
+      REQUIRE_FACTORY_APPROVAL: 'true'
+      REQUIRE_ARABIC_REVIEW: 'true'
+      REQUIRE_REVIEWED_VISUAL_BASELINES: 'true'
+      REQUIRE_PROVIDER_APPROVAL: 'true'
+      REQUIRE_ZERO_STRICT_DEBT: 'true'
+      ALLOW_LIVE_FORMSPREE_TEST: 'true'
+      ALLOW_LIVE_MALWARE_TEST: 'true'
+      ALLOW_LIVE_PAYMENT_TEST: 'true'
+      FULL_STACK_E2E: 'false'
+      STAGING_LIVE_E2E: 'true'
+      E2E_ENVIRONMENT_ID: shababuna-staging-e2e
+      E2E_SITE_URL: ${{ inputs.staging_url }}
+      E2E_SUPABASE_URL: ${{ secrets.E2E_SUPABASE_URL }}
+      E2E_SUPABASE_ANON_KEY: ${{ secrets.E2E_SUPABASE_ANON_KEY }}
+      E2E_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.E2E_SUPABASE_SERVICE_ROLE_KEY }}
+      MAILPIT_API_URL: ${{ secrets.E2E_MAILPIT_API_URL }}
+      E2E_PAYMENT_API_URL: ${{ secrets.E2E_PAYMENT_API_URL }}
+      E2E_MALWARE_API_URL: ${{ secrets.E2E_MALWARE_API_URL }}
+      E2E_SIGNATURE_API_URL: ${{ secrets.E2E_SIGNATURE_API_URL }}
+      PRODUCTION_HOSTS: shababuna.ly,www.shababuna.ly
+      VITE_SUPABASE_URL: ${{ secrets.E2E_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.E2E_SUPABASE_ANON_KEY }}
+      SUPABASE_URL: ${{ secrets.INTEGRATION_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.INTEGRATION_SUPABASE_SERVICE_ROLE_KEY }}
+      FORMSPREE_ORDER_ENDPOINT: ${{ secrets.FORMSPREE_ORDER_ENDPOINT }}
+      INTEGRATION_TEST_EMAIL: ${{ secrets.INTEGRATION_TEST_EMAIL }}
+      MALWARE_SCAN_API_URL: ${{ secrets.MALWARE_SCAN_API_URL }}
+      MALWARE_SCAN_API_KEY: ${{ secrets.MALWARE_SCAN_API_KEY }}
+      MALWARE_WORKER_URL: ${{ secrets.MALWARE_WORKER_URL }}
+      PAYMENTS_PROVIDER: ${{ secrets.PAYMENTS_PROVIDER }}
+      PAYMENTS_SESSION_URL: ${{ secrets.PAYMENTS_SESSION_URL }}
+      PAYMENTS_RETRIEVE_URL: ${{ secrets.PAYMENTS_RETRIEVE_URL }}
+      PAYMENTS_REFUND_URL: ${{ secrets.PAYMENTS_REFUND_URL }}
+      PAYMENTS_WEBHOOK_SECRET: ${{ secrets.PAYMENTS_WEBHOOK_SECRET }}
+      PAYMENTS_SECRET_KEY: ${{ secrets.PAYMENTS_SECRET_KEY }}
+      PAYMENTS_PROVIDER_API_VERSION: ${{ secrets.PAYMENTS_PROVIDER_API_VERSION }}
+      PAYMENTS_PROVIDER_DOCS_URL: ${{ secrets.PAYMENTS_PROVIDER_DOCS_URL }}
+      PAYMENTS_PROVIDER_SANDBOX_URL: ${{ secrets.PAYMENTS_PROVIDER_SANDBOX_URL }}
+      PAYMENTS_WEBHOOK_SCHEMA_VERSION: ${{ secrets.PAYMENTS_WEBHOOK_SCHEMA_VERSION }}
+      PAYMENTS_SANDBOX_TEST_TRANSACTION_ID: ${{ secrets.PAYMENTS_SANDBOX_TEST_TRANSACTION_ID }}
+      PAYMENTS_SANDBOX_TEST_REFUND_AMOUNT: ${{ secrets.PAYMENTS_SANDBOX_TEST_REFUND_AMOUNT }}
+      PAYMENTS_SANDBOX_TEST_CURRENCY: ${{ secrets.PAYMENTS_SANDBOX_TEST_CURRENCY }}
+      VITE_PAYMENTS_PROVIDER: ${{ secrets.PAYMENTS_PROVIDER }}
+      VITE_PAYMENTS_PUBLISHABLE_KEY: ${{ secrets.VITE_PAYMENTS_PUBLISHABLE_KEY }}
+      VITE_CHECKOUT_API_BASE: /api
+      SIGNATURE_PROVIDER: ${{ secrets.SIGNATURE_PROVIDER }}
+      SIGNATURE_API_URL: ${{ secrets.SIGNATURE_API_URL }}
+      SIGNATURE_CREATE_ENVELOPE_URL: ${{ secrets.SIGNATURE_CREATE_ENVELOPE_URL }}
+      SIGNATURE_API_KEY: ${{ secrets.SIGNATURE_API_KEY }}
+      SIGNATURE_WEBHOOK_SECRET: ${{ secrets.SIGNATURE_WEBHOOK_SECRET }}
+      SIGNATURE_PROVIDER_SCHEMA_VERSION: ${{ secrets.SIGNATURE_PROVIDER_SCHEMA_VERSION }}
+      SIGNATURE_PROVIDER_DOCS_URL: ${{ secrets.SIGNATURE_PROVIDER_DOCS_URL }}
+      SIGNATURE_PROVIDER_SANDBOX_URL: ${{ secrets.SIGNATURE_PROVIDER_SANDBOX_URL }}
+      SIGNATURE_PROVIDER_TEST_ENVELOPE_ID: ${{ secrets.SIGNATURE_PROVIDER_TEST_ENVELOPE_ID }}
+      VITE_SIGNATURE_PROVIDER: ${{ secrets.SIGNATURE_PROVIDER }}
+      INTEGRATION_MAILBOX_API_URL: ${{ secrets.INTEGRATION_MAILBOX_API_URL }}
+      INTEGRATION_MAILBOX_API_TOKEN: ${{ secrets.INTEGRATION_MAILBOX_API_TOKEN }}
+      FORMSPREE_ADMIN_RECIPIENT: ${{ secrets.FORMSPREE_ADMIN_RECIPIENT }}
+      PAGESPEED_URL: ${{ inputs.staging_url }}
+      PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci --registry=https://registry.npmjs.org
+      - run: npm run quality:install -- --registry=https://registry.npmjs.org
+      - uses: supabase/setup-cli@46f7f98c7f948ad727d22c1e67fab04c223a0520 # v3.0.0
+        with: { version: 2.109.1 }
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run typecheck:strict-critical
+      - run: npm run typecheck:production
+      - run: npm run audit:typescript
+      - run: npm run test:node
+      - run: npm run test:ui
+      - run: npm run coverage
+      - run: npm run test:db
+      - run: npm run build
+      - run: npm run analyze
+      - name: Verify isolated staging E2E configuration
+        run: npm run test:e2e:isolation
+      - name: Run real staging workflows against isolated Supabase/Mailpit/sandboxes
+        run: npm run test:e2e:staging-live
+      - run: npm run test:a11y:run
+      - run: npm run visual:run
+      - run: npm run test:pwa-upgrade
+      - run: npm run lighthouse:mobile
+      - run: npm run lighthouse:desktop
+      - run: npm run lighthouse:validate
+      - run: npm run pagespeed:mobile
+      - run: npm run pagespeed:desktop
+      - run: npm run pagespeed:validate
+      - run: npm run security:audit
+      - run: npm run validate:catalog-completeness
+      - run: npm run validate:factory-readiness
+      - run: npm run validate:arabic-review
+      - run: npm run validate:provider-readiness
+      - run: npm run validate:visual-baselines
+      - name: Verify upload-quarantine-worker-delete-alert malware pipeline
+        run: npm run test:malware-pipeline
+      - run: npm run test:integrations
+      - run: npm run verify:release
+      - name: Attest immutable production build
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: dist/**
+      - name: Attest release evidence bundle
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: reports/release/evidence-bundle.json
+      - name: Attest software bill of materials
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: reports/sbom.cdx.json
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: verified-production-release-${{ github.sha }}
+          path: |
+            dist
+            reports
+            coverage-project
+            test-results
+          if-no-files-found: error
+          retention-days: 90

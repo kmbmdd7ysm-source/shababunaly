@@ -1,0 +1,294 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK public shell (Phase 2A)
+   --------------------------------------------------------------------------
+   The bridge layer. Unlike the `gw-*` layers, this file is deliberately allowed
+   to target the existing shell class names, because its job is to migrate the
+   header, footer and shared chrome onto the new system in place rather than
+   rewrite their markup and risk their behaviour.
+
+   It loads last, so it wins over `global.css`, `premium.css` and
+   `shababuna.css` without needing ``.
+
+   Rules it still obeys: tokens only (no raw colours), logical properties only
+   (no physical left/right), and no change to any interactive behaviour.
+   ========================================================================== */
+
+/* ---------- Header shell -------------------------------------------------- */
+
+.site-header {
+  background: var(--sh-chalk);
+  border-block-end: 1px solid var(--sh-rule);
+  box-shadow: none;
+}
+
+.site-header.scrolled {
+  border-block-end-color: var(--sh-rule-strong);
+  box-shadow: var(--sh-lift);
+}
+
+/* The actions cluster must never shrink. `premium.css` sets `min-width: 0` on
+   it, which let the row collapse below its content: at 44px targets the cart
+   button ended up sitting exactly on top of the compare link, and axe reported
+   the compare target as obscured. */
+.header-actions {
+  flex: none;
+  min-inline-size: auto;
+  gap: var(--sh-s-1);
+}
+
+.desktop-utilities {
+  flex: none;
+  min-inline-size: auto;
+  gap: var(--sh-s-1);
+}
+
+/* The nav is what yields space instead. */
+/* Giving the icon buttons a lawful 44px target made the actions cluster about
+   200px wider, which pushed it straight into the navigation. The header now
+   spans the viewport instead of being capped at the 1240px content container,
+   and the nav scales down between 1000px and 1400px so the row always fits.
+   Content elsewhere keeps its measure; only the chrome goes full width. */
+.site-header .header-inner {
+  max-inline-size: none;
+  padding-inline: clamp(16px, 3vw, 48px);
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+.desktop-nav {
+  min-inline-size: 0;
+  flex: 0 1 auto;
+  gap: clamp(0.1rem, 0.5vw, 0.35rem);
+}
+
+@media (min-width: 1000px) and (max-width: 1439px) {
+  .nav-link {
+    font-size: 0.7rem;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Belt and braces: the nav may shrink and may clip its own overflow, but it
+   must never paint over the actions cluster. Every link remains reachable
+   because the mobile menu carries the same navigation at these widths. */
+.desktop-nav {
+  overflow: hidden;
+}
+
+/* The nav takes the display face and nothing else. Adding the system's
+   wide spec tracking here pushed the row from 696px of available space to
+   868px of content, and the last link ran straight over the search icon.
+   Navigation is not a spec label; it keeps its original metrics. */
+.nav-link {
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+  font-stretch: 96%;
+  color: var(--sh-ink);
+  white-space: nowrap;
+}
+
+[lang='ar'] .nav-link {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.icon-btn {
+  color: var(--sh-ink);
+  border-radius: var(--sh-r-1);
+}
+
+.icon-btn:hover {
+  background: var(--sh-chalk-2);
+}
+
+.lang-text-btn {
+  min-block-size: var(--sh-target);
+  min-inline-size: var(--sh-target-min);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-ink);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+}
+
+.lang-text-btn:hover {
+  border-color: var(--sh-ink);
+}
+
+/* ---------- Announcement -------------------------------------------------- */
+
+.announcement-bar {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .announcement-bar {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Mobile navigation --------------------------------------------- */
+
+.mobile-menu {
+  background: var(--sh-chalk);
+  border-inline-end: 1px solid var(--sh-rule);
+}
+
+.mobile-link,
+.mobile-accordion-btn {
+  min-block-size: var(--sh-target);
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+  font-stretch: 100%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink);
+}
+
+[lang='ar'] .mobile-link,
+[lang='ar'] .mobile-accordion-btn {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Footer -------------------------------------------------------- */
+
+.site-footer {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.site-footer a {
+  color: var(--sh-night-ink-70);
+}
+
+.site-footer a:hover {
+  color: var(--sh-night-ink);
+}
+
+.site-footer h3,
+.site-footer h4 {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .site-footer h3,
+[lang='ar'] .site-footer h4 {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.site-footer :focus-visible {
+  outline-color: var(--sh-signal-on-dark);
+}
+
+/* ---------- Shared surfaces ----------------------------------------------- */
+
+.section--muted {
+  background: var(--sh-chalk-2);
+}
+
+/* `.section--dark` is deliberately NOT restyled here. Re-grounding it on
+   --sh-night left five nodes of #050505 text sitting on a near-black ground at
+   1.03:1 on /teams-wholesale, because their colour comes from a different rule
+   that assumed the original background. The legacy dark section already reads
+   correctly; it gets migrated with its own page, not from the bridge. */
+
+.page-hero {
+  background: var(--sh-chalk-2);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+/* The LHA wordmark watermark belonged to a different brand and was painting
+   behind every PageHero on the site — Shop, Cart, Checkout, Contact, Search,
+   About and Teams included. It is removed everywhere; the LHA store keeps its
+   own identity through its own components. */
+.page-hero::after {
+  content: none;
+}
+
+.product-card {
+  background: var(--sh-chalk);
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+}
+
+.btn-primary {
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  letter-spacing: var(--sh-tr-spec);
+}
+
+.btn-secondary,
+.btn-ghost {
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  letter-spacing: var(--sh-tr-spec);
+}
+
+[lang='ar'] .btn-primary,
+[lang='ar'] .btn-secondary,
+[lang='ar'] .btn-ghost {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+}
+
+/* ---------- Focus --------------------------------------------------------- */
+
+:focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-focus-color);
+  outline-offset: var(--sh-focus-offset);
+}
+
+/* ---------- Shared forms and status ---------------------------------------
+   Two pre-existing WCAG failures on shared components, both fixable in the
+   bridge without touching a line of behaviour. */
+
+/* The status pill inherits `--muted` (#4d4d4d), which is legible on the light
+   ground it was designed for but measured 2.03:1 where the pill sits on the
+   dark product-card overlay. It now carries its own ground so the contrast is
+   independent of wherever it is placed. */
+.status-pill {
+  background: var(--sh-chalk);
+  color: var(--sh-ink-70);
+  border: 1px solid var(--sh-rule-strong);
+}
+
+.status-pill.ended,
+.status-pill.closed {
+  color: var(--sh-ink-50);
+}
+
+/* Filter checkboxes were rendering at the 16x16 UA default, below the 24x24
+   WCAG 2.2 AA 2.5.8 minimum, 63 of them on the shop page alone. */
+input[type='checkbox'],
+input[type='radio'] {
+  inline-size: 24px;
+  block-size: 24px;
+  min-inline-size: 24px;
+  min-block-size: 24px;
+  accent-color: var(--sh-ink);
+  cursor: pointer;
+}

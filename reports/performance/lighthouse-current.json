@@ -1,0 +1,65 @@
+{
+  "schema": "shababuna.performance.lighthouse.v1",
+  "sha": "d8417de61174dc03c84a3918920ffdc639981cf7",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14",
+  "generatedAt": "2026-08-10T18:50:41.261361Z",
+  "target": "vite preview :4173",
+  "results": {
+    "desktop": {
+      "performance": 0.8,
+      "FCP": {
+        "ms": 1767.4038,
+        "display": "1.8\u00a0s",
+        "score": 0.4
+      },
+      "LCP": {
+        "ms": 2074.9038,
+        "display": "2.1\u00a0s",
+        "score": 0.6
+      },
+      "CLS": {
+        "ms": 0.002104,
+        "display": "0.002",
+        "score": 1
+      },
+      "TBT": {
+        "ms": 107.5,
+        "display": "110\u00a0ms",
+        "score": 0.96
+      },
+      "SI": {
+        "ms": 1767.4038,
+        "display": "1.8\u00a0s",
+        "score": 0.72
+      }
+    },
+    "mobile": {
+      "performance": 0.97,
+      "FCP": {
+        "ms": 1739.8834000000002,
+        "display": "1.7\u00a0s",
+        "score": 0.91
+      },
+      "LCP": {
+        "ms": 1922.8834000000002,
+        "display": "1.9\u00a0s",
+        "score": 0.98
+      },
+      "CLS": {
+        "ms": 7.1e-05,
+        "display": "0",
+        "score": 1
+      },
+      "TBT": {
+        "ms": 136.49999999999977,
+        "display": "140\u00a0ms",
+        "score": 0.96
+      },
+      "SI": {
+        "ms": 1739.8834000000002,
+        "display": "1.7\u00a0s",
+        "score": 1
+      }
+    }
+  }
+}

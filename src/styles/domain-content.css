@@ -1,0 +1,215 @@
+/* Domain CSS: domain-content.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: content-from-global.css ---- */
+
+/* content global */
+
+
+.contact-info {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.prose-block .section-title {
+  color: #050505;
+  max-width: none;
+  font-size: clamp(2rem, 4vw, 4.4rem);
+}
+
+.help-search {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.help-search input {
+  height: 56px;
+  border: 1px solid var(--border);
+  padding-inline: 1rem;
+  font-size: 1rem;
+}
+
+.help-account-callout {
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.contact-form-wrap,
+.contact-form,
+.contact-info,
+.page-hero,
+.page-hero .container {
+  overflow-wrap: anywhere;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+}
+
+.contact-form-wrap > *,
+.contact-info > *,
+.filters-drawer-panel > * {
+  min-width: 0;
+}
+
+.contact-form label {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.contact-info .section-title {
+  font-size: clamp(2rem, 8vw, 4.5rem);
+  line-height: 0.92;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+.contact-info {
+    padding: 1.25rem;
+  }
+.contact-info .section-title {
+    font-size: clamp(2rem, 11vw, 3.15rem);
+    line-height: 0.94;
+  }
+.contact-form-wrap,
+  .contact-form,
+  .contact-info {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+.contact-info .section-title {
+    max-width: 100%;
+    font-size: clamp(2rem, 9.5vw, 2.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
+.contact-section > .container,
+.contact-form-wrap,
+.contact-form {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.contact-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.contact-form > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.contact-form .contact-consent {
+  display:grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-form .contact-consent input {
+  grid-column: 1;
+  width: 20px;
+  height: 20px;
+  margin: 0.2rem 0 0;
+}
+
+.contact-form .contact-consent span {
+  grid-column: 2;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+html[dir='rtl'] .contact-form .contact-consent {
+  grid-template-columns: minmax(0, 1fr) 22px;
+}
+
+html[dir='rtl'] .contact-form .contact-consent input {
+  grid-column: 2;
+}
+
+html[dir='rtl'] .contact-form .contact-consent span {
+  grid-column: 1;
+}
+.contact-section .container {
+    padding-inline: var(--gutter);
+  }
+.contact-form input,
+  .contact-form select,
+  .contact-form textarea,
+  .contact-form button {
+    width: 100%;
+    max-width: 100%;
+  }
+.contact-info .section-title {
+    font-size: clamp(1.65rem, 2.7vw, 3rem);
+    line-height: 1;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+
+/* ---- source: content-from-shababuna.css ---- */
+
+/* content shababuna */
+
+
+.contact-info {
+  background: #050505;
+  color: #fff;
+  padding: clamp(30px, 4vw, 55px);
+}
+
+.contact-info h2 {
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  letter-spacing: -0.07em;
+}
+
+.contact-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 40px 0 0;
+  display: grid;
+  gap: 0;
+}
+
+.contact-info li {
+  padding-block: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.contact-info li span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.67rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-08-09T20:54:00.940292+00:00",
+  "totalImportant": 164,
+  "files": {
+    "global.css": {
+      "count": 127,
+      "byProperty": {
+        "width": 15,
+        "transform": 14,
+        "height": 13,
+        "min-width": 6,
+        "font-size": 5,
+        "overflow-wrap": 5,
+        "border": 4,
+        "max-width": 4,
+        "word-break": 4,
+        "inset-inline": 4,
+        "padding": 4,
+        "animation-duration": 3,
+        "animation-iteration-count": 3,
+        "transition-duration": 3,
+        "scroll-behavior": 3,
+        "color": 3,
+        "border-radius": 3,
+        "inset": 3,
+        "margin-inline": 3,
+        "right": 3
+      },
+      "lines": 5070
+    },
+    "premium.css": {
+      "count": 37,
+      "byProperty": {
+        "transition": 8,
+        "transition-duration": 4,
+        "transform": 3,
+        "animation-duration": 3,
+        "animation-iteration-count": 3,
+        "background": 2,
+        "padding-block": 2,
+        "max-width": 2,
+        "scroll-behavior": 2,
+        "letter-spacing": 1,
+        "box-shadow": 1,
+        "font-size": 1,
+        "animation": 1,
+        "border-radius": 1,
+        "filter": 1,
+        "content": 1,
+        "inset": 1
+      },
+      "lines": 1631
+    },
+    "shababuna.css": {
+      "count": 0,
+      "byProperty": {},
+      "lines": 3067
+    }
+  },
+  "policy": "Remaining !important are exceptional overrides (layout locks, reduced-motion, sticky chrome). Further reduction continues with ownership moves."
+}

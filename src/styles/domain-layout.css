@@ -1,0 +1,183 @@
+/* Domain CSS: domain-layout.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: layout-legacy-from-global.css ---- */
+
+/* layout legacy global */
+
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6em;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container.narrow {
+  max-width: 720px;
+}
+
+.section-label {
+  color: var(--text);
+  letter-spacing: 0.22em;
+  font-size: 0.68rem;
+}
+
+.section-title {
+  font-weight: 900;
+  font-size: clamp(2rem, 4.8vw, 4.8rem);
+  line-height: 0.92;
+  max-width: 14ch;
+}
+
+.academy-intro .section-label {
+  color: #fff;
+}
+
+.page-hero .section-label {
+  color: #fff;
+}
+
+.section-label {
+  color: #050505;
+}
+
+.academy-intro .section-title,
+.academy-intro .section-label {
+  color: #fff;
+}
+
+.page-hero h1,
+.page-hero h2,
+.page-hero .display-title,
+.page-hero .section-title,
+.page-hero .section-label {
+  color: #fff;
+}
+
+[dir='rtl'] .display-title,
+[dir='rtl'] .section-title {
+  line-height: 1.18;
+  font-weight: 800;
+}
+
+[dir='rtl'] .section-title {
+  max-width: 18ch;
+}
+.section-title {
+    font-size: clamp(2rem, 11vw, 3.45rem);
+    line-height: 1;
+  }
+[dir='rtl'] .section-title {
+    font-size: clamp(1.8rem, 9.5vw, 3rem);
+    line-height: 1.28;
+  }
+
+.display-title,
+.section-heading .section-title {
+  font-size: clamp(2rem, 5vw, 4.4rem);
+  line-height: 0.94;
+  max-width: 16ch;
+  text-wrap: balance;
+}
+.display-title,
+.section-heading .section-title {
+    font-size: clamp(2.15rem, 10vw, 3.5rem);
+  }
+
+html[dir='rtl'] .section-title,
+html[dir='rtl'] .page-hero h1 {
+  font-size: clamp(1.9rem, 8vw, 3.8rem);
+}
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+  }
+
+#root,
+main,
+.page,
+section,
+.container {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.error-boundary .narrow {
+  padding-block: clamp(3rem, 8vw, 7rem);
+}
+
+
+/* ---- source: layout-legacy-from-premium.css ---- */
+
+/* layout legacy premium */
+
+
+.section-heading .section-title {
+  max-width: 18ch;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+}
+
+.section-label {
+  letter-spacing: 0.18em;
+}
+.section-heading .section-title {
+    font-size: clamp(2.15rem, 11vw, 3.8rem);
+    line-height: 0.94;
+    max-width: 13ch;
+  }
+
+
+/* ---- source: layout-legacy-from-shababuna.css ---- */
+
+/* layout legacy shababuna */
+
+
+.container {
+  width: min(calc(100% - clamp(32px, 6vw, 96px)), var(--sha-wide));
+}
+
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  max-width: 950px;
+  font-size: clamp(2rem, 4vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.lha-store-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.container {
+    width: min(calc(100% - 32px), var(--sha-wide));
+  }

@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-08-09T18:56:02.523050+00:00",
+  "phase": "B-pass4-safe-important-strip-expanded",
+  "after": {
+    "global.css": {
+      "lines": 5070,
+      "important": 173
+    },
+    "premium.css": {
+      "lines": 1631,
+      "important": 41
+    },
+    "shababuna.css": {
+      "lines": 3067,
+      "important": 0
+    }
+  }
+}

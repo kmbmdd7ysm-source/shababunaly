@@ -1,0 +1,17 @@
+{
+  "pass": 7,
+  "files": [
+    {
+      "file": "src/styles/global.css",
+      "before": 127,
+      "after": 91,
+      "removed": 36
+    },
+    {
+      "file": "src/styles/premium.css",
+      "before": 37,
+      "after": 37,
+      "removed": 0
+    }
+  ]
+}

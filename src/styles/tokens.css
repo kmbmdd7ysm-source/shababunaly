@@ -1,0 +1,321 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK DESIGN TOKENS  «خَطّ الأرض»
+   --------------------------------------------------------------------------
+   The single source of truth for the redesign foundation.
+
+   ISOLATION CONTRACT (Phase 1)
+   Every token in this file is namespaced `--sh-*`. Nothing here redefines a
+   token the existing stylesheets consume (`--bg`, `--surface`, `--text`,
+   `--accent`, `--font-body`, `--font-display`, `--space-*`, `--motion-*`,
+   `--ink`, `--paper`, `--ease`, `--ease-premium`, `--radius*`, `--shadow*`,
+   `--container`, `--gutter`, `--header-h`).
+   This file declares custom properties only. It contains no rule that targets
+   an existing class, so importing it cannot change a single rendered pixel of
+   the live site.
+
+   Central idea: before anyone plays, someone draws the ground. The system is a
+   measured survey drawing — bone paper, ink line, maple warmth — with dark
+   used strictly as chapter punctuation, never as a theme.
+   ========================================================================== */
+
+:root {
+  /* ---------- Colour · materials ---------------------------------------- */
+  --sh-chalk: #f7f5f0; /* the ground / page */
+  --sh-chalk-2: #efece5; /* recessed plane */
+  --sh-chalk-3: #e4e0d7; /* inset / field */
+  --sh-ink: #0b0b0c; /* the line and the type */
+  --sh-ink-70: #4a4a4c;
+  --sh-ink-50: #5f5f62;
+  --sh-ink-35: #7b7b7d;
+
+  /* Hairlines are the most-used colour in the whole system. */
+  --sh-rule: rgba(11, 11, 12, 0.12);
+  --sh-rule-strong: rgba(11, 11, 12, 0.26);
+  --sh-rule-inverse: rgba(247, 245, 240, 0.22);
+  --sh-rule-inverse-strong: rgba(247, 245, 240, 0.44);
+
+  --sh-maple: #8a5422; /* material warmth — court floor (text-safe) */
+  --sh-maple-tint: #f3e6d4;
+
+  /* ---------- Colour · semantics ---------------------------------------- */
+  --sh-verified: #0e6f39; /* RESERVED: verified Ready-to-Ship inventory only */
+  --sh-signal: #2440c4; /* interactive / focus / selected — never decorative */
+  --sh-signal-on-dark: #687bd6; /* the same role, re-solved for the dark chapter */
+  --sh-alert-on-dark: #e8735a; /* the alert role, re-solved for the dark chapter */
+  --sh-alert: #a4290b;
+  --sh-warn: #7a4708;
+
+  /* ---------- Colour · dark chapter (punctuation, never a theme) --------- */
+  --sh-night: #0a0b0d;
+  --sh-night-2: #14161a;
+  --sh-night-ink: #f4f2ed;
+  --sh-night-ink-70: #b9b6ae;
+  --sh-sodium: #e39b3d; /* film-world warm key */
+  --sh-moon: #9db7c4; /* film-world cool fill */
+
+  /* Hero wash stops. The film is a chapter, so the wash is a flat directed
+     scrim rather than a photographic vignette. */
+  --sh-wash-1: rgba(10, 11, 13, 0.94);
+  --sh-wash-2: rgba(10, 11, 13, 0.84);
+  --sh-wash-3: rgba(10, 11, 13, 0.46);
+  --sh-wash-4: rgba(10, 11, 13, 0.32);
+
+  /* The scrim behind an open drawer or dialog. Dense enough that the page
+     behind reads as withdrawn rather than merely dimmed. */
+  --sh-scrim: rgba(10, 11, 13, 0.62);
+
+  /* ---------- Colour · compositing surfaces ------------------------------
+     Centralized alpha surfaces used by live route/component styles. */
+  --sh-night-72: rgb(12 12 12 / 0.72);
+  --sh-chalk-92: rgb(250 247 240 / 0.92);
+  --sh-chalk-98: rgb(250 247 240 / 0.98);
+  --sh-white-02: rgb(255 255 255 / 0.02);
+  --sh-white-025: rgb(255 255 255 / 0.025);
+  --sh-white-04: rgb(255 255 255 / 0.04);
+  --sh-white-045: rgb(255 255 255 / 0.045);
+  --sh-white-08: rgb(255 255 255 / 0.08);
+  --sh-white-10: rgb(255 255 255 / 0.10);
+  --sh-white-12: rgb(255 255 255 / 0.12);
+  --sh-white-14: rgb(255 255 255 / 0.14);
+  --sh-white-22: rgb(255 255 255 / 0.22);
+  --sh-white-50: rgb(255 255 255 / 0.50);
+  --sh-black-06: rgb(0 0 0 / 0.06);
+  --sh-black-07: rgb(0 0 0 / 0.07);
+  --sh-black-08: rgb(0 0 0 / 0.08);
+  --sh-black-13: rgb(0 0 0 / 0.13);
+  --sh-black-15: rgb(0 0 0 / 0.15);
+  --sh-black-16: rgb(0 0 0 / 0.16);
+  --sh-black-18: rgb(0 0 0 / 0.18);
+  --sh-black-22: rgb(0 0 0 / 0.22);
+  --sh-black-55: rgb(0 0 0 / 0.55);
+  --sh-black-56: rgb(0 0 0 / 0.56);
+  --sh-black-72: rgb(0 0 0 / 0.72);
+  --sh-black-76: rgb(0 0 0 / 0.76);
+  --sh-black-82: rgb(0 0 0 / 0.82);
+  --sh-black-84: rgb(0 0 0 / 0.84);
+  --sh-black-88: rgb(0 0 0 / 0.88);
+
+  /* ---------- Typography · families ------------------------------------- */
+  /* Faces are declared in fonts.css. Names are Shababuna-specific so the
+     existing `Inter` / `Archivo` / `Noto Kufi Arabic` declarations in
+     global.css keep resolving to the system stack until a later phase.
+
+     Each stack lists the Arabic face straight after the Latin one. Because the
+     faces are split by `unicode-range`, the browser resolves the correct face
+     per character with no `dir`/`lang` switching, and a mixed string such as
+     «طقم لعب 2XL» renders Arabic in the Arabic face and `2XL` in the Latin
+     face automatically. An English visitor never downloads the Arabic file and
+     an Arabic visitor never downloads the Latin display file unless Latin
+     glyphs are actually painted.
+
+     Each stack carries BOTH metric-matched fallbacks. Listing only the Latin
+     one meant that, while the Arabic face was still loading, Arabic glyphs were
+     measured with Inter/Archivo metrics — a 96.9%/24.1% ascent-descent standing
+     in for Cairo's 130.3%/57.1%. That mismatch was the entire Arabic font-swap
+     layout shift. */
+  --sh-font-display:
+    'Shababuna Display', 'Shababuna Arabic', 'Shababuna Display Fallback',
+    'Shababuna Arabic Fallback', 'Arial Black', system-ui, sans-serif;
+  --sh-font-text:
+    'Shababuna Text', 'Shababuna Arabic', 'Shababuna Text Fallback', 'Shababuna Arabic Fallback',
+    system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sh-font-arabic: 'Shababuna Arabic', 'Shababuna Arabic Fallback', Tahoma, Arial, sans-serif;
+
+  /* ---------- Site-wide adoption -----------------------------------------
+     `global.css` already resolves every font through `--font-body` and
+     `--font-display`. Re-pointing those two tokens here — this file loads after
+     the legacy cascade — gives the entire site the real typeface without
+     touching a single legacy selector or component. It is the smallest possible
+     change with the largest possible identity effect, and it reverts by
+     deleting two lines. */
+  --font-body: var(--sh-font-text);
+  --font-display: var(--sh-font-display);
+
+  /* ---------- Typography · Latin scale (fluid) --------------------------- */
+  --sh-t-hero: clamp(3rem, 1.6rem + 6.4vw, 7rem);
+  --sh-t-display: clamp(2.2rem, 1.4rem + 3.6vw, 4.4rem);
+  --sh-t-title: clamp(1.6rem, 1.25rem + 1.6vw, 2.6rem);
+  --sh-t-lead: clamp(1.05rem, 0.98rem + 0.35vw, 1.35rem);
+  --sh-t-body: 1rem;
+  --sh-t-small: 0.875rem;
+  --sh-t-spec: 0.75rem;
+
+  /* ---------- Typography · Arabic scale ---------------------------------
+     Arabic is never given Latin metrics. It is set ~0.88x the Latin optical
+     size with far looser leading and zero tracking, because Arabic ascenders
+     and descenders are clipped by the tight display leading Latin tolerates. */
+  --sh-t-hero-ar: clamp(2.5rem, 1.4rem + 5.4vw, 5.9rem);
+  --sh-t-display-ar: clamp(1.95rem, 1.3rem + 3.1vw, 3.85rem);
+  --sh-t-title-ar: clamp(1.45rem, 1.16rem + 1.35vw, 2.3rem);
+  --sh-t-lead-ar: clamp(1.02rem, 0.96rem + 0.3vw, 1.28rem);
+  --sh-t-body-ar: 1.0625rem; /* Arabic reads small; +1px over Latin body */
+
+  /* ---------- Typography · leading and tracking ------------------------- */
+  --sh-lh-hero: 0.92;
+  --sh-lh-display: 0.98;
+  --sh-lh-title: 1.1;
+  --sh-lh-lead: 1.5;
+  --sh-lh-body: 1.6;
+  --sh-lh-spec: 1.2;
+
+  --sh-lh-hero-ar: 1.28; /* never below 1.28 for Arabic */
+  --sh-lh-display-ar: 1.32;
+  --sh-lh-title-ar: 1.38;
+  --sh-lh-body-ar: 1.85;
+
+  --sh-tr-hero: -0.03em;
+  --sh-tr-display: -0.022em;
+  --sh-tr-title: -0.015em;
+  --sh-tr-body: 0;
+  --sh-tr-spec: 0.18em; /* wide-tracked uppercase spec labels */
+  --sh-tr-ar: 0; /* Arabic is NEVER tracked */
+
+  /* ---------- Typography · width axis (the GROUNDWORK identity) ---------- */
+  --sh-wd-condensed: 92;
+  --sh-wd-normal: 100;
+  --sh-wd-wide: 118;
+  --sh-wd-widest: 125;
+
+  /* ---------- Spacing (8px base, court-derived long scale) --------------- */
+  --sh-s-0: 0;
+  --sh-s-1: 4px;
+  --sh-s-2: 8px;
+  --sh-s-3: 12px;
+  --sh-s-4: 16px;
+  --sh-s-5: 24px;
+  --sh-s-6: 32px;
+  --sh-s-7: 48px;
+  --sh-s-8: 64px;
+  --sh-s-9: 96px;
+  --sh-s-10: 128px;
+  --sh-s-11: 160px;
+  --sh-s-12: 224px;
+
+  /* ---------- Grid and layout ------------------------------------------- */
+  --sh-container: 1240px;
+  --sh-container-narrow: 720px;
+  --sh-gutter: clamp(16px, 4vw, 40px);
+  --sh-columns: 12;
+  --sh-col-gap: clamp(16px, 2.2vw, 28px);
+  --sh-section-y: clamp(56px, 8vw, 128px);
+  --sh-chapter-y: clamp(64px, 9vw, 144px);
+
+  /* ---------- Radius (drawn, not rounded) -------------------------------- */
+  --sh-r-0: 0px;
+  --sh-r-1: 2px;
+  --sh-r-2: 4px;
+  --sh-r-pill: 999px;
+
+  /* ---------- Elevation (exactly two; depth is drawn, not blurred) ------- */
+  --sh-lift: 0 1px 0 rgba(11, 11, 12, 0.06);
+  --sh-plate: 0 12px 28px -18px rgba(11, 11, 12, 0.28);
+
+  /* ---------- Borders ---------------------------------------------------- */
+  --sh-hairline: 1px solid var(--sh-rule);
+  --sh-hairline-strong: 1px solid var(--sh-rule-strong);
+
+  /* ---------- Motion ----------------------------------------------------- */
+  --sh-d-1: 120ms; /* state feedback */
+  --sh-d-2: 220ms; /* control */
+  --sh-d-3: 420ms; /* element */
+  --sh-d-4: 760ms; /* chapter */
+  /* One easing family. Motion draws: it starts somewhere and measures to an end. */
+  --sh-e-draw: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* The single ballistic curve. Used exactly three times in the whole product:
+     add-to-cart, proof approval, order confirmation. Moments of commitment. */
+  --sh-e-release: cubic-bezier(0.34, 0.9, 0.22, 1);
+
+  /* ---------- Focus ------------------------------------------------------
+     Dual ring so focus survives on both the chalk ground and a dark chapter. */
+  --sh-focus-width: 2px;
+  --sh-focus-offset: 2px;
+  --sh-focus-color: var(--sh-signal);
+  --sh-focus-halo: var(--sh-chalk);
+
+  /* ---------- Targets ---------------------------------------------------- */
+  --sh-target-min: 24px; /* WCAG 2.2 AA 2.5.8 floor */
+  --sh-target-lg: 52px; /* commit controls: checkout, pay, approve */
+  --sh-target: 44px; /* design target */
+
+  /* ---------- Compatibility aliases --------------------------------------
+     Migrated domain styles still use a few historic variable names. These
+     aliases resolve them centrally instead of allowing silent invalid CSS. */
+  --ink: var(--sh-ink);
+  --paper-2: var(--sh-chalk-2);
+  --cream: var(--sh-chalk);
+  --sha-paper: var(--sh-chalk);
+  --sha-line: var(--sh-rule);
+  --sha-green: var(--sh-verified);
+  --sha-wide: 1480px;
+  --shadow-raised: 0 20px 50px -24px rgb(11 11 12 / 0.28);
+  --ease-premium: var(--sh-e-draw);
+  --ease-emphasized: var(--sh-e-draw);
+  --ease-standard: var(--sh-e-draw);
+  --motion-fast: var(--sh-d-1);
+  --motion-control: var(--sh-d-2);
+  --motion-base: var(--sh-d-2);
+  --motion-card: var(--sh-d-3);
+  --motion-page: var(--sh-d-4);
+  --motion-slow: var(--sh-d-4);
+  --sh-font-body: var(--sh-font-text);
+
+  /* ---------- Z-index scale ---------------------------------------------- */
+  --sh-z-base: 0;
+  --sh-z-plate: 10;
+  --sh-z-sticky: 100;
+  --sh-z-header: 200;
+  --sh-z-overlay: 300;
+  --sh-z-modal: 400;
+  --sh-z-toast: 500;
+}
+
+/* ==========================================================================
+   Capability tiers
+   `useDeviceCapability` writes `data-capability="a|b|c"` on <html>. CSS reads
+   it. No JavaScript ever mutates a style — `scripts/lint-project.mjs` fails
+   the build on `.style.` anywhere in src/, and the CSP sets
+   `style-src-attr 'none'`. Everything expensive is opt-in by tier.
+   ========================================================================== */
+
+:root {
+  --sh-allow-motion: 1;
+  --sh-allow-heavy-media: 1;
+}
+
+[data-capability='b'] {
+  --sh-allow-heavy-media: 0;
+}
+
+[data-capability='c'] {
+  --sh-allow-motion: 0;
+  --sh-allow-heavy-media: 0;
+}
+
+/* ==========================================================================
+   High contrast
+   Rules lift from 12% to 34% and decorative tints are dropped, so the drawing
+   survives when the user asks for more contrast.
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --sh-rule: rgba(11, 11, 12, 0.34);
+    --sh-rule-strong: rgba(11, 11, 12, 0.62);
+    --sh-rule-inverse: rgba(247, 245, 240, 0.48);
+    --sh-rule-inverse-strong: rgba(247, 245, 240, 0.78);
+    --sh-ink-70: #2c2c2e;
+    --sh-ink-50: #45454a;
+    --sh-ink-35: #5c5c62;
+    --sh-maple-tint: var(--sh-chalk-2);
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --sh-rule: CanvasText;
+    --sh-rule-strong: CanvasText;
+    --sh-rule-inverse: CanvasText;
+    --sh-rule-inverse-strong: CanvasText;
+    --sh-focus-color: Highlight;
+  }
+}

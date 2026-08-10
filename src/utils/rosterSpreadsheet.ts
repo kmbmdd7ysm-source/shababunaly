@@ -1,0 +1,187 @@
+import { normalizeRoster, parseRosterCsv } from '../data/customization.ts';
+
+const MAX_SPREADSHEET_BYTES = 8 * 1024 * 1024;
+const textDecoder = new TextDecoder('utf-8');
+
+function readU16(view: DataView, offset: number): number {
+  return view.getUint16(offset, true);
+}
+function readU32(view: DataView, offset: number): number {
+  return view.getUint32(offset, true);
+}
+
+export function decodeXml(value = ''): string {
+  return String(value)
+    .replace(/&#(\d+);/g, (_match, code: string) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_match, code: string) =>
+      String.fromCodePoint(Number.parseInt(code, 16)),
+    )
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, '&');
+}
+
+export async function inflateRaw(bytes: Uint8Array): Promise<Uint8Array> {
+  if (typeof DecompressionStream !== 'function') throw new Error('xlsx_deflate_unsupported');
+  const stream = new Blob([bytes as BlobPart])
+    .stream()
+    .pipeThrough(new DecompressionStream('deflate-raw'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+export async function unzipEntries(
+  buffer: ArrayBuffer | Uint8Array,
+): Promise<Map<string, Uint8Array>> {
+  const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let eocd = -1;
+  for (let offset = Math.max(0, bytes.length - 65_557); offset <= bytes.length - 22; offset += 1) {
+    if (readU32(view, offset) === 0x06054b50) eocd = offset;
+  }
+  if (eocd < 0) throw new Error('xlsx_zip_directory_missing');
+  const totalEntries = readU16(view, eocd + 10);
+  let cursor = readU32(view, eocd + 16);
+  const entries = new Map<string, Uint8Array>();
+  for (let index = 0; index < totalEntries; index += 1) {
+    if (readU32(view, cursor) !== 0x02014b50) throw new Error('xlsx_zip_entry_invalid');
+    const method = readU16(view, cursor + 10);
+    const compressedSize = readU32(view, cursor + 20);
+    const uncompressedSize = readU32(view, cursor + 24);
+    const nameLength = readU16(view, cursor + 28);
+    const extraLength = readU16(view, cursor + 30);
+    const commentLength = readU16(view, cursor + 32);
+    const localOffset = readU32(view, cursor + 42);
+    const name = textDecoder
+      .decode(bytes.slice(cursor + 46, cursor + 46 + nameLength))
+      .replace(/^\/+/, '');
+    if (readU32(view, localOffset) !== 0x04034b50) throw new Error('xlsx_zip_local_entry_invalid');
+    const localNameLength = readU16(view, localOffset + 26);
+    const localExtraLength = readU16(view, localOffset + 28);
+    const dataOffset = localOffset + 30 + localNameLength + localExtraLength;
+    const compressed = bytes.slice(dataOffset, dataOffset + compressedSize);
+    let data: Uint8Array;
+    if (method === 0) data = compressed;
+    else if (method === 8) data = await inflateRaw(compressed);
+    else throw new Error('xlsx_zip_compression_unsupported');
+    if (uncompressedSize && data.byteLength !== uncompressedSize) {
+      throw new Error('xlsx_zip_size_mismatch');
+    }
+    entries.set(name, data);
+    cursor += 46 + nameLength + extraLength + commentLength;
+  }
+  return entries;
+}
+
+export function parseSharedStrings(xml = ''): string[] {
+  const values: string[] = [];
+  for (const item of String(xml).matchAll(/<si\b[^>]*>([\s\S]*?)<\/si>/gi)) {
+    const segment = item[1] || '';
+    const text = [...segment.matchAll(/<t\b[^>]*>([\s\S]*?)<\/t>/gi)]
+      .map((match) => decodeXml(match[1] || ''))
+      .join('');
+    values.push(text);
+  }
+  return values;
+}
+
+export function columnIndex(reference = ''): number {
+  const letters =
+    String(reference)
+      .match(/^[A-Z]+/i)?.[0]
+      ?.toUpperCase() || 'A';
+  let result = 0;
+  for (const letter of letters) result = result * 26 + letter.charCodeAt(0) - 64;
+  return Math.max(0, result - 1);
+}
+
+export function parseWorksheet(xml = '', sharedStrings: string[] = []): string[][] {
+  const rows: string[][] = [];
+  for (const rowMatch of String(xml).matchAll(/<row\b[^>]*>([\s\S]*?)<\/row>/gi)) {
+    const row: string[] = [];
+    const rowBody = rowMatch[1] || '';
+    for (const cellMatch of rowBody.matchAll(/<c\b([^>]*)>([\s\S]*?)<\/c>/gi)) {
+      const attrs = cellMatch[1] || '';
+      const body = cellMatch[2] || '';
+      const ref = attrs.match(/\br="([^"]+)"/i)?.[1] || `A${rows.length + 1}`;
+      const type = attrs.match(/\bt="([^"]+)"/i)?.[1] || '';
+      const inline = body.match(/<is\b[^>]*>([\s\S]*?)<\/is>/i)?.[1] || '';
+      const raw =
+        body.match(/<v\b[^>]*>([\s\S]*?)<\/v>/i)?.[1] ??
+        [...inline.matchAll(/<t\b[^>]*>([\s\S]*?)<\/t>/gi)].map((match) => match[1] || '').join('');
+      const decoded = decodeXml(raw);
+      const value = type === 's' ? (sharedStrings[Number(decoded)] ?? '') : decoded;
+      row[columnIndex(ref)] = value;
+    }
+    rows.push(Array.from({ length: row.length }, (_, index) => row[index] ?? ''));
+  }
+  return rows;
+}
+
+export function matrixToCsv(rows: string[][]): string {
+  const escape = (value: unknown) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+  return rows.map((row) => row.map(escape).join(',')).join('\n');
+}
+
+export function resolveFirstWorksheet(entries: Map<string, Uint8Array>): string | null {
+  const workbookBytes = entries.get('xl/workbook.xml');
+  const relationsBytes = entries.get('xl/_rels/workbook.xml.rels');
+  if (workbookBytes && relationsBytes) {
+    const workbook = textDecoder.decode(workbookBytes);
+    const relations = textDecoder.decode(relationsBytes);
+    const relationId = workbook.match(/<sheet\b[^>]*\br:id="([^"]+)"/i)?.[1];
+    if (relationId) {
+      const relationRegex = new RegExp(
+        `<Relationship\\b[^>]*\\bId="${relationId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*\\bTarget="([^"]+)"`,
+        'i',
+      );
+      const target = relations.match(relationRegex)?.[1];
+      if (target) {
+        const path = target.startsWith('/')
+          ? target.slice(1)
+          : `xl/${target.replace(/^\.\//, '')}`.replace(/\/[^/]+\/\.\.\//g, '/');
+        if (entries.has(path)) return path;
+      }
+    }
+  }
+  return [...entries.keys()].find((name) => /^xl\/worksheets\/sheet\d+\.xml$/i.test(name)) || null;
+}
+
+export async function parseRosterXlsxBuffer(buffer: ArrayBuffer | Uint8Array): Promise<unknown> {
+  const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+  if (!bytes.byteLength || bytes.byteLength > MAX_SPREADSHEET_BYTES) {
+    throw new Error('xlsx_size_invalid');
+  }
+  const entries = await unzipEntries(bytes);
+  const worksheetPath = resolveFirstWorksheet(entries);
+  if (!worksheetPath) throw new Error('xlsx_worksheet_missing');
+  const shared = entries.get('xl/sharedStrings.xml');
+  const sharedStrings = shared ? parseSharedStrings(textDecoder.decode(shared)) : [];
+  const worksheet = entries.get(worksheetPath);
+  if (!worksheet) throw new Error('xlsx_worksheet_missing');
+  const matrix = parseWorksheet(textDecoder.decode(worksheet), sharedStrings);
+  return normalizeRoster(parseRosterCsv(matrixToCsv(matrix)));
+}
+
+export async function parseRosterFile(
+  file: File | null | undefined,
+): Promise<{ players?: unknown[]; error?: string; [key: string]: unknown } | unknown[]> {
+  if (!file) return [];
+  if (Number(file.size || 0) > MAX_SPREADSHEET_BYTES) throw new Error('roster_file_too_large');
+  const name = String(file.name || '').toLowerCase();
+  const type = String(file.type || '').toLowerCase();
+  if (name.endsWith('.csv') || type.includes('csv') || type === 'text/plain') {
+    return parseRosterCsv(await file.text()) as { players?: unknown[]; error?: string };
+  }
+  if (name.endsWith('.xlsx') || type.includes('spreadsheetml')) {
+    return (await parseRosterXlsxBuffer(await file.arrayBuffer())) as {
+      players?: unknown[];
+      error?: string;
+    };
+  }
+  throw new Error('roster_file_type_unsupported');
+}
+
+export const ROSTER_FILE_ACCEPT =
+  '.csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';

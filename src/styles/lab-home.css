@@ -1,0 +1,226 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK homepage prototype (/lab/home)
+   --------------------------------------------------------------------------
+   Prototype-only composition. Deleting this file, `src/pages/LabHomePage.jsx`
+   and one route line in `src/App.tsx` removes the prototype completely.
+   Prototype-only composition; the shared `gw-*` system is global.
+   ========================================================================== */
+
+/* ---------- 01 · THE LINE ------------------------------------------------ */
+
+.gw-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: clamp(64px, 11vw, 168px);
+  background: var(--sh-chalk);
+}
+
+.gw-hero-inner {
+  position: relative;
+  z-index: var(--sh-z-plate);
+}
+
+/* The slogan lockup is Latin in BOTH locales, so it carries the width axis
+   itself rather than inheriting it from the heading box. That keeps the Arabic
+   metrics override free to do its real job (size, leading, tracking, case)
+   without flattening a Latin wordmark. */
+/* `BUILT DIFFERENT.` is a Latin wordmark and must be byte-identical in both
+   locales. Left to the bidi algorithm inside an Arabic paragraph the trailing
+   full stop is a neutral character and migrates to the visual left, rendering
+   the slogan as ".DIFFERENT". Isolating the lockup as an LTR run fixes the
+   glyph order; `fit-content` keeps the box itself on the inline-start edge, so
+   the lockup still sits on the right in Arabic. */
+.gw-hero-line {
+  display: block;
+  /* `fit-content` keeps the box on the inline-start edge in both locales.
+     A full-width box with an explicit text-align pair was tried as a possible
+     CLS improvement and measured WORSE on every case over three runs each
+     (Arabic desktop font-swap CLS 0.0235 vs 0.0119, English 0.0023 vs 0.0013),
+     so shrink-to-fit stays. */
+  inline-size: fit-content;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-stretch: 118%;
+  text-transform: uppercase;
+}
+
+/* Latin tracking for the wordmark.
+   KNOWN LIMITATION, deliberately not fought here: `global.css` carries a
+   pre-existing `html[dir='rtl'] * { letter-spacing: 0 }`, a
+   universal reset that flattens tracking on every element in Arabic —
+   including a Latin wordmark. The policy behind it is right (Arabic is never
+   tracked) but the blast radius is not. Overriding it would mean answering
+   `` with ``, which is the cascade war the cleanup phase
+   exists to end. The wordmark therefore renders at 0 tracking in Arabic and
+   -0.03em in English until that reset is narrowed. Recorded in
+   docs/DESIGN_SYSTEM.md. */
+.gw-hero-line {
+  letter-spacing: var(--sh-tr-hero);
+}
+
+/* The outlined second line is the one deliberate piece of display drama.
+   `-webkit-text-stroke` is progressively enhanced: without it the line simply
+   renders solid, which is still correct. */
+.gw-hero-line--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--sh-ink);
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .gw-hero-line--outline {
+    color: var(--sh-ink-35);
+  }
+}
+
+@media (forced-colors: active) {
+  .gw-hero-line--outline {
+    color: CanvasText;
+    -webkit-text-stroke: 0;
+  }
+}
+
+/* The reading measure belongs to the prose, not to the display type: capping
+   the whole stack was forcing "DIFFERENT." onto two lines at 1440px. */
+.gw-hero .gw-lead {
+  max-inline-size: 34rem;
+}
+
+.gw-hero .gw-leader {
+  inline-size: min(100%, 24rem);
+}
+
+/* ---------- 02 · THE MEASURE --------------------------------------------- */
+
+.gw-chapter--strip {
+  padding-block: clamp(28px, 4vw, 44px);
+}
+
+.gw-measure-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sh-s-4);
+}
+
+.gw-measure-strip .gw-title {
+  color: var(--sh-night-ink);
+  margin: 0;
+}
+
+.gw-measure-terms {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Tick separators between the four terms — drawn, not typed. */
+.gw-measure-terms li + li {
+  padding-inline-start: var(--sh-s-3);
+  border-inline-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+/* ---------- 03 · THE PLAN ------------------------------------------------ */
+
+/* Five departments read as the five zones of a court, so at desktop widths they
+   sit on one row rather than wrapping 4 + 1. */
+@media (min-width: 1100px) {
+  .gw-department-plates {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.gw-department {
+  gap: var(--sh-s-3);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.gw-department .gw-media {
+  background: var(--sh-chalk-2);
+  object-fit: contain;
+  padding: var(--sh-s-5);
+}
+
+.gw-department-name {
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+}
+
+/* Arabic department names are longer than their Latin counterparts at the same
+   optical size, and the five-zone row is deliberately narrow, so Arabic steps
+   down rather than wrapping inside a word. */
+.gw-department-name:lang(ar),
+[lang='ar'] .gw-department-name {
+  font-size: clamp(1rem, 0.86rem + 0.45vw, 1.25rem);
+}
+
+.gw-department-count {
+  color: var(--sh-ink-50);
+}
+
+.gw-department .gw-rule-extend {
+  display: block;
+  block-size: 2px;
+  background: var(--sh-ink);
+}
+
+/* ---------- 05 · THE WORKSHOP -------------------------------------------- */
+
+.gw-workshop-plate {
+  gap: var(--sh-s-4);
+}
+
+.gw-workshop-art {
+  background: var(--sh-chalk);
+  object-fit: contain;
+  padding: var(--sh-s-6);
+}
+
+/* ---------- Responsive ----------------------------------------------------
+   Mobile is authored first: single column, generous targets, no decoration
+   that costs a composite layer. */
+
+@media (max-width: 699px) {
+  .gw-measure-strip {
+    display: grid;
+    justify-items: start;
+    gap: var(--sh-s-3);
+  }
+
+  /* The width axis is what keeps the headline on one line at 390px. Condensing
+     is the correct answer here; shrinking the type would cost the hero its
+     authority, and letting "DIFFERENT." wrap would drop the full stop onto a
+     line of its own. */
+  .gw-hero-line {
+    font-stretch: 96%;
+  }
+
+  .gw-hero-line--outline {
+    -webkit-text-stroke-width: 1px;
+  }
+
+  .gw-department .gw-media {
+    padding: var(--sh-s-4);
+  }
+}
+
+/* The court plan is a large decorative drawing. It is withheld from Tier C
+   devices and shown at reduced presence on small screens, because a wide
+   1500-unit SVG on a 390px viewport is noise rather than structure. */
+
+@media (max-width: 699px) {
+  .gw-court-svg {
+    inline-size: 220%;
+    opacity: 0.75;
+  }
+}
+
+[data-capability='c'] .gw-court {
+  display: none;
+}

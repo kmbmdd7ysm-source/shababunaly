@@ -1,0 +1,2 @@
+src/pages/CheckoutPage.jsx:1123:                    en: 'Libya delivery: 20 LYD. Free from 500 LYD.',
+src/pages/CheckoutPage.jsx:1124:                    ar: 'التوصيل داخل ليبيا 20 د.ل، ومجاني من 500 د.ل.',

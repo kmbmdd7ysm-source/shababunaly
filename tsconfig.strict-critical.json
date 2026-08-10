@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "types/**/*.d.ts",
+    "src/domain/**/*.ts",
+    "src/config/commerce.ts",
+    "src/config/shipping.ts",
+    "src/config/integrations.ts",
+    "src/services/money.ts",
+    "src/services/orderStatus.ts",
+    "src/utils/fulfillment.ts",
+    "src/utils/productEligibility.ts",
+    "src/utils/safeReturnPath.ts"
+  ],
+  "exclude": ["dist", "node_modules", "reports"]
+}

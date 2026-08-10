@@ -1,0 +1,1060 @@
+/* ==========================================================================
+   SHABABUNA — THE JOURNEY
+   --------------------------------------------------------------------------
+   The homepage as a sequence of full-viewport chapters, not a hero followed by
+   stacked sections.
+
+   Scroll-snap is progressive: without it, the page still reads as ordinary
+   sections. Reduced motion switches it off entirely.
+   ========================================================================== */
+
+.gw-journey {
+  scroll-snap-type: y proximity;
+}
+
+.gw-journey[data-snap='off'] {
+  scroll-snap-type: none;
+}
+
+/* ---------- A chapter ------------------------------------------------------- */
+
+.gw-act {
+  position: relative;
+  min-block-size: 100svh;
+  display: flex;
+  align-items: center;
+  scroll-snap-align: start;
+  scroll-margin-block-start: 0;
+  overflow: hidden;
+  padding-block: clamp(48px, 8vh, 96px);
+}
+
+@media (max-width: 999px) {
+  .gw-act {
+    min-block-size: auto;
+    padding-block: clamp(56px, 12vw, 96px);
+  }
+
+  .gw-journey {
+    scroll-snap-type: none;
+  }
+}
+
+.gw-act-inner {
+  inline-size: 100%;
+  max-inline-size: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 72px);
+  position: relative;
+  z-index: 2;
+}
+
+.gw-act-head {
+  margin-block-end: clamp(24px, 4vh, 48px);
+}
+
+.gw-act-head .gw-spec,
+.gw-act-head .gw-kicker {
+  margin: 0 0 var(--sh-s-2);
+}
+
+/* Commerce eyebrow — calm label, not dossier stamp */
+.gw-kicker {
+  margin: 0;
+  font-family: var(--sh-font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: inherit;
+  opacity: 0.72;
+}
+
+.gw-act-title {
+  margin: 0;
+  max-inline-size: 18ch;
+  font-family: var(--sh-font-display);
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 4.2rem);
+  font-weight: 800;
+  font-stretch: 106%;
+  line-height: 0.98;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-act-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.7rem, 1.1rem + 2.8vw, 3.2rem);
+  line-height: 1.28;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  max-inline-size: 22ch;
+}
+
+.gw-act-body {
+  margin: var(--sh-s-4) 0 0;
+  max-inline-size: 52ch;
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.15rem);
+  line-height: 1.6;
+}
+
+.gw-act-figure {
+  margin: var(--sh-s-3) 0 0;
+}
+
+.gw-act-figure .gw-figure {
+  font-size: clamp(1.3rem, 1.1rem + 1vw, 2rem);
+}
+
+.gw-act-out {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--sh-target);
+  margin-block-start: clamp(20px, 3vh, 40px);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  border-block-end: 2px solid currentColor;
+}
+
+[lang='ar'] .gw-act-out {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* ---------- Chapter tones ---------------------------------------------------- */
+
+.gw-act--open .gw-act-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gw-act--open,
+.gw-act--roster,
+.gw-act--signoff {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+.gw-act--floor {
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+}
+
+.gw-act--stock,
+.gw-act--equipment {
+  background: var(--sh-chalk-2);
+  color: var(--sh-ink);
+}
+
+.gw-act--workshop {
+  background: var(--sh-maple-tint);
+  color: var(--sh-ink);
+}
+
+.gw-act--open .gw-spec,
+.gw-act--open .gw-kicker,
+.gw-act--roster .gw-spec,
+.gw-act--roster .gw-kicker,
+.gw-act--signoff .gw-spec,
+.gw-act--signoff .gw-kicker {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-act--open :focus-visible,
+.gw-act--roster :focus-visible,
+.gw-act--signoff :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+/* ---------- Chapter index ----------------------------------------------------- */
+
+.gw-acts {
+  position: fixed;
+  inset-inline-end: 0;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  z-index: 300;
+  padding-inline-end: clamp(12px, 1.8vw, 28px);
+}
+
+@media (max-width: 999px) {
+  .gw-acts {
+    display: none;
+  }
+}
+
+/* No plate. A box of ticks reads as a debug widget bolted to the page. The
+   index knows which ground is in view (data-tone) and inverts against it, so it
+   can be a bare mark that belongs to the composition. */
+.gw-acts ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-1);
+  align-items: flex-end;
+}
+
+.gw-acts a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target-min);
+  padding-inline: 6px;
+  text-decoration: none;
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+.gw-acts[data-tone='night'] a {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-acts[data-tone='day'] a {
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .gw-acts a {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-acts-label {
+  max-inline-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    max-inline-size var(--sh-d-2) var(--sh-e-draw),
+    opacity var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-acts a:hover .gw-acts-label,
+.gw-acts a:focus-visible .gw-acts-label,
+.gw-acts a.is-active .gw-acts-label {
+  max-inline-size: 140px;
+  opacity: 1;
+}
+
+.gw-acts[data-reduced='on'] .gw-acts-label {
+  transition: none;
+}
+
+.gw-acts[data-tone='night'] a.is-active {
+  color: var(--sh-night-ink);
+}
+
+.gw-acts[data-tone='day'] a.is-active {
+  color: var(--sh-ink);
+}
+
+.gw-acts-tick {
+  inline-size: 14px;
+  block-size: 1px;
+  flex: none;
+  background: currentColor;
+  transition: inline-size var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-acts a.is-active .gw-acts-tick,
+.gw-acts a:hover .gw-acts-tick {
+  inline-size: 22px;
+}
+
+.gw-acts[data-reduced='on'] .gw-acts-tick {
+  transition: none;
+}
+
+/* ---------- 00 Opening --------------------------------------------------------- */
+
+/* The opening's atmosphere. A faint line drawing on flat black read as an
+   unfinished screen; this is a photographic ground with real depth. The veil
+   guarantees the type's contrast no matter how the art is cropped, so nothing
+   depends on the image's own luminance. */
+.gw-open-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gw-open-atmos img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: 70% 60%;
+}
+
+.gw-act--open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    var(--sh-night) 24%,
+    color-mix(in srgb, var(--sh-night) 72%, transparent) 56%,
+    color-mix(in srgb, var(--sh-night) 28%, transparent) 100%
+  );
+}
+
+@media (max-width: 899px) {
+  .gw-act--open::after {
+    background: linear-gradient(
+      to top,
+      var(--sh-night) 30%,
+      color-mix(in srgb, var(--sh-night) 78%, transparent) 62%,
+      color-mix(in srgb, var(--sh-night) 34%, transparent) 100%
+    );
+  }
+}
+
+.gw-open-kicker {
+  margin: 0 0 var(--sh-s-4);
+}
+
+.gw-open-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--sh-font-display);
+  font-size: clamp(3.2rem, 1.4rem + 8.6vw, 10rem);
+  font-weight: 800;
+  font-stretch: 118%;
+  line-height: 0.84;
+  letter-spacing: var(--sh-tr-hero);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-open-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(2.6rem, 1.4rem + 6vw, 7rem);
+  line-height: 1.18;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-open-title-out {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--sh-night-ink);
+}
+
+/* Arabic is a connected script. An outline stroke runs along every join and
+   floods the counters, so the second line turns to mush — clearly visible at
+   390px. The two-tone idea survives; the technique changes to one the script
+   can carry. */
+[lang='ar'] .gw-open-title-out {
+  color: var(--sh-night-ink-70);
+  -webkit-text-stroke: 0;
+  font-weight: 500;
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .gw-open-title-out {
+    color: var(--sh-night-ink-70);
+  }
+}
+
+@media (forced-colors: active) {
+  .gw-open-title-out {
+    color: CanvasText;
+    -webkit-text-stroke: 0;
+  }
+}
+
+/* Mobile opening overrides. These MUST come after the base .gw-open-title
+   rules: they have equal specificity, so source order decides. Written above
+   them they silently did nothing. */
+@media (max-width: 899px) {
+  /* The tall crop already frames the shaft and the floor; pushing the focal
+     point around only threw the wood out of frame. Let it sit centred. */
+  .gw-open-atmos img {
+    object-position: 50% 50%;
+  }
+
+  .gw-act--open {
+    min-block-size: 92svh;
+  }
+
+  /* Anchor the type to the foot on mobile. Centring it left a dead band of flat
+     black under the buttons while the photograph sat above, which read as an
+     unfinished screen. The SECTION is the flex container — putting
+     justify-content on the auto-height inner did nothing. */
+  .gw-act--open {
+    align-items: flex-end;
+  }
+
+  /* The opening title is set for a wide viewport. At 390px "DIFFERENT." ran off
+     the edge — the 118% width axis makes it far wider than the measure. Pull
+     the size and the expansion back so the word fits its own line. */
+  /* Sized against the longest word, not the viewport in the abstract.
+     "DIFFERENT." is ten characters plus a full stop; at 118% width axis it ran
+     straight off the edge. Pure vw with no floor guarantees it scales down on
+     the narrowest devices instead of clipping. */
+  /* Measured, not guessed: at 390px "Different." wanted 391px inside a 350px
+     box. Archivo is variable, so the width axis buys the 12% back without
+     shrinking the type — a condensed face at full size reads far stronger on a
+     phone than a small expanded one. */
+  .gw-open-title {
+    font-size: min(12vw, 3.4rem);
+    font-stretch: 82%;
+    line-height: 0.92;
+  }
+
+  .gw-open-title-out {
+    -webkit-text-stroke-width: 1.5px;
+  }
+}
+
+.gw-open-lede {
+  margin: clamp(20px, 3vh, 36px) 0 0;
+  max-inline-size: 40ch;
+  color: var(--sh-night-ink-70);
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+  line-height: 1.55;
+}
+
+.gw-open-paths {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-3);
+  margin-block-start: clamp(24px, 4vh, 44px);
+}
+
+.gw-path {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh-s-3);
+  min-block-size: var(--sh-target-lg);
+  padding-inline: var(--sh-s-5);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  text-decoration: none;
+  color: inherit;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  transition: background-color var(--sh-d-2) var(--sh-e-draw);
+}
+
+[lang='ar'] .gw-path {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-path--primary {
+  background: var(--sh-night-ink);
+  color: var(--sh-night);
+  border-color: var(--sh-night-ink);
+}
+
+.gw-act--workshop .gw-path--primary,
+.gw-act--floor .gw-path--primary {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+  border-color: var(--sh-ink);
+}
+
+.gw-path:hover {
+  background: var(--sh-night-ink);
+  color: var(--sh-night);
+}
+
+.gw-act--workshop .gw-path:hover,
+.gw-act--floor .gw-path:hover {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-path {
+    transition: none;
+  }
+}
+
+.gw-open-place {
+  margin: clamp(24px, 4vh, 44px) 0 0;
+}
+
+/* ---------- 01 The floor — court as navigation ---------------------------------- */
+
+.gw-floor {
+  position: relative;
+  aspect-ratio: 15 / 13;
+  max-block-size: min(52vh, 460px);
+  max-inline-size: 640px;
+  margin-inline: auto;
+  color: var(--sh-rule-strong);
+}
+
+@media (max-width: 999px) {
+  .gw-floor {
+    max-block-size: none;
+    aspect-ratio: auto;
+    display: grid;
+    gap: var(--sh-s-2);
+  }
+
+  .gw-floor .gw-floor-court {
+    display: none;
+  }
+}
+
+.gw-floor-court {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.gw-floor-zone {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  text-decoration: none;
+  min-inline-size: 132px;
+  transition: border-color var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-floor-zone:hover {
+  border-color: var(--sh-ink);
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+.gw-floor-zone[data-zone='key'] {
+  inset-block-start: 12%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.gw-floor-zone[data-zone='baseline'] {
+  inset-block-start: 3%;
+  inset-inline-start: 4%;
+}
+
+.gw-floor-zone[data-zone='corner'] {
+  inset-block-start: 3%;
+  inset-inline-end: 4%;
+}
+
+.gw-floor-zone[data-zone='centre'] {
+  inset-block-start: 46%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.gw-floor-zone[data-zone='arc'] {
+  inset-block-end: 6%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+/* RTL: the transform centring must not be flipped by the mirror. */
+[dir='rtl'] .gw-floor-zone[data-zone='key'],
+[dir='rtl'] .gw-floor-zone[data-zone='centre'],
+[dir='rtl'] .gw-floor-zone[data-zone='arc'] {
+  transform: translateX(50%);
+}
+
+@media (max-width: 999px) {
+  .gw-floor-zone {
+    position: static;
+    transform: none;
+    min-inline-size: 0;
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--sh-s-3);
+    min-block-size: var(--sh-target);
+  }
+}
+
+.gw-floor-name {
+  font-family: var(--sh-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  font-stretch: 92%;
+  text-transform: uppercase;
+  letter-spacing: var(--sh-tr-title);
+}
+
+[lang='ar'] .gw-floor-name {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  text-transform: none;
+  letter-spacing: var(--sh-tr-ar);
+}
+
+/* ---------- Exhibits ------------------------------------------------------------ */
+
+.gw-exhibit {
+  display: grid;
+  gap: var(--sh-s-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+/* ---------- Minimums / stages ---------------------------------------------------- */
+
+.gw-minimums {
+  display: grid;
+  gap: 0;
+  margin: clamp(20px, 3vh, 36px) 0 clamp(20px, 3vh, 36px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  border-block-start: 1px solid var(--sh-rule);
+}
+
+.gw-minimums > div {
+  padding: var(--sh-s-3) var(--sh-s-3) var(--sh-s-3) 0;
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-minimums dt {
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+  margin-block-end: 4px;
+}
+
+[lang='ar'] .gw-minimums dt {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-minimums dd {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.2rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.gw-minimums--inverse {
+  border-block-start-color: var(--sh-rule-inverse-strong);
+}
+
+.gw-minimums--inverse > div {
+  border-block-end-color: var(--sh-rule-inverse);
+}
+
+.gw-minimums--inverse dt {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-minimums--inverse dd {
+  color: var(--sh-night-ink);
+}
+
+.gw-stages {
+  list-style: none;
+  margin: clamp(20px, 3vh, 40px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  background: var(--sh-rule-inverse-strong);
+  border: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-stages li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--sh-s-3);
+  background: var(--sh-night);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-night-ink);
+}
+
+[lang='ar'] .gw-stages li {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-stages-num {
+  font-size: 0.5625rem;
+  color: var(--sh-night-ink-70);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 03 Workshop ---------------------------------------------------------- */
+
+.gw-workshop-inner {
+  display: grid;
+  gap: clamp(24px, 4vw, 64px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+@media (min-width: 1000px) {
+  .gw-workshop-inner {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+.gw-workshop-plate {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: clamp(20px, 3vw, 40px);
+  text-align: center;
+}
+
+.gw-workshop-plate img {
+  inline-size: 100%;
+  max-inline-size: 320px;
+  block-size: auto;
+}
+
+.gw-workshop-plate .gw-spec {
+  margin: var(--sh-s-3) 0 0;
+  color: var(--sh-ink-50);
+}
+
+/* ---------- 06 Sign-off ---------------------------------------------------------- */
+
+.gw-signoff-inner {
+  text-align: center;
+  max-inline-size: 60ch;
+}
+
+.gw-signoff-inner .gw-act-title,
+.gw-signoff-inner .gw-act-body {
+  margin-inline: auto;
+  max-inline-size: none;
+}
+
+.gw-signoff-inner .gw-open-paths {
+  justify-content: center;
+}
+
+.gw-signoff-mark {
+  inline-size: clamp(160px, 20vw, 260px);
+  block-size: auto;
+  margin-block-end: clamp(20px, 3vh, 36px);
+}
+
+/* The department count. Meaningful, unlike the index number it replaced. */
+.gw-floor-count {
+  font-family: var(--sh-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-floor-zone:hover .gw-floor-count {
+  color: var(--sh-chalk);
+}
+
+@media (max-width: 999px) {
+  .gw-floor-zone {
+    justify-content: space-between;
+  }
+}
+
+/* ==========================================================================
+   THE JOURNEY — MOTION
+   --------------------------------------------------------------------------
+   Scroll-linked, off the main thread, and authored so the FINISHED state is the
+   default. Everything below is layered on only where `animation-timeline` is
+   supported and motion is not reduced, so a browser without it — or a reader
+   who asked for stillness — sees a complete page rather than a broken one.
+
+   Nothing here hijacks scrolling, blocks input, or delays navigation.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The opening's atmosphere drifts and settles as the reader leaves it,
+       giving the photograph depth against the type in front of it. Transform
+       and opacity only, so it stays on the compositor. */
+    .gw-open-atmos img {
+      animation: gw-atmos-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    /* Type rises out of the ground it sits on. */
+    .gw-act-head,
+    .gw-open-kicker,
+    .gw-open-title,
+    .gw-open-lede,
+    .gw-open-paths,
+    .gw-open-place {
+      animation: gw-act-rise var(--sh-d-4) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 24%;
+    }
+
+    /* A chapter's contents arrive just after its heading rather than with it,
+       which reads as a camera settling rather than everything snapping in. */
+    .gw-exhibit > *,
+    .gw-floor-zone,
+    .gw-stages li,
+    .gw-minimums > div {
+      animation: gw-act-rise var(--sh-d-3) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 30%;
+    }
+
+    /* The court plan draws itself in as the floor chapter arrives. */
+    .gw-floor .gw-floor-court path,
+    .gw-floor .gw-floor-court circle,
+    .gw-floor .gw-floor-court rect {
+      animation: gw-court-draw var(--sh-d-4) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 46%;
+    }
+  }
+}
+
+@keyframes gw-atmos-drift {
+  from {
+    transform: scale(1.08) translate3d(0, -1.5%, 0);
+  }
+  to {
+    transform: scale(1) translate3d(0, 1.5%, 0);
+  }
+}
+
+@keyframes gw-act-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stroke-dash draw. Authored so the finished state is a fully drawn line. */
+@keyframes gw-court-draw {
+  from {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+  }
+  to {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Tier C devices get the finished composition with no scroll choreography at
+   all: the budget is better spent on the photograph than on animating it. */
+.gw-journey[data-capability='c'] .gw-open-atmos img,
+.gw-journey[data-capability='c'] .gw-act-head,
+.gw-journey[data-capability='c'] .gw-exhibit > *,
+.gw-journey[data-capability='c'] .gw-floor-zone {
+  animation: none;
+}
+
+/* ---------- THE GAME -------------------------------------------------------- */
+
+.gw-act--game {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow: hidden;
+}
+
+.gw-act--game .gw-spec,
+.gw-act--game .gw-kicker,
+.gw-act--game .gw-act-body {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-act--game :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+.gw-game-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gw-game-atmos img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  opacity: 0.42;
+}
+
+.gw-act--game::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    var(--sh-night) 28%,
+    color-mix(in srgb, var(--sh-night) 78%, transparent) 62%,
+    color-mix(in srgb, var(--sh-night) 40%, transparent) 100%
+  );
+}
+
+.gw-game-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.gw-game-pillars {
+  list-style: none;
+  margin: clamp(28px, 5vh, 56px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  background: var(--sh-rule-inverse-strong);
+  border: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-game-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+  min-block-size: 160px;
+  padding: clamp(18px, 2.5vw, 28px);
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  text-decoration: none;
+  transition: background-color var(--sh-d-2) var(--sh-e-draw);
+}
+
+.gw-game-pillar:hover {
+  background: var(--sh-night-2);
+}
+
+.gw-game-pillar-name {
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.1rem, 0.95rem + 0.8vw, 1.5rem);
+  font-weight: 800;
+  font-stretch: 96%;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-game-pillar-name {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-game-pillar-copy {
+  color: var(--sh-night-ink-70);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  max-inline-size: 32ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-game-pillar {
+    transition: none;
+  }
+}
+
+/* ---------- THE BRAND ------------------------------------------------------- */
+
+.gw-act--brand {
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+}
+
+.gw-act--brand .gw-spec,
+.gw-act--brand .gw-kicker,
+.gw-act--brand .gw-act-body {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-act--brand :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 3px;
+}
+
+.gw-brand-facts {
+  margin: clamp(24px, 4vh, 48px) 0 0;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-brand-facts > div {
+  padding: var(--sh-s-4) var(--sh-s-4) var(--sh-s-4) 0;
+  border-block-end: 1px solid var(--sh-rule-inverse);
+}
+
+.gw-brand-facts dt {
+  margin: 0 0 6px;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-night-ink-70);
+}
+
+[lang='ar'] .gw-brand-facts dt {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-brand-facts dd {
+  margin: 0;
+  max-inline-size: 36ch;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--sh-night-ink);
+}
+
+.gw-act--brand .gw-open-paths {
+  margin-block-start: clamp(24px, 4vh, 40px);
+}
+
+.gw-floor-zone[data-zone='ready'] {
+  inset-block-start: 28%;
+  inset-inline-start: 8%;
+}

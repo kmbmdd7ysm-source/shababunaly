@@ -1,0 +1,61 @@
+/* Domain CSS: domain-a11y.css — consolidated from legacy extracts; owned by route/components */
+
+
+/* ---- source: a11y-from-global.css ---- */
+
+/* a11y global */
+
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+  background: #f5f5f5;
+}
+
+.share-buttons .share-control,
+.share-buttons .share-control:hover,
+.share-buttons .share-control:focus,
+.share-buttons .share-control:focus-visible,
+.share-buttons .share-control:active {
+  appearance: none;
+  color: #111;
+  background: #fff;
+  border: 1px solid #111;
+  box-shadow: none;
+  transform: none;
+}
+
+
+/* ---- source: a11y-from-premium.css ---- */
+
+/* a11y premium */
+
+
+.country-combobox > input[role='combobox']:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+
+.country-combobox__trigger:focus-visible,
+.country-combobox__search input:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}

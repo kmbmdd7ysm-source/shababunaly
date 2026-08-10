@@ -1,0 +1,32 @@
+# Arabic Technical QA
+
+- SHA: `55cfbca82463c4233e75f02062b81c27ec91a591`
+- ARABIC_TECHNICAL_QA = PASS
+- ARABIC_HUMAN_REVIEW = REQUIRED
+- Routes checked: 24
+- Failures: 0
+
+- mobile / dir=rtl overflow=false h1=نبنيمختلفين.
+- mobile /shop dir=rtl overflow=false h1=تسوق كرة السلة
+- mobile /shop/clothing dir=rtl overflow=false h1=الملابس
+- mobile /products/shababuna-reversible-practice-jersey dir=rtl overflow=false h1=Shababuna Reversible Practice Jersey
+- mobile /customize dir=rtl overflow=false h1=صمّم كل شيء
+- mobile /teams-wholesale dir=rtl overflow=false h1=تجهيز الفرق
+- mobile /cart dir=rtl overflow=false h1=حقيبة التسوق
+- mobile /checkout dir=rtl overflow=false h1=الدفع
+- mobile /account dir=rtl overflow=false h1=تسجيل الدخول
+- mobile /special-request dir=rtl overflow=false h1=لم تجده؟ أرسل طلبك.
+- mobile /contact dir=rtl overflow=false h1=تواصل مع الفريق المناسب.
+- mobile /help dir=rtl overflow=false h1=اعثر على إجابة
+- desktop / dir=rtl overflow=false h1=نبنيمختلفين.
+- desktop /shop dir=rtl overflow=false h1=تسوق كرة السلة
+- desktop /shop/clothing dir=rtl overflow=false h1=الملابس
+- desktop /products/shababuna-reversible-practice-jersey dir=rtl overflow=false h1=Shababuna Reversible Practice Jersey
+- desktop /customize dir=rtl overflow=false h1=صمّم كل شيء
+- desktop /teams-wholesale dir=rtl overflow=false h1=تجهيز الفرق
+- desktop /cart dir=rtl overflow=false h1=حقيبة التسوق
+- desktop /checkout dir=rtl overflow=false h1=الدفع
+- desktop /account dir=rtl overflow=false h1=تسجيل الدخول
+- desktop /special-request dir=rtl overflow=false h1=لم تجده؟ أرسل طلبك.
+- desktop /contact dir=rtl overflow=false h1=تواصل مع الفريق المناسب.
+- desktop /help dir=rtl overflow=false h1=اعثر على إجابة

@@ -1,0 +1,57 @@
+{
+  "schema": "shababuna.browser.e2e.v1",
+  "sha": "d8417de61174dc03c84a3918920ffdc639981cf7",
+  "generatedAt": "2026-08-10T18:34:38.415Z",
+  "environment": "local-vite",
+  "testsRun": 10,
+  "passed": 10,
+  "failed": 0,
+  "skipped": 0,
+  "results": [
+    {
+      "name": "HOME",
+      "status": "passed"
+    },
+    {
+      "name": "SHOP",
+      "status": "passed"
+    },
+    {
+      "name": "CATEGORY",
+      "status": "passed"
+    },
+    {
+      "name": "PRODUCT",
+      "status": "passed"
+    },
+    {
+      "name": "CUSTOMIZE_WEBGL",
+      "status": "passed"
+    },
+    {
+      "name": "TEAMS",
+      "status": "passed"
+    },
+    {
+      "name": "CART",
+      "status": "passed"
+    },
+    {
+      "name": "CHECKOUT",
+      "status": "passed"
+    },
+    {
+      "name": "ACCOUNT",
+      "status": "passed"
+    },
+    {
+      "name": "DEV_SPIN",
+      "status": "passed"
+    }
+  ],
+  "notes": [
+    "Auth live paths not run \u2014 no credentials",
+    "Catalogue Tier B spin remains 0; DEV_SPIN is fixture only"
+  ],
+  "branch": "cursor/shababuna-redesign-master-plan-dc14"
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "providers": {
+    "online_card": {
+      "provider": "",
+      "apiVersion": "",
+      "documentationUrl": "",
+      "sandboxUrl": "",
+      "webhookSchemaVersion": "",
+      "threeDS": { "supported": false, "testedAt": "", "evidenceReference": "" },
+      "refund": { "supported": false, "testedAt": "", "evidenceReference": "" },
+      "retrieve": { "supported": false, "testedAt": "", "evidenceReference": "" },
+      "applePay": { "enabled": false, "domainVerified": false, "evidenceReference": "" },
+      "googlePay": { "enabled": false, "merchantVerified": false, "evidenceReference": "" },
+      "fraudProvider": "",
+      "reconciliationEvidenceReference": ""
+    },
+    "libyan_bank_card": {
+      "provider": "",
+      "apiVersion": "",
+      "documentationUrl": "",
+      "sandboxUrl": "",
+      "webhookSchemaVersion": "",
+      "threeDS": { "supported": false, "testedAt": "", "evidenceReference": "" },
+      "refund": { "supported": false, "testedAt": "", "evidenceReference": "" },
+      "retrieve": { "supported": false, "testedAt": "", "evidenceReference": "" },
+      "fraudProvider": "",
+      "reconciliationEvidenceReference": ""
+    }
+  }
+}

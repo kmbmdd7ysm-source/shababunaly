@@ -1,0 +1,184 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK APPLIED TYPOGRAPHY
+   --------------------------------------------------------------------------
+   The type scale as applied rules. Imported by the components that use it so
+   Vite emits it in a route chunk rather than the entry bundle. The @font-face
+   contract these rules depend on lives in `fonts.css`, which is global.
+
+   SCOPE (Phase 2): the `gw-*` classes are global utilities and the base type
+   is applied to `body`, so the whole site inherits the real faces rather than
+   the system stack. Nothing here targets a legacy class name, so no existing
+   component is restyled by accident — legacy components simply inherit better
+   typography through `--font-body` / `--font-display`, which `tokens.css`
+   now points at the shipped faces.
+   ========================================================================== */
+body {
+  font-family: var(--sh-font-text);
+  font-size: var(--sh-t-body);
+  line-height: var(--sh-lh-body);
+  color: var(--sh-ink);
+  font-variant-numeric: tabular-nums;
+  font-synthesis-weight: none;
+  font-synthesis-style: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Arabic is a native cut of the same brand, never a translated Latin layout. */
+body:lang(ar),
+[lang='ar'] body {
+  font-size: var(--sh-t-body-ar);
+  line-height: var(--sh-lh-body-ar);
+  letter-spacing: var(--sh-tr-ar);
+}
+
+/* ---------- Display ---------------------------------------------------- */
+
+.gw-hero-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-hero);
+  font-weight: 900;
+  line-height: var(--sh-lh-hero);
+  letter-spacing: var(--sh-tr-hero);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.gw-display {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: var(--sh-lh-display);
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.gw-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-title);
+  font-weight: 700;
+  font-stretch: 105%;
+  line-height: var(--sh-lh-title);
+  letter-spacing: var(--sh-tr-title);
+}
+
+/* Arabic display: hierarchy comes from weight and size, never from width
+   distortion, never from uppercase, never from negative tracking. */
+.gw-hero-title:lang(ar),
+[lang='ar'] .gw-hero-title {
+  font-size: var(--sh-t-hero-ar);
+  line-height: var(--sh-lh-hero-ar);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-display:lang(ar),
+[lang='ar'] .gw-display {
+  font-size: var(--sh-t-display-ar);
+  line-height: var(--sh-lh-display-ar);
+  letter-spacing: var(--sh-tr-ar);
+  font-stretch: normal;
+  text-transform: none;
+}
+
+.gw-title:lang(ar),
+[lang='ar'] .gw-title {
+  font-size: var(--sh-t-title-ar);
+  line-height: var(--sh-lh-title-ar);
+  letter-spacing: var(--sh-tr-ar);
+  font-stretch: normal;
+}
+
+/* ---------- Body and supporting ---------------------------------------- */
+
+.gw-lead {
+  margin: 0;
+  font-size: var(--sh-t-lead);
+  line-height: var(--sh-lh-lead);
+  color: var(--sh-ink-70);
+  max-inline-size: 62ch;
+}
+
+.gw-lead:lang(ar),
+[lang='ar'] .gw-lead {
+  font-size: var(--sh-t-lead-ar);
+  line-height: var(--sh-lh-body-ar);
+  max-inline-size: 54ch;
+}
+
+.gw-body {
+  margin: 0;
+  font-size: var(--sh-t-body);
+  line-height: var(--sh-lh-body);
+  max-inline-size: 68ch;
+}
+
+.gw-body:lang(ar),
+[lang='ar'] .gw-body {
+  font-size: var(--sh-t-body-ar);
+  line-height: var(--sh-lh-body-ar);
+  max-inline-size: 58ch;
+}
+
+/* ---------- Spec label — the condensed, wide-tracked voice of the system - */
+
+.gw-spec {
+  display: inline-block;
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  line-height: var(--sh-lh-spec);
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+}
+
+/* Arabic never uppercases and never tracks. It steps down in size instead. */
+.gw-spec:lang(ar),
+[lang='ar'] .gw-spec {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+/* ---------- Numerals ---------------------------------------------------- */
+
+.gw-figure {
+  font-family: var(--sh-font-display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Latin digits in both locales: `money.js` already formats with
+   `ar-LY-u-nu-latn`, and Latin digits are the sporting convention for jersey
+   numbers and sizes. Keep the Latin face for figures even inside Arabic. */
+.gw-figure:lang(ar),
+[lang='ar'] .gw-figure {
+  font-family: var(--sh-font-display);
+  letter-spacing: 0;
+}
+
+/* ---------- Bidi isolation for mixed content ---------------------------
+   Extends the pattern `services/money.js` already uses correctly, so SKUs,
+   sizes, currency codes and brand names never reorder inside Arabic copy. */
+
+.gw-isolate {
+  unicode-bidi: isolate;
+}
+
+.gw-isolate-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "provider": "",
+  "apiVersion": "",
+  "documentationUrl": "",
+  "sandboxUrl": "",
+  "webhookSchemaVersion": "",
+  "identityVerificationMethod": "",
+  "trustedTimestamp": false,
+  "auditCertificate": false,
+  "tamperEvidentSignedDocument": false,
+  "regionalComplianceEvidenceReference": "",
+  "sandboxCompletedEnvelopeId": "",
+  "testedAt": "",
+  "approvedBy": ""
+}

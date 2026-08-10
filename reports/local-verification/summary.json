@@ -1,0 +1,43 @@
+{
+  "status": "source_hardened_not_production_verified",
+  "generatedAt": "2026-08-02T18:55:42.940006+00:00",
+  "verified": {
+    "zipSourceBaselinePreserved": true,
+    "nodeTests": {
+      "passed": 322,
+      "failed": 0,
+      "skipped": 0
+    },
+    "nodeApiCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "typecheck": true,
+    "strictCritical": true,
+    "strictProductionCurrentScope": true,
+    "sourceVerification": true,
+    "orderedMigrationFiles": 31
+  },
+  "notVerified": [
+    "production build",
+    "full React/Vitest coverage",
+    "ESLint/Prettier locked execution",
+    "database/RLS runtime",
+    "browser E2E",
+    "accessibility",
+    "visual regression",
+    "PWA upgrade",
+    "Lighthouse/PageSpeed",
+    "dependency audit/SBOM",
+    "live providers",
+    "real catalog inventory/media",
+    "factory approval",
+    "Arabic human approval"
+  ],
+  "strictTypeScript": {
+    "strictFiles": 13,
+    "sourceApiFiles": 219,
+    "coveragePercent": 5.94
+  }
+}

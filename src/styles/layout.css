@@ -1,0 +1,371 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK LAYOUT
+   --------------------------------------------------------------------------
+   A 12-column grid with three named regions reused across every page:
+
+     BASELINE  full-bleed, anchors a chapter
+     KEY       8 of 12 — the dense commercial block (grids, forms, summaries)
+     ARC       10 of 12, offset — the wide editorial band
+
+   RTL: logical properties throughout (`margin-inline`, `padding-inline`,
+   `inset-inline`, `border-inline`, `text-align: start`). There is not a single
+   physical `left`/`right` declaration in this file, so RTL needs no override.
+
+   SCOPE (Phase 2): `gw-*` classes are global utilities. The page ground moves
+   to the chalk surface on `body` so the new identity frames every route.
+   Reuses the existing global `.sr-only` utility rather than redefining it.
+   ========================================================================== */
+
+body {
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+}
+
+/* ---------- Container ---------------------------------------------------- */
+
+.gw-container {
+  inline-size: 100%;
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: var(--sh-gutter);
+}
+
+.gw-container--narrow {
+  max-inline-size: var(--sh-container-narrow);
+}
+
+/* ---------- Section rhythm ----------------------------------------------- */
+
+.gw-section {
+  padding-block: var(--sh-section-y);
+}
+
+.gw-section--tight {
+  padding-block: clamp(32px, 5vw, 72px);
+}
+
+.gw-section--flush {
+  padding-block: 0;
+}
+
+.gw-section--inset {
+  background: var(--sh-chalk-2);
+}
+
+.gw-section--maple {
+  background: var(--sh-maple-tint);
+}
+
+/* ---------- The 12-column grid and its three regions --------------------- */
+
+.gw-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sh-columns), minmax(0, 1fr));
+  gap: var(--sh-col-gap);
+}
+
+.gw-baseline {
+  grid-column: 1 / -1;
+}
+
+.gw-key {
+  grid-column: 1 / -1;
+}
+
+.gw-arc {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 900px) {
+  .gw-key {
+    grid-column: 1 / span 8;
+  }
+
+  .gw-arc {
+    grid-column: 2 / span 10;
+  }
+}
+
+/* ---------- Composition helpers ------------------------------------------ */
+
+/* Block children must fill the stack, so `align-items` stays at its default
+   `stretch`. Intrinsically-sized controls opt out individually below — the
+   opposite arrangement (`align-items: start`) silently collapses any grid or
+   table placed in a stack to its content width. */
+.gw-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+  align-items: stretch;
+}
+
+.gw-stack > .gw-btn,
+.gw-stack > .gw-stamp,
+.gw-stack > .gw-spec {
+  align-self: start;
+}
+
+[dir='rtl'] .gw-stack > .gw-btn,
+[dir='rtl'] .gw-stack > .gw-stamp,
+[dir='rtl'] .gw-stack > .gw-spec {
+  align-self: end;
+}
+
+.gw-stack--tight {
+  gap: var(--sh-s-2);
+}
+
+.gw-stack--loose {
+  gap: var(--sh-s-6);
+}
+
+.gw-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+}
+
+.gw-split {
+  display: grid;
+  gap: var(--sh-s-7);
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .gw-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* ---------- Auto grid for plates ----------------------------------------- */
+
+.gw-plates {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+/* ==========================================================================
+   Focus — a dual ring so it survives on chalk AND inside a dark chapter
+   ========================================================================== */
+
+:focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-focus-color);
+  outline-offset: var(--sh-focus-offset);
+  border-radius: var(--sh-r-1);
+}
+
+/* ==========================================================================
+   Buttons — three ranks, all with a drawn identity
+   Minimum target 44px; the leading tick extends on hover and on focus, never
+   on hover alone, so nothing is discoverable by pointer only.
+   ========================================================================== */
+
+.gw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-5);
+  padding-block: var(--sh-s-3);
+  border: 1px solid transparent;
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 96%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--sh-d-1) var(--sh-e-draw),
+    border-color var(--sh-d-1) var(--sh-e-draw),
+    color var(--sh-d-1) var(--sh-e-draw);
+}
+
+.gw-btn:lang(ar),
+[lang='ar'] .gw-btn {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.9375rem;
+}
+
+.gw-btn--primary {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+  border-color: var(--sh-ink);
+}
+
+.gw-btn--primary:hover {
+  background: var(--sh-signal);
+  border-color: var(--sh-signal);
+}
+
+.gw-btn--secondary {
+  background: transparent;
+  color: var(--sh-ink);
+  border-color: var(--sh-rule-strong);
+}
+
+.gw-btn--secondary:hover {
+  border-color: var(--sh-ink);
+}
+
+.gw-btn--ghost {
+  background: transparent;
+  color: var(--sh-ink);
+  border-color: transparent;
+  padding-inline: var(--sh-s-2);
+}
+
+.gw-btn--ghost:hover {
+  color: var(--sh-signal);
+}
+
+/* Ranks re-solved for the dark chapter. */
+.gw-chapter .gw-btn--primary {
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  border-color: var(--sh-chalk);
+}
+
+.gw-chapter .gw-btn--primary:hover {
+  background: var(--sh-sodium);
+  border-color: var(--sh-sodium);
+  color: var(--sh-night);
+}
+
+.gw-chapter .gw-btn--secondary {
+  color: var(--sh-night-ink);
+  border-color: var(--sh-rule-inverse-strong);
+}
+
+.gw-chapter .gw-btn--secondary:hover {
+  border-color: var(--sh-night-ink);
+}
+
+.gw-chapter .gw-btn--ghost {
+  color: var(--sh-night-ink);
+}
+
+.gw-chapter .gw-btn--ghost:hover {
+  color: var(--sh-sodium);
+}
+
+/* ==========================================================================
+   Spec table — the commercial voice of the system
+   Tabular numerals, hairline rules, `text-align: start` so it mirrors cleanly.
+   ========================================================================== */
+
+.gw-spec-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-spec-table th,
+.gw-spec-table td {
+  text-align: start;
+  padding-block: var(--sh-s-3);
+  padding-inline: 0;
+  border-block-end: 1px solid var(--sh-rule);
+  vertical-align: baseline;
+}
+
+.gw-spec-table th {
+  inline-size: 40%;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+.gw-spec-table th:lang(ar),
+[lang='ar'] .gw-spec-table th {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.gw-spec-table td {
+  color: var(--sh-ink);
+}
+
+.gw-chapter .gw-spec-table th,
+.gw-chapter .gw-spec-table td {
+  border-block-end-color: var(--sh-rule-inverse);
+}
+
+.gw-chapter .gw-spec-table th {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-chapter .gw-spec-table td {
+  color: var(--sh-night-ink);
+}
+
+/* ==========================================================================
+   Media plate — reserves its ratio so nothing shifts while loading
+   ========================================================================== */
+
+.gw-media {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--sh-chalk-3);
+  border-radius: var(--sh-r-1);
+}
+
+.gw-media--wide {
+  aspect-ratio: 16 / 9;
+}
+
+.gw-media--square {
+  aspect-ratio: 1 / 1;
+}
+
+/* ==========================================================================
+   Zoom resilience
+   The a11y suite asserts <= 2px horizontal overflow at 200% and 400% zoom, so
+   every long token has an explicit wrapping rule.
+   ========================================================================== */
+
+/* Long-token wrapping is applied to the system's own prose classes, never to
+   `body`. A global `overflow-wrap: break-word` broke the Arabic label on the
+   language switcher into one letter per line on English pages, because Arabic
+   is a connected script and the rule did not know the difference. */
+.gw-lead,
+.gw-body,
+.gw-department-copy {
+  overflow-wrap: break-word;
+}
+
+.gw-figure,
+.gw-spec,
+.gw-hero-title,
+.gw-display,
+.gw-title {
+  overflow-wrap: normal;
+}
+
+/* Arabic is a connected script: breaking inside a word splits letterforms that
+   belong together and produces something a reader cannot parse. Arabic is
+   never broken mid-word anywhere on the site — it is sized to fit instead. */
+:lang(ar) {
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}

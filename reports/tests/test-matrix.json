@@ -1,0 +1,53 @@
+{
+  "status": "informational",
+  "generatedAt": "2026-08-02T18:55:43.227Z",
+  "commitSha": null,
+  "runId": null,
+  "warning": "Counts from static/source-contract, mocked unit, database, browser and live-provider tests are not equivalent and must never be presented as one production-verification number.",
+  "categories": [
+    {
+      "type": "Node unit/API/source-contract (includes mocks and static contract checks)",
+      "written": true,
+      "executed": true,
+      "status": "passed",
+      "passedTests": 322,
+      "failedTests": 0
+    },
+    {
+      "type": "Full React component coverage",
+      "written": true,
+      "executed": false,
+      "status": "not_run"
+    },
+    {
+      "type": "Database/RLS",
+      "written": true,
+      "executed": false,
+      "status": "not_run"
+    },
+    {
+      "type": "Browser contract workflows (mock-backed)",
+      "written": true,
+      "executed": false,
+      "status": "not_run"
+    },
+    {
+      "type": "Accessibility",
+      "written": true,
+      "executed": false,
+      "status": "not_run"
+    },
+    {
+      "type": "Visual regression",
+      "written": true,
+      "executed": false,
+      "status": "not_run"
+    },
+    {
+      "type": "Staging-live browser and external providers",
+      "written": true,
+      "executed": false,
+      "status": "not_run"
+    }
+  ]
+}
