@@ -1,0 +1,1553 @@
+{
+  "schema": "shababuna.product.media.manifest.v1",
+  "sha": "8d9f248a3dbaf8b75ebb818ff0208a7e3d47b3a3",
+  "generatedAt": "2026-08-10T15:29:24.289Z",
+  "productCount": 59,
+  "totals": {
+    "placeholderHeavy": 36,
+    "missingFinalMedia": 36,
+    "withReal3D": 0,
+    "withSpinset": 0,
+    "finalMediaComplete": 0
+  },
+  "products": [
+    {
+      "id": "s001",
+      "slug": "shababuna-pro-game-set",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s002",
+      "slug": "shababuna-elite-game-jersey",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s003",
+      "slug": "shababuna-court-game-shorts",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s004",
+      "slug": "shababuna-reversible-practice-jersey",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s005",
+      "slug": "shababuna-practice-shorts",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s006",
+      "slug": "built-different-performance-tee",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s007",
+      "slug": "shababuna-heavyweight-hoodie",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s008",
+      "slug": "shababuna-travel-pants",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s009",
+      "slug": "shababuna-team-tracksuit",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s010",
+      "slug": "shababuna-compression-top",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s011",
+      "slug": "shababuna-pro-basketball-socks",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s030",
+      "slug": "nike-off-court-basketball-shoe",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s031",
+      "slug": "shababuna-recovery-slides",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s040",
+      "slug": "shababuna-elite-basketball-backpack",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s041",
+      "slug": "shababuna-team-duffle",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s042",
+      "slug": "shababuna-performance-arm-sleeve",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s043",
+      "slug": "basketball-ankle-support",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s044",
+      "slug": "shababuna-team-towel",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s045",
+      "slug": "custom-team-sticker-pack",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s046",
+      "slug": "basketball-training-cone-set",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s047",
+      "slug": "shababuna-court-cap",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s048",
+      "slug": "shababuna-performance-bottle",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s049",
+      "slug": "custom-woven-team-patch",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s050",
+      "slug": "molten-indoor-game-basketball",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s051",
+      "slug": "wilson-indoor-outdoor-basketball",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s052",
+      "slug": "spalding-outdoor-basketball",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s053",
+      "slug": "shababuna-custom-team-basketball",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s060",
+      "slug": "competition-basketball-hoop-system",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s061",
+      "slug": "tempered-glass-backboard",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s062",
+      "slug": "professional-spring-rim",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s063",
+      "slug": "24-second-shot-clock-set",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s064",
+      "slug": "basketball-ball-cart",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s066",
+      "slug": "professional-court-padding-set",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "s065",
+      "slug": "electric-ball-pump-kit",
+      "realUniqueViews": 0,
+      "front": false,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": true,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": []
+    },
+    {
+      "id": "p014",
+      "slug": "all-i-know-is-win-tee",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/all-i-know-is-win-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "all-i-know-is-win-tee-black"
+        },
+        {
+          "path": "/images/products/all-i-know-is-win-tee-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "all-i-know-is-win-tee-white"
+        },
+        {
+          "path": "/images/products/all-i-know-is-win-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "all-i-know-is-win-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p015",
+      "slug": "hoops-for-troops-tee",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/hoops-for-troops-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "hoops-for-troops-tee-black"
+        },
+        {
+          "path": "/images/products/hoops-for-troops-tee-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "hoops-for-troops-tee-grey"
+        },
+        {
+          "path": "/images/products/hoops-for-troops-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "hoops-for-troops-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p016",
+      "slug": "hoopers-performance-tee",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/hoopers-performance-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "hoopers-performance-tee-black"
+        },
+        {
+          "path": "/images/products/hoopers-performance-tee-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "hoopers-performance-tee-grey"
+        },
+        {
+          "path": "/images/products/hoopers-performance-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "hoopers-performance-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p017",
+      "slug": "hoopers-long-sleeve-performance",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/hoopers-long-sleeve-performance-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "hoopers-long-sleeve-performance-grey"
+        },
+        {
+          "path": "/images/products/hoopers-long-sleeve-performance-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "hoopers-long-sleeve-performance-black"
+        },
+        {
+          "path": "/images/products/hoopers-long-sleeve-performance-grey.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "hoopers-long-sleeve-performance-grey"
+        }
+      ]
+    },
+    {
+      "id": "p018",
+      "slug": "lha-performance-shorts",
+      "realUniqueViews": 1,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-performance-shorts-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-performance-shorts-black"
+        },
+        {
+          "path": "/images/products/lha-performance-shorts-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-performance-shorts-black"
+        }
+      ]
+    },
+    {
+      "id": "p019",
+      "slug": "lha-logo-performance-tee",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-logo-performance-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-logo-performance-tee-black"
+        },
+        {
+          "path": "/images/products/lha-logo-performance-tee-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-logo-performance-tee-grey"
+        },
+        {
+          "path": "/images/products/lha-logo-performance-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-logo-performance-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p020",
+      "slug": "libya-hoops-academy-tee",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/libya-hoops-academy-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "libya-hoops-academy-tee-black"
+        },
+        {
+          "path": "/images/products/libya-hoops-academy-tee-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "libya-hoops-academy-tee-grey"
+        },
+        {
+          "path": "/images/products/libya-hoops-academy-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "libya-hoops-academy-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p021",
+      "slug": "lha-chest-logo-tank",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-chest-logo-tank-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-chest-logo-tank-white"
+        },
+        {
+          "path": "/images/products/lha-chest-logo-tank-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-chest-logo-tank-black"
+        },
+        {
+          "path": "/images/products/lha-chest-logo-tank-white.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-chest-logo-tank-white"
+        }
+      ]
+    },
+    {
+      "id": "p022",
+      "slug": "lha-center-logo-tank",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-center-logo-tank-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-center-logo-tank-white"
+        },
+        {
+          "path": "/images/products/lha-center-logo-tank-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-center-logo-tank-black"
+        },
+        {
+          "path": "/images/products/lha-center-logo-tank-white.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-center-logo-tank-white"
+        }
+      ]
+    },
+    {
+      "id": "p023",
+      "slug": "lha-compression-long-sleeve",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-compression-long-sleeve-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-compression-long-sleeve-white"
+        },
+        {
+          "path": "/images/products/lha-compression-long-sleeve-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-compression-long-sleeve-black"
+        },
+        {
+          "path": "/images/products/lha-compression-long-sleeve-white.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-compression-long-sleeve-white"
+        }
+      ]
+    },
+    {
+      "id": "p024",
+      "slug": "lha-full-length-compression-tights",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-full-length-compression-tights-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-full-length-compression-tights-black"
+        },
+        {
+          "path": "/images/products/lha-full-length-compression-tights-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-full-length-compression-tights-white"
+        },
+        {
+          "path": "/images/products/lha-full-length-compression-tights-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-full-length-compression-tights-black"
+        }
+      ]
+    },
+    {
+      "id": "p025",
+      "slug": "lha-one-leg-compression-tights",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-one-leg-compression-tights-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-one-leg-compression-tights-black"
+        },
+        {
+          "path": "/images/products/lha-one-leg-compression-tights-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-one-leg-compression-tights-white"
+        },
+        {
+          "path": "/images/products/lha-one-leg-compression-tights-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-one-leg-compression-tights-black"
+        }
+      ]
+    },
+    {
+      "id": "p026",
+      "slug": "lha-sleeve-logo-performance-tee",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-sleeve-logo-performance-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-sleeve-logo-performance-tee-black"
+        },
+        {
+          "path": "/images/products/lha-sleeve-logo-performance-tee-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-sleeve-logo-performance-tee-white"
+        },
+        {
+          "path": "/images/products/lha-sleeve-logo-performance-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-sleeve-logo-performance-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p027",
+      "slug": "lha-elite-basketball-backpack",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-elite-basketball-backpack-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-elite-basketball-backpack-black"
+        },
+        {
+          "path": "/images/products/lha-elite-basketball-backpack-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-elite-basketball-backpack-white"
+        },
+        {
+          "path": "/images/products/lha-elite-basketball-backpack-camo.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-elite-basketball-backpack-camo"
+        },
+        {
+          "path": "/images/products/lha-elite-basketball-backpack-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-elite-basketball-backpack-black"
+        }
+      ]
+    },
+    {
+      "id": "p028",
+      "slug": "lha-academy-everyday-backpack",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-academy-backpack-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-academy-backpack-black"
+        },
+        {
+          "path": "/images/products/lha-academy-backpack-red.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-academy-backpack-red"
+        },
+        {
+          "path": "/images/products/lha-academy-backpack-beige.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-academy-backpack-beige"
+        },
+        {
+          "path": "/images/products/lha-academy-backpack-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-academy-backpack-black"
+        }
+      ]
+    },
+    {
+      "id": "p030",
+      "slug": "lha-compression-shorts",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/compression-shorts-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "compression-shorts-black"
+        },
+        {
+          "path": "/images/products/compression-shorts-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "compression-shorts-white"
+        },
+        {
+          "path": "/images/products/compression-shorts-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "compression-shorts-black"
+        }
+      ]
+    },
+    {
+      "id": "p031",
+      "slug": "lha-performance-basketball-socks",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-court-socks-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-court-socks-black"
+        },
+        {
+          "path": "/images/products/lha-court-socks-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-court-socks-white"
+        },
+        {
+          "path": "/images/products/lha-court-socks-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-court-socks-black"
+        }
+      ]
+    },
+    {
+      "id": "p029",
+      "slug": "lha-premium-fleece-set",
+      "realUniqueViews": 4,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/lha-premium-fleece-set-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-premium-fleece-set-black"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-premium-fleece-set-grey"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-cream.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-premium-fleece-set-cream"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-premium-fleece-set-black"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-black-close.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "lha-premium-fleece-set-black-close"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-black-close.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-premium-fleece-set-black-close"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-grey.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-premium-fleece-set-grey"
+        },
+        {
+          "path": "/images/products/lha-premium-fleece-set-cream.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "lha-premium-fleece-set-cream"
+        }
+      ]
+    },
+    {
+      "id": "p032",
+      "slug": "own-the-game-essential-tee",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-essential-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-essential-tee-black"
+        },
+        {
+          "path": "/images/products/own-the-game-essential-tee-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-essential-tee-grey"
+        },
+        {
+          "path": "/images/products/own-the-game-essential-tee-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-essential-tee-white"
+        },
+        {
+          "path": "/images/products/own-the-game-essential-tee-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-essential-tee-black"
+        }
+      ]
+    },
+    {
+      "id": "p033",
+      "slug": "own-the-game-sleeveless-top",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-sleeveless-top-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-sleeveless-top-black"
+        },
+        {
+          "path": "/images/products/own-the-game-sleeveless-top-white.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-sleeveless-top-white"
+        },
+        {
+          "path": "/images/products/own-the-game-sleeveless-top-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-sleeveless-top-grey"
+        },
+        {
+          "path": "/images/products/own-the-game-sleeveless-top-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-sleeveless-top-black"
+        }
+      ]
+    },
+    {
+      "id": "p034",
+      "slug": "own-the-game-zip-hoodie",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-zip-hoodie-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-zip-hoodie-black"
+        },
+        {
+          "path": "/images/products/own-the-game-zip-hoodie-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-zip-hoodie-grey"
+        },
+        {
+          "path": "/images/products/own-the-game-zip-hoodie-cream.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-zip-hoodie-cream"
+        },
+        {
+          "path": "/images/products/own-the-game-zip-hoodie-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-zip-hoodie-black"
+        }
+      ]
+    },
+    {
+      "id": "p035",
+      "slug": "own-the-game-crewneck",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-crewneck-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-crewneck-black"
+        },
+        {
+          "path": "/images/products/own-the-game-crewneck-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-crewneck-grey"
+        },
+        {
+          "path": "/images/products/own-the-game-crewneck-cream.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-crewneck-cream"
+        },
+        {
+          "path": "/images/products/own-the-game-crewneck-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-crewneck-black"
+        }
+      ]
+    },
+    {
+      "id": "p036",
+      "slug": "own-the-game-fleece-shorts",
+      "realUniqueViews": 2,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-fleece-shorts-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-fleece-shorts-black"
+        },
+        {
+          "path": "/images/products/own-the-game-fleece-shorts-cream.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-fleece-shorts-cream"
+        },
+        {
+          "path": "/images/products/own-the-game-fleece-shorts-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-fleece-shorts-black"
+        }
+      ]
+    },
+    {
+      "id": "p037",
+      "slug": "own-the-game-pullover-hoodie",
+      "realUniqueViews": 3,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": false,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-pullover-hoodie-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-pullover-hoodie-black"
+        },
+        {
+          "path": "/images/products/own-the-game-pullover-hoodie-grey.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-pullover-hoodie-grey"
+        },
+        {
+          "path": "/images/products/own-the-game-pullover-hoodie-cream.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-pullover-hoodie-cream"
+        },
+        {
+          "path": "/images/products/own-the-game-pullover-hoodie-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-pullover-hoodie-black"
+        }
+      ]
+    },
+    {
+      "id": "p038",
+      "slug": "own-the-game-fleece-pants",
+      "realUniqueViews": 1,
+      "front": true,
+      "back": false,
+      "left": false,
+      "right": false,
+      "detail": false,
+      "lifestyle": false,
+      "spinFrames": 0,
+      "real3D": false,
+      "conceptOnly": false,
+      "placeholderHeavy": true,
+      "finalMediaComplete": false,
+      "assets": [
+        {
+          "path": "/images/products/own-the-game-fleece-pants-black.webp",
+          "class": "ANGLE",
+          "derivative": false,
+          "key": "own-the-game-fleece-pants-black"
+        },
+        {
+          "path": "/images/products/own-the-game-fleece-pants-black.webp",
+          "class": "ANGLE",
+          "derivative": true,
+          "key": "own-the-game-fleece-pants-black"
+        }
+      ]
+    }
+  ]
+}

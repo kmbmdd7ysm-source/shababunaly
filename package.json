@@ -93,7 +93,8 @@
     "validate:product-master": "node --experimental-strip-types scripts/validate-product-master.mjs",
     "verify:build-provenance": "node scripts/verify-build-provenance.mjs",
     "verify:release-evidence-sha": "node scripts/verify-release-evidence-sha.mjs",
-    "postinstall": "node scripts/ensure-offscreencanvas-types.mjs"
+    "postinstall": "node scripts/ensure-offscreencanvas-types.mjs",
+    "media:manifest": "node scripts/generate-media-manifest.mjs"
   },
   "dependencies": {
     "@google/model-viewer": "^3.5.0",

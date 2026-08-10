@@ -26,13 +26,7 @@ import './styles/typography.css';
 import './styles/motion.css';
 import './styles/geometry.css';
 import './styles/layout.css';
-import './styles/domain-layout.css';
-import './styles/domain-a11y.css';
 import './styles/shell.css';
-import './styles/domain-forms.css';
-import './styles/domain-overlays.css';
-import './styles/domain-media.css';
-import './styles/domain-misc.css';
 /* chrome/shop/customize/account/commerce/content/teams/pwa import with owners */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,

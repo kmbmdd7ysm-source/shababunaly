@@ -1,8 +1,10 @@
 import { lazy, Suspense, useEffect, useId, useState, type KeyboardEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { resolveProductViewer } from '../../utils/productViewerTier.ts';
 import MultiAngleEngine from './engines/MultiAngleEngine';
 import Spin360Engine from './engines/Spin360Engine';
+import SpinsetEngine from './engines/SpinsetEngine';
 import StaticMediaEngine from './engines/StaticMediaEngine';
 import '../../styles/product.css';
 
@@ -26,10 +28,13 @@ export default function ProductMediaViewer({
   eager?: boolean;
 }) {
   const { pick, dir } = useLanguage();
+  const [params] = useSearchParams();
   const { tier, images, frames, model } = resolveProductViewer(product);
   const sources = frames.length > 0 ? frames : images;
   const [index, setIndex] = useState(0);
   const listId = useId();
+  // Development-only spinset fixture — never treated as catalogue Tier B photography.
+  const showDevSpin = params.get('devSpin') === '1' || params.get('fixture') === 'spin';
 
   useEffect(() => {
     setIndex(0);
@@ -73,6 +78,19 @@ export default function ProductMediaViewer({
     },
   );
   const fallback = sources[0] || String(product?.image || '');
+
+  if (showDevSpin) {
+    return (
+      <div className="gw-viewer" data-tier="B" data-engine="SpinsetEngine" data-fixture="development">
+        <SpinsetEngine
+          allowDevelopmentFixture
+          productName={String(
+            (product?.name as { en?: string } | undefined)?.en || product?.slug || '',
+          )}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="gw-viewer" data-tier={tier} data-engine="ProductMediaViewer">
