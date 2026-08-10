@@ -52,9 +52,12 @@ const ReadinessContext = createContext<ReadinessContextValue>({
 
 export function ReadinessProvider({ children }: { children?: ReactNode }) {
   const localReadiness = useMemo(() => getProductionReadiness(), []);
+  // When a server check is required, start degraded so the banner occupies
+  // document flow from the first paint. Flipping checking→degraded after fetch
+  // was shifting main content (~0.05–0.17 CLS on home).
   const [state, setState] = useState<ReadinessState>(() =>
     localReadiness.ready && localReadiness.needsServerCheck
-      ? 'checking'
+      ? 'degraded'
       : localReadiness.ready
         ? 'ready'
         : 'degraded',
