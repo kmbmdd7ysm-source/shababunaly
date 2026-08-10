@@ -1,6 +1,6 @@
 # Missing final product media
 
-SHA: `c182a8987661591ca776cc92cb7c6e87d5e30c5d`
+SHA: `d9b3634fdb993f13f016fb0e929e3ab6b181d662`
 
 Placeholder-heavy: **36** / 59
 

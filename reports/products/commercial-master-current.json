@@ -1,10 +1,10 @@
 {
   "schema": "shababuna.product.commercial-master.v1",
-  "sha": "af78f490464c7c14be964188bebb11015de741b6",
-  "generatedAt": "2026-08-10T15:59:07.319021Z",
+  "sha": "d9b3634fdb993f13f016fb0e929e3ab6b181d662",
+  "generatedAt": "2026-08-10T18:37:28.833079Z",
   "productCount": 59,
   "allMissingExternalCommercialFields": true,
-  "note": "External factual commercial fields are not invented. Software supports intake; status remains MISSING/PENDING_VERIFICATION until verified.",
+  "note": "External factual commercial fields are not invented.",
   "products": [
     {
       "slug": "shababuna-pro-game-set",
