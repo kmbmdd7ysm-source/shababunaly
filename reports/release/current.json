@@ -1,11 +1,11 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "311a6e1879bcbebe9fad74e668a978409ee87fb4",
+  "sha": "0919bcd93429909d8678e09fefe4e073527195f4",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T06:08:32.482Z",
+  "generatedAt": "2026-08-10T06:12:05.040Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
-  "workingTree": "clean",
+  "workingTree": "dirty",
   "typescript": {
     "coveragePercent": 100.0,
     "legacyFiles": []
@@ -21,13 +21,13 @@
   "arabicTechnicalQa": "PASS",
   "arabicHumanReview": "REQUIRED",
   "lighthouseLocal": {
-    "sha": "13db66491272115172182f6801d97d0b19fabc6d",
-    "generatedAt": "2026-08-10T06:06:13.873924+00:00",
-    "performance": 80,
+    "sha": "0919bcd93429909d8678e09fefe4e073527195f4",
+    "generatedAt": "2026-08-10T06:12:05.036511+00:00",
+    "performance": 78,
     "accessibility": 100,
-    "lcpMs": 3299,
-    "cls": 0.168,
-    "note": "CLS still ~0.17 on local preview with currency welcome dialog present; geo no longer mutates prices pre-confirm."
+    "lcpMs": 3083,
+    "cls": 0.0,
+    "note": "CLS fixed by reserving readiness banner from first paint. LCP still ~3.1s local preview."
   },
   "status": "in_progress",
   "verdict": null
