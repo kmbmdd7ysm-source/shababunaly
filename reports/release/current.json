@@ -1,11 +1,11 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "2e0ded6c32db59bb9322a755dbc40fae1ee7f42c",
+  "sha": "99606f519913b0d3bc90fca88607814884a9dff7",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T07:21:01.641Z",
+  "generatedAt": "2026-08-10T07:21:21.460Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
-  "workingTree": "clean",
+  "workingTree": "dirty",
   "typescript": {
     "coveragePercent": 100.0,
     "legacyFiles": []
