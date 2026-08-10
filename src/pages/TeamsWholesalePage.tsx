@@ -228,7 +228,7 @@ export default function TeamsWholesalePage(): ReactElement {
           ================================================================ */}
       <div className="gw-spine">
         <aside className="gw-spine-index">
-          <p className="gw-spec">{pick({ en: 'Order lifecycle', ar: 'دورة الطلب' })}</p>
+          <p className="gw-kicker">{pick({ en: 'Order lifecycle', ar: 'دورة الطلب' })}</p>
           <ol>
             {LIFECYCLE.map((stage, position) => (
               <li key={`${stage.id}-${position}`}>
@@ -254,7 +254,7 @@ export default function TeamsWholesalePage(): ReactElement {
             <Breadcrumbs
               items={[{ label: pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' }) }]}
             />
-            <p className="gw-spec">
+            <p className="gw-kicker">
               {pick({ en: 'B2B · Clubs · Academies', ar: 'أعمال · أندية · أكاديميات' })}
             </p>
             <h1 className="gw-spine-title">
@@ -273,7 +273,7 @@ export default function TeamsWholesalePage(): ReactElement {
             <div className="container">
               <div className="gw-teams-intro">
                 <div>
-                  <p className="gw-spec">
+                  <p className="gw-kicker">
                     {pick({ en: 'Custom is built in', ar: 'التخصيص جزء من النظام' })}
                   </p>
                   <h2 id="stage-build-t" className="gw-teams-title">

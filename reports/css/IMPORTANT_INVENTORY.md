@@ -1,0 +1,82 @@
+# Remaining !important inventory
+
+Each remaining use must be justified during ownership migration.
+
+Total: 76
+
+- `src/styles/catalogue.css:510:border: 0 !important;`
+- `src/styles/catalogue.css:512:box-shadow: none !important;`
+- `src/styles/catalogue.css:516:border: 0 !important;`
+- `src/styles/catalogue.css:608:display: inline-flex !important;`
+- `src/styles/catalogue.css:610:min-block-size: 24px !important;`
+- `src/styles/command.css:189:animation: none !important;`
+- `src/styles/global.css:2187:animation-duration: 0.001ms !important;`
+- `src/styles/global.css:2188:animation-iteration-count: 1 !important;`
+- `src/styles/global.css:2189:transition-duration: 0.001ms !important;`
+- `src/styles/global.css:2190:scroll-behavior: auto !important;`
+- `src/styles/global.css:3791:fill: #111 !important;`
+- `src/styles/global.css:3792:stroke: #111 !important;`
+- `src/styles/global.css:3908:overflow-wrap: break-word !important;`
+- `src/styles/global.css:3915:overflow-wrap: normal !important;`
+- `src/styles/global.css:3967:overflow-wrap: normal !important;`
+- `src/styles/global.css:3969:hyphens: none !important;`
+- `src/styles/global.css:4034:overflow-wrap: normal !important;`
+- `src/styles/global.css:4184:box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.22) !important;`
+- `src/styles/global.css:4362:translate: none !important;`
+- `src/styles/global.css:4420:overflow-wrap: anywhere !important;`
+- `src/styles/global.css:4461:touch-action: pinch-zoom !important;`
+- `src/styles/global.css:4471:transform-origin: center !important;`
+- `src/styles/global.css:4555:scroll-behavior: auto !important;`
+- `src/styles/global.css:4556:animation-duration: 0.01ms !important;`
+- `src/styles/global.css:4557:animation-iteration-count: 1 !important;`
+- `src/styles/global.css:4558:transition-duration: 0.01ms !important;`
+- `src/styles/global.css:4573:scroll-behavior: auto !important;`
+- `src/styles/global.css:4574:animation-duration: 0.01ms !important;`
+- `src/styles/global.css:4575:animation-iteration-count: 1 !important;`
+- `src/styles/global.css:4576:transition-duration: 0.01ms !important;`
+- `src/styles/global.css:4680:transform: scale(1) !important;`
+- `src/styles/global.css:4684:transform: scale(1.25) !important;`
+- `src/styles/global.css:4688:transform: scale(1.5) !important;`
+- `src/styles/global.css:4692:transform: scale(1.75) !important;`
+- `src/styles/global.css:4696:transform: scale(2) !important;`
+- `src/styles/global.css:4700:transform: scale(2.25) !important;`
+- `src/styles/global.css:4704:transform: scale(2.5) !important;`
+- `src/styles/global.css:4708:transform: scale(2.75) !important;`
+- `src/styles/global.css:4712:transform: scale(3) !important;`
+- `src/styles/journey.css:589:transform: none !important;`
+- `src/styles/lab-home.css:50:pre-existing `html[dir='rtl'] * { letter-spacing: 0 !important }`, a`
+- `src/styles/lab-home.css:54:`!important` with `!important`, which is the cascade war the cleanup phase`
+- `src/styles/ledger.css:498:border-radius: 999px !important;`
+- `src/styles/operations.css:328:animation: none !important;`
+- `src/styles/premium.css:44:transform var(--motion-med) !important;`
+- `src/styles/premium.css:65:transition: transform 0.35s var(--ease-premium) !important;`
+- `src/styles/premium.css:75:background var(--motion-fast) !important;`
+- `src/styles/premium.css:96:box-shadow 0.3s !important;`
+- `src/styles/premium.css:145:transform: translateY(-10px) !important;`
+- `src/styles/premium.css:146:box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12) !important;`
+- `src/styles/premium.css:156:opacity 0.45s !important;`
+- `src/styles/premium.css:168:opacity 0.3s !important;`
+- `src/styles/premium.css:180:background 0.25s !important;`
+- `src/styles/premium.css:285:animation-duration: 0.01ms !important;`
+- `src/styles/premium.css:286:animation-iteration-count: 1 !important;`
+- `src/styles/premium.css:287:scroll-behavior: auto !important;`
+- `src/styles/premium.css:288:transition-duration: 0.01ms !important;`
+- `src/styles/premium.css:614:animation-duration: 0.01ms !important;`
+- `src/styles/premium.css:615:animation-iteration-count: 1 !important;`
+- `src/styles/premium.css:616:transition-duration: 0.01ms !important;`
+- `src/styles/premium.css:617:scroll-behavior: auto !important;`
+- `src/styles/premium.css:1095:animation-duration: 0.01ms !important;`
+- `src/styles/premium.css:1096:animation-iteration-count: 1 !important;`
+- `src/styles/premium.css:1097:transition-duration: 0.01ms !important;`
+- `src/styles/premium.css:1148:animation: none !important;`
+- `src/styles/premium.css:1149:transition-duration: 0.01ms !important;`
+- `src/styles/premium.css:1295:transform: none !important;`
+- `src/styles/premium.css:1397:transform: none !important;`
+- `src/styles/premium.css:1398:filter: none !important;`
+- `src/styles/premium.css:1405:content: none !important;`
+- `src/styles/shell.css:10:`shababuna.css` without needing `!important`.`
+- `src/styles/shell.nav.css:22:padding-inline-start: 0 !important;`
+- `src/styles/stage.css:414:margin-block-start: 6px !important;`
+- `src/styles/stage.css:872:/* global.css carries `.smart-img { background: #fff !important }` — a legacy`
+- `src/styles/stage.css:880:background: transparent !important;`
+- `src/styles/workspace.css:329:with `!important` by the legacy sheet. Putting a chalk plate behind that copy`

@@ -41,14 +41,14 @@ export default function CartPage(): ReactElement {
       <section className="gw-ledger" aria-labelledby="gw-cart-title">
         <div className="gw-ledger-inner">
           <div className="gw-ledger-head">
-            <p className="gw-spec">{nav.cart}</p>
+            <p className="gw-kicker">{nav.cart}</p>
             <div className="gw-ledger-head-row">
               <h1 id="gw-cart-title" className="gw-ledger-title">
                 {cartCopy.title}
               </h1>
               <p className="gw-ledger-count">
                 <span className="gw-figure gw-isolate-ltr">{items.length}</span>
-                <span className="gw-spec">
+                <span className="gw-kicker">
                   {items.length === 1
                     ? pick({ en: 'line', ar: 'سطر' })
                     : pick({ en: 'lines', ar: 'أسطر' })}
