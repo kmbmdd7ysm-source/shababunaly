@@ -145,7 +145,7 @@ export default function CustomizePage(): ReactElement {
   const [params] = useSearchParams();
   const requestedDesignId = params.get('design');
   const initialType =
-    productTypeFromCatalog(params.get('product'), getProduct as never) ||
+    productTypeFromCatalog(params.get('product'), getProduct as (slug: string) => Record<string, unknown> | undefined) ||
     DEFAULT_CUSTOM_DESIGN.productType;
   const initialProduct = getCustomProductType(initialType);
   const [step, setStep] = useState('product');
@@ -272,7 +272,7 @@ export default function CustomizePage(): ReactElement {
     setAutosaveState('waiting');
     const timer = setTimeout(() => {
       setAutosaveState('saving');
-      void autosaveDesignStudio(savedId, design as never, design.studio as never)
+      void autosaveDesignStudio(savedId, design as Record<string, unknown>, design.studio as Record<string, unknown>)
         .then(() => setAutosaveState('saved'))
         .catch(() => setAutosaveState('error'));
     }, 1400);
@@ -721,7 +721,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                 productFamily={productFamily}
                 setProductFamily={setProductFamily}
                 design={design}
-                selectProduct={selectProduct as never}
+                selectProduct={selectProduct}
                 setStep={(next: string) => setStep(next === 'design' ? 'model' : next)}
               />
             )}

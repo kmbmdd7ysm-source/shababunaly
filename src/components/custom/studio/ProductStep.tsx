@@ -51,7 +51,7 @@ export default function ProductStep({
   productFamily: string | null;
   setProductFamily: (family: string | null) => void;
   design: Record<string, unknown>;
-  selectProduct: (product: unknown) => void;
+  selectProduct: (product: string) => void;
   setStep: (step: string) => void;
 }) {
   return (
