@@ -1,17 +1,14 @@
 {
-  "sha": "977b37a743ce1c8cd6ef4a401ed333c361e1ddf0",
-  "generatedAt": "2026-08-10T05:52:43.638927+00:00",
-  "liveLegacyFile": "src/styles/legacy-retained.css",
-  "archivedTriad": [
-    "src/styles/_archive/global.css",
-    "src/styles/_archive/premium.css",
-    "src/styles/_archive/shababuna.css"
-  ],
-  "legacyRetainedLines": 8903,
-  "liveStyleLines": 24116,
+  "sha": "5b08fe07e0b1711379da9f8272bd106d9cbb2a10",
+  "generatedAt": "2026-08-10T06:24:29.066999+00:00",
+  "legacyTriadLines": 9127,
+  "liveStyleLines": 24513,
   "importantTotal": 77,
   "idleLegacyLoadRemoved": true,
-  "postPaintLegacyRemoved": true,
+  "extractedComponentSheets": [
+    "commerce-welcome.css",
+    "pwa-cookie-from-global.css"
+  ],
   "files": [
     {
       "file": "src/styles/account-sync.css",
@@ -54,6 +51,11 @@
       "important": 1
     },
     {
+      "file": "src/styles/commerce-welcome.css",
+      "lines": 89,
+      "important": 0
+    },
+    {
       "file": "src/styles/composition.css",
       "lines": 1668,
       "important": 0
@@ -82,6 +84,11 @@
       "file": "src/styles/geometry.css",
       "lines": 314,
       "important": 0
+    },
+    {
+      "file": "src/styles/global.css",
+      "lines": 4634,
+      "important": 33
     },
     {
       "file": "src/styles/home.css",
@@ -114,11 +121,6 @@
       "important": 1
     },
     {
-      "file": "src/styles/legacy-retained.css",
-      "lines": 8903,
-      "important": 59
-    },
-    {
       "file": "src/styles/masthead.css",
       "lines": 580,
       "important": 0
@@ -139,6 +141,11 @@
       "important": 0
     },
     {
+      "file": "src/styles/premium.css",
+      "lines": 1530,
+      "important": 26
+    },
+    {
       "file": "src/styles/product-card.css",
       "lines": 232,
       "important": 0
@@ -149,8 +156,18 @@
       "important": 0
     },
     {
+      "file": "src/styles/pwa-cookie-from-global.css",
+      "lines": 82,
+      "important": 0
+    },
+    {
       "file": "src/styles/runs.css",
       "lines": 793,
+      "important": 0
+    },
+    {
+      "file": "src/styles/shababuna.css",
+      "lines": 2963,
       "important": 0
     },
     {
@@ -180,7 +197,7 @@
     },
     {
       "file": "src/styles/sysbanner.css",
-      "lines": 171,
+      "lines": 173,
       "important": 0
     },
     {
@@ -203,6 +220,5 @@
       "lines": 457,
       "important": 1
     }
-  ],
-  "note": "global/premium/shababuna archived; live cascade uses foundation+route sheets+legacy-retained used-only island."
+  ]
 }
