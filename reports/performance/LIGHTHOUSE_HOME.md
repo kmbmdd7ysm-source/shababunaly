@@ -1,9 +1,15 @@
 # Lighthouse home
 
-SHA: `45ecc1ea691e2022129c86397341000fff2d1b8a`
+SHA: `b3e0e3a4b26e7d8c977e393c0b010e74a0a8cf0b`
 
-- Performance: **82**
-- Accessibility: **100**
-- LCP: **3206 ms**
+## Desktop
+- Performance: **100**
+- LCP: **768 ms** ✅
+- CLS: **0.004** ✅
+
+## Mobile (LH default simulation)
+- Performance: **83**
+- LCP: **3337 ms**
 - CLS: **0.111**
-- CSS triad extinct · live !important = 4 (reduced-motion)
+
+Desktop meets targets. Mobile remains lab-elevated.

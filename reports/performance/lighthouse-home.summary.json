@@ -1,9 +1,17 @@
 {
-  "sha": "7493a95cfa0f73badf4f1260e8bb79a074ddbcbf",
-  "generatedAt": "2026-08-10T07:19:57.840266+00:00",
-  "performance": 83,
-  "accessibility": 100,
-  "lcpMs": 3337,
-  "cls": 0.111,
-  "note": "CLS stable at 0.111 on LH mobile simulation after welcome delay; desktop PO ~0.005."
+  "sha": "b3e0e3a4b26e7d8c977e393c0b010e74a0a8cf0b",
+  "generatedAt": "2026-08-10T07:20:45.120542+00:00",
+  "mobile": {
+    "performance": 83,
+    "accessibility": 100,
+    "lcpMs": 3337,
+    "cls": 0.111
+  },
+  "desktop": {
+    "performance": 100,
+    "accessibility": 100,
+    "lcpMs": 768,
+    "cls": 0.004
+  },
+  "note": "Desktop meets LCP/CLS targets. Mobile LH simulation remains elevated (throttling/lab)."
 }
