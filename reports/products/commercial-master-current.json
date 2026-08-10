@@ -1,7 +1,7 @@
 {
   "schema": "shababuna.product.commercial-master.v1",
-  "sha": "88aec1532d4bf25c2bdfe2c4b9bb90eab687d306",
-  "generatedAt": "2026-08-10T18:50:38.070464Z",
+  "sha": "d8417de61174dc03c84a3918920ffdc639981cf7",
+  "generatedAt": "2026-08-10T18:50:41.460997Z",
   "productCount": 59,
   "allMissingExternalCommercialFields": true,
   "note": "External factual commercial fields are not invented.",
