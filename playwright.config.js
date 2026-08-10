@@ -32,17 +32,35 @@ export default defineConfig({
       testIgnore: specialSuites,
       use: {
         ...devices['Desktop Chrome'],
-        ...(executablePath ? { launchOptions: { executablePath, args: ['--no-sandbox', '--disable-dev-shm-usage'] } } : {}),
+        ...(executablePath
+          ? { launchOptions: { executablePath, args: ['--no-sandbox', '--disable-dev-shm-usage'] } }
+          : {}),
       },
     },
     { name: 'desktop-firefox', testIgnore: specialSuites, use: { ...devices['Desktop Firefox'] } },
     { name: 'desktop-webkit', testIgnore: specialSuites, use: { ...devices['Desktop Safari'] } },
     { name: 'mobile-chromium', testIgnore: specialSuites, use: { ...devices['Pixel 7'] } },
     { name: 'mobile-webkit', testIgnore: specialSuites, use: { ...devices['iPhone 14'] } },
-    { name: 'reduced-motion', testIgnore: specialSuites, use: { ...devices['Desktop Chrome'], reducedMotion: 'reduce' } },
-    { name: 'arabic-rtl', testIgnore: specialSuites, use: { ...devices['Desktop Chrome'], locale: 'ar-LY' } },
-    { name: 'browser-contract-chromium', testMatch: /browser-contract-workflows\.spec\.js/, use: { ...devices['Desktop Chrome'] } },
-    { name: 'staging-live-chromium', testMatch: /staging-live-workflows\.spec\.js/, use: { ...devices['Desktop Chrome'] } },
+    {
+      name: 'reduced-motion',
+      testIgnore: specialSuites,
+      use: { ...devices['Desktop Chrome'], reducedMotion: 'reduce' },
+    },
+    {
+      name: 'arabic-rtl',
+      testIgnore: specialSuites,
+      use: { ...devices['Desktop Chrome'], locale: 'ar-LY' },
+    },
+    {
+      name: 'browser-contract-chromium',
+      testMatch: /browser-contract-workflows\.spec\.js/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'staging-live-chromium',
+      testMatch: /staging-live-workflows\.spec\.js/,
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   webServer: undefined,
 });

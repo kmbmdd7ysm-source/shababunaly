@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it, vi } from './test-api.js';
-import { lockDocumentScroll } from '../src/utils/scrollLock.js';
+import { lockDocumentScroll } from '../src/utils/scrollLock.ts';
 
 function classListMock() {
   const values = new Set();
@@ -43,7 +43,15 @@ describe('CSP and PWA hardening', { concurrency: false }, () => {
   it('keeps sensitive routes network-only and revisions caches by build id', async () => {
     const worker = await readFile(new URL('../public/sw.js', import.meta.url), 'utf8');
     expect(worker).toContain("PARAMS.get('v')");
-    for (const route of ['/api', '/account', '/checkout', '/operations', '/team-locker', '/design-share', '/special-request']) {
+    for (const route of [
+      '/api',
+      '/account',
+      '/checkout',
+      '/operations',
+      '/team-locker',
+      '/design-share',
+      '/special-request',
+    ]) {
       expect(worker).toContain(route.replace('/', '\\/'));
     }
     expect(worker).toContain('key.startsWith(CACHE_PREFIX)');
@@ -56,11 +64,11 @@ describe('CSP and PWA hardening', { concurrency: false }, () => {
 
   it('contains no React inline style props or direct style mutations', async () => {
     const sourceFiles = [
-      '../src/pages/CartPage.jsx',
-      '../src/components/layout/CartDrawer.jsx',
-      '../src/components/custom/ProductionDesignEditor.jsx',
-      '../src/components/media/MediaLightbox.jsx',
-      '../src/components/common/SmartImage.jsx',
+      '../src/pages/CartPage.tsx',
+      '../src/components/layout/CartDrawer.tsx',
+      '../src/components/custom/ProductionDesignEditor.tsx',
+      '../src/components/media/MediaLightbox.tsx',
+      '../src/components/common/SmartImage.tsx',
     ];
     for (const file of sourceFiles) {
       const source = await readFile(new URL(file, import.meta.url), 'utf8');

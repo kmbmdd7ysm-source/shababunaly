@@ -18,11 +18,37 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-class ResizeObserverMock { observe() {} unobserve() {} disconnect() {} }
-class IntersectionObserverMock { observe() {} unobserve() {} disconnect() {} }
-Object.defineProperty(globalThis, 'ResizeObserver', { configurable: true, value: ResizeObserverMock });
-Object.defineProperty(globalThis, 'IntersectionObserver', { configurable: true, value: IntersectionObserverMock });
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+class IntersectionObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+Object.defineProperty(globalThis, 'ResizeObserver', {
+  configurable: true,
+  value: ResizeObserverMock,
+});
+Object.defineProperty(globalThis, 'IntersectionObserver', {
+  configurable: true,
+  value: IntersectionObserverMock,
+});
 HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
-  clearRect() {}, fillRect() {}, drawImage() {}, fillText() {}, measureText: () => ({ width: 10 }),
-  save() {}, restore() {}, translate() {}, rotate() {}, scale() {}, beginPath() {}, closePath() {}, stroke() {}, fill() {},
+  clearRect() {},
+  fillRect() {},
+  drawImage() {},
+  fillText() {},
+  measureText: () => ({ width: 10 }),
+  save() {},
+  restore() {},
+  translate() {},
+  rotate() {},
+  scale() {},
+  beginPath() {},
+  closePath() {},
+  stroke() {},
+  fill() {},
 }));

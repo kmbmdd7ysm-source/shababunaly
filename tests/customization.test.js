@@ -4,7 +4,7 @@ import {
   normalizeRoster,
   parseRosterCsv,
   rosterToCsv,
-} from '../src/data/customization.js';
+} from '../src/data/customization.ts';
 
 describe('custom manufacturing studio', () => {
   it('enforces product-specific minimums', () => {
@@ -18,7 +18,19 @@ describe('custom manufacturing studio', () => {
   });
 
   it('supports a purpose-built preview for every custom product', () => {
-    const supported = new Set(['uniform', 'jersey', 'shorts', 'shirt', 'hoodie', 'pants', 'tracksuit', 'bag', 'sleeve', 'ball', 'padding']);
+    const supported = new Set([
+      'uniform',
+      'jersey',
+      'shorts',
+      'shirt',
+      'hoodie',
+      'pants',
+      'tracksuit',
+      'bag',
+      'sleeve',
+      'ball',
+      'padding',
+    ]);
     for (const product of CUSTOM_PRODUCT_TYPES) expect(supported.has(product.preview)).toBe(true);
   });
 
@@ -32,9 +44,23 @@ describe('custom manufacturing studio', () => {
   });
 
   it('round-trips a roster through CSV without losing essential fields', () => {
-    const initial = [{ name: 'Seddig Etorki', jerseyName: 'ETORKI', number: '20', jerseySize: 'L', shortsSize: 'L' }];
+    const initial = [
+      {
+        name: 'Seddig Etorki',
+        jerseyName: 'ETORKI',
+        number: '20',
+        jerseySize: 'L',
+        shortsSize: 'L',
+      },
+    ];
     const parsed = parseRosterCsv(rosterToCsv(initial));
     expect(parsed).toHaveLength(1);
-    expect(parsed[0]).toMatchObject({ name: 'Seddig Etorki', jerseyName: 'ETORKI', number: '20', jerseySize: 'L', shortsSize: 'L' });
+    expect(parsed[0]).toMatchObject({
+      name: 'Seddig Etorki',
+      jerseyName: 'ETORKI',
+      number: '20',
+      jerseySize: 'L',
+      shortsSize: 'L',
+    });
   });
 });

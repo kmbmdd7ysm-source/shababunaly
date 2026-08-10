@@ -1,0 +1,366 @@
+/* ========================================================================
+   LHA 9999 — GLOBAL PREMIUM EXPERIENCE LAYER
+   Intentional, performance-conscious enhancement over the existing system.
+   ======================================================================== */
+
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-15: 120px;
+  --space-20: 160px;
+  --ink: #080808;
+  --ink-2: #151515;
+  --ink-3: #242424;
+  --paper: #fbfbf9;
+  --paper-2: #f1f0eb;
+  --motion-fast: 180ms;
+  --motion-med: 420ms;
+  --motion-slow: 850ms;
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  background: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: #111;
+  color: #fff;
+}
+
+@keyframes heroReveal {
+to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes markDrift {
+to {
+    transform: translate3d(0, -12px, 0) rotate(0.8deg);
+  }
+}
+
+@keyframes lhaFloat {
+to {
+    transform: translate3d(4vw, -2vw, 0) scale(1.08);
+  }
+}
+
+@keyframes heartPulse {
+0%,
+  100% {
+    transform: scale(1);
+  }50% {
+    transform: scale(1.32);
+  }
+}
+
+@keyframes overlayIn {
+from {
+    opacity: 0;
+  }to {
+    opacity: 1;
+  }
+}
+
+@keyframes searchIn {
+from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+*,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================================================== */
+
+/* LHA EXPERIENCE SYSTEM — cinematic, motion, media, compare, PWA, account    */
+
+/* ========================================================================== */
+
+:root {
+  --motion-instant: 140ms;
+  --motion-control: 220ms;
+  --motion-card: 300ms;
+  --motion-section: 480ms;
+  --motion-page: 340ms;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-distance: 24px;
+  --surface-0: #050505;
+  --surface-1: #111;
+  --surface-2: #1b1b1b;
+  --paper: #f7f7f5;
+  --ink: #090909;
+}
+
+.route-shell {
+  min-height: 50vh;
+}
+
+.route-enter {
+  animation: route-enter var(--motion-page) var(--ease-premium) both;
+}
+
+@keyframes route-enter {
+from {
+    opacity: 0;
+    transform: translateY(10px);
+  }to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-rise {
+from {
+    opacity: 0;
+    transform: translateY(24px);
+  }to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scroll-dot {
+50% {
+    transform: translateY(17px);
+    opacity: 0.2;
+  }
+}
+
+.offline-page {
+  min-height: 100svh;
+  background: #050505;
+  color: #fff;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 32px;
+}
+
+.offline-page img {
+  width: 110px;
+}
+
+.offline-page p {
+  max-width: 600px;
+  color: #bdbdbd;
+}
+
+@media (prefers-reduced-motion: reduce) {
+*,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* LHA production account, sync and PWA completion */
+
+.password-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border: 1px solid #888;
+}
+
+.password-field input {
+  border: 0;
+  min-width: 0;
+}
+
+.password-field button {
+  border: 0;
+  border-inline-start: 1px solid #aaa;
+  background: transparent;
+  padding: 0 16px;
+}
+
+.check-row {
+  display:flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.danger-button {
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid currentColor;
+  background: transparent;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+}
+
+/* Account production sections */
+
+@media (max-width: 700px) {
+}
+
+/* Commerce preferences */
+
+.currency-selector.compact select {
+  min-height: 38px;
+  padding-inline: 8px 24px;
+  font-size: 0.78rem;
+}
+
+/* Accessible searchable country combobox */
+
+/* Searchable country selector */
+
+/* ---------- Premium interaction & media refinement ---------- */
+
+:root {
+  --motion-fast: 140ms;
+  --motion-base: 220ms;
+  --motion-slow: 420ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-raised: 0 10px 30px rgba(10, 10, 10, 0.1);
+  --shadow-overlay: 0 24px 80px rgba(10, 10, 10, 0.2);
+}
+
+:is(a, button, input, select, textarea, [role='button']) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.route-enter {
+  animation: route-premium-in var(--motion-slow) var(--ease-emphasized) both;
+}
+
+@keyframes route-premium-in {
+from {
+    opacity: 0;
+    transform: translateY(8px);
+  }to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+html {
+    scroll-behavior: auto;
+  }*,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Intentional media-unavailable state: never substitutes unrelated product photography. */
+
+/* ---------- Mobile, RTL, compare, and account layout ownership ---------- */
+
+.profile-photo-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-photo-preview img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.auth-form {
+  width: min(100%, 640px);
+}
+
+.auth-form label,
+.auth-form input,
+.password-field {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 999px) {
+:root {
+    --header-h: 72px;
+  }
+}
+
+@media (max-width: 640px) {.auth-form {
+    padding-inline: 16px;
+  }
+}
+
+/* Final mobile account navigation and touch-state correction.
+   Keep the account section tabs as an isolated horizontal scrollport so labels
+   never shrink into each other or widen the page. */
+
+/* iOS Safari can preserve :hover/:active paint after a tap. On coarse touch
+   pointers the menu trigger and logo must remain visually neutral after taps. */
+
+/* Product photography must remain on a pure white studio surface. */
+
+/* Performance stability: reserve paint geometry and keep route motion composited. */
+
+.route-enter {
+  will-change: opacity, transform;
+}
+
+.deferred-footer.is-ready {
+  min-height: 0;
+}
+
+/* Two-path registration: personal shoppers or verified team/business buyers. */
+
+.organization-signup-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
+  gap: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

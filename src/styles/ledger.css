@@ -1,0 +1,522 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK ledger (rebuilt cart composition)
+   --------------------------------------------------------------------------
+   The bag is a running account, not a page with a hero and two columns.
+
+     masthead   the line count as a figure against a rule
+     threshold  free-delivery progress as a measured bar, not a notice box
+     lines      numbered entries in a ledger
+     reckoning  a specification block, total set apart by a heavier rule
+
+   Restrained by intent: nothing moves near a total.
+   ========================================================================== */
+
+.gw-ledger {
+  padding-block: clamp(28px, 4vw, 48px) clamp(48px, 7vw, 96px);
+}
+
+.gw-ledger-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+/* ---------- Masthead ------------------------------------------------------- */
+
+.gw-ledger-head {
+  padding-block-end: var(--sh-s-4);
+  border-block-end: 2px solid var(--sh-ink);
+  margin-block-end: var(--sh-s-5);
+}
+
+.gw-ledger-head .gw-spec {
+  margin: 0 0 4px;
+  color: var(--sh-ink-50);
+}
+
+.gw-ledger-head-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-4);
+}
+
+.gw-ledger-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.9rem, 1.3rem + 2.8vw, 3.4rem);
+  font-weight: 800;
+  font-stretch: 106%;
+  line-height: 1;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-ledger-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.6rem, 1.2rem + 2vw, 2.6rem);
+  line-height: 1.3;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-ledger-count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+}
+
+.gw-ledger-count .gw-figure {
+  font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.8rem);
+}
+
+.gw-ledger-count .gw-spec {
+  color: var(--sh-ink-50);
+}
+
+/* ---------- Body ------------------------------------------------------------ */
+
+.gw-ledger-body {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .gw-ledger-body {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  }
+}
+
+.gw-ledger-empty {
+  padding-block: var(--sh-s-6);
+}
+
+/* ---------- Threshold -------------------------------------------------------- */
+
+.gw-threshold {
+  padding-block-end: var(--sh-s-3);
+  margin-block-end: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-threshold-text {
+  margin: 0 0 6px;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-verified);
+  font-variant-numeric: tabular-nums;
+}
+
+[lang='ar'] .gw-threshold-text {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-threshold-bar {
+  inline-size: 100%;
+  block-size: 3px;
+  appearance: none;
+  border: 0;
+  background: var(--sh-rule);
+}
+
+.gw-threshold-bar::-webkit-progress-bar {
+  background: var(--sh-rule);
+}
+
+.gw-threshold-bar::-webkit-progress-value {
+  background: var(--sh-verified);
+}
+
+.gw-threshold-bar::-moz-progress-bar {
+  background: var(--sh-verified);
+}
+
+/* ---------- Lines -------------------------------------------------------------
+   Numbered entries. The index is the ledger's spine. */
+
+.gw-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--sh-rule);
+}
+
+.gw-line {
+  display: grid;
+  grid-template-columns: 24px 88px minmax(0, 1fr) auto;
+  gap: var(--sh-s-3);
+  align-items: start;
+  padding-block: var(--sh-s-4);
+  border-block-end: 1px solid var(--sh-rule);
+}
+
+.gw-line-index {
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+  padding-block-start: 4px;
+}
+
+.gw-line-media {
+  inline-size: 88px;
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  overflow: hidden;
+  display: block;
+}
+
+.gw-line-media img {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}
+
+.gw-line-name {
+  font-family: var(--sh-font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  font-stretch: 96%;
+  color: var(--sh-ink);
+  text-decoration: none;
+}
+
+[lang='ar'] .gw-line-name {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+}
+
+.gw-line-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gw-line-meta {
+  margin: 4px 0 var(--sh-s-2);
+  color: var(--sh-ink-50);
+  font-size: var(--sh-t-small);
+}
+
+.gw-line-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+}
+
+.gw-line-fixed {
+  font-variant-numeric: tabular-nums;
+  color: var(--sh-ink-70);
+  font-size: var(--sh-t-small);
+}
+
+.gw-line-remove {
+  min-block-size: var(--sh-target-min);
+  border: 0;
+  background: transparent;
+  color: var(--sh-alert);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: var(--sh-t-small);
+}
+
+.gw-line-price {
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.gw-ledger-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: var(--sh-target);
+  margin-block-start: var(--sh-s-4);
+  color: var(--sh-ink-70);
+  text-decoration: none;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-ledger-back {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-ledger-back:hover {
+  color: var(--sh-ink);
+}
+
+/* RTL: the back chevron points the other way. */
+[dir='rtl'] .gw-ledger-back svg {
+  transform: scaleX(-1);
+}
+
+/* ---------- Reckoning ---------------------------------------------------------- */
+
+.gw-reckoning {
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: var(--sh-s-5);
+  position: sticky;
+  inset-block-start: calc(72px + var(--sh-s-4));
+}
+
+.gw-reckoning-title {
+  margin: 0 0 var(--sh-s-3);
+  padding-block-end: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  color: var(--sh-ink-70);
+}
+
+.gw-reckoning-rows {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-reckoning-rows > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-block: 8px;
+}
+
+.gw-reckoning-rows dt,
+.gw-reckoning-rows dd {
+  margin: 0;
+}
+
+.gw-reckoning-muted {
+  color: var(--sh-ink-50);
+  text-align: end;
+  font-size: var(--sh-t-small);
+}
+
+.gw-reckoning-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  margin: var(--sh-s-3) 0 var(--sh-s-4);
+  padding-block-start: var(--sh-s-3);
+  border-block-start: 2px solid var(--sh-ink);
+  font-family: var(--sh-font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+[lang='ar'] .gw-reckoning-total {
+  font-family: var(--sh-font-arabic);
+}
+
+.gw-reckoning-commit {
+  inline-size: 100%;
+  justify-content: center;
+  min-block-size: var(--sh-target-lg);
+}
+
+.gw-reckoning-note {
+  margin: var(--sh-s-3) 0 0;
+  color: var(--sh-ink-50);
+  font-size: var(--sh-t-small);
+  text-align: center;
+}
+
+/* ---------- Mobile ---------------------------------------------------------------- */
+
+@media (max-width: 699px) {
+  .gw-line {
+    grid-template-columns: 20px 68px minmax(0, 1fr);
+    gap: var(--sh-s-2);
+  }
+
+  .gw-line-media {
+    inline-size: 68px;
+  }
+
+  /* The price drops under the body rather than squeezing a fourth column. */
+  .gw-line-price {
+    grid-column: 2 / -1;
+    text-align: start;
+    margin-block-start: var(--sh-s-2);
+  }
+
+  .gw-reckoning {
+    position: static;
+    padding: var(--sh-s-4);
+  }
+}
+
+/* ---------- The empty bag as a departure board -------------------------------
+   An empty bag used to be a small dashed box adrift in a tall white field with
+   the footer crowding in — a dead end at the exact moment a visitor is most
+   likely to leave. It is now a way back in. */
+
+.gw-ledger-empty {
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  min-block-size: 56svh;
+  padding-block: clamp(32px, 6vh, 72px);
+}
+
+@media (min-width: 900px) {
+  .gw-ledger-empty {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.gw-ledger-empty-line {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3.2rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 1;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-ledger-empty-line {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.3;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-ledger-empty-hint {
+  margin: var(--sh-s-3) 0 var(--sh-s-4);
+  max-inline-size: 40ch;
+  color: var(--sh-ink-70);
+}
+
+.gw-ledger-gates {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--sh-rule-strong);
+}
+
+.gw-ledger-gates a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--sh-s-3);
+  min-block-size: var(--sh-target);
+  padding-block: var(--sh-s-3);
+  border-block-end: 1px solid var(--sh-rule);
+  color: var(--sh-ink);
+  text-decoration: none;
+}
+
+.gw-ledger-gates a:hover {
+  border-block-end-color: var(--sh-ink);
+}
+
+.gw-ledger-gate-num,
+.gw-ledger-gate-count {
+  font-family: var(--sh-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  color: var(--sh-ink-50);
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-ledger-gate-name {
+  font-family: var(--sh-font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-stretch: 96%;
+  text-transform: uppercase;
+  letter-spacing: var(--sh-tr-title);
+}
+
+[lang='ar'] .gw-ledger-gate-name {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  text-transform: none;
+  letter-spacing: var(--sh-tr-ar);
+}
+
+.gw-empty-orb {
+  color: var(--sh-ink-50);
+  margin-block-end: var(--sh-s-4);
+}
+
+.gw-empty-orb svg {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gw-empty-orb svg {
+    animation: gw-ball-spin 18s linear infinite;
+  }
+}
+
+@keyframes gw-ball-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gw-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sh-s-3);
+  margin-block-start: var(--sh-s-4);
+}
+
+.gw-btn {
+  border-radius: 999px;
+}
+
+.gw-btn--ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--sh-target-lg, 48px);
+  padding-inline: var(--sh-s-5);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-btn--ghost {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: 0;
+  text-transform: none;
+}

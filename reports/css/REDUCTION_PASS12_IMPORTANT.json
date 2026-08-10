@@ -1,0 +1,15 @@
+{
+  "pass": 12,
+  "results": {
+    "global.css": {
+      "before": 68,
+      "after": 33,
+      "removed": 35
+    },
+    "premium.css": {
+      "before": 36,
+      "after": 26,
+      "removed": 10
+    }
+  }
+}

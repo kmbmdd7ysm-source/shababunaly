@@ -1,0 +1,8 @@
+{
+  "removed": [
+    "shop-count",
+    "gallery-thumbs",
+    "cart-lines"
+  ],
+  "count": 3
+}

@@ -1,0 +1,466 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK account (rebuilt composition)
+   --------------------------------------------------------------------------
+   WAS: a heading row with an avatar, a title and a sign-out button, above a
+   two-column `.account-layout` of a plain nav column and a content div.
+
+   NOW:
+     identity   a masthead carrying the avatar editor, the signed-in address
+                and the live sync status as specification, with sign-out as the
+                masthead's own action
+     register   a NUMBERED section index, matching the language used by the
+                site masthead, the catalogue and the colophon
+     panel      the active section on a drawn plate
+
+   Plus a focused GATE for authentication: one centred plate on a measured
+   ground, with nothing competing with the form.
+
+   Restrained by intent — this is a customer's own data, not a campaign.
+   ========================================================================== */
+
+/* ---------- Identity masthead ------------------------------------------------ */
+
+.gw-account {
+  padding-block: clamp(24px, 4vw, 48px) clamp(48px, 7vw, 96px);
+}
+
+.gw-account-inner {
+  max-inline-size: var(--sh-container);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.gw-account-identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-4);
+  padding-block-end: var(--sh-s-4);
+  border-block-end: 2px solid var(--sh-ink);
+  margin-block-end: var(--sh-s-5);
+}
+
+.gw-account-avatar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  flex: none;
+}
+
+.gw-account-avatar > span {
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .gw-account-avatar > span {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-account-avatar input[type='file'] {
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.gw-account-who {
+  flex: 1 1 260px;
+  min-inline-size: 0;
+}
+
+.gw-account-who .gw-spec {
+  margin: 0 0 4px;
+  color: var(--sh-ink-50);
+}
+
+.gw-account-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.6rem, 1.2rem + 2.2vw, 2.8rem);
+  font-weight: 800;
+  font-stretch: 104%;
+  line-height: 1;
+  letter-spacing: var(--sh-tr-display);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-account-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.3;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-account-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+  margin: var(--sh-s-2) 0 0;
+  color: var(--sh-ink-70);
+  font-size: var(--sh-t-small);
+  overflow-wrap: anywhere;
+}
+
+/* Sync state carries a word and a mark, never colour alone. */
+.gw-account-sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-50);
+}
+
+[lang='ar'] .gw-account-sync {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-account-sync[data-status='ready'],
+.gw-account-sync[data-status='synced'] {
+  color: var(--sh-verified);
+}
+
+.gw-account-sync[data-status='error'] {
+  color: var(--sh-alert);
+}
+
+.gw-account-signout {
+  flex: none;
+}
+
+/* ---------- Body: register + panel --------------------------------------------- */
+
+.gw-account-body {
+  display: grid;
+  gap: var(--sh-col-gap);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .gw-account-body {
+    grid-template-columns: 244px minmax(0, 1fr);
+  }
+}
+
+.gw-account-register {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-inline-start: 2px solid var(--sh-ink);
+  padding-inline-start: var(--sh-s-3);
+}
+
+@media (min-width: 900px) {
+  .gw-account-register {
+    position: sticky;
+    inset-block-start: calc(72px + var(--sh-s-4));
+  }
+}
+
+@media (max-width: 899px) {
+  .gw-account-register {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-inline-start: 0;
+    border-block-end: 1px solid var(--sh-rule);
+    padding-inline-start: 0;
+    padding-block-end: 2px;
+  }
+
+  .gw-account-register::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.gw-account-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target);
+  padding-inline: 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sh-ink) 6%, transparent);
+  color: var(--sh-ink-70);
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  font-family: var(--sh-font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+[lang='ar'] .gw-account-tab {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  font-size: 0.875rem;
+}
+
+.gw-account-tab:hover {
+  background: color-mix(in srgb, var(--sh-ink) 12%, transparent);
+  color: var(--sh-ink);
+}
+
+.gw-account-tab.is-active {
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+}
+
+.gw-account-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--sh-s-3);
+}
+
+.gw-account-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-2);
+  padding: var(--sh-s-4);
+  border: 0;
+  border-radius: var(--sh-r-3, 1.25rem);
+  background: color-mix(in srgb, var(--sh-ink) 4%, var(--sh-chalk));
+}
+
+.gw-account-summary-card h2 {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--sh-ink-70);
+}
+
+.gw-account-summary-card strong {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-account-panel {
+  min-inline-size: 0;
+}
+
+/* ---------- The gate ------------------------------------------------------------
+   Authentication is one focused task. A centred plate, nothing competing. */
+
+.gw-gate {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  padding-block: clamp(32px, 6vw, 88px);
+  padding-inline: var(--sh-s-4);
+  background: var(--sh-chalk-2);
+  min-block-size: 60vh;
+}
+
+.gw-gate-form {
+  inline-size: min(30rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-strong);
+  border-block-start: 3px solid var(--sh-ink);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  padding: clamp(20px, 4vw, 40px);
+}
+
+.gw-gate-form .gw-spec {
+  margin: 0;
+  color: var(--sh-ink-50);
+}
+
+.gw-gate-title {
+  margin: 0;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem);
+  font-weight: 800;
+  font-stretch: 100%;
+  line-height: 1.05;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-gate-title {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  line-height: 1.34;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+@media (max-width: 599px) {
+  .gw-gate {
+    padding-inline: 0;
+    background: var(--sh-chalk);
+  }
+
+  .gw-gate-form {
+    border-inline: 0;
+    border-radius: 0;
+  }
+}
+
+/* ---------- Gate fields ------------------------------------------------------------
+   The legacy styling reached these through `.auth-form label/input`, which no
+   longer matches now the wrapper is `gw-gate-form`. Styled here directly, so
+   the gate owns its own form presentation rather than inheriting it. */
+
+.gw-gate-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+}
+
+[lang='ar'] .gw-gate-form label {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-gate-form input[type='email'],
+.gw-gate-form input[type='password'],
+.gw-gate-form input[type='text'],
+.gw-gate-form input[type='tel'],
+.gw-gate-form select {
+  inline-size: 100%;
+  min-block-size: var(--sh-target);
+  padding-inline: 12px;
+  border: 1px solid var(--sh-rule-strong);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  font-family: var(--sh-font-text);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+[lang='ar'] .gw-gate-form input,
+[lang='ar'] .gw-gate-form select {
+  font-family: var(--sh-font-arabic);
+}
+
+.gw-gate-form input:focus-visible,
+.gw-gate-form select:focus-visible {
+  border-color: var(--sh-ink);
+}
+
+/* Password + reveal as one measured control. */
+.gw-gate-form .password-field {
+  display: flex;
+  gap: 0;
+}
+
+.gw-gate-form .password-field input {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.gw-gate-form .password-field button {
+  flex: none;
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-strong);
+  border-inline-start: 0;
+  border-start-end-radius: var(--sh-r-1);
+  border-end-end-radius: var(--sh-r-1);
+  background: var(--sh-chalk-2);
+  color: var(--sh-ink-70);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+}
+
+.gw-gate-form .password-field button:hover {
+  color: var(--sh-ink);
+}
+
+/* The commit control. */
+.gw-gate-form > button[type='submit'],
+.gw-gate-form > .btn-primary {
+  min-block-size: var(--sh-target-lg);
+  inline-size: 100%;
+  border: 1px solid var(--sh-ink);
+  border-radius: var(--sh-r-1);
+  background: var(--sh-ink);
+  color: var(--sh-chalk);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 800;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-gate-form > button[type='submit'],
+[lang='ar'] .gw-gate-form > .btn-primary {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-gate-form > button[type='submit']:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Secondary routes out of the gate sit on one rule. */
+.gw-gate-form .link-btn,
+.gw-gate-form button:not([type='submit']):not(.password-field button) {
+  background: transparent;
+  border: 0;
+  color: var(--sh-ink-70);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-block-size: var(--sh-target-min);
+  font-size: 0.875rem;
+}
+
+.gw-gate-form .link-btn:hover {
+  color: var(--sh-ink);
+}
+
+.gw-gate-form .form-notice,
+.gw-gate-form .form-status {
+  border-inline-start: 3px solid var(--sh-ink);
+  padding: var(--sh-s-3);
+  background: var(--sh-chalk-2);
+  border-radius: var(--sh-r-1);
+  font-size: var(--sh-t-small);
+}

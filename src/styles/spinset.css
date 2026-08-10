@@ -1,0 +1,52 @@
+.gw-spin {
+  display: grid;
+  gap: 0.65rem;
+  color: #f4f1ea;
+}
+
+.gw-spin-badge {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(196 163 90 / 0.9);
+}
+
+.gw-spin-stage {
+  aspect-ratio: 1;
+  max-inline-size: 40rem;
+  margin-inline: auto;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #0d0d0d;
+  touch-action: none;
+  cursor: ew-resize;
+}
+
+.gw-spin-stage:focus-visible {
+  outline: 2px solid #c4a35a;
+  outline-offset: 3px;
+}
+
+.gw-spin-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.gw-spin-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: rgb(255 255 255 / 0.65);
+}
+
+.gw-spin--missing,
+.gw-spin--invalid {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #141414;
+}

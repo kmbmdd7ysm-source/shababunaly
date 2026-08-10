@@ -1,0 +1,85 @@
+/* Domain CSS: domain-pwa-cookie.css — consolidated from legacy extracts; owned by route/components */
+
+/* ---- source: pwa-cookie-from-global.css ---- */
+
+/* from global */
+
+.cookie-banner {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1200;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -8px 30px rgba(10, 10, 10, 0.1);
+  animation: slideUp 0.3s var(--ease);
+}
+
+.cookie-banner-inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: 1.25rem var(--gutter);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+.cookie-banner-inner {
+  grid-template-columns: 1fr auto;
+}
+
+.cookie-banner-text h2 {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+}
+
+.cookie-banner-text p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.cookie-options {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.cookie-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.cookie-option input {
+  margin-top: 0.15em;
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+}
+
+.cookie-option .always {
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+  color: var(--muted-2);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.site-header,
+.site-footer,
+.cookie-banner,
+.announcement-bar {
+  display: none;
+}

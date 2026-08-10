@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-08-09T21:30:10.969174+00:00",
+  "commitSha": "6efe3b2458f486a6dc9a2cc7d5bb375b93342d63",
+  "sourceFiles": 269,
+  "strictFiles": 221,
+  "strictCoveragePercent": 82.16,
+  "cssLegacy": {
+    "global.css": {
+      "lines": 5070,
+      "important": 127
+    },
+    "premium.css": {
+      "lines": 1631,
+      "important": 37
+    },
+    "shababuna.css": {
+      "lines": 3067,
+      "important": 0
+    }
+  },
+  "remainingApiJs": 0,
+  "remainingSrcJsx": 48,
+  "remainingPages": [
+    "src/pages/AccountPage.jsx",
+    "src/pages/CheckoutPage.jsx",
+    "src/pages/CustomizePage.jsx",
+    "src/pages/DesignSharePage.jsx",
+    "src/pages/OperationsDashboardPage.jsx",
+    "src/pages/OrderDetailPage.jsx",
+    "src/pages/SpecialRequestPage.jsx",
+    "src/pages/TeamsWholesalePage.jsx"
+  ]
+}

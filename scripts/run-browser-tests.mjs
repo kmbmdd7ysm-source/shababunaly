@@ -5,13 +5,22 @@ import { chromium } from 'playwright';
 
 const args = process.argv.slice(2);
 const joinedArgs = args.join(' ');
-const resultKind = joinedArgs.includes('accessibility') ? 'accessibility' : joinedArgs.includes('visual') ? 'visual' : joinedArgs.includes('pwa-upgrade') ? 'pwa-upgrade' : 'e2e';
+const resultKind = joinedArgs.includes('accessibility')
+  ? 'accessibility'
+  : joinedArgs.includes('visual')
+    ? 'visual'
+    : joinedArgs.includes('pwa-upgrade')
+      ? 'pwa-upgrade'
+      : 'e2e';
 let resultStatus = 'failed';
 let resultError = '';
 let resultStats = null;
 const writeResult = async () => {
   await mkdir('reports/browser', { recursive: true });
-  await writeFile(`reports/browser/${resultKind}-result.json`, `${JSON.stringify({ status: resultStatus, generatedAt: new Date().toISOString(), commitSha: process.env.GITHUB_SHA || null, runId: process.env.GITHUB_RUN_ID || null, target: baseURL || null, spec: joinedArgs || 'default', stats: resultStats, error: resultError || null }, null, 2)}\n`);
+  await writeFile(
+    `reports/browser/${resultKind}-result.json`,
+    `${JSON.stringify({ status: resultStatus, generatedAt: new Date().toISOString(), commitSha: process.env.GITHUB_SHA || null, runId: process.env.GITHUB_RUN_ID || null, target: baseURL || null, spec: joinedArgs || 'default', stats: resultStats, error: resultError || null }, null, 2)}\n`,
+  );
 };
 const external = process.env.PLAYWRIGHT_BASE_URL;
 let server;
@@ -64,7 +73,7 @@ const waitReady = async (url) => {
     } catch (error) {
       lastError = error;
     }
-    await new Promise((r) => setTimeout(r, 250));
+    await new Promise((resolve) => setTimeout(resolve, 250));
   }
   throw new Error(
     `Browser server readiness failed for ${url}: ${lastError?.message || 'unknown error'}`,
@@ -76,20 +85,24 @@ try {
   if (!baseURL) {
     const port = await freePort();
     baseURL = `http://127.0.0.1:${port}`;
-    server = spawn(
-      process.execPath,
-      ['scripts/serve-production-test.mjs', String(port)],
-      { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, PORT: String(port) } },
-    );
+    server = spawn(process.execPath, ['scripts/serve-production-test.mjs', String(port)], {
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: { ...process.env, PORT: String(port) },
+    });
     server.stdout.on('data', (chunk) => process.stdout.write(`[production-test] ${chunk}`));
     server.stderr.on('data', (chunk) => process.stderr.write(`[production-test] ${chunk}`));
   }
   log(`Browser target: ${baseURL}${external ? ' (external)' : ' (local dynamic port)'}`);
   await waitReady(baseURL);
   log('Server readiness check passed.');
-  const browser = await chromium.launch(process.env.CHROMIUM_PATH
-    ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage'] }
-    : {});
+  const browser = await chromium.launch(
+    process.env.CHROMIUM_PATH
+      ? {
+          executablePath: process.env.CHROMIUM_PATH,
+          args: ['--no-sandbox', '--disable-dev-shm-usage'],
+        }
+      : {},
+  );
   try {
     const page = await browser.newPage();
     await page.goto(baseURL, { waitUntil: 'domcontentloaded', timeout: 10_000 });

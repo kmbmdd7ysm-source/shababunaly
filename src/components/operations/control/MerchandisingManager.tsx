@@ -1,0 +1,229 @@
+import type { ReactElement } from 'react';
+import { useState } from 'react';
+import { upsertOperationalEntity } from '../../../services/operations';
+import { OperationalRow } from './shared';
+import type { OperationsRunFn } from '../../../types/operations';
+
+export default function MerchandisingManager({
+  state,
+  pick,
+  saving,
+  run,
+}: {
+  state: unknown;
+  pick: (value: string | { en?: string; ar?: string }) => string;
+  saving?: string | boolean | undefined;
+  run: OperationsRunFn;
+}): ReactElement {
+  const s = (state || {}) as Record<string, unknown>;
+  const rows = (key: string) =>
+    Array.isArray(s[key]) ? (s[key] as Array<Record<string, unknown>>) : [];
+  const [collection, setCollection] = useState({
+    slug: '',
+    name_en: '',
+    name_ar: '',
+    status: 'draft',
+    product_ids: [],
+  });
+  const [coupon, setCoupon] = useState({
+    code: '',
+    discount_type: 'percent',
+    discount_value: '10',
+    minimum_subtotal: '0',
+    active: true,
+  });
+  const [tax, setTax] = useState({
+    country_code: '',
+    region: '',
+    rate: '0',
+    active: true,
+  });
+  return (
+    <section className="operations-subsection">
+      <h3>
+        {pick({
+          en: 'Collections, coupons & tax rules',
+          ar: 'المجموعات والكوبونات وقواعد الضرائب',
+        })}
+      </h3>
+      <div className="operations-card-grid">
+        <form
+          className="operations-card"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void run(
+              'collection',
+              () => upsertOperationalEntity('catalog_collections', collection),
+              pick({ en: 'Collection saved.', ar: 'تم حفظ المجموعة.' }),
+            );
+          }}
+        >
+          <strong>{pick({ en: 'Collection', ar: 'مجموعة' })}</strong>
+          <input
+            value={collection.slug}
+            onChange={(event) =>
+              setCollection({
+                ...collection,
+                slug: event.target.value.replace(/[^a-z0-9-]/gi, '-').toLowerCase(),
+              })
+            }
+            placeholder="collection-slug"
+            required
+          />
+          <input
+            value={collection.name_en}
+            onChange={(event) => setCollection({ ...collection, name_en: event.target.value })}
+            placeholder="Name EN"
+            required
+          />
+          <input
+            value={collection.name_ar}
+            onChange={(event) => setCollection({ ...collection, name_ar: event.target.value })}
+            placeholder="الاسم"
+            required
+          />
+          <select
+            value={collection.status}
+            onChange={(event) => setCollection({ ...collection, status: event.target.value })}
+          >
+            <option>draft</option>
+            <option>active</option>
+            <option>archived</option>
+          </select>
+          <button className="btn-primary compact" disabled={saving === 'collection'}>
+            {pick({ en: 'Save collection', ar: 'حفظ المجموعة' })}
+          </button>
+        </form>
+        <form
+          className="operations-card"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void run(
+              'coupon',
+              () =>
+                upsertOperationalEntity('coupons', {
+                  ...coupon,
+                  code: coupon.code.toUpperCase(),
+                  discount_value: Number(coupon.discount_value),
+                  minimum_subtotal: Number(coupon.minimum_subtotal),
+                }),
+              pick({ en: 'Coupon saved.', ar: 'تم حفظ الكوبون.' }),
+            );
+          }}
+        >
+          <strong>{pick({ en: 'Coupon', ar: 'كوبون' })}</strong>
+          <input
+            value={coupon.code}
+            onChange={(event) => setCoupon({ ...coupon, code: event.target.value })}
+            placeholder="CODE"
+            required
+          />
+          <select
+            value={coupon.discount_type}
+            onChange={(event) => setCoupon({ ...coupon, discount_type: event.target.value })}
+          >
+            <option value="percent">percent</option>
+            <option value="fixed">fixed</option>
+          </select>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            value={coupon.discount_value}
+            onChange={(event) => setCoupon({ ...coupon, discount_value: event.target.value })}
+          />
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value={coupon.minimum_subtotal}
+            onChange={(event) => setCoupon({ ...coupon, minimum_subtotal: event.target.value })}
+          />
+          <button className="btn-primary compact" disabled={saving === 'coupon'}>
+            {pick({ en: 'Save coupon', ar: 'حفظ الكوبون' })}
+          </button>
+        </form>
+        <form
+          className="operations-card"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void run(
+              'tax-rule',
+              () =>
+                upsertOperationalEntity('tax_rules', {
+                  ...tax,
+                  country_code: tax.country_code.toUpperCase(),
+                  region: tax.region || null,
+                  rate: Number(tax.rate),
+                }),
+              pick({ en: 'Tax rule saved.', ar: 'تم حفظ قاعدة الضريبة.' }),
+            );
+          }}
+        >
+          <strong>{pick({ en: 'Tax rule', ar: 'قاعدة ضريبة' })}</strong>
+          <input
+            maxLength={2}
+            value={tax.country_code}
+            onChange={(event) => setTax({ ...tax, country_code: event.target.value })}
+            placeholder="US"
+            required
+          />
+          <input
+            value={tax.region}
+            onChange={(event) => setTax({ ...tax, region: event.target.value })}
+            placeholder={pick({ en: 'Region (optional)', ar: 'المنطقة (اختياري)' })}
+          />
+          <input
+            type="number"
+            min="0"
+            max="1"
+            step="0.0001"
+            value={tax.rate}
+            onChange={(event) => setTax({ ...tax, rate: event.target.value })}
+          />
+          <button className="btn-primary compact" disabled={saving === 'tax-rule'}>
+            {pick({ en: 'Save tax rule', ar: 'حفظ قاعدة الضريبة' })}
+          </button>
+        </form>
+      </div>
+      <details>
+        <summary>{pick({ en: 'Existing merchandising rules', ar: 'قواعد العرض الحالية' })}</summary>
+        <div className="workspace-list">
+          {rows('collections').map((row: Record<string, unknown>) => (
+            <OperationalRow
+              key={String(row.id)}
+              table="catalog_collections"
+              row={row}
+              label={String(row.name_en || row.name || '')}
+              run={run}
+              saving={saving}
+              pick={pick}
+            />
+          ))}
+          {rows('coupons').map((row: Record<string, unknown>) => (
+            <OperationalRow
+              key={String(row.id)}
+              table="coupons"
+              row={row}
+              label={String(row.code || '')}
+              run={run}
+              saving={saving}
+              pick={pick}
+            />
+          ))}
+          {rows('taxRules').map((row: Record<string, unknown>) => (
+            <OperationalRow
+              key={String(row.id)}
+              table="tax_rules"
+              row={row}
+              label={`${row.country_code}${row.region ? ` · ${row.region}` : ''}`}
+              run={run}
+              saving={saving}
+              pick={pick}
+            />
+          ))}
+        </div>
+      </details>
+    </section>
+  );
+}

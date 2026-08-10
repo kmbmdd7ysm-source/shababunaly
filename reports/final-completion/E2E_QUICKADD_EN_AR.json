@@ -1,0 +1,18 @@
+[
+  {
+    "lang": "en",
+    "dir": "ltr",
+    "overflow": false,
+    "sheet": true,
+    "hasLine": true,
+    "checkoutH1": "Checkout"
+  },
+  {
+    "lang": "ar",
+    "dir": "rtl",
+    "overflow": false,
+    "sheet": true,
+    "hasLine": true,
+    "checkoutH1": "الدفع"
+  }
+]

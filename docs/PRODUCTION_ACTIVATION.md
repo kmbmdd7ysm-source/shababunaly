@@ -92,7 +92,6 @@ Both provider adapters must:
 
 Never trust an amount sent by the browser.
 
-
 ## 3.1 Verified notification delivery
 
 The approved endpoint is already configured:
@@ -140,7 +139,6 @@ Recommended video exports:
 - Mobile hero: 1080×1350 or 1080×1920 crop, separately encoded.
 - Do not autoplay multiple below-the-fold videos.
 - Keep a static poster and respect `prefers-reduced-motion`.
-
 
 ## 5.1 Staff and super-admin access
 

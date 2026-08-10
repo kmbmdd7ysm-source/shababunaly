@@ -1,5 +1,41 @@
 {
-  "status": "not_run",
-  "generatedAt": "2026-08-02T18:55:42.940006+00:00",
-  "reason": "Not executable in this sandbox: clean registry dependencies and/or isolated external services were unavailable. No pass is claimed."
+  "status": "passed",
+  "generatedAt": "2026-08-10T06:00:45.883Z",
+  "versions": [
+    "pwa-a-1786341590788",
+    "pwa-b-1786341590788"
+  ],
+  "checks": [
+    {
+      "name": "version_a_installed",
+      "passed": true,
+      "cacheKeys": [
+        "shababuna-pwa-a-1786341590788-static"
+      ]
+    },
+    {
+      "name": "old_caches_removed",
+      "passed": true,
+      "cacheKeys": [
+        "shababuna-pwa-b-1786341590788-static",
+        "shababuna-pwa-b-1786341590788-pages",
+        "shababuna-pwa-b-1786341590788-media"
+      ]
+    },
+    {
+      "name": "version_b_active",
+      "passed": true,
+      "cacheKeys": [
+        "shababuna-pwa-b-1786341590788-static",
+        "shababuna-pwa-b-1786341590788-pages",
+        "shababuna-pwa-b-1786341590788-media"
+      ]
+    },
+    {
+      "name": "sensitive_routes_not_cached",
+      "passed": true,
+      "matches": []
+    }
+  ],
+  "error": null
 }

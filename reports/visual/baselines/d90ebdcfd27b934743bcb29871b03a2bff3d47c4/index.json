@@ -1,0 +1,133 @@
+{
+  "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+  "generatedAt": "2026-08-10T05:42:40.248Z",
+  "results": [
+    {
+      "route": "/",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "f0ddbbfab8dcb699461178f28cd6dec3067f2c2101a82f02adaf2975a2244ce6",
+      "file": "home.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/shop",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "eb0bd40f1ed951be5a97df2cb8715a0629611a365478dbb50b1e2df152fc4042",
+      "file": "shop.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/shop/ready-to-ship",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "f7883315d9316fff31da3c919b06bb2ff9e6edae7df7f2430b8b2df756e7fba9",
+      "file": "ready.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/customize",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "92558d0e77c67ee75c416250f57ae2527a128164a285ed460cc33e1edcfedf95",
+      "file": "customize.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/teams-wholesale",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "8e716988a573ccd83cfdb139c7f6a9102eeea4e6c3755c1b37dc7570fafab436",
+      "file": "teams.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/cart",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "fe96267914972ab89a4907d0066715fb007701fbf2d8aae3886b91809c164121",
+      "file": "cart.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/special-request",
+      "locale": "en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "92b9d19d2e306a72d5041a7f31b76e98ffad76149e6cf1a0b7e7657a353c0b43",
+      "file": "special.png",
+      "overflow": false,
+      "dir": "ltr",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/shop",
+      "locale": "ar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "1acaf06b93503565f9471513791492cd731b38106e3b9be1c0a1fb48c6fa1a8c",
+      "file": "shop-ar-mobile.png",
+      "overflow": false,
+      "dir": "rtl",
+      "status": "BASELINE_CAPTURED"
+    },
+    {
+      "route": "/",
+      "locale": "ar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+      "hash": "12b19869b78e992442e5c43cd5f89ebad65ccbcff93266713dd00c2aa9a99bb8",
+      "file": "home-ar-mobile.png",
+      "overflow": false,
+      "dir": "rtl",
+      "status": "BASELINE_CAPTURED"
+    }
+  ],
+  "humanApproval": "HUMAN_APPROVAL_REQUIRED"
+}

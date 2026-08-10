@@ -1,11 +1,42 @@
+import { execSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
+
+// Build provenance, injected so a preview can prove which commit it serves.
+const git = (cmd) => {
+  try {
+    return execSync(cmd, { encoding: 'utf8' }).trim();
+  } catch {
+    return 'unknown';
+  }
+};
+process.env.VITE_BUILD_SHA ||= git('git rev-parse HEAD');
+process.env.VITE_BUILD_BRANCH ||= git('git rev-parse --abbrev-ref HEAD');
+process.env.VITE_BUILD_TIME ||= new Date().toISOString();
 import react from '@vitejs/plugin-react';
 
-const buildId = String(process.env.VITE_BUILD_ID || process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || Date.now()).slice(0, 80);
+const buildId = String(
+  process.env.VITE_BUILD_ID ||
+    process.env.VERCEL_GIT_COMMIT_SHA ||
+    process.env.GITHUB_SHA ||
+    Date.now(),
+).slice(0, 80);
 
 export default defineConfig({
   define: { 'import.meta.env.VITE_BUILD_ID': JSON.stringify(buildId) },
   plugins: [react()],
+  resolve: {
+    // Keep the real package for bundling; tsc uses the stub via tsconfig paths.
+    alias: {
+      '@google/model-viewer': path.resolve(
+        rootDir,
+        'node_modules/@google/model-viewer/dist/model-viewer.min.js',
+      ),
+    },
+  },
   build: {
     outDir: 'dist',
     target: 'es2020',
@@ -17,9 +48,19 @@ export default defineConfig({
     modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          helmet: ['react-helmet-async'],
+        manualChunks(id) {
+          // Keep react/helmet as shared early chunks.
+          // Do NOT force `three` into a global chunk — that caused modulepreload
+          // of WebGL on Home/Shop. Three must stay behind Customize dynamic import.
+          if (
+            id.includes('node_modules/react-dom') ||
+            id.includes('node_modules/react/') ||
+            id.includes('node_modules/react-router')
+          ) {
+            return 'react';
+          }
+          if (id.includes('node_modules/react-helmet-async')) return 'helmet';
+          return undefined;
         },
       },
     },

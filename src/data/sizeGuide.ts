@@ -1,0 +1,132 @@
+// ============================================================================
+// SIZE GUIDE  —  EDITABLE MEASUREMENTS (cm). Add/adjust rows per product type.
+// `key` matches product.sizeGuide. `columns` are bilingual headers.
+// ============================================================================
+
+export const sizeUnitNote = {
+  en: 'Measurements in centimetres. If between sizes, size up.',
+  ar: 'القياسات بالسنتيمتر. إذا كنت بين مقاسين، اختر الأكبر.',
+};
+
+export const sizeGuides = [
+  {
+    key: 't-shirts',
+    title: { en: 'T-Shirts', ar: 'تيشيرتات' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Chest', ar: 'الصدر' },
+      { en: 'Length', ar: 'الطول' },
+    ],
+    rows: [
+      ['XS', '88', '66'],
+      ['S', '96', '69'],
+      ['M', '104', '72'],
+      ['L', '112', '74'],
+      ['XL', '120', '76'],
+      ['XXL', '128', '78'],
+    ],
+  },
+  {
+    key: 'tops',
+    title: { en: 'Tops', ar: 'القمصان العلوية' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Chest', ar: 'الصدر' },
+      { en: 'Length', ar: 'الطول' },
+    ],
+    rows: [
+      ['XS', '86', '64'],
+      ['S', '94', '67'],
+      ['M', '102', '70'],
+      ['L', '110', '72'],
+      ['XL', '118', '74'],
+      ['XXL', '126', '76'],
+    ],
+  },
+  {
+    key: 'shorts',
+    title: { en: 'Shorts', ar: 'الشورتات' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Waist', ar: 'الخصر' },
+      { en: 'Inseam', ar: 'الطول الداخلي' },
+    ],
+    rows: [
+      ['XS', '68', '22'],
+      ['S', '74', '23'],
+      ['M', '80', '23'],
+      ['L', '88', '24'],
+      ['XL', '96', '24'],
+      ['XXL', '104', '25'],
+    ],
+  },
+  {
+    key: 'hoodies',
+    title: { en: 'Hoodies', ar: 'الهوديز' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Chest', ar: 'الصدر' },
+      { en: 'Length', ar: 'الطول' },
+    ],
+    rows: [
+      ['XS', '100', '66'],
+      ['S', '108', '69'],
+      ['M', '116', '72'],
+      ['L', '124', '74'],
+      ['XL', '132', '76'],
+      ['XXL', '140', '78'],
+    ],
+  },
+  {
+    key: 'pants',
+    title: { en: 'Pants', ar: 'البناطيل' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Waist', ar: 'الخصر' },
+      { en: 'Inseam', ar: 'الطول الداخلي' },
+    ],
+    rows: [
+      ['XS', '70', '76'],
+      ['S', '76', '77'],
+      ['M', '82', '78'],
+      ['L', '90', '79'],
+      ['XL', '98', '80'],
+      ['XXL', '106', '80'],
+    ],
+  },
+  {
+    key: 'fleece-sets',
+    title: { en: 'Fleece Sets', ar: 'أطقم الفليس' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Chest', ar: 'الصدر' },
+      { en: 'Waist', ar: 'الخصر' },
+    ],
+    rows: [
+      ['XS', '100', '70'],
+      ['S', '108', '76'],
+      ['M', '116', '82'],
+      ['L', '124', '90'],
+      ['XL', '132', '98'],
+      ['XXL', '140', '106'],
+    ],
+  },
+  {
+    key: 'compression',
+    title: { en: 'Compression', ar: 'الملابس الضاغطة' },
+    columns: [
+      { en: 'Size', ar: 'المقاس' },
+      { en: 'Chest', ar: 'الصدر' },
+      { en: 'Height', ar: 'الطول' },
+    ],
+    rows: [
+      ['S', '86–94', '160–170'],
+      ['M', '94–102', '170–178'],
+      ['L', '102–110', '178–186'],
+      ['XL', '110–118', '186–194'],
+      ['XXL', '118–126', '190–200'],
+    ],
+  },
+];
+
+export const getSizeGuide = (key: string) => sizeGuides.find((g) => g.key === key);

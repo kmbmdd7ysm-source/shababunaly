@@ -1,17 +1,50 @@
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
-const required = process.env.REQUIRE_REVIEWED_VISUAL_BASELINES === 'true' || process.env.NODE_ENV === 'production';
-const manifest = JSON.parse(readFileSync('visual-baselines.json','utf8'));
+const required =
+  process.env.REQUIRE_REVIEWED_VISUAL_BASELINES === 'true' || process.env.NODE_ENV === 'production';
+const manifest = JSON.parse(readFileSync('visual-baselines.json', 'utf8'));
 const root = manifest.baselineDirectory || 'e2e/visual.spec.js-snapshots';
-const walk = (dir) => existsSync(dir) ? readdirSync(dir).flatMap((name) => { const file=join(dir,name); return statSync(file).isDirectory()?walk(file):[file]; }) : [];
+const walk = (dir) =>
+  existsSync(dir)
+    ? readdirSync(dir).flatMap((name) => {
+        const file = join(dir, name);
+        return statSync(file).isDirectory() ? walk(file) : [file];
+      })
+    : [];
 const files = walk(root).filter((file) => file.endsWith('.png'));
-const actual = Object.fromEntries(files.map((file) => [relative(root,file).replaceAll('\\','/'),createHash('sha256').update(readFileSync(file)).digest('hex')]));
+const actual = Object.fromEntries(
+  files.map((file) => [
+    relative(root, file).replaceAll('\\', '/'),
+    createHash('sha256').update(readFileSync(file)).digest('hex'),
+  ]),
+);
 const approved = manifest.approvedFiles || {};
 const missingApproval = Object.keys(actual).filter((file) => approved[file] !== actual[file]);
 const missingFile = Object.keys(approved).filter((file) => actual[file] !== approved[file]);
-const reviewerEvidence = Boolean(String(manifest.reviewer||'').trim() && String(manifest.reviewedAt||'').trim() && String(manifest.sourceCommit||'').trim());
-const productionReady = files.length > 0 && missingApproval.length===0 && missingFile.length===0 && reviewerEvidence;
-const report={status:productionReady?'passed':required?'failed':'review_required',generatedAt:new Date().toISOString(),productionReady,baselineCount:files.length,reviewerEvidence,missingApproval,missingFile};
-mkdirSync('reports/browser',{recursive:true});writeFileSync('reports/browser/visual-baseline-review.json',`${JSON.stringify(report,null,2)}\n`);
-if(required&&!productionReady){console.error('Visual baselines are missing or not hash-reviewed by a named reviewer.');process.exit(1);} console.info(`Visual baselines: ${files.length}; reviewed: ${productionReady}.`);
+const reviewerEvidence = Boolean(
+  String(manifest.reviewer || '').trim() &&
+  String(manifest.reviewedAt || '').trim() &&
+  String(manifest.sourceCommit || '').trim(),
+);
+const productionReady =
+  files.length > 0 && missingApproval.length === 0 && missingFile.length === 0 && reviewerEvidence;
+const report = {
+  status: productionReady ? 'passed' : required ? 'failed' : 'review_required',
+  generatedAt: new Date().toISOString(),
+  productionReady,
+  baselineCount: files.length,
+  reviewerEvidence,
+  missingApproval,
+  missingFile,
+};
+mkdirSync('reports/browser', { recursive: true });
+writeFileSync(
+  'reports/browser/visual-baseline-review.json',
+  `${JSON.stringify(report, null, 2)}\n`,
+);
+if (required && !productionReady) {
+  console.error('Visual baselines are missing or not hash-reviewed by a named reviewer.');
+  process.exit(1);
+}
+console.info(`Visual baselines: ${files.length}; reviewed: ${productionReady}.`);

@@ -1,0 +1,540 @@
+/* ==========================================================================
+   SHABABUNA — THE SHELL
+   --------------------------------------------------------------------------
+   A floating header over a cinematic navigation overlay.
+
+   Replaces a permanent 76px vertical rail that cramped the wordmark into an
+   unreadable column, collided its icons with their own labels, and occupied an
+   edge of every viewport it framed.
+
+   Nothing here is pinned to an edge permanently, so full-bleed compositions
+   stay full-bleed. Every offset is logical, so Arabic mirrors with no override.
+   ========================================================================== */
+
+:root {
+  --gw-head-h: 76px;
+  --gw-head-h-sm: 62px;
+}
+
+/* The rail used to inset the document. Nothing does now — the header floats
+   over the content and each route decides its own top offset. */
+#root {
+  padding-inline-start: 0;
+}
+
+/* ---------- The floating header --------------------------------------------- */
+
+/*
+ * The shell is STICKY, not fixed, on ordinary routes.
+ *
+ * A sticky element occupies its space in normal flow, so the document needs no
+ * offset and nothing has to be measured — which matters here because the
+ * announcement is dismissible and its copy wraps differently per locale and
+ * viewport, so any hard-coded offset would be wrong the moment anything
+ * changed. (Publishing a measured height would have meant mutating an inline
+ * custom property, which this repo's CSP lint correctly forbids.)
+ *
+ * Only a declared cinematic opening switches it to fixed, so the composition
+ * can run underneath it.
+ */
+/*
+ * GlobalChrome sticky stack — readiness + announcement + header share one
+ * sticky ancestor so dismiss collapses never leave a stale top offset.
+ */
+.gw-chrome {
+  position: relative;
+  z-index: 800;
+}
+
+.gw-chrome-sticky,
+.gw-shell {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 800;
+  background: color-mix(in srgb, var(--sh-chalk, #f7f5f0) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.gw-chrome-sticky:has(.gw-head[data-condensed='no']),
+.gw-shell:has(.gw-head[data-condensed='no']) {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+/* Cinematic openings stay under a STICKY shell. Fixed positioning covered the
+   system banner and announcement. The opening pulls under the shell instead. */
+[data-cinematic-open='yes'] .route-shell {
+  margin-block-start: calc(-1 * var(--gw-head-h));
+}
+
+@media (max-width: 899px) {
+  [data-cinematic-open='yes'] .route-shell {
+    margin-block-start: calc(-1 * var(--gw-head-h-sm));
+  }
+}
+
+[data-cinematic-open='yes'] .gw-act--open,
+[data-cinematic-open='yes'] .gw-entrance {
+  padding-block-start: calc(var(--gw-head-h) + clamp(24px, 4vh, 48px));
+}
+
+@media (max-width: 899px) {
+  [data-cinematic-open='yes'] .gw-act--open,
+  [data-cinematic-open='yes'] .gw-entrance {
+    padding-block-start: calc(var(--gw-head-h-sm) + clamp(20px, 4vh, 36px));
+  }
+}
+
+.gw-head {
+  position: relative;
+  z-index: 1;
+  block-size: var(--gw-head-h);
+  display: flex;
+  align-items: center;
+  transition:
+    background-color var(--sh-d-3) var(--sh-e-draw),
+    border-color var(--sh-d-3) var(--sh-e-draw),
+    block-size var(--sh-d-3) var(--sh-e-draw);
+  border-block-end: 1px solid transparent;
+}
+
+@media (max-width: 899px) {
+  .gw-head {
+    block-size: var(--gw-head-h-sm);
+  }
+}
+
+/* Transparent over a cinematic opening; a solid bar once you leave it. */
+.gw-head[data-condensed='yes'] {
+  background: var(--sh-night);
+  border-block-end-color: var(--sh-rule-inverse-strong);
+  box-shadow: var(--sh-lift);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-head {
+    transition: none;
+  }
+}
+
+.gw-head-inner {
+  inline-size: 100%;
+  max-inline-size: 1560px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 48px);
+}
+
+.gw-head-brand {
+  flex: none;
+  display: block;
+  line-height: 0;
+}
+
+.gw-head-brand img {
+  block-size: clamp(20px, 2.2vw, 26px);
+  inline-size: auto;
+}
+
+/* The wordmark is a raster. A CSS filter turns it to grey mush on either
+   ground, so the two supplied files are swapped instead. */
+.gw-head-brand-dark {
+  display: none;
+}
+
+.gw-head-nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 34px);
+  min-inline-size: 0;
+}
+
+@media (max-width: 1099px) {
+  .gw-head-nav {
+    display: none;
+  }
+}
+
+.gw-head-link {
+  position: relative;
+  padding-block: 6px;
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-head-link {
+  font-family: var(--sh-font-arabic);
+  font-size: 0.9375rem;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-head-link:hover,
+.gw-head-link.active {
+  color: var(--sh-night-ink);
+}
+
+.gw-head-link.active::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  block-size: 2px;
+  background: currentColor;
+}
+
+.gw-head-tools {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-inline-start: auto;
+}
+
+.gw-tool {
+  position: relative;
+  inline-size: var(--sh-target);
+  block-size: var(--sh-target);
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sh-night-ink-70);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.gw-tool:hover {
+  color: var(--sh-night-ink);
+  background: color-mix(in srgb, var(--sh-night-ink) 10%, transparent);
+}
+
+.gw-tool svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+/* Favourites, compare and account are desktop-only in the header: on a phone
+   they live in the overlay at a comfortable size rather than as 20px targets
+   crowded into a 62px bar. */
+@media (max-width: 899px) {
+  .gw-tool--wide {
+    display: none;
+  }
+}
+
+.gw-tally {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 2px;
+  min-inline-size: 16px;
+  block-size: 16px;
+  padding-inline: 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--sh-night-ink);
+  color: var(--sh-night);
+  font-family: var(--sh-font-display);
+  font-size: 0.5625rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-menu-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-block-size: var(--sh-target);
+  margin-inline-start: var(--sh-s-2);
+  padding-inline: var(--sh-s-4);
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sh-night-ink) 12%, transparent);
+  color: var(--sh-night-ink);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-menu-key {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-menu-key:hover {
+  background: var(--sh-night-2);
+}
+
+.gw-menu-key-bars {
+  display: grid;
+  gap: 4px;
+  inline-size: 16px;
+}
+
+.gw-menu-key-bars i {
+  display: block;
+  block-size: 1.5px;
+  background: currentColor;
+}
+
+@media (max-width: 599px) {
+  .gw-menu-key-word {
+    display: none;
+  }
+
+  .gw-menu-key {
+    inline-size: var(--sh-target);
+    justify-content: center;
+    padding-inline: 0;
+  }
+}
+
+.gw-head :focus-visible,
+.gw-nav :focus-visible {
+  outline: var(--sh-focus-width) solid var(--sh-signal-on-dark);
+  outline-offset: 2px;
+}
+
+/* ---------- The overlay ------------------------------------------------------ */
+
+.gw-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    visibility 0s var(--sh-d-2);
+}
+
+.gw-nav.is-open {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity var(--sh-d-2) var(--sh-e-draw),
+    visibility 0s 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-nav {
+    transition-duration: 0s;
+  }
+}
+
+.gw-nav-bar {
+  flex: none;
+  block-size: var(--gw-head-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sh-s-3);
+  padding-inline: clamp(16px, 3vw, 48px);
+  border-block-end: 1px solid var(--sh-rule-inverse-strong);
+}
+
+@media (max-width: 899px) {
+  .gw-nav-bar {
+    block-size: var(--gw-head-h-sm);
+  }
+}
+
+.gw-nav-brand {
+  line-height: 0;
+}
+
+.gw-nav-brand img {
+  block-size: clamp(20px, 2.2vw, 26px);
+  inline-size: auto;
+}
+
+.gw-nav-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-3);
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-night-ink);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+}
+
+[lang='ar'] .gw-nav-close {
+  font-family: var(--sh-font-arabic);
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-nav-body {
+  flex: 1;
+  display: grid;
+  gap: clamp(28px, 4vw, 72px);
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  max-inline-size: 1560px;
+  inline-size: 100%;
+  margin-inline: auto;
+  padding: clamp(28px, 5vh, 64px) clamp(16px, 3vw, 48px);
+}
+
+@media (min-width: 1000px) {
+  .gw-nav-body {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+  }
+}
+
+/* Primary destinations at display scale — navigation as a moment. */
+.gw-nav-primary {
+  display: flex;
+  flex-direction: column;
+}
+
+.gw-nav-major {
+  display: flex;
+  align-items: center;
+  gap: var(--sh-s-3);
+  min-block-size: clamp(56px, 8vh, 76px);
+  border-block-end: 1px solid var(--sh-rule-inverse);
+  color: var(--sh-night-ink);
+  text-decoration: none;
+  font-family: var(--sh-font-display);
+  font-size: clamp(1.5rem, 1rem + 2.4vw, 2.6rem);
+  font-weight: 800;
+  font-stretch: 100%;
+  line-height: 1.05;
+  letter-spacing: var(--sh-tr-title);
+  text-transform: uppercase;
+  transition: padding-inline-start var(--sh-d-2) var(--sh-e-draw);
+}
+
+[lang='ar'] .gw-nav-major {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  font-size: clamp(1.3rem, 1rem + 1.8vw, 2.1rem);
+  line-height: 1.4;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+.gw-nav-major svg {
+  flex: none;
+  inline-size: 22px;
+  block-size: 22px;
+  color: var(--sh-night-ink-70);
+}
+
+.gw-nav-major:hover {
+  padding-inline-start: var(--sh-s-3);
+}
+
+.gw-nav-major:hover svg {
+  color: var(--sh-night-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-nav-major {
+    transition: none;
+  }
+}
+
+.gw-nav-tree {
+  display: grid;
+  gap: clamp(20px, 3vw, 40px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 168px), 1fr));
+  align-items: start;
+}
+
+.gw-nav-col {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.gw-nav-col .gw-spec {
+  margin: 0 0 var(--sh-s-2);
+  color: var(--sh-night-ink-70);
+}
+
+.gw-nav-minor {
+  min-block-size: var(--sh-target-min);
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--sh-night-ink-70);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  text-align: start;
+  cursor: pointer;
+}
+
+.gw-nav-minor:hover {
+  color: var(--sh-night-ink);
+}
+
+.gw-nav-minor--button {
+  padding: 0;
+}
+
+.gw-nav-foot {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh-s-3);
+  max-inline-size: 1560px;
+  inline-size: 100%;
+  margin-inline: auto;
+  padding: var(--sh-s-4) clamp(16px, 3vw, 48px) calc(var(--sh-s-4) + env(safe-area-inset-bottom));
+  border-block-start: 1px solid var(--sh-rule-inverse-strong);
+}
+
+.gw-nav-lang {
+  min-block-size: var(--sh-target);
+  padding-inline: var(--sh-s-4);
+  border: 1px solid var(--sh-rule-inverse-strong);
+  border-radius: var(--sh-r-1);
+  background: transparent;
+  color: var(--sh-night-ink);
+  cursor: pointer;
+  font-family: var(--sh-font-display);
+  font-weight: 700;
+}
+
+.gw-nav-place {
+  margin: 0;
+  margin-inline-start: auto;
+  color: var(--sh-night-ink-70);
+}
+
+/* No route offset is needed: the sticky shell occupies its own space, and a
+   cinematic route deliberately runs underneath the fixed one. */

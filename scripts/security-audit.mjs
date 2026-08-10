@@ -3,8 +3,30 @@ import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 
 const root = process.cwd();
-const ignored = new Set(['.git', 'node_modules', 'dist', 'coverage', 'coverage-critical', 'playwright-report', 'test-results', 'reports']);
-const sourceExtensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx', '.json', '.yml', '.yaml', '.html', '.sql', '.md']);
+const ignored = new Set([
+  '.git',
+  'node_modules',
+  'dist',
+  'coverage',
+  'coverage-critical',
+  'playwright-report',
+  'test-results',
+  'reports',
+]);
+const sourceExtensions = new Set([
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.cjs',
+  '.ts',
+  '.tsx',
+  '.json',
+  '.yml',
+  '.yaml',
+  '.html',
+  '.sql',
+  '.md',
+]);
 const findings = [];
 const scanned = [];
 
@@ -13,7 +35,11 @@ async function walk(directory) {
     if (ignored.has(entry.name)) continue;
     const absolute = join(directory, entry.name);
     if (entry.isDirectory()) await walk(absolute);
-    else if (sourceExtensions.has(extname(entry.name).toLowerCase()) || entry.name.startsWith('.env')) scanned.push(absolute);
+    else if (
+      sourceExtensions.has(extname(entry.name).toLowerCase()) ||
+      entry.name.startsWith('.env')
+    )
+      scanned.push(absolute);
   }
 }
 
@@ -27,7 +53,10 @@ const secretPatterns = [
 ];
 /** @type {Array<[string, RegExp]>} */
 const productionHazards = [
-  ['Sensitive localStorage', /localStorage\.(?:setItem|getItem)\([^\n]*(?:address|phone|whatsapp|password|token|secret|order)/i],
+  [
+    'Sensitive localStorage',
+    /localStorage\.(?:setItem|getItem)\([^\n]*(?:address|phone|whatsapp|password|token|secret|order)/i,
+  ],
   ['Editable user metadata role', /user_metadata\??\.role|user_metadata\[['"]role['"]\]/i],
   ['Untrusted SVG rendering', /dangerouslySetInnerHTML[^\n]*(?:svg|image)/i],
   ['Stack trace exposed to client', /res\.(?:json|send)\([^\n]*(?:stack|stackTrace)/i],
@@ -60,11 +89,20 @@ for (const file of scanned) {
 
 const headers = JSON.parse(await readFile('vercel.json', 'utf8'));
 const serializedHeaders = JSON.stringify(headers);
-for (const required of ['Content-Security-Policy', 'Strict-Transport-Security', 'X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy']) {
-  if (!serializedHeaders.includes(required)) findings.push({ severity: 'high', file: 'vercel.json', issue: `Missing ${required}` });
+for (const required of [
+  'Content-Security-Policy',
+  'Strict-Transport-Security',
+  'X-Content-Type-Options',
+  'Referrer-Policy',
+  'Permissions-Policy',
+]) {
+  if (!serializedHeaders.includes(required))
+    findings.push({ severity: 'high', file: 'vercel.json', issue: `Missing ${required}` });
 }
 
-const migrations = (await readdir('supabase/migrations')).filter((name) => name.endsWith('.sql')).sort();
+const migrations = (await readdir('supabase/migrations'))
+  .filter((name) => name.endsWith('.sql'))
+  .sort();
 const migrationDigest = createHash('sha256').update(migrations.join('\n')).digest('hex');
 const lines = [
   'SHABABUNA static security audit',
@@ -74,7 +112,9 @@ const lines = [
   `Migration index SHA-256: ${migrationDigest}`,
   `Findings: ${findings.length}`,
   '',
-  ...(findings.length ? findings.map((item) => `[${item.severity.toUpperCase()}] ${item.file}: ${item.issue}`) : ['No blocking static findings detected.']),
+  ...(findings.length
+    ? findings.map((item) => `[${item.severity.toUpperCase()}] ${item.file}: ${item.issue}`)
+    : ['No blocking static findings detected.']),
   '',
   'Scope note: this is a source/configuration audit. It does not replace live penetration testing, provider verification, dependency installation, or Supabase RLS execution against a running database.',
 ];

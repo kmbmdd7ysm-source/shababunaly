@@ -1,49 +1,16 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "allowJs": true,
-    "checkJs": true,
-    "jsx": "react-jsx",
-    "noEmit": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "useUnknownInCatchVariables": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": false,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "types": []
+    "skipLibCheck": false
   },
-  "include": [
-    "types/strict-critical.d.ts",
-    "src/config/commerce.js",
-    "src/config/shipping.js",
-    "src/services/money.js",
-    "src/services/orderStatus.js",
-    "src/utils/fulfillment.js",
-    "src/utils/productEligibility.js",
-    "src/utils/safeReturnPath.js",
-    "src/config.js",
-    "src/data/categories.js",
-    "src/data/countries.js",
-    "src/data/customization.js",
-    "src/data/navigation.js",
-    "src/utils/scrollLock.js"
-  ],
+  "include": ["types/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "api/**/*.ts"],
   "exclude": [
-    "types/project-shims.d.ts",
-    "node_modules",
     "dist",
-    "reports"
+    "node_modules",
+    "reports",
+    "coverage",
+    "coverage-project",
+    "brand-quarantine",
+    "vendor"
   ]
 }

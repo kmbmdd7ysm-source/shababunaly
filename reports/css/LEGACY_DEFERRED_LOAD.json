@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-08-09T20:32:35.415758+00:00",
+  "phase": "2-legacy-deferred-from-main-entry",
+  "eager": [
+    "foundation.css",
+    "tokens.css",
+    "fonts.css",
+    "typography.css",
+    "motion.css",
+    "geometry.css",
+    "layout.css",
+    "shell.css"
+  ],
+  "deferredIdle": [
+    "global.css",
+    "premium.css",
+    "shababuna.css"
+  ],
+  "note": "main.jsx no longer synchronously imports the three giant legacy visual systems"
+}

@@ -1,0 +1,102 @@
+.brand-logo
+.hero-atmosphere,
+.hero-gridline
+.hero-atmosphere
+.hero-atmosphere span
+.hero-atmosphere span:nth-child(1)
+.hero-atmosphere span:nth-child(2)
+.hero-atmosphere span:nth-child(3)
+.hero-gridline
+.hero-inner
+.hero-kicker
+.hero-title
+.hero-text
+.hero-actions
+.hero-mark
+.brand-proof
+.brand-proof-grid
+.brand-proof p
+.brand-proof span
+.category-card img
+.category-card:hover img
+.category-card-name
+.category-card:hover .category-card-name
+.search-bar input
+.search-discovery
+.search-popular
+.search-popular > span
+.search-popular a
+.search-popular a:hover
+.search-popular b
+.search-popular a:hover b
+.cinematic-hero
+.hero-media,
+.hero-media > video,
+.hero-poster,
+.hero-webgl,
+.hero-vignette,
+.hero-noise
+.hero-poster,
+.hero-media > video
+.hero-media > video
+.hero-webgl
+.hero-vignette
+.hero-noise
+.cinematic-hero .hero-inner
+.cinematic-hero .hero-title,
+.cinematic-hero .hero-kicker,
+.cinematic-hero .hero-text,
+.cinematic-hero .hero-actions
+.cinematic-hero .hero-text
+.cinematic-hero .hero-actions
+.hero-video-control
+.hero-scroll
+.hero-scroll-dot
+.compare-product
+.gallery-open
+.gallery-open > span
+.compare-head
+.pwa-toast
+.pwa-toast p
+.pwa-toast button
+.pwa-toast button:last-child
+.lha-logo
+.account-content
+.account-grid
+.account-grid article
+.account-grid strong
+.brand-logo
+.sync-status
+[dir='rtl'] .brand-logo
+.sync-status[data-status='error'],
+.sync-status[data-status='offline']
+.country-combobox__toggle
+.country-combobox__option
+.country-combobox__option small
+.hero-media,
+.hero-media > video,
+.hero-poster
+.hero-media > video,
+.hero-poster
+.hero-poster
+.hero-media > video
+.hero-inner,
+.hero-video-control,
+.hero-scroll
+.brand-logo
+.brand-text
+.brand-text small
+.menu-btn
+.mobile-menu-head .brand-text
+.mobile-menu-body
+.mobile-menu-foot
+[dir='rtl'] .mobile-sublink
+.footer-mid
+.footer-lang
+.page-title-row
+.color-options,
+.size-options
+.hero-poster
+.hero-poster-picture
+.hero-poster-picture > .hero-poster
+.home-deferred-anchor

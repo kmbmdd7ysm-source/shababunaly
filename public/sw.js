@@ -9,7 +9,7 @@ const PAGES = `${VERSION}-pages`;
 const CURRENT_CACHES = new Set([STATIC, MEDIA, PAGES]);
 const CORE = [
   '/', '/offline', '/favicon.svg', '/favicon.png', '/site.webmanifest',
-  '/brand/shababuna-mark-black.png', '/brand/shababuna-mark-white.png',
+  '/brand/shababuna-monogram.svg',
   '/brand/shababuna-wordmark-black.png', '/brand/shababuna-wordmark-white.png',
   '/media/hero/shababuna-hero-poster.webp', '/media/hero/shababuna-hero-poster-mobile.webp',
 ];
@@ -33,7 +33,13 @@ async function cacheCoreIndividually() {
 }
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(cacheCoreIndividually());
+  event.waitUntil(
+    (async () => {
+      await cacheCoreIndividually();
+      // Activate the new worker immediately so A→B upgrades purge old caches.
+      await self.skipWaiting();
+    })(),
+  );
 });
 
 self.addEventListener('activate', (event) => {
@@ -54,18 +60,22 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       const cache = await caches.open(PAGES);
       try {
+        /*
+         * Navigations are network-first with a long timeout. HTML is NOT written
+         * into the page cache on success — caching HTML caused A→B upgrades to
+         * keep serving an old document (and therefore an old `sw.js?v=` id).
+         * The page cache is only an offline fallback.
+         */
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 4500);
+        const timer = setTimeout(() => controller.abort(), 15000);
         try {
-          const response = await fetch(request, { signal: controller.signal });
-          if (response.ok && !PRIVATE.test(url.pathname)) await cache.put(request, response.clone());
-          await trimCache(PAGES, 24);
+          const response = await fetch(request, { signal: controller.signal, cache: 'no-store' });
           return response;
         } finally {
           clearTimeout(timer);
         }
       } catch {
-        return await cache.match(request) || await caches.match('/offline');
+        return (await cache.match(request)) || (await caches.match('/offline')) || Response.error();
       }
     })());
     return;

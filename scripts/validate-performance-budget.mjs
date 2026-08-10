@@ -11,7 +11,8 @@ const required = [
 
 for (const [file, maximum] of required) {
   if (!existsSync(file)) failures.push(`${file} is missing`);
-  else if (statSync(file).size > maximum) failures.push(`${file} is ${statSync(file).size} bytes; budget is ${maximum}`);
+  else if (statSync(file).size > maximum)
+    failures.push(`${file} is ${statSync(file).size} bytes; budget is ${maximum}`);
 }
 
 const optimizedProducts = readdirSync('public/images/products')
@@ -20,7 +21,8 @@ const optimizedProducts = readdirSync('public/images/products')
 if (!optimizedProducts.length) failures.push('No optimized WebP product assets were found');
 for (const file of optimizedProducts) {
   const bytes = statSync(file).size;
-  if (bytes > 120_000) failures.push(`${file} exceeds the 120 KB optimized product-media budget (${bytes})`);
+  if (bytes > 120_000)
+    failures.push(`${file} exceeds the 120 KB optimized product-media budget (${bytes})`);
 }
 
 const forbiddenVideoExtensions = new Set(['.mp4', '.mov', '.webm', '.m4v']);
@@ -32,13 +34,22 @@ function walk(directory) {
   });
 }
 for (const file of walk('public')) {
-  if (forbiddenVideoExtensions.has(path.extname(file).toLowerCase()) && statSync(file).size > 4_000_000) {
-    failures.push(`${file} is bundled above the 4 MB launch-media budget; use an external optimized source`);
+  if (
+    forbiddenVideoExtensions.has(path.extname(file).toLowerCase()) &&
+    statSync(file).size > 4_000_000
+  ) {
+    failures.push(
+      `${file} is bundled above the 4 MB launch-media budget; use an external optimized source`,
+    );
   }
 }
 
 if (failures.length) {
-  console.error(`Performance-budget validation failed:\n${failures.map((item) => `- ${item}`).join('\n')}`);
+  console.error(
+    `Performance-budget validation failed:\n${failures.map((item) => `- ${item}`).join('\n')}`,
+  );
   process.exit(1);
 }
-console.info(`Performance budgets passed: ${optimizedProducts.length} optimized product assets and critical hero media within limits.`);
+console.info(
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets and critical hero media within limits.`,
+);

@@ -18,7 +18,7 @@ Deno.serve(async (request) => {
   const email = String(body?.email || '')
     .trim()
     .toLowerCase();
-  if (!(/^(SHB|LHA)-\d{8}-\d{7}$/.test(orderNumber)) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+  if (!/^(SHB|LHA)-\d{8}-\d{7}$/.test(orderNumber) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return json({ order: null }, 200);
   const url = Deno.env.get('SUPABASE_URL');
   const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');

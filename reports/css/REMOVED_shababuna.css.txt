@@ -1,0 +1,137 @@
+.brand-logo--header.brand-wordmark--header
+[dir='rtl'] .brand-logo--header.brand-wordmark--header
+.mega-menu
+.mega-inner
+.mega-col
+.mega-featured a
+.mega-col h3
+.mobile-menu-head
+.mobile-sublink
+.cinematic-hero
+.cinematic-hero .hero-media::after
+.cinematic-hero .hero-content
+.cinematic-hero .hero-title
+.cinematic-hero .hero-kicker
+.cinematic-hero .hero-text
+.cinematic-hero .hero-actions
+.brand-proof
+.brand-proof-grid
+.brand-proof-grid p
+.brand-proof-grid span
+.cinematic-split-grid
+.media-reserve
+.media-reserve::before,
+.work-media-placeholder::before
+.media-reserve span,
+.work-media-placeholder span
+.media-reserve small,
+.work-media-placeholder small
+.cinematic-copy
+.team-home-grid
+.team-home-facts
+[dir='rtl'] .team-home-facts
+.team-home-facts article
+.team-home-facts strong
+.team-home-facts span
+.lha-home-band
+.lha-home-inner
+.lha-home-inner img
+.lha-home-inner p
+.home-work-slots
+.home-work-slots .media-reserve
+.shop-head
+.filters-sidebar
+.filter-option
+.shop-results-count
+.mobile-filter-drawer
+.product-layout
+.product-info
+.gallery-image
+.product-desc
+.purchase-mode
+.purchase-mode button
+[dir='rtl'] .purchase-mode button
+.purchase-mode strong
+.purchase-mode span
+.fulfillment-panel
+.fulfillment-panel--ready
+.fulfillment-panel strong
+.fulfillment-panel p
+.fulfillment-panel span
+.fulfillment-panel a
+.quote-product-actions
+.custom-studio
+.custom-studio-grid
+.custom-builder
+.custom-type-grid
+.custom-type-grid button
+[dir='rtl'] .custom-type-grid button
+.custom-type-grid small
+.custom-control-row
+.custom-color
+.custom-color input[type='color']
+.jersey-stage
+.jersey-mock
+.jersey-mock::after
+.jersey-mock-content
+.jersey-mock-number
+.jersey-mock-team,
+.jersey-mock-player
+.package-card,
+.process-card
+.package-card img
+.process-card span
+.work-grid
+.work-slot h2
+.work-slot p:last-child
+.work-media-placeholder
+.about-manifesto
+.about-manifesto h2
+.about-manifesto > p:last-child
+.about-pillars article h3
+.about-pillars article p
+.checkout-layout--spacious
+.contact-grid
+.footer-top
+.footer-brand-wordmark
+[dir='rtl'] .footer-brand-wordmark
+.footer-slogan
+.footer-tagline,
+.footer-nl-text
+.footer-col h3
+.footer-col li a
+.footer-payments
+.payment-logo--libyan-bank-card
+.custom-studio-v2
+.studio-shell
+.studio-workspace
+.studio-section-heading
+.studio-section-heading p
+.custom-product-grid
+.custom-product-grid button
+.custom-product-grid button:hover
+.custom-product-grid button > span
+.custom-product-grid button strong
+.custom-product-grid button small
+.media-reserve > img
+.media-reserve > span,
+.media-reserve > small
+.work-media-placeholder > img
+.work-media-placeholder > span,
+.work-media-placeholder > small
+.shop-special-request-bar
+.shop-special-request-bar > div
+.shop-special-request-bar span
+.search-special-empty
+.production-layer--number span
+.autosave-state--saved
+.autosave-state--error
+.production-readiness
+.production-readiness__panel
+.production-readiness__panel img
+.production-readiness__panel h1
+.production-readiness__panel p
+.design-share-page
+.design-share-header
+.design-share-invalid
+.design-share-invalid h1

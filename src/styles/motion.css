@@ -1,0 +1,271 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK MOTION
+   --------------------------------------------------------------------------
+   The motion language is DRAWING. Lines extend from an origin, dimensions
+   measure themselves, plates register into position with one decisive snap.
+   Nothing floats. Nothing bounces. Nothing drifts. Nothing loops.
+
+   WHY THIS IS PURE CSS
+   `scripts/lint-project.mjs` fails the build on `style={{` or `.style.`
+   anywhere in `src/`, and the CSP sets `style-src-attr 'none'`. JavaScript
+   therefore cannot drive visuals here — which is a gift, not a limit: CSS
+   scroll-driven animations run off the main thread, cost zero bytes of
+   library, and keep TBT inside the 150 ms mobile budget that the repeated-run
+   Lighthouse gate enforces.
+
+   PROGRESSIVE ENHANCEMENT
+   Every choreographed element is authored in its FINISHED state by default.
+   Motion is layered on only inside `@supports (animation-timeline: view())`.
+   A browser without support shows the finished composition immediately — no
+   polyfill, no JavaScript, and no flash of hidden content if the enhancement
+   never arrives.
+
+   ISOLATION CONTRACT (Phase 1)
+   SCOPE (Phase 2): global. Keyframes stay inert until a `gw-*` class uses them.
+   ========================================================================== */
+
+/* ---------- Keyframes --------------------------------------------------- */
+
+@keyframes gw-draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Registration moves; it does not fade.
+   Two reasons, and they agree. Conceptually, a drawn system snaps a plate into
+   register — fading is a photographic gesture, not a draughting one.
+   Practically, a scroll-linked opacity fade means any partially-entered text is
+   rendered at reduced contrast for as long as it is on screen, which axe
+   correctly flags and a real reader correctly resents. Animating transform
+   alone keeps every glyph at full contrast at every moment of the animation. */
+@keyframes gw-register {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* A wipe, not a fade: the content is either drawn or not yet drawn, never
+   rendered at partial contrast. */
+@keyframes gw-measure-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ==========================================================================
+   Threshold — the only motion that runs on load.
+   A single hairline draws across the frame in 320 ms. That is the entire
+   loading experience: no spinner, no skeleton, no route loader.
+   ========================================================================== */
+
+.gw-threshold-rule {
+  display: block;
+  block-size: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--sh-rule-strong);
+  transform-origin: left center;
+}
+
+[dir='rtl'] .gw-threshold-rule {
+  transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gw-threshold-rule {
+    animation: gw-draw-line 320ms var(--sh-e-draw) both;
+  }
+}
+
+/* ==========================================================================
+   Scroll choreography — off the main thread, opt-in by support.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .gw-register {
+      animation: gw-register var(--sh-d-3) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+
+    .gw-measure {
+      animation: gw-measure-in var(--sh-d-4) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+
+    /* Staggering is a per-element delay expressed as a range offset, so it
+       stays declarative and never needs a JavaScript index. */
+    .gw-stagger > * {
+      animation: gw-register var(--sh-d-3) var(--sh-e-draw) both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 24%;
+    }
+  }
+}
+
+/* Elements are authored finished. These are the defaults that apply when the
+   enhancement above is unavailable, when motion is reduced, or on Tier C. */
+.gw-register,
+.gw-measure,
+.gw-stagger > * {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+
+/* ==========================================================================
+   Interaction feedback
+   Tier 2 of the reduced-motion policy: state changes that carry MEANING keep
+   a 120 ms transition even under `prefers-reduced-motion`, because instant
+   appearance genuinely harms comprehension. Only choreography is removed.
+   ========================================================================== */
+
+.gw-interactive {
+  transition:
+    background-color var(--sh-d-1) var(--sh-e-draw),
+    border-color var(--sh-d-1) var(--sh-e-draw),
+    color var(--sh-d-1) var(--sh-e-draw);
+}
+
+.gw-rule-extend {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--sh-d-2) var(--sh-e-draw);
+}
+
+[dir='rtl'] .gw-rule-extend {
+  transform-origin: right center;
+}
+
+.gw-extends:hover .gw-rule-extend,
+.gw-extends:focus-visible .gw-rule-extend {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   Reduced motion — designed tiers, not a global kill switch
+   Tier 1 removed:  all choreography, the threshold draw, chapter reveals.
+   Tier 2 retained: 120 ms state feedback that carries meaning.
+   Tier 3 absent:   parallax, auto-rotation, looping media, floating elements
+                    do not exist in this design in ANY mode.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-threshold-rule,
+  .gw-register,
+  .gw-measure,
+  .gw-stagger > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .gw-rule-extend {
+    transition: none;
+    transform: scaleX(1);
+  }
+}
+
+/* Tier C devices get the same treatment as reduced motion: the capability
+   attribute is written once by `useDeviceCapability`, and CSS reads it. */
+[data-capability='c'] .gw-threshold-rule,
+[data-capability='c'] .gw-register,
+[data-capability='c'] .gw-measure,
+[data-capability='c'] .gw-stagger > * {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+@keyframes heroReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes markDrift {
+  to {
+    transform: translate3d(0, -12px, 0) rotate(0.8deg);
+  }
+}
+@keyframes lhaFloat {
+  to {
+    transform: translate3d(4vw, -2vw, 0) scale(1.08);
+  }
+}
+@keyframes heartPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.32);
+  }
+}
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes searchIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes route-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes scroll-dot {
+  50% {
+    transform: translateY(17px);
+    opacity: 0.2;
+  }
+}
+@keyframes route-premium-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

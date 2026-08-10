@@ -1,5 +1,10 @@
 import { describe, expect, it } from './test-api.js';
-import { countries, getAddressRequirements, isCashEligibleCountry, isSupportedCountryCode } from '../src/data/countries.js';
+import {
+  countries,
+  getAddressRequirements,
+  isCashEligibleCountry,
+  isSupportedCountryCode,
+} from '../src/data/countries.ts';
 
 describe('worldwide geography', () => {
   it('supports Libya and global ISO destinations', () => {

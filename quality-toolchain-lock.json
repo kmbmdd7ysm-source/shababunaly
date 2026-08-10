@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
+  "note": "Pins must match package.json devDependencies. npm ci alone must install these.",
   "packages": {
     "eslint": "9.39.1",
     "@eslint/js": "9.39.1",
     "globals": "16.5.0",
-    "typescript-eslint": "8.48.0",
+    "typescript-eslint": "8.66.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
@@ -18,10 +19,14 @@
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
     "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/dom": "10.4.1",
     "@types/node": "22.19.1",
     "@types/react": "18.3.27",
     "@types/react-dom": "18.3.7",
     "@cyclonedx/cyclonedx-npm": "4.0.3",
-    "lighthouse": "12.6.1"
+    "lighthouse": "12.6.1",
+    "stylelint": "16.25.0",
+    "stylelint-config-standard": "39.0.1",
+    "typescript": "5.9.3"
   }
 }

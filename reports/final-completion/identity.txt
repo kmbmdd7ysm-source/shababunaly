@@ -1,0 +1,7 @@
+branch=cursor/shababuna-redesign-master-plan-dc14
+sha=f4fe6a6ed2cdc659ea26f07451545e5575d29749
+dirty=1
+utc=2026-08-09T01:40:17Z
+node=v22.14.0
+npm=10.9.7
+registry=https://registry.npmjs.org/

@@ -1,0 +1,5 @@
+branch=cursor/shababuna-redesign-master-plan-dc14
+sha=9838f9c1b823b16dee1ac3aa7f129a6b4b8e274a
+main=508c07c6d30ab51ba19d4a2ad1fad2848bec9f87
+uncommitted=1
+date=2026-08-07T03:47:40Z

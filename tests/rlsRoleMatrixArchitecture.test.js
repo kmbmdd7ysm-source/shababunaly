@@ -9,9 +9,9 @@ describe('executable RLS role matrix', () => {
     expect(sql).toContain('unrelated customer cannot read organization contract');
   });
   it('tests anonymous, AAL1, AAL2 and service-role boundaries', () => {
-    expect(sql).toContain("admin claim at AAL1 is denied");
-    expect(sql).toContain("admin claim at AAL2 is accepted");
-    expect(sql).toContain("service role is trusted without browser MFA");
-    expect(sql).toContain("anon cannot read profiles");
+    expect(sql).toContain('admin claim at AAL1 is denied');
+    expect(sql).toContain('admin claim at AAL2 is accepted');
+    expect(sql).toContain('service role is trusted without browser MFA');
+    expect(sql).toContain('anon cannot read profiles');
   });
 });

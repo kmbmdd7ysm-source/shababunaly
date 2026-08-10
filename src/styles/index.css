@@ -1,2 +1,20 @@
-
-.operations-bi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}.operations-bi-grid article{display:grid;gap:6px;padding:14px;border:1px solid var(--line,#dedede);border-radius:12px;background:var(--surface,#fff)}.operations-bi-grid span{font-size:.78rem;opacity:.72}.operations-bi-grid strong{font-size:1.25rem}
+.operations-bi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 12px;
+}
+.operations-bi-grid article {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--line, #dedede);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+}
+.operations-bi-grid span {
+  font-size: 0.78rem;
+  opacity: 0.72;
+}
+.operations-bi-grid strong {
+  font-size: 1.25rem;
+}

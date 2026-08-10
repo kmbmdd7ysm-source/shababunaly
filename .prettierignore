@@ -6,3 +6,5 @@ public/sw.js
 package-lock.json
 
 coverage-critical
+
+src/styles/_archive

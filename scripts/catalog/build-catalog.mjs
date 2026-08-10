@@ -1,4 +1,4 @@
-import { products } from '../../src/data/products.js';
+import { products } from '../../src/data/products.ts';
 
 const currencies = new Set(['USD', 'LYD']);
 export function buildCatalog(input = products) {
@@ -55,14 +55,22 @@ export function buildCatalog(input = products) {
             productType: product.productType || null,
             retailAvailable: product.retailAvailable !== false,
             wholesaleAvailable: Boolean(product.wholesaleAvailable),
-            wholesalePrice: Number.isFinite(Number(product.wholesalePrice)) ? Number(product.wholesalePrice) : null,
-            wholesaleMin: Number.isFinite(Number(product.wholesaleMin)) ? Number(product.wholesaleMin) : null,
-            minimumOrder: Number.isFinite(Number(product.minimumOrder)) ? Number(product.minimumOrder) : 1,
+            wholesalePrice: Number.isFinite(Number(product.wholesalePrice))
+              ? Number(product.wholesalePrice)
+              : null,
+            wholesaleMin: Number.isFinite(Number(product.wholesaleMin))
+              ? Number(product.wholesaleMin)
+              : null,
+            minimumOrder: Number.isFinite(Number(product.minimumOrder))
+              ? Number(product.minimumOrder)
+              : 1,
             customizable: Boolean(product.customizable),
             largeEquipment: Boolean(product.largeEquipment),
             readyToShip: Boolean(product.readyToShip),
-            deliveryProfile: product.deliveryProfile || (product.readyToShip ? 'ready' : 'standard'),
-            inventorySource: product.inventorySource || (inventoryTracking ? 'catalog' : 'supplier-order'),
+            deliveryProfile:
+              product.deliveryProfile || (product.readyToShip ? 'ready' : 'standard'),
+            inventorySource:
+              product.inventorySource || (inventoryTracking ? 'catalog' : 'supplier-order'),
             mediaStatus: product.mediaStatus || null,
             madeInUSA: Boolean(product.madeInUSA),
             storefronts: Array.isArray(product.storefronts) ? product.storefronts : ['shop'],

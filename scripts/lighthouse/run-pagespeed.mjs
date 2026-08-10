@@ -1,13 +1,105 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
-const strategy=String(process.argv[2]||'').trim().toLowerCase(); if(!['mobile','desktop'].includes(strategy)){console.error('Usage: run-pagespeed <mobile|desktop>');process.exit(2)}
-const siteUrl=String(process.env.PAGESPEED_URL||process.env.SITE_URL||'').trim(); const apiKey=String(process.env.PAGESPEED_API_KEY||'').trim(); const timeoutMs=Math.max(10000,Number(process.env.PAGESPEED_TIMEOUT_MS||120000)); const runCount=Math.max(3,Number(process.env.PAGESPEED_RUNS||3)); const reportPath=`reports/pagespeed-${strategy}.json`; mkdirSync('reports/pagespeed-runs',{recursive:true});
-const write=(payload)=>writeFileSync(reportPath,`${JSON.stringify({strategy,generatedAt:new Date().toISOString(),commitSha:process.env.GITHUB_SHA||null,runId:process.env.GITHUB_RUN_ID||null,...payload},null,2)}\n`); const median=(values)=>{const s=values.filter(Number.isFinite).sort((a,b)=>a-b);return s.length?s[Math.floor(s.length/2)]:null;};
-if(!/^https:\/\//i.test(siteUrl)){write({status:'not_run',reason:'public HTTPS PAGESPEED_URL or SITE_URL required'});process.exit(1)} if(!apiKey){write({status:'not_run',reason:'PAGESPEED_API_KEY missing'});process.exit(1)}
-const runs=[];
-for(let index=1;index<=runCount;index++){
- const endpoint=new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');endpoint.searchParams.set('url',siteUrl);endpoint.searchParams.set('strategy',strategy);endpoint.searchParams.set('key',apiKey);for(const category of ['performance','accessibility','best-practices','seo'])endpoint.searchParams.append('category',category);
- const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);
- try{const response=await fetch(endpoint,{signal:controller.signal,headers:{accept:'application/json'}});const body=await response.json().catch(()=>null);if(!response.ok||!body?.lighthouseResult)throw new Error(body?.error?.message||`HTTP ${response.status}`);writeFileSync(`reports/pagespeed-runs/${strategy}-${index}.json`,`${JSON.stringify(body,null,2)}\n`);const result=body.lighthouseResult,a=result.audits||{};runs.push({index,fetchTime:result.fetchTime||null,categories:Object.fromEntries(Object.entries(result.categories||{}).map(([k,v])=>[k,{score:v?.score??null}])),metrics:{lcpMs:a['largest-contentful-paint']?.numericValue??null,cls:a['cumulative-layout-shift']?.numericValue??null,tbtMs:a['total-blocking-time']?.numericValue??null},loadingExperience:body.loadingExperience||null,originLoadingExperience:body.originLoadingExperience||null});}catch(error){write({status:'failed',completedRuns:runs.length,reason:error?.name==='AbortError'?'PageSpeed API timeout':String(error?.message||error),runs});process.exit(1)}finally{clearTimeout(timer)}
- if(index<runCount)await new Promise(r=>setTimeout(r,1500));
+const strategy = String(process.argv[2] || '')
+  .trim()
+  .toLowerCase();
+if (!['mobile', 'desktop'].includes(strategy)) {
+  console.error('Usage: run-pagespeed <mobile|desktop>');
+  process.exit(2);
 }
-const categories=Object.fromEntries(['performance','accessibility','best-practices','seo'].map(k=>[k,{score:median(runs.map(x=>Number(x.categories?.[k]?.score)))}]));const metrics={lcpMs:median(runs.map(x=>Number(x.metrics.lcpMs))),cls:median(runs.map(x=>Number(x.metrics.cls))),tbtMs:median(runs.map(x=>Number(x.metrics.tbtMs)))};write({status:'completed',requestedUrl:siteUrl,runCount,categories,metrics,runs,fieldData:runs.at(-1)?.loadingExperience||null,originFieldData:runs.at(-1)?.originLoadingExperience||null});console.info(`Saved ${runCount}-run PageSpeed ${strategy} median evidence.`);
+const siteUrl = String(process.env.PAGESPEED_URL || process.env.SITE_URL || '').trim();
+const apiKey = String(process.env.PAGESPEED_API_KEY || '').trim();
+const timeoutMs = Math.max(10000, Number(process.env.PAGESPEED_TIMEOUT_MS || 120000));
+const runCount = Math.max(3, Number(process.env.PAGESPEED_RUNS || 3));
+const reportPath = `reports/pagespeed-${strategy}.json`;
+mkdirSync('reports/pagespeed-runs', { recursive: true });
+const write = (payload) =>
+  writeFileSync(
+    reportPath,
+    `${JSON.stringify({ strategy, generatedAt: new Date().toISOString(), commitSha: process.env.GITHUB_SHA || null, runId: process.env.GITHUB_RUN_ID || null, ...payload }, null, 2)}\n`,
+  );
+const median = (values) => {
+  const s = values.filter(Number.isFinite).sort((a, b) => a - b);
+  return s.length ? s[Math.floor(s.length / 2)] : null;
+};
+if (!/^https:\/\//i.test(siteUrl)) {
+  write({ status: 'not_run', reason: 'public HTTPS PAGESPEED_URL or SITE_URL required' });
+  process.exit(1);
+}
+if (!apiKey) {
+  write({ status: 'not_run', reason: 'PAGESPEED_API_KEY missing' });
+  process.exit(1);
+}
+const runs = [];
+for (let index = 1; index <= runCount; index++) {
+  const endpoint = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
+  endpoint.searchParams.set('url', siteUrl);
+  endpoint.searchParams.set('strategy', strategy);
+  endpoint.searchParams.set('key', apiKey);
+  for (const category of ['performance', 'accessibility', 'best-practices', 'seo'])
+    endpoint.searchParams.append('category', category);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(endpoint, {
+      signal: controller.signal,
+      headers: { accept: 'application/json' },
+    });
+    const body = await response.json().catch(() => null);
+    if (!response.ok || !body?.lighthouseResult)
+      throw new Error(body?.error?.message || `HTTP ${response.status}`);
+    writeFileSync(
+      `reports/pagespeed-runs/${strategy}-${index}.json`,
+      `${JSON.stringify(body, null, 2)}\n`,
+    );
+    const result = body.lighthouseResult,
+      a = result.audits || {};
+    runs.push({
+      index,
+      fetchTime: result.fetchTime || null,
+      categories: Object.fromEntries(
+        Object.entries(result.categories || {}).map(([k, v]) => [k, { score: v?.score ?? null }]),
+      ),
+      metrics: {
+        lcpMs: a['largest-contentful-paint']?.numericValue ?? null,
+        cls: a['cumulative-layout-shift']?.numericValue ?? null,
+        tbtMs: a['total-blocking-time']?.numericValue ?? null,
+      },
+      loadingExperience: body.loadingExperience || null,
+      originLoadingExperience: body.originLoadingExperience || null,
+    });
+  } catch (error) {
+    write({
+      status: 'failed',
+      completedRuns: runs.length,
+      reason:
+        error?.name === 'AbortError' ? 'PageSpeed API timeout' : String(error?.message || error),
+      runs,
+    });
+    process.exit(1);
+  } finally {
+    clearTimeout(timer);
+  }
+  if (index < runCount) await new Promise((resolve) => setTimeout(resolve, 1500));
+}
+const categories = Object.fromEntries(
+  ['performance', 'accessibility', 'best-practices', 'seo'].map((k) => [
+    k,
+    { score: median(runs.map((x) => Number(x.categories?.[k]?.score))) },
+  ]),
+);
+const metrics = {
+  lcpMs: median(runs.map((x) => Number(x.metrics.lcpMs))),
+  cls: median(runs.map((x) => Number(x.metrics.cls))),
+  tbtMs: median(runs.map((x) => Number(x.metrics.tbtMs))),
+};
+write({
+  status: 'completed',
+  requestedUrl: siteUrl,
+  runCount,
+  categories,
+  metrics,
+  runs,
+  fieldData: runs.at(-1)?.loadingExperience || null,
+  originFieldData: runs.at(-1)?.originLoadingExperience || null,
+});
+console.info(`Saved ${runCount}-run PageSpeed ${strategy} median evidence.`);

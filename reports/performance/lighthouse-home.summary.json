@@ -1,0 +1,17 @@
+{
+  "sha": "9fa7acffc24ae5d96b853686baa7684e0b5cd4d5",
+  "generatedAt": "2026-08-10T07:21:00.168Z",
+  "mobile": {
+    "performance": 83,
+    "accessibility": 100,
+    "lcpMs": 3337,
+    "cls": 0.111
+  },
+  "desktop": {
+    "performance": 100,
+    "accessibility": 100,
+    "lcpMs": 768,
+    "cls": 0.004
+  },
+  "note": "Desktop meets LCP/CLS targets. Mobile LH simulation remains elevated (throttling/lab)."
+}

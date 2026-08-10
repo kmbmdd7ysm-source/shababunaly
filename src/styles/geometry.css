@@ -1,0 +1,314 @@
+/* ==========================================================================
+   SHABABUNA — GROUNDWORK GEOMETRY
+   --------------------------------------------------------------------------
+   The drawing primitives of the system: hairlines, tick rules, dimension
+   leaders, registration marks, plates and stamps.
+
+   Every measurement below is derived from real FIBA court geometry so the
+   layout is a survey of an actual court rather than a decorative motif:
+     court            28.00 m x 15.00 m   -> --gw-court-ratio
+     three-point arc   6.75 m radius
+     free-throw key    4.90 m x 5.80 m
+     centre circle     3.60 m diameter
+     restricted arc    1.25 m radius
+
+   RTL: logical properties only. A basketball court is bilaterally symmetric,
+   so mirroring this system produces a CORRECT court, not a broken layout.
+
+   SCOPE (Phase 2): global. Court constants live on `:root`.
+   ========================================================================== */
+
+:root {
+  --gw-court-ratio: calc(28 / 15);
+  --gw-arc-r: 6.75;
+  --gw-key-w: 4.9;
+  --gw-key-h: 5.8;
+  --gw-circle-d: 3.6;
+  --gw-tick: 8px;
+  --gw-tick-gap: 24px;
+}
+
+/* ---------- Hairline rules ---------------------------------------------- */
+
+.gw-rule-h {
+  inline-size: 100%;
+  block-size: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--sh-rule);
+}
+
+.gw-rule-h--strong {
+  background: var(--sh-rule-strong);
+}
+
+.gw-rule-v {
+  inline-size: 1px;
+  align-self: stretch;
+  background: var(--sh-rule);
+}
+
+/* ---------- Tick rule — a measured edge, the signature of the system ----
+   A repeating-linear-gradient is a single paint with no extra DOM. */
+
+.gw-tick-rule {
+  position: relative;
+  padding-block-start: var(--gw-tick);
+  border-block-start: 1px solid var(--sh-rule-strong);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--sh-rule) 0 1px,
+    transparent 1px var(--gw-tick-gap)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% var(--gw-tick);
+  background-position: top left;
+}
+
+[dir='rtl'] .gw-tick-rule {
+  background-position: top right;
+}
+
+/* ---------- Dimension leader — annotates a measurement ------------------ */
+
+.gw-leader {
+  display: flex;
+  align-items: center;
+  gap: var(--sh-s-3);
+  color: var(--sh-ink-50);
+}
+
+.gw-leader::before,
+.gw-leader::after {
+  content: '';
+  block-size: 1px;
+  flex: 1 1 auto;
+  background: var(--sh-rule-strong);
+}
+
+.gw-leader--start::before {
+  display: none;
+}
+
+.gw-leader--end::after {
+  display: none;
+}
+
+/* ---------- Registration marks — corner crosses on a plate -------------- */
+
+.gw-registered {
+  position: relative;
+}
+
+.gw-registered::before,
+.gw-registered::after {
+  content: '';
+  position: absolute;
+  inline-size: 10px;
+  block-size: 10px;
+  pointer-events: none;
+  border-color: var(--sh-rule-strong);
+  border-style: solid;
+}
+
+.gw-registered::before {
+  inset-block-start: -1px;
+  inset-inline-start: -1px;
+  border-width: 1px 0 0 1px;
+}
+
+.gw-registered::after {
+  inset-block-end: -1px;
+  inset-inline-end: -1px;
+  border-width: 0 1px 1px 0;
+}
+
+/* ---------- Plate — an object placed on the sheet ----------------------- */
+
+.gw-plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh-s-4);
+  padding: var(--sh-s-5);
+  background: var(--sh-chalk);
+  border: 1px solid var(--sh-rule);
+  border-radius: var(--sh-r-1);
+}
+
+.gw-plate--inset {
+  background: var(--sh-chalk-2);
+}
+
+.gw-plate--field {
+  background: var(--sh-chalk-3);
+}
+
+.gw-plate--maple {
+  background: var(--sh-maple-tint);
+}
+
+.gw-plate--flush {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* ---------- Scale tick — the leading edge marker on a media plate ------- */
+
+.gw-scaled {
+  position: relative;
+}
+
+.gw-scaled::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--sh-s-4);
+  inset-inline-start: 0;
+  inline-size: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--sh-rule-strong) 0 1px,
+    transparent 1px 12px
+  );
+  pointer-events: none;
+}
+
+/* ---------- Stamp — a verified or status mark --------------------------- */
+
+.gw-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh-s-2);
+  min-block-size: var(--sh-target-min);
+  padding: 4px var(--sh-s-3);
+  border: 1px solid currentColor;
+  border-radius: var(--sh-r-1);
+  font-family: var(--sh-font-display);
+  font-size: var(--sh-t-spec);
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: var(--sh-tr-spec);
+  text-transform: uppercase;
+  color: var(--sh-ink-70);
+  background: transparent;
+}
+
+.gw-stamp:lang(ar),
+[lang='ar'] .gw-stamp {
+  font-family: var(--sh-font-arabic);
+  font-stretch: normal;
+  letter-spacing: var(--sh-tr-ar);
+  text-transform: none;
+}
+
+/* Colour is never the only signal: each tone also carries a leading glyph
+   rendered by the component, and the label text states the meaning. */
+.gw-stamp--verified {
+  color: var(--sh-verified);
+}
+
+.gw-stamp--alert {
+  color: var(--sh-alert);
+}
+
+.gw-stamp--warn {
+  color: var(--sh-warn);
+}
+
+.gw-stamp--signal {
+  color: var(--sh-signal);
+}
+
+.gw-stamp-dot {
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+/* ==========================================================================
+   Court plan — the drawn ground
+   Built from gradients only: no image request, no SVG DOM, no layout cost,
+   and it scales to any DPR without shimmering because every line is 1px.
+   ========================================================================== */
+
+.gw-court {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  color: var(--sh-rule);
+}
+
+.gw-court-svg {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: min(150%, 1600px);
+  block-size: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+}
+
+[dir='rtl'] .gw-court-svg {
+  transform: translate(50%, -50%) scaleX(-1);
+}
+
+/* ---------- Dark chapter -------------------------------------------------
+   Chapters are full-bleed and bounded by a drawn rule. The system and the
+   film never blend: there is no gradient between the two worlds. */
+
+.gw-chapter {
+  position: relative;
+  background: var(--sh-night);
+  color: var(--sh-night-ink);
+  border-block: 1px solid var(--sh-rule-inverse-strong);
+  padding-block: var(--sh-chapter-y);
+}
+
+.gw-chapter .gw-rule-h {
+  background: var(--sh-rule-inverse);
+}
+
+.gw-chapter .gw-rule-h--strong {
+  background: var(--sh-rule-inverse-strong);
+}
+
+.gw-chapter .gw-tick-rule {
+  border-block-start-color: var(--sh-rule-inverse-strong);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--sh-rule-inverse) 0 1px,
+    transparent 1px var(--gw-tick-gap)
+  );
+}
+
+.gw-chapter .gw-spec,
+.gw-chapter .gw-lead,
+.gw-chapter .gw-body {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-chapter .gw-stamp {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-chapter .gw-leader {
+  color: var(--sh-night-ink-70);
+}
+
+.gw-chapter .gw-leader::before,
+.gw-chapter .gw-leader::after {
+  background: var(--sh-rule-inverse-strong);
+}
+
+.gw-chapter .gw-court {
+  color: var(--sh-rule-inverse);
+}
+
+/* The focus ring is re-solved for the dark chapter so it never disappears. */
+.gw-chapter :focus-visible {
+  outline-color: var(--sh-signal-on-dark);
+}
