@@ -379,7 +379,7 @@ export default function ShopPage(): ReactElement {
               alt=""
               width="1400"
               height="933"
-              fetchPriority="high"
+              fetchpriority="high"
               decoding="async"
             />
           </picture>

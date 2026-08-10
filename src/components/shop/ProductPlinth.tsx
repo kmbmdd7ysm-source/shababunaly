@@ -57,7 +57,7 @@ export default function ProductPlinth({
           src={image}
           alt=""
           loading={eager ? 'eager' : 'lazy'}
-          fetchPriority={eager ? 'high' : 'auto'}
+          fetchpriority={eager ? 'high' : 'auto'}
           decoding="async"
           width="720"
           height="720"

@@ -255,7 +255,7 @@ export default function HomePage(): ReactElement {
               alt=""
               width="1600"
               height="1067"
-              fetchPriority="high"
+              fetchpriority="high"
               decoding="async"
             />
           </picture>
