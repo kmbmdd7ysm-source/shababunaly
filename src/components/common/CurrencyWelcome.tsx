@@ -57,6 +57,8 @@ export default function CurrencyWelcome(): ReactElement | null {
           src="/brand/shababuna-wordmark-black.png"
           alt="Shababuna"
           className="commerce-welcome-logo"
+          width={244}
+          height={68}
         />
         <p className="section-label">BUILT DIFFERENT.</p>
         <h2 id="commerce-welcome-title">

@@ -1,0 +1,12 @@
+{
+  "sha": "11d2ce3294efc1f06359d333c940d7f0396f1cc9",
+  "generatedAt": "2026-08-10T06:02:40.332879+00:00",
+  "url": "http://127.0.0.1:4173/",
+  "performance": 79,
+  "accessibility": 100,
+  "lcpMs": 2983,
+  "cls": 0.168,
+  "fcpMs": 2362,
+  "note": "Local vite preview. Currency welcome + large CSS affect lab scores. Not production CDN.",
+  "report": "reports/performance/lighthouse-home.json"
+}
