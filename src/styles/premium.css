@@ -85,42 +85,6 @@ body {
   background: linear-gradient(135deg, #030303, #111 70%, #050505);
 }
 
-.hero .btn-primary,
-.hero .btn-secondary {
-  position: relative;
-  overflow: hidden;
-  transition:
-    transform 0.3s var(--ease-premium),
-    background 0.3s,
-    color 0.3s,
-    box-shadow 0.3s !important;
-}
-
-.hero .btn-primary::after,
-.hero .btn-secondary::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    110deg,
-    transparent 20%,
-    rgba(255, 255, 255, 0.28) 48%,
-    transparent 76%
-  );
-  transform: translateX(-130%);
-  transition: transform 0.75s var(--ease-premium);
-}
-
-.hero .btn-primary:hover::after,
-.hero .btn-secondary:hover::after {
-  transform: translateX(130%);
-}
-
-.hero .btn-primary:hover,
-.hero .btn-secondary:hover {
-  transform: translateY(-3px) scale(1.01);
-}
-
 .section {
   position: relative;
   padding-block: clamp(88px, 10vw, 160px);
@@ -461,11 +425,6 @@ from {
   margin: 8px 0;
 }
 
-.compare-table .btn-primary {
-  margin-top: 12px;
-  width: 100%;
-}
-
 .compare-remove {
   float: right;
   width: 34px;
@@ -474,12 +433,6 @@ from {
 
 .compare-table tr.is-different td {
   background: #fffbea;
-}
-
-.form-notice {
-  padding: 14px;
-  background: #f0eee7;
-  border-left: 4px solid #111;
 }
 
 .offline-page {
@@ -630,13 +583,6 @@ from {
   color: #444;
 }
 
-.address-actions,
-.form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
 .address-actions button {
   border: 0;
   background: transparent;
@@ -645,23 +591,7 @@ from {
   padding: 8px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.field-error {
-  display: block;
-  color: #a40000;
-  font-size: 0.82rem;
-  margin-top: 6px;
-}
-
-@media (max-width: 700px) {
-.form-grid {
-    grid-template-columns: 1fr;
-  }.address-card {
+@media (max-width: 700px) {.address-card {
     padding: 20px;
   }
 }
@@ -1186,6 +1116,7 @@ main,
 
 @media (max-width: 640px) {
 }
+
 
 
 

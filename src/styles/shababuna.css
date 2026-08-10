@@ -76,39 +76,6 @@ body {
   color: rgba(255, 255, 255, 0.72);
 }
 
-.btn-primary,
-.btn-secondary,
-.btn-ghost {
-  min-height: 54px;
-  padding-inline: 28px;
-  border-radius: 999px;
-  font-weight: 780;
-  letter-spacing: 0.01em;
-}
-
-.btn-primary {
-  background: #050505;
-  color: #fff;
-  border-color: #050505;
-}
-
-.btn-primary:hover {
-  background: #292929;
-  border-color: #292929;
-}
-
-.section--dark .btn-primary {
-  background: #fff;
-  color: #050505;
-  border-color: #fff;
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid rgba(5, 5, 5, 0.22);
-  color: #050505;
-}
-
 /* Header */
 
 .announcement-bar {
@@ -174,17 +141,6 @@ body {
 }
 
 /* Hero */
-
-.cinematic-hero .btn-primary {
-  background: #fff;
-  color: #050505;
-  border-color: #fff;
-}
-
-.cinematic-hero .btn-ghost {
-  border-color: rgba(255, 255, 255, 0.45);
-  color: #fff;
-}
 
 /* Home / departments */
 
@@ -446,21 +402,6 @@ body {
 
 /* Checkout */
 
-.form-block {
-  padding: clamp(24px, 3.4vw, 44px);
-  border: 1px solid var(--sha-line);
-  display: grid;
-  gap: 18px;
-}
-
-.form-block legend {
-  padding-inline: 10px;
-  font-size: 0.75rem;
-  font-weight: 850;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .field {
   gap: 8px;
 }
@@ -695,9 +636,6 @@ body {
   }.ready-badge {
     padding: 6px 8px;
     font-size: 0.53rem;
-  }.field-row,
-  .payment-plan-grid {
-    grid-template-columns: 1fr;
   }.package-grid,
   .process-grid,
   .capability-grid {
@@ -707,8 +645,6 @@ body {
   }.store-toolbar {
     align-items: flex-start;
     flex-direction: column;
-  }.form-block {
-    padding: 22px 18px;
   }.payment-balance-card {
     grid-template-columns: 1fr;
   }.payment-balance-card > div + div {
@@ -1273,11 +1209,6 @@ body {
   line-height: 1.65;
 }
 
-.special-request-info .btn-secondary {
-  border-color: #fff;
-  color: #fff;
-}
-
 .special-request-form {
   display: grid;
   gap: 18px;
@@ -1296,20 +1227,6 @@ body {
 .special-reference legend {
   padding: 0 8px;
   font-weight: 900;
-}
-
-.checkbox-line {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  line-height: 1.45;
-}
-
-.checkbox-line input {
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
-  accent-color: #111;
 }
 
 .turnstile-wrap {
@@ -1773,10 +1690,6 @@ body {
   }
 }
 
-.production-readiness__panel .btn-primary {
-  margin-top: 8px;
-}
-
 /* Enterprise workspace completion */
 
 .enterprise-panel-stack {
@@ -1944,6 +1857,7 @@ body {
   stroke: #42d17a;
   stroke-width: 4;
 }
+
 
 
 

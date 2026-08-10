@@ -1,0 +1,275 @@
+/* forms global */
+
+
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.9em 1.6em;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border: 1.5px solid transparent;
+  transition:
+    transform 0.15s var(--ease),
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.btn-primary:hover {
+  background: #262626;
+  border-color: #262626;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--black);
+}
+
+.btn-secondary:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--black);
+  background: var(--surface-2);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.share-buttons .btn-secondary {
+  padding: 0.5em 0.9em;
+}
+
+.form-block {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.form-block legend {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.field-row {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr;
+}
+.field-row {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+.field-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.field-check input {
+  margin-top: 0.2em;
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.form-error {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.notice--info {
+  background: #fff6f7;
+  border: 1px solid #f3ccd3;
+}
+
+.notice--muted {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.notice--ok {
+  background: #edf8f1;
+  border: 1px solid #bce4cd;
+}
+
+.academy-copy .btn-secondary {
+  width: fit-content;
+}
+
+.cta-band .btn-ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.cta-band .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+[dir='rtl'] .btn-primary,
+[dir='rtl'] .btn-secondary {
+  letter-spacing: 0;
+}
+
+.hero .btn-primary {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.hero .btn-primary:hover {
+  background: transparent;
+  color: #fff;
+}
+
+.hero .btn-secondary {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.hero .btn-secondary:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.academy-intro .btn-secondary {
+  color: #fff;
+  border-color: #fff;
+  background: transparent;
+}
+
+.academy-intro .btn-secondary:hover {
+  background: #fff;
+  color: #000;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  border-radius: 0;
+  min-height: 52px;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.cta-band .btn-primary {
+  background: #fff;
+  color: #050505;
+  border-color: #fff;
+}
+
+.cta-band .btn-primary:hover {
+  background: transparent;
+  color: #fff;
+}
+
+.order-confirmed .btn-primary {
+  justify-self: center;
+}
+
+.button-row,
+.help-result-count {
+  color: var(--muted);
+}.button-row,
+.button-row > * {
+    width: 100%;
+  }
+
+.filter-sheet-actions .btn-primary {
+  min-height: 54px;
+}.mobile-account-panel .btn-primary,
+  .mobile-account-panel .btn-secondary {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+.detail-cta > .btn-primary {
+  border-radius: 999px;
+}
+
+.contact-form .field-row {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.contact-form-wrap,
+.contact-form,
+.contact-form .field,
+.contact-form .field-check {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.contact-form .field-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.contact-form .field-check input {
+  flex: 0 0 auto;
+}
+
+.contact-form .field-check span {
+  overflow-wrap: break-word !important;
+  word-break: normal;
+}.contact-form .field-row {
+    grid-template-columns:minmax(0, 1fr);
+  }.contact-form .field,
+  .contact-form .field-check,
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+.payment-recovery-card .btn-primary {
+  margin-top: 0.5rem;
+}

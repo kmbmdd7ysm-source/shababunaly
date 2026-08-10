@@ -30,6 +30,9 @@ import './styles/shell.css';
 import './styles/global.css';
 import './styles/premium.css';
 import './styles/shababuna.css';
+import './styles/forms-from-shababuna.css';
+import './styles/forms-from-premium.css';
+import './styles/forms-from-global.css';
 /* shell.nav / colophon / masthead load with Header, Footer, and route shells.
    Legacy triad stays eager until ownership migration finishes — load-deferred
    secondary sheets did not improve LCP and risked route flash. */
