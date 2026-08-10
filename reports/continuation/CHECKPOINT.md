@@ -1,15 +1,15 @@
 # Absolute final checkpoint
 
-- SHA: `6ecd6490f02a15056419ed4bf5a916c6b395a231`
-- Legacy CSS: **legacy-island.css ~1758 lines** (triad archived; started 9660)
-- LH: perf **85** / a11y **100** / LCP **3187ms** / CLS **0.111**
-- TS **100%** · PWA **PASS**
-- Ready-to-Ship global · Customize 7-step+concept3D · Special Request simplified
+- SHA: `631d4b000bd7f0d66548f534d087c6766f40d25f`
+- Legacy island: **1548** lines (triad archived; started 9660)
+- LH: perf ~85 / CLS ~0.11 / LCP ~3.2s
+- TS 100% · PWA PASS · Ready-to-Ship global · Customize 7-step+concept3D
 - API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 - ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
 
 ## Next
-1. Shrink legacy-island further / LCP ≤2.5s / CLS ≤0.10 on LH
-2. Clean-tree final verdict
+1. Drive island under 1000 → delete
+2. LCP/CLS targets on LH
+3. Clean-tree final verdict
 
 **NOT FINAL COMPLETE**

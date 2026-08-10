@@ -1,11 +1,11 @@
 {
-  "sha": "c9e251acaed3a352dce434d604d90a58c28f6545",
-  "generatedAt": "2026-08-10T06:52:26.247039+00:00",
-  "legacyIslandLines": 1778,
-  "legacyTriadFiles": "archived",
+  "sha": "631d4b000bd7f0d66548f534d087c6766f40d25f",
+  "generatedAt": "2026-08-10T07:01:02.973870+00:00",
+  "legacyIslandLines": 1548,
   "startingTriadLines": 9660,
+  "reductionLines": 8112,
   "importantTotal": 77,
   "idleLegacyLoadRemoved": true,
-  "clsLocalLighthouse": 0.0,
-  "milestone": "single_legacy_island"
+  "clsLocalLighthouse": 0.111,
+  "milestone": "island_under_1600"
 }
