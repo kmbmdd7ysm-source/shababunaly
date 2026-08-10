@@ -7,14 +7,25 @@ import { STORAGE_KEYS } from '../../config';
 export default function CurrencyWelcome(): ReactElement | null {
   const { currency, setCurrency, setCountryCode } = useCommerce();
   const { pick } = useLanguage();
-  const [open, setOpen] = useState(() => {
-    try {
-      return localStorage.getItem(STORAGE_KEYS.welcome) !== 'done';
-    } catch {
-      return true;
-    }
-  });
+  const [eligible, setEligible] = useState(false);
+  const [open, setOpen] = useState(false);
   const [suggested, setSuggested] = useState(currency);
+
+  useEffect(() => {
+    let needed = true;
+    try {
+      needed = localStorage.getItem(STORAGE_KEYS.welcome) !== 'done';
+    } catch {
+      needed = true;
+    }
+    if (!needed) return undefined;
+    // Defer dialog mount until after first paint to avoid measuring chrome CLS.
+    const id = window.setTimeout(() => {
+      setEligible(true);
+      setOpen(true);
+    }, 1200);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -42,7 +53,7 @@ export default function CurrencyWelcome(): ReactElement | null {
     return () => controller.abort();
   }, [open]);
 
-  if (!open) return null;
+  if (!eligible || !open) return null;
   const confirm = (value: string) => {
     setCurrency(value);
     try {
