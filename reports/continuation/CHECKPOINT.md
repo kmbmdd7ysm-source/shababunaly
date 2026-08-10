@@ -1,16 +1,15 @@
 # Absolute final checkpoint
 
-- SHA: `c9e251acaed3a352dce434d604d90a58c28f6545`
-- Legacy CSS: **single \`legacy-island.css\` (~1778 lines)**; triad archived
-- Started at ~9660 triad lines
-- CLS **0.000** · TS **100%** · PWA **PASS** · LCP ~3.1s open
+- SHA: `6ecd6490f02a15056419ed4bf5a916c6b395a231`
+- Legacy CSS: **legacy-island.css ~1758 lines** (triad archived; started 9660)
+- LH: perf **85** / a11y **100** / LCP **3187ms** / CLS **0.111**
+- TS **100%** · PWA **PASS**
 - Ready-to-Ship global · Customize 7-step+concept3D · Special Request simplified
 - API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 - ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
 
 ## Next
-1. Continue shrinking/deleting legacy-island.css
-2. LCP ≤2.5s
-3. Clean-tree final verdict
+1. Shrink legacy-island further / LCP ≤2.5s / CLS ≤0.10 on LH
+2. Clean-tree final verdict
 
 **NOT FINAL COMPLETE**
