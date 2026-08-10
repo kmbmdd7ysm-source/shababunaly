@@ -1,11 +1,12 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `1548f19b8c89045b7b2e75718d592948b964aefa`
-- TypeScript: **98.98%** (Realtime3D ambient, orders.js, operations.js remain)
-- Done: b2b/simplePdf/designExports TS · E2E · API local · route audit · plinth a11y · perf snapshot
+- SHA: `fa47196508937bf0ca69ed3dde2c5fb1dc0c82cc`
+- TypeScript: **98.98%** — remaining: Realtime3DEngine.jsx, orders.js, operations.js
+- tsc GREEN · build GREEN
+- Home title a11y · cross-lang matrix · E2E · API local · route audit
 **NOT FINAL COMPLETE**
 
 ## Exact next unfinished
-1. orders.js + operations.js TS (recipes)
-2. Deployed API verification  
+1. orders.js + operations.js TS
+2. Deployed API verification
 3. Final full-site audit from final SHA
