@@ -1,16 +1,16 @@
 # Absolute final checkpoint
 
-- SHA: `f3d1b5df7aacaf153d0c1b2ba8a900bf731a77f8`
-- TS **100%** · Ready-to-Ship global · CSS idle-load removed · triad ~9292 lines live
-- Customize 7-step + CONCEPT 3D · Special Request simplified · Placeholder stage
-- Department art-direction · Account lazy sections · PWA A→B **PASS**
-- API preview: BLOCKED_EXTERNAL_VERCEL_PROTECTION
-- ARABIC_TECHNICAL_QA=PASS · ARABIC_HUMAN_REVIEW=REQUIRED
+- SHA: `32ff7f81eadcc199496bf062ee01cef72deeea1f`
+- TS **100%** · PWA A→B **PASS** · RTS global · Customize 7-step+concept3D
+- CSS idle-load removed · triad live ~9292 lines · !important ~77
+- LH local: perf 78 / a11y 100 / LCP 3291ms / CLS 0.168
+- API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
+- ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
 
-## Next unfinished
-1. Continue shrinking live legacy CSS / !important
-2. Teams workspace polish · more E2E auth matrix
-3. Lighthouse clean-tree measurement
-4. Final SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS when solvable closed
+## Exact next unfinished
+1. Drive CLS≤0.10 and LCP≤2.5s (currency welcome/lab noise + unused CSS)
+2. Continue legacy CSS ownership migration
+3. Auth/commerce full Playwright matrix
+4. Final clean-tree evidence + SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS / better
 
 **NOT FINAL COMPLETE**
