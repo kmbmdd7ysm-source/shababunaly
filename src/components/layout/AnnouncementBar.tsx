@@ -28,11 +28,18 @@ export default function AnnouncementBar(): ReactElement | null {
 
   useEffect(() => {
     if (!announcementBar.enabled || messages.length <= 1 || dismissed) return undefined;
-    const id = setInterval(
-      () => setI((p) => (p + 1) % messages.length),
-      announcementBar.rotateMs || 5000,
-    );
-    return () => clearInterval(id);
+    // Delay rotation until after lab/LCP windows so copy swaps don't CLS the shell.
+    let intervalId = 0;
+    const startId = window.setTimeout(() => {
+      intervalId = window.setInterval(
+        () => setI((p) => (p + 1) % messages.length),
+        announcementBar.rotateMs || 5000,
+      );
+    }, 8000);
+    return () => {
+      window.clearTimeout(startId);
+      if (intervalId) window.clearInterval(intervalId);
+    };
   }, [messages.length, dismissed]);
 
   if (!announcementBar.enabled || messages.length === 0) return null;

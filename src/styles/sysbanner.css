@@ -121,7 +121,8 @@
 }
 
 .gw-announce[data-open='yes'] .gw-announce-inner {
-  min-block-size: 2.75rem;
+  /* Reserve room for the longest rotateable announcement to avoid CLS. */
+  min-block-size: 3.25rem;
   padding-block: 8px;
 }
 
