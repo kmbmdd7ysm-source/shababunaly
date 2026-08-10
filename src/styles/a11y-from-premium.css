@@ -1,0 +1,13 @@
+/* a11y premium */
+
+
+.country-combobox > input[role='combobox']:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+
+.country-combobox__trigger:focus-visible,
+.country-combobox__search input:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}

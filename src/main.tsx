@@ -20,6 +20,8 @@ import { STORAGE_KEYS } from './config';
  * Continue deleting unused rules from global/premium/shababuna until empty.
  */
 import './styles/foundation.css';
+import './styles/a11y-from-premium.css';
+import './styles/a11y-from-global.css';
 import './styles/tokens.css';
 import './styles/fonts.css';
 import './styles/typography.css';

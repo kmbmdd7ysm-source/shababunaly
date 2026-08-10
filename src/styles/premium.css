@@ -560,11 +560,6 @@ from {
   padding: 0 12px 0 44px;
 }
 
-.country-combobox > input[role='combobox']:focus-visible {
-  outline: 3px solid #111;
-  outline-offset: 2px;
-}
-
 .country-combobox__list {
   position: absolute;
   z-index: 100;
@@ -625,12 +620,6 @@ from {
   color: #111;
   text-align: start;
   font: inherit;
-}
-
-.country-combobox__trigger:focus-visible,
-.country-combobox__search input:focus-visible {
-  outline: 3px solid #111;
-  outline-offset: 2px;
 }
 
 .country-combobox__code {
@@ -986,6 +975,7 @@ html {
   grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
   gap: 1rem;
 }
+
 
 
 
