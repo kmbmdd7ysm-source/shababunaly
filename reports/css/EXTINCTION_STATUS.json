@@ -1,10 +1,11 @@
 {
-  "sha": "765600eb52c568ebbadd47fadbbcf9155f16ebd4",
-  "generatedAt": "2026-08-10T07:06:01.573471+00:00",
-  "legacyIslandLines": 345,
-  "islandHalfLines": 278,
+  "sha": "fcb73f31a8aa43a2705a0e6abee10781afaf4708",
+  "generatedAt": "2026-08-10T07:07:53.021026+00:00",
+  "legacyIslandLines": 544,
   "startingTriadLines": 9660,
+  "reductionLines": 9116,
   "importantTotal": 77,
   "idleLegacyLoadRemoved": true,
-  "milestone": "island_under_350"
+  "archivedTriad": true,
+  "milestone": "island_under_550"
 }
