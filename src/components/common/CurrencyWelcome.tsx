@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useCommerce } from '../../context/CommerceContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { STORAGE_KEYS } from '../../config';
+import '../../styles/commerce-welcome.css';
 
 export default function CurrencyWelcome(): ReactElement | null {
   const { currency, setCurrency, setCountryCode } = useCommerce();

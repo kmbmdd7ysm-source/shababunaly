@@ -420,89 +420,6 @@ body {
 
 /* Currency welcome */
 
-.commerce-welcome {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
-.commerce-welcome-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(16px);
-}
-
-.commerce-welcome-panel {
-  position: relative;
-  width: min(650px, 100%);
-  background: #fff;
-  padding: clamp(34px, 6vw, 70px);
-  text-align: center;
-  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.35);
-}
-
-.commerce-welcome-logo {
-  width: min(300px, 70%);
-  height: auto;
-  margin-inline: auto;
-}
-
-.commerce-welcome-panel h2 {
-  font-size: clamp(2rem, 4vw, 4rem);
-  letter-spacing: -0.05em;
-  margin: 20px 0 12px;
-}
-
-.commerce-welcome-panel > p:not(.section-label) {
-  max-width: 480px;
-  margin-inline: auto;
-  color: #666;
-  line-height: 1.6;
-}
-
-.currency-welcome-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 32px;
-}
-
-.currency-welcome-options button {
-  min-height: 132px;
-  border: 1px solid var(--sha-line);
-  background: #fff;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-  justify-content: center;
-}
-
-.currency-welcome-options button:hover,
-.currency-welcome-options button.recommended {
-  border-color: #050505;
-  background: #f5f5f3;
-}
-
-.currency-welcome-options strong {
-  font-size: 1.7rem;
-}
-
-.currency-welcome-options span {
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.currency-welcome-options small {
-  color: #0b7b42;
-  font-size: 0.68rem;
-}
-
 /* Customize */
 
 .custom-type-grid button.active {
@@ -935,10 +852,6 @@ body {
   }.ready-badge {
     padding: 6px 8px;
     font-size: 0.53rem;
-  }.currency-welcome-options {
-    grid-template-columns: 1fr;
-  }.commerce-welcome-panel {
-    padding: 34px 22px;
   }.field-row,
   .payment-plan-grid {
     grid-template-columns: 1fr;
@@ -3047,3 +2960,4 @@ body {
   stroke: #42d17a;
   stroke-width: 4;
 }
+
