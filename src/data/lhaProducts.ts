@@ -14,17 +14,20 @@ const C = {
 };
 
 // Factory: fills defaults + builds variants/inventory from sizes × colours.
-export function normalizeLhaProduct(p) {
+export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, unknown> {
   const isPhysicalActive =
     (p.fulfillmentType || 'physical') === 'physical' && p.available !== false && !p.comingSoon;
-  const sizes = p.sizes || DEFAULT_CLOTHING_SIZES;
-  const colors = p.colors || [C.black];
+  const sizes = (Array.isArray(p.sizes) ? p.sizes : DEFAULT_CLOTHING_SIZES) as string[];
+  const colors = (
+    Array.isArray(p.colors) ? p.colors : [C.black]
+  ) as Array<{ key: string; [k: string]: unknown }>;
   const inventoryTracking = p.inventoryVerified === true;
-  const variants = [];
+  const variants: Array<Record<string, unknown>> = [];
   for (const color of colors) {
     for (const size of sizes) {
       const directKey = `${color.key}:${size}`;
-      const explicit = p.stockByVariant?.[directKey] ?? color.stock ?? p.stockPerVariant ?? 0;
+      const stockByVariant = (p.stockByVariant || {}) as Record<string, unknown>;
+      const explicit = stockByVariant[directKey] ?? color.stock ?? p.stockPerVariant ?? 0;
       variants.push({
         size,
         color: color.key,
@@ -35,7 +38,9 @@ export function normalizeLhaProduct(p) {
       });
     }
   }
-  const stock = inventoryTracking ? variants.reduce((sum, variant) => sum + variant.stock, 0) : 0;
+  const stock = inventoryTracking
+    ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0)
+    : 0;
   const status = p.comingSoon ? 'coming_soon' : p.available === false ? 'archived' : 'active';
   return {
     currency: 'USD',
@@ -75,10 +80,13 @@ export function normalizeLhaProduct(p) {
     socialImage: p.socialImage ?? p.image ?? null,
     mediaStatus: p.image ? 'supplied' : 'missing',
     alt: p.alt || {
-      en: `${p.name.en} — Libya Hoops Academy`,
-      ar: `${p.name.ar} — أكاديمية ليبيا هوبس`,
+      en: `${String((p.name as { en?: string }).en || '')} — Libya Hoops Academy`,
+      ar: `${String((p.name as { ar?: string }).ar || '')} — أكاديمية ليبيا هوبس`,
     },
-    seoTitle: p.seoTitle || { en: `${p.name.en} | LHA Shop`, ar: `${p.name.ar} | متجر LHA` },
+    seoTitle: p.seoTitle || {
+      en: `${String((p.name as { en?: string }).en || '')} | LHA Shop`,
+      ar: `${String((p.name as { ar?: string }).ar || '')} | متجر LHA`,
+    },
     seoDescription: p.seoDescription || p.description,
   };
 }
@@ -934,20 +942,33 @@ export const products = [
 ];
 
 // ── Selectors ──
-export const getProduct = (slug) => products.find((p) => p.slug === slug);
-export const getProductById = (id) => products.find((p) => p.id === id);
+export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
+export const getProductById = (id: string) => products.find((p) => p.id === id);
 export const featuredProducts = () => products.filter((p) => p.featured);
 export const newArrivals = () => products.filter((p) => p.newArrival);
 export const bestSellers = () => products.filter((p) => p.bestSeller);
-export const productsByCategory = (cat) => products.filter((p) => p.category === cat);
-export const productsBySubcategory = (cat, sub) =>
+export const productsByCategory = (cat: string) => products.filter((p) => p.category === cat);
+export const productsBySubcategory = (cat: string, sub: string) =>
   products.filter((p) => p.category === cat && p.subcategory === sub);
-export const relatedProducts = (product, limit = 4) =>
-  (product?.related || []).map(getProductById).filter(Boolean).slice(0, limit);
-export const isLowStock = (p) => p.availability === 'in-stock' && p.stock <= p.lowStockThreshold;
+export const relatedProducts = (product: Record<string, unknown> | null | undefined, limit = 4) =>
+  (Array.isArray(product?.related) ? (product?.related as string[]) : [])
+    .map(getProductById)
+    .filter(Boolean)
+    .slice(0, limit);
+export const isLowStock = (p: Record<string, unknown>) =>
+  p.availability === 'in-stock' && Number(p.stock) <= Number(p.lowStockThreshold);
 
 // All colours/sizes present in the catalogue (drives shop filters).
 export const allColors = Array.from(
-  new Map(products.flatMap((p) => p.colors).map((c) => [c.key, c])).values(),
+  new Map(
+    products
+      .flatMap((p) => (Array.isArray(p.colors) ? p.colors : []))
+      .map((color) => {
+        const c = color as { key: string };
+        return [c.key, c] as const;
+      }),
+  ).values(),
 );
-export const allSizes = Array.from(new Set(products.flatMap((p) => p.sizes)));
+export const allSizes = Array.from(
+  new Set(products.flatMap((p) => (Array.isArray(p.sizes) ? (p.sizes as string[]) : []))),
+);

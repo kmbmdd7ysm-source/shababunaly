@@ -1,4 +1,4 @@
-import { products as sourceLhaProducts } from './lhaProducts.js';
+import { products as sourceLhaProducts } from './lhaProducts.ts';
 import { isProductVisible, isReadyToShipEligible } from '../utils/productEligibility.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
 
