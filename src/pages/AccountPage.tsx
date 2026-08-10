@@ -1,5 +1,5 @@
 import type { FormEvent, ReactElement, RefObject } from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -15,9 +15,6 @@ import { errorText, mapError } from '../utils/errors';
 import { createProfileImageDataUrl, validateProfileImage } from '../utils/profileImage';
 import { getMyOrders } from '../services/orders';
 import { safeInternalReturnPath } from '../utils/safeReturnPath';
-import OrganizationWorkspace from '../components/account/OrganizationWorkspace';
-import ReturnsSection from '../components/account/ReturnsSection';
-import SpecialRequestsSection from '../components/account/SpecialRequestsSection';
 import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
 import {
@@ -32,6 +29,10 @@ import { ORGANIZATION_TYPES } from './account/accountConstants';
 import '../styles/transact.css';
 import '../styles/account-sync.css';
 import '../styles/workspace.css';
+
+const OrganizationWorkspace = lazy(() => import('../components/account/OrganizationWorkspace'));
+const ReturnsSection = lazy(() => import('../components/account/ReturnsSection'));
+const SpecialRequestsSection = lazy(() => import('../components/account/SpecialRequestsSection'));
 
 const ACCOUNT_SECTIONS = [
   'overview',
@@ -978,9 +979,21 @@ export default function AccountPage(): ReactElement {
                   />
                 </LazyAccountSection>
               )}
-              {section === 'workspace' && <OrganizationWorkspace />}
-              {section === 'returns' && <ReturnsSection orders={ordersState.orders} />}
-              {section === 'special-requests' && <SpecialRequestsSection />}
+              {section === 'workspace' && (
+                <Suspense fallback={<LazyAccountSection />}>
+                  <OrganizationWorkspace />
+                </Suspense>
+              )}
+              {section === 'returns' && (
+                <Suspense fallback={<LazyAccountSection />}>
+                  <ReturnsSection orders={ordersState.orders} />
+                </Suspense>
+              )}
+              {section === 'special-requests' && (
+                <Suspense fallback={<LazyAccountSection />}>
+                  <SpecialRequestsSection />
+                </Suspense>
+              )}
               {section === 'profile' && (
                 <LazyAccountSection>
                   <ProfileSection
