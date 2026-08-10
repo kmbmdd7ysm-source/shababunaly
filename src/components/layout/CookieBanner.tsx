@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCookies } from '../../context/CookieContext';
 import { useLanguage } from '../../context/LanguageContext';
 
+import '../../styles/pwa-cookie-from-global.css';
 export default function CookieBanner(): ReactElement | null {
   const { consent, save, preferencesOpen, openPreferences, closePreferences } = useCookies();
   const { t } = useLanguage();
