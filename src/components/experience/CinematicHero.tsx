@@ -61,8 +61,7 @@ export default function CinematicHero(): ReactElement {
       return undefined;
     }
     const fade = globalThis.setTimeout(() => {
-      shell.style.transition = 'opacity 240ms ease';
-      shell.style.opacity = '0';
+      shell.classList.add('is-retiring');
     }, 2500);
     const remove = globalThis.setTimeout(() => {
       shell.remove();

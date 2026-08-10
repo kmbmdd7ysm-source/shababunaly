@@ -268,10 +268,7 @@
 }
 
 .workspace-design-swatch span {
-  font-family:
-    Impact,
-    Arial Black,
-    sans-serif;
+  font-family: Impact, 'Arial Black', sans-serif;
   font-size: 3.4rem;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
 }

@@ -63,7 +63,7 @@
 
 .contact-form label {
   overflow-wrap: anywhere;
-  word-break: break-word;
+  word-break: normal;
 }
 
 .contact-info .section-title {

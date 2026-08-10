@@ -172,7 +172,7 @@ export default function Garment3DStage({
           dpr={[1, 1.75]}
           camera={{ position: [0, 0.25, 3.2], fov: 35 }}
           gl={{ antialias: true, alpha: true }}
-          style={{ width: '100%', height: '100%', touchAction: 'none' }}
+          className="gw-r3f-canvas"
           onCreated={({ gl }) => {
             gl.setClearColor('#0d0d0d', 1);
           }}
