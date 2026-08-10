@@ -17,6 +17,7 @@ import Icon from '../components/icons/Icon';
 import { useCatalog } from '../context/CatalogContext';
 import { categories, getCategory, getSubcategory } from '../data/categories';
 import { lockDocumentScroll } from '../utils/scrollLock';
+import { isReadyToShipEligible } from '../utils/productEligibility';
 import '../styles/catalogue.css';
 import '../styles/runs.css';
 import '../styles/catalog.css';
@@ -138,18 +139,15 @@ export default function ShopPage(): ReactElement {
     () =>
       (products as CatalogProduct[]).filter((product) => {
         if (category === 'ready-to-ship') {
-          return (
-            product.readyToShip === true &&
-            product.inventoryVerified === true &&
-            product.inventoryTracking === true
-          );
+          // Honest Libya readiness: only verified tracked stock, never fabricated.
+          return isReadyToShipEligible(product as never, 'LY');
         }
         if (category && product.category !== category) return false;
         if (subcategory && product.subcategory !== subcategory) return false;
         return true;
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
-    [category, subcategory],
+    [category, subcategory, products],
   );
 
   const filtered = useMemo(() => {
@@ -179,14 +177,7 @@ export default function ShopPage(): ReactElement {
       ) {
         return false;
       }
-      if (
-        filters.readyOnly &&
-        !(
-          product.readyToShip === true &&
-          product.inventoryVerified === true &&
-          product.inventoryTracking === true
-        )
-      ) {
+      if (filters.readyOnly && !isReadyToShipEligible(product as never, 'LY')) {
         return false;
       }
       if (filters.newOnly && !product.newArrival) return false;
@@ -416,12 +407,8 @@ export default function ShopPage(): ReactElement {
                   </span>
                   <span className="gw-gate-count gw-isolate-ltr">
                     {
-                      products.filter(
-                        (entry) =>
-                          entry.readyToShip === true &&
-                          entry.inventoryVerified === true &&
-                          entry.inventoryTracking === true,
-                      ).length
+                      products.filter((entry) => isReadyToShipEligible(entry as never, 'LY'))
+                        .length
                     }
                   </span>
                 </Link>
