@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
@@ -200,6 +201,16 @@ export default function HomePage(): ReactElement {
         description="Premium basketball retail, custom manufacturing, team supply and wholesale from Libya to the world."
         path="/"
       />
+      <Helmet>
+        <link
+          rel="preload"
+          as="image"
+          href="/media/atmosphere/arena-wide-1600.webp"
+          type="image/webp"
+          imageSrcSet="/media/atmosphere/arena-wide-1024.webp 1024w, /media/atmosphere/arena-wide-1600.webp 1600w, /media/atmosphere/arena-wide-2048.webp 2048w"
+          imageSizes="100vw"
+        />
+      </Helmet>
 
       {/* The chapter index. Real links, so it works with no JavaScript beyond
           React's own rendering, and it is a nav landmark for screen readers. */}

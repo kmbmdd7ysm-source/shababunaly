@@ -36,6 +36,7 @@
 }
 
 .gw-sysbanner[data-open='yes'] .gw-sysbanner-inner {
+  min-block-size: 2.75rem;
   padding-block: 10px;
 }
 
@@ -120,6 +121,7 @@
 }
 
 .gw-announce[data-open='yes'] .gw-announce-inner {
+  min-block-size: 2.75rem;
   padding-block: 8px;
 }
 
