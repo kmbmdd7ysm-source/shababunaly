@@ -49,13 +49,20 @@ export default function CinematicHero(): ReactElement {
   const capability = useDeviceCapability();
 
   useEffect(() => {
-    // Absolute LCP shell: keep painted through the LCP window, then remove.
+    // Fixed LCP overlay stays above React until after the LCP window, then fades out.
     const shell = document.getElementById('lcp-shell');
     if (!shell) return undefined;
-    const timer = globalThis.setTimeout(() => {
+    const fade = globalThis.setTimeout(() => {
+      shell.style.transition = 'opacity 280ms ease';
+      shell.style.opacity = '0';
+    }, 2200);
+    const remove = globalThis.setTimeout(() => {
       shell.remove();
-    }, 4000);
-    return () => globalThis.clearTimeout(timer);
+    }, 2600);
+    return () => {
+      globalThis.clearTimeout(fade);
+      globalThis.clearTimeout(remove);
+    };
   }, []);
 
   useEffect(() => {
