@@ -105,10 +105,8 @@ export function ReadinessProvider({ children }: { children?: ReactNode }) {
   // Latch open from the first paint when we start degraded so the banner never
   // "pops in" after effects, and never auto-collapses when the readiness fetch
   // later reports ready (that collapse was ~0.05–0.17 CLS on home).
-  const [latchedOpen, setLatchedOpen] = useState(
-    () =>
-      (localReadiness.ready && localReadiness.needsServerCheck) || !localReadiness.ready,
-  );
+  const latchedOpen =
+    (localReadiness.ready && localReadiness.needsServerCheck) || !localReadiness.ready;
   const open = latchedOpen && !dismissed;
 
   useEffect(() => {

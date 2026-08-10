@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { SITE } from '../../config';
 import { useLanguage } from '../../context/LanguageContext';
@@ -63,7 +63,11 @@ export default function MainHeader(): ReactElement {
 
   const [navOpen, setNavOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [condensed, setCondensed] = useState(true);
+  // Prefer cinematic-open from the first layout pass to avoid condensed→expanded CLS.
+  const [condensed, setCondensed] = useState(() => {
+    if (typeof document === 'undefined') return true;
+    return document.documentElement.dataset.cinematicOpen !== 'yes';
+  });
 
   const searchButton = useRef<HTMLButtonElement | null>(null);
   const menuButton = useRef<HTMLButtonElement | null>(null);
@@ -77,7 +81,7 @@ export default function MainHeader(): ReactElement {
    * page a transparent header would be invisible — solid is the safe default
    * and the exception has to be earned. rAF-throttled so scrolling stays cheap.
    */
-  useEffect(() => {
+  useLayoutEffect(() => {
     let frame = 0;
     const evaluate = () => {
       const cinematic = document.documentElement.dataset.cinematicOpen === 'yes';
@@ -90,13 +94,10 @@ export default function MainHeader(): ReactElement {
         evaluate();
       });
     };
-    // The route paints after this effect, so re-read on the next frame too.
     evaluate();
-    const settle = requestAnimationFrame(evaluate);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(settle);
       if (frame) cancelAnimationFrame(frame);
     };
   }, [location.pathname]);
