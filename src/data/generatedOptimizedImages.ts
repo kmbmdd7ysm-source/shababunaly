@@ -1,5 +1,5 @@
 // Generated from optimized files that exist in public/.
-export const OPTIMIZED_IMAGES = {
+export const OPTIMIZED_IMAGES: Record<string, string> = {
   '/images/categories/accessories-hero-player.webp':
     '/images/categories/accessories-hero-player.opt.webp',
   '/images/categories/accessories-hero-player.jpeg':

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactElement } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { OPTIMIZED_IMAGES } from '../../data/generatedOptimizedImages.js';
+import { OPTIMIZED_IMAGES } from '../../data/generatedOptimizedImages.ts';
 
 const MEDIA_VERSION = '20260729-performance-final';
 

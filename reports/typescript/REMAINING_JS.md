@@ -1,9 +1,8 @@
 # TypeScript remaining JS/JSX inventory
 
-Total remaining: 10
+Total remaining: 9
 
 - `src/components/product/engines/Realtime3DEngine.jsx`
-- `src/data/generatedOptimizedImages.js`
 - `src/data/lhaProducts.js`
 - `src/data/products.js`
 - `src/data/translations.js`
