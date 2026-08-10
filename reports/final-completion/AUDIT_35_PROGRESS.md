@@ -1,26 +1,22 @@
-# 35-problem-group progress (living) — NOT FINAL COMPLETE
+# 35-problem-group progress — NOT FINAL COMPLETE
 
-SHA: `5da868db6ec4c967397f483675d4e964cb295137`
+SHA: 
 
-## Verified in-repo
-- TypeScript **98.98%** (3 legacy: Realtime3DEngine.jsx ambient, orders.js, operations.js)
-- Catalog + b2b + simplePdf + designExports migrated
-- QuickAddSheet, PDP CTA, Ready-to-Ship honesty, cart Libya gate, dismiss a11y
-- Home title aria-label; plinth accessible names
-- E2E shop→bag→checkout + customize review
-- Cross-lang responsive matrix (no overflow)
-- Local API GET OK; POST quote BLOCKED without Vercel
-- Route audit 200s; PWA sw.js present; build green
+## TypeScript
+**99.32%** — remaining: ,  (model-viewer ambient)
 
-## BLOCKED external
-- Verified inventory for Ready-to-Ship counts
-- Deployed Vercel API / Formspree / payments / full RLS e2e
-- ARABIC_HUMAN_REVIEW
+## Completed migrations this continuation
+b2b · orders · simplePdf · designExports · (prior: catalog data, OrgWorkspace, addressService, rosterSpreadsheet)
 
-## Remaining before FINAL COMPLETE
-1. Migrate orders.js + operations.js (or prove BLOCKED)
-2. Deployed API verification when environment allows
+## Verified product/UX
+QuickAddSheet · PDP CTA · Ready-to-Ship honesty · cart Libya gate · dismiss/plinth/home/checkout a11y
+E2E shop→bag→checkout + customize · cross-lang responsive · route audit · build green
+
+## External BLOCKED
+Ready-to-Ship inventory · Vercel OAuth for api/ · Supabase RLS stack · ARABIC_HUMAN_REVIEW
+
+## Before FINAL COMPLETE
+1. Migrate operations.js (per-export interfaces — see OPERATIONS_TS_RECIPE.md)
+2. Keep or resolve Realtime3D ambient
 3. Regenerate final release evidence from final SHA
-4. Full-site audit pass claiming FINAL COMPLETE only if all solvable items verified
-
-Do not claim FINAL COMPLETE from this document alone.
+4. Full-site audit claiming FINAL COMPLETE only if all solvable items verified
