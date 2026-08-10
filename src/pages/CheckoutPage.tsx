@@ -619,8 +619,14 @@ export default function CheckoutPage(): ReactElement {
           path="/checkout"
           noindex
         />
-        <section className="gw-checkout gw-checkout--terminal">
+        <section className="gw-checkout gw-checkout--terminal" aria-labelledby="gw-checkout-title">
           <div className="gw-checkout-inner">
+            <div className="gw-checkout-head">
+              <p className="gw-spec">{nav.cart}</p>
+              <h1 id="gw-checkout-title" className="gw-checkout-title">
+                {checkout.title}
+              </h1>
+            </div>
             {orderConfirmed ? (
               <div className="order-confirmed">
                 <span>
