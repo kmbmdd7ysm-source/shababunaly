@@ -1,7 +1,7 @@
 {
   "schema": "shababuna.browser.e2e.v1",
-  "sha": "2ba86a6b10615031d4330a982f3ae80047eacb71",
-  "generatedAt": "2026-08-10T15:35:32.394Z",
+  "sha": "ee3ea56ae63528d6360caab2f50d12fb7da38e04",
+  "generatedAt": "2026-08-10T18:34:38.415Z",
   "environment": "local-vite",
   "testsRun": 10,
   "passed": 10,
@@ -25,15 +25,7 @@
       "status": "passed"
     },
     {
-      "name": "QUICK_ADD_CART",
-      "status": "passed"
-    },
-    {
-      "name": "CHECKOUT",
-      "status": "passed"
-    },
-    {
-      "name": "CUSTOMIZE_STEPS",
+      "name": "CUSTOMIZE_WEBGL",
       "status": "passed"
     },
     {
@@ -41,7 +33,15 @@
       "status": "passed"
     },
     {
-      "name": "ACCOUNT_SIGNED_OUT",
+      "name": "CART",
+      "status": "passed"
+    },
+    {
+      "name": "CHECKOUT",
+      "status": "passed"
+    },
+    {
+      "name": "ACCOUNT",
       "status": "passed"
     },
     {
@@ -50,7 +50,7 @@
     }
   ],
   "notes": [
-    "Authenticated account/checkout payment live paths not run \u2014 no test credentials",
+    "Auth live paths not run — no credentials",
     "Catalogue Tier B spin remains 0; DEV_SPIN is fixture only"
   ]
 }
