@@ -1,6 +1,10 @@
 import type { ReactElement } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
-import { normalizeProductMaster, missingMasterFields } from '../../../domain/productMaster.ts';
+import {
+  normalizeProductMaster,
+  missingMasterFields,
+  type ProductMasterFields as MasterFields,
+} from '../../../domain/productMaster.ts';
 
 /**
  * Operations input surface for real commercial fields.
@@ -14,8 +18,8 @@ export default function ProductMasterFields({
   onChange?: (next: Record<string, unknown>) => void;
 }): ReactElement {
   const { pick } = useLanguage();
-  const master = normalizeProductMaster(product) as unknown as Record<string, unknown>;
-  const missing = missingMasterFields(master as never);
+  const master = normalizeProductMaster(product) as MasterFields & Record<string, unknown>;
+  const missing = missingMasterFields(master);
   const fields: Array<[string, string, string]> = [
     ['supplierSKU', 'Supplier SKU', 'رمز المورد'],
     ['barcode', 'Barcode', 'الباركود'],

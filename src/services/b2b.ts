@@ -294,7 +294,7 @@ export async function saveRoster({
   rows = [],
   rosterId = null,
 }: SaveRosterInput): Promise<Row> {
-  const normalized = normalizeRoster(rows as never);
+  const normalized = normalizeRoster(rows as import("../data/customization").RosterInput[]);
   const row = {
     id: rosterId || newId('roster'),
     user_id: userId || null,

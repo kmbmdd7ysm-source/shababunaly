@@ -7,7 +7,7 @@ import { getMyOrders, lookupGuestOrder } from '../services/orders';
 import Seo from '../components/common/Seo';
 import '../styles/composition.css';
 import '../styles/runs.css';
-import OrderCard from '../components/account/OrderCard';
+import OrderCard, { type OrderLike } from '../components/account/OrderCard';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 
 export default function OrderTrackingPage(): ReactElement {
@@ -141,7 +141,7 @@ export default function OrderTrackingPage(): ReactElement {
                     {ordersState.orders.map((order) => (
                       <OrderCard
                         key={String((order as Record<string, unknown>).id || '')}
-                        order={order as never}
+                        order={order as OrderLike}
                       />
                     ))}
                   </div>

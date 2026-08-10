@@ -1135,7 +1135,11 @@ export const productsByCategory = (cat: string) =>
 export const productsBySubcategory = (cat: string, sub: string) =>
   products.filter((p) => p.category === cat && p.subcategory === sub);
 export const relatedProducts = (item: unknown, limit = 4) =>
-  getRelatedProducts(item as never, products as never, limit);
+  getRelatedProducts(
+    item as import('../utils/relatedProducts').RelatedCandidate | null | undefined,
+    products as unknown as import('../utils/relatedProducts').RelatedCandidate[],
+    limit,
+  );
 export const isLowStock = (p: Record<string, unknown>) =>
   Boolean(p.inventoryTracking) &&
   p.inventoryVerified === true &&

@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { presentOrderStatus } from '../../services/orderStatus.ts';
 
-type OrderLike = {
-  orderNumber: string;
-  createdAt: string;
+export type OrderLike = {
+  orderNumber?: string;
+  createdAt?: string;
   orderStatus?: string;
   paymentStatus?: string;
   syncState?: string;
@@ -12,6 +12,7 @@ type OrderLike = {
   total?: number;
   displayCurrency?: string;
   items?: Array<{ id?: string; sku?: string; quantity?: number; name?: string }>;
+  [key: string]: unknown;
 };
 
 export default function OrderCard({
@@ -32,10 +33,10 @@ export default function OrderCard({
     <article className={`order-card${compact ? ' order-card--compact' : ''}`}>
       <div className="order-card-head">
         <div>
-          <h3>{order.orderNumber}</h3>
-          <time dateTime={order.createdAt}>
+          <h3>{String(order.orderNumber || '')}</h3>
+          <time dateTime={String(order.createdAt || '')}>
             {new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', { dateStyle: 'medium' }).format(
-              new Date(order.createdAt),
+              new Date(String(order.createdAt || Date.now())),
             )}
           </time>
         </div>
@@ -78,7 +79,10 @@ export default function OrderCard({
           ))}
         </ul>
       )}
-      <Link className="link-btn" to={`/order-tracking/${encodeURIComponent(order.orderNumber)}`}>
+      <Link
+        className="link-btn"
+        to={`/order-tracking/${encodeURIComponent(String(order.orderNumber || ''))}`}
+      >
         {pick({ en: 'View Details', ar: 'عرض التفاصيل' })}
       </Link>
     </article>

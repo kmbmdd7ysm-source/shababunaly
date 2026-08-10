@@ -1,6 +1,6 @@
 {
   "schema": "shababuna.typescript.type-quality.v1",
-  "sha": "a705cef6291b9fa6a68bcc9a05add299c0d50f57",
+  "sha": "aa2c2bb87b2f74b5d4ce3ef056888f6fb36d9e9c",
   "anyCount": 0,
-  "asNeverCount": 14
+  "asNeverCount": 0
 }

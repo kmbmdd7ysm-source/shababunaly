@@ -1,17 +1,18 @@
 import type { FormEvent, ReactElement } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
-type LocalePick = (value: { en: string; ar: string }) => string;
+type LocalePick = (value: { en?: string; ar?: string } | string) => string;
 
 type MfaAuth = {
   cloudConfigured?: boolean;
-  listMfaFactors: () => Promise<{
+  listMfaFactors?: () => Promise<{
     factors?: Array<Record<string, unknown>>;
     aal?: Record<string, unknown> | null;
   }>;
-  enrollMfaTotp: () => Promise<Record<string, unknown>>;
-  verifyMfaTotp: (factorId: string, code: string) => Promise<unknown>;
-  unenrollMfaFactor: (factorId: string) => Promise<unknown>;
+  enrollMfaTotp?: () => Promise<Record<string, unknown>>;
+  verifyMfaTotp?: (factorId: string, code: string) => Promise<unknown>;
+  unenrollMfaFactor?: (factorId: string) => Promise<unknown>;
+  [key: string]: unknown;
 };
 
 type Enrollment = Record<string, unknown> & {
@@ -58,7 +59,8 @@ export default function MfaSecurityPanel({
       return;
     }
     try {
-      const result = await auth.listMfaFactors();
+      const result = await (auth.listMfaFactors?.() ??
+        Promise.resolve({ factors: [], aal: null }));
       setState({
         loading: false,
         factors: Array.isArray(result.factors)
@@ -79,7 +81,7 @@ export default function MfaSecurityPanel({
   const begin = async () => {
     setBusy(true);
     try {
-      const result = (await auth.enrollMfaTotp()) as Enrollment;
+      const result = (await (auth.enrollMfaTotp?.() ?? Promise.reject(new Error('MFA unavailable')))) as Enrollment;
       setEnrollment(result);
       setCode('');
       setState((current) => ({ ...current, error: '' }));
@@ -95,7 +97,7 @@ export default function MfaSecurityPanel({
     if (!enrollment?.id || !/^\d{6}$/.test(code)) return;
     setBusy(true);
     try {
-      await auth.verifyMfaTotp(String(enrollment.id), code);
+      await auth.verifyMfaTotp?.(String(enrollment.id), code);
       setEnrollment(null);
       setCode('');
       await load();
@@ -115,7 +117,7 @@ export default function MfaSecurityPanel({
       return;
     setBusy(true);
     try {
-      await auth.unenrollMfaFactor(factorId);
+      await auth.unenrollMfaFactor?.(factorId);
       await load();
     } catch (error) {
       setState((current) => ({ ...current, error: errMsg(error) || String(error) }));

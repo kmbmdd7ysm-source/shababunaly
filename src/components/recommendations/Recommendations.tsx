@@ -1,20 +1,24 @@
 import ProductCard from '../shop/ProductCard';
 import { useCatalog } from '../../context/CatalogContext';
-import { recommend } from '../../utils/recommendations.ts';
+import { recommend, type RecommendProduct } from '../../utils/recommendations.ts';
 import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
 import { useWishlist } from '../../hooks/useWishlist';
 import { useCart } from '../../context/CartContext';
 import { useLanguage } from '../../context/LanguageContext';
 
-export default function Recommendations({ current }: { current?: { id?: string; [key: string]: unknown } }) {
+export default function Recommendations({
+  current,
+}: {
+  current?: RecommendProduct | null;
+}) {
   const { products } = useCatalog();
   const { ids } = useRecentlyViewed(),
     w = useWishlist(),
     { items } = useCart(),
     { pick } = useLanguage();
-  const catalog = products as Array<{ id: string; [key: string]: unknown }>;
-  const list = recommend(catalog as never, {
-    current: current as never,
+  const catalog = products as RecommendProduct[];
+  const list = recommend(catalog, {
+    current: current || null,
     recent: ids,
     wishlist: w.ids || [],
     cart: (items as Array<{ id: string }>) || [],

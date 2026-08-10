@@ -1,5 +1,6 @@
 import type { ProductMasterFields, UnknownCommercialField, VariantInventory } from './types.ts';
 
+export type { ProductMasterFields };
 export type MasterValue<T> = T | UnknownCommercialField;
 
 const UNKNOWN: UnknownCommercialField = 'pending_verification';

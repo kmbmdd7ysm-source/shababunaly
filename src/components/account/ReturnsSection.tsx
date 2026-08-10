@@ -159,7 +159,7 @@ export default function ReturnsSection({
         orderNumber: String(order.orderNumber || ''),
         reason,
         details,
-        items: items as never,
+        items: items as Array<Record<string, unknown>>,
       });
       setReason('');
       setDetails('');

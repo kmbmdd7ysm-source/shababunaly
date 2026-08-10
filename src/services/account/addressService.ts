@@ -260,7 +260,7 @@ export async function saveAddress(
     }
     return normalizeRow((data || {}) as AddressRow);
   } catch (error: unknown) {
-    reportClientError(error as never, { source: 'address_save_cloud' });
+    reportClientError(error, { source: 'address_save_cloud' });
     if (allowLocalPersistence && localRecord) return localRecord;
     throw error;
   }
@@ -277,7 +277,7 @@ export async function deleteAddress(userId: string, id: string): Promise<void> {
   if (!client) return;
   const { error } = await client.from('addresses').delete().eq('id', id).eq('user_id', userId);
   if (error) {
-    reportClientError(error as never, { source: 'address_delete_cloud' });
+    reportClientError(error, { source: 'address_delete_cloud' });
     throw error;
   }
 }
@@ -305,7 +305,7 @@ export async function setDefaultAddress(userId: string, id: string): Promise<Add
         .eq('user_id', userId);
       if (error) throw error;
     } catch (error: unknown) {
-      reportClientError(error as never, { source: 'address_default_cloud' });
+      reportClientError(error, { source: 'address_default_cloud' });
       if (!allowLocalPersistence) throw error;
     }
   }

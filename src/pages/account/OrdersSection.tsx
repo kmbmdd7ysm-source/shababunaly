@@ -59,7 +59,7 @@ export default function OrdersSection({
             {ordersState.orders.slice(0, 5).map((order) => (
               <OrderCard
                 key={String(order.id)}
-                order={order as never}
+                order={order}
                 compact
               />
             ))}

@@ -10,7 +10,8 @@ import {
 } from 'react';
 import { STORAGE_KEYS } from '../config.ts';
 import { useAuth } from './AuthContext';
-import { useCart } from './CartContext';
+import { useCart } from './CartContext'
+import type { CartItem } from './CartContext';
 import { useCompare } from './CompareContext';
 import { readScoped, writeScoped, createChannel, clearUserScope } from '../services/sync/storage.ts';
 import {
@@ -90,7 +91,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
   }, [cart.items, wishlist, compare.ids, recent, profile]);
   const apply = useCallback(
     (s: Record<string, unknown>) => {
-      cart.replaceItems((s.cart as never) || []);
+      cart.replaceItems(((s.cart as CartItem[]) || []));
       compare.replace(ids(s.compare as Array<string | IdItem>).slice(0, MAX_COMPARE));
       setWishlist(normalizeIds((s.wishlist as Array<string | IdItem>) || []) as IdItem[]);
       setRecent(
