@@ -1,18 +1,15 @@
 # Absolute final checkpoint
 
-- SHA: `bb7a87a2c18b14d7365a71ead18ebd58b5895a93`
-- **CLS 0.000** · LCP ~3.1s local · TS **100%** · PWA A→B **PASS**
-- Ready-to-Ship global (nav + eligibility)
-- Customize 7-step + CONCEPT 3D · Special Request simplified
-- Auth UI negative login shows error
-- CSS: no idle inject · triad ~9.3k · !important 77
+- SHA: `64dcfba807dd97c752b7f2abb7347dc67f1cb1b9`
+- **CLS 0.000** ✅ · LCP ~3.3s (open) · TS 100% · PWA PASS
+- Ready-to-Ship global · Customize 7-step+concept3D · Special Request simplified
+- Readiness banner latched until dismiss (CLS fix)
 - API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 - ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
 
-## Exact next unfinished
+## Next
 1. LCP ≤2.5s
-2. Continue CSS triad ownership migration
-3. Broader authenticated E2E (needs fixtures/credentials)
-4. Clean-tree final release verdict
+2. CSS triad ownership migration
+3. Broader auth E2E / clean-tree verdict
 
 **NOT FINAL COMPLETE**

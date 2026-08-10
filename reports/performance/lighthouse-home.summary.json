@@ -1,9 +1,8 @@
 {
-  "sha": "943c8fcd4d177d29d120e39f85ed74dd8980c860",
-  "generatedAt": "2026-08-10T06:14:27.979762+00:00",
-  "performance": 78,
+  "sha": "64dcfba807dd97c752b7f2abb7347dc67f1cb1b9",
+  "generatedAt": "2026-08-10T06:21:05.317110+00:00",
+  "performance": 75,
   "accessibility": 100,
-  "lcpMs": 3083,
-  "cls": 0.0,
-  "note": "CLS target met (0). LCP still ~3.1s on local preview."
+  "lcpMs": 3259,
+  "cls": 0.0
 }
