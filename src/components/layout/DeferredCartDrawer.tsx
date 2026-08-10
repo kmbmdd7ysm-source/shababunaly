@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { useCart } from '../../context/CartContext';
+import '../../styles/domain-overlays.css';
 
 const CartDrawer = lazy(() => import('./CartDrawer'));
 

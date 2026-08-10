@@ -8,6 +8,7 @@ import Breadcrumbs from '../components/common/Breadcrumbs';
 import '../styles/composition.css';
 import '../styles/spine.css';
 import '../styles/domain-misc.css';
+import '../styles/domain-forms.css';
 import CountrySelect from '../components/common/CountrySelect';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';

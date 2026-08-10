@@ -42,6 +42,7 @@ import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
 import '../styles/studio.css';
 import '../styles/domain-misc.css';
+import '../styles/domain-forms.css';
 import ProductStep from '../components/custom/studio/ProductStep';
 import ModelStep from '../components/custom/studio/ModelStep';
 import DesignStep from '../components/custom/studio/DesignStep';

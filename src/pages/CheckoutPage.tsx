@@ -31,6 +31,7 @@ import { listAddresses } from '../services/account/addressService';
 import { reportClientError } from '../services/telemetry';
 import '../styles/transact.css';
 import '../styles/domain-misc.css';
+import '../styles/domain-forms.css';
 import type { LocaleText } from '../types/i18n';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

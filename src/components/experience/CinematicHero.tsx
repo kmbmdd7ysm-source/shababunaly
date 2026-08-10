@@ -6,6 +6,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { fetchSiteContent } from '../../services/siteContent';
 import { SITE } from '../../config';
+import '../../styles/domain-media.css';
 
 const ENV_DESKTOP_VIDEO = String(import.meta.env.VITE_HERO_VIDEO_URL || '').trim();
 const ENV_MOBILE_VIDEO = String(import.meta.env.VITE_HERO_MOBILE_VIDEO_URL || '').trim();

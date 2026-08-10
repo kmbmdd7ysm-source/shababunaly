@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
+import '../styles/domain-forms.css';
 import CountrySelect from '../components/common/CountrySelect';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 import { useLanguage } from '../context/LanguageContext';

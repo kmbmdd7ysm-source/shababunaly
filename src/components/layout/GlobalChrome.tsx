@@ -4,6 +4,7 @@ import AnnouncementStack from './AnnouncementStack';
 import MainHeader from './MainHeader';
 import '../../styles/sysbanner.css';
 import '../../styles/shell.nav.css';
+import '../../styles/domain-overlays.css';
 
 /**
  * Authoritative global chrome — single ownership, no bridge duplicates.

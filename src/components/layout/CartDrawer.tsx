@@ -9,6 +9,7 @@ import SmartImage from '../common/SmartImage';
 import QuantitySelector from '../common/QuantitySelector';
 import Icon from '../icons/Icon';
 import { lockDocumentScroll } from '../../utils/scrollLock';
+import '../../styles/domain-overlays.css';
 
 export default function CartDrawer(): ReactElement | null {
   const { t, pick, lang } = useLanguage();

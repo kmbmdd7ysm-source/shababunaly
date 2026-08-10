@@ -19,6 +19,7 @@ import { getVariantPurchaseLimit, type VariantLike } from '../../utils/productEl
 import type { LocaleText } from '../../types/i18n';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability.ts';
 import type { ProductLike } from '../../utils/productEligibility.ts';
+import '../../styles/domain-media.css';
 
 type CardColor = {
   key?: string;
