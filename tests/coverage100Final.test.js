@@ -41,7 +41,7 @@ import {
   compareBrands,
   BRAND_PRIORITY,
   catalogProducts,
-} from '../src/data/products.js';
+} from '../src/data/products.ts';
 import { CUSTOM_PRODUCT_TYPES, normalizeRoster, rosterToCsv } from '../src/data/customization.ts';
 import {
   normalizeStudio,

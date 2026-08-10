@@ -4,9 +4,9 @@ import {
   allBrands,
   lhaStoreProducts,
   readyToShipProducts,
-} from '../src/data/products.js';
+} from '../src/data/products.ts';
 import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.ts';
-import { products as sourceLhaProducts } from '../src/data/lhaProducts.js';
+import { products as sourceLhaProducts } from '../src/data/lhaProducts.ts';
 import { categories } from '../src/data/categories.ts';
 
 let errors = 0;

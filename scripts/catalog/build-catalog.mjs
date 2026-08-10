@@ -1,4 +1,4 @@
-import { products } from '../../src/data/products.js';
+import { products } from '../../src/data/products.ts';
 
 const currencies = new Set(['USD', 'LYD']);
 export function buildCatalog(input = products) {

@@ -12,7 +12,7 @@
 // Writes a machine-readable matrix for the runtime and a human-readable table
 // for whoever has to commission the photography.
 import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
-import { products } from '../src/data/products.js';
+import { products } from '../src/data/products.ts';
 
 const MIN_SPIN_FRAMES = 24;
 const MODELS_MANIFEST = 'public/models/manifest.json';

@@ -37,7 +37,7 @@ import {
   productsBySubcategory as rawBySubcategory,
   relatedProducts as rawRelated,
   isLowStock as rawLowStock,
-} from '../src/data/lhaProducts.js';
+} from '../src/data/lhaProducts.ts';
 import {
   normalizeCatalogProduct,
   verifiedVariantStock,
@@ -59,7 +59,7 @@ import {
   allBrands,
   allProductTypes,
   compareBrands,
-} from '../src/data/products.js';
+} from '../src/data/products.ts';
 
 afterEach(() => vi.restoreAllMocks());
 

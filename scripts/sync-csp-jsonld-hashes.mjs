@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
-import { products } from '../src/data/products.js';
+import { products } from '../src/data/products.ts';
 import {
   createHomeSchema,
   createProductSchema,

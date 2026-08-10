@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { SITE } from '../src/config.ts';
-import { products } from '../src/data/products.js';
+import { products } from '../src/data/products.ts';
 import { legal } from '../src/data/legal.ts';
 import {
   createHomeSchema,

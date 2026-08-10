@@ -15,7 +15,7 @@ import {
   bestSellers,
   collectColors,
   collectSizes,
-} from '../src/data/products.js';
+} from '../src/data/products.ts';
 import {
   createDefaultStudio,
   addDesignLayer,

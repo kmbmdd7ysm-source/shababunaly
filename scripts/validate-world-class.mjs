@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { catalogProducts, products, readyToShipProducts } from '../src/data/products.js';
+import { catalogProducts, products, readyToShipProducts } from '../src/data/products.ts';
 import { isProductVisible } from '../src/utils/productEligibility.ts';
 import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.ts';
 

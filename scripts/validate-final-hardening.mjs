@@ -6,7 +6,7 @@ import {
   products,
   lhaStoreProducts,
   readyToShipProducts,
-} from '../src/data/products.js';
+} from '../src/data/products.ts';
 import { isProductVisible, isProductPurchasable } from '../src/utils/productEligibility.ts';
 
 const fail = [];
@@ -222,9 +222,9 @@ for (const file of readdirSync('api').filter((name) => name.endsWith('.js'))) {
 
 if (products.some((product) => Number(product.stock || 0) > 30))
   fail.push('Static catalogue contains implausibly high launch inventory');
-if (read('src/data/products.js').includes('index < 10'))
+if (read('src/data/products.ts').includes('index < 10'))
   fail.push('Ready-to-ship still uses automatic first-ten logic');
-if (read('src/data/products.js').includes('stockPerVariant = 25'))
+if (read('src/data/products.ts').includes('stockPerVariant = 25'))
   fail.push('Legacy generated 25-per-variant inventory remains');
 
 const specialMigration = read(

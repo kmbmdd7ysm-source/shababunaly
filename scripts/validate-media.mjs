@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { products } from '../src/data/products.js';
+import { products } from '../src/data/products.ts';
 
 let errors = 0;
 let warnings = 0;

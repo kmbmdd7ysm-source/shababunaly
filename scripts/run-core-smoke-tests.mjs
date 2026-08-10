@@ -6,7 +6,7 @@ import {
   allBrands,
   lhaStoreProducts,
   readyToShipProducts,
-} from '../src/data/products.js';
+} from '../src/data/products.ts';
 import { isProductPurchasable, isProductVisible } from '../src/utils/productEligibility.ts';
 import {
   CUSTOM_PRODUCT_TYPES,

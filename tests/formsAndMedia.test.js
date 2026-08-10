@@ -1,6 +1,6 @@
 import { describe, expect, it } from './test-api.js';
 import fs from 'node:fs';
-import { products } from '../src/data/products.js';
+import { products } from '../src/data/products.ts';
 
 describe('forms and media readiness', () => {
   it('uses the approved Formspree endpoint as the only application fallback', () => {

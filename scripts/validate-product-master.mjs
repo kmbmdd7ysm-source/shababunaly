@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { products } from '../src/data/products.js';
+import { products } from '../src/data/products.ts';
 import {
   normalizeProductMaster,
   missingMasterFields,
