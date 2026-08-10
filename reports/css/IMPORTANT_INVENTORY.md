@@ -1,10 +1,5 @@
-# Remaining !important (56)
+# Remaining !important (53)
 
-After triad extinction.
-
-- `catalogue.css:510: border: 0 !important;`
-- `catalogue.css:512: box-shadow: none !important;`
-- `catalogue.css:516: border: 0 !important;`
 - `catalogue.css:608: display: inline-flex !important;`
 - `catalogue.css:610: min-block-size: 24px !important;`
 - `chrome-from-premium.css:9: transform var(--motion-med) !important;`
