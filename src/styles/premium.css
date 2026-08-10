@@ -42,29 +42,6 @@ body {
   background: linear-gradient(135deg, #030303, #111 70%, #050505);
 }
 
-.section {
-  position: relative;
-  padding-block: clamp(88px, 10vw, 160px);
-}
-
-.section-heading {
-  margin-bottom: clamp(36px, 6vw, 72px);
-}
-
-.wishlist-btn {
-  transition:
-    transform 0.25s var(--ease-premium),
-    background 0.25s !important;
-}
-
-.wishlist-btn:active {
-  transform: scale(0.78);
-}
-
-.wishlist-btn.active {
-  animation: heartPulse 0.45s var(--ease-premium);
-}
-
 .page-hero {
   position: relative;
   overflow: hidden;
@@ -133,9 +110,6 @@ from {
 }
 
 @media (max-width: 760px) {
-.section {
-    padding-block: 88px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -367,152 +341,12 @@ from {
 
 /* Accessible searchable country combobox */
 
-.country-combobox {
-  position: relative;
-  width: 100%;
-}
-
-.country-combobox > input[role='combobox'] {
-  width: 100%;
-  min-height: 48px;
-  padding: 0 44px 0 12px;
-  border: 1px solid #b7b7b7;
-  background: #fff;
-  color: #111;
-  font: inherit;
-}
-
-[dir='rtl'] .country-combobox > input[role='combobox'] {
-  padding: 0 12px 0 44px;
-}
-
-.country-combobox__list {
-  position: absolute;
-  z-index: 100;
-  inset-inline: 0;
-  inset-block-start: calc(100% + 6px);
-  max-height: min(360px, 50dvh);
-  overflow-y: auto;
-  margin: 0;
-  padding: 6px;
-  list-style: none;
-  border: 1px solid #c8c8c8;
-  background: #fff;
-  color: #111;
-  box-shadow: 0 18px 50px rgb(0 0 0 / 18%);
-}
-
-.country-combobox__option.is-active {
-  background: #111;
-  color: #fff;
-}
-
-.country-combobox__option.is-active small {
-  color: #ddd;
-}
-
-.country-combobox__empty {
-  padding: 16px 12px;
-  color: #555;
-}
-
 @media (max-width: 640px) {
-.country-combobox__list {
-    position: fixed;
-    z-index: 1000;
-    inset: auto 12px max(12px, env(safe-area-inset-bottom));
-    max-height: min(62dvh, 520px);
-    border-radius: 0;
-  }
 }
 
 /* Searchable country selector */
 
-.country-combobox {
-  position: relative;
-  width: 100%;
-}
-
-.country-combobox__trigger {
-  width: 100%;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 0 14px;
-  border: 1px solid #cfcfcf;
-  background: #fff;
-  color: #111;
-  text-align: start;
-  font: inherit;
-}
-
-.country-combobox__code {
-  margin-inline-start: auto;
-  color: #666;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-}
-
-.country-combobox__popover {
-  position: absolute;
-  z-index: 120;
-  inset-inline: 0;
-  top: calc(100% + 6px);
-  background: #fff;
-  border: 1px solid #111;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
-  padding: 10px;
-  max-height: min(420px, 70vh);
-}
-
-.country-combobox__search input {
-  width: 100%;
-  min-height: 46px;
-  padding: 0 12px;
-  border: 1px solid #aaa;
-  font-size: 16px;
-}
-
-.country-combobox__list {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  max-height: 300px;
-  overflow: auto;
-  overscroll-behavior: contain;
-}
-
-.country-combobox__list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 11px 12px;
-  cursor: pointer;
-}
-
-.country-combobox__list li.is-active,
-.country-combobox__list li[aria-selected='true'] {
-  background: #111;
-  color: #fff;
-}
-
-.country-combobox__empty {
-  padding: 20px 12px;
-  text-align: center;
-  color: #666;
-}
-
 @media (max-width: 600px) {
-.country-combobox__popover {
-    position: fixed;
-    inset: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px);
-    max-height: none;
-    padding: 16px;
-  }.country-combobox__list {
-    max-height: calc(100dvh - 150px);
-  }
 }
 
 /* ---------- Premium interaction & media refinement ---------- */
@@ -591,21 +425,6 @@ html {
   max-width: 100%;
 }
 
-.accordion-header {
-  min-width: 0;
-  gap: 1rem;
-}
-
-.accordion-header button > *:first-child {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.accordion-icon {
-  flex: 0 0 22px;
-  margin-inline-start: auto;
-}
-
 .gallery-main {
   min-width: 0;
 }
@@ -621,10 +440,7 @@ html {
 @media (max-width: 360px) {
 }
 
-@media (max-width: 640px) {
-.section {
-    padding-inline: 0;
-  }.auth-form {
+@media (max-width: 640px) {.auth-form {
     padding-inline: 16px;
   }
 }
@@ -658,6 +474,7 @@ html {
   grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
   gap: 1rem;
 }
+
 
 
 
