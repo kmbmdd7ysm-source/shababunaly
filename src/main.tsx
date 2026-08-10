@@ -30,6 +30,7 @@ import './styles/shell.css';
 import './styles/global.css';
 import './styles/premium.css';
 import './styles/shababuna.css';
+import './styles/overlays-from-global.css';
 import './styles/forms-from-shababuna.css';
 import './styles/forms-from-premium.css';
 import './styles/forms-from-global.css';
