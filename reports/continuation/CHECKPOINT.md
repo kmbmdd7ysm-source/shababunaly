@@ -1,12 +1,12 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `4d0b4c4939f0e5069959244b0ec6fbc2b331ca92`
-- TypeScript: **96.36%** · addressService.ts migrated · 11 legacy JS remain · `tsc` GREEN
-- UX: QuickAddSheet · PDP CTA · dismiss · cart Libya gate · Teams anchors
-- Evidence: Ready-to-Ship inventory BLOCKED · Teams quote local 404 BLOCKED
+- SHA: `7ef283cc6841aadb056606389ad69c62b9e4a325`
+- TypeScript: **96.68%** · addressService + rosterSpreadsheet migrated · 10 legacy JS remain
+- `tsc` GREEN · build GREEN (prior) · QuickAddSheet · PDP CTA · AR mobile RTL PASS (tech)
+- External BLOCKED docs: Ready-to-Ship inventory · Teams quote local API 404
 
 ## Exact next unfinished
-1. Migrate remaining utils/services JS where feasible (simplePdf, rosterSpreadsheet, designExports, b2b/orders/operations, data)
-2. Deployed API verification when available
-3. Remaining audited groups / final audit
+1. Remaining JS: Realtime3D ambient, data/*, b2b/orders/operations, designExports, simplePdf
+2. Deployed API verification
+3. Final audit of 35 groups + SHA evidence
 **NOT FINAL COMPLETE**
