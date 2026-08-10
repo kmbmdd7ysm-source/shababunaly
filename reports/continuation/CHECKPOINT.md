@@ -1,14 +1,14 @@
 # Absolute final checkpoint
 
-- SHA: `1e9f64767d6d3c6212ae382d4845eb0656cce9ae`
-- **CSS triad EXTINCT** · live !important **4** (reduced-motion only)
-- TS **100%** · PWA **PASS** · Ready-to-Ship global · Customize 7-step+concept3D
-- LH: ~85 perf / ~0.11 CLS / ~3.2s LCP
-- API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
-- ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
+- SHA: `89dedb308f72652ac70d3291b14880a4cb2d6785`
+- CSS triad **EXTINCT** · !important **4** (reduced-motion only)
+- LH: perf 82 / CLS 0.111 / LCP 3206ms
+- TS 100% · PWA PASS · Ready-to-Ship global · Customize 7-step+concept3D
+- Draft verdict doc present — **NOT FINAL COMPLETE**
 
 ## Next
-1. LH CLS≤0.10 / LCP≤2.5s
-2. Clean-tree final verdict (SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS likely)
+1. Close LH CLS/LCP gap or document lab-limit honestly
+2. Clean working tree + regenerate all evidence from one SHA
+3. Emit SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS (or better) with SECTION 1/2
 
 **NOT FINAL COMPLETE**
