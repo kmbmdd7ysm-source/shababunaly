@@ -1,8 +1,9 @@
 {
-  "sha": "c763f8195710857871dfd3e7477debc165e9864a",
-  "generatedAt": "2026-08-10T06:04:14.259396+00:00",
-  "performance": 78,
+  "sha": "13db66491272115172182f6801d97d0b19fabc6d",
+  "generatedAt": "2026-08-10T06:06:13.873924+00:00",
+  "performance": 80,
   "accessibility": 100,
-  "lcpMs": 3291,
-  "cls": 0.168
+  "lcpMs": 3299,
+  "cls": 0.168,
+  "note": "CLS still ~0.17 on local preview with currency welcome dialog present; geo no longer mutates prices pre-confirm."
 }
