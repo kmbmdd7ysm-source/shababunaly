@@ -1,13 +1,14 @@
 # Continuation checkpoint
 
-- SHA: `713a89396d414c02eae41e035ae803c7693babdc`
-- TypeScript: **99.66%** — only `loadModelViewer.js` bridge remains
-- operations.ts COMPLETE · Realtime3DEngine.tsx COMPLETE
-- Quick-add EN/AR continuum PASS · Ready-to-Ship gate count **0** (honest)
-- External API/DB/Vercel BLOCKED documented
+- SHA: `ceba720d680d191b48e06873f7b851c9f57bad77`
+- TypeScript: **99.66%** — `loadModelViewer.js` bridge only
+- operations.ts · Realtime3DEngine.tsx COMPLETE
+- Quick-add EN/AR continuum PASS
+- Vercel preview API probe: **401 SSO** (BLOCKED)
 **NOT FINAL COMPLETE**
 
 ## Exact next unfinished
-1. Deployed preview API verification (Vercel + Supabase credentials)
-2. Human Arabic review sign-off
-3. Regenerate RELEASE_VERDICT → FINAL COMPLETE only when genuine
+1. Human unlock of Vercel Deployment Protection OR bypass token for API E2E
+2. Supabase credentials / verified inventory for Ready-to-Ship > 0
+3. Human Arabic review
+4. Then FINAL COMPLETE from that SHA

@@ -14,6 +14,7 @@
 | TS coverage | 99.66% (loadModelViewer.js bridge) |
 
 ## BLOCKED external
+- Vercel preview SSO protection (401 on /api/*) — see VERCEL_PREVIEW_API_PROBE.md
 - Vercel API / public-quote-request
 - Supabase inventory / RLS / payments
 - ARABIC_HUMAN_REVIEW
