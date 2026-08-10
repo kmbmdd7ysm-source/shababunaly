@@ -30,7 +30,8 @@
     "baseUrl": ".",
     "paths": {
       "react-router-dom": ["types/react-router-dom-shim.d.ts"],
-      "react-router": ["types/react-router-dom-shim.d.ts"]
+      "react-router": ["types/react-router-dom-shim.d.ts"],
+      "@google/model-viewer": ["src/shims/model-viewer-module.ts"]
     }
   },
   "include": ["types/**/*.d.ts", "src/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "api/**/*.ts"],

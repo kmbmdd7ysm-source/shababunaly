@@ -6,7 +6,6 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useCart } from '../../context/CartContext';
 import { useCompare } from '../../context/CompareContext';
 import { useAuth } from '../../context/AuthContext';
-import { useCommerce } from '../../context/CommerceContext';
 import { useWishlist } from '../../hooks/useWishlist';
 import { trackEvent } from '../../utils/analytics';
 import { lockDocumentScroll } from '../../utils/scrollLock';
@@ -57,11 +56,9 @@ export default function MainHeader(): ReactElement {
   const compare = useCompare();
   const wishlist = useWishlist();
   const auth = useAuth();
-  const { countryCode } = useCommerce();
-  const isLibya = countryCode === 'LY';
-  const featuredShopLinks = megaMenu.featured.filter(
-    (item: { key?: string }) => isLibya || item.key !== 'readyToShip',
-  );
+  // Ready to Ship stays globally discoverable. International shipping caveats
+  // are communicated on the destination page — never by hiding the link.
+  const featuredShopLinks = megaMenu.featured;
   const location = useLocation();
 
   const [navOpen, setNavOpen] = useState(false);

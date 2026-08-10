@@ -1,4 +1,4 @@
-import './loadModelViewer.js';
+import './loadModelViewer.ts';
 import { useEffect, useState, type ReactElement } from 'react';
 import type { LocaleValue } from '../../../context/LanguageContext';
 import StaticMediaEngine from './StaticMediaEngine';

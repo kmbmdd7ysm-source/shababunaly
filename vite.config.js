@@ -1,5 +1,9 @@
 import { execSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 // Build provenance, injected so a preview can prove which commit it serves.
 const git = (cmd) => {
@@ -24,6 +28,15 @@ const buildId = String(
 export default defineConfig({
   define: { 'import.meta.env.VITE_BUILD_ID': JSON.stringify(buildId) },
   plugins: [react()],
+  resolve: {
+    // Keep the real package for bundling; tsc uses the stub via tsconfig paths.
+    alias: {
+      '@google/model-viewer': path.resolve(
+        rootDir,
+        'node_modules/@google/model-viewer/dist/model-viewer.min.js',
+      ),
+    },
+  },
   build: {
     outDir: 'dist',
     target: 'es2020',

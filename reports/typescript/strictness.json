@@ -1,11 +1,25 @@
 {
-  "status": "bridge_remainder",
-  "generatedAt": "2026-08-10T02:15:57.832Z",
-  "sourceFiles": 293,
-  "strictFiles": 292,
-  "strictCoveragePercent": 99.66,
-  "legacyFiles": [
-    "src/components/product/engines/loadModelViewer.js"
-  ],
-  "note": "loadModelViewer.js is a one-line side-effect bridge so @google/model-viewer package types never enter tsc under skipLibCheck:false."
+  "status": "complete",
+  "generatedAt": "2026-08-10T05:19:44.798Z",
+  "sha": "d5e8467a3b832013c470d0337bff9a559f6326eb",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14",
+  "workingTree": "dirty",
+  "nodeVersion": "v22.14.0",
+  "npmVersion": "10.9.7",
+  "viteVersion": "vite/7.3.6 linux-x64 node-v22.14.0",
+  "sourceFiles": 294,
+  "strictFiles": 294,
+  "strictCoveragePercent": 100.0,
+  "legacyFiles": [],
+  "legitimateExceptions": [],
+  "note": "100% application/business executable source under src/ and api/ is TypeScript. @google/model-viewer types stubbed via tsconfig paths; Vite aliases to real package.",
+  "strictFlags": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "useUnknownInCatchVariables": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": false
+  }
 }

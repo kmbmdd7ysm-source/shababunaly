@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { SITE } from '../../config.ts';
 import { useLanguage } from '../../context/LanguageContext';
 import { useCookies } from '../../context/CookieContext';
-import { useCommerce } from '../../context/CommerceContext';
 import { trackEvent } from '../../utils/analytics.ts';
 import { footerNav } from '../../data/navigation.ts';
 import { footerContacts } from '../../data/footerSocial';
@@ -19,7 +18,6 @@ type FooterLink = { to: string; key?: string; label?: { en?: string; ar?: string
 export default function Footer() {
   const { t, pick, lang } = useLanguage();
   const { openPreferences } = useCookies();
-  const { countryCode } = useCommerce();
   const nav = t.nav as Record<string, string>;
   const footer = t.footer as Record<string, string> & {
     socialLinks?: string;
@@ -28,9 +26,8 @@ export default function Footer() {
   const common = t.common as Record<string, string>;
   const newsletter = t.newsletter as Record<string, string>;
 
-  const shopFooterLinks = footerNav.shop.filter(
-    (item: { key?: string }) => countryCode === 'LY' || item.key !== 'readyToShip',
-  ) as FooterLink[];
+  // Ready to Ship remains visible worldwide; destination page explains shipping.
+  const shopFooterLinks = footerNav.shop as FooterLink[];
 
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
