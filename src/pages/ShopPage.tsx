@@ -146,7 +146,6 @@ export default function ShopPage(): ReactElement {
         if (subcategory && product.subcategory !== subcategory) return false;
         return true;
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
     [category, subcategory, products],
   );
 
