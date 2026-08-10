@@ -646,7 +646,7 @@ export default function ShopPage(): ReactElement {
             className="gw-console-active"
             aria-label={pick({ en: 'Active filters', ar: 'عوامل التصفية النشطة' })}
           >
-            <p className="gw-kicker">{pick({ en: 'Filtering by', ar: 'التصفية حسب' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Filters', ar: 'عوامل التصفية' })}</p>
             <ul>
               {activeTokens.map((token) => (
                 <li key={token.key}>
