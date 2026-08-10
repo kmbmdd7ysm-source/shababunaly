@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import type { CatalogProduct } from '../context/CatalogContext';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -16,6 +16,7 @@ import EmptyState from '../components/common/EmptyState';
 import Icon from '../components/icons/Icon';
 import { useCatalog } from '../context/CatalogContext';
 import { categories, getCategory, getSubcategory } from '../data/categories';
+import { getDepartmentArt } from '../data/departmentArtDirection';
 import { lockDocumentScroll } from '../utils/scrollLock';
 import { isReadyToShipEligible } from '../utils/productEligibility';
 import '../styles/catalogue.css';
@@ -354,6 +355,10 @@ export default function ShopPage(): ReactElement {
   }
 
   const showEntrance = showEntranceValue;
+  const departmentArt = useMemo(
+    () => getDepartmentArt(String(category || 'clothing')),
+    [category],
+  );
   // The entrance is a full-bleed dark composition; the working header is light,
   // so the declaration has to follow the state rather than the route.
   useCinematicOpening(showEntrance);
@@ -461,12 +466,19 @@ export default function ShopPage(): ReactElement {
           className="gw-world-headband"
           aria-labelledby="gw-catalogue-title"
           data-dept={category || 'all'}
+          style={
+            departmentArt.desktopHero
+              ? ({
+                  ['--gw-dept-art' as string]: `url(${departmentArt.desktopHero})`,
+                } as CSSProperties)
+              : undefined
+          }
         >
           <div className="gw-cat-head-inner">
             <Breadcrumbs items={crumbs} />
             <div className="gw-cat-head-row">
               <div>
-                <p className="gw-spec">{pick({ en: 'Department', ar: 'القسم' })}</p>
+                <p className="gw-kicker">{pick({ en: 'Shop', ar: 'تسوق' })}</p>
                 <h1 id="gw-catalogue-title" className="gw-cat-title">
                   {heading}
                 </h1>
