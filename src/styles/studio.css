@@ -946,3 +946,11 @@
   letter-spacing: 0;
   text-transform: none;
 }
+
+/* Stage-first Customize model step */
+.gw-toolbench--stage-first .gw-toolbench-stage {
+  margin-block: 0.75rem 1.25rem;
+}
+.gw-toolbench--stage-first .gw-garment-stage--canvas {
+  min-block-size: min(58vh, 520px);
+}

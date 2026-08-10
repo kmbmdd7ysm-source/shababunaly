@@ -606,10 +606,30 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
           tool's controls, and the commercial contract at its foot. There is no
           masthead pushing the work below the fold.
           ================================================================ */}
-      <div className="gw-lab">
+      <div className="gw-lab" data-step={step}>
         <div className="gw-lab-stage">
           <div className="gw-lab-stage-inner">
-            <StudioStage design={design} preflight={productionPreflight} />
+            {/* Model step: WebGL concept stage commands the viewport.
+                Design+ later: 2D production editor remains available. */}
+            {step === 'model' ? (
+              <Suspense
+                fallback={
+                  <p className="gw-garment-help" role="status">
+                    {pick({ en: 'Loading 3D stage…', ar: 'جاري تحميل المسرح ثلاثي الأبعاد…' })}
+                  </p>
+                }
+              >
+                <Garment3DStage
+                  productLabel={pick(selected.label)}
+                  baseColor={String(design.primary || design.primaryColor || '#1a1a1a')}
+                  accentColor={String(
+                    design.accent || design.secondary || design.accentColor || '#c4a35a',
+                  )}
+                />
+              </Suspense>
+            ) : (
+              <StudioStage design={design} preflight={productionPreflight} />
+            )}
           </div>
 
           {/* The commercial contract reads across the foot of the stage, so the
@@ -707,21 +727,12 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                 onBack={() => setStep('product')}
                 onContinue={() => setStep('design')}
                 stage={
-                  <Suspense
-                    fallback={
-                      <p className="gw-garment-help" role="status">
-                        {pick({ en: 'Loading 3D stage…', ar: 'جاري تحميل المسرح ثلاثي الأبعاد…' })}
-                      </p>
-                    }
-                  >
-                    <Garment3DStage
-                      productLabel={pick(selected.label)}
-                      baseColor={String(design.primary || design.primaryColor || '#1a1a1a')}
-                      accentColor={String(
-                        design.accent || design.secondary || design.accentColor || '#c4a35a',
-                      )}
-                    />
-                  </Suspense>
+                  <p className="gw-toolbench-lede">
+                    {pick({
+                      en: 'Use the large WebGL stage to orbit the development garment. Continue when the concept direction feels right.',
+                      ar: 'استخدم المسرح ثلاثي الأبعاد الكبير لتدوير قطعة التطوير. تابع عندما يناسبك اتجاه المفهوم.',
+                    })}
+                  </p>
                 }
               />
             )}

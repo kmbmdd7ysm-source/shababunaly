@@ -23,6 +23,11 @@ import '../styles/domain-shop.css';
 import '../styles/catalogue.css';
 import '../styles/runs.css';
 import '../styles/catalog.css';
+import type { ProductLike } from '../utils/productEligibility.ts';
+
+function asProductLike(product: unknown): ProductLike {
+  return (product || {}) as ProductLike;
+}
 
 const numberOrNull = (value: unknown): number | null =>
   value === '' || value == null || Number.isNaN(Number(value)) ? null : Number(value);
@@ -142,7 +147,7 @@ export default function ShopPage(): ReactElement {
       (products as CatalogProduct[]).filter((product) => {
         if (category === 'ready-to-ship') {
           // Honest Libya readiness: only verified tracked stock, never fabricated.
-          return isReadyToShipEligible(product as never, 'LY');
+          return isReadyToShipEligible(asProductLike(product), 'LY');
         }
         if (category && product.category !== category) return false;
         if (subcategory && product.subcategory !== subcategory) return false;
@@ -178,7 +183,7 @@ export default function ShopPage(): ReactElement {
       ) {
         return false;
       }
-      if (filters.readyOnly && !isReadyToShipEligible(product as never, 'LY')) {
+      if (filters.readyOnly && !isReadyToShipEligible(asProductLike(product), 'LY')) {
         return false;
       }
       if (filters.newOnly && !product.newArrival) return false;
@@ -427,7 +432,7 @@ export default function ShopPage(): ReactElement {
                     </span>
                     <span className="gw-gate-count gw-isolate-ltr">
                       {
-                        products.filter((entry) => isReadyToShipEligible(entry as never, 'LY'))
+                        products.filter((entry) => isReadyToShipEligible(asProductLike(entry), 'LY'))
                           .length
                       }
                     </span>
@@ -472,12 +477,12 @@ export default function ShopPage(): ReactElement {
               </h2>
             </header>
             <div className="gw-world-stage">
-              <ProductPlinth product={featured[0] as never} index={0} eager />
+              <ProductPlinth product={featured[0]} index={0} eager />
             </div>
             {featured.length > 1 && (
               <div className="gw-world-rail">
                 {featured.slice(1).map((product, index) => (
-                  <ProductCard key={product.id} product={product as never} eager={index < 2} />
+                  <ProductCard key={product.id} product={product} eager={index < 2} />
                 ))}
               </div>
             )}
@@ -562,11 +567,11 @@ export default function ShopPage(): ReactElement {
       {!showEntrance && category && filtered.length > 0 && (
         <section className="gw-dept-world" aria-label={heading}>
           <div className="gw-dept-world-inner">
-            <ProductPlinth product={filtered[0] as never} index={0} eager />
+            <ProductPlinth product={filtered[0]} index={0} eager />
             {filtered.length > 1 && (
               <div className="gw-dept-world-rail">
                 {filtered.slice(1, 4).map((product) => (
-                  <ProductCard key={`world-${product.id}`} product={product as never} />
+                  <ProductCard key={`world-${product.id}`} product={product} />
                 ))}
               </div>
             )}
@@ -669,13 +674,13 @@ export default function ShopPage(): ReactElement {
           runs.length ? (
             runs.map((run) => (
               <section key={run.from} className="gw-run" aria-label={`${heading} ${run.from + 1}`}>
-                <ProductPlinth product={run.lead as never} index={run.from / RUN} eager={run.from === 0} />
+                <ProductPlinth product={run.lead} index={run.from / RUN} eager={run.from === 0} />
                 {run.rest.length > 0 && (
                   <div className="gw-run-grid">
                     {run.rest.map((product, position) => (
                       <ProductCard
                         key={product.id}
-                        product={product as never}
+                        product={product}
                         eager={run.from === 0 && position < 3}
                       />
                     ))}

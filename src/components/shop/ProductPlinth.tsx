@@ -16,22 +16,25 @@ import { resolveProductViewer } from '../../utils/productViewerTier';
  * the tier from the same resolver the product page uses, and the link is the
  * ordinary product URL — so pricing, currency and routing stay in one place.
  */
+type PlinthProduct = {
+  slug?: string;
+  image?: string;
+  brand?: string;
+  name?: { en?: string; ar?: string } | string;
+  colors?: Array<{ image?: string }>;
+  [key: string]: unknown;
+};
+
 export default function ProductPlinth({
-  product,
+  product: productInput,
   index = 0,
   eager = false,
 }: {
-  product: Record<string, unknown> & {
-    slug?: string;
-    image?: string;
-    brand?: string;
-    name?: { en?: string; ar?: string } | string;
-    colors?: Array<{ image?: string }>;
-    [key: string]: unknown;
-  };
+  product: unknown;
   index?: number;
   eager?: boolean;
 }) {
+  const product = (productInput || {}) as PlinthProduct;
   const { pick } = useLanguage();
   const viewer = resolveProductViewer(product);
   // Same resolution ProductCard uses: the first colourway's image if the
