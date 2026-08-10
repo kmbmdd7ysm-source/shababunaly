@@ -48,10 +48,14 @@ export default function ProductPlinth({
 
   return (
     <article className="gw-plinth" data-flip={index % 2 === 1 ? 'yes' : 'no'}>
-      <Link to={`/products/${product.slug}`} className="gw-plinth-frame">
+      <Link
+        to={`/products/${product.slug}`}
+        className="gw-plinth-frame"
+        aria-label={pick(product.name)}
+      >
         <img
           src={image}
-          alt={pick(product.name)}
+          alt=""
           loading={eager ? 'eager' : 'lazy'}
           fetchPriority={eager ? 'high' : 'auto'}
           decoding="async"
