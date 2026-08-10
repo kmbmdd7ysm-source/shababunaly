@@ -1,24 +1,17 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "169de4dc37c432eaa6049ba6c7b7b04d35885ad6",
+  "sha": "1e9f64767d6d3c6212ae382d4845eb0656cce9ae",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T07:13:33.628Z",
+  "generatedAt": "2026-08-10T07:16:03.920Z",
   "typescript": {
     "coveragePercent": 100.0
   },
   "css": {
     "triadLive": false,
-    "importantLive": 54
+    "importantLive": 4,
+    "importantReason": "reduced-motion-only"
   },
   "pwaUpgrade": "passed",
-  "lighthouseLocal": {
-    "sha": "247306a39b20907b0b85c3e5b1a333957aa09e3c",
-    "generatedAt": "2026-08-10T07:11:23.713848+00:00",
-    "performance": 85,
-    "accessibility": 100,
-    "lcpMs": 3326,
-    "cls": 0.111
-  },
   "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
   "status": "in_progress",
   "verdict": null

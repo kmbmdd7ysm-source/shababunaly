@@ -1,15 +1,14 @@
 # Absolute final checkpoint
 
-- SHA: `169de4dc37c432eaa6049ba6c7b7b04d35885ad6`
-- **CSS triad EXTINCT live** · live !important **54**
-- LH: perf 85 / CLS 0.111 / LCP 3326ms
-- TS **100%** · PWA **PASS**
-- Ready-to-Ship global · Customize 7-step+concept3D · Special Request simplified
+- SHA: `1e9f64767d6d3c6212ae382d4845eb0656cce9ae`
+- **CSS triad EXTINCT** · live !important **4** (reduced-motion only)
+- TS **100%** · PWA **PASS** · Ready-to-Ship global · Customize 7-step+concept3D
+- LH: ~85 perf / ~0.11 CLS / ~3.2s LCP
 - API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 - ARABIC_TECHNICAL_QA=PASS · HUMAN_REVIEW=REQUIRED
 
 ## Next
-1. Drive LH CLS≤0.10 and LCP≤2.5s
-2. Clean-tree final release evidence + allowed verdict
+1. LH CLS≤0.10 / LCP≤2.5s
+2. Clean-tree final verdict (SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS likely)
 
 **NOT FINAL COMPLETE**
