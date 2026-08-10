@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
+import CinematicHero from '../components/experience/CinematicHero';
 import { useLanguage } from '../context/LanguageContext';
 import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { useCommerce } from '../context/CommerceContext';
@@ -158,23 +159,19 @@ export default function HomePage(): ReactElement {
   const featured = featuredProducts().slice(0, 3);
   const shoes = products.filter((product) => product.category === 'footwear').slice(0, 3);
 
+  // Commerce-first navigation — not an architecture “chapter index”.
   const chapters = [
-    { id: 'open', label: { en: 'Opening', ar: 'الافتتاح' } },
-    { id: 'game', label: { en: 'The game', ar: 'اللعبة' } },
-    { id: 'floor', label: { en: 'The floor', ar: 'الأرضية' } },
-    { id: 'stock', label: { en: 'Ready to Ship', ar: 'تسليم فوري' } },
-    { id: 'workshop', label: { en: 'The workshop', ar: 'الورشة' } },
-    { id: 'roster', label: { en: 'The roster', ar: 'الفريق' } },
-    { id: 'equipment', label: { en: 'Equipment', ar: 'المعدات' } },
-    { id: 'brand', label: { en: 'The brand', ar: 'العلامة' } },
-    { id: 'signoff', label: { en: 'Sign-off', ar: 'الختام' } },
+    { id: 'hero', label: { en: 'Home', ar: 'الرئيسية' } },
+    { id: 'game', label: { en: 'Shop', ar: 'تسوق' } },
+    { id: 'stock', label: { en: 'Ready', ar: 'فوري' } },
+    { id: 'workshop', label: { en: 'Customize', ar: 'صمّم' } },
+    { id: 'roster', label: { en: 'Teams', ar: 'أندية' } },
+    { id: 'equipment', label: { en: 'Gear', ar: 'تجهيز' } },
+    { id: 'brand', label: { en: 'Story', ar: 'القصة' } },
   ];
 
-  const [active, setActive] = useState(chapters[0]?.id || 'open');
-  /* Which chapters are dark. The index sits over whatever is in view, so it
-     needs to know the ground to invert against — otherwise it needs an opaque
-     plate, and a plate full of ticks reads as a debug widget. */
-  const DARK_ACTS = new Set(['open', 'game', 'roster', 'brand', 'signoff']);
+  const [active, setActive] = useState(chapters[0]?.id || 'hero');
+  const DARK_ACTS = new Set(['hero', 'game', 'roster', 'brand', 'signoff']);
   const scroller = useRef<HTMLDivElement | null>(null);
 
   // Track the chapter in view so the index can mark it. Falls back silently
@@ -237,76 +234,17 @@ export default function HomePage(): ReactElement {
         </ol>
       </nav>
 
+      {/* Wired CinematicHero — full commerce opening with poster/video pipeline. */}
+      <div id="hero">
+        <CinematicHero />
+      </div>
+
       <div
         className="gw-journey"
         ref={scroller}
         data-snap={reduced ? 'off' : 'on'}
         data-capability={capability}
       >
-        {/* ── 00 OPENING ───────────────────────────────────────────────── */}
-        <section id="open" className="gw-act gw-act--open" aria-labelledby="gw-open-title">
-          {/* Atmosphere, not an empty dark screen. Original generated artwork —
-              an arena shaft of light across a hardwood arc. Two crops so mobile
-              gets a composition made for it rather than a cropped desktop one.
-              Decorative, so it carries an empty alt and is hidden from AT. */}
-          <picture className="gw-open-atmos">
-            <source
-              media="(min-width: 900px)"
-              type="image/webp"
-              srcSet="/media/atmosphere/arena-wide-1024.webp 1024w, /media/atmosphere/arena-wide-1600.webp 1600w, /media/atmosphere/arena-wide-2048.webp 2048w"
-              sizes="100vw"
-            />
-            <source
-              type="image/webp"
-              srcSet="/media/atmosphere/arena-tall-640.webp 640w, /media/atmosphere/arena-tall-900.webp 900w, /media/atmosphere/arena-tall-1200.webp 1200w"
-              sizes="100vw"
-            />
-            <img
-              src="/media/atmosphere/arena-wide-1024.webp"
-              alt=""
-              width="1024"
-              height="683"
-              fetchPriority="high"
-              decoding="async"
-            />
-          </picture>
-          <div className="gw-act-inner gw-open-inner">
-            <p className="gw-open-kicker">
-              {pick({ en: 'Basketball commerce', ar: 'تجارة كرة السلة' })}
-            </p>
-            <h1
-              id="gw-open-title"
-              className="gw-open-title"
-              aria-label={pick({ en: 'Built Different.', ar: 'نبني مختلفين.' })}
-            >
-              <span aria-hidden="true">{pick({ en: 'Built', ar: 'نبني' })}</span>
-              <span className="gw-open-title-out" aria-hidden="true">
-                {pick({ en: 'Different.', ar: 'مختلفين.' })}
-              </span>
-            </h1>
-            <p className="gw-open-lede">
-              {pick({
-                en: 'Shop ready gear, customize teamwear, and run wholesale club orders — basketball retail with manufacturing built in.',
-                ar: 'تسوّق تجهيزات جاهزة، وصمّم ملابس الفرق، وأدر طلبات الجملة للأندية — تجارة كرة سلة بصناعة مدمجة.',
-              })}
-            </p>
-            <div className="gw-open-paths">
-              <Link className="gw-path gw-path--primary" to="/shop">
-                <span>{pick({ en: 'Shop', ar: 'تسوّق' })}</span>
-              </Link>
-              <Link className="gw-path" to="/shop/ready-to-ship">
-                <span>{pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}</span>
-              </Link>
-              <Link className="gw-path" to="/customize">
-                <span>{pick({ en: 'Customize', ar: 'صمّم' })}</span>
-              </Link>
-              <Link className="gw-path" to="/teams-wholesale">
-                <span>{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</span>
-              </Link>
-            </div>
-            <p className="gw-kicker gw-open-place">{pick(SITE.address)}</p>
-          </div>
-        </section>
 
         {/* ── THE GAME — culture and performance, court atmosphere ──────── */}
         <section id="game" className="gw-act gw-act--game" aria-labelledby="gw-game-title">

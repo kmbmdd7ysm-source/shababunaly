@@ -216,59 +216,71 @@ export default function TeamsWholesalePage(): ReactElement {
         description="Custom teamwear, club supply, equipment and wholesale ordering from Shababuna."
         path="/teams-wholesale"
       />
-      {/* ================================================================
-          THE SPINE
-          The rejected page was a masthead followed by stacked marketing
-          sections. But a B2B order is not a set of topics — it is a SEQUENCE,
-          and the page should be that sequence.
+      <div className="gw-teams-sales">
+        <header className="gw-teams-hero" aria-labelledby="teams-hero-title">
+          <picture className="gw-teams-hero-media" aria-hidden="true">
+            <source
+              type="image/webp"
+              srcSet="/media/atmosphere/arena-wide-1024.webp 1024w, /media/atmosphere/arena-wide-1600.webp 1600w"
+              sizes="100vw"
+            />
+            <img
+              src="/media/atmosphere/arena-wide-1600.webp"
+              alt=""
+              width="1600"
+              height="900"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
+          <div className="gw-teams-hero-inner">
+            <Breadcrumbs
+              items={[{ label: pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' }) }]}
+            />
+            <p className="gw-kicker">
+              {pick({ en: 'Clubs · Academies · Wholesale', ar: 'أندية · أكاديميات · جملة' })}
+            </p>
+            <h1 id="teams-hero-title" className="gw-teams-hero-title">
+              {pick({ en: 'Outfitting teams', ar: 'تجهيز الفرق' })}
+            </h1>
+            <p className="gw-teams-hero-lede">
+              {pick({
+                en: 'Game uniforms, training, apparel, balls and equipment — designed, quoted, approved and delivered as one club program.',
+                ar: 'طقم المباريات والتدريب والملابس والكرات والمعدات — تصميم وعرض سعر واعتماد وتسليم كبرنامج نادٍ واحد.',
+              })}
+            </p>
+            <div className="gw-teams-hero-actions">
+              <Link to="/customize" className="gw-btn gw-btn--primary">
+                {pick({ en: 'Open Design Studio', ar: 'افتح استوديو التصميم' })}
+              </Link>
+              <a href="#quote" className="gw-btn gw-btn--secondary">
+                {pick({ en: 'Request a quote', ar: 'اطلب عرض سعر' })}
+              </a>
+              {auth.user && (
+                <Link to="/account?section=workspace" className="gw-btn gw-btn--ghost">
+                  {pick({ en: 'Workspace', ar: 'مساحة العمل' })}
+                </Link>
+              )}
+            </div>
+          </div>
+        </header>
 
-          The lifecycle is now the page structure: a sticky numbered index down
-          the leading edge, and every block of content attached to the stage it
-          belongs to. A club can see where they are in the process and jump
-          straight to the stage they need. Nothing is invented — these are the
-          five stages the backend already supports.
-          ================================================================ */}
-      <div className="gw-spine">
-        <aside className="gw-spine-index">
-          <p className="gw-kicker">{pick({ en: 'Order lifecycle', ar: 'دورة الطلب' })}</p>
+        <nav className="gw-teams-journey" aria-label={pick({ en: 'Process', ar: 'العملية' })}>
           <ol>
             {LIFECYCLE.map((stage, position) => (
               <li key={`${stage.id}-${position}`}>
                 <a href={`#stage-${stage.id}`}>
-                  <span aria-hidden="true">{String(position + 1).padStart(2, '0')}</span>
+                  <span className="gw-teams-journey-n" aria-hidden="true">
+                    {String(position + 1).padStart(2, '0')}
+                  </span>
                   {pick(stage.title)}
                 </a>
               </li>
             ))}
           </ol>
-          <Link to="/customize" className="gw-btn gw-btn--primary gw-spine-cta">
-            {pick({ en: 'Open Design Studio', ar: 'افتح استوديو التصميم' })}
-          </Link>
-          {auth.user && (
-            <Link to="/account?section=workspace" className="gw-btn gw-btn--secondary">
-              {pick({ en: 'Organization Workspace', ar: 'منصة المؤسسة' })}
-            </Link>
-          )}
-        </aside>
+        </nav>
 
-        <div className="gw-spine-body">
-          <header className="gw-spine-head">
-            <Breadcrumbs
-              items={[{ label: pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' }) }]}
-            />
-            <p className="gw-kicker">
-              {pick({ en: 'B2B · Clubs · Academies', ar: 'أعمال · أندية · أكاديميات' })}
-            </p>
-            <h1 className="gw-spine-title">
-              {pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
-            </h1>
-            <p className="gw-spine-lede">
-              {pick({
-                en: 'Custom production, club supply, wholesale pricing, design approval, staged payment and project tracking in one system.',
-                ar: 'التصنيع المخصص وتجهيز الأندية وأسعار الجملة واعتماد التصميم والدفع المرحلي وتتبع المشروع في نظام واحد.',
-              })}
-            </p>
-          </header>
+        <div className="gw-teams-body">
 
           <section id="stage-build" className="gw-stage-block" aria-labelledby="stage-build-t">
             <p className="gw-stage-mark">{pick({ en: 'Build', ar: 'جهّز' })}</p>

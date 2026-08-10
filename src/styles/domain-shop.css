@@ -538,9 +538,8 @@ html[dir='rtl'] .shop-category-scroll,
   overflow: hidden;
 }
 
-.product-card-img,
 @media (hover: hover) and (pointer: fine) {
-.product-card-media:hover .product-card-img--main {
+  .product-card-media:hover .product-card-img--main {
     transform: scale(1.018);
   }
 }

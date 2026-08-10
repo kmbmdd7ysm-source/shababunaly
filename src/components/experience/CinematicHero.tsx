@@ -148,12 +148,20 @@ export default function CinematicHero(): ReactElement {
 
       <div className="gw-container gw-hero-inner">
         <div className="gw-stack gw-stack--loose gw-hero-copy">
-          <p className="gw-spec gw-hero-kicker">
+          <p className="gw-kicker gw-hero-kicker">
             {pick({ en: 'Shababuna · Basketball supply', ar: 'شبابنا · تجهيز كرة السلة' })}
           </p>
-          <h1 id="gw-home-hero-title" className="gw-hero-title">
-            <span className="gw-hero-line">BUILT</span>
-            <span className="gw-hero-line gw-hero-line--outline">DIFFERENT.</span>
+          <h1
+            id="gw-home-hero-title"
+            className="gw-hero-title"
+            aria-label={pick({ en: 'Built Different.', ar: 'نبني مختلفين.' })}
+          >
+            <span className="gw-hero-line" aria-hidden="true">
+              {pick({ en: 'BUILT', ar: 'نبني' })}
+            </span>
+            <span className="gw-hero-line gw-hero-line--outline" aria-hidden="true">
+              {pick({ en: 'DIFFERENT.', ar: 'مختلفين.' })}
+            </span>
           </h1>
           <p className="gw-lead gw-hero-lead">
             {pick({
@@ -172,15 +180,15 @@ export default function CinematicHero(): ReactElement {
               {pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
             </Link>
           </div>
-          <p className="gw-leader gw-leader--start gw-spec gw-hero-place">
+          <p className="gw-leader gw-leader--start gw-kicker gw-hero-place">
             <span>{pick(SITE.address)}</span>
           </p>
         </div>
       </div>
 
-      <a className="gw-hero-scroll" href="#gw-departments">
+      <a className="gw-hero-scroll" href="#game">
         <span className="sr-only">
-          {pick({ en: 'Scroll to shop departments', ar: 'انتقل إلى أقسام المتجر' })}
+          {pick({ en: 'Scroll to shop', ar: 'انتقل إلى المتجر' })}
         </span>
         <span className="gw-hero-scroll-tick" aria-hidden="true" />
       </a>

@@ -392,43 +392,68 @@ export default function ShopPage(): ReactElement {
           <div className="gw-entrance-inner">
             <div className="gw-entrance-lede">
               <Breadcrumbs items={crumbs} />
-              <p className="gw-spec">{pick({ en: 'Shababuna shop', ar: 'متجر شبابنا' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Shababuna shop', ar: 'متجر شبابنا' })}</p>
               <h1 id="gw-catalogue-title" className="gw-entrance-title">
-                {pick({ en: 'The catalogue', ar: 'الكتالوج' })}
+                {pick({ en: 'Shop basketball', ar: 'تسوق كرة السلة' })}
               </h1>
-              <p className="gw-entrance-copy">{description}</p>
-              <p className="gw-entrance-count">
-                <span className="gw-figure gw-isolate-ltr">{filtered.length}</span>
-                <span className="gw-spec">
-                  {filtered.length === 1 ? common.result : common.results}
-                </span>
+              <p className="gw-entrance-copy">
+                {pick({
+                  en: 'Clothing, footwear, balls and equipment — ready to ship, made to order, and custom for clubs.',
+                  ar: 'ملابس وأحذية وكرات ومعدات — تسليم فوري وتصنيع حسب الطلب وتخصيص للأندية.',
+                })}
               </p>
-            </div>
-            <ul className="gw-entrance-gates">
-              <li>
-                <Link to="/shop/ready-to-ship" className="gw-gate gw-gate--ready">
-                  <span className="gw-gate-name">
-                    {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-                  </span>
-                  <span className="gw-gate-count gw-isolate-ltr">
-                    {
-                      products.filter((entry) => isReadyToShipEligible(entry as never, 'LY'))
-                        .length
-                    }
-                  </span>
+              <div className="gw-entrance-cta">
+                <Link className="gw-btn gw-btn--primary" to="/shop/clothing">
+                  {pick({ en: 'Explore clothing', ar: 'استكشف الملابس' })}
                 </Link>
+                <Link className="gw-btn gw-btn--secondary" to="/shop/ready-to-ship">
+                  {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                </Link>
+              </div>
+            </div>
+            <ul className="gw-entrance-gates gw-entrance-gates--visual">
+              <li>
+                <div
+                  className="gw-gate-shell"
+                  style={
+                    {
+                      ['--gw-gate-art' as string]: `url(${getDepartmentArt('ready-to-ship').desktopHero || ''})`,
+                    } as CSSProperties
+                  }
+                >
+                  <Link to="/shop/ready-to-ship" className="gw-gate gw-gate--ready gw-gate--visual">
+                    <span className="gw-gate-name">
+                      {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                    </span>
+                    <span className="gw-gate-count gw-isolate-ltr">
+                      {
+                        products.filter((entry) => isReadyToShipEligible(entry as never, 'LY'))
+                          .length
+                      }
+                    </span>
+                  </Link>
+                </div>
               </li>
               {departments
                 .filter((item) => item.slug !== 'ready-to-ship')
                 .map((item) => (
                   <li key={item.slug}>
-                    <Link to={`/shop/${item.slug}`} className="gw-gate">
-                      <span className="gw-gate-name">{pick(item.name)}</span>
-                      <span className="gw-gate-count gw-isolate-ltr">
-                        {products.filter((entry) => entry.category === item.slug).length ||
-                          baseProducts.length}
-                      </span>
-                    </Link>
+                    <div
+                      className="gw-gate-shell"
+                      style={
+                        {
+                          ['--gw-gate-art' as string]: `url(${getDepartmentArt(item.slug).desktopHero || ''})`,
+                        } as CSSProperties
+                      }
+                    >
+                      <Link to={`/shop/${item.slug}`} className="gw-gate gw-gate--visual">
+                        <span className="gw-gate-name">{pick(item.name)}</span>
+                        <span className="gw-gate-count gw-isolate-ltr">
+                          {products.filter((entry) => entry.category === item.slug).length ||
+                            baseProducts.length}
+                        </span>
+                      </Link>
+                    </div>
                   </li>
                 ))}
             </ul>

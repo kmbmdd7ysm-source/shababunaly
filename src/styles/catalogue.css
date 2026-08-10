@@ -610,3 +610,65 @@ a.product-card-name {
   min-block-size: 24px;
   padding-block: 4px;
 }
+
+/* Visual department gates — media-backed, not text ledgers */
+.gw-entrance-gates--visual {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .gw-entrance-gates--visual {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.gw-gate-shell {
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.15), rgb(0 0 0 / 0.72)),
+    var(--gw-gate-art, linear-gradient(135deg, #1a1a1a, #0c0c0c)) center / cover no-repeat;
+}
+
+.gw-gate--visual {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-block-size: 5.5rem;
+  border: 0;
+  border-radius: 1.1rem;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  color: #f4f1ea;
+  text-decoration: none;
+  background: transparent;
+}
+
+.gw-gate--visual .gw-gate-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.gw-gate--visual .gw-gate-count {
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+.gw-gate--visual:hover,
+.gw-gate--visual:focus-visible {
+  outline: none;
+  filter: brightness(1.08);
+}
+
+.gw-entrance-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-block-start: 1.25rem;
+}
