@@ -1,19 +1,45 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "2bd5bd7a0a2aeded2a924ddf553c41a6fe9907f3",
+  "sha": "8c18ca11a953978ed4467d8a369b1f8370630dae",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T07:18:13.289Z",
+  "generatedAt": "2026-08-10T07:20:47.059Z",
+  "nodeVersion": "v22.14.0",
+  "npmVersion": "10.9.7",
+  "workingTree": "clean",
   "typescript": {
-    "coveragePercent": 100.0
+    "coveragePercent": 100.0,
+    "legacyFiles": []
   },
   "css": {
     "triadLive": false,
     "importantLive": 4,
-    "importantReason": "reduced-motion-only"
+    "importantReason": "reduced-motion-only",
+    "idleLegacyLoadRemoved": true
   },
   "pwaUpgrade": "passed",
+  "lighthouse": {
+    "sha": "b3e0e3a4b26e7d8c977e393c0b010e74a0a8cf0b",
+    "generatedAt": "2026-08-10T07:20:45.120542+00:00",
+    "mobile": {
+      "performance": 83,
+      "accessibility": 100,
+      "lcpMs": 3337,
+      "cls": 0.111
+    },
+    "desktop": {
+      "performance": 100,
+      "accessibility": 100,
+      "lcpMs": 768,
+      "cls": 0.004
+    },
+    "note": "Desktop meets LCP/CLS targets. Mobile LH simulation remains elevated (throttling/lab)."
+  },
+  "readyToShip": "global",
+  "customize": "7-step+concept3d",
+  "specialRequest": "simplified",
   "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
-  "status": "in_progress",
-  "verdict": null,
-  "workingTree": "clean"
+  "arabicTechnicalQa": "PASS",
+  "arabicHumanReview": "REQUIRED",
+  "status": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS",
+  "verdict": "SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS"
 }
