@@ -5,7 +5,7 @@ import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { useCommerce } from '../context/CommerceContext';
-import { useCart, cartKey } from '../context/CartContext';
+import { useCart, type CartItem, cartKey } from '../context/CartContext';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { trackEvent } from '../utils/analytics';
 import Seo from '../components/common/Seo';
@@ -34,6 +34,7 @@ import '../styles/stage.css';
 import '../styles/catalogue.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
 import '../styles/catalog.css';
+import '../styles/domain-misc.css';
 
 type ColorEntry = { key: string; hex?: string; name?: { en?: string; ar?: string }; image?: string };
 type SizeEntry = string;
@@ -227,7 +228,7 @@ export default function ProductPage(): ReactElement {
         Boolean(product.claimEvidenceReference),
       largeEquipment: product.largeEquipment === true,
       deliveryProfile: isWholesale ? 'custom' : product.readyToShip ? 'ready' : 'standard',
-    } as never);
+    } as CartItem);
     trackEvent('add_to_cart', {
       item_id: product.id,
       item_name: pick(product.name as { en?: string; ar?: string }),
@@ -657,7 +658,7 @@ export default function ProductPage(): ReactElement {
             </div>
             <div className="gw-catalogue-grid">
               {related.map((item) => (
-                <ProductCard key={String(item?.id)} product={(item || {}) as never} />
+                <ProductCard key={String(item?.id)} product={(item || {})} />
               ))}
             </div>
           </div>
@@ -673,7 +674,7 @@ export default function ProductPage(): ReactElement {
             </div>
             <div className="gw-catalogue-grid">
               {recent.map((item) => (
-                <ProductCard key={String(item?.id)} product={(item || {}) as never} />
+                <ProductCard key={String(item?.id)} product={(item || {})} />
               ))}
             </div>
           </div>

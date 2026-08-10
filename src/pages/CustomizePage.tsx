@@ -41,8 +41,11 @@ import { parseRosterFile, ROSTER_FILE_ACCEPT } from '../utils/rosterSpreadsheet'
 import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
 import '../styles/studio.css';
+import '../styles/domain-misc.css';
 import ProductStep from '../components/custom/studio/ProductStep';
 import ModelStep from '../components/custom/studio/ModelStep';
+import DesignStep from '../components/custom/studio/DesignStep';
+import RosterStep from '../components/custom/studio/RosterStep';
 
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -180,7 +183,7 @@ export default function CustomizePage(): ReactElement {
     () => getCustomProductType(String(design.productType || '')),
     [design.productType],
   );
-  const normalizedRoster = useMemo(() => normalizeRoster(roster as never), [roster]);
+  const normalizedRoster = useMemo(() => normalizeRoster(roster as import("../data/customization").RosterInput[]), [roster]);
   const rosterErrors = normalizedRoster.reduce(
     (sum: number, row: { errors?: unknown[] }) => sum + (row.errors?.length || 0),
     0,
@@ -190,9 +193,9 @@ export default function CustomizePage(): ReactElement {
   const productionPreflight = useMemo(
     () =>
       runProductionPreflight({
-        design: design as never,
-        studio: design.studio as never,
-        roster: normalizedRoster as never,
+        design: design as Record<string, unknown>,
+        studio: design.studio,
+        roster: normalizedRoster,
       }),
     [design, normalizedRoster],
   );
@@ -245,7 +248,7 @@ export default function CustomizePage(): ReactElement {
         };
         setDesign({
           ...loaded,
-          studio: normalizeStudio(loaded.studio, loaded as never),
+          studio: normalizeStudio(loaded.studio, loaded as Record<string, unknown>),
         });
         setStep('design');
         setStatus(pick({ en: 'Saved design loaded.', ar: 'تم فتح التصميم المحفوظ.' }));
@@ -265,7 +268,7 @@ export default function CustomizePage(): ReactElement {
   const setStudio = (studio: unknown) =>
     setDesign((current) => ({
       ...current,
-      studio: normalizeStudio(studio, current as never),
+      studio: normalizeStudio(studio, current as Record<string, unknown>),
     }));
   useEffect(() => {
     if (!auth.user?.id || !savedId || lockedDesign || !design.studio) return undefined;
@@ -743,37 +746,13 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
             )}
 
             {step === 'design' && (
-              <section className="gw-toolbench" aria-labelledby="custom-design-title">
-                <header className="gw-toolbench-head">
-                  <div>
-                    <p className="gw-kicker">
-                      {pick({ en: 'Design', ar: 'التصميم' })}
-                    </p>
-                    <h2 id="custom-design-title" className="gw-toolbench-title">
-                      {pick({ en: 'Build the visual direction', ar: 'ابنِ الاتجاه البصري' })}
-                    </h2>
-                    <p className="gw-toolbench-lede">
-                      {pick({
-                        en: 'Controls sit beside the stage. Position artwork across front, back and side views. A final manufacturing proof is still required before production.',
-                        ar: 'أدوات التحكم بجانب المسرح. ضع العناصر عبر الأمام والخلف والجانب. ما زالت بروفة التصنيع النهائية مطلوبة قبل الإنتاج.',
-                      })}
-                    </p>
-                  </div>
-                  <button
-                    className="gw-btn gw-btn--secondary"
-                    type="button"
-                    onClick={() => { void saveDraft(); }}
-                    disabled={busy}
-                  >
-                    {pick({ en: 'Save Design', ar: 'حفظ التصميم' })}
-                  </button>
-                </header>
-                <p className="gw-toolbench-accuracy" role="status">
-                  {pick({
-                    en: 'Customer concept preview — not factory-accurate until CAD patterns and approvals are supplied.',
-                    ar: 'معاينة مفهوم العميل — ليست دقيقة للمصنع حتى تتوفر نماذج CAD والاعتمادات.',
-                  })}
-                </p>
+              <DesignStep
+                pick={pick}
+                busy={busy}
+                onSave={() => saveDraft()}
+                onBack={() => setStep('model')}
+                onContinue={() => setStep(selected.supportsRoster ? 'roster' : 'review')}
+              >
                 <div className="gw-toolbench-grid design-control-grid">
                   <label>
                     <span>{pick({ en: 'Product', ar: 'المنتج' })}</span>
@@ -1076,38 +1055,15 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     })}
                   />
                 )}
-                <div className="studio-next">
-                  <button
-                    className="btn-primary"
-                    type="button"
-                    onClick={() => setStep(selected.supportsRoster ? 'roster' : 'review')}
-                  >
-                    {pick({
-                      en: selected.supportsRoster ? 'Add Team Roster' : 'Review Request',
-                      ar: selected.supportsRoster ? 'أضف قائمة الفريق' : 'راجع الطلب',
-                    })}
-                  </button>
-                </div>
-              </section>
+              </DesignStep>
             )}
 
             {step === 'roster' && (
-              <section className="gw-roster-desk" aria-labelledby="custom-roster-title">
-                <header className="gw-toolbench-head">
-                  <div>
-                    <p className="gw-kicker">
-                      {pick({ en: 'Roster workspace', ar: 'مساحة القائمة' })}
-                    </p>
-                    <h2 id="custom-roster-title" className="gw-toolbench-title">
-                      {pick({ en: 'Names, numbers and sizes', ar: 'الأسماء والأرقام والمقاسات' })}
-                    </h2>
-                    <p className="gw-toolbench-lede">
-                      {pick({
-                        en: 'Duplicate numbers and incomplete rows are flagged automatically. Arabic and English names are supported in the same roster.',
-                        ar: 'يتم اكتشاف الأرقام المكررة والصفوف الناقصة تلقائيًا. الأسماء العربية والإنجليزية مدعومة في القائمة نفسها.',
-                      })}
-                    </p>
-                  </div>
+              <RosterStep
+                pick={pick}
+                onBack={() => setStep('design')}
+                onContinue={() => setStep('review')}
+              >
                   <div className="gw-roster-actions roster-actions">
                     <label className="btn-secondary file-button">
                       {pick({ en: 'Import CSV/XLSX', ar: 'استيراد CSV/XLSX' })}
@@ -1125,7 +1081,6 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                       {pick({ en: 'Template', ar: 'النموذج' })}
                     </button>
                   </div>
-                </header>
                 <div className="roster-table-wrap">
                   <table className="roster-table">
                     <thead>
@@ -1250,10 +1205,10 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     {pick({ en: 'Review Request', ar: 'راجع الطلب' })}
                   </button>
                 </div>
-              </section>
+              </RosterStep>
             )}
 
-            {step === 'review' && (
+{step === 'review' && (
               <section aria-labelledby="custom-review-title">
                 <p className="section-label">04 — REVIEW</p>
                 <h2 id="custom-review-title" className="section-title">

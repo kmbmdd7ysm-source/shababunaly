@@ -14,6 +14,7 @@ import SmartImage from '../common/SmartImage';
 import Price from '../common/Price';
 import Icon from '../icons/Icon';
 import { lockDocumentScroll } from '../../utils/scrollLock';
+import type { LocaleText } from '../../types/i18n';
 
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
@@ -322,13 +323,13 @@ export default function SearchOverlay({
                       >
                         <SmartImage
                           src={String(product.image || '')}
-                          alt={String(pick(product.name as never) || '')}
+                          alt={String(pick((product.name || "") as LocaleText) || '')}
                           width={320}
                           height={320}
                         />
                         <strong>
                           <Highlight
-                            text={String(pick(product.name as never) || '')}
+                            text={String(pick((product.name || "") as LocaleText) || '')}
                             query={query}
                           />
                         </strong>

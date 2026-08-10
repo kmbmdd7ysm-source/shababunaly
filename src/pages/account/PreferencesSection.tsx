@@ -1,7 +1,7 @@
 import type { Dispatch, FormEvent, ReactElement, SetStateAction } from 'react';
 import CurrencySelector from '../../components/common/CurrencySelector';
 
-type PickFn = (value: { en: string; ar: string }) => string;
+type PickFn = (value: unknown) => string;
 
 type Profile = Record<string, unknown> & {
   preferredSize?: string;
@@ -10,10 +10,12 @@ type Profile = Record<string, unknown> & {
 
 type CommerceLike = {
   preferenceStatus?: string;
+  [key: string]: unknown;
 };
 
 type UserDataLike = {
   clearPersonalization?: () => void;
+  [key: string]: unknown;
 };
 
 export default function PreferencesSection({

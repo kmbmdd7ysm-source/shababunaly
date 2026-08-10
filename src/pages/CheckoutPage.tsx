@@ -30,6 +30,8 @@ import { sendFormspree } from '../services/formspree';
 import { listAddresses } from '../services/account/addressService';
 import { reportClientError } from '../services/telemetry';
 import '../styles/transact.css';
+import '../styles/domain-misc.css';
+import type { LocaleText } from '../types/i18n';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CHECKOUT_KEY = 'shababuna-checkout-idempotency';
@@ -363,7 +365,7 @@ export default function CheckoutPage(): ReactElement {
         },
         taxTotal: 0,
         discountTotal: 0,
-      } as never,
+      } as Record<string, unknown>,
       { idempotencyKey: idempotencyRef.current, allowPending: true },
     )) as { order?: Record<string, unknown>; source?: string };
 
@@ -502,7 +504,7 @@ export default function CheckoutPage(): ReactElement {
             id: item.id,
             type: item.type,
             sku: item.sku,
-            name: pick(item.name as never),
+            name: pick((item.name || "") as LocaleText),
             quantity,
             unitPrice: price,
             lineTotal: price * quantity,
@@ -913,11 +915,11 @@ export default function CheckoutPage(): ReactElement {
                   return (
                     <li key={String(item.key)} className="summary-item">
                       <div className="summary-item-media">
-                        <SmartImage src={String(item.image || '')} alt={pick(item.name as never)} />
+                        <SmartImage src={String(item.image || '')} alt={pick((item.name || "") as LocaleText)} />
                         <span className="summary-item-qty">{quantity}</span>
                       </div>
                       <div className="summary-item-name">
-                        <span>{pick(item.name as never)}</span>
+                        <span>{pick((item.name || "") as LocaleText)}</span>
                         {item.size && item.size !== 'OS' ? (
                           <small>{String(item.size)}</small>
                         ) : null}

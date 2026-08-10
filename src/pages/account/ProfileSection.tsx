@@ -2,7 +2,7 @@ import type { Dispatch, FormEvent, ReactElement, SetStateAction } from 'react';
 import { ORGANIZATION_TYPES } from './accountConstants.ts';
 import { errorText } from '../../utils/errors.ts';
 
-type PickFn = (value: { en: string; ar: string }) => string;
+type PickFn = (value: unknown) => string;
 
 type Profile = Record<string, unknown> & {
   accountType?: string;
@@ -20,14 +20,16 @@ type AuthLike = {
     email?: string;
     email_confirmed_at?: string | null;
     confirmed_at?: string | null;
-  };
+    [key: string]: unknown;
+  } | null;
   cloudConfigured?: boolean;
-  resendVerification?: (email?: string) => Promise<{ error?: unknown } | void>;
-  updateMetadata?: (metadata: Record<string, unknown>) => Promise<{ error?: unknown } | void>;
+  resendVerification?: (email?: string) => Promise<unknown>;
+  updateMetadata?: (metadata: Record<string, unknown>) => Promise<unknown>;
 };
 
 type UserDataLike = {
-  saveProfile: (profile: Profile) => Promise<unknown>;
+  saveProfile?: (profile: Profile) => Promise<unknown>;
+  [key: string]: unknown;
 };
 
 export default function ProfileSection({
@@ -222,7 +224,7 @@ export default function ProfileSection({
               try {
                 const nextProfile = { ...profile, avatarUrl: '', avatar_url: null };
                 const [profileResult, metadataResult] = await Promise.allSettled([
-                  data.saveProfile(nextProfile),
+                  data.saveProfile?.(nextProfile) ?? Promise.resolve(),
                   auth.updateMetadata?.({ avatar_url: null }) ?? Promise.resolve(),
                 ]);
                 if (

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import type { ReactElement } from 'react';
 import OrderCard from '../../components/account/OrderCard';
 
-type PickFn = (value: { en: string; ar: string }) => string;
+type PickFn = (value: unknown) => string;
 
 type OrdersState = {
   state: string;

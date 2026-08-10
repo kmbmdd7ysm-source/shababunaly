@@ -23,6 +23,7 @@ import '../styles/domain-shop.css';
 import '../styles/catalogue.css';
 import '../styles/runs.css';
 import '../styles/catalog.css';
+import '../styles/domain-misc.css';
 import type { ProductLike } from '../utils/productEligibility.ts';
 
 function asProductLike(product: unknown): ProductLike {

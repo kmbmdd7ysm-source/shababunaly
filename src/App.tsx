@@ -20,7 +20,6 @@ import './styles/domain-a11y.css';
 import './styles/domain-forms.css';
 import './styles/domain-overlays.css';
 import './styles/domain-media.css';
-import './styles/domain-misc.css';
 const About = lazy(() => import('./pages/AboutPage'));
 const Shop = lazy(() => import('./pages/ShopPage'));
 const Product = lazy(() => import('./pages/ProductPage'));

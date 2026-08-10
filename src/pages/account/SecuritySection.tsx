@@ -7,13 +7,15 @@ import {
 } from '../../services/privacy.ts';
 import { errorText } from '../../utils/errors.ts';
 
-type PickFn = (value: { en: string; ar: string }) => string;
+type PickFn = (value: unknown) => string;
 
 type AuthLike = {
   cloudConfigured?: boolean;
   updatePassword?: (password: string) => Promise<unknown>;
   deleteAccount?: () => Promise<unknown>;
   signOut?: (scope?: string) => Promise<unknown> | void;
+  user?: unknown;
+  [key: string]: unknown;
 };
 
 type ExportRow = {

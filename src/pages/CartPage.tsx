@@ -13,6 +13,7 @@ import { useCatalog } from '../context/CatalogContext';
 import { categories } from '../data/categories';
 import Icon from '../components/icons/Icon';
 import '../styles/transact.css';
+import '../styles/domain-misc.css';
 
 export default function CartPage(): ReactElement {
   const { getProduct, products } = useCatalog();

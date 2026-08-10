@@ -30,6 +30,7 @@ import { ORGANIZATION_TYPES } from './account/accountConstants';
 import '../styles/transact.css';
 import '../styles/account-sync.css';
 import '../styles/workspace.css';
+import '../styles/domain-misc.css';
 
 const OrganizationWorkspace = lazy(() => import('../components/account/OrganizationWorkspace'));
 const ReturnsSection = lazy(() => import('../components/account/ReturnsSection'));
@@ -974,7 +975,7 @@ export default function AccountPage(): ReactElement {
                 <LazyAccountSection>
                   <OrdersSection
                     pick={pickLoose}
-                    ordersState={ordersState as never}
+                    ordersState={ordersState}
                     loadOrders={() => {
                       void loadOrders();
                     }}
@@ -1001,7 +1002,7 @@ export default function AccountPage(): ReactElement {
                   <ProfileSection
                     pick={pickLoose}
                     lang={lang}
-                    auth={auth as never}
+                    auth={auth}
                     profile={profile}
                     setProfile={setProfile}
                     accountEmail={accountEmail}
@@ -1009,9 +1010,9 @@ export default function AccountPage(): ReactElement {
                     busy={busy}
                     setBusy={setBusy}
                     setMsg={setMsg}
-                    save={save as never}
+                    save={save}
                     clearPhotoPreview={clearPhotoPreview}
-                    data={data as never}
+                    data={data}
                   />
                 </LazyAccountSection>
               )}
@@ -1039,14 +1040,14 @@ export default function AccountPage(): ReactElement {
                     profile={profile}
                     setProfile={setProfile}
                     save={save}
-                    commerce={commerce as never}
-                    data={data as never}
+                    commerce={commerce}
+                    data={data}
                   />
                 </LazyAccountSection>
               )}
               {section === 'security' && (
                 <LazyAccountSection>
-                  <SecuritySection auth={auth as never} pick={pickLoose} lang={lang} />
+                  <SecuritySection auth={auth} pick={pickLoose} lang={lang} />
                 </LazyAccountSection>
               )}
               {msg && (

@@ -1,48 +1,48 @@
 {
   "schema": "shababuna.performance.lighthouse.v1",
-  "sha": "8b90a71958fb47bd291ba784cdd0691bc65b8f7c",
-  "generatedAt": "2026-08-10T15:55:00.946526Z",
+  "sha": "a705cef6291b9fa6a68bcc9a05add299c0d50f57",
+  "generatedAt": "2026-08-10T16:37:22.810598Z",
   "target": "vite preview :4173",
   "results": {
     "desktop": {
-      "performance": 0.69,
+      "performance": 0.68,
       "FCP": {
-        "ms": 2320.7181,
-        "display": "2.3\u00a0s",
-        "score": 0.18
+        "ms": 1929.5874,
+        "display": "1.9\u00a0s",
+        "score": 0.32
       },
       "LCP": {
-        "ms": 3027.256675,
-        "display": "3.0\u00a0s",
-        "score": 0.33
+        "ms": 3128.52795,
+        "display": "3.1\u00a0s",
+        "score": 0.31
       },
       "CLS": {
-        "ms": 0.002306,
+        "ms": 0.002297,
         "display": "0.002",
         "score": 1
       },
       "TBT": {
-        "ms": 106.5,
-        "display": "110\u00a0ms",
-        "score": 0.96
+        "ms": 176,
+        "display": "180\u00a0ms",
+        "score": 0.85
       },
       "SI": {
-        "ms": 2320.7181,
-        "display": "2.3\u00a0s",
-        "score": 0.49
+        "ms": 1929.5874,
+        "display": "1.9\u00a0s",
+        "score": 0.65
       }
     },
     "mobile": {
-      "performance": 0.89,
+      "performance": 0.91,
       "FCP": {
-        "ms": 2346.6593,
-        "display": "2.3\u00a0s",
-        "score": 0.73
+        "ms": 1871.6902,
+        "display": "1.9\u00a0s",
+        "score": 0.88
       },
       "LCP": {
-        "ms": 3178.48895,
-        "display": "3.2\u00a0s",
-        "score": 0.73
+        "ms": 2988.1902,
+        "display": "3.0\u00a0s",
+        "score": 0.78
       },
       "CLS": {
         "ms": 0.000681,
@@ -50,14 +50,14 @@
         "score": 1
       },
       "TBT": {
-        "ms": 151,
-        "display": "150\u00a0ms",
-        "score": 0.94
+        "ms": 168.5,
+        "display": "170\u00a0ms",
+        "score": 0.93
       },
       "SI": {
-        "ms": 2346.6593,
-        "display": "2.3\u00a0s",
-        "score": 0.98
+        "ms": 1871.6902,
+        "display": "1.9\u00a0s",
+        "score": 1
       }
     }
   }

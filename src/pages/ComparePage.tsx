@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCompare } from '../context/CompareContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
-import { useCart, cartKey } from '../context/CartContext';
+import { useCart, type CartItem, cartKey } from '../context/CartContext';
 import Seo from '../components/common/Seo';
 import RouteMasthead from '../components/composition/RouteMasthead';
 import '../styles/composition.css';
@@ -12,7 +12,7 @@ import Price from '../components/common/Price';
 import { getCompareAction } from '../utils/productOptions';
 import Icon from '../components/icons/Icon';
 import SmartImage from '../components/common/SmartImage';
-import { getVariantPurchaseLimit } from '../utils/productEligibility';
+import { getVariantPurchaseLimit, type VariantLike } from '../utils/productEligibility';
 
 export default function ComparePage(): ReactElement {
   const { products } = useCatalog();
@@ -201,7 +201,7 @@ export default function ComparePage(): ReactElement {
                                   size: String(variant.size || ''),
                                   color: String(variant.color || ''),
                                   sku: String(variant.sku || ''),
-                                  maxStock: getVariantPurchaseLimit(variant as never),
+                                  maxStock: getVariantPurchaseLimit(variant as VariantLike),
                                   inventoryTracking: variant.inventoryTracking !== false,
                                   href: `/products/${String(p.slug || '')}`,
                                   quantity: 1,
@@ -209,7 +209,7 @@ export default function ComparePage(): ReactElement {
                                   readyToShip:
                                     p.readyToShip === true && variant.readyToShip !== false,
                                   deliveryProfile: p.readyToShip ? 'ready' : 'standard',
-                                } as never);
+                                } as CartItem);
                               }}
                             >
                               {label}
