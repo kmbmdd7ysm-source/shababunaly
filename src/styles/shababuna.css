@@ -350,43 +350,11 @@ body {
 
 /* Customize */
 
-.custom-type-grid button.active {
-  border: 2px solid #050505;
-  background: #f4f4f2;
-}
-
-.custom-upload {
-  min-height: 120px;
-  padding: 22px;
-  border: 1px dashed rgba(5, 5, 5, 0.35);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  background: #fafafa;
-}
-
-.custom-upload input {
-  width: 100%;
-}
-
-.custom-upload small {
-  color: #777;
-}
-
 .quote-layout {
   display: grid;
   grid-template-columns: minmax(300px, 0.7fr) minmax(0, 1.3fr);
   gap: clamp(50px, 10vw, 150px);
   align-items: start;
-}
-
-.quote-form {
-  background: #fff;
-  padding: clamp(26px, 4vw, 54px);
-  display: grid;
-  gap: 18px;
-  border: 1px solid var(--sha-line);
 }
 
 /* Teams / work / LHA */
@@ -760,66 +728,6 @@ body {
    SHABABUNA 10/10 EXPERIENCE — DESIGN STUDIO, B2B WORKSPACE & OPERATIONS
    ========================================================================== */
 
-.studio-steps {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: clamp(22px, 4vw, 48px);
-}
-
-.studio-steps button {
-  min-height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px solid #d7d7d0;
-  background: #fff;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-radius: 10px;
-  transition:
-    border-color 0.18s ease,
-    background 0.18s ease,
-    transform 0.18s ease;
-}
-
-.studio-steps button span {
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  color: #76766f;
-}
-
-.studio-steps button:hover {
-  transform: translateY(-1px);
-  border-color: #7f7f78;
-}
-
-.studio-steps button.active {
-  background: #080808;
-  color: #fff;
-  border-color: #080808;
-}
-
-.studio-steps button.active span {
-  color: #bdbdb6;
-}
-
-.studio-preview-column {
-  position: sticky;
-  top: calc(var(--header-h) + 24px);
-  display: grid;
-  gap: 16px;
-  min-width: 0;
-}
-
-.custom-product-grid button.active {
-  background: #090909;
-  color: #fff;
-  border-color: #090909;
-}
-
 .design-control-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -885,12 +793,6 @@ body {
   align-items: stretch;
 }
 
-.studio-next {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 28px;
-}
-
 .design-preview {
   background: #090909;
   color: #fff;
@@ -931,41 +833,6 @@ body {
   line-height: 1.5;
 }
 
-.studio-contract-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px solid #d9d9d2;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fff;
-}
-
-.studio-contract-card > div {
-  padding: 16px;
-  display: grid;
-  gap: 4px;
-  min-height: 78px;
-}
-
-.studio-contract-card > div:nth-child(odd) {
-  border-inline-end: 1px solid #e0e0da;
-}
-
-.studio-contract-card > div:nth-child(-n + 2) {
-  border-bottom: 1px solid #e0e0da;
-}
-
-.studio-contract-card span {
-  color: #6a6a64;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.studio-contract-card strong {
-  font-size: 1.05rem;
-}
-
 .made-in-usa-note {
   padding: 15px 17px;
   border: 1px solid #d8d8d2;
@@ -991,73 +858,6 @@ body {
   inset: 0;
   opacity: 0;
   cursor: pointer;
-}
-
-.roster-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.roster-table-wrap {
-  overflow: auto;
-  border: 1px solid #d9d9d3;
-  border-radius: 12px;
-  background: #fff;
-}
-
-.roster-table {
-  width: 100%;
-  min-width: 760px;
-  border-collapse: collapse;
-}
-
-.roster-table th {
-  padding: 14px 12px;
-  background: #f3f3f0;
-  text-align: start;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.roster-table td {
-  padding: 9px;
-  border-top: 1px solid #e4e4de;
-}
-
-.roster-table input,
-.roster-table select {
-  width: 100%;
-  min-height: 42px;
-  border: 1px solid #d5d5cf;
-  border-radius: 7px;
-  padding: 0 9px;
-  background: #fff;
-}
-
-.roster-table tr.invalid input,
-.roster-table tr.invalid select {
-  border-color: #c24132;
-  background: #fff7f5;
-}
-
-.roster-remove {
-  width: 38px;
-  height: 38px;
-  border: 0;
-  background: #f1f1ee;
-  border-radius: 999px;
-  font-size: 1.3rem;
-}
-
-.roster-summary {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  color: #55554f;
 }
 
 .review-facts {
@@ -1099,10 +899,6 @@ body {
 .review-consent p {
   margin-top: 4px;
   color: #5d5d57;
-}
-
-.studio-status {
-  margin-top: 24px;
 }
 
 .service-intro-actions {
@@ -1197,34 +993,17 @@ body {
 @supports (content-visibility: auto) {
 }
 
-@media (max-width: 1080px) {
-.studio-preview-column {
-    position: static;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr);
-    align-items: start;
-  }.design-preview {
+@media (max-width: 1080px) {.design-preview {
     grid-row: span 3;
   }
 }
 
-@media (max-width: 760px) {
-.studio-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }.studio-steps button {
-    min-height: 56px;
-    font-size: 0.78rem;
-  }.design-colour-grid {
+@media (max-width: 760px) {.design-colour-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }.studio-preview-column {
-    grid-template-columns: 1fr;
   }.design-preview {
     grid-row: auto;
   }.design-preview svg {
     min-height: 260px;
-  }.organization-upgrade-card,
-  .roster-summary {
-    align-items: stretch;
-    flex-direction: column;
   }
 }
 
@@ -2165,6 +1944,7 @@ body {
   stroke: #42d17a;
   stroke-width: 4;
 }
+
 
 
 
