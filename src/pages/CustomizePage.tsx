@@ -41,6 +41,7 @@ import { buildProductionPackage } from '../utils/designExports';
 import { runProductionPreflight } from '../services/productionPreflight';
 import '../styles/studio.css';
 import ProductStep from '../components/custom/studio/ProductStep';
+import GarmentConceptStage from '../components/custom/GarmentConceptStage';
 
 const STEPS = [
   { key: 'product', en: 'Product', ar: 'المنتج' },
@@ -713,22 +714,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     </p>
                   </div>
                 </header>
-                <div className="review-facts">
-                  <article>
-                    <span>{pick({ en: 'Presentation', ar: 'العرض' })}</span>
-                    <strong>{pick({ en: 'CONCEPT 3D', ar: 'ثلاثي أبعاد مفاهيمي' })}</strong>
-                  </article>
-                  <article>
-                    <span>{pick({ en: 'Product', ar: 'المنتج' })}</span>
-                    <strong>{pick(selected.label)}</strong>
-                  </article>
-                  <article>
-                    <span>{pick({ en: 'Views', ar: 'الواجهات' })}</span>
-                    <strong>
-                      {pick({ en: 'Front · Back · Left · Right', ar: 'أمام · خلف · يسار · يمين' })}
-                    </strong>
-                  </article>
-                </div>
+                <GarmentConceptStage productLabel={pick(selected.label)} />
                 <div className="studio-actions">
                   <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('product')}>
                     {pick({ en: 'Back', ar: 'رجوع' })}
