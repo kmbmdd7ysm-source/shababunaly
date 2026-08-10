@@ -176,11 +176,13 @@ for (const token of [
 const adminUsersApi = read('api/admin-users.ts');
 for (const token of [
   'requireSuperAdmin',
-  'app_metadata?.role',
+  'app_metadata',
   'SUPABASE_SERVICE_ROLE_KEY',
   'cannot_remove_own_super_admin_role',
 ])
   has(adminUsersApi, token, `admin users ${token}`);
+if (!/appMeta\.role|app_metadata\?\.role|app_metadata\.role/u.test(adminUsersApi))
+  fail.push('Missing admin users app_metadata role authority');
 if (/user_metadata\?\.role|user_metadata\.role/u.test(adminUsersApi))
   fail.push('Admin authorization trusts editable user_metadata.role');
 const formApi = read('api/formspree.ts');
@@ -204,7 +206,7 @@ for (const token of [
   "deliveryProfile === 'international'",
 ])
   has(checkout, token, `checkout shipping ${token}`);
-const commerceContext = read('src/context/CommerceContext.jsx');
+const commerceContext = read('src/context/CommerceContext.tsx');
 has(commerceContext, 'fetchPublicShippingRates', 'public country shipping rates');
 const hero = read('src/components/experience/CinematicHero.tsx');
 for (const token of ['home_hero', 'mobileVideoUrl', 'useReducedMotion', 'saveData'])
@@ -320,10 +322,10 @@ for (const token of [
   'Cache-Control',
 ])
   has(readiness, token, `readiness API ${token}`);
-const readinessGate = read('src/context/ReadinessContext.jsx');
+const readinessGate = read('src/context/ReadinessContext.tsx');
 for (const token of ['/api/readiness', "credentials: 'same-origin'", 'localReadiness'])
   has(readinessGate, token, `production readiness gate ${token}`);
-const chrome = read('src/components/layout/GlobalChrome.jsx');
+const chrome = read('src/components/layout/GlobalChrome.tsx');
 for (const token of ['ReadinessBanner', 'AnnouncementBar', 'MainHeader'])
   has(chrome, token, `global chrome ${token}`);
 

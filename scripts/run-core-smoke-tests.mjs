@@ -145,7 +145,7 @@ const resilience = readFileSync(
 );
 assert.match(resilience, /variant_snapshot'->>'customizable/);
 const adminApi = readFileSync('api/admin-users.ts', 'utf8');
-assert.match(adminApi, /app_metadata\?\.role/);
+assert.match(adminApi, /appMeta\.role|app_metadata\?\.role|app_metadata\.role/);
 assert.doesNotMatch(adminApi, /user_metadata\?\.role|user_metadata\.role/);
 console.info(
   'Core smoke tests passed: catalogue safety, 12-type production customization, CSV/XLSX readiness, artwork ZIP export, secure design sharing, trusted shipping, returns, B2B approvals, staff authorization, readiness gates and operations invariants.',

@@ -12,13 +12,13 @@ const requireText = (source, value, label = value) => {
   if (!source.includes(value)) failures.push(`Missing required implementation: ${label}`);
 };
 
-const config = requireFile('src/config.js');
+const config = requireFile('src/config.ts');
 const shipping = requireFile('src/config/shipping.ts');
 const app = requireFile('src/App.tsx');
 const customize = requireFile('src/pages/CustomizePage.tsx');
 const preview = requireFile('src/components/custom/DesignPreview.tsx');
 const productionEditor = requireFile('src/components/custom/ProductionDesignEditor.tsx');
-const workspace = requireFile('src/components/account/OrganizationWorkspace.jsx');
+const workspace = requireFile('src/components/account/OrganizationWorkspace.tsx');
 const teams = requireFile('src/pages/TeamsWholesalePage.tsx');
 const operations = requireFile('src/pages/OperationsPage.tsx');
 const migration = requireFile('supabase/migrations/20260731040000_shababuna_b2b_operations.sql');
@@ -125,13 +125,16 @@ for (const table of [
 for (const rule of ['pending_shipping_quote', 'half', 'full'])
   requireText(checkout, rule, `checkout flow ${rule}`);
 for (const token of [
-  'LH_MOBILE_PERFORMANCE,.99',
-  'Number(report.runCount)<3',
+  'LH_MOBILE_PERFORMANCE',
+  '0.99',
+  'report.runCount',
   'report.metrics?.lcpMs',
   'report.metrics?.cls',
   'report.metrics?.tbtMs',
 ])
   requireText(lighthouse, token, `repeated Lighthouse gate ${token}`);
+if (!/Number\(report\.runCount\)\s*<\s*3/.test(lighthouse))
+  failures.push('Missing required implementation: repeated Lighthouse gate runCount < 3');
 requireText(lighthouse, 'desktop', 'desktop Lighthouse gate');
 for (const threshold of [
   '--test-coverage-lines=100',
