@@ -5,6 +5,9 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getStaffRole, isStaffUser } from '../services/operations';
 import Icon from '../components/icons/Icon';
+import '../styles/commerce-ops-from-shababuna.css';
+import '../styles/commerce-ops-from-premium.css';
+import '../styles/commerce-ops-from-global.css';
 import '../styles/command.css';
 import '../styles/operations.css';
 
