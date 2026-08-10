@@ -1,8 +1,8 @@
 {
   "schema": "shababuna.performance.lighthouse.v1",
-  "sha": "7145696fcc35f1e6530857704db5ad4bd313ec13",
+  "sha": "c182a8987661591ca776cc92cb7c6e87d5e30c5d",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T18:37:01.290498Z",
+  "generatedAt": "2026-08-10T18:37:03.187221Z",
   "target": "vite preview :4173",
   "results": {
     "desktop": {
