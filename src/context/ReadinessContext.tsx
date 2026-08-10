@@ -102,7 +102,14 @@ export function ReadinessProvider({ children }: { children?: ReactNode }) {
     };
   }, [state]);
 
-  const open = state === 'degraded' && !dismissed;
+  // Keep the banner latched open after the initial degraded paint until the
+  // shopper dismisses it. Auto-hiding when /api/readiness flips to ready was
+  // collapsing chrome height and shifting main (CLS regression).
+  const [latchedOpen, setLatchedOpen] = useState(false);
+  useEffect(() => {
+    if (state === 'degraded' && !dismissed) setLatchedOpen(true);
+  }, [state, dismissed]);
+  const open = latchedOpen && !dismissed;
 
   useEffect(() => {
     document.documentElement.dataset.sysBanner = open ? 'open' : 'closed';
