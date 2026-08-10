@@ -23,23 +23,35 @@ export default function CurrencyWelcome(): ReactElement | null {
       .then((response) => (response.ok ? response.json() : null))
       .then((geo) => {
         const inLibya = geo?.country === 'LY';
-        const nextCurrency = inLibya ? 'LYD' : 'USD';
-        const nextCountry = inLibya ? 'LY' : geo?.country || 'US';
-        setSuggested(nextCurrency);
-        setCurrency(nextCurrency);
-        setCountryCode(nextCountry);
+        // Only suggest — do not mutate live commerce state until the shopper confirms.
+        // Applying currency/country here caused homepage price/layout CLS.
+        setSuggested(inLibya ? 'LYD' : 'USD');
+        try {
+          sessionStorage.setItem(
+            'shababuna-geo-suggest',
+            JSON.stringify({
+              currency: inLibya ? 'LYD' : 'USD',
+              country: inLibya ? 'LY' : geo?.country || 'US',
+            }),
+          );
+        } catch {
+          /* ignore */
+        }
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [open, setCountryCode, setCurrency]);
+  }, [open]);
 
   if (!open) return null;
   const confirm = (value: string) => {
     setCurrency(value);
     try {
+      const suggestedGeo = JSON.parse(sessionStorage.getItem('shababuna-geo-suggest') || '{}');
+      if (suggestedGeo?.country) setCountryCode(String(suggestedGeo.country));
+      else if (value === 'LYD') setCountryCode('LY');
       localStorage.setItem(STORAGE_KEYS.welcome, 'done');
     } catch {
-      /* ignore */
+      if (value === 'LYD') setCountryCode('LY');
     }
     setOpen(false);
   };
