@@ -1,9 +1,10 @@
 {
-  "sha": "60d7a834e2fed2fc235e18662f4e804f284d51b7",
-  "generatedAt": "2026-08-10T06:34:33.850525+00:00",
-  "legacyTriadLines": 6834,
-  "importantTotal": 77,
+  "sha": "4c38db878b05a6b7dcce0232cfeb8ed74ab7b301",
+  "generatedAt": "2026-08-10T06:45:52.667767+00:00",
+  "legacyTriadLines": 6469,
   "startingTriadLines": 9660,
-  "reductionLines": 2826,
-  "idleLegacyLoadRemoved": true
+  "reductionLines": 3191,
+  "importantTotal": 77,
+  "idleLegacyLoadRemoved": true,
+  "clsLocal": 0.0
 }
