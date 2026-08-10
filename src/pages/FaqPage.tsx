@@ -5,6 +5,8 @@ import Dossier from '../components/composition/Dossier';
 import Accordion from '../components/common/Accordion';
 import EmptyState from '../components/common/EmptyState';
 import { faqCategories } from '../data/faqs.ts';
+import '../styles/content-from-shababuna.css';
+import '../styles/content-from-global.css';
 import '../styles/content.css';
 
 /*

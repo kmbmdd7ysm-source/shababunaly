@@ -5,6 +5,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { SITE } from '../config';
 import Seo from '../components/common/Seo';
 import RouteMasthead from '../components/composition/RouteMasthead';
+import '../styles/content-from-shababuna.css';
+import '../styles/content-from-global.css';
 import '../styles/composition.css';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import { sendFormspree } from '../services/formspree';

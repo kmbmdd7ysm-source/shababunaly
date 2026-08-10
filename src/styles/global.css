@@ -1477,16 +1477,6 @@ to {
 
 /* ---------- Contact ---------- */
 
-.contact-info {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem;
-  display: grid;
-  gap: 1.25rem;
-  align-content: start;
-}
-
 .track-form {
   display: grid;
   gap: 1rem;
@@ -1882,12 +1872,6 @@ main {
 
 /* Editorial content and about page readability */
 
-.prose-block .section-title {
-  color: #050505;
-  max-width: none;
-  font-size: clamp(2rem, 4vw, 4.4rem);
-}
-
 /* Cards: strong photography stage and crisp copy */
 
 /* Journey is a premium numbered editorial system */
@@ -2222,27 +2206,6 @@ html[dir='rtl'] * {
 
 .search-view-all {
   margin-top: 2rem;
-}
-
-.help-search {
-  display: grid;
-  gap: 0.5rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-}
-
-.help-search input {
-  height: 56px;
-  border: 1px solid var(--border);
-  padding-inline: 1rem;
-  font-size: 1rem;
-}
-
-.help-account-callout {
-  padding: 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 2rem;
 }
 
 .orders-list {
@@ -2942,32 +2905,7 @@ canvas {
   color: #fff;
 }
 
-.contact-form-wrap,
-.contact-form,
-.contact-info,
-.page-hero,
-.page-hero .container {
-  overflow-wrap: anywhere;
-}
-
-.contact-form input,
-.contact-form select,
-.contact-form textarea {
-  width: 100%;
-}
-
 /* Final production verification hardening: local containment only. */
-
-.contact-form-wrap > *,
-.contact-info > *,
-.filters-drawer-panel > * {
-  min-width: 0;
-}
-
-.contact-form label {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
 
 .filters-drawer-panel {
   overscroll-behavior: contain;
@@ -2998,21 +2936,7 @@ canvas {
   }
 }
 
-.contact-info .section-title {
-  font-size: clamp(2rem, 8vw, 4.5rem);
-  line-height: 0.92;
-  overflow-wrap: normal !important;
-  word-break: keep-all;
-  hyphens: none;
-}
-
 @media (max-width: 520px) {
-.contact-info {
-    padding: 1.25rem;
-  }.contact-info .section-title {
-    font-size: clamp(2rem, 11vw, 3.15rem);
-    line-height: 0.94;
-  }
 }
 
 /* Final independent repair: mobile logo, contact containment, and registration clarity. */
@@ -3033,20 +2957,6 @@ canvas {
     object-fit: contain;
   }html[dir='rtl'] .header-inner > .brand {
     justify-content: flex-end;
-  }.contact-form-wrap,
-  .contact-form,
-  .contact-info {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }.contact-info .section-title {
-    max-width: 100%;
-    font-size: clamp(2rem, 9.5vw, 2.75rem);
-    line-height: 0.98;
-    letter-spacing: -0.035em;
-    overflow-wrap: normal !important;
-    word-break: normal;
-    hyphens: none !important;
   }
 }
 
@@ -3068,75 +2978,7 @@ html,
   }
 }
 
-.contact-section > .container,
-.contact-form-wrap,
-.contact-form {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-}
-
-.contact-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
-}
-
-.contact-form > * {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.contact-form .contact-consent {
-  display:grid;
-  grid-template-columns: 22px minmax(0, 1fr);
-  align-items: start;
-  column-gap: 0.75rem;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.contact-form .contact-consent input {
-  grid-column: 1;
-  width: 20px;
-  height: 20px;
-  margin: 0.2rem 0 0;
-}
-
-.contact-form .contact-consent span {
-  grid-column: 2;
-  width: auto;
-  min-width: 0;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: normal !important;
-  word-break: normal;
-}
-
-html[dir='rtl'] .contact-form .contact-consent {
-  grid-template-columns: minmax(0, 1fr) 22px;
-}
-
-html[dir='rtl'] .contact-form .contact-consent input {
-  grid-column: 2;
-}
-
-html[dir='rtl'] .contact-form .contact-consent span {
-  grid-column: 1;
-}
-
 @media (max-width: 760px) {
-.contact-section .container {
-    padding-inline: var(--gutter);
-  }.contact-form input,
-  .contact-form select,
-  .contact-form textarea,
-  .contact-form button {
-    width: 100%;
-    max-width: 100%;
-  }
 }
 
 /* Production hotfixes: stable mobile sheets, colour metadata and RTL viewport containment. */
@@ -3427,12 +3269,6 @@ html,
 }
 
 @media (min-width: 860px) {
-.contact-info .section-title {
-    font-size: clamp(1.65rem, 2.7vw, 3rem);
-    line-height: 1;
-    max-width: 100%;
-    overflow-wrap: anywhere !important;
-  }
 }
 
 @media (max-width: 760px) {
@@ -3721,6 +3557,7 @@ body.scroll-locked {
 .lightbox-stage img.lightbox-zoom-300 {
   transform: scale(3) !important;
 }
+
 
 
 

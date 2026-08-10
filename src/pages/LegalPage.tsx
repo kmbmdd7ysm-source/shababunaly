@@ -5,6 +5,8 @@ import RouteMasthead from '../components/composition/RouteMasthead';
 import Dossier from '../components/composition/Dossier';
 import { getLegal } from '../data/legal.ts';
 import NotFoundPage from './NotFoundPage';
+import '../styles/content-from-shababuna.css';
+import '../styles/content-from-global.css';
 import '../styles/content.css';
 
 export default function LegalPage({ docKey }: { docKey: string }) {
