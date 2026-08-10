@@ -1,5 +1,5 @@
 import type { FormEvent, ReactElement, RefObject } from 'react';
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -980,19 +980,19 @@ export default function AccountPage(): ReactElement {
                 </LazyAccountSection>
               )}
               {section === 'workspace' && (
-                <Suspense fallback={<LazyAccountSection />}>
+                <LazyAccountSection>
                   <OrganizationWorkspace />
-                </Suspense>
+                </LazyAccountSection>
               )}
               {section === 'returns' && (
-                <Suspense fallback={<LazyAccountSection />}>
+                <LazyAccountSection>
                   <ReturnsSection orders={ordersState.orders} />
-                </Suspense>
+                </LazyAccountSection>
               )}
               {section === 'special-requests' && (
-                <Suspense fallback={<LazyAccountSection />}>
+                <LazyAccountSection>
                   <SpecialRequestsSection />
-                </Suspense>
+                </LazyAccountSection>
               )}
               {section === 'profile' && (
                 <LazyAccountSection>
