@@ -4246,18 +4246,7 @@ html,
   #root,
   #main-content {
     touch-action: pan-y pinch-zoom;
-  }/* These are the only controls intentionally allowed to pan horizontally. */:where(
-    .shop-category-scroll,
-    .shop-subcategory-scroll,
-    .mobile-filter-pills,
-    .account-tabs,
-    .compare-scroll
-  ) {
-    max-inline-size: 100%;
-    overscroll-behavior-inline: contain;
-    touch-action: pan-x pan-y;
-    -webkit-overflow-scrolling: touch;
-  }/* Fixed overlays must use the layout viewport, not content width. */:where(
+  }/* These are the only controls intentionally allowed to pan horizontally. *//* Fixed overlays must use the layout viewport, not content width. */:where(
     .mobile-menu-overlay,
     .search-screen,
     .cart-drawer-overlay,
@@ -4268,10 +4257,7 @@ html,
     inset-inline: 0;
     inline-size: 100%;
     max-inline-size: 100%;
-  }/* Long user/order content wraps rather than widening the page. */:where(.order-number, .order-card, .order-detail, .account-page, .contact-section) {
-    overflow-wrap: anywhere;
-    word-break: normal;
-  }
+  }/* Long user/order content wraps rather than widening the page. */
 }
 
 /* RTL changes reading direction only; viewport geometry remains anchored. */
@@ -4631,4 +4617,5 @@ body.scroll-locked {
 .lightbox-stage img.lightbox-zoom-300 {
   transform: scale(3) !important;
 }
+
 
