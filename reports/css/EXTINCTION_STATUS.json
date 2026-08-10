@@ -1,16 +1,9 @@
 {
-  "sha": "cf52fa64c8b1a1519c1daf7e4e14853a4a444de6",
-  "generatedAt": "2026-08-10T06:30:57.934023+00:00",
-  "legacyTriadLines": 7481,
+  "sha": "60d7a834e2fed2fc235e18662f4e804f284d51b7",
+  "generatedAt": "2026-08-10T06:34:33.850525+00:00",
+  "legacyTriadLines": 6834,
   "importantTotal": 77,
-  "idleLegacyLoadRemoved": true,
   "startingTriadLines": 9660,
-  "reductionLines": 2179,
-  "extractedSheets": [
-    "commerce-welcome.css",
-    "pwa-cookie-from-global.css",
-    "account-workspace-from-*.css",
-    "commerce-ops-from-*.css",
-    "shop-from-*.css"
-  ]
+  "reductionLines": 2826,
+  "idleLegacyLoadRemoved": true
 }
