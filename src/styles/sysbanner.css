@@ -127,6 +127,8 @@
 }
 
 .gw-announce-link {
+  display: inline-block;
+  min-block-size: 1.25em;
   flex: 1 1 12rem;
   max-inline-size: 72ch;
   color: inherit;
@@ -144,6 +146,8 @@
 }
 
 [lang='ar'] .gw-announce-link {
+  display: inline-block;
+  min-block-size: 1.25em;
   letter-spacing: 0;
 }
 
