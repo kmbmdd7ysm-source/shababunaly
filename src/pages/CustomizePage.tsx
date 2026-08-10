@@ -192,9 +192,9 @@ export default function CustomizePage(): ReactElement {
         }
       : null;
   const resolveOrganization = async () =>
-    organizationMetadata
+    organizationMetadata && auth.user?.id
       ? ensureOrganization({
-          userId: auth.user?.id,
+          userId: String(auth.user.id),
           name: organizationMetadata.name || contact.organization,
           type: organizationMetadata.type,
           countryCode: contact.country,
@@ -373,10 +373,11 @@ export default function CustomizePage(): ReactElement {
     setStatus('');
     try {
       const organization = await resolveOrganization();
+      const organizationId = organization?.id ? String(organization.id) : null;
       const saved = await saveCustomDesign({
-        userId: auth.user.id,
-        organizationId: organization?.id || null,
-        design: { ...design, id: lockedDesign ? undefined : savedId },
+        userId: String(auth.user.id),
+        organizationId,
+        design: { ...design, id: lockedDesign ? undefined : savedId } as Record<string, unknown>,
         name: `${design.teamName || 'Team'} — ${pick(selected.label)}${lockedDesign ? ' Working Copy' : ''}`,
         status: 'draft',
       });
@@ -384,8 +385,8 @@ export default function CustomizePage(): ReactElement {
       setWorkflowStatus(String(saved.status || 'draft'));
       if (selected.supportsRoster && normalizedRoster.length) {
         await saveRoster({
-          userId: auth.user.id,
-          organizationId: organization?.id || null,
+          userId: String(auth.user.id),
+          organizationId,
           name: `${design.teamName || 'Team'} roster`,
           rows: normalizedRoster,
         });
@@ -488,11 +489,12 @@ export default function CustomizePage(): ReactElement {
     let rosterRecord = null;
     try {
       const organization = await resolveOrganization();
+      const organizationId = organization?.id ? String(organization.id) : null;
       if (auth.user?.id) {
         const saved = await saveCustomDesign({
-          userId: auth.user.id,
-          organizationId: organization?.id || null,
-          design: { ...design, id: lockedDesign ? undefined : savedId },
+          userId: String(auth.user.id),
+          organizationId,
+          design: { ...design, id: lockedDesign ? undefined : savedId } as Record<string, unknown>,
           name: `${design.teamName || contact.organization} — ${pick(selected.label)}${lockedDesign ? ' Revision' : ''}`,
           status: 'quote_requested',
         });
@@ -501,8 +503,8 @@ export default function CustomizePage(): ReactElement {
         setWorkflowStatus(String(saved.status || 'quote_requested'));
         if (selected.supportsRoster && normalizedRoster.length) {
           rosterRecord = await saveRoster({
-            userId: auth.user.id,
-            organizationId: organization?.id || null,
+            userId: String(auth.user.id),
+            organizationId,
             name: `${design.teamName || contact.organization} roster`,
             rows: normalizedRoster,
           });

@@ -13,7 +13,7 @@ const operations = [
   read('src/components/operations/OperationsEnterpriseModules.jsx'),
   read('src/components/operations/OperationsCommerceModules.jsx'),
 ].join('\n');
-const b2b = read('src/services/b2b.js');
+const b2b = read('src/services/b2b.ts');
 const app = read('src/App.tsx');
 
 await test('enterprise B2B workflows', async (t) => {

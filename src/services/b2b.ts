@@ -1,6 +1,89 @@
 import { getSupabase } from './supabase';
 import { normalizeRoster } from '../data/customization';
 
+type Row = Record<string, unknown>;
+type Supa = NonNullable<Awaited<ReturnType<typeof getSupabase>>>;
+
+type EnsureOrganizationInput = {
+  userId: string;
+  name: string;
+  type?: string;
+  countryCode?: string;
+};
+
+type SaveCustomDesignInput = {
+  userId: string;
+  design: Row;
+  name?: string;
+  organizationId?: string | null;
+  status?: string;
+};
+
+type SaveRosterInput = {
+  userId: string;
+  name?: string;
+  organizationId?: string | null;
+  rows?: unknown[];
+  rosterId?: string | null;
+};
+
+type CreateQuoteInput = {
+  userId: string;
+  organizationId?: string | null;
+  payload: Row;
+};
+
+type RespondDesignInput = { designId: string; decision: string; note?: string };
+type RespondQuoteInput = { quoteId: string; decision: string; note?: string };
+type StartQuotePaymentInput = {
+  quoteNumber: string;
+  customerEmail: string;
+  paymentMethod: string;
+};
+type ProjectMessageInput = {
+  organizationId?: string | null | undefined;
+  quoteId?: string | null | undefined;
+  orderId?: string | null | undefined;
+  body: string;
+  attachmentIds?: unknown[];
+};
+type ReorderInput = {
+  organizationId?: string | null | undefined;
+  sourceOrderId?: string | null | undefined;
+  sourceQuoteId?: string | null | undefined;
+  sourceDesignId?: string | null | undefined;
+  requestType?: string;
+  items?: unknown[];
+  playerDetails?: Row;
+  note?: string;
+};
+type ExternalSignatureInput = {
+  accessToken?: string | undefined;
+  contractId: string;
+  signerName: string;
+  signerEmail: string;
+};
+type SignContractInput = {
+  accessToken?: string | undefined;
+  contractId: string;
+  signerName: string;
+  signerEmail: string;
+  signatureValue: string;
+  signatureType?: string;
+  consentVersion?: string;
+};
+type PaymentProofInput = {
+  accessToken?: string | undefined;
+  entityType: string;
+  entityId: string;
+  file: File | null;
+  amount: string | number;
+  currency?: string;
+  paymentMethod?: string;
+  reference?: string;
+  note?: string;
+};
+
 const allowLocalPersistence =
   Boolean(import.meta.env.DEV) ||
   ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
@@ -8,21 +91,21 @@ const STORAGE_PREFIX = 'shababuna-b2b-v2';
 const MAX_LOCAL_ROWS = 80;
 
 const nowIso = () => new Date().toISOString();
-const newId = (prefix) =>
+const newId = (prefix: string): string =>
   `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`}`;
-const storageKey = (kind, userId) => `${STORAGE_PREFIX}:${kind}:${userId || 'guest'}`;
+const storageKey = (kind: string, userId?: string | null): string => `${STORAGE_PREFIX}:${kind}:${userId || 'guest'}`;
 
-function readLocal(kind, userId) {
+function readLocal(kind: string, userId?: string | null): Row[] {
   if (!allowLocalPersistence) return [];
   try {
     const parsed = JSON.parse(globalThis.localStorage?.getItem(storageKey(kind, userId)) || '[]');
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? (parsed as Row[]) : [];
   } catch {
     return [];
   }
 }
 
-function writeLocal(kind, userId, rows) {
+function writeLocal(kind: string, userId: string | null | undefined, rows: Row[]): Row[] {
   if (!allowLocalPersistence) return rows;
   try {
     globalThis.localStorage?.setItem(
@@ -35,16 +118,16 @@ function writeLocal(kind, userId, rows) {
   return rows;
 }
 
-function upsertLocal(kind, userId, row) {
+function upsertLocal(kind: string, userId: string | null | undefined, row: Row): Row {
   const rows = readLocal(kind, userId);
-  const next = [row, ...rows.filter((item) => item.id !== row.id)].sort((a, b) =>
+  const next = [row, ...rows.filter((item) => item.id !== row.id)].sort((a: Row, b: Row) =>
     String(b.updated_at || b.created_at).localeCompare(String(a.updated_at || a.created_at)),
   );
   writeLocal(kind, userId, next);
   return row;
 }
 
-async function membershipIds(client, userId) {
+async function membershipIds(client: Supa | null, userId?: string | null): Promise<string[]> {
   if (!client || !userId) return [];
   const { data, error } = await client
     .from('organization_members')
@@ -52,10 +135,16 @@ async function membershipIds(client, userId) {
     .eq('user_id', userId)
     .limit(20);
   if (error) return [];
-  return [...new Set((data || []).map((row) => row.organization_id).filter(Boolean))];
+  return [
+    ...new Set(
+      (data || [])
+        .map((row: Row) => String(row.organization_id || ''))
+        .filter(Boolean),
+    ),
+  ];
 }
 
-async function cloudList(table, userId, order = 'updated_at') {
+async function cloudList(table: string, userId: string, order = 'updated_at'): Promise<Row[] | null> {
   const client = await getSupabase();
   if (!userId || userId === 'guest') {
     if (allowLocalPersistence) return null;
@@ -68,17 +157,17 @@ async function cloudList(table, userId, order = 'updated_at') {
   const organizations = await membershipIds(client, userId);
   let query = client.from(table).select('*');
   if (organizations.length) {
-    const organizationFilter = organizations.map((id) => `organization_id.eq.${id}`).join(',');
-    query = query.or(`user_id.eq.${userId},${organizationFilter}`);
+    const organizationFilter = organizations.map((id: string) => `organization_id.eq.${id}`).join(',');
+    query = query.or(`user_id.eq.${userId},${organizationFilter}`) as typeof query;
   } else {
     query = query.eq('user_id', userId);
   }
   const { data, error } = await query.order(order, { ascending: false }).limit(100);
   if (error) throw error;
-  return data || [];
+  return (data || []) as Row[];
 }
 
-async function cloudUpsert(table, row) {
+async function cloudUpsert(table: string, row: Row): Promise<Row | null> {
   const client = await getSupabase();
   if (!client) {
     if (allowLocalPersistence) return null;
@@ -90,10 +179,15 @@ async function cloudUpsert(table, row) {
     .select('*')
     .single();
   if (error) throw error;
-  return data;
+  return data as Row;
 }
 
-export async function ensureOrganization({ userId, name, type = 'club', countryCode = 'LY' }) {
+export async function ensureOrganization({
+  userId,
+  name,
+  type = 'club',
+  countryCode = 'LY',
+}: EnsureOrganizationInput): Promise<Row | null> {
   if (!userId || userId === 'guest' || !String(name || '').trim()) return null;
   try {
     const client = await getSupabase();
@@ -115,7 +209,7 @@ export async function ensureOrganization({ userId, name, type = 'club', countryC
   }
 }
 
-export async function listSavedDesigns(userId) {
+export async function listSavedDesigns(userId: string): Promise<Row[]> {
   try {
     const cloud = await cloudList('custom_designs', userId);
     if (cloud) {
@@ -134,8 +228,8 @@ export async function saveCustomDesign({
   name,
   organizationId = null,
   status = 'draft',
-}) {
-  const previousId = design.id || null;
+}: SaveCustomDesignInput): Promise<Row> {
+  const previousId = (design.id as string | undefined) || null;
   const row = {
     id: previousId || newId('design'),
     user_id: userId || null,
@@ -150,7 +244,7 @@ export async function saveCustomDesign({
       ...design,
       id: undefined,
       version: undefined,
-      logoPreview: design.logoPreview?.startsWith('data:') ? null : design.logoPreview || null,
+      logoPreview: String(design.logoPreview || '').startsWith('data:') ? null : design.logoPreview || null,
     },
     preview_data: {
       primary: design.primary,
@@ -172,15 +266,15 @@ export async function saveCustomDesign({
   return upsertLocal('designs', userId, row);
 }
 
-export async function duplicateCustomDesign({ userId, design }) {
+export async function duplicateCustomDesign({ userId, design }: { userId: string; design: Row }): Promise<Row> {
   return saveCustomDesign({
     userId,
-    design: { ...design, id: undefined, version: 1, created_at: undefined },
-    name: `${design.name || design.teamName || 'Design'} Copy`,
+    design: { ...design, id: undefined, version: 1, created_at: undefined } as Row,
+    name: `${String(design.name || design.teamName || 'Design')} Copy`,
   });
 }
 
-export async function listRosters(userId) {
+export async function listRosters(userId: string): Promise<Row[]> {
   try {
     const cloud = await cloudList('team_rosters', userId);
     if (cloud) {
@@ -199,8 +293,8 @@ export async function saveRoster({
   organizationId = null,
   rows = [],
   rosterId = null,
-}) {
-  const normalized = normalizeRoster(rows);
+}: SaveRosterInput): Promise<Row> {
+  const normalized = normalizeRoster(rows as never);
   const row = {
     id: rosterId || newId('roster'),
     user_id: userId || null,
@@ -210,7 +304,7 @@ export async function saveRoster({
       .slice(0, 120),
     players: normalized,
     player_count: normalized.length,
-    validation_errors: normalized.reduce((sum, player) => sum + player.errors.length, 0),
+    validation_errors: normalized.reduce((sum: number, player: { errors: unknown[] }) => sum + player.errors.length, 0),
     created_at: nowIso(),
     updated_at: nowIso(),
   };
@@ -223,7 +317,7 @@ export async function saveRoster({
   return upsertLocal('rosters', userId, row);
 }
 
-export async function listQuoteRequests(userId) {
+export async function listQuoteRequests(userId: string): Promise<Row[]> {
   try {
     const cloud = await cloudList('quote_requests', userId);
     if (cloud) {
@@ -236,7 +330,11 @@ export async function listQuoteRequests(userId) {
   return readLocal('quotes', userId);
 }
 
-export async function createQuoteRequest({ userId, organizationId = null, payload }) {
+export async function createQuoteRequest({
+  userId,
+  organizationId = null,
+  payload,
+}: CreateQuoteInput): Promise<Row> {
   const row = {
     id: newId('quote'),
     user_id: userId || null,
@@ -261,12 +359,12 @@ export async function createQuoteRequest({ userId, organizationId = null, payloa
   return upsertLocal('quotes', userId, row);
 }
 
-export async function listProductionUpdates(userId) {
+export async function listProductionUpdates(userId: string): Promise<Row[]> {
   try {
     const client = await getSupabase();
     if (client && userId && userId !== 'guest') {
       const quotes = await cloudList('quote_requests', userId, 'created_at');
-      const quoteIds = (quotes || []).map((row) => row.id).filter(Boolean);
+      const quoteIds = (quotes || []).map((row: Row) => String(row.id || '')).filter(Boolean);
       if (!quoteIds.length) return [];
       const { data, error } = await client
         .from('production_updates')
@@ -284,7 +382,7 @@ export async function listProductionUpdates(userId) {
   return readLocal('production', userId);
 }
 
-export function saveLocalProductionUpdate(userId, update) {
+export function saveLocalProductionUpdate(userId: string, update: Row): Row {
   if (!allowLocalPersistence)
     throw Object.assign(new Error('cloud_required'), { code: 'CLOUD_REQUIRED' });
   return upsertLocal('production', userId, {
@@ -294,7 +392,7 @@ export function saveLocalProductionUpdate(userId, update) {
   });
 }
 
-export function clearB2bLocalState(userId) {
+export function clearB2bLocalState(userId: string): void {
   if (!allowLocalPersistence) return;
   for (const kind of ['designs', 'rosters', 'quotes', 'production']) {
     try {
@@ -305,7 +403,7 @@ export function clearB2bLocalState(userId) {
   }
 }
 
-export async function listDesignVersions(designId) {
+export async function listDesignVersions(designId: string): Promise<Row[]> {
   try {
     const client = await getSupabase();
     if (!client || !designId) return [];
@@ -323,7 +421,7 @@ export async function listDesignVersions(designId) {
   }
 }
 
-export async function respondToDesign({ designId, decision, note = '' }) {
+export async function respondToDesign({ designId, decision, note = '' }: RespondDesignInput): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_respond_to_design', {
@@ -335,7 +433,7 @@ export async function respondToDesign({ designId, decision, note = '' }) {
   return data;
 }
 
-export async function respondToQuote({ quoteId, decision, note = '' }) {
+export async function respondToQuote({ quoteId, decision, note = '' }: RespondQuoteInput): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_respond_to_quote', {
@@ -347,7 +445,11 @@ export async function respondToQuote({ quoteId, decision, note = '' }) {
   return data;
 }
 
-export async function startQuotePayment({ quoteNumber, customerEmail, paymentMethod }) {
+export async function startQuotePayment({
+  quoteNumber,
+  customerEmail,
+  paymentMethod,
+}: StartQuotePaymentInput): Promise<Row> {
   const response = await fetch('/api/create-quote-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -356,18 +458,18 @@ export async function startQuotePayment({ quoteNumber, customerEmail, paymentMet
     body: JSON.stringify({ quoteNumber, customerEmail, paymentMethod }),
   });
   const text = await response.text().catch(() => '');
-  let result = {};
+  let result: Row = {};
   try {
-    result = text ? JSON.parse(text) : {};
+    result = text ? (JSON.parse(text) as Row) : {};
   } catch {
     /* ignore */
   }
-  if (!response.ok || !result.url) throw new Error(result.error || 'quote_payment_session_failed');
-  window.location.assign(result.url);
+  if (!response.ok || !result.url) throw new Error(String(result.error || 'quote_payment_session_failed'));
+  window.location.assign(String(result.url));
   return result;
 }
 
-async function requireCloudUser(userId) {
+async function requireCloudUser(userId: string): Promise<Supa> {
   if (!userId || userId === 'guest')
     throw Object.assign(new Error('authentication_required'), { code: 'AUTH_REQUIRED' });
   const client = await getSupabase();
@@ -375,7 +477,7 @@ async function requireCloudUser(userId) {
   return client;
 }
 
-async function listForOrganizations(client, table, organizationIds, order = 'created_at') {
+async function listForOrganizations(client: Supa, table: string, organizationIds: string[], order = 'created_at'): Promise<Row[]> {
   if (!organizationIds.length) return [];
   const { data, error } = await client
     .from(table)
@@ -387,36 +489,38 @@ async function listForOrganizations(client, table, organizationIds, order = 'cre
   return data || [];
 }
 
-export async function loadEnterpriseWorkspace(userId) {
+export async function loadEnterpriseWorkspace(userId: string): Promise<Row> {
   const client = await requireCloudUser(userId);
   const organizations = await membershipIds(client, userId);
-  const [orders, quotes, invoices, contracts, reorders, paymentProofs, lockers, messages] =
+  const [ordersRaw, quotesRaw, invoices, contracts, reorders, paymentProofs, lockers, messages] =
     await Promise.all([
-      cloudList('orders', userId, 'created_at').catch(() => []),
-      cloudList('quote_requests', userId, 'created_at').catch(() => []),
-      listForOrganizations(client, 'invoices', organizations).catch(() => []),
-      listForOrganizations(client, 'organization_contracts', organizations).catch(() => []),
-      listForOrganizations(client, 'reorder_requests', organizations).catch(() => []),
-      listForOrganizations(client, 'payment_proofs', organizations).catch(() => []),
-      listForOrganizations(client, 'team_locker_stores', organizations).catch(() => []),
-      listForOrganizations(client, 'project_messages', organizations).catch(() => []),
+      cloudList('orders', userId, 'created_at').catch(() => [] as Row[]),
+      cloudList('quote_requests', userId, 'created_at').catch(() => [] as Row[]),
+      listForOrganizations(client, 'invoices', organizations).catch(() => [] as Row[]),
+      listForOrganizations(client, 'organization_contracts', organizations).catch(() => [] as Row[]),
+      listForOrganizations(client, 'reorder_requests', organizations).catch(() => [] as Row[]),
+      listForOrganizations(client, 'payment_proofs', organizations).catch(() => [] as Row[]),
+      listForOrganizations(client, 'team_locker_stores', organizations).catch(() => [] as Row[]),
+      listForOrganizations(client, 'project_messages', organizations).catch(() => [] as Row[]),
     ]);
-  const orderIds = orders.map((row) => row.id).filter(Boolean);
-  const quoteIds = quotes.map((row) => row.id).filter(Boolean);
-  let shipments = [];
+  const orders = (ordersRaw || []) as Row[];
+  const quotes = (quotesRaw || []) as Row[];
+  const orderIds = orders.map((row: Row) => String(row.id || '')).filter(Boolean);
+  const quoteIds = quotes.map((row: Row) => String(row.id || '')).filter(Boolean);
+  let shipments: Row[] = [];
   if (orderIds.length || quoteIds.length) {
     const query = client.from('shipments').select('*,carrier:carriers(name,tracking_url_template)');
-    const filters = [];
+    const filters: string[] = [];
     if (orderIds.length) filters.push(`order_id.in.(${orderIds.join(',')})`);
     if (quoteIds.length)
       filters.push(
-        `quote_id.in.(${quoteIds.map((id) => `"${String(id).replaceAll('"', '')}"`).join(',')})`,
+        `quote_id.in.(${quoteIds.map((id: string) => `"${String(id).replaceAll('"', '')}"`).join(',')})`,
       );
     const result = await query
       .or(filters.join(','))
       .order('created_at', { ascending: false })
       .limit(200);
-    if (!result.error) shipments = result.data || [];
+    if (!result.error) shipments = (result.data || []) as Row[];
   }
   return {
     organizations,
@@ -436,7 +540,7 @@ export async function createProjectMessage({
   orderId = null,
   body,
   attachmentIds = [],
-}) {
+}: ProjectMessageInput): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const message = String(body || '').trim();
@@ -461,7 +565,7 @@ export async function createReorderRequest({
   items = [],
   playerDetails = {},
   note = '',
-}) {
+}: ReorderInput): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('customer_create_reorder_request', {
@@ -485,7 +589,7 @@ export async function startExternalContractSignature({
   contractId,
   signerName,
   signerEmail,
-}) {
+}: ExternalSignatureInput): Promise<Row> {
   if (!accessToken) throw new Error('authentication_required');
   const response = await fetch('/api/signature-envelope', {
     method: 'POST',
@@ -498,10 +602,10 @@ export async function startExternalContractSignature({
     },
     body: JSON.stringify({ contractId, signerName, signerEmail }),
   });
-  const data = await response.json().catch(() => ({}));
+  const data = (await response.json().catch(() => ({}))) as Row;
   if (!response.ok || !data.ok || !/^https:\/\//i.test(String(data.signingUrl || '')))
-    throw new Error(data.error || 'signature_provider_unavailable');
-  window.location.assign(data.signingUrl);
+    throw new Error(String(data.error || 'signature_provider_unavailable'));
+  window.location.assign(String(data.signingUrl));
   return data;
 }
 
@@ -513,7 +617,7 @@ export async function signOrganizationContract({
   signatureValue,
   signatureType = 'typed',
   consentVersion = '1.0',
-}) {
+}: SignContractInput): Promise<unknown> {
   if (!accessToken) throw new Error('authentication_required');
   const response = await fetch('/api/contract-sign', {
     method: 'POST',
@@ -534,11 +638,11 @@ export async function signOrganizationContract({
     }),
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.ok) throw new Error(data.error || 'contract_sign_unavailable');
+  if (!response.ok || !data.ok) throw new Error(String(data.error || 'contract_sign_unavailable'));
   return data.contract;
 }
 
-function encodePaymentProof(file) {
+function encodePaymentProof(file: File | null): Promise<Row> {
   return new Promise((resolve, reject) => {
     if (!(file instanceof File) || !file.size || file.size > 2 * 1024 * 1024)
       return reject(new Error('invalid_file_size'));
@@ -567,7 +671,7 @@ export async function submitPaymentProof({
   paymentMethod = 'bank_transfer',
   reference = '',
   note = '',
-}) {
+}: PaymentProofInput): Promise<unknown> {
   if (!accessToken) throw new Error('authentication_required');
   const encoded = await encodePaymentProof(file);
   const response = await fetch('/api/payment-proof', {
@@ -591,11 +695,11 @@ export async function submitPaymentProof({
     }),
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.ok) throw new Error(data.error || 'payment_proof_unavailable');
+  if (!response.ok || !data.ok) throw new Error(String(data.error || 'payment_proof_unavailable'));
   return data.proof;
 }
 
-export async function getTeamLocker(slug) {
+export async function getTeamLocker(slug: string | undefined): Promise<{ store: Row | null; products: Row[] }> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const cleanSlug = String(slug || '')
@@ -616,5 +720,5 @@ export async function getTeamLocker(slug) {
     .eq('status', 'active')
     .order('sort_order', { ascending: true });
   if (productsError) throw productsError;
-  return { store, products: products || [] };
+  return { store: (store || null) as Row | null, products: (products || []) as Row[] };
 }
