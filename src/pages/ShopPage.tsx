@@ -649,9 +649,29 @@ export default function ShopPage(): ReactElement {
         ) : (
           <div className="gw-run">
             <EmptyState
-              message={shop.empty || ''}
-              hint={shop.emptyHint || ''}
-              action={{ label: common.clearAll || 'Clear', onClick: () => navigate('/shop') }}
+              message={
+                category === 'ready-to-ship'
+                  ? pick({
+                      en: 'No verified ready-to-ship stock right now.',
+                      ar: 'لا توجد كمية موثّقة للتسليم الفوري حالياً.',
+                    })
+                  : shop.empty || ''
+              }
+              hint={
+                category === 'ready-to-ship'
+                  ? pick({
+                      en: 'Ready-to-Ship only lists products with verified Libya inventory — never estimated stock.',
+                      ar: 'التسليم الفوري يعرض فقط المنتجات ذات المخزون الموثّق داخل ليبيا — دون تقديرات.',
+                    })
+                  : shop.emptyHint || ''
+              }
+              action={{
+                label:
+                  category === 'ready-to-ship'
+                    ? pick({ en: 'Browse the catalogue', ar: 'تصفح الكتالوج' })
+                    : common.clearAll || 'Clear',
+                onClick: () => navigate('/shop'),
+              }}
             />
           </div>
         )}
