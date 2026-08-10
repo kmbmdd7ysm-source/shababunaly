@@ -1,38 +1,26 @@
 # 35-problem-group progress (living) — NOT FINAL COMPLETE
 
-SHA at write: see git HEAD. Regenerated during continuous execution.
+SHA: `5da868db6ec4c967397f483675d4e964cb295137`
 
-## Verified solvable in-repo
-| Area | Status | Evidence |
-| --- | --- | --- |
-| TypeScript migration | **98.98%** / 3 legacy left | reports/typescript/strictness.json |
-| Catalog data TS | DONE | products/lhaProducts/translations TS |
-| B2B service TS | DONE | src/services/b2b.ts |
-| simplePdf / designExports TS | DONE | src/utils/*.ts |
-| Ready-to-Ship UI + honesty | DONE | ShopPage eligibility + empty copy |
-| Quick-add variants sheet | DONE | QuickAddSheet screenshots |
-| PDP Configure & buy | DONE | ProductPage stage CTA |
-| Cart Libya free-ship gate | DONE | CartPage / CartDrawer |
-| Dismiss sentence-case 44px | DONE | sysbanner.css |
-| Empty states no emoji | DONE | EmptyState SVG |
-| EN/AR RTL mobile/tablet | TECH PASS | MOBILE_AR_RTL.md TABLET_EN.md |
-| E2E shop→bag→checkout | DONE | e2e-*.png artifacts |
-| Customize review path | DONE | e2e-customize-review.png |
-| Local API GET config/geo/readiness | DONE | API_LOCAL_VERIFICATION.md |
-| Production build | GREEN | dist provenance |
+## Verified in-repo
+- TypeScript **98.98%** (3 legacy: Realtime3DEngine.jsx ambient, orders.js, operations.js)
+- Catalog + b2b + simplePdf + designExports migrated
+- QuickAddSheet, PDP CTA, Ready-to-Ship honesty, cart Libya gate, dismiss a11y
+- Home title aria-label; plinth accessible names
+- E2E shop→bag→checkout + customize review
+- Cross-lang responsive matrix (no overflow)
+- Local API GET OK; POST quote BLOCKED without Vercel
+- Route audit 200s; PWA sw.js present; build green
 
-## BLOCKED (external)
-| Area | Reason |
-| --- | --- |
-| Ready-to-Ship count > 0 | Needs verified inventory / Supabase |
-| Teams/quote POST | Vite has no Vercel `/api` proxy |
-| Live payments / Formspree delivery | Credentials |
-| Full RLS/DB e2e | Supabase stack optional |
-| ARABIC_HUMAN_REVIEW | Requires human |
+## BLOCKED external
+- Verified inventory for Ready-to-Ship counts
+- Deployed Vercel API / Formspree / payments / full RLS e2e
+- ARABIC_HUMAN_REVIEW
 
-## Remaining code migrations
-- orders.js, operations.js (recipes in reports/continuation/)
-- Realtime3DEngine.jsx ambient (model-viewer types)
+## Remaining before FINAL COMPLETE
+1. Migrate orders.js + operations.js (or prove BLOCKED)
+2. Deployed API verification when environment allows
+3. Regenerate final release evidence from final SHA
+4. Full-site audit pass claiming FINAL COMPLETE only if all solvable items verified
 
-## Gate
-FINAL COMPLETE only after: remaining solvable migrations OR documented BLOCKED, deployed API verify where possible, full audit regenerated from final SHA.
+Do not claim FINAL COMPLETE from this document alone.
