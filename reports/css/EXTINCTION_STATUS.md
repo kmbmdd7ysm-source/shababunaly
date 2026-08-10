@@ -1,20 +1,18 @@
-# CSS extinction status
+# CSS extinction status — TRIAD EXTINCT (live)
 
 ## Live
-- Foundation tokens/typography/layout/shell/motion
-- Route + component owned extract sheets
-- \`legacy-island.css\` — **97 lines** of clean document utilities only
+- Foundation (includes folded document utilities)
+- Route/component owned sheets + extract sheets
+- **No** \`global.css\` / \`premium.css\` / \`shababuna.css\` / \`legacy-island.css\` imports
 
 ## Archived
 - \`src/styles/_archive/global.css\`
 - \`src/styles/_archive/premium.css\`
 - \`src/styles/_archive/shababuna.css\`
 
-## Removed
-- Idle/post-paint legacy CSS injection
-- Corrupted fused selectors / orphan keyframe fragments from automated culls
+## Metrics
+- Started triad: ~9660 lines
+- Live \`!important\` count: **57**
+- Idle/post-paint legacy inject: **removed**
 
-## !important
-- Total across live \`src/styles/*.css\`: **57**
-
-Started from ~9660-line triad. Ownership migration continues if island can go to zero.
+SHA: \`631f6ca74e3145a504c34dd495870c485c1b06ad\`
