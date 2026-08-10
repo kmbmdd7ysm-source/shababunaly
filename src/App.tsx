@@ -67,7 +67,15 @@ export default function App(): ReactElement {
           <RouteExperience>
             <Suspense fallback={<LoadingScreen />}>
               <Routes>
-                <Route path="/" element={<Home />} />
+                {/* Null fallback: static #lcp-shell covers first paint on Home */}
+                <Route
+                  path="/"
+                  element={
+                    <Suspense fallback={null}>
+                      <Home />
+                    </Suspense>
+                  }
+                />
                 <Route path="/about" element={<About />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/:category" element={<Shop />} />
