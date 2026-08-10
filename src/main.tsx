@@ -27,9 +27,7 @@ import './styles/motion.css';
 import './styles/geometry.css';
 import './styles/layout.css';
 import './styles/shell.css';
-import './styles/global.css';
-import './styles/premium.css';
-import './styles/shababuna.css';
+import './styles/legacy-retained.css';
 /* shell.nav / colophon / masthead load with Header, Footer, and route shells. */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,

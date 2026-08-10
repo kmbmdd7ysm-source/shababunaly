@@ -1,10 +1,17 @@
 {
-  "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
-  "generatedAt": "2026-08-10T05:42:55.400815+00:00",
-  "legacyTriadLines": 9292,
-  "totalStyleLines": 24353,
+  "sha": "977b37a743ce1c8cd6ef4a401ed333c361e1ddf0",
+  "generatedAt": "2026-08-10T05:52:43.638927+00:00",
+  "liveLegacyFile": "src/styles/legacy-retained.css",
+  "archivedTriad": [
+    "src/styles/_archive/global.css",
+    "src/styles/_archive/premium.css",
+    "src/styles/_archive/shababuna.css"
+  ],
+  "legacyRetainedLines": 8903,
+  "liveStyleLines": 24116,
   "importantTotal": 77,
   "idleLegacyLoadRemoved": true,
+  "postPaintLegacyRemoved": true,
   "files": [
     {
       "file": "src/styles/account-sync.css",
@@ -67,14 +74,14 @@
       "important": 0
     },
     {
-      "file": "src/styles/geometry.css",
-      "lines": 314,
+      "file": "src/styles/garment-concept.css",
+      "lines": 138,
       "important": 0
     },
     {
-      "file": "src/styles/global.css",
-      "lines": 4713,
-      "important": 33
+      "file": "src/styles/geometry.css",
+      "lines": 314,
+      "important": 0
     },
     {
       "file": "src/styles/home.css",
@@ -107,6 +114,11 @@
       "important": 1
     },
     {
+      "file": "src/styles/legacy-retained.css",
+      "lines": 8903,
+      "important": 59
+    },
+    {
       "file": "src/styles/masthead.css",
       "lines": 580,
       "important": 0
@@ -127,11 +139,6 @@
       "important": 0
     },
     {
-      "file": "src/styles/premium.css",
-      "lines": 1530,
-      "important": 26
-    },
-    {
       "file": "src/styles/product-card.css",
       "lines": 232,
       "important": 0
@@ -143,12 +150,7 @@
     },
     {
       "file": "src/styles/runs.css",
-      "lines": 779,
-      "important": 0
-    },
-    {
-      "file": "src/styles/shababuna.css",
-      "lines": 3049,
+      "lines": 793,
       "important": 0
     },
     {
@@ -201,5 +203,6 @@
       "lines": 457,
       "important": 1
     }
-  ]
+  ],
+  "note": "global/premium/shababuna archived; live cascade uses foundation+route sheets+legacy-retained used-only island."
 }

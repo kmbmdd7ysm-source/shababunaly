@@ -1,6 +1,17 @@
 # CSS extinction status
 
-- Idle/post-paint legacy CSS load **removed** (eager import of thinned triad — no cascade flash).
-- PostCSS AST cull of unused selectors applied to global/premium/shababuna.
-- Legacy triad lines ~9292 (down from ~9660).
-- Remaining work: continue ownership migration into route/component sheets until triad can be deleted.
+## Live
+- Foundation tokens/typography/layout/shell (eager)
+- Route/component sheets
+- `legacy-retained.css` — used-only island extracted from former triad
+
+## Archived (not imported)
+- `src/styles/_archive/global.css`
+- `src/styles/_archive/premium.css`
+- `src/styles/_archive/shababuna.css`
+
+## Removed
+- `requestIdleCallback` post-first-paint legacy injection (cascade flash)
+
+## Next
+Continue moving retained rules into route/component ownership until `legacy-retained.css` can shrink further or vanish.
