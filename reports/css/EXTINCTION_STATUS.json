@@ -1,11 +1,11 @@
 {
-  "sha": "efcf4f610dfa6bdc6f295475a08fe654ece8825b",
-  "generatedAt": "2026-08-10T06:49:45.636809+00:00",
-  "legacyTriadLines": 3758,
+  "sha": "54229692e55e5b2c2a8a88a4bc32c0583204a792",
+  "generatedAt": "2026-08-10T06:50:34.685428+00:00",
+  "legacyTriadLines": 2596,
   "startingTriadLines": 9660,
-  "reductionLines": 5902,
+  "reductionLines": 7064,
   "importantTotal": 77,
   "idleLegacyLoadRemoved": true,
   "clsLocalLighthouse": 0.0,
-  "milestone": "under_4000"
+  "milestone": "under_3000"
 }
