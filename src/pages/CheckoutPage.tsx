@@ -23,6 +23,7 @@ import { trackCommerceEvent, trackEvent } from '../utils/analytics';
 import Seo from '../components/common/Seo';
 import SmartImage from '../components/common/SmartImage';
 import EmptyState from '../components/common/EmptyState';
+import '../styles/island-account.css';
 import '../styles/commerce-ops-from-shababuna.css';
 import '../styles/commerce-ops-from-premium.css';
 import '../styles/commerce-ops-from-global.css';

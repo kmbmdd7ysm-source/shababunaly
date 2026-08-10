@@ -19,6 +19,7 @@ import { categories, getCategory, getSubcategory } from '../data/categories';
 import { getDepartmentArt } from '../data/departmentArtDirection';
 import { lockDocumentScroll } from '../utils/scrollLock';
 import { isReadyToShipEligible } from '../utils/productEligibility';
+import '../styles/island-product.css';
 import '../styles/shop-from-shababuna.css';
 import '../styles/shop-from-premium.css';
 import '../styles/shop-from-global.css';

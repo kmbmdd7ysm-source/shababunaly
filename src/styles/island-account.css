@@ -1,0 +1,56 @@
+/* from island */
+
+
+.check-row {
+  display:flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.currency-selector.compact select {
+  min-height: 38px;
+  padding-inline: 8px 24px;
+  font-size: 0.78rem;
+}
+
+.profile-photo-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-photo-preview img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.store-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  margin-bottom: 50px;
+}.store-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+.manual-payment-panel {
+  display:grid;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #dfdfd8;
+}
+
+.refund-panel {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(127, 127, 127, 0.18);
+}
+
+.refund-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+}

@@ -8,6 +8,7 @@ import { useCart } from '../context/CartContext';
 import { useCompare } from '../context/CompareContext';
 import { useCommerce } from '../context/CommerceContext';
 import Seo from '../components/common/Seo';
+import '../styles/island-account.css';
 import '../styles/account.css';
 import '../styles/account-workspace-from-shababuna.css';
 import '../styles/account-workspace-from-premium.css';

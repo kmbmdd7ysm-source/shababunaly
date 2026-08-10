@@ -29,6 +29,7 @@ import Icon from '../components/icons/Icon';
 import PurchaseActions from '../components/shop/PurchaseActions';
 import ViewingTierNote from '../components/product/ViewingTierNote';
 import ProductMediaViewer from '../components/product/ProductMediaViewer';
+import '../styles/island-product.css';
 import '../styles/shop-from-shababuna.css';
 import '../styles/shop-from-premium.css';
 import '../styles/shop-from-global.css';
