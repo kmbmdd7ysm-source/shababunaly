@@ -74,7 +74,7 @@ export function buildDesignViewSvg({
   view?: string;
   productLabel?: string;
 } = {}): string {
-  const normalized = normalizeStudio(studio as never, design as never);
+  const normalized = normalizeStudio(studio, design);
   const product = getCustomProductType(String(design.productType || ''));
   const primary = safeHex(design.primary, '#050505');
   const secondary = safeHex(design.secondary, '#ffffff');
@@ -231,7 +231,7 @@ export function buildProductionPackage({
   reference?: string;
   productLabel?: string;
 } = {}): Blob {
-  const normalized = normalizeStudio(studio as never, design as never);
+  const normalized = normalizeStudio(studio, design);
   const factorySpecification = getFactoryTemplateSpec(String(design.productType || ''));
   const preflight = runProductionPreflight({ design, studio: normalized, roster });
   const manifest = {
@@ -279,7 +279,10 @@ export function buildProductionPackage({
     data: JSON.stringify(factorySpecification, null, 2),
   });
   files.push({ name: 'color-specifications.csv', data: buildColorSpecificationsCsv(design) });
-  files.push({ name: 'roster.csv', data: rosterToCsv(roster as never) });
+  files.push({
+    name: 'roster.csv',
+    data: rosterToCsv(roster as import('../data/customization').RosterInput[]),
+  });
   files.push({
     name: 'README.txt',
     data: 'SHABABUNA production artwork package.\nReview every view, layer, color, preflight note and roster entry before manufacturing.\nThe included template is a generic manufacturing specification and must be validated against the selected factory pattern.\nThis package becomes production-authorized only after the factory proof, manufacturing claim evidence and commercial quote are approved.\n',
