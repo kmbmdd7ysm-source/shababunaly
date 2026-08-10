@@ -24,7 +24,7 @@ export default function CurrencyWelcome(): ReactElement | null {
     const id = window.setTimeout(() => {
       setEligible(true);
       setOpen(true);
-    }, 1200);
+    }, 4500);
     return () => window.clearTimeout(id);
   }, []);
 
