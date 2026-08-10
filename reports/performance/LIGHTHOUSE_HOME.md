@@ -1,10 +1,8 @@
-# Lighthouse home (local preview)
+# Lighthouse home
 
-SHA: `64dcfba807dd97c752b7f2abb7347dc67f1cb1b9`
+SHA: `ce5949a7a9960ba5130002251c8acb151626d190`
 
-- Performance: **75**
+- Performance: **84**
 - Accessibility: **100**
-- LCP: **3259 ms**
-- CLS: **0.000** ✅
-
-LCP target still open.
+- LCP: **3232 ms**
+- CLS: **0.168**

@@ -1,8 +1,8 @@
 {
-  "sha": "64dcfba807dd97c752b7f2abb7347dc67f1cb1b9",
-  "generatedAt": "2026-08-10T06:21:05.317110+00:00",
-  "performance": 75,
+  "sha": "ce5949a7a9960ba5130002251c8acb151626d190",
+  "generatedAt": "2026-08-10T06:53:15.234486+00:00",
+  "performance": 84,
   "accessibility": 100,
-  "lcpMs": 3259,
-  "cls": 0.0
+  "lcpMs": 3232,
+  "cls": 0.168
 }
