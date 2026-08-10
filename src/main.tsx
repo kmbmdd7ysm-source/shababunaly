@@ -100,6 +100,13 @@ installGlobalErrorMonitoring();
   // Keep body in sync for any legacy selectors that still read body[dir].
   // Direction itself comes from the document attribute — not a CSS LTR force.
   document.body.dir = dir;
+  try {
+    if (location.pathname === '/' || location.pathname === '') {
+      document.documentElement.dataset.cinematicOpen = 'yes';
+    }
+  } catch {
+    /* ignore */
+  }
 })();
 
 const rootElement = document.getElementById('root');
