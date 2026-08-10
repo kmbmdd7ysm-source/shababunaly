@@ -1,3 +1,4 @@
+import '../styles/teams-from-shababuna.css';
 import '../styles/customize-from-shababuna.css';
 import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';

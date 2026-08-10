@@ -1,0 +1,17 @@
+/* teams shababuna */
+
+
+.package-grid,
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}.package-grid,
+  .process-grid,
+  .capability-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }.package-grid,
+  .process-grid,
+  .capability-grid {
+    grid-template-columns: 1fr;
+  }
