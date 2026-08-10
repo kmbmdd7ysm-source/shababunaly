@@ -1,22 +1,17 @@
-# Absolute final completion checkpoint
+# Absolute final checkpoint
 
-- SHA: 
-- TS: **100%**
-- CSS idle legacy load: removed; triad ~9292 lines; !important ~77
-- Ready-to-Ship: globally visible
-- Customize: 7-step flow
-- Special Request: simplified
-- Placeholder stage + media manifest
-- Visual baselines captured under reports/visual/baselines/d90ebdcfd27b934743bcb29871b03a2bff3d47c4/
-- API preview: BLOCKED_EXTERNAL_VERCEL_PROTECTION
+- SHA: `d0a795ca7b906960a2436eae388ec9c8febfddef`
+- TS 100% · RTS global · CSS idle-load removed · triad ~9292 lines
+- Customize 7-step + CONCEPT 3D garment fixture
+- Special Request simplified · Placeholder stage · Media manifest
+- Department art-direction system · Visual baselines (prior SHA folder)
+- API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 
-## Exact next unfinished
-1. Continue CSS ownership migration (delete more legacy)
-2. Customize concept 3D garment fixture engine
-3. Teams public vs workspace split polish
-4. Account/Operations further modular lazy routes
-5. Full Playwright auth/commerce E2E where fixtures allow
-6. PWA A→B + Lighthouse from clean tree
-7. Final SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS verdict when solvable closed
+## Next unfinished
+1. Deeper CSS ownership migration / !important reduction
+2. Teams public/workspace split polish
+3. Account/Operations lazy modular routes
+4. Full E2E auth matrix + PWA A→B + Lighthouse clean-tree
+5. Final verdict SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS when solvable closed
 
 **NOT FINAL COMPLETE**
