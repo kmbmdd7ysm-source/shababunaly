@@ -102,13 +102,13 @@ export function ReadinessProvider({ children }: { children?: ReactNode }) {
     };
   }, [state]);
 
-  // Keep the banner latched open after the initial degraded paint until the
-  // shopper dismisses it. Auto-hiding when /api/readiness flips to ready was
-  // collapsing chrome height and shifting main (CLS regression).
-  const [latchedOpen, setLatchedOpen] = useState(false);
-  useEffect(() => {
-    if (state === 'degraded' && !dismissed) setLatchedOpen(true);
-  }, [state, dismissed]);
+  // Latch open from the first paint when we start degraded so the banner never
+  // "pops in" after effects, and never auto-collapses when the readiness fetch
+  // later reports ready (that collapse was ~0.05–0.17 CLS on home).
+  const [latchedOpen, setLatchedOpen] = useState(
+    () =>
+      (localReadiness.ready && localReadiness.needsServerCheck) || !localReadiness.ready,
+  );
   const open = latchedOpen && !dismissed;
 
   useEffect(() => {
