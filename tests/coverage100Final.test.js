@@ -84,7 +84,7 @@ import {
   parseWorksheet,
   resolveFirstWorksheet,
   unzipEntries,
-} from '../src/utils/rosterSpreadsheet.js';
+} from '../src/utils/rosterSpreadsheet.ts';
 import { createTextPdf, downloadDesignDocuments } from '../src/utils/simplePdf.js';
 import { getSearchSuggestions } from '../src/utils/search.ts';
 import { safeInternalReturnPath } from '../src/utils/safeReturnPath.ts';

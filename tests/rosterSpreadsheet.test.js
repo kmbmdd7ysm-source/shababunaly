@@ -1,6 +1,6 @@
 import './setup.js';
 import { describe, expect, it } from './test-api.js';
-import { parseRosterFile, parseRosterXlsxBuffer } from '../src/utils/rosterSpreadsheet.js';
+import { parseRosterFile, parseRosterXlsxBuffer } from '../src/utils/rosterSpreadsheet.ts';
 import { createStoreZip } from '../src/utils/designExports.js';
 
 async function minimalRosterXlsx() {

@@ -296,7 +296,7 @@ for (const token of [
   has(shareMigration, token, `secure design sharing ${token}`);
 const app = read('src/App.tsx');
 has(app, '/design-share/:token', 'secure design-share route');
-const spreadsheet = read('src/utils/rosterSpreadsheet.js');
+const spreadsheet = read('src/utils/rosterSpreadsheet.ts');
 for (const token of [
   'parseRosterXlsxBuffer',
   'parseRosterFile',

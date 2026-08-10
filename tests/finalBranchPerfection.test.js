@@ -31,7 +31,7 @@ import {
   resolveFirstWorksheet,
   parseRosterXlsxBuffer,
   parseRosterFile,
-} from '../src/utils/rosterSpreadsheet.js';
+} from '../src/utils/rosterSpreadsheet.ts';
 
 const ENV = [
   'NODE_ENV',

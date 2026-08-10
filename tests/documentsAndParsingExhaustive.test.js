@@ -13,7 +13,7 @@ import {
   parseRosterXlsxBuffer,
   parseRosterFile,
   ROSTER_FILE_ACCEPT,
-} from '../src/utils/rosterSpreadsheet.js';
+} from '../src/utils/rosterSpreadsheet.ts';
 import { createStoreZip } from '../src/utils/designExports.js';
 import { createTextPdf, downloadBlob, downloadDesignDocuments } from '../src/utils/simplePdf.js';
 import { createDefaultStudio } from '../src/services/designStudio.ts';

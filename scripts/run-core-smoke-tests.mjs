@@ -14,7 +14,7 @@ import {
   parseRosterCsv,
   rosterToCsv,
 } from '../src/data/customization.ts';
-import { ROSTER_FILE_ACCEPT } from '../src/utils/rosterSpreadsheet.js';
+import { ROSTER_FILE_ACCEPT } from '../src/utils/rosterSpreadsheet.ts';
 import { buildProductionPackage } from '../src/utils/designExports.js';
 
 const byType = Object.fromEntries(CUSTOM_PRODUCT_TYPES.map((item) => [item.key, item]));

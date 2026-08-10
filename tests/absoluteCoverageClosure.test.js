@@ -43,7 +43,7 @@ import {
   parseWorksheet,
   resolveFirstWorksheet,
   unzipEntries,
-} from '../src/utils/rosterSpreadsheet.js';
+} from '../src/utils/rosterSpreadsheet.ts';
 import { createTextPdf, downloadDesignDocuments } from '../src/utils/simplePdf.js';
 
 const ENV = [

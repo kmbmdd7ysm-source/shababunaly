@@ -289,10 +289,14 @@ export default function CustomizePage(): ReactElement {
     if (!file) return;
     try {
       const parsed = await parseRosterFile(file);
+      const parsedRecord =
+        parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+          ? (parsed as { players?: unknown[] })
+          : null;
       const rows = Array.isArray(parsed)
         ? (parsed as Array<Record<string, unknown>>)
-        : Array.isArray(parsed.players)
-          ? (parsed.players as Array<Record<string, unknown>>)
+        : Array.isArray(parsedRecord?.players)
+          ? (parsedRecord.players as Array<Record<string, unknown>>)
           : [];
       setRoster(rows);
       setStatus(

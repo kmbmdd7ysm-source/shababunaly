@@ -1,6 +1,6 @@
 # TypeScript remaining JS/JSX inventory
 
-Total remaining: 11
+Total remaining: 10
 
 - `src/components/product/engines/Realtime3DEngine.jsx`
 - `src/data/generatedOptimizedImages.js`
@@ -11,5 +11,4 @@ Total remaining: 11
 - `src/services/operations.js`
 - `src/services/orders.js`
 - `src/utils/designExports.js`
-- `src/utils/rosterSpreadsheet.js`
 - `src/utils/simplePdf.js`

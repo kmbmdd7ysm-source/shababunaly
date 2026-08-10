@@ -73,7 +73,7 @@ import {
   parseWorksheet,
   resolveFirstWorksheet,
   unzipEntries,
-} from '../src/utils/rosterSpreadsheet.js';
+} from '../src/utils/rosterSpreadsheet.ts';
 import {
   artworkPage,
   coverPage,

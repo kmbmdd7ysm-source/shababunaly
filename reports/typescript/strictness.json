@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-10T00:14:45.256Z",
-  "sourceFiles": 302,
+  "generatedAt": "2026-08-10T00:37:41.926Z",
+  "sourceFiles": 301,
   "strictFiles": 291,
-  "strictCoveragePercent": 96.36,
+  "strictCoveragePercent": 96.68,
   "legacyFiles": [
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/data/generatedOptimizedImages.js",
@@ -14,7 +14,6 @@
     "src/services/operations.js",
     "src/services/orders.js",
     "src/utils/designExports.js",
-    "src/utils/rosterSpreadsheet.js",
     "src/utils/simplePdf.js"
   ],
   "violations": [],
