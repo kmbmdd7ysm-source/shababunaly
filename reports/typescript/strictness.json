@@ -1,12 +1,11 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-10T01:39:03.085Z",
-  "sourceFiles": 294,
+  "generatedAt": "2026-08-10T02:10:48.099Z",
+  "sourceFiles": 293,
   "strictFiles": 292,
-  "strictCoveragePercent": 99.32,
+  "strictCoveragePercent": 99.66,
   "legacyFiles": [
-    "src/components/product/engines/Realtime3DEngine.jsx",
-    "src/services/operations.js"
+    "src/components/product/engines/Realtime3DEngine.jsx"
   ],
   "violations": [],
   "compilerGuarantees": {

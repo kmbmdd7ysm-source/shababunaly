@@ -12,7 +12,7 @@ describe('enterprise production completion', () => {
     expect(special).toContain('customer_decision');
   });
   it('enforces quote total as subtotal plus shipping plus tax less discount', async () => {
-    const service = await read('src/services/operations.js');
+    const service = await read('src/services/operations.ts');
     const sql = await read(
       'supabase/migrations/20260801010000_shababuna_production_completion.sql',
     );

@@ -7,7 +7,7 @@ describe('teams, wholesale and operations architecture', () => {
     'utf8',
   );
   const app = readFileSync('src/App.tsx', 'utf8');
-  const operations = readFileSync('src/services/operations.js', 'utf8');
+  const operations = readFileSync('src/services/operations.ts', 'utf8');
 
   it('creates the full B2B data model with RLS', () => {
     for (const table of [

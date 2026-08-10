@@ -168,9 +168,9 @@ function ShipmentRow({
                 `shipment-${String(row.id || '')}`,
                 () =>
                   upsertShipment({
-                    shipmentId: row.id,
-                    orderId: row.order_id,
-                    quoteId: row.quote_id,
+                    shipmentId: row.id != null ? String(row.id) : null,
+                    orderId: row.order_id != null ? String(row.order_id) : null,
+                    quoteId: row.quote_id != null ? String(row.quote_id) : null,
                     carrierId: carrierId || null,
                     trackingNumber,
                     status,

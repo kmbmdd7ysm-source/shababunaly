@@ -104,12 +104,12 @@ export function ReturnOperationsCard({
             updateKey,
             () =>
               updateReturnRequest({
-                returnId: request.id,
-                status,
-                resolution,
+                returnId: String(request.id || ''),
+                status: String(status || ''),
+                resolution: resolution == null ? null : String(resolution),
                 refundAmount: refundAmount || null,
-                staffNote: note,
-                restock,
+                staffNote: String(note || ''),
+                restock: Boolean(restock),
               }),
             pick({
               en: 'Return updated and customer notified.',
@@ -146,11 +146,11 @@ export function ReturnOperationsCard({
                 refundKey,
                 () =>
                   recordRefund({
-                    orderId: order.id,
-                    amountUsd: refundAmount,
+                    orderId: String(order.id || ''),
+                    amountUsd: Number(refundAmount) || 0,
                     method: 'return_refund',
-                    reference,
-                    returnRequestId: request.id,
+                    reference: String(reference || ''),
+                    returnRequestId: String(request.id || ''),
                   }),
                 pick({
                   en: 'Refund completed and customer notified.',

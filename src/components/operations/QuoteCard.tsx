@@ -119,11 +119,11 @@ export function QuoteCard({
             () =>
               updateQuoteWorkflow({
                 quoteId: String(quote.id || ''),
-                status: values.status,
-                subtotal: values.subtotal,
-                shippingTotal: values.shipping,
-                taxTotal: values.tax,
-                discountTotal: values.discount,
+                status: String(values.status ?? ''),
+                subtotal: values.subtotal as string | number,
+                shippingTotal: values.shipping as string | number,
+                taxTotal: values.tax as string | number,
+                discountTotal: values.discount as string | number,
               }),
             pick({ en: 'Quote saved with verified total.', ar: 'تم حفظ العرض بإجمالي متحقق منه.' }),
           )

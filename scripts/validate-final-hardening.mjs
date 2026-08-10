@@ -68,7 +68,7 @@ for (const token of [
   'cloud_order_creation_failed',
 ])
   has(ordersService, token, `order fail-closed ${token}`);
-const operations = read('src/services/operations.js');
+const operations = read('src/services/operations.ts');
 if (/user_metadata\?\.role|user_metadata\.role/u.test(operations))
   fail.push('Staff authorization still trusts user_metadata.role');
 for (const token of [

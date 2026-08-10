@@ -1,20 +1,29 @@
 import { getSupabase } from './supabase';
 import { sendFormspree } from './formspree';
 
+type Row = Record<string, unknown>;
+type StaffUser = unknown;
+type Money = string | number | null | undefined;
+
+
 const STAFF_ROLES = new Set(['super_admin', 'admin', 'operations', 'sales']);
 
-export function getStaffRole(user) {
-  const role = String(user?.app_metadata?.role || '')
+export function getStaffRole(user: StaffUser): string {
+  const meta =
+    user && typeof user === 'object'
+      ? ((user as Row).app_metadata as Row | undefined)
+      : undefined;
+  const role = String(meta?.role || '')
     .trim()
     .toLowerCase();
   return STAFF_ROLES.has(role) ? role : '';
 }
 
-export function isStaffUser(user) {
+export function isStaffUser(user: StaffUser): boolean {
   return Boolean(getStaffRole(user));
 }
 
-async function notify(payload, subject) {
+async function notify(payload: Row, subject: string): Promise<void> {
   try {
     await sendFormspree({ formType: 'operations', ...payload }, subject);
   } catch {
@@ -22,7 +31,7 @@ async function notify(payload, subject) {
   }
 }
 
-export async function loadOperationsDashboard() {
+export async function loadOperationsDashboard(): Promise<Row> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const [
@@ -283,10 +292,22 @@ export async function updateSpecialRequest({
   staffNotes = '',
   paymentUrl = '',
   quoteExpiresAt = null,
-}) {
+}: {
+  requestId: string;
+  status: string;
+  productCost?: string | number | null;
+  shippingCost?: string | number | null;
+  taxTotal?: string | number | null;
+  discountTotal?: string | number | null;
+  currency?: string;
+  estimatedArrivalDays?: string | number | null;
+  staffNotes?: string;
+  paymentUrl?: string;
+  quoteExpiresAt?: string | null;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
-  const numeric = (value) => (value === '' || value == null ? null : Number(value));
+  const numeric = (value: unknown) => (value === '' || value == null ? null : Number(value));
   const values = [productCost, shippingCost, taxTotal, discountTotal].map(numeric);
   if (values.some((value) => value != null && (!Number.isFinite(value) || value < 0)))
     throw new Error('invalid_quote_amount');
@@ -310,7 +331,15 @@ export async function updateSpecialRequest({
   return data;
 }
 
-export async function setShippingQuote({ orderId, amountUsd, note = '' }) {
+export async function setShippingQuote({
+  orderId,
+  amountUsd,
+  note = '',
+}: {
+  orderId: string;
+  amountUsd: string | number;
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -342,7 +371,12 @@ export async function updateOrderWorkflow({
   orderStatus = null,
   paymentStatus = null,
   fulfillmentStatus = null,
-}) {
+}: {
+  orderId: string;
+  orderStatus?: string | null;
+  paymentStatus?: string | null;
+  fulfillmentStatus?: string | null;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_update_order_workflow', {
@@ -374,7 +408,13 @@ export async function recordManualPayment({
   method = 'cash',
   reference = '',
   note = '',
-}) {
+}: {
+  orderId: string;
+  amountUsd: string | number;
+  method?: string;
+  reference?: string;
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -412,7 +452,14 @@ export async function updateQuoteWorkflow({
   shippingTotal,
   taxTotal = 0,
   discountTotal = 0,
-}) {
+}: {
+  quoteId: string;
+  status: string;
+  subtotal?: unknown;
+  shippingTotal?: unknown;
+  taxTotal?: unknown;
+  discountTotal?: unknown;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const parsedSubtotal = subtotal === '' || subtotal == null ? null : Number(subtotal);
@@ -463,7 +510,7 @@ export async function updateQuoteWorkflow({
   return data;
 }
 
-export async function setExchangeRate(rate) {
+export async function setExchangeRate(rate: number | string): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const numeric = Number(rate);
@@ -477,14 +524,22 @@ export async function setExchangeRate(rate) {
   return data;
 }
 
-export async function publishDesignProof({ designId, proofUrls = [], note = '' }) {
+export async function publishDesignProof({
+  designId,
+  proofUrls = [],
+  note = '',
+}: {
+  designId: string;
+  proofUrls?: unknown[];
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const urls = [
     ...new Set(
-      proofUrls
-        .map((value) => String(value || '').trim())
-        .filter((value) => /^https:\/\//i.test(value)),
+      (Array.isArray(proofUrls) ? proofUrls : [])
+        .map((value: unknown) => String(value || '').trim())
+        .filter((value: unknown) => /^https:\/\//i.test(String(value))),
     ),
   ].slice(0, 8);
   if (!urls.length) throw new Error('proof_url_required');
@@ -514,7 +569,13 @@ export async function recordQuotePayment({
   method = 'bank_transfer',
   reference = '',
   note = '',
-}) {
+}: {
+  quoteId: string;
+  amountUsd: string | number;
+  method?: string;
+  reference?: string;
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -553,7 +614,14 @@ export async function updateReturnRequest({
   refundAmount = null,
   staffNote = '',
   restock = false,
-}) {
+}: {
+  returnId: string;
+  status: string;
+  resolution?: string | null;
+  refundAmount?: string | number | null;
+  staffNote?: string;
+  restock?: boolean;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = refundAmount === '' || refundAmount == null ? null : Number(refundAmount);
@@ -591,7 +659,14 @@ export async function recordRefund({
   reference = '',
   note = '',
   returnRequestId = null,
-}) {
+}: {
+  orderId?: string | null;
+  amountUsd: string | number;
+  method?: string;
+  reference?: string;
+  note?: string;
+  returnRequestId?: string | null;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const amount = Number(amountUsd);
@@ -629,7 +704,14 @@ export async function updateCatalogVariant({
   inventoryQuantity,
   active,
   readyToShip,
-}) {
+}: {
+  variantId: string;
+  unitPrice?: Money;
+  wholesalePrice?: Money;
+  inventoryQuantity?: Money;
+  active?: boolean | null;
+  readyToShip?: boolean | null;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const payload = {
@@ -676,7 +758,23 @@ export async function updateCatalogProduct({
   bestSeller,
   comingSoon,
   quoteOnly,
-}) {
+}: {
+  productId: string;
+  nameEn?: string | null;
+  nameAr?: string | null;
+  descriptionEn?: string | null;
+  descriptionAr?: string | null;
+  brand?: string | null;
+  category?: string | null;
+  subcategory?: string | null;
+  productType?: string | null;
+  imageUrl?: string | null;
+  featured?: boolean | null;
+  newArrival?: boolean | null;
+  bestSeller?: boolean | null;
+  comingSoon?: boolean | null;
+  quoteOnly?: boolean | null;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_update_catalog_product', {
@@ -718,7 +816,12 @@ export async function setCountryShippingRate({
   rateUsd = null,
   active = true,
   note = '',
-}) {
+}: {
+  countryCode: string;
+  rateUsd?: string | number | null;
+  active?: boolean;
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const code = String(countryCode || '')
@@ -726,7 +829,7 @@ export async function setCountryShippingRate({
     .toUpperCase();
   const rate = rateUsd === '' || rateUsd == null ? null : Number(rateUsd);
   if (!/^[A-Z]{2}$/.test(code) || code === 'LY') throw new Error('invalid_country_code');
-  if (active && (!Number.isFinite(rate) || rate < 0))
+  if (active && (rate == null || !Number.isFinite(rate) || rate < 0))
     throw new Error('active_shipping_rate_required');
   const { data, error } = await client.rpc('staff_set_country_shipping_rate', {
     p_country_code: code,
@@ -742,7 +845,15 @@ export async function setCountryShippingRate({
   return data;
 }
 
-export async function updateSiteContent({ contentKey, contentValue, publicRead = true }) {
+export async function updateSiteContent({
+  contentKey,
+  contentValue,
+  publicRead = true,
+}: {
+  contentKey: string;
+  contentValue: Row;
+  publicRead?: boolean;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const key = String(contentKey || '')
@@ -763,36 +874,37 @@ export async function updateSiteContent({ contentKey, contentValue, publicRead =
   return data;
 }
 
-async function adminUsersRequest(accessToken, options = {}) {
+async function adminUsersRequest(accessToken?: string, options: Row = {}) {
   if (!accessToken) throw new Error('staff_session_required');
   const response = await fetch('/api/admin-users', {
-    ...options,
+    ...(options as RequestInit),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
-      ...(options.headers || {}),
+      ...(((options as Row).headers as Row) || {}),
     },
     cache: 'no-store',
   });
-  const data = await response.json().catch(() => ({}));
+  const data = (await response.json().catch(() => ({}))) as Row;
   if (!response.ok || data.ok === false)
-    throw new Error(data.error || 'admin_users_request_failed');
+    throw new Error(String(data.error || 'admin_users_request_failed'));
   return data;
 }
 
-export async function loadAdminUsers(accessToken) {
-  return adminUsersRequest(accessToken, { method: 'GET' });
+export async function loadAdminUsers(accessToken?: string): Promise<unknown[]> {
+  const data = await adminUsersRequest(accessToken, { method: 'GET' });
+  return Array.isArray(data.users) ? (data.users as unknown[]) : Array.isArray(data) ? (data as unknown[]) : [];
 }
 
-export async function updateAdminUserRole(accessToken, userId, role) {
+export async function updateAdminUserRole(accessToken: string, userId: string, role: string): Promise<unknown> {
   return adminUsersRequest(accessToken, {
     method: 'PATCH',
     body: JSON.stringify({ userId, role }),
   });
 }
 
-function encodeUploadFile(file, role = 'additional_file') {
+function encodeUploadFile(file: File, role = 'additional_file'): Promise<Row> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error('file_read_failed'));
@@ -807,9 +919,17 @@ function encodeUploadFile(file, role = 'additional_file') {
   });
 }
 
-export async function uploadDesignProofFiles({ accessToken, designId, files }) {
+export async function uploadDesignProofFiles({
+  accessToken,
+  designId,
+  files,
+}: {
+  accessToken?: string | undefined;
+  designId: string;
+  files?: File[];
+}): Promise<unknown> {
   if (!accessToken) throw new Error('staff_session_required');
-  const list = Array.from(files || []).slice(0, 5);
+  const list = (files || []).slice(0, 5);
   if (!list.length) throw new Error('file_required');
   const encoded = await Promise.all(list.map((file) => encodeUploadFile(file)));
   const response = await fetch('/api/admin-media-upload', {
@@ -849,7 +969,7 @@ const OPERATIONAL_TABLES = new Set([
   'shipments',
   'reorder_requests',
 ]);
-export async function upsertOperationalEntity(table, row) {
+export async function upsertOperationalEntity(table: string, row: Row): Promise<unknown> {
   if (!OPERATIONAL_TABLES.has(table) || !row || typeof row !== 'object')
     throw new Error('invalid_operational_entity');
   const client = await getSupabase();
@@ -860,7 +980,7 @@ export async function upsertOperationalEntity(table, row) {
   if (error) throw error;
   return data;
 }
-export async function deleteOperationalEntity(table, id) {
+export async function deleteOperationalEntity(table: string, id: string): Promise<unknown> {
   if (!OPERATIONAL_TABLES.has(table) || !id) throw new Error('invalid_operational_entity');
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
@@ -876,7 +996,15 @@ export async function recordStockMovement({
   referenceType = 'manual',
   referenceId = '',
   note = '',
-}) {
+}: {
+  warehouseId: string;
+  variantId: string;
+  movementType: string;
+  quantityDelta: string | number;
+  referenceType?: string;
+  referenceId?: string;
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const quantity = Number(quantityDelta);
@@ -896,7 +1024,15 @@ export async function recordStockMovement({
   return data;
 }
 
-export async function reviewPaymentProof({ proofId, status, note = '' }) {
+export async function reviewPaymentProof({
+  proofId,
+  status,
+  note = '',
+}: {
+  proofId: string;
+  status: string;
+  note?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_review_payment_proof', {
@@ -918,17 +1054,17 @@ export async function reviewPaymentProof({ proofId, status, note = '' }) {
   return data;
 }
 
-function csvCell(value) {
+function csvCell(value: unknown) {
   const text = String(value ?? '');
   return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
-export function parseInventoryCsv(text) {
+export function parseInventoryCsv(text: string): unknown[] {
   const source = String(text || '').replace(/^\uFEFF/, '');
   const lines = source.split(/\r?\n/).filter((line) => line.trim());
   if (lines.length < 2 || lines.length > 1001) throw new Error('invalid_inventory_csv_size');
-  const parseLine = (line) => {
-    const cells = [];
+  const parseLine = (line: string): string[] => {
+    const cells: string[] = [];
     let current = '';
     let quoted = false;
     for (let index = 0; index < line.length; index += 1) {
@@ -946,12 +1082,14 @@ export function parseInventoryCsv(text) {
     cells.push(current.trim());
     return cells;
   };
-  const headers = parseLine(lines[0]).map((value) => value.toLowerCase().replace(/\s+/g, '_'));
+  const headers = parseLine(String(lines[0] || '')).map((value) =>
+    value.toLowerCase().replace(/\s+/g, '_'),
+  );
   for (const required of ['warehouse_code', 'sku', 'on_hand'])
     if (!headers.includes(required)) throw new Error(`missing_inventory_header:${required}`);
   return lines.slice(1).map((line, rowIndex) => {
     const cells = parseLine(line);
-    const row = {};
+    const row: Row = {};
     headers.forEach((header, index) => {
       row[header] = cells[index] ?? '';
     });
@@ -965,26 +1103,37 @@ export function parseInventoryCsv(text) {
   });
 }
 
-export function createInventoryCsv(rows) {
+export function createInventoryCsv(rows: unknown[]): string {
   const header = ['warehouse_code', 'sku', 'on_hand', 'reserved', 'reorder_point', 'verified_at'];
   return [
     header.join(','),
-    ...(rows || []).map((row) =>
-      [
-        row.warehouse?.code || '',
-        row.variant?.sku || row.variant_id,
+    ...(rows || []).map((entry) => {
+      const row = entry as Row;
+      const warehouse = (row.warehouse || {}) as Row;
+      const variant = (row.variant || {}) as Row;
+      return [
+        warehouse.code || '',
+        variant.sku || row.variant_id,
         row.on_hand,
         row.reserved,
         row.reorder_point,
         row.verified_at || '',
       ]
         .map(csvCell)
-        .join(','),
-    ),
+        .join(',');
+    }),
   ].join('\n');
 }
 
-export async function previewInventoryImport({ sourceName, rows, batchId = crypto.randomUUID() }) {
+export async function previewInventoryImport({
+  sourceName,
+  rows,
+  batchId = crypto.randomUUID(),
+}: {
+  sourceName: string;
+  rows: unknown[];
+  batchId?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_apply_inventory_batch', {
@@ -997,7 +1146,15 @@ export async function previewInventoryImport({ sourceName, rows, batchId = crypt
   return data;
 }
 
-export async function applyInventoryImport({ sourceName, rows, batchId }) {
+export async function applyInventoryImport({
+  sourceName,
+  rows,
+  batchId,
+}: {
+  sourceName: string;
+  rows: unknown[];
+  batchId: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_apply_inventory_batch', {
@@ -1010,7 +1167,7 @@ export async function applyInventoryImport({ sourceName, rows, batchId }) {
   return data;
 }
 
-export async function rollbackInventoryImport(batchId) {
+export async function rollbackInventoryImport(batchId: string): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_rollback_inventory_batch', {
@@ -1020,7 +1177,7 @@ export async function rollbackInventoryImport(batchId) {
   return data;
 }
 
-export async function retryCommerceNotification(notificationId) {
+export async function retryCommerceNotification(notificationId: string): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const id = Number(notificationId);
@@ -1032,7 +1189,7 @@ export async function retryCommerceNotification(notificationId) {
   return data;
 }
 
-export async function resolveSecurityEvent(eventId, resolved = true) {
+export async function resolveSecurityEvent(eventId: string, resolved = true): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   if (!eventId) throw new Error('invalid_security_event');
@@ -1051,7 +1208,14 @@ export async function updateMediaAsset({
   sortOrder = null,
   visibility = null,
   retryScan = false,
-}) {
+}: {
+  assetId: string;
+  altTextEn?: string | null;
+  altTextAr?: string | null;
+  sortOrder?: number | string | null;
+  visibility?: string | null;
+  retryScan?: boolean;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   if (!assetId) throw new Error('invalid_media_asset');
@@ -1078,7 +1242,16 @@ export async function upsertShipment({
   trackingNumber = '',
   status = 'pending',
   metadata = {},
-}) {
+}: {
+  shipmentId?: string | null;
+  shipmentNumber?: string | null;
+  orderId?: string | number | null;
+  quoteId?: string | number | null;
+  carrierId?: string | number | null;
+  trackingNumber?: string;
+  status?: string;
+  metadata?: Row;
+} = {}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   if (Boolean(orderId) === Boolean(quoteId)) throw new Error('shipment_requires_one_parent');
@@ -1102,9 +1275,18 @@ export async function uploadOperationalMedia({
   entityId,
   assetRole = 'reference',
   files,
-}) {
+}: {
+  accessToken?: string | undefined;
+  entityType: string;
+  entityId: string;
+  assetRole?: string;
+  files?: unknown;
+}): Promise<unknown> {
   if (!accessToken) throw new Error('staff_session_required');
-  const list = Array.from(files || []).slice(0, 5);
+  const list = (Array.isArray(files) ? files : Array.from((files as ArrayLike<File>) || [])).slice(
+    0,
+    5,
+  ) as File[];
   if (!list.length) throw new Error('file_required');
   const encoded = await Promise.all(list.map((file) => encodeUploadFile(file, assetRole)));
   const response = await fetch('/api/admin-media-upload', {
@@ -1122,7 +1304,7 @@ export async function uploadOperationalMedia({
   return data.assets || [];
 }
 
-export async function createCatalogProductDraft(input) {
+export async function createCatalogProductDraft(input: Row): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_create_catalog_product_draft', {
@@ -1145,7 +1327,17 @@ export async function createCatalogProductDraft(input) {
   return data;
 }
 
-export async function addCatalogVariantDraft({ productId, sku, color = 'black', size = 'OS' }) {
+export async function addCatalogVariantDraft({
+  productId,
+  sku,
+  color = 'black',
+  size = 'OS',
+}: {
+  productId: string;
+  sku: string;
+  color?: string;
+  size?: string;
+}): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_add_catalog_variant_draft', {
@@ -1158,7 +1350,7 @@ export async function addCatalogVariantDraft({ productId, sku, color = 'black', 
   return data;
 }
 
-export async function archiveCatalogProduct(productId) {
+export async function archiveCatalogProduct(productId: string): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const { data, error } = await client.rpc('staff_archive_catalog_product', {
@@ -1231,23 +1423,37 @@ const sectionQueries = {
     ['taxRules', 'tax_rules', '*', { order: ['country_code', true], limit: 300 }],
   ],
 };
-export function invalidateOperationsCache(section = null) {
+export function invalidateOperationsCache(section: string | null = null): void {
   if (section) operationsSectionCache.delete(section);
   else operationsSectionCache.clear();
 }
-export async function loadOperationsSection(section, { force = false } = {}) {
+export async function loadOperationsSection(
+  section: string,
+  options: { force?: boolean } = {},
+): Promise<Row> {
   const key = String(section || '').toLowerCase();
-  const definitions = sectionQueries[key];
+  const definitions = (sectionQueries as Record<string, unknown[][]>)[key];
   if (!definitions) throw new Error('unknown_operations_section');
-  const cached = operationsSectionCache.get(key);
-  if (!force && cached && Date.now() - cached.createdAt < OPERATIONS_CACHE_MS) return cached.data;
+  const cached = operationsSectionCache.get(key) as
+    | { createdAt: number; data: Row }
+    | undefined;
+  if (!options.force && cached && Date.now() - cached.createdAt < OPERATIONS_CACHE_MS) {
+    return cached.data;
+  }
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
   const entries = await Promise.all(
-    definitions.map(async ([name, table, select, options]) => {
+    definitions.map(async (definition) => {
+      const [name, table, select, queryOptions] = definition as [
+        string,
+        string,
+        string,
+        { order?: [string, boolean]; limit?: number } | undefined,
+      ];
       let query = client.from(table).select(select);
-      if (options?.order) query = query.order(options.order[0], { ascending: options.order[1] });
-      if (options?.limit) query = query.limit(options.limit);
+      if (queryOptions?.order)
+        query = query.order(queryOptions.order[0], { ascending: queryOptions.order[1] });
+      if (queryOptions?.limit) query = query.limit(queryOptions.limit);
       const result = await query;
       if (result.error) throw result.error;
       return [name, result.data || []];

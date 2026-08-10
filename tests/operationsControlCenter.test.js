@@ -43,7 +43,7 @@ test.describe('operations control center', () => {
       await read('src/components/operations/control/ProcurementAndBilling.jsx'),
       await read('src/components/operations/control/FulfillmentManager.jsx'),
     ].join('\n');
-    const service = await read('src/services/operations.js');
+    const service = await read('src/services/operations.ts');
     assert.match(page, /Collections, coupons & tax rules/);
     assert.match(page, /Procurement & billing/);
     assert.match(page, /Shipments, tracking & partial fulfillment/);
@@ -67,7 +67,7 @@ test.describe('operations control center', () => {
 
   test('supports atomic inventory CSV preview, apply and rollback', async () => {
     const sql = await read('supabase/migrations/20260801022000_shababuna_inventory_imports.sql');
-    const service = await read('src/services/operations.js');
+    const service = await read('src/services/operations.ts');
     assert.match(sql, /staff_apply_inventory_batch/);
     assert.match(sql, /staff_rollback_inventory_batch/);
     assert.match(sql, /inventory_changed_after_import/);
