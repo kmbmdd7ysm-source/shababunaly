@@ -1,8 +1,8 @@
 {
-  "sha": "02842248d863a80edbad48b131b273b1bc7a536d",
-  "generatedAt": "2026-08-10T05:30:40.780039+00:00",
+  "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
+  "generatedAt": "2026-08-10T05:42:55.400815+00:00",
   "legacyTriadLines": 9292,
-  "totalStyleLines": 24269,
+  "totalStyleLines": 24353,
   "importantTotal": 77,
   "idleLegacyLoadRemoved": true,
   "files": [
@@ -88,7 +88,7 @@
     },
     {
       "file": "src/styles/journey.css",
-      "lines": 1042,
+      "lines": 1060,
       "important": 1
     },
     {
@@ -120,6 +120,11 @@
       "file": "src/styles/operations.css",
       "lines": 361,
       "important": 1
+    },
+    {
+      "file": "src/styles/placeholder-stage.css",
+      "lines": 66,
+      "important": 0
     },
     {
       "file": "src/styles/premium.css",
@@ -196,6 +201,5 @@
       "lines": 457,
       "important": 1
     }
-  ],
-  "note": "PostCSS AST cull of unused selectors; deferred idle load removed to prevent cascade flash."
+  ]
 }

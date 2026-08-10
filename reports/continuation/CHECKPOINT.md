@@ -1,18 +1,22 @@
 # Absolute final completion checkpoint
 
-- SHA: `413b9803b5ed0cb8715ee899ad54ee10dabcca27`
-- TypeScript: **100%** (294/294)
-- Ready-to-Ship nav: global (header+footer)
-- CSS: idle legacy load removed; AST cull in progress (~9292 triad lines)
-- GlobalChrome → AnnouncementStack + MainHeader
+- SHA: 
+- TS: **100%**
+- CSS idle legacy load: removed; triad ~9292 lines; !important ~77
+- Ready-to-Ship: globally visible
+- Customize: 7-step flow
+- Special Request: simplified
+- Placeholder stage + media manifest
+- Visual baselines captured under reports/visual/baselines/d90ebdcfd27b934743bcb29871b03a2bff3d47c4/
+- API preview: BLOCKED_EXTERNAL_VERCEL_PROTECTION
 
 ## Exact next unfinished
-1. Media manifest normalization + placeholder presentation
-2. Customize explicit step workflow + 3D fixture
-3. Special Request simplify
-4. Continue CSS ownership migration
-5. Vercel bypass-token verification script
-6. Full E2E / a11y / visual baselines from this SHA lineage
-7. Final release verdict when solvable gates closed
+1. Continue CSS ownership migration (delete more legacy)
+2. Customize concept 3D garment fixture engine
+3. Teams public vs workspace split polish
+4. Account/Operations further modular lazy routes
+5. Full Playwright auth/commerce E2E where fixtures allow
+6. PWA A→B + Lighthouse from clean tree
+7. Final SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS verdict when solvable closed
 
 **NOT FINAL COMPLETE**

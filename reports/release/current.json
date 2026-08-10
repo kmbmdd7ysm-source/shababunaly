@@ -1,23 +1,27 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "413b9803b5ed0cb8715ee899ad54ee10dabcca27",
+  "sha": "d90ebdcfd27b934743bcb29871b03a2bff3d47c4",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T05:32:19.417Z",
+  "generatedAt": "2026-08-10T05:42:55.401Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
-  "workingTree": "clean",
+  "workingTree": "dirty",
   "typescript": {
     "coveragePercent": 100.0,
     "sourceFiles": 294,
     "strictFiles": 294,
-    "legacyFiles": [],
-    "report": "reports/typescript/strictness.json"
+    "legacyFiles": []
   },
   "css": {
-    "report": "reports/css/EXTINCTION_STATUS.md",
+    "legacyTriadLines": 9292,
+    "importantTotal": 77,
     "idleLegacyLoadRemoved": true
   },
-  "readyToShipNav": "global_visible",
+  "visualBaselines": "reports/visual/baselines/d90ebdcfd27b934743bcb29871b03a2bff3d47c4/index.json",
+  "mediaManifest": "reports/media/PRODUCT_MEDIA_MANIFEST.json",
+  "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
+  "arabicTechnicalQa": "PASS",
+  "arabicHumanReview": "REQUIRED",
   "status": "in_progress",
   "verdict": null
 }
