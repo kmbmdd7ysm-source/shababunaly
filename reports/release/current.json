@@ -1,8 +1,8 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "1e9f64767d6d3c6212ae382d4845eb0656cce9ae",
+  "sha": "2bd5bd7a0a2aeded2a924ddf553c41a6fe9907f3",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T07:16:03.920Z",
+  "generatedAt": "2026-08-10T07:18:13.289Z",
   "typescript": {
     "coveragePercent": 100.0
   },
@@ -14,5 +14,6 @@
   "pwaUpgrade": "passed",
   "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
   "status": "in_progress",
-  "verdict": null
+  "verdict": null,
+  "workingTree": "clean"
 }

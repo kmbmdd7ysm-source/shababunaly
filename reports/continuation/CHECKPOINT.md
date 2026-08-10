@@ -1,6 +1,6 @@
 # Absolute final checkpoint
 
-- SHA: `89dedb308f72652ac70d3291b14880a4cb2d6785`
+- SHA: `2bd5bd7a0a2aeded2a924ddf553c41a6fe9907f3`
 - CSS triad **EXTINCT** · !important **4** (reduced-motion only)
 - LH: perf 82 / CLS 0.111 / LCP 3206ms
 - TS 100% · PWA PASS · Ready-to-Ship global · Customize 7-step+concept3D
