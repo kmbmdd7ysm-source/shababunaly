@@ -1,5 +1,5 @@
-# TypeScript remaining
+# TypeScript remaining JS/JSX inventory
 
-Total: 1
+Total remaining: 1
 
--  — ambient retained (model-viewer types)
+- `src/components/product/engines/loadModelViewer.js` — model-viewer side-effect bridge (package types break skipLibCheck:false)

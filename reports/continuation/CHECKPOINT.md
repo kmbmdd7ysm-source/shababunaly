@@ -1,12 +1,12 @@
-# Continuation checkpoint — Final Continuous Completion
+# Continuation checkpoint
 
-- SHA: `dd05aef666382086bb6428ce666d6215a3524e22`
-- TypeScript: **99.32%** — remaining: **operations.js** + Realtime3DEngine.jsx (ambient)
-- orders.ts COMPLETE this stretch
-- operations: multiple probes; requires per-export interfaces (see OPERATIONS_TS_RECIPE.md) — do not use  / bulk OpsInput on destructured staff RPCs
-- Evidence/E2E/a11y continuum green; external API/DB/Vercel BLOCKED documented
-**NOT FINAL COMPLETE**
+- SHA: (see git HEAD after push)
+- TypeScript: **99.66%** — only `loadModelViewer.js` bridge remains
+- operations.ts COMPLETE · Realtime3DEngine.tsx COMPLETE
+- External API/DB/Vercel BLOCKED documented
+**NOT FINAL COMPLETE** (external proofs + human AR review)
 
 ## Exact next unfinished
-1. operations.js TS with careful per-export interfaces (no bulk Row)
-2. Final full-site audit from final SHA → FINAL COMPLETE only when genuine
+1. Deployed preview API verification (Vercel + Supabase)
+2. Human Arabic review sign-off
+3. Then regenerate RELEASE_VERDICT → FINAL COMPLETE when genuine
