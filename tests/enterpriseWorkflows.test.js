@@ -7,11 +7,11 @@ const migration = read('supabase/migrations/20260801020000_shababuna_enterprise_
 const proofMigration = read(
   'supabase/migrations/20260801021000_shababuna_customer_enterprise_rpcs.sql',
 );
-const workspace = read('src/components/account/OrganizationWorkspace.jsx');
+const workspace = read('src/components/account/OrganizationWorkspace.tsx');
 const operations = [
   read('src/pages/OperationsPage.tsx'),
-  read('src/components/operations/OperationsEnterpriseModules.jsx'),
-  read('src/components/operations/OperationsCommerceModules.jsx'),
+  read('src/components/operations/OperationsEnterpriseModules.tsx'),
+  read('src/components/operations/OperationsCommerceModules.tsx'),
 ].join('\n');
 const b2b = read('src/services/b2b.ts');
 const app = read('src/App.tsx');

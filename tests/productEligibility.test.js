@@ -84,7 +84,7 @@ describe('product publishing eligibility', () => {
     expect(isVariantPurchasable({ ...approved, status: 'draft' }, { sku: 'x' })).toBe(false);
     expect(isVariantPurchasable(tracked, {})).toBe(false);
   });
-  it('requires verified Libya inventory for Ready to Ship', () => {
+  it('requires verified Libya-held inventory for Ready to Ship (globally discoverable)', () => {
     const ready = {
       ...approved,
       readyToShip: true,
@@ -93,7 +93,8 @@ describe('product publishing eligibility', () => {
       variants: [{ sku: 'SHA-M', inventoryTracking: true, readyToShip: true, stock: 1 }],
     };
     expect(isReadyToShipEligible(ready, 'LY')).toBe(true);
-    expect(isReadyToShipEligible(ready, 'US')).toBe(false);
+    // Destination country must not hide Ready-to-Ship eligibility.
+    expect(isReadyToShipEligible(ready, 'US')).toBe(true);
     expect(isReadyToShipEligible({ ...ready, readyToShip: false }, 'LY')).toBe(false);
     expect(isReadyToShipEligible({ ...ready, inventoryTracking: false }, 'LY')).toBe(false);
     expect(isReadyToShipEligible({ ...ready, inventoryLocation: 'CN' }, 'LY')).toBe(false);
