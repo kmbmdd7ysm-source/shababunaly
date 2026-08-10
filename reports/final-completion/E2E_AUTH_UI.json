@@ -6,6 +6,7 @@
     "passwordFields": 1
   },
   {
-    "negativeLoginAlert": ""
+    "negativeLoginAlert": "Something went wrong. Please try again.",
+    "status": "PASS"
   }
 ]
