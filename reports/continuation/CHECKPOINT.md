@@ -1,12 +1,15 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `563978584f5c0b665676c3f6f0cf0aa65841d656`
-- TypeScript: **97.99%** · data layer fully TS · 6 legacy remain
-- Ready-to-Ship: eligibility helper + honest empty copy
-- QuickAddSheet · PDP CTA · tablet/mobile AR evidence · build GREEN
+- SHA: `b73cc378f2d2cbcd0c203d962167f80a50218e0b`
+- TypeScript: **98.98%** — legacy left: Realtime3DEngine.jsx, orders.js, operations.js
+- Migrated this stretch: b2b.ts, simplePdf.ts, designExports.ts
+- Build GREEN · E2E shop→bag→checkout + customize review GREEN
+- API local: GET config/geo/readiness 200; POST quote 404 (Vercel BLOCKED)
+- A11y: plinth links labeled; shop unlabeled=0
 **NOT FINAL COMPLETE**
 
-## Next exact unfinished
-1. Remaining JS: b2b / orders / operations / designExports / simplePdf (+ Realtime3D ambient)
-2. Deployed API verification
-3. Final 35-group audit
+## Exact next unfinished
+1. orders.js + operations.js TS (recipes exist)
+2. Keep Realtime3D ambient unless model-viewer types fixed
+3. Deployed API verification when available
+4. Final 35-group audit from final SHA → FINAL COMPLETE only then
