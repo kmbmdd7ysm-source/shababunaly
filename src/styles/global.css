@@ -305,24 +305,6 @@ strong {
 
 /* ---------- Header ---------- */
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 900;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid transparent;
-  transition:
-    border-color 0.25s,
-    box-shadow 0.25s,
-    background 0.25s;
-}
-
-.site-header.scrolled {
-  border-bottom-color: var(--border);
-  box-shadow: var(--shadow-sm);
-}
-
 .header-inner {
   height: var(--header-h);
   display: flex;
@@ -351,26 +333,6 @@ strong {
 .desktop-nav {
     display: flex;
   }
-}
-
-.nav-link {
-  padding: 0.5em 0.85em;
-  border-radius: var(--radius);
-  font-weight: 600;
-  font-size: 0.92rem;
-  color: var(--text);
-  position: relative;
-  transition:
-    color 0.15s,
-    background 0.15s;
-}
-
-.nav-link:hover {
-  background: var(--surface-2);
-}
-
-.nav-link[aria-current='page'] {
-  color: var(--accent);
 }
 
 .header-actions {
@@ -404,12 +366,6 @@ strong {
 }
 
 /* ---------- Mega menu ---------- */
-
-.mega-menu.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
 
 /* ---------- Mobile menu ---------- */
 
@@ -1587,10 +1543,6 @@ to {
   color: #fff;
 }
 
-.footer-slogan .accent {
-  color: var(--accent);
-}
-
 /* ---------- Cookie banner ---------- */
 
 @keyframes slideUp {
@@ -1687,49 +1639,12 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.site-header {
-  background: rgba(255, 255, 255, 0.96);
-}
-
 .header-inner {
   height: 82px;
 }
 
 .brand {
   gap: 0.8rem;
-}
-
-.nav-link {
-  border-radius: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 800;
-}
-
-.nav-link:hover {
-  background: transparent;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  left: 0.85em;
-  right: 0.85em;
-  bottom: 0.15em;
-  height: 1px;
-  background: #000;
-  transform: scaleX(0);
-  transition: transform 0.2s var(--ease);
-}
-
-.nav-link:hover::after,
-.nav-link[aria-current='page']::after {
-  transform: scaleX(1);
-}
-
-.nav-link[aria-current='page'] {
-  color: var(--text);
 }
 
 .icon-btn {
@@ -1902,19 +1817,8 @@ main {
 
 /* Header: clean, balanced, premium */
 
-.site-header {
-  background: rgba(255, 255, 255, 0.97);
-  color: #050505;
-  border-bottom: 1px solid #deded8;
-}
-
 .header-inner {
   max-width: 1440px;
-}
-
-.icon-btn,
-.nav-link {
-  color: #050505;
 }
 
 .mobile-menu {
@@ -3371,15 +3275,6 @@ html[dir='rtl'] main {
   overflow-x:hidden;
 }
 
-html[dir='rtl'] .hero,
-html[dir='rtl'] .page-hero,
-html[dir='rtl'] .announcement-bar,
-html[dir='rtl'] .site-header {
-  inset-inline: auto;
-  width: 100%;
-  max-width: 100%;
-}
-
 /*
  * RTL uses the document dir attribute. Do NOT force html/body to LTR —
  * that was the root cause of broken Arabic layout and required a JS
@@ -3409,20 +3304,6 @@ body {
   max-width: 100%;
   margin: 0;
   padding: 0;
-}
-
-#root[dir='rtl'] main,
-#root[dir='rtl'] .hero,
-#root[dir='rtl'] .page-hero,
-#root[dir='rtl'] .site-header,
-#root[dir='rtl'] .announcement-bar {
-  left: 0;
-  right: 0;
-  margin-left: 0;
-  margin-right: 0;
-  width: 100%;
-  max-width: 100%;
-  transform: none;
 }
 
 /* ==========================================================================\n   FINAL MOBILE VIEWPORT STABILITY\n   Prevent document-level horizontal drift without disabling intentional\n   category, filter, compare, and tab scrollers.\n   ========================================================================== */
@@ -3840,6 +3721,7 @@ body.scroll-locked {
 .lightbox-stage img.lightbox-zoom-300 {
   transform: scale(3) !important;
 }
+
 
 
 

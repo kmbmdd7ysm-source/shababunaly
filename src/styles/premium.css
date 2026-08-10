@@ -36,37 +36,12 @@ body {
   color: #fff;
 }
 
-.site-header {
-  transition:
-    height var(--motion-med) var(--ease-premium),
-    background var(--motion-med),
-    box-shadow var(--motion-med),
-    transform var(--motion-med) !important;
-}
-
-.site-header:not(.scrolled) {
-  box-shadow: none;
-}
-
-.site-header.scrolled .header-inner {
-  height: 66px;
-}
-
 .header-inner {
   transition: height var(--motion-med) var(--ease-premium);
 }
 
 .brand:hover .brand-logo {
   transform: scale(0.96) rotate(-1deg);
-}
-
-.nav-link::after {
-  transform-origin: left center;
-  transition: transform 0.35s var(--ease-premium) !important;
-}
-
-[dir='rtl'] .nav-link::after {
-  transform-origin: right center;
 }
 
 .icon-btn {
@@ -863,14 +838,6 @@ html {
 
 /* ---------- Mobile, RTL, compare, and account layout ownership ---------- */
 
-#root,
-main,
-.site-header,
-.container {
-  width: min(100%, var(--container));
-  min-width: 0;
-}
-
 .header-actions,
 .desktop-utilities {
   min-width: 0;
@@ -1116,6 +1083,7 @@ main,
 
 @media (max-width: 640px) {
 }
+
 
 
 

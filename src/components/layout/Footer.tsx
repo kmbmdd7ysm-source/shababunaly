@@ -1,3 +1,6 @@
+import '../../styles/chrome-from-shababuna.css';
+import '../../styles/chrome-from-premium.css';
+import '../../styles/chrome-from-global.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SITE } from '../../config.ts';

@@ -1,0 +1,35 @@
+/* chrome premium */
+
+
+.site-header {
+  transition:
+    height var(--motion-med) var(--ease-premium),
+    background var(--motion-med),
+    box-shadow var(--motion-med),
+    transform var(--motion-med) !important;
+}
+
+.site-header:not(.scrolled) {
+  box-shadow: none;
+}
+
+.site-header.scrolled .header-inner {
+  height: 66px;
+}
+
+.nav-link::after {
+  transform-origin: left center;
+  transition: transform 0.35s var(--ease-premium) !important;
+}
+
+[dir='rtl'] .nav-link::after {
+  transform-origin: right center;
+}
+
+#root,
+main,
+.site-header,
+.container {
+  width: min(100%, var(--container));
+  min-width: 0;
+}

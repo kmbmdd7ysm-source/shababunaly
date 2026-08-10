@@ -87,12 +87,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-.site-header {
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid var(--sha-line);
-  backdrop-filter: blur(18px);
-}
-
 .header-inner {
   min-height: 84px;
   gap: clamp(24px, 4vw, 68px);
@@ -105,18 +99,6 @@ body {
 .desktop-nav {
   margin-inline: auto;
   gap: clamp(18px, 2.2vw, 38px);
-}
-
-.nav-link {
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.nav-link::after {
-  height: 1px;
 }
 
 .header-actions {
@@ -586,8 +568,6 @@ body {
 @media (max-width: 1180px) {
 .desktop-nav {
     gap: 16px;
-  }.nav-link {
-    font-size: 0.69rem;
   }.desktop-utilities .lang-text-btn,
   .desktop-utilities .currency-selector {
     display: none;
@@ -1857,6 +1837,7 @@ body {
   stroke: #42d17a;
   stroke-width: 4;
 }
+
 
 
 
