@@ -1,17 +1,16 @@
 # Absolute final checkpoint
 
-- SHA: `d0a795ca7b906960a2436eae388ec9c8febfddef`
-- TS 100% · RTS global · CSS idle-load removed · triad ~9292 lines
-- Customize 7-step + CONCEPT 3D garment fixture
-- Special Request simplified · Placeholder stage · Media manifest
-- Department art-direction system · Visual baselines (prior SHA folder)
-- API: BLOCKED_EXTERNAL_VERCEL_PROTECTION
+- SHA: `f3d1b5df7aacaf153d0c1b2ba8a900bf731a77f8`
+- TS **100%** · Ready-to-Ship global · CSS idle-load removed · triad ~9292 lines live
+- Customize 7-step + CONCEPT 3D · Special Request simplified · Placeholder stage
+- Department art-direction · Account lazy sections · PWA A→B **PASS**
+- API preview: BLOCKED_EXTERNAL_VERCEL_PROTECTION
+- ARABIC_TECHNICAL_QA=PASS · ARABIC_HUMAN_REVIEW=REQUIRED
 
 ## Next unfinished
-1. Deeper CSS ownership migration / !important reduction
-2. Teams public/workspace split polish
-3. Account/Operations lazy modular routes
-4. Full E2E auth matrix + PWA A→B + Lighthouse clean-tree
-5. Final verdict SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS when solvable closed
+1. Continue shrinking live legacy CSS / !important
+2. Teams workspace polish · more E2E auth matrix
+3. Lighthouse clean-tree measurement
+4. Final SOFTWARE_VERIFIED_EXTERNAL_BLOCKERS when solvable closed
 
 **NOT FINAL COMPLETE**

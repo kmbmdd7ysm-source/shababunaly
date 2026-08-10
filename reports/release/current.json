@@ -1,15 +1,13 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "d0a795ca7b906960a2436eae388ec9c8febfddef",
+  "sha": "f3d1b5df7aacaf153d0c1b2ba8a900bf731a77f8",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T05:45:59.207Z",
+  "generatedAt": "2026-08-10T06:01:09.733Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
   "workingTree": "clean",
   "typescript": {
     "coveragePercent": 100.0,
-    "sourceFiles": 294,
-    "strictFiles": 294,
     "legacyFiles": []
   },
   "css": {
@@ -17,12 +15,7 @@
     "importantTotal": 77,
     "idleLegacyLoadRemoved": true
   },
-  "customize": {
-    "steps": 7,
-    "concept3d": "GarmentConceptStage"
-  },
-  "specialRequest": "simplified",
-  "readyToShipNav": "global",
+  "pwaUpgrade": "passed",
   "apiPreview": "BLOCKED_EXTERNAL_VERCEL_PROTECTION",
   "arabicTechnicalQa": "PASS",
   "arabicHumanReview": "REQUIRED",
