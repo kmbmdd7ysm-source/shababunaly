@@ -9,3 +9,6 @@ dist
 coverage
 coverage-critical
 coverage-project
+
+# Local PWA upgrade harness artifacts
+reports/pwa-upgrade/
