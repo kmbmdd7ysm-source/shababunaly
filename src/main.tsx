@@ -30,6 +30,7 @@ import './styles/geometry.css';
 import './styles/layout.css';
 import './styles/shell.css';
 import './styles/legacy-island.css';
+import './styles/island-extract-2.css';
 import './styles/island-extract.css';
 import './styles/tail-from-shababuna.css';
 import './styles/tail-from-premium.css';
