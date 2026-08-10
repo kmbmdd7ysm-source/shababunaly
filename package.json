@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "SHABABUNA \u2014 global basketball retail, custom manufacturing, teams and wholesale platform.",
+  "description": "SHABABUNA — global basketball retail, custom manufacturing, teams and wholesale platform.",
   "scripts": {
     "dev": "vite",
     "validate:data": "node --experimental-strip-types scripts/validate-data.mjs",

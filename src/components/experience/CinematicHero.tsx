@@ -45,20 +45,28 @@ export default function CinematicHero(): ReactElement {
     mobileVideoUrl: ENV_MOBILE_VIDEO,
   });
   const [failed, setFailed] = useState(false);
+  // Defer React poster until static LCP shell retires — avoids LCP candidate reset.
+  const [shellActive, setShellActive] = useState(
+    () => typeof document !== 'undefined' && Boolean(document.getElementById('lcp-shell')),
+  );
   const reduced = useReducedMotion();
   const capability = useDeviceCapability();
 
   useEffect(() => {
-    // Fixed LCP overlay stays above React until after the LCP window, then fades out.
+    // Fixed LCP overlay stays the image LCP candidate; React poster mounts after.
     const shell = document.getElementById('lcp-shell');
-    if (!shell) return undefined;
+    if (!shell) {
+      setShellActive(false);
+      return undefined;
+    }
     const fade = globalThis.setTimeout(() => {
-      shell.style.transition = 'opacity 280ms ease';
+      shell.style.transition = 'opacity 240ms ease';
       shell.style.opacity = '0';
-    }, 2200);
+    }, 2500);
     const remove = globalThis.setTimeout(() => {
       shell.remove();
-    }, 2600);
+      setShellActive(false);
+    }, 2800);
     return () => {
       globalThis.clearTimeout(fade);
       globalThis.clearTimeout(remove);
@@ -127,21 +135,22 @@ export default function CinematicHero(): ReactElement {
   return (
     <section className="gw-hero" aria-labelledby="gw-home-hero-title">
       <div className="gw-hero-media" aria-hidden="true">
-        <picture>
-          <source
-            media="(max-width: 767px)"
-            srcSet="/media/hero/shababuna-hero-poster-mobile.webp"
-          />
-          <img
-            className="gw-hero-poster"
-            src="/media/hero/shababuna-hero-poster.webp"
-            alt=""
-            width="1940"
-            height="1024"
-            fetchPriority="high"
-            decoding="sync"
-          />
-        </picture>
+        {!shellActive && (
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              srcSet="/media/hero/shababuna-hero-poster-mobile.webp"
+            />
+            <img
+              className="gw-hero-poster"
+              src="/media/hero/shababuna-hero-poster.webp"
+              alt=""
+              width="1940"
+              height="1024"
+              decoding="async"
+            />
+          </picture>
+        )}
         {showFilm && (
           <video
             ref={video}

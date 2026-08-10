@@ -1,64 +1,66 @@
 {
   "schema": "shababuna.performance.lighthouse.v1",
-  "sha": "e1831cf12b34f2fbfeb1655506327d6356afd8f1",
-  "generatedAt": "2026-08-10T16:47:34.023316Z",
+  "sha": "5f866b95fec75cd6834e73654ee6429b7bad371f",
+  "generatedAt": "2026-08-10T18:30:46.065736Z",
   "target": "vite preview :4173",
   "results": {
     "desktop": {
-      "performance": 0.58,
+      "performance": 0.68,
       "FCP": {
-        "ms": 1930.0015,
-        "display": "1.9\u00a0s",
+        "ms": 1956.2665000000002,
+        "display": "2.0\u00a0s",
+        "score": 0.31
+      },
+      "LCP": {
+        "ms": 3051.89975,
+        "display": "3.1\u00a0s",
         "score": 0.32
       },
-      "LCP": {
-        "ms": 3293.252625,
-        "display": "3.3\u00a0s",
-        "score": 0.27
-      },
       "CLS": {
-        "ms": 0.002522,
-        "display": "0.003",
+        "ms": 0.002306,
+        "display": "0.002",
         "score": 1
       },
       "TBT": {
-        "ms": 315,
-        "display": "320\u00a0ms",
-        "score": 0.56
+        "ms": 53.5,
+        "display": "50\u00a0ms",
+        "score": 1
       },
       "SI": {
-        "ms": 1984.7015512391522,
-        "display": "2.0\u00a0s",
-        "score": 0.63
-      }
+        "ms": 3504.365722398111,
+        "display": "3.5\u00a0s",
+        "score": 0.16
+      },
+      "lcpSelector": "section.gw-hero > div.gw-hero-media > picture > img.gw-hero-poster"
     },
     "mobile": {
-      "performance": 0.78,
+      "performance": 0.91,
       "FCP": {
-        "ms": 1899.663,
-        "display": "1.9\u00a0s",
-        "score": 0.87
+        "ms": 1958.469,
+        "display": "2.0\u00a0s",
+        "score": 0.85
       },
       "LCP": {
-        "ms": 3203.6629999999996,
+        "ms": 3194.7035,
         "display": "3.2\u00a0s",
-        "score": 0.72
+        "score": 0.73
       },
       "CLS": {
-        "ms": 0,
-        "display": "0",
+        "ms": 0.000681,
+        "display": "0.001",
         "score": 1
       },
       "TBT": {
-        "ms": 559.0842499999999,
-        "display": "560\u00a0ms",
-        "score": 0.53
+        "ms": 42.5,
+        "display": "40\u00a0ms",
+        "score": 1
       },
       "SI": {
-        "ms": 1974.4565241522337,
-        "display": "2.0\u00a0s",
-        "score": 0.99
-      }
+        "ms": 3448.101377974965,
+        "display": "3.4\u00a0s",
+        "score": 0.89
+      },
+      "lcpSelector": "section.gw-hero > div.gw-hero-media > picture > img.gw-hero-poster"
     }
   }
 }
