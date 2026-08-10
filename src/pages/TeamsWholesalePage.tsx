@@ -20,7 +20,7 @@ const LIFECYCLE = [
   { id: 'quote', title: { en: 'Quote', ar: 'عرض السعر' } },
   { id: 'approve', title: { en: 'Approve', ar: 'الاعتماد' } },
   { id: 'produce', title: { en: 'Produce', ar: 'التصنيع' } },
-  { id: 'produce', title: { en: 'Complete', ar: 'الإكمال' } },
+  { id: 'complete', title: { en: 'Complete', ar: 'الإكمال' } },
 ];
 
 const packages = [
