@@ -1,14 +1,3 @@
-/* LEGACY ISLAND — remaining global/premium/shababuna after ownership migration */
-
-
-/* ---- from src/styles/global.css ---- */
-
-/* ==========================================================================
-   SHABABUNA — GLOBAL STYLES
-   Premium light identity · bilingual (EN/AR) · RTL-aware · mobile-first
-   Fonts (loaded in index.html): Inter, Archivo (display), Noto Kufi Arabic
-   ========================================================================== */
-
 :root {
   --bg: #ffffff;
   --surface: #f7f7f5;
@@ -129,28 +118,6 @@ strong {
   font-weight: 700;
 }
 
-/* ---------- Layout ---------- */
-
-/* ---------- Buttons ---------- */
-
-/* ---------- Utilities ---------- */
-
-/* ---------- Announcement bar ---------- */
-
-/* ---------- Header ---------- */
-
-/* ---------- Mega menu ---------- */
-
-/* ---------- Mobile menu ---------- */
-
-/* ---------- Hero + court lines ---------- */
-
-/* ---------- Section heading ---------- */
-
-/* ---------- Page hero ---------- */
-
-/* ---------- Breadcrumbs ---------- */
-
 .crumb {
   display: inline-flex;
   align-items: center;
@@ -162,30 +129,12 @@ strong {
   margin-inline: 0.35rem;
 }
 
-/* ---------- Badge ---------- */
-
-/* ---------- Price ---------- */
-
-/* ---------- Quantity selector ---------- */
-
-/* ---------- Product card ---------- */
-
-/* ---------- Category card ---------- */
-
-/* ---------- Event / Program / Training / Coach cards ---------- */
-
-/* ---------- Shop layout + filters ---------- */
-
 .swatch-dot {
   display: block;
   width: 100%;
   height: 100%;
   border-radius: 50%;
 }
-
-/* Mobile filters drawer */
-
-/* ---------- Product detail ---------- */
 
 .variant-group {
   display: grid;
@@ -212,55 +161,17 @@ strong {
   margin: 0;
 }
 
-/* ---------- Accordion ---------- */
-
-/* ---------- Share buttons ---------- */
-
-/* ---------- Modal ---------- */
-
-/* ---------- Size tables ---------- */
-
-/* ---------- Empty state / loading ---------- */
-
 @keyframes spin {
 to {
     transform: rotate(360deg);
   }
 }
 
-/* ---------- Cart drawer ---------- */
-
-/* ---------- Cart page ---------- */
-
-/* ---------- Checkout ---------- */
-
-/* ---------- Notices ---------- */
-
-/* ---------- Search overlay + page ---------- */
-
-/* ---------- About / prose ---------- */
-
-/* ---------- Home sections ---------- */
-
-/* ---------- Detail (program/event/training/coach) ---------- */
-
-/* ---------- Status / 404 ---------- */
-
-/* ---------- Legal / FAQ ---------- */
-
-/* ---------- Contact ---------- */
-
 .track-form {
   display: grid;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-
-/* ---------- Newsletter ---------- */
-
-/* ---------- Footer ---------- */
-
-/* ---------- Cookie banner ---------- */
 
 @keyframes slideUp {
 from {
@@ -270,13 +181,9 @@ from {
   }
 }
 
-/* ---------- RTL adjustments ---------- */
-
 [dir='rtl'] {
   text-align: right;
 }
-
-/* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
 *,
@@ -288,12 +195,6 @@ from {
     scroll-behavior: auto !important;
   }
 }
-
-/* ---------- Print ---------- */
-
-/* ========================================================================
-   LHA 2.0 — PREMIUM BLACK / WHITE PERFORMANCE SYSTEM
-   ======================================================================== */
 
 :root {
   --cream: #f2f1ec;
@@ -309,11 +210,6 @@ from {
 body {
   letter-spacing: -0.005em;
 }
-
-/* ========================================================================== 
-   LHA 3.0 — WORLD-CLASS CONTRAST & BRAND SYSTEM
-   Final authoritative layer. Every surface owns its foreground color.
-   ========================================================================== */
 
 :root {
   --bg: #ffffff;
@@ -344,28 +240,6 @@ main {
   background: #fff;
 }
 
-/* Never allow inherited dark-mode colors to contaminate light sections */
-
-/* Header: clean, balanced, premium */
-
-/* Performance strip */
-
-/* Academy statement: dark, but every child explicitly readable */
-
-/* Value cards everywhere else: black on light — fixes white-on-white */
-
-/* Editorial content and about page readability */
-
-/* Cards: strong photography stage and crisp copy */
-
-/* Journey is a premium numbered editorial system */
-
-/* Page heroes and CTA own their contrast */
-
-/* Footer must not inherit light foreground */
-
-/* Arabic: readable display rhythm, no collisions */
-
 [dir='rtl'] body {
   font-family: var(--sh-font-arabic);
 }
@@ -373,8 +247,6 @@ main {
 [dir='rtl'] p {
   line-height: 1.9;
 }
-
-/* LHA 100 premium fixes */
 
 html[dir='rtl'] body {
   font-family: var(--sh-font-arabic);
@@ -384,10 +256,6 @@ html[dir='rtl'] body {
 html[dir='rtl'] * {
   letter-spacing: 0;
 }
-
-/* Final mobile utility, search, help and order pass */
-
-/* Final visual-correction pass: mobile commerce, search, RTL and product purchase UX */
 
 .quantity-row {
   display: flex;
@@ -401,15 +269,9 @@ html[dir='rtl'] a {
   letter-spacing: 0;
 }
 
-/* Precision completion: authoritative mobile header/menu/icon rules */
-
 .rotated {
   transform: rotate(180deg);
 }
-
-/* Final mandatory correction: integrated mobile menu and measured touch geometry */
-
-/* Responsive layout foundation */
 
 html,
 body,
@@ -439,18 +301,6 @@ canvas {
   height: auto;
 }
 
-/* Category and filter rows are isolated scrollports; they never enlarge the page. */
-
-/* One shared purchase geometry for physical and digital products. */
-
-/* Final production verification hardening: local containment only. */
-
-/* Final screenshot-backed mobile corrections. */
-
-/* Final independent repair: mobile logo, contact containment, and registration clarity. */
-
-/* LASTWEB final screenshot-backed containment corrections. */
-
 html,
 body,
 #root {
@@ -467,8 +317,6 @@ html,
   }
 }
 
-/* Production hotfixes: stable mobile sheets, colour metadata and RTL viewport containment. */
-
 html[dir='rtl'],
 html[dir='rtl'] body,
 html[dir='rtl'] #root {
@@ -480,8 +328,6 @@ html[dir='rtl'] #root {
 html[dir='rtl'] body {
   margin: 0;
 }
-
-/* Final deployment corrections: reliable mobile sheets and viewport containment. */
 
 html,
 body,
@@ -516,12 +362,6 @@ html[dir='rtl'] main {
   overflow-x:hidden;
 }
 
-/*
- * RTL uses the document dir attribute. Do NOT force html/body to LTR —
- * that was the root cause of broken Arabic layout and required a JS
- * workaround to stamp dir onto #root. Logical CSS + dir="rtl" is enough.
- */
-
 html {
   width: 100%;
   max-width: 100%;
@@ -546,8 +386,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
-/* ==========================================================================\n   FINAL MOBILE VIEWPORT STABILITY\n   Prevent document-level horizontal drift without disabling intentional\n   category, filter, compare, and tab scrollers.\n   ========================================================================== */
 
 html,
 body {
@@ -578,8 +416,6 @@ body,
   }
 }
 
-/* Media and form controls must never establish a wider intrinsic viewport. */
-
 img,
 picture,
 video,
@@ -593,8 +429,6 @@ button {
   min-inline-size: 0;
   max-inline-size: 100%;
 }
-
-/* Grid/flex descendants are a frequent source of intermittent iOS overflow. */
 
 #main-content :where(section, article, aside, nav, header, footer, div, form, fieldset) {
   min-inline-size: 0;
@@ -612,10 +446,8 @@ html,
   #root,
   #main-content {
     touch-action: pan-y pinch-zoom;
-  }/* These are the only controls intentionally allowed to pan horizontally. *//* Fixed overlays must use the layout viewport, not content width. *//* Long user/order content wraps rather than widening the page. */
+  }
 }
-
-/* RTL changes reading direction only; viewport geometry remains anchored. */
 
 #root[dir='rtl'],
 #root[dir='rtl'] #main-content {
@@ -625,20 +457,6 @@ html,
   max-inline-size: 100%;
 }
 
-/* Product photography must remain on a pure white studio surface. */
-
-/* Final launch fixes */
-
-/* Reliable product image viewer: white, viewport-bound, and immediately visible on mobile/desktop. */
-
-/* LHA branded 404 */
-
-/* Online training access-plan selector */
-
-/* Cross-device catalogue media hardening */
-
-/* Final launch media reliability: desktop and mobile use the same visible media rules. */
-
 @media (prefers-reduced-motion: reduce) {
 *,
   *::before,
@@ -660,44 +478,12 @@ html,
     transition-duration: 0.01ms !important;
   }
 }
-
-/* Global render-failure recovery. */
-
-/* CSP-safe dynamic UI primitives */
 
 html.scroll-locked,
 body.scroll-locked {
   overflow:hidden;
   overscroll-behavior: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ---- from src/styles/premium.css ---- */
-
-/* ========================================================================
-   LHA 9999 — GLOBAL PREMIUM EXPERIENCE LAYER
-   Intentional, performance-conscious enhancement over the existing system.
-   ======================================================================== */
 
 :root {
   --space-1: 8px;
@@ -789,12 +575,6 @@ from {
   }
 }
 
-/* ========================================================================== */
-
-/* LHA EXPERIENCE SYSTEM — cinematic, motion, media, compare, PWA, account    */
-
-/* ========================================================================== */
-
 :root {
   --motion-instant: 140ms;
   --motion-control: 220ms;
@@ -848,29 +628,17 @@ from {
   }
 }
 
-/* LHA production account, sync and PWA completion */
-
 .check-row {
   display:flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Account production sections */
-
-/* Commerce preferences */
-
 .currency-selector.compact select {
   min-height: 38px;
   padding-inline: 8px 24px;
   font-size: 0.78rem;
 }
-
-/* Accessible searchable country combobox */
-
-/* Searchable country selector */
-
-/* ---------- Premium interaction & media refinement ---------- */
 
 :root {
   --motion-fast: 140ms;
@@ -914,10 +682,6 @@ html {
   }
 }
 
-/* Intentional media-unavailable state: never substitutes unrelated product photography. */
-
-/* ---------- Mobile, RTL, compare, and account layout ownership ---------- */
-
 .profile-photo-preview {
   display: flex;
   align-items: center;
@@ -939,45 +703,6 @@ html {
 
 @media (max-width: 640px) {
 }
-
-/* Final mobile account navigation and touch-state correction.
-   Keep the account section tabs as an isolated horizontal scrollport so labels
-   never shrink into each other or widen the page. */
-
-/* iOS Safari can preserve :hover/:active paint after a tap. On coarse touch
-   pointers the menu trigger and logo must remain visually neutral after taps. */
-
-/* Product photography must remain on a pure white studio surface. */
-
-/* Performance stability: reserve paint geometry and keep route motion composited. */
-
-/* Two-path registration: personal shoppers or verified team/business buyers. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ---- from src/styles/shababuna.css ---- */
-
-/* ==========================================================================
-   SHABABUNA — BUILT DIFFERENT
-   Final black / white commerce layer. Loaded after the legacy system so the
-   transformed store keeps its proven behavior while receiving a new identity.
-   ========================================================================== */
 
 :root {
   --sha-black: #050505;
@@ -1001,26 +726,10 @@ body {
   color: var(--sha-ink);
 }
 
-/* Header */
-
-/* Hero */
-
-/* Home / departments */
-
-/* Product catalogue */
-
-/* Product detail */
-
 .minimum-note {
   font-size: 0.78rem;
   color: #666;
 }
-
-/* Currency welcome */
-
-/* Customize */
-
-/* Teams / work / LHA */
 
 .store-toolbar {
   display: flex;
@@ -1029,8 +738,6 @@ body {
   gap: 30px;
   margin-bottom: 50px;
 }
-
-/* Checkout */
 
 .delivery-promise {
   min-height: 58px;
@@ -1042,19 +749,11 @@ body {
   font-size: 0.88rem;
 }
 
-/* Contact / footer */
-
-/* Responsive */
-
 @media (max-width: 620px) {.store-toolbar {
     align-items: flex-start;
     flex-direction: column;
   }
 }
-
-/* ========================================================================== 
-   SHABABUNA 10/10 EXPERIENCE — DESIGN STUDIO, B2B WORKSPACE & OPERATIONS
-   ========================================================================== */
 
 .made-in-usa-note {
   padding: 15px 17px;
@@ -1087,18 +786,12 @@ body {
   z-index: 1;
 }
 
-/* Render off-screen sections cheaply without changing their visual result. */
-
-/* Final operations workspace hardening */
-
 .manual-payment-panel {
   display:grid;
   gap: 10px;
   padding-top: 14px;
   border-top: 1px solid #dfdfd8;
 }
-
-/* Returns, refunds and final operations hardening */
 
 .refund-panel {
   margin-top: 0.8rem;
@@ -1114,27 +807,17 @@ body {
 @media (max-width: 640px) {
 }
 
-/* Operations control plane: spacious, scan-friendly and usable on mobile. */
-
 @media (max-width: 760px) {
 }
-
-/* Special requests: sourcing workflow */
 
 .turnstile-wrap {
   min-height: 65px;
 }
 
-/* Production-grade 2D design editor */
-
-/* Enterprise workspace completion */
-
-/* Operations control center */
-
-/* Secure design review */
-
 @media (max-width: 820px) {
 }
+
+
 
 
 
