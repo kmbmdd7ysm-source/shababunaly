@@ -18,7 +18,7 @@ export default defineConfig({
       all: true,
       include: ['src/**/*.{js,jsx,ts,tsx}', 'api/**/*.{js,ts}'],
       exclude: [
-        'src/data/translations.js',
+        'src/data/translations.ts',
         'src/data/legal.ts',
         'src/data/sizeGuide.ts',
         'src/main.jsx',

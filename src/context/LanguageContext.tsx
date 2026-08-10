@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { translations } from '../data/translations.js';
+import { translations } from '../data/translations.ts';
 import { STORAGE_KEYS } from '../config.ts';
 
 export type Lang = 'en' | 'ar';

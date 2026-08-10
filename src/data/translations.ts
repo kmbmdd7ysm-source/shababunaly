@@ -4,7 +4,7 @@
 // files; this file holds interface, navigation, forms and section labels.
 // ============================================================================
 
-export const translations = {
+export const translations: Record<string, Record<string, unknown>> = {
   en: {
     a11y: {
       skip: 'Skip to content',

@@ -4,9 +4,9 @@ import { pathToFileURL } from 'node:url';
 
 const requireApproval = process.env.REQUIRE_ARABIC_REVIEW === 'true';
 const manifest = JSON.parse(readFileSync('arabic-review-manifest.json', 'utf8'));
-const translationSource = readFileSync('src/data/translations.js', 'utf8');
+const translationSource = readFileSync('src/data/translations.ts', 'utf8');
 const translationSourceSha256 = createHash('sha256').update(translationSource).digest('hex');
-const moduleUrl = `${pathToFileURL(`${process.cwd()}/src/data/translations.js`).href}?review=${Date.now()}`;
+const moduleUrl = `${pathToFileURL(`${process.cwd()}/src/data/translations.ts`).href}?review=${Date.now()}`;
 const { translations } = await import(moduleUrl);
 const validReviewDate = (value) => {
   const parsed = Date.parse(String(value || ''));
