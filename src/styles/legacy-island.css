@@ -243,9 +243,6 @@ strong {
   flex-shrink: 0;
 }
 
-@media (min-width: 1000px) {
-}
-
 /* ---------- Mega menu ---------- */
 
 /* ---------- Mobile menu ---------- */
@@ -599,9 +596,6 @@ body {
   color: rgba(255, 255, 255, 0.68);
 }
 
-@media (max-width: 760px) {
-}
-
 /* ========================================================================== 
    LHA 3.0 — WORLD-CLASS CONTRAST & BRAND SYSTEM
    Final authoritative layer. Every surface owns its foreground color.
@@ -668,9 +662,6 @@ main {
 
 [dir='rtl'] p {
   line-height: 1.9;
-}
-
-@media (max-width: 760px) {
 }
 
 /* LHA 100 premium fixes */
@@ -1263,13 +1254,7 @@ from {
   font-weight: 700;
 }
 
-@media (max-width: 768px) {
-}
-
 /* Account production sections */
-
-@media (max-width: 700px) {
-}
 
 /* Commerce preferences */
 
@@ -1564,12 +1549,6 @@ body {
 
 /* Responsive */
 
-@media (max-width: 1180px) {
-}
-
-@media (max-width: 900px) {
-}
-
 @media (max-width: 620px) {.ready-badge {
     padding: 6px 8px;
     font-size: 0.53rem;
@@ -1757,6 +1736,7 @@ body {
     justify-self: start;
   }
 }
+
 
 
 
