@@ -263,9 +263,13 @@ export default function HomePage(): ReactElement {
             <p className="gw-open-kicker">
               {pick({ en: 'Basketball commerce', ar: 'تجارة كرة السلة' })}
             </p>
-            <h1 id="gw-open-title" className="gw-open-title">
-              <span>{pick({ en: 'Built', ar: 'نبني' })}</span>
-              <span className="gw-open-title-out">
+            <h1
+              id="gw-open-title"
+              className="gw-open-title"
+              aria-label={pick({ en: 'Built Different.', ar: 'نبني مختلفين.' })}
+            >
+              <span aria-hidden="true">{pick({ en: 'Built', ar: 'نبني' })}</span>
+              <span className="gw-open-title-out" aria-hidden="true">
                 {pick({ en: 'Different.', ar: 'مختلفين.' })}
               </span>
             </h1>
