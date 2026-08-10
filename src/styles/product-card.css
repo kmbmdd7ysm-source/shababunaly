@@ -73,23 +73,23 @@ a.product-card-name {
 
 
 /* Phase G — image-first fashion/sports retail cards */
-.product-card {
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
+article.product-card.product-card {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   border-radius: 0;
   overflow: visible;
 }
-.product-card-media {
-  border: 0 !important;
+article.product-card .product-card-media {
+  border: 0;
   border-radius: 0;
   aspect-ratio: 3 / 4;
   background: var(--sh-chalk-2, #f4f1ea);
   overflow: hidden;
 }
-.product-card-media::after {
-  content: none !important;
-  display: none !important;
+article.product-card .product-card-media::after {
+  content: none;
+  display: none;
 }
 .product-card-body,
 .product-card-info {
