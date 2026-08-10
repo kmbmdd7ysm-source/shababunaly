@@ -1,9 +1,8 @@
 {
-  "sha": "6ecd6490f02a15056419ed4bf5a916c6b395a231",
-  "generatedAt": "2026-08-10T06:59:49.373430+00:00",
+  "sha": "247306a39b20907b0b85c3e5b1a333957aa09e3c",
+  "generatedAt": "2026-08-10T07:11:23.713848+00:00",
   "performance": 85,
   "accessibility": 100,
-  "lcpMs": 3187,
-  "cls": 0.111,
-  "note": "LH mobile sim CLS~0.11; desktop PO ~0.005. Island ~1758 lines."
+  "lcpMs": 3326,
+  "cls": 0.111
 }

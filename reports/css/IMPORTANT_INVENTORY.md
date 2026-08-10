@@ -1,82 +1,60 @@
-# Remaining !important inventory
+# Remaining !important (56)
 
-Each remaining use must be justified during ownership migration.
+After triad extinction.
 
-Total: 76
-
-- `src/styles/catalogue.css:510:border: 0 !important;`
-- `src/styles/catalogue.css:512:box-shadow: none !important;`
-- `src/styles/catalogue.css:516:border: 0 !important;`
-- `src/styles/catalogue.css:608:display: inline-flex !important;`
-- `src/styles/catalogue.css:610:min-block-size: 24px !important;`
-- `src/styles/command.css:189:animation: none !important;`
-- `src/styles/global.css:2187:animation-duration: 0.001ms !important;`
-- `src/styles/global.css:2188:animation-iteration-count: 1 !important;`
-- `src/styles/global.css:2189:transition-duration: 0.001ms !important;`
-- `src/styles/global.css:2190:scroll-behavior: auto !important;`
-- `src/styles/global.css:3791:fill: #111 !important;`
-- `src/styles/global.css:3792:stroke: #111 !important;`
-- `src/styles/global.css:3908:overflow-wrap: break-word !important;`
-- `src/styles/global.css:3915:overflow-wrap: normal !important;`
-- `src/styles/global.css:3967:overflow-wrap: normal !important;`
-- `src/styles/global.css:3969:hyphens: none !important;`
-- `src/styles/global.css:4034:overflow-wrap: normal !important;`
-- `src/styles/global.css:4184:box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.22) !important;`
-- `src/styles/global.css:4362:translate: none !important;`
-- `src/styles/global.css:4420:overflow-wrap: anywhere !important;`
-- `src/styles/global.css:4461:touch-action: pinch-zoom !important;`
-- `src/styles/global.css:4471:transform-origin: center !important;`
-- `src/styles/global.css:4555:scroll-behavior: auto !important;`
-- `src/styles/global.css:4556:animation-duration: 0.01ms !important;`
-- `src/styles/global.css:4557:animation-iteration-count: 1 !important;`
-- `src/styles/global.css:4558:transition-duration: 0.01ms !important;`
-- `src/styles/global.css:4573:scroll-behavior: auto !important;`
-- `src/styles/global.css:4574:animation-duration: 0.01ms !important;`
-- `src/styles/global.css:4575:animation-iteration-count: 1 !important;`
-- `src/styles/global.css:4576:transition-duration: 0.01ms !important;`
-- `src/styles/global.css:4680:transform: scale(1) !important;`
-- `src/styles/global.css:4684:transform: scale(1.25) !important;`
-- `src/styles/global.css:4688:transform: scale(1.5) !important;`
-- `src/styles/global.css:4692:transform: scale(1.75) !important;`
-- `src/styles/global.css:4696:transform: scale(2) !important;`
-- `src/styles/global.css:4700:transform: scale(2.25) !important;`
-- `src/styles/global.css:4704:transform: scale(2.5) !important;`
-- `src/styles/global.css:4708:transform: scale(2.75) !important;`
-- `src/styles/global.css:4712:transform: scale(3) !important;`
-- `src/styles/journey.css:589:transform: none !important;`
-- `src/styles/lab-home.css:50:pre-existing `html[dir='rtl'] * { letter-spacing: 0 !important }`, a`
-- `src/styles/lab-home.css:54:`!important` with `!important`, which is the cascade war the cleanup phase`
-- `src/styles/ledger.css:498:border-radius: 999px !important;`
-- `src/styles/operations.css:328:animation: none !important;`
-- `src/styles/premium.css:44:transform var(--motion-med) !important;`
-- `src/styles/premium.css:65:transition: transform 0.35s var(--ease-premium) !important;`
-- `src/styles/premium.css:75:background var(--motion-fast) !important;`
-- `src/styles/premium.css:96:box-shadow 0.3s !important;`
-- `src/styles/premium.css:145:transform: translateY(-10px) !important;`
-- `src/styles/premium.css:146:box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12) !important;`
-- `src/styles/premium.css:156:opacity 0.45s !important;`
-- `src/styles/premium.css:168:opacity 0.3s !important;`
-- `src/styles/premium.css:180:background 0.25s !important;`
-- `src/styles/premium.css:285:animation-duration: 0.01ms !important;`
-- `src/styles/premium.css:286:animation-iteration-count: 1 !important;`
-- `src/styles/premium.css:287:scroll-behavior: auto !important;`
-- `src/styles/premium.css:288:transition-duration: 0.01ms !important;`
-- `src/styles/premium.css:614:animation-duration: 0.01ms !important;`
-- `src/styles/premium.css:615:animation-iteration-count: 1 !important;`
-- `src/styles/premium.css:616:transition-duration: 0.01ms !important;`
-- `src/styles/premium.css:617:scroll-behavior: auto !important;`
-- `src/styles/premium.css:1095:animation-duration: 0.01ms !important;`
-- `src/styles/premium.css:1096:animation-iteration-count: 1 !important;`
-- `src/styles/premium.css:1097:transition-duration: 0.01ms !important;`
-- `src/styles/premium.css:1148:animation: none !important;`
-- `src/styles/premium.css:1149:transition-duration: 0.01ms !important;`
-- `src/styles/premium.css:1295:transform: none !important;`
-- `src/styles/premium.css:1397:transform: none !important;`
-- `src/styles/premium.css:1398:filter: none !important;`
-- `src/styles/premium.css:1405:content: none !important;`
-- `src/styles/shell.css:10:`shababuna.css` without needing `!important`.`
-- `src/styles/shell.nav.css:22:padding-inline-start: 0 !important;`
-- `src/styles/stage.css:414:margin-block-start: 6px !important;`
-- `src/styles/stage.css:872:/* global.css carries `.smart-img { background: #fff !important }` — a legacy`
-- `src/styles/stage.css:880:background: transparent !important;`
-- `src/styles/workspace.css:329:with `!important` by the legacy sheet. Putting a chalk plate behind that copy`
+- `catalogue.css:510: border: 0 !important;`
+- `catalogue.css:512: box-shadow: none !important;`
+- `catalogue.css:516: border: 0 !important;`
+- `catalogue.css:608: display: inline-flex !important;`
+- `catalogue.css:610: min-block-size: 24px !important;`
+- `chrome-from-premium.css:9: transform var(--motion-med) !important;`
+- `chrome-from-premium.css:22: transition: transform 0.35s var(--ease-premium) !important;`
+- `chrome2-from-premium.css:57: transform: none !important;`
+- `chrome2-from-premium.css:82: transform: none !important;`
+- `chrome2-from-premium.css:83: filter: none !important;`
+- `chrome2-from-premium.css:90: content: none !important;`
+- `command.css:189: animation: none !important;`
+- `content-from-global.css:69: overflow-wrap: normal !important;`
+- `content-from-global.css:89: overflow-wrap: normal !important;`
+- `content-from-global.css:91: hyphens: none !important;`
+- `content-from-global.css:137: overflow-wrap: normal !important;`
+- `content-from-global.css:165: overflow-wrap: anywhere !important;`
+- `forms-from-global.css:260: overflow-wrap: break-word !important;`
+- `forms-from-premium.css:12: box-shadow 0.3s !important;`
+- `foundation.css:219: scroll-behavior: auto !important;`
+- `foundation.css:220: animation-duration: 0.01ms !important;`
+- `foundation.css:221: animation-iteration-count: 1 !important;`
+- `foundation.css:222: transition-duration: 0.01ms !important;`
+- `journey.css:589: transform: none !important;`
+- `lab-home.css:50: pre-existing `html[dir='rtl'] * { letter-spacing: 0 !important }`, a`
+- `lab-home.css:54: `!important` with `!important`, which is the cascade war the cleanup phase`
+- `ledger.css:498: border-radius: 999px !important;`
+- `media-from-global.css:42: touch-action: pinch-zoom !important;`
+- `media-from-global.css:52: transform-origin: center !important;`
+- `misc-from-global.css:486: fill: #111 !important;`
+- `misc-from-global.css:487: stroke: #111 !important;`
+- `misc-from-premium.css:16: background 0.25s !important;`
+- `operations.css:328: animation: none !important;`
+- `shell.css:10: `shababuna.css` without needing `!important`.`
+- `shell.nav.css:22: padding-inline-start: 0 !important;`
+- `shop-from-premium.css:6: transform: translateY(-10px) !important;`
+- `shop-from-premium.css:7: box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12) !important;`
+- `shop-from-premium.css:17: opacity 0.45s !important;`
+- `shop-from-premium.css:29: opacity 0.3s !important;`
+- `shop-from-premium.css:102: animation: none !important;`
+- `shop-from-premium.css:103: transition-duration: 0.01ms !important;`
+- `shop2-from-global.css:210: box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.22) !important;`
+- `shop2-from-premium.css:11: background var(--motion-fast) !important;`
+- `stage.css:414: margin-block-start: 6px !important;`
+- `stage.css:872: /* global.css carries `.smart-img { background: #fff !important }` — a legacy`
+- `stage.css:880: background: transparent !important;`
+- `studio2-from-global.css:60: transform: scale(1) !important;`
+- `studio2-from-global.css:64: transform: scale(1.25) !important;`
+- `studio2-from-global.css:68: transform: scale(1.5) !important;`
+- `studio2-from-global.css:72: transform: scale(1.75) !important;`
+- `studio2-from-global.css:76: transform: scale(2) !important;`
+- `studio2-from-global.css:80: transform: scale(2.25) !important;`
+- `studio2-from-global.css:84: transform: scale(2.5) !important;`
+- `studio2-from-global.css:88: transform: scale(2.75) !important;`
+- `studio2-from-global.css:92: transform: scale(3) !important;`
+- `workspace.css:329: with `!important` by the legacy sheet. Putting a chalk plate behind that copy`
