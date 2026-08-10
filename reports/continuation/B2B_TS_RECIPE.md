@@ -13,3 +13,9 @@ once ambient `.d.ts` was removed.
 6. `npx tsc --noEmit` must be EXIT 0 before deleting ambient permanently
 
 Do not use `@ts-nocheck` or `any`.
+
+## Attempt notes (91c668a+)
+Bulk `Record<string, unknown>` on destructured export params reduces implicit-any count
+but turns property access into `unknown` (TS18046) and breaks Supabase client typing.
+Prefer explicit interfaces per export (as in the previous ambient `b2b.d.ts`) written
+into the `.ts` file, then migrate internals function-by-function.
