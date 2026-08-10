@@ -135,11 +135,16 @@ export function getVariantPurchaseLimit(
 
 export function isReadyToShipEligible(
   product: ProductLike | null | undefined,
-  countryCode = 'LY',
+  _countryCode = 'LY',
 ): boolean {
-  if (!product || countryCode !== 'LY' || !isProductPublishable(product)) return false;
+  // Destination remains globally discoverable. Inventory is Libya-held; shipping
+  // caveats are UX copy — do not hide eligible stock from international shoppers.
+  void _countryCode;
+  if (!product || !isProductPublishable(product)) return false;
   if (product.readyToShip !== true || product.inventoryTracking !== true) return false;
   if (String(product.inventoryLocation || '').toUpperCase() !== 'LY') return false;
+  // Prefer explicit verification when present; never invent stock.
+  if (product.inventoryVerified === false) return false;
   return Array.isArray(product.variants)
     ? product.variants.some(
         (variant) =>
