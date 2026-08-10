@@ -1,9 +1,9 @@
 {
   "status": "migration_required",
-  "generatedAt": "2026-08-09T23:38:41.914Z",
-  "sourceFiles": 302,
-  "strictFiles": 290,
-  "strictCoveragePercent": 96.03,
+  "generatedAt": "2026-08-10T00:02:34.521Z",
+  "sourceFiles": 303,
+  "strictFiles": 291,
+  "strictCoveragePercent": 96.04,
   "legacyFiles": [
     "src/components/product/engines/Realtime3DEngine.jsx",
     "src/data/generatedOptimizedImages.js",
@@ -29,5 +29,5 @@
     "noImplicitOverride": true,
     "skipLibCheck": false
   },
-  "note": "Strict coverage counts TypeScript source files under src/ and api/. Remaining .js/.jsx files are migrated progressively; npm run typecheck checks all .ts/.tsx under full strictness."
+  "note": "Strict coverage counts TypeScript source files under src/ and api/. Remaining .js/.jsx files keep ambient .d.ts bridges where model-viewer/data/services block full migration."
 }
