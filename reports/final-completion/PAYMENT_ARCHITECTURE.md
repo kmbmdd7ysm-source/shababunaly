@@ -7,3 +7,8 @@
 - Mock/path verification: see `npm run test:integrations` / provider readiness scripts
 
 Do not mark LIVE_VERIFIED without real provider credentials.
+
+## Runtime probe (staging-safe)
+- `isPaymentsConfigured()` reflects env
+- Unconfigured providers must never report LIVE_VERIFIED
+- Mock path available via VITE_PAYMENTS_MOCK
