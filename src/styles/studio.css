@@ -954,3 +954,38 @@
 .gw-toolbench--stage-first .gw-garment-stage--canvas {
   min-block-size: min(58vh, 520px);
 }
+
+/* Floating design tool rail — stage-first configurator language */
+.gw-lab[data-step='design'] .gw-toolbench-grid.design-control-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+  background: rgb(12 12 12 / 0.72);
+  backdrop-filter: blur(10px);
+  border: 0;
+}
+
+.gw-lab[data-step='design'] .gw-toolbench-grid.design-control-grid label {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.gw-lab[data-step='design'] .gw-toolbench-grid.design-control-grid select,
+.gw-lab[data-step='design'] .gw-toolbench-grid.design-control-grid input {
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.04);
+  color: inherit;
+  padding: 0.55rem 0.85rem;
+}
+
+@media (max-width: 899px) {
+  .gw-lab[data-step='design'] .gw-toolbench-grid.design-control-grid {
+    position: sticky;
+    bottom: 0.5rem;
+    z-index: 3;
+  }
+}

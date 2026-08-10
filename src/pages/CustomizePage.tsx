@@ -44,6 +44,11 @@ import '../styles/studio.css';
 import ProductStep from '../components/custom/studio/ProductStep';
 import ModelStep from '../components/custom/studio/ModelStep';
 
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return (value && typeof value === 'object' ? value : {}) as Record<string, unknown>;
+}
+
 const Garment3DStage = lazy(() => import('../components/custom/Garment3DStage'));
 
 const STEPS = [
@@ -148,7 +153,7 @@ export default function CustomizePage(): ReactElement {
     ...(DEFAULT_CUSTOM_DESIGN as Record<string, unknown>),
     productType: initialType,
     quantity: initialProduct.minimum,
-    studio: createDefaultStudio(DEFAULT_CUSTOM_DESIGN as never),
+    studio: createDefaultStudio(asRecord(DEFAULT_CUSTOM_DESIGN)),
   });
   const [roster, setRoster] = useState<Array<Record<string, unknown>>>([]);
   const [productFamily, setProductFamily] = useState<string | null>(null);
@@ -741,8 +746,8 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
               <section className="gw-toolbench" aria-labelledby="custom-design-title">
                 <header className="gw-toolbench-head">
                   <div>
-                    <p className="gw-spec">
-                      {pick({ en: 'Design laboratory', ar: 'مختبر التصميم' })}
+                    <p className="gw-kicker">
+                      {pick({ en: 'Design', ar: 'التصميم' })}
                     </p>
                     <h2 id="custom-design-title" className="gw-toolbench-title">
                       {pick({ en: 'Build the visual direction', ar: 'ابنِ الاتجاه البصري' })}
