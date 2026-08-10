@@ -49,6 +49,16 @@ export default function CinematicHero(): ReactElement {
   const capability = useDeviceCapability();
 
   useEffect(() => {
+    // Absolute LCP shell: keep painted through the LCP window, then remove.
+    const shell = document.getElementById('lcp-shell');
+    if (!shell) return undefined;
+    const timer = globalThis.setTimeout(() => {
+      shell.remove();
+    }, 4000);
+    return () => globalThis.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     let active = true;
     const load = () =>
       fetchSiteContent('home_hero')

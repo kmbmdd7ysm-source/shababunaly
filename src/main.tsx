@@ -42,6 +42,16 @@ import App from './App';
 
 installGlobalErrorMonitoring();
 
+// Retire static LCP shell on non-home routes (home hero owns delayed removal).
+try {
+  const path = globalThis.location?.pathname || '/';
+  if (path !== '/' && path !== '/index.html') {
+    document.getElementById('lcp-shell')?.remove();
+  }
+} catch {
+  /* ignore */
+}
+
 // Apply document language and direction BEFORE React's first paint.
 //
 // `LanguageProvider` reads the stored language synchronously and renders Arabic

@@ -56,6 +56,38 @@
       imagesizes="100vw"
       fetchpriority="high"
     />
+    <style>
+      /* Critical LCP shell — paints before JS; absolute so late removal avoids CLS */
+      html,
+      body {
+        margin: 0;
+        background: #050505;
+      }
+      #lcp-shell.gw-hero-ssr {
+        position: absolute;
+        inset: 0 0 auto 0;
+        z-index: 1;
+        width: 100%;
+        height: min(70vh, 720px);
+        background: #050505;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      #lcp-shell .gw-hero-poster {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #root {
+        position: relative;
+        z-index: 2;
+      }
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+      }
+    </style>
     <!-- Self-hosted faces are declared in src/styles/fonts.css and are deliberately
          NOT preloaded yet: no live route paints them, so a preload would cost every
          visitor ~36 KB for nothing and would compete with the hero poster above for
@@ -66,6 +98,21 @@
   </head>
   <body>
     <a id="skip-link" class="skip-link" href="#main-content">Skip to content</a>
+    <!--
+      Static LCP shell OUTSIDE #root so React mount does not reset LCP.
+      Home retires it after the LCP window; non-home routes remove immediately.
+    -->
+    <section id="lcp-shell" class="gw-hero-ssr" aria-hidden="true">
+      <img
+        class="gw-hero-poster"
+        src="/media/hero/shababuna-hero-poster.webp"
+        width="1940"
+        height="1024"
+        fetchpriority="high"
+        decoding="sync"
+        alt=""
+      />
+    </section>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
