@@ -616,7 +616,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
           <div className="gw-lab-stage-inner">
             {/* Model step: WebGL concept stage commands the viewport.
                 Design+ later: 2D production editor remains available. */}
-            {step === 'model' ? (
+            {step === 'model' || step === 'design' ? (
               <Suspense
                 fallback={
                   <p className="gw-garment-help" role="status">
