@@ -53,8 +53,21 @@
   margin-block-end: clamp(24px, 4vh, 48px);
 }
 
-.gw-act-head .gw-spec {
+.gw-act-head .gw-spec,
+.gw-act-head .gw-kicker {
   margin: 0 0 var(--sh-s-2);
+}
+
+/* Commerce eyebrow — calm label, not dossier stamp */
+.gw-kicker {
+  margin: 0;
+  font-family: var(--sh-font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: inherit;
+  opacity: 0.72;
 }
 
 .gw-act-title {
@@ -147,8 +160,11 @@
 }
 
 .gw-act--open .gw-spec,
+.gw-act--open .gw-kicker,
 .gw-act--roster .gw-spec,
-.gw-act--signoff .gw-spec {
+.gw-act--roster .gw-kicker,
+.gw-act--signoff .gw-spec,
+.gw-act--signoff .gw-kicker {
   color: var(--sh-night-ink-70);
 }
 
@@ -879,6 +895,7 @@
 }
 
 .gw-act--game .gw-spec,
+.gw-act--game .gw-kicker,
 .gw-act--game .gw-act-body {
   color: var(--sh-night-ink-70);
 }
@@ -986,6 +1003,7 @@
 }
 
 .gw-act--brand .gw-spec,
+.gw-act--brand .gw-kicker,
 .gw-act--brand .gw-act-body {
   color: var(--sh-night-ink-70);
 }

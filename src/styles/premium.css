@@ -141,14 +141,7 @@ body {
 }
 
 .product-card,
-.program-card,
-.event-card,
-.training-card,
-.product-card:hover,
-.program-card:hover,
-.event-card:hover,
-.training-card:hover,
-.coach-card:hover {
+.product-card:hover {
   transform: translateY(-10px) !important;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12) !important;
 }
@@ -630,14 +623,6 @@ from {
 
 /* LHA production account, sync and PWA completion */
 
-.account-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: end;
-  margin-bottom: 32px;
-}
-
 .account-layout {
   display: grid;
   grid-template-columns: minmax(180px, 240px) 1fr;
@@ -746,11 +731,7 @@ from {
   color: inherit;
 }
 
-@media (max-width: 768px) {
-.account-heading {
-    align-items: start;
-    flex-direction: column;
-  }.account-layout {
+@media (max-width: 768px) {.account-layout {
     grid-template-columns: 1fr;
   }.account-nav {
     flex-direction: row;
@@ -850,30 +831,10 @@ from {
 
 /* Commerce preferences */
 
-.currency-selector {
-  display: inline-flex;
-  align-items: center;
-}
-
-.currency-selector select {
-  min-height: 44px;
-  border: 1px solid currentColor;
-  background: transparent;
-  color: inherit;
-  padding: 0 30px 0 10px;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .currency-selector.compact select {
   min-height: 38px;
   padding-inline: 8px 24px;
   font-size: 0.78rem;
-}
-
-[dir='rtl'] .currency-selector select {
-  padding: 0 10px 0 30px;
 }
 
 .checkout-form select,
@@ -888,8 +849,7 @@ from {
 }
 
 .checkout-form select:focus-visible,
-.address-form select:focus-visible,
-.currency-selector select:focus-visible {
+.address-form select:focus-visible {
   outline: 3px solid currentColor;
   outline-offset: 2px;
 }
@@ -915,9 +875,7 @@ from {
   padding: 0 12px 0 44px;
 }
 
-.country-combobox > input[role='combobox']:focus-visible,
-.country-combobox__toggle:focus-visible,
-.country-combobox__option:focus-visible {
+.country-combobox > input[role='combobox']:focus-visible {
   outline: 3px solid #111;
   outline-offset: 2px;
 }
@@ -938,14 +896,12 @@ from {
   box-shadow: 0 18px 50px rgb(0 0 0 / 18%);
 }
 
-.country-combobox__option.is-active,
-.country-combobox__option[aria-selected='true'] {
+.country-combobox__option.is-active {
   background: #111;
   color: #fff;
 }
 
-.country-combobox__option.is-active small,
-.country-combobox__option[aria-selected='true'] small {
+.country-combobox__option.is-active small {
   color: #ddd;
 }
 
@@ -1107,8 +1063,7 @@ button:disabled,
 
 .product-card-img,
 @media (hover: hover) and (pointer: fine) {
-.product-card-media:hover .product-card-img--main,
-  .gallery-open:hover .gallery-image {
+.product-card-media:hover .product-card-img--main {
     transform: scale(1.018);
   }
 }
@@ -1141,8 +1096,7 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }.product-card:hover,
-  .product-card-media:hover .product-card-img--main,
-  .gallery-open:hover .gallery-image {
+  .product-card-media:hover .product-card-img--main {
     transform: none;
   }
 }
@@ -1154,8 +1108,6 @@ html {
     padding: 12px 10px 14px;
   }.product-card-name {
     line-height: 1.28;
-  }.hero-actions > * {
-    min-height: 48px;
   }
 }
 
@@ -1222,11 +1174,6 @@ main,
 }
 
 .mobile-menu-head .brand {
-  min-width: 0;
-}
-
-.mobile-menu-foot > * {
-  width: 100%;
   min-width: 0;
 }
 
@@ -1312,9 +1259,6 @@ main,
   margin-inline-start: auto;
 }
 
-.product-layout > *,
-.product-info,
-.product-gallery,
 .gallery-main {
   min-width: 0;
 }
@@ -1490,19 +1434,8 @@ main,
 }
 
 .product-card-img,
-.category-card-img,
-.program-card-img,
-.event-card-img,
-.training-card-img,
-/* Mobile performance hardening: preserve the visual design while keeping the
-   first paint limited to the poster and above-the-fold content. */
-
 .home-deferred-anchor.is-ready {
   min-height: 0;
-}
-
-.deferred-footer {
-  min-height: min(560px, 70vh);
 }
 
 .deferred-footer.is-ready {

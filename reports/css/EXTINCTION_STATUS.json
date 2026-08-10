@@ -1,19 +1,201 @@
 {
-  "sha": "4efc77952123aff7edd149500a519a4dd659e9d1",
-  "legacyDeferred": true,
-  "important": {
-    "global": 68,
-    "premium": 37,
-    "shababuna": 0
-  },
-  "next": "Relocate remaining valid rules from global/premium into route/component CSS then delete obsolete selectors",
-  "remainingJsx": [
-    "components/account/OrganizationWorkspace.jsx",
-    "components/custom/DesignPreview.jsx",
-    "components/custom/ProductionDesignEditor.jsx",
-    "components/operations/OperationsCommerceModules.jsx",
-    "components/operations/OperationsEnterpriseModules.jsx",
-    "components/operations/OperationsMasterData.jsx",
-    "components/product/engines/Realtime3DEngine.jsx"
-  ]
+  "sha": "02842248d863a80edbad48b131b273b1bc7a536d",
+  "generatedAt": "2026-08-10T05:30:40.780039+00:00",
+  "legacyTriadLines": 9292,
+  "totalStyleLines": 24269,
+  "importantTotal": 77,
+  "idleLegacyLoadRemoved": true,
+  "files": [
+    {
+      "file": "src/styles/account-sync.css",
+      "lines": 112,
+      "important": 0
+    },
+    {
+      "file": "src/styles/account.css",
+      "lines": 466,
+      "important": 0
+    },
+    {
+      "file": "src/styles/buildmarker.css",
+      "lines": 84,
+      "important": 0
+    },
+    {
+      "file": "src/styles/catalog.css",
+      "lines": 639,
+      "important": 0
+    },
+    {
+      "file": "src/styles/catalogue.css",
+      "lines": 612,
+      "important": 5
+    },
+    {
+      "file": "src/styles/checkout.css",
+      "lines": 285,
+      "important": 0
+    },
+    {
+      "file": "src/styles/colophon.css",
+      "lines": 343,
+      "important": 0
+    },
+    {
+      "file": "src/styles/command.css",
+      "lines": 244,
+      "important": 1
+    },
+    {
+      "file": "src/styles/composition.css",
+      "lines": 1668,
+      "important": 0
+    },
+    {
+      "file": "src/styles/content.css",
+      "lines": 272,
+      "important": 0
+    },
+    {
+      "file": "src/styles/fonts.css",
+      "lines": 102,
+      "important": 0
+    },
+    {
+      "file": "src/styles/foundation.css",
+      "lines": 136,
+      "important": 0
+    },
+    {
+      "file": "src/styles/geometry.css",
+      "lines": 314,
+      "important": 0
+    },
+    {
+      "file": "src/styles/global.css",
+      "lines": 4713,
+      "important": 33
+    },
+    {
+      "file": "src/styles/home.css",
+      "lines": 447,
+      "important": 0
+    },
+    {
+      "file": "src/styles/index.css",
+      "lines": 20,
+      "important": 0
+    },
+    {
+      "file": "src/styles/journey.css",
+      "lines": 1042,
+      "important": 1
+    },
+    {
+      "file": "src/styles/lab-home.css",
+      "lines": 226,
+      "important": 3
+    },
+    {
+      "file": "src/styles/layout.css",
+      "lines": 371,
+      "important": 0
+    },
+    {
+      "file": "src/styles/ledger.css",
+      "lines": 522,
+      "important": 1
+    },
+    {
+      "file": "src/styles/masthead.css",
+      "lines": 580,
+      "important": 0
+    },
+    {
+      "file": "src/styles/motion.css",
+      "lines": 192,
+      "important": 0
+    },
+    {
+      "file": "src/styles/operations.css",
+      "lines": 361,
+      "important": 1
+    },
+    {
+      "file": "src/styles/premium.css",
+      "lines": 1530,
+      "important": 26
+    },
+    {
+      "file": "src/styles/product-card.css",
+      "lines": 232,
+      "important": 0
+    },
+    {
+      "file": "src/styles/product.css",
+      "lines": 127,
+      "important": 0
+    },
+    {
+      "file": "src/styles/runs.css",
+      "lines": 779,
+      "important": 0
+    },
+    {
+      "file": "src/styles/shababuna.css",
+      "lines": 3049,
+      "important": 0
+    },
+    {
+      "file": "src/styles/shell.css",
+      "lines": 294,
+      "important": 1
+    },
+    {
+      "file": "src/styles/shell.nav.css",
+      "lines": 540,
+      "important": 1
+    },
+    {
+      "file": "src/styles/spine.css",
+      "lines": 367,
+      "important": 0
+    },
+    {
+      "file": "src/styles/stage.css",
+      "lines": 935,
+      "important": 3
+    },
+    {
+      "file": "src/styles/studio.css",
+      "lines": 948,
+      "important": 0
+    },
+    {
+      "file": "src/styles/sysbanner.css",
+      "lines": 171,
+      "important": 0
+    },
+    {
+      "file": "src/styles/tokens.css",
+      "lines": 268,
+      "important": 0
+    },
+    {
+      "file": "src/styles/transact.css",
+      "lines": 637,
+      "important": 0
+    },
+    {
+      "file": "src/styles/typography.css",
+      "lines": 184,
+      "important": 0
+    },
+    {
+      "file": "src/styles/workspace.css",
+      "lines": 457,
+      "important": 1
+    }
+  ],
+  "note": "PostCSS AST cull of unused selectors; deferred idle load removed to prevent cascade flash."
 }

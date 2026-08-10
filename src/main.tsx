@@ -14,11 +14,10 @@ import { installGlobalErrorMonitoring } from './services/telemetry';
 import ProductionReadinessGate from './components/security/ProductionReadinessGate';
 import { STORAGE_KEYS } from './config';
 /*
- * CSS architecture (Phase 2 extinction):
- * Eager global foundation only — reset/tokens/typography/layout/shell.
- * Legacy visual systems (global/premium/shababuna) load after first paint so
- * main entry no longer synchronously ships three giant cascade layers.
- * Route/domain sheets continue to load with the routes that need them.
+ * CSS architecture (extinction in progress):
+ * Eager foundation + remaining shared legacy islands (no idle/post-paint inject —
+ * deferred legacy caused cascade flash / CLS). Route sheets stay with routes.
+ * Continue deleting unused rules from global/premium/shababuna until empty.
  */
 import './styles/foundation.css';
 import './styles/tokens.css';
@@ -28,17 +27,9 @@ import './styles/motion.css';
 import './styles/geometry.css';
 import './styles/layout.css';
 import './styles/shell.css';
-
-const loadLegacyVisualSystems = () => {
-  void import('./styles/global.css');
-  void import('./styles/premium.css');
-  void import('./styles/shababuna.css');
-};
-if (typeof window !== 'undefined') {
-  if (typeof window.requestIdleCallback === 'function')
-    window.requestIdleCallback(loadLegacyVisualSystems, { timeout: 900 });
-  else window.setTimeout(loadLegacyVisualSystems, 0);
-}
+import './styles/global.css';
+import './styles/premium.css';
+import './styles/shababuna.css';
 /* shell.nav / colophon / masthead load with Header, Footer, and route shells. */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,

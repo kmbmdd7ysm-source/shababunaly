@@ -1,0 +1,20 @@
+{
+  "schema": "shababuna.release.evidence.v1",
+  "sha": "02842248d863a80edbad48b131b273b1bc7a536d",
+  "branch": "cursor/shababuna-redesign-master-plan-dc14",
+  "generatedAt": "2026-08-10T05:24:18.185Z",
+  "nodeVersion": "v22.14.0",
+  "npmVersion": "10.9.7",
+  "workingTree": "clean",
+  "typescript": {
+    "coveragePercent": 100.0,
+    "sourceFiles": 294,
+    "strictFiles": 294,
+    "legacyFiles": [],
+    "report": "reports/typescript/strictness.json"
+  },
+  "archivedStaleCount": 9,
+  "archivedTo": "reports/historical/20260810T052418Z",
+  "status": "in_progress",
+  "verdict": null
+}

@@ -1,26 +1,25 @@
-import ReadinessBanner from './ReadinessBanner';
-import AnnouncementBar from './AnnouncementBar';
+import type { ReactElement } from 'react';
+import AnnouncementStack from './AnnouncementStack';
 import MainHeader from './MainHeader';
 import '../../styles/sysbanner.css';
 import '../../styles/shell.nav.css';
 
 /**
- * ONE coordinated chrome stack:
- *   GlobalChrome
- *   ├── ReadinessBanner
- *   ├── AnnouncementBar
- *   └── MainHeader
+ * Authoritative global chrome — single ownership, no bridge duplicates.
  *
- * Owns stacking, sticky offsets, safe areas, dismiss height collapse,
- * mobile and RTL behaviour. Banners stay in document flow so they never
- * cover logo/menu/content.
+ * GlobalChrome
+ *   AnnouncementStack (readiness + shipping/commerce dismissibles)
+ *   MainHeader
+ *     MainNavigation · UtilityNavigation · Search · LocaleCurrency · MobileNavigation
+ *
+ * Banners stay in document flow so dismiss never covers logo/menu.
+ * Ready to Ship remains discoverable worldwide via header mega menu + footer.
  */
-export default function GlobalChrome() {
+export default function GlobalChrome(): ReactElement {
   return (
     <div className="gw-chrome">
       <div className="gw-chrome-sticky">
-        <ReadinessBanner />
-        <AnnouncementBar />
+        <AnnouncementStack />
         <MainHeader />
       </div>
     </div>

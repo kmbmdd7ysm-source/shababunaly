@@ -293,7 +293,7 @@ export default function HomePage(): ReactElement {
                 <span>{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</span>
               </Link>
             </div>
-            <p className="gw-spec gw-open-place">{pick(SITE.address)}</p>
+            <p className="gw-kicker gw-open-place">{pick(SITE.address)}</p>
           </div>
         </section>
 
@@ -316,7 +316,7 @@ export default function HomePage(): ReactElement {
           </picture>
           <div className="gw-act-inner gw-game-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: 'The game', ar: 'اللعبة' })}</p>
+              <p className="gw-kicker">{pick({ en: 'The game', ar: 'اللعبة' })}</p>
               <h2 id="gw-game-title" className="gw-act-title">
                 {pick({
                   en: 'Built for how basketball actually moves.',
@@ -347,7 +347,7 @@ export default function HomePage(): ReactElement {
         <section id="floor" className="gw-act gw-act--floor" aria-labelledby="gw-floor-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: 'The floor', ar: 'الأرضية' })}</p>
+              <p className="gw-kicker">{pick({ en: 'The floor', ar: 'الأرضية' })}</p>
               <h2 id="gw-floor-title" className="gw-act-title">
                 {pick({ en: 'Everything basketball needs', ar: 'كل ما تحتاجه كرة السلة' })}
               </h2>
@@ -373,7 +373,7 @@ export default function HomePage(): ReactElement {
         <section id="stock" className="gw-act gw-act--stock" aria-labelledby="gw-stock-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">
+              <p className="gw-kicker">
                 {pick({
                   en: isLibya ? 'Held in Libya' : 'Inventory in Libya',
                   ar: isLibya ? 'مخزون في ليبيا' : 'المخزون في ليبيا',
@@ -475,7 +475,7 @@ export default function HomePage(): ReactElement {
         <section id="roster" className="gw-act gw-act--roster" aria-labelledby="gw-roster-title">
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</p>
               <h2 id="gw-roster-title" className="gw-act-title">
                 {pick({ en: 'One order. The whole organization.', ar: 'طلب واحد. المؤسسة كاملة.' })}
               </h2>
@@ -524,7 +524,7 @@ export default function HomePage(): ReactElement {
         >
           <div className="gw-act-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: 'On the floor', ar: 'على الأرض' })}</p>
+              <p className="gw-kicker">{pick({ en: 'On the floor', ar: 'على الأرض' })}</p>
               <h2 id="gw-equipment-title" className="gw-act-title">
                 {pick({ en: 'In-court. Off-court.', ar: 'داخل الملعب. خارجه.' })}
               </h2>
@@ -544,7 +544,7 @@ export default function HomePage(): ReactElement {
         <section id="brand" className="gw-act gw-act--brand" aria-labelledby="gw-brand-title">
           <div className="gw-act-inner gw-brand-inner">
             <header className="gw-act-head">
-              <p className="gw-spec">{pick({ en: 'Shababuna', ar: 'شبابنا' })}</p>
+              <p className="gw-kicker">{pick({ en: 'Shababuna', ar: 'شبابنا' })}</p>
               <h2 id="gw-brand-title" className="gw-act-title">
                 {pick({
                   en: 'More than a basketball store.',
@@ -615,7 +615,7 @@ export default function HomePage(): ReactElement {
               loading="lazy"
               decoding="async"
             />
-            <p className="gw-spec">{pick({ en: 'Official LHA store', ar: 'متجر LHA الرسمي' })}</p>
+            <p className="gw-kicker">{pick({ en: 'Official LHA store', ar: 'متجر LHA الرسمي' })}</p>
             <h2 id="gw-signoff-title" className="gw-act-title">
               {pick({ en: 'All LHA clothing and accessories.', ar: 'جميع ملابس وإكسسوارات LHA.' })}
             </h2>

@@ -64,8 +64,7 @@ body {
   text-wrap: balance;
 }
 
-.lead,
-.section-intro {
+.lead {
   max-width: 760px;
   font-size: clamp(1.03rem, 1.5vw, 1.35rem);
   line-height: 1.65;
@@ -168,7 +167,6 @@ body {
   background: #fff;
 }
 
-.mobile-link,
 .mobile-accordion-btn {
   min-height: 62px;
   font-size: 1.08rem;
@@ -898,16 +896,9 @@ body {
     display: none;
   }.header-inner {
     min-height: 72px;
-  }.cinematic-split-grid,
-  .team-home-grid,
-  .custom-studio-grid,
-  .quote-layout,
-  .checkout-layout--spacious,
-  .contact-grid {
+  }.quote-layout {
     grid-template-columns: 1fr;
-  }.jersey-stage,
-  .product-info,
-  .checkout-summary {
+  }.checkout-summary {
     position: relative;
     top: auto;
   }.gallery-main {
@@ -948,11 +939,8 @@ body {
     grid-template-columns: 1fr;
   }.commerce-welcome-panel {
     padding: 34px 22px;
-  }.custom-type-grid,
-  .custom-control-row,
-  .field-row,
-  .payment-plan-grid,
-  .purchase-mode {
+  }.field-row,
+  .payment-plan-grid {
     grid-template-columns: 1fr;
   }.package-grid,
   .process-grid,
@@ -1724,11 +1712,7 @@ body {
 /* Render off-screen sections cheaply without changing their visual result. */
 
 @supports (content-visibility: auto) {
-.home-departments,
-  .cinematic-split,
-  .team-home-grid,
-  .lha-home-band,
-  .account-capabilities,
+.account-capabilities,
   .operations-section {
     content-visibility: auto;
     contain-intrinsic-size: 1px 760px;
@@ -1755,8 +1739,7 @@ body {
   }.studio-steps button {
     min-height: 56px;
     font-size: 0.78rem;
-  }.custom-product-grid,
-  .design-control-grid,
+  }.design-control-grid,
   .design-copy-grid,
   .design-upload-grid,
   .review-facts,
@@ -1770,8 +1753,7 @@ body {
     grid-row: auto;
   }.design-preview svg {
     min-height: 260px;
-  }.studio-section-heading,
-  .organization-upgrade-card,
+  }.organization-upgrade-card,
   .roster-summary {
     align-items: stretch;
     flex-direction: column;
