@@ -30,6 +30,8 @@ import './styles/shell.css';
 import './styles/global.css';
 import './styles/premium.css';
 import './styles/shababuna.css';
+import './styles/media-from-premium.css';
+import './styles/media-from-global.css';
 import './styles/layout-legacy-from-shababuna.css';
 import './styles/layout-legacy-from-premium.css';
 import './styles/layout-legacy-from-global.css';

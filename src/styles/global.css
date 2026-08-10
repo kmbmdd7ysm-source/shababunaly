@@ -1747,9 +1747,6 @@ html[dir='rtl'] * {
   font-size: 3rem;
 }
 
-@media (max-width: 720px) {
-}
-
 /* Final mobile utility, search, help and order pass */
 
 .search-overlay {
@@ -2877,17 +2874,6 @@ html,
 
 /* Final launch fixes */
 
-.media-lightbox {
-  position:fixed;
-  inset: 0;
-  z-index: 3000;
-  background: rgba(0, 0, 0, 0.92);
-  display:grid;
-  place-items:center;
-  padding: 72px 16px 52px;
-  overflow:hidden;
-}
-
 .lightbox-stage {
   width: min(1100px, 100%);
   height: min(78dvh, 900px);
@@ -2915,10 +2901,7 @@ html,
   z-index: 2;
 }
 
-@media (max-width: 760px) {
-.media-lightbox {
-    padding: 76px 8px 52px;
-  }.lightbox-stage {
+@media (max-width: 760px) {.lightbox-stage {
     width: 100%;
     height: calc(100dvh - 140px);
   }.lightbox-nav {
@@ -2928,73 +2911,7 @@ html,
 
 /* Reliable product image viewer: white, viewport-bound, and immediately visible on mobile/desktop. */
 
-.media-lightbox {
-  position:fixed;
-  inset: 0;
-  z-index: 10000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width: 100vw;
-  height: 100dvh;
-  padding: 64px 64px 56px;
-  background: #fff;
-  color: #111;
-  overflow:hidden;
-}
-
-.media-lightbox .lightbox-stage {
-  width: 100%;
-  height: 100%;
-  max-width: 1200px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background: #fff;
-  overflow:auto;
-  touch-action: pinch-zoom !important;
-}
-
-.media-lightbox .lightbox-stage img {
-  display:block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit:contain;
-  transform-origin: center !important;
-}
-
-.media-lightbox .lightbox-close,
-.media-lightbox .lightbox-nav,
-.media-lightbox .lightbox-tools button {
-  color: #111;
-  background: rgba(255, 255, 255, 0.94);
-  border-color: rgba(0, 0, 0, 0.28);
-}
-
-.media-lightbox .lightbox-close {
-  position:fixed;
-  top: max(16px, env(safe-area-inset-top));
-  right: 16px;
-}
-
-.media-lightbox .lightbox-tools {
-  color: #111;
-}
-
 @media (max-width: 760px) {
-.media-lightbox {
-    padding: calc(64px + env(safe-area-inset-top)) 8px calc(44px + env(safe-area-inset-bottom));
-  }.media-lightbox .lightbox-stage {
-    width: 100%;
-    height: 100%;
-  }.media-lightbox .lightbox-stage img {
-    max-width: 100%;
-    max-height: 100%;
-  }.media-lightbox .lightbox-nav {
-    display:none;
-  }
 }
 
 /* LHA branded 404 */
@@ -3019,21 +2936,6 @@ html,
 /* Cross-device catalogue media hardening */
 
 /* Final launch media reliability: desktop and mobile use the same visible media rules. */
-
-.event-card-media > .smart-img,
-.program-card-media > .smart-img,
-.training-card-media > .smart-img {
-  display:block;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  opacity: 1;
-  visibility:visible;
-  object-fit:cover;
-  object-position:center;
-  transform: none;
-}
 
 .size-pill.out,
 .size-pill:disabled {
@@ -3112,22 +3014,6 @@ body.scroll-locked {
   overscroll-behavior: none;
 }
 
-.smart-img--fallback.ratio-16-9 {
-  aspect-ratio: 16 / 9;
-}
-
-.smart-img--fallback.ratio-3-2 {
-  aspect-ratio: 3 / 2;
-}
-
-.smart-img--fallback.ratio-4-5 {
-  aspect-ratio: 4 / 5;
-}
-
-.smart-img--fallback.ratio-1-1 {
-  aspect-ratio: 1 / 1;
-}
-
 .freeship-progress {
   width: 100%;
   height: 6px;
@@ -3197,6 +3083,8 @@ body.scroll-locked {
 .lightbox-stage img.lightbox-zoom-300 {
   transform: scale(3) !important;
 }
+
+
 
 
 
