@@ -1,0 +1,146 @@
+/* tail shababuna */
+
+
+.display-title {
+  font-size: clamp(2.8rem, 7.2vw, 7.6rem);
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+  text-wrap: balance;
+}
+
+.gallery-main {
+  background: #f2f2f0;
+  min-height: 650px;
+}
+
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--sha-line);
+  border-left: 1px solid var(--sha-line);
+}
+
+[dir='rtl'] .capability-grid {
+  border-left: 0;
+  border-right: 1px solid var(--sha-line);
+}
+
+.capability-grid > div,
+.capability-grid > article {
+  min-height: 220px;
+  padding: 28px;
+  border-right: 1px solid var(--sha-line);
+  border-bottom: 1px solid var(--sha-line);
+}
+
+.capability-grid span {
+  display: block;
+  margin-bottom: 50px;
+  color: #999;
+  font-weight: 800;
+}
+
+.capability-grid p {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.lha-store-hero {
+  min-height: 520px;
+  background: #050505;
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  padding-block: 90px;
+}
+
+.lha-store-hero img {
+  width: min(420px, 80vw);
+  max-height: 125px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+[dir='rtl'] .lha-store-hero img {
+  object-position: right center;
+}
+
+.lha-store-hero h1 {
+  font-size: clamp(3rem, 7vw, 8rem);
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+}
+
+.lha-store-hero span {
+  color: rgba(255, 255, 255, 0.64);
+  max-width: 740px;
+}
+
+.field {
+  gap: 8px;
+}
+
+.field > span:first-child {
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.06em;
+}
+
+.field input,
+.field select,
+.field textarea {
+  min-height: 54px;
+  border: 1px solid rgba(5, 5, 5, 0.22);
+  border-radius: 0;
+  background: #fff;
+  padding-inline: 15px;
+}
+
+.field textarea {
+  padding-block: 15px;
+}.gallery-main {
+    min-height: 520px;
+  }.lha-store-hero {
+    min-height: 440px;
+  }
+
+.review-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0 30px;
+}
+
+.review-facts article {
+  min-height: 94px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #d9d9d3;
+  border-radius: 11px;
+  background: #fafaf8;
+}
+
+.review-facts span {
+  color: #6b6b65;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.review-facts strong {
+  font-size: 1rem;
+}
+
+.review-consent {
+  padding: 19px;
+  border: 1px solid #d3d3cd;
+  border-radius: 10px;
+  background: #f8f8f5;
+}
+
+.review-consent p {
+  margin-top: 4px;
+  color: #5d5d57;
+}

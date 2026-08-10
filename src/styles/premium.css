@@ -36,12 +36,6 @@ body {
   color: #fff;
 }
 
-.hero {
-  overflow: hidden;
-  isolation: isolate;
-  background: linear-gradient(135deg, #030303, #111 70%, #050505);
-}
-
 @keyframes heroReveal {
 to {
     opacity: 1;
@@ -220,88 +214,12 @@ from {
   font-weight: 700;
 }
 
-.pwa-stack {
-  position: fixed;
-  inset-inline: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom));
-  z-index: 1000;
-  display: grid;
-  gap: 8px;
-  pointer-events: none;
-}
-
-.pwa-banner {
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: #111;
-  color: #fff;
-  border: 1px solid #444;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
-}
-
-.pwa-banner span {
-  flex: 1;
-}
-
-.pwa-banner button {
-  min-height: 44px;
-  padding: 8px 14px;
-  border: 1px solid currentColor;
-  background: transparent;
-  color: inherit;
-}
-
-@media (max-width: 768px) {.pwa-stack {
-    inset-inline: 8px;
-  }.pwa-banner {
-    flex-wrap: wrap;
-  }
+@media (max-width: 768px) {
 }
 
 /* Account production sections */
 
-.address-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-  margin: 24px 0;
-}
-
-.address-card {
-  border: 1px solid var(--border, #d8d8d8);
-  padding: 24px;
-  background: #fff;
-  color: #111;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.address-card p {
-  line-height: 1.65;
-  color: #444;
-}
-
-.address-actions button {
-  border: 0;
-  background: transparent;
-  text-decoration: underline;
-  min-height: 44px;
-  padding: 8px;
-}
-
-@media (max-width: 700px) {.address-card {
-    padding: 20px;
-  }
-}
-
-[dir='rtl'] .address-card,
-[dir='rtl'] .address-form {
-  text-align: right;
+@media (max-width: 700px) {
 }
 
 /* Commerce preferences */
@@ -392,10 +310,6 @@ html {
   max-width: 100%;
 }
 
-.gallery-main {
-  min-width: 0;
-}
-
 @media (max-width: 999px) {
 :root {
     --header-h: 72px;
@@ -433,6 +347,7 @@ html {
   grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
   gap: 1rem;
 }
+
 
 
 
