@@ -14,8 +14,16 @@ import { trackEvent } from '../utils/analytics.ts';
 import { useAuth } from './AuthContext';
 import { useCatalog } from './CatalogContext';
 import { readScoped, writeScoped, createChannel } from '../services/sync/storage.ts';
-import { cartRequiresPhysicalShipping } from '../utils/fulfillment.ts';
-import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility.ts';
+import {
+  cartRequiresPhysicalShipping,
+  type FulfillmentItem,
+} from '../utils/fulfillment.ts';
+import {
+  getVariantPurchaseLimit,
+  isVariantPurchasable,
+  type ProductLike,
+  type VariantLike,
+} from '../utils/productEligibility.ts';
 
 export type CartItem = {
   key: string;
@@ -130,8 +138,8 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
         const wholesalePrice = Number(variant.wholesalePrice ?? product.wholesalePrice ?? 0);
         const price = wholesale && wholesalePrice > 0 ? wholesalePrice : retailPrice;
         const tracked = variant.inventoryTracking !== false;
-        const purchasable = isVariantPurchasable(product as never, variant as never);
-        const maxStock = getVariantPurchaseLimit(variant as never);
+        const purchasable = isVariantPurchasable(product as ProductLike, variant as VariantLike);
+        const maxStock = getVariantPurchaseLimit(variant as VariantLike);
         return {
           ...item,
           name: product.name as CartItem['name'],
@@ -212,8 +220,11 @@ export function CartProvider({ children }: { children?: ReactNode }) {
       [items],
     ),
     count = useMemo(() => items.reduce((s, i) => s + Number(i.quantity || 0), 0), [items]),
-    hasPhysical = useMemo(() => cartRequiresPhysicalShipping(items as never), [items]),
-    digitalOnly = useMemo(() => items.length > 0 && !cartRequiresPhysicalShipping(items as never), [items]);
+    hasPhysical = useMemo(() => cartRequiresPhysicalShipping(items as FulfillmentItem[]), [items]),
+    digitalOnly = useMemo(
+      () => items.length > 0 && !cartRequiresPhysicalShipping(items as FulfillmentItem[]),
+      [items],
+    );
   return (
     <CartContext.Provider
       value={useMemo<CartContextValue>(
