@@ -1,13 +1,12 @@
 # Continuation checkpoint — Final Continuous Completion
 
-- SHA: `b5bb6cf5b3ad3dc4094c331ed3f1a2e71b41e506`
-- TypeScript: **96.04%** (291/303) · `tsc` GREEN · build GREEN
-- Quick-add sheet · PDP CTA · dismiss · cart Libya gate · Teams keys · Ready-to-Ship + Teams submit BLOCKED docs (external deps)
-- Customize journey · AR RTL · secondary routes · favorites empty editorial
+- SHA: `4d0b4c4939f0e5069959244b0ec6fbc2b331ca92`
+- TypeScript: **96.36%** · addressService.ts migrated · 11 legacy JS remain · `tsc` GREEN
+- UX: QuickAddSheet · PDP CTA · dismiss · cart Libya gate · Teams anchors
+- Evidence: Ready-to-Ship inventory BLOCKED · Teams quote local 404 BLOCKED
 
 ## Exact next unfinished
-1. Deployed API verification for Teams/quote/orders when credentials available
-2. Further CSS extinction of deferred legacy sheets
-3. Broader a11y/perf + remaining audited groups
-4. Final full-site audit + SHA evidence
+1. Migrate remaining utils/services JS where feasible (simplePdf, rosterSpreadsheet, designExports, b2b/orders/operations, data)
+2. Deployed API verification when available
+3. Remaining audited groups / final audit
 **NOT FINAL COMPLETE**
