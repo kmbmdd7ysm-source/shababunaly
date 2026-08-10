@@ -17,6 +17,7 @@ const initial = {
   whatsapp: '',
   country: 'LY',
   productUrl: '',
+  productName: '',
   description: '',
   preferredBrand: '',
   desiredQuantity: '1',
@@ -24,7 +25,7 @@ const initial = {
   color: '',
   targetBudget: '',
   requiredDate: '',
-  preferredContactMethod: 'whatsapp',
+  preferredContactMethod: 'email',
   consent: false,
 };
 
@@ -58,6 +59,7 @@ type SpecialRequestForm = {
   whatsapp: string;
   country: string;
   productUrl: string;
+  productName: string;
   description: string;
   preferredBrand: string;
   desiredQuantity: string;
@@ -79,7 +81,6 @@ export default function SpecialRequestPage(): ReactElement {
     customerName: String(metadata.fullName || ''),
   }));
   const [productImage, setProductImage] = useState<File | null>(null);
-  const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
   const [token, setToken] = useState('');
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
@@ -95,19 +96,29 @@ export default function SpecialRequestPage(): ReactElement {
     setResult(null);
     try {
       const productUrl = form.productUrl.trim();
+      const productName = form.productName.trim();
       if (productUrl && !/^https?:\/\/[^\s]+$/i.test(productUrl))
         throw new Error('product_reference_required');
-      if (!productUrl && !productImage) throw new Error('product_reference_required');
+      if (!productUrl && !productImage && !productName) throw new Error('product_reference_required');
+      const note = form.description.trim();
+      const description =
+        note ||
+        [productName && `Product: ${productName}`, productUrl && `URL: ${productUrl}`]
+          .filter(Boolean)
+          .join('\n') ||
+        'Special product request';
       const request = (await submitSpecialRequest({
         payload: {
           ...form,
           productUrl,
-          desiredQuantity: Number(form.desiredQuantity),
+          preferredBrand: productName || form.preferredBrand,
+          description,
+          desiredQuantity: Number(form.desiredQuantity) || 1,
           targetBudget: form.targetBudget === '' ? null : Number(form.targetBudget),
           locale: lang,
         },
         productImage,
-        additionalFiles,
+        additionalFiles: [],
         turnstileToken: token,
         accessToken: String(auth.session?.access_token || ''),
       })) as Record<string, unknown>;
@@ -119,7 +130,6 @@ export default function SpecialRequestPage(): ReactElement {
         country: current.country,
       }));
       setProductImage(null);
-      setAdditionalFiles([]);
       setToken('');
     } catch (failure) {
       const code = failure instanceof Error ? failure.message : '';
@@ -249,37 +259,38 @@ export default function SpecialRequestPage(): ReactElement {
                 />
               </label>
             </div>
-            <div className="field-row">
-              <label className="field">
-                <span>{pick({ en: 'Phone', ar: 'الهاتف' })}</span>
-                <input
-                  autoComplete="tel"
-                  value={form.phone}
-                  onChange={(e) => set('phone', e.target.value)}
-                />
-              </label>
-              <label className="field">
-                <span>WhatsApp</span>
-                <input
-                  autoComplete="tel"
-                  value={form.whatsapp}
-                  onChange={(e) => set('whatsapp', e.target.value)}
-                />
-              </label>
-            </div>
+            <label className="field">
+              <span>{pick({ en: 'Phone', ar: 'الهاتف' })}</span>
+              <input
+                autoComplete="tel"
+                value={form.phone}
+                onChange={(e) => set('phone', e.target.value)}
+              />
+            </label>
             <label className="field">
               <span>{pick({ en: 'Country', ar: 'الدولة' })}</span>
               <CountrySelect value={form.country} onChange={(value) => set('country', value)} />
             </label>
+            <label className="field">
+              <span>{pick({ en: 'Product name', ar: 'اسم المنتج' })}</span>
+              <input
+                value={form.productName}
+                onChange={(e) => set('productName', e.target.value)}
+                placeholder={pick({
+                  en: 'What are you looking for?',
+                  ar: 'عمّ تبحث؟',
+                })}
+              />
+            </label>
             <fieldset className="special-reference">
               <legend>
                 {pick({
-                  en: 'Product reference — choose at least one',
-                  ar: 'مرجع المنتج — اختر واحدًا على الأقل',
+                  en: 'Link or image — at least one helps us find it',
+                  ar: 'رابط أو صورة — واحد على الأقل يساعدنا',
                 })}
               </legend>
               <label className="field">
-                <span>{pick({ en: 'Product URL', ar: 'رابط المنتج' })}</span>
+                <span>{pick({ en: 'Product link', ar: 'رابط المنتج' })}</span>
                 <input
                   type="url"
                   inputMode="url"
@@ -305,101 +316,12 @@ export default function SpecialRequestPage(): ReactElement {
               </label>
             </fieldset>
             <label className="field">
-              <span>{pick({ en: 'Description', ar: 'الوصف' })}</span>
+              <span>{pick({ en: 'Short note (optional)', ar: 'ملاحظة قصيرة (اختياري)' })}</span>
               <textarea
-                required
-                minLength={10}
-                rows={6}
+                rows={3}
                 value={form.description}
                 onChange={(e) => set('description', e.target.value)}
               />
-            </label>
-            <div className="field-row">
-              <label className="field">
-                <span>
-                  {pick({ en: 'Preferred brand (optional)', ar: 'العلامة المفضلة (اختياري)' })}
-                </span>
-                <input
-                  value={form.preferredBrand}
-                  onChange={(e) => set('preferredBrand', e.target.value)}
-                />
-              </label>
-              <label className="field">
-                <span>{pick({ en: 'Desired quantity', ar: 'الكمية المطلوبة' })}</span>
-                <input
-                  required
-                  type="number"
-                  min="1"
-                  max="100000"
-                  value={form.desiredQuantity}
-                  onChange={(e) => set('desiredQuantity', e.target.value)}
-                />
-              </label>
-            </div>
-            <div className="field-row">
-              <label className="field">
-                <span>{pick({ en: 'Size (if applicable)', ar: 'المقاس (إن وجد)' })}</span>
-                <input value={form.size} onChange={(e) => set('size', e.target.value)} />
-              </label>
-              <label className="field">
-                <span>{pick({ en: 'Color (if applicable)', ar: 'اللون (إن وجد)' })}</span>
-                <input value={form.color} onChange={(e) => set('color', e.target.value)} />
-              </label>
-            </div>
-            <div className="field-row">
-              <label className="field">
-                <span>
-                  {pick({ en: 'Target budget (optional)', ar: 'الميزانية المستهدفة (اختياري)' })}
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={form.targetBudget}
-                  onChange={(e) => set('targetBudget', e.target.value)}
-                />
-              </label>
-              <label className="field">
-                <span>
-                  {pick({ en: 'Required date (optional)', ar: 'التاريخ المطلوب (اختياري)' })}
-                </span>
-                <input
-                  type="date"
-                  value={form.requiredDate}
-                  onChange={(e) => set('requiredDate', e.target.value)}
-                />
-              </label>
-            </div>
-            <label className="custom-upload">
-              <span>
-                {pick({ en: 'Additional files (optional)', ar: 'ملفات إضافية (اختياري)' })}
-              </span>
-              <input
-                type="file"
-                multiple
-                accept=".jpg,.jpeg,.png,.webp,.pdf,.csv,.xlsx"
-                onChange={(e) =>
-                  setAdditionalFiles(e.target.files ? Array.from(e.target.files).slice(0, 4) : [])
-                }
-              />
-              <small>
-                {additionalFiles.map((file) => file.name).join(' · ') ||
-                  pick({
-                    en: 'Images, PDF, CSV or XLSX · four additional files maximum',
-                    ar: 'صور أو PDF أو CSV أو XLSX · أربعة ملفات إضافية كحد أقصى',
-                  })}
-              </small>
-            </label>
-            <label className="field">
-              <span>{pick({ en: 'Preferred contact method', ar: 'طريقة التواصل المفضلة' })}</span>
-              <select
-                value={form.preferredContactMethod}
-                onChange={(e) => set('preferredContactMethod', e.target.value)}
-              >
-                <option value="whatsapp">WhatsApp</option>
-                <option value="email">Email</option>
-                <option value="phone">{pick({ en: 'Phone', ar: 'الهاتف' })}</option>
-              </select>
             </label>
             <label className="checkbox-line">
               <input

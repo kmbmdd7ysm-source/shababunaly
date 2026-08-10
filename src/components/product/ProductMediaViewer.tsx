@@ -128,6 +128,7 @@ export default function ProductMediaViewer({
           <StaticMediaEngine
             {...(fallback ? { src: fallback } : {})}
             alt={alt}
+            productName={alt}
             {...(eager ? { eager } : {})}
           />
         </div>

@@ -1,8 +1,8 @@
 {
   "schema": "shababuna.release.evidence.v1",
-  "sha": "02842248d863a80edbad48b131b273b1bc7a536d",
+  "sha": "413b9803b5ed0cb8715ee899ad54ee10dabcca27",
   "branch": "cursor/shababuna-redesign-master-plan-dc14",
-  "generatedAt": "2026-08-10T05:24:18.185Z",
+  "generatedAt": "2026-08-10T05:32:19.417Z",
   "nodeVersion": "v22.14.0",
   "npmVersion": "10.9.7",
   "workingTree": "clean",
@@ -13,8 +13,11 @@
     "legacyFiles": [],
     "report": "reports/typescript/strictness.json"
   },
-  "archivedStaleCount": 9,
-  "archivedTo": "reports/historical/20260810T052418Z",
+  "css": {
+    "report": "reports/css/EXTINCTION_STATUS.md",
+    "idleLegacyLoadRemoved": true
+  },
+  "readyToShipNav": "global_visible",
   "status": "in_progress",
   "verdict": null
 }

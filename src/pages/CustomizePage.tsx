@@ -44,9 +44,12 @@ import ProductStep from '../components/custom/studio/ProductStep';
 
 const STEPS = [
   { key: 'product', en: 'Product', ar: 'المنتج' },
+  { key: 'model', en: 'Model', ar: 'النموذج' },
   { key: 'design', en: 'Design', ar: 'التصميم' },
   { key: 'roster', en: 'Roster', ar: 'قائمة الفريق' },
   { key: 'review', en: 'Review', ar: 'المراجعة' },
+  { key: 'proof', en: 'Proof', ar: 'البروفة' },
+  { key: 'quote', en: 'Quote', ar: 'عرض السعر' },
 ];
 
 function productTypeFromCatalog(
@@ -690,8 +693,51 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                 setProductFamily={setProductFamily}
                 design={design}
                 selectProduct={selectProduct as never}
-                setStep={setStep}
+                setStep={(next: string) => setStep(next === 'design' ? 'model' : next)}
               />
+            )}
+
+            {step === 'model' && (
+              <section className="gw-toolbench" aria-labelledby="custom-model-title">
+                <header className="gw-toolbench-head">
+                  <div>
+                    <p className="gw-kicker">{pick({ en: 'Model', ar: 'النموذج' })}</p>
+                    <h2 id="custom-model-title" className="gw-toolbench-title">
+                      {pick({ en: 'Choose the garment stage', ar: 'اختر مسرح القطعة' })}
+                    </h2>
+                    <p className="gw-toolbench-lede">
+                      {pick({
+                        en: 'Concept 3D and blank templates are for design direction. Factory-accurate geometry is only used after a verified factory model is attached — never invented here.',
+                        ar: 'النموذج ثلاثي الأبعاد المفاهيمي والقوالب الفارغة لاتجاه التصميم فقط. هندسة المصنع الدقيقة تُستخدم بعد ربط نموذج مصنع موثّق — ولا تُختلق هنا.',
+                      })}
+                    </p>
+                  </div>
+                </header>
+                <div className="review-facts">
+                  <article>
+                    <span>{pick({ en: 'Presentation', ar: 'العرض' })}</span>
+                    <strong>{pick({ en: 'CONCEPT 3D', ar: 'ثلاثي أبعاد مفاهيمي' })}</strong>
+                  </article>
+                  <article>
+                    <span>{pick({ en: 'Product', ar: 'المنتج' })}</span>
+                    <strong>{pick(selected.label)}</strong>
+                  </article>
+                  <article>
+                    <span>{pick({ en: 'Views', ar: 'الواجهات' })}</span>
+                    <strong>
+                      {pick({ en: 'Front · Back · Left · Right', ar: 'أمام · خلف · يسار · يمين' })}
+                    </strong>
+                  </article>
+                </div>
+                <div className="studio-actions">
+                  <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('product')}>
+                    {pick({ en: 'Back', ar: 'رجوع' })}
+                  </button>
+                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('design')}>
+                    {pick({ en: 'Continue to Design', ar: 'متابعة إلى التصميم' })}
+                  </button>
+                </div>
+              </section>
             )}
 
             {step === 'design' && (
@@ -1381,8 +1427,83 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                       : pick({ en: 'Send Production Review', ar: 'إرسال لمراجعة الإنتاج' })}
                   </button>
                 </form>
+                <div className="studio-actions">
+                  <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('roster')}>
+                    {pick({ en: 'Back', ar: 'رجوع' })}
+                  </button>
+                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('proof')}>
+                    {pick({ en: 'Continue to Proof', ar: 'متابعة إلى البروفة' })}
+                  </button>
+                </div>
               </section>
             )}
+
+            {step === 'proof' && (
+              <section aria-labelledby="custom-proof-title">
+                <p className="gw-kicker">{pick({ en: 'Proof', ar: 'البروفة' })}</p>
+                <h2 id="custom-proof-title" className="section-title">
+                  {pick({ en: 'Proof before production', ar: 'البروفة قبل التصنيع' })}
+                </h2>
+                <p>
+                  {pick({
+                    en: 'Download the concept package for your records. Factory proof approval is a separate gate — CONCEPT and FACTORY APPROVED are never the same status.',
+                    ar: 'حمّل حزمة المفهوم لسجلاتك. اعتماد بروفة المصنع بوابة منفصلة — المفهوم واعتماد المصنع ليسا الحالة نفسها.',
+                  })}
+                </p>
+                <div className="studio-actions">
+                  <button
+                    className="gw-btn gw-btn--secondary"
+                    type="button"
+                    onClick={() => {
+                      const docs = downloadDesignDocuments({
+                        design: design as Record<string, unknown>,
+                        studio: (design.studio || createDefaultStudio(design)) as Record<
+                          string,
+                          unknown
+                        >,
+                        productLabel: pick(selected.label),
+                        roster: normalizedRoster,
+                        reference: savedId || 'DRAFT',
+                      });
+                      if (docs.proof)
+                        downloadBlob(
+                          docs.proof,
+                          `shababuna-concept-${savedId || 'draft'}.pdf`,
+                        );
+                    }}
+                  >
+                    {pick({ en: 'Download concept pack', ar: 'تحميل حزمة المفهوم' })}
+                  </button>
+                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('quote')}>
+                    {pick({ en: 'Continue to Quote', ar: 'متابعة إلى عرض السعر' })}
+                  </button>
+                </div>
+              </section>
+            )}
+
+            {step === 'quote' && (
+              <section aria-labelledby="custom-quote-title">
+                <p className="gw-kicker">{pick({ en: 'Quote', ar: 'عرض السعر' })}</p>
+                <h2 id="custom-quote-title" className="section-title">
+                  {pick({ en: 'Send the quote request', ar: 'أرسل طلب عرض السعر' })}
+                </h2>
+                <p>
+                  {pick({
+                    en: 'Return to Review to confirm contact details and submit the production review request. Your design and roster stay saved across steps.',
+                    ar: 'ارجع إلى المراجعة لتأكيد بيانات التواصل وإرسال طلب مراجعة الإنتاج. يبقى التصميم وقائمة الفريق محفوظين عبر الخطوات.',
+                  })}
+                </p>
+                <div className="studio-actions">
+                  <button className="gw-btn gw-btn--secondary" type="button" onClick={() => setStep('proof')}>
+                    {pick({ en: 'Back', ar: 'رجوع' })}
+                  </button>
+                  <button className="gw-btn gw-btn--primary" type="button" onClick={() => setStep('review')}>
+                    {pick({ en: 'Open Review & submit', ar: 'افتح المراجعة وأرسل' })}
+                  </button>
+                </div>
+              </section>
+            )}
+
             {status && (
               <p className="form-status studio-status" role="status">
                 {status}

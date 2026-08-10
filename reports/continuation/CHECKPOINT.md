@@ -1,13 +1,18 @@
-# Continuation checkpoint
+# Absolute final completion checkpoint
 
-- SHA: `b4659acaf4c23f89c2e73922193d013fea3212a1`
-- In-repo solvable master rebuild: **COMPLETE**
-- Validators restored for TSX migration: PASS
-- External remaining: Vercel SSO · Supabase inventory · human AR review
+- SHA: `413b9803b5ed0cb8715ee899ad54ee10dabcca27`
+- TypeScript: **100%** (294/294)
+- Ready-to-Ship nav: global (header+footer)
+- CSS: idle legacy load removed; AST cull in progress (~9292 triad lines)
+- GlobalChrome → AnnouncementStack + MainHeader
+
+## Exact next unfinished
+1. Media manifest normalization + placeholder presentation
+2. Customize explicit step workflow + 3D fixture
+3. Special Request simplify
+4. Continue CSS ownership migration
+5. Vercel bypass-token verification script
+6. Full E2E / a11y / visual baselines from this SHA lineage
+7. Final release verdict when solvable gates closed
+
 **NOT FINAL COMPLETE**
-
-## Exact next unfinished (external/human only)
-1. Disable/bypass Vercel Deployment Protection for preview API E2E
-2. Provide verified Libya inventory / Supabase
-3. Approve arabic-review-manifest sections (human)
-4. Regenerate RELEASE_VERDICT → FINAL COMPLETE
