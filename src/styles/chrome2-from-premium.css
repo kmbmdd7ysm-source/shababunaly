@@ -1,0 +1,91 @@
+/* chrome2 premium */
+
+
+.header-inner {
+  transition: height var(--motion-med) var(--ease-premium);
+}
+
+.search-overlay {
+  background: rgba(5, 5, 5, 0.72);
+  backdrop-filter: blur(18px) saturate(130%);
+  animation: overlayIn 0.3s ease both;
+}
+
+.search-overlay-inner {
+  animation: searchIn 0.55s var(--ease-premium) both;
+}
+
+.header-actions,
+.desktop-utilities {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.mobile-menu {
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+}
+
+.mobile-menu-head .brand {
+  min-width: 0;
+}.header-inner {
+    gap: 0.45rem;
+    padding-inline: 12px;
+    width: 100%;
+  }.header-inner .brand {
+    position: static;
+    inset-inline-start: auto;
+    transform: none;
+    max-width: calc(100% - 176px);
+    gap: 0.4rem;
+  }[dir='rtl'] .header-inner .brand {
+    transform: none;
+  }.header-inner .brand-logo {
+    height: 42px;
+  }.header-inner .brand-text {
+    font-size: clamp(0.68rem, 3vw, 0.9rem);
+    overflow: hidden;
+  }.header-actions {
+    margin-inline-start: auto;
+  }.header-actions .icon-btn {
+    width: 42px;
+    height: 42px;
+  }.mobile-menu .brand {
+    position: static;
+    transform: none !important;
+    max-width: none;
+  }
+.header-inner .brand {
+    max-width: calc(100% - 164px);
+  }.header-inner .brand-text {
+    display: none;
+  }.header-inner .brand-logo {
+    height: 44px;
+  }
+.header-actions .mobile-more-action,
+  .header-actions .mobile-more-action:hover,
+  .header-actions .mobile-more-action:active,
+  .header-actions .mobile-more-action:focus,
+  .header-actions .mobile-more-action[aria-expanded='true'],
+  .mobile-menu-head .brand,
+  .mobile-menu-head .brand:hover,
+  .mobile-menu-head .brand:active,
+  .mobile-menu-head .brand:focus {
+    background: transparent;
+    color: inherit;
+    border-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    outline: 0;
+    transform: none !important;
+    filter: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }.header-actions .mobile-more-action::before,
+  .header-actions .mobile-more-action::after,
+  .mobile-menu-head .brand::before,
+  .mobile-menu-head .brand::after {
+    display:none;
+    content: none !important;
+  }
