@@ -991,7 +991,7 @@ describe('100% data, studio and document branch closure', { concurrency: false }
         variants: [{ stock: 0 }],
         inventoryVerified: true,
       }),
-    ).toMatchObject({ status: 'active', comingSoon: false, availability: 'in-stock' });
+    ).toMatchObject({ status: 'coming_soon', comingSoon: true, availability: 'coming-soon' });
     expect(getProduct('missing')).toBe(undefined);
     expect(getProductById('missing')).toBe(undefined);
     featuredProducts();

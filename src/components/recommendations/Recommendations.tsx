@@ -25,7 +25,7 @@ export default function Recommendations({
   }).slice(0, 4);
   if (!list.length) return null;
   return (
-    <section className="section section--muted">
+    <section className="section section--muted recommendations-section">
       <div className="container">
         <p className="section-label">{pick({ en: 'PERSONALIZED', ar: 'مختارة لك' })}</p>
         <h2 className="section-title">{pick({ en: 'Recommended for you', ar: 'مقترحة لك' })}</h2>

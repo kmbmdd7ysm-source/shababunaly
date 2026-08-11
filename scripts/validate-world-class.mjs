@@ -16,6 +16,7 @@ const config = requireFile('src/config.ts');
 const shipping = requireFile('src/config/shipping.ts');
 const app = requireFile('src/App.tsx');
 const customize = requireFile('src/pages/CustomizePage.tsx');
+const advancedCustomize = requireFile('src/pages/AdvancedCustomizePage.tsx');
 const preview = requireFile('src/components/custom/DesignPreview.tsx');
 const productionEditor = requireFile('src/components/custom/ProductionDesignEditor.tsx');
 const workspace = requireFile('src/components/account/OrganizationWorkspace.tsx');
@@ -39,6 +40,7 @@ const coverageAudit = requireFile('scripts/audit-coverage-scope.mjs');
 const source = [
   app,
   customize,
+  advancedCustomize,
   preview,
   productionEditor,
   workspace,
@@ -68,15 +70,16 @@ for (const route of [
   '/design-share/:token',
 ])
   requireText(app, route, `route ${route}`);
+for (const feature of ['CUSTOM_PRODUCT_TYPES', 'submitPublicQuote'])
+  requireText(customize, feature);
 for (const feature of [
   'CUSTOM_PRODUCT_TYPES',
   'ProductionDesignEditor',
   'parseRosterFile',
   'rosterToCsv',
   'saveCustomDesign',
-  'submitPublicQuote',
 ])
-  requireText(customize, feature);
+  requireText(advancedCustomize, feature, `advanced customize ${feature}`);
 for (const feature of ['parseRosterXlsxBuffer', 'ROSTER_FILE_ACCEPT', 'DecompressionStream'])
   requireText(spreadsheet, feature, `roster spreadsheet ${feature}`);
 for (const feature of [
@@ -189,11 +192,16 @@ if (
 )
   failures.push('Custom minimums do not match apparel 10, basketballs 6, hoop padding 1');
 if (
-  readyToShipProducts().some(
-    (product) => !product.inventoryVerified || product.inventoryLocation !== 'LY',
-  )
+  readyToShipProducts().some((product) => {
+    const ownerConfirmedLha =
+      product.legacyLha === true &&
+      product.inventorySource === 'owner_confirmed_lha_ready' &&
+      product.comingSoon !== true &&
+      product.available !== false;
+    return product.inventoryLocation !== 'LY' || (!product.inventoryVerified && !ownerConfirmedLha);
+  })
 )
-  failures.push('Ready-to-ship exposes unverified or non-Libya inventory');
+  failures.push('Ready-to-ship exposes inventory outside the verified or owner-confirmed Libya lanes');
 if (
   !products.some((product) => product.wholesaleAvailable && product.wholesalePrice < product.price)
 )

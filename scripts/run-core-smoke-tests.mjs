@@ -42,7 +42,8 @@ assert.equal(csvRoundTrip[0].jerseySize, 'L');
 assert.equal(catalogProducts.length, 69);
 assert.equal(products.length, 69);
 assert.equal(lhaStoreProducts().length, 25);
-assert.equal(readyToShipProducts().length, 0);
+assert.equal(readyToShipProducts().length, 15);
+assert.equal(readyToShipProducts().every((item) => item.legacyLha === true && item.inventorySource === 'owner_confirmed_lha_ready' && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
 assert.equal(products.every(isProductVisible), true);
 assert.equal(
   products

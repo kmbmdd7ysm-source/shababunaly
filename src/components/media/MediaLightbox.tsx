@@ -20,6 +20,7 @@ export default function MediaLightbox({
   const dialog = useRef<HTMLDivElement | null>(null);
   const [zoom, setZoom] = useState(1);
   const [i, setI] = useState(index);
+  const touchStartX = useRef<number | null>(null);
   useEffect(() => setI(index), [index]);
   useEffect(() => {
     if (!open) return undefined;
@@ -66,6 +67,18 @@ export default function MediaLightbox({
       <div
         className="lightbox-stage"
         role="presentation"
+        onTouchStart={(e) => {
+          if (zoom === 1) touchStartX.current = e.changedTouches[0]?.clientX ?? null;
+        }}
+        onTouchEnd={(e) => {
+          if (zoom !== 1 || touchStartX.current == null) return;
+          const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+          const delta = endX - touchStartX.current;
+          touchStartX.current = null;
+          if (Math.abs(delta) < 45) return;
+          if (delta < 0) next();
+          else prev();
+        }}
         onDoubleClick={() => setZoom((z) => (z === 1 ? 2 : 1))}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') setZoom((z) => (z === 1 ? 2 : 1));

@@ -38,6 +38,7 @@ import './styles/shell.css';
 // `localStorage`, since the check is a plain text match.)
 import App from './App';
 import './styles/worldclass-polish.css';
+import './styles/customer-experience.css';
 
 installGlobalErrorMonitoring();
 

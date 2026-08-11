@@ -462,9 +462,11 @@ describe('global catalog normalizer and selectors exhaustive', () => {
     expect(featuredProducts().every((p) => p.featured && !p.legacyLha)).toBe(true);
     expect(newArrivals().every((p) => p.newArrival && !p.legacyLha)).toBe(true);
     expect(bestSellers().every((p) => p.bestSeller && !p.legacyLha)).toBe(true);
-    expect(readyToShipProducts()).toEqual([]);
+    const ready = readyToShipProducts();
+    expect(ready.length).toBe(15);
+    expect(ready.every((product) => product.legacyLha === true && product.readyToShip === true && product.comingSoon !== true)).toBe(true);
     expect(lhaStoreProducts()).toHaveLength(25);
-    expect(productsByCategory('ready-to-ship')).toEqual([]);
+    expect(productsByCategory('ready-to-ship')).toEqual(ready);
     expect(productsByCategory(first.category).length).toBeGreaterThan(0);
     expect(productsBySubcategory(first.category, first.subcategory).length).toBeGreaterThan(0);
     expect(relatedProducts(first, 2).length).toBeLessThan(3);

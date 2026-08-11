@@ -28,6 +28,7 @@ const Cart = lazy(() => import('./pages/CartPage'));
 const Checkout = lazy(() => import('./pages/CheckoutPage'));
 const CheckoutStatus = lazy(() => import('./pages/CheckoutStatusPage'));
 const Customize = lazy(() => import('./pages/CustomizePage'));
+const AdvancedCustomize = lazy(() => import('./pages/AdvancedCustomizePage'));
 const TeamsWholesale = lazy(() => import('./pages/TeamsWholesalePage'));
 const LhaStore = lazy(() => import('./pages/LhaStorePage'));
 const OurWork = lazy(() => import('./pages/OurWorkPage'));
@@ -94,6 +95,7 @@ export default function App(): ReactElement {
                 <Route path="/checkout/success" element={<CheckoutStatus status="success" />} />
                 <Route path="/checkout/cancelled" element={<CheckoutStatus status="cancelled" />} />
                 <Route path="/customize" element={<Customize />} />
+                <Route path="/customize/advanced" element={<AdvancedCustomize />} />
                 <Route path="/special-request" element={<SpecialRequest />} />
                 <Route path="/teams-wholesale" element={<TeamsWholesale />} />
                 <Route path="/team-locker/:slug" element={<TeamLocker />} />

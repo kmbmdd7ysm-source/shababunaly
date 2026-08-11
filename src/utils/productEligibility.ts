@@ -140,9 +140,18 @@ export function isReadyToShipEligible(
   // Ready-to-Ship is the verified Libya inventory lane, not a global scarcity badge.
   if (String(countryCode || '').toUpperCase() !== 'LY') return false;
   if (!product || !isProductPublishable(product)) return false;
-  if (product.readyToShip !== true || product.inventoryTracking !== true) return false;
+  if (product.readyToShip !== true) return false;
   if (String(product.inventoryLocation || '').toUpperCase() !== 'LY') return false;
-  // Prefer explicit verification when present; never invent stock.
+
+  // LHA is a separate owner-confirmed fulfilment lane. The owner explicitly
+  // confirmed every active LHA item is immediate-delivery in Libya unless it
+  // is marked Coming Soon. This must not be converted into fake numeric stock.
+  if (String(product.inventorySource || '') === 'owner_confirmed_lha_ready') {
+    return product.comingSoon !== true && product.available !== false;
+  }
+
+  // All other Ready-to-Ship products remain evidence-based tracked inventory.
+  if (product.inventoryTracking !== true) return false;
   if (product.inventoryVerified === false) return false;
   return Array.isArray(product.variants)
     ? product.variants.some(

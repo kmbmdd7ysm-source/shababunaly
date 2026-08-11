@@ -3,6 +3,7 @@ import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { recordBusinessEvent } from './_business-events.ts';
+import { sendInternalFormNotification } from './_internal-form-notification.ts';
 
 type ApiReq = {
   method?: string;
@@ -173,7 +174,21 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         quantity: payload.quantity,
       },
     });
-    return res.status(201).json({ ok: true, duplicate: false, quote });
+    const emailResult = await sendInternalFormNotification(
+      {
+        form_type: payload.formType,
+        quote_number: quote.quote_number,
+        quote_id: quote.id,
+        ...payload,
+      },
+      `Shababuna ${payload.formType === 'custom_design_quote' ? 'custom design' : 'teams & wholesale'} · ${payload.organization || payload.customerName}`,
+    );
+    return res.status(201).json({
+      ok: true,
+      duplicate: false,
+      quote,
+      notification: emailResult.delivered ? 'delivered' : 'pending',
+    });
   } catch (error: unknown) {
     const code = clean(
       error && typeof error === 'object' && 'message' in error

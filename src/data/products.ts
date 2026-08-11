@@ -1060,6 +1060,10 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
   const inventoryTracking = item.inventoryVerified === true;
   const price = Number(item.price || 0);
   const quoteOnly = price <= 0;
+  const comingSoon = item.comingSoon === true;
+  // LHA stock state is owner-confirmed: every active LHA item is available for
+  // immediate Libya delivery unless the catalogue explicitly marks it Coming Soon.
+  const ownerConfirmedReady = !comingSoon && !quoteOnly;
   const variants = (Array.isArray(item.variants) ? item.variants as Array<Record<string, unknown>> : []).map((variant) => ({
     ...variant,
     stock: inventoryTracking ? Math.max(0, Number(variant.stock) || 0) : 0,
@@ -1067,12 +1071,12 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
     inventoryTracking,
     availabilityState:
       inventoryTracking && Number(variant.stock) <= 0 ? 'out_of_stock' : 'in_stock',
-    readyToShip: inventoryTracking && item.readyToShip === true && Number(variant.stock) > 0,
+    readyToShip: ownerConfirmedReady || (inventoryTracking && item.readyToShip === true && Number(variant.stock) > 0),
     unitPrice: price,
     wholesalePrice: price > 0 ? Math.round(price * 0.82 * 100) / 100 : null,
   }));
   const stock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0) : 0;
-  const readyToShip = inventoryTracking && item.readyToShip === true && stock > 0;
+  const readyToShip = ownerConfirmedReady || (inventoryTracking && item.readyToShip === true && stock > 0);
   const fallbackImage = item.image || '/images/catalog/apparel.svg';
   return {
     ...item,
@@ -1101,14 +1105,18 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
     price,
     inventoryTracking,
     inventoryVerified: inventoryTracking,
-    inventorySource: inventoryTracking ? 'verified_inventory' : 'supplier_order',
+    inventorySource: ownerConfirmedReady
+      ? 'owner_confirmed_lha_ready'
+      : inventoryTracking
+        ? 'verified_inventory'
+        : 'supplier_order',
     inventoryLocation: readyToShip ? 'LY' : null,
     deliveryProfile: readyToShip ? 'ready' : quoteOnly ? 'custom' : 'standard',
-    status: 'active',
-    available: true,
-    comingSoon: false,
+    status: comingSoon ? 'coming_soon' : 'active',
+    available: !comingSoon,
+    comingSoon,
     quoteOnly,
-    availability: 'in-stock',
+    availability: comingSoon ? 'coming-soon' : 'in-stock',
     image: fallbackImage,
     socialImage: item.socialImage || fallbackImage,
     mediaStatus: item.image ? 'supplied' : 'placeholder',

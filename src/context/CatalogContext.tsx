@@ -105,6 +105,11 @@ function rowData(row: CatalogRow | null | undefined): Record<string, unknown> {
 }
 
 function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogProduct {
+  const ownerConfirmedLhaReady =
+    product.legacyLha === true &&
+    product.comingSoon !== true &&
+    product.available !== false &&
+    product.quoteOnly !== true;
   const activeRows = rows.filter((row) => row && row.variant_id && row.sku);
   if (!activeRows.length) return product;
   const variants = activeRows.map((row) => {
@@ -116,18 +121,29 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       size: String(row.size || 'OS'),
       color: String(row.color || 'black'),
       sku: String(row.sku),
-      stock: row.inventory_tracking ? Math.max(0, Number(row.inventory_quantity) || 0) : 0,
-      inventoryTracking: Boolean(row.inventory_tracking),
-      availabilityState: String(row.availability_state || 'in_stock'),
-      unitPrice: Number.isFinite(unitPrice) ? unitPrice : Number(product.price),
+      stock: ownerConfirmedLhaReady
+        ? 0
+        : row.inventory_tracking
+          ? Math.max(0, Number(row.inventory_quantity) || 0)
+          : 0,
+      inventoryTracking: ownerConfirmedLhaReady ? false : Boolean(row.inventory_tracking),
+      availabilityState: ownerConfirmedLhaReady
+        ? 'in_stock'
+        : String(row.availability_state || 'in_stock'),
+      unitPrice: ownerConfirmedLhaReady
+        ? Number(product.price)
+        : Number.isFinite(unitPrice)
+          ? unitPrice
+          : Number(product.price),
       compareAt: Number.isFinite(compareAt) ? compareAt : null,
       wholesalePrice: Number.isFinite(wholesalePrice)
         ? wholesalePrice
         : Number(product.wholesalePrice || 0) || null,
       readyToShip:
-        Boolean(data.readyToShip) &&
-        Boolean(row.inventory_tracking) &&
-        Number(row.inventory_quantity) > 0,
+        ownerConfirmedLhaReady ||
+        (Boolean(data.readyToShip) &&
+          Boolean(row.inventory_tracking) &&
+          Number(row.inventory_quantity) > 0),
       catalogUpdatedAt: row.updated_at || null,
     };
   });
@@ -137,7 +153,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     : 0;
   const firstRow = activeRows[0];
   const data = rowData(firstRow);
-  const readyToShip = activeRows.some((row) => {
+  const readyToShip = ownerConfirmedLhaReady || activeRows.some((row) => {
     const variant = rowData(row);
     return (
       Boolean(variant.readyToShip) &&
@@ -145,7 +161,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       Number(row.inventory_quantity) > 0
     );
   });
-  const hasAvailableVariant = activeRows.some((row) =>
+  const hasAvailableVariant = ownerConfirmedLhaReady || activeRows.some((row) =>
     row.inventory_tracking
       ? Number(row.inventory_quantity) > 0
       : !['out_of_stock', 'unavailable'].includes(String(row.availability_state || '')),
@@ -167,7 +183,11 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     ? Math.min(...wholesalePrices)
     : Number(product.wholesalePrice);
 
-  const comingSoon = data.comingSoon == null ? Boolean(product.comingSoon) : Boolean(data.comingSoon);
+  const comingSoon = product.legacyLha === true
+    ? Boolean(product.comingSoon)
+    : data.comingSoon == null
+      ? Boolean(product.comingSoon)
+      : Boolean(data.comingSoon);
   const productName =
     data.nameEn || data.nameAr
       ? {
@@ -205,9 +225,9 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     description,
     comingSoon,
     readyToShip,
-    inventoryTracking: tracked,
+    inventoryTracking: ownerConfirmedLhaReady ? false : tracked,
     variants,
-    stock,
+    stock: ownerConfirmedLhaReady ? 0 : stock,
     availability: !comingSoon && hasAvailableVariant ? 'in-stock' : 'sold-out',
     available: !comingSoon && hasAvailableVariant,
     priceVaries: new Set(retailPrices.map((value) => value.toFixed(2))).size > 1,
@@ -236,7 +256,8 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
   next.bestSeller =
     data.bestSeller == null ? Boolean(product.bestSeller) : Boolean(data.bestSeller);
   next.quoteOnly = data.quoteOnly == null ? Boolean(product.quoteOnly) : Boolean(data.quoteOnly);
-  if (Number.isFinite(unitPrice)) next.price = unitPrice;
+  if (product.legacyLha === true) next.price = product.price;
+  else if (Number.isFinite(unitPrice)) next.price = unitPrice;
   else if (product.price != null) next.price = product.price;
   if (compareAtFinite != null) next.compareAt = compareAtFinite;
   else if (product.compareAt !== undefined) next.compareAt = product.compareAt ?? null;
@@ -262,8 +283,14 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
   next.deliveryProfile = readyToShip
     ? 'ready'
     : data.deliveryProfile || product.deliveryProfile || 'standard';
-  if (data.inventorySource || product.inventorySource)
+  if (ownerConfirmedLhaReady) {
+    next.inventorySource = 'owner_confirmed_lha_ready';
+    next.inventoryLocation = 'LY';
+    next.inventoryVerified = false;
+    next.readyToShip = true;
+  } else if (data.inventorySource || product.inventorySource) {
     next.inventorySource = data.inventorySource || product.inventorySource;
+  }
   return next;
 }
 

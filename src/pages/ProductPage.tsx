@@ -3,20 +3,18 @@ import type { CatalogProduct } from '../context/CatalogContext';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { useCommerce } from '../context/CommerceContext';
 import { useCart, type CartItem, cartKey } from '../context/CartContext';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { trackEvent } from '../utils/analytics';
 import Seo from '../components/common/Seo';
-import { resolveProductViewer, resolveProductMediaMode } from '../utils/productViewerTier';
+import { resolveProductMediaMode } from '../utils/productViewerTier';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import Price from '../components/common/Price';
 import Badge from '../components/common/Badge';
 import Modal from '../components/common/Modal';
 import ShareButtons from '../components/common/ShareButtons';
 import ProductCard from '../components/shop/ProductCard';
-import { ColorSelector, SizeSelector } from '../components/shop/VariantSelector';
 import { useCatalog } from '../context/CatalogContext';
 import { getCategory, getSubcategory } from '../data/categories';
 import { getSizeGuide } from '../data/sizeGuide';
@@ -26,13 +24,11 @@ import { useCompare } from '../context/CompareContext';
 import Recommendations from '../components/recommendations/Recommendations';
 import { useWishlist } from '../hooks/useWishlist';
 import Icon from '../components/icons/Icon';
-import PurchaseActions from '../components/shop/PurchaseActions';
-import ViewingTierNote from '../components/product/ViewingTierNote';
+import ColorSwatch from '../components/common/ColorSwatch';
 import ProductMediaViewer from '../components/product/ProductMediaViewer';
 import PerformanceProfile from '../components/product/PerformanceProfile';
 import { isBasketballPerformanceShoe } from '../utils/productIntelligence';
 import '../styles/domain-shop.css';
-import '../styles/stage.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
 import '../styles/catalog.css';
 import '../styles/domain-misc.css';
@@ -119,10 +115,6 @@ export default function ProductPage(): ReactElement {
   /* Verified photography and a concept plate need different stage treatments:
      a photograph shot on white should read as a print laid on the stage, a
      transparent plate should read as a drawing floating in the light. */
-  // Full-bleed dark opening: the header floats over it, transparent.
-  useCinematicOpening();
-
-  const viewerTier = resolveProductViewer(product).tier;
   const mediaMode = resolveProductMediaMode(product);
 
   const gallery = useMemo(() => {
@@ -299,40 +291,18 @@ export default function ProductPage(): ReactElement {
     { title: productCopy.shipping, content: <p>{shippingCopy}</p> },
   ].filter((entry): entry is { title: string; content: ReactElement } => Boolean(entry));
 
-  // The badge set is composed once and placed on the stage, not scattered.
-  const stageBadges = [
-    comingSoon && {
-      key: 'soon',
-      node: <Badge tone="limited">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</Badge>,
-    },
-    !comingSoon && soldOut && { key: 'sold', node: <Badge tone="sold">{badge.soldOut}</Badge> },
-    !comingSoon &&
-      !soldOut &&
-      showReady && {
-        key: 'ready',
-        node: (
-          <span className="ready-badge">
-            <i className="ready-dot" />
-            {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-          </span>
-        ),
-      },
-    !comingSoon &&
-      !soldOut &&
-      onSale && { key: 'sale', node: <Badge tone="sale">{badge.sale || ''}</Badge> },
-    !comingSoon &&
-      !soldOut &&
-      product.newArrival && { key: 'new', node: <Badge tone="new">{badge.new || ''}</Badge> },
-  ].filter((entry): entry is { key: string; node: ReactElement } => Boolean(entry));
-
   const purchasable = !comingSoon && !soldOut && !quoteOnly;
+
+  const canUseAdvancedViewer = ['SPIN_360', 'MODEL_3D', 'VIDEO_GALLERY', 'HYBRID'].includes(mediaMode);
+  const selectedColor = colors.find((entry) => entry.key === color);
+  const shareTitle = pick(product.name as { en?: string; ar?: string });
 
   return (
     <>
       <Seo
         title={String(
           pick((product.seoTitle as { en?: string; ar?: string }) || {}) ||
-            pick(product.name as { en?: string; ar?: string }) ||
+            shareTitle ||
             '',
         )}
         description={String(
@@ -345,418 +315,291 @@ export default function ProductPage(): ReactElement {
         type="product"
       />
 
-      {/* ================================================================
-          1 — THE STAGE
-          The product is the room, not a thumbnail beside a form. A dark
-          chapter carrying the viewer full-bleed, the trail and identity as
-          overlaid specification, and the angle register beneath it.
-          ================================================================ */}
-      <section className="gw-stage" aria-labelledby="gw-product-title">
-        {/* The viewer is the stage, not a column of it. It fills the section
-            edge to edge; identity, trail and the angle register are overlaid on
-            top of it. Nothing sits beside it competing for the same width. */}
-        <div className="gw-stage-canvas" data-tier={viewerTier} data-media-mode={mediaMode}>
-          {/*
-            The adaptive ProductViewer is the stage. Levels A/B/C/D are chosen
-            by verified assets — never by inventing a spin from one photograph.
-            Full-screen remains available for the current gallery frame.
-          */}
-          <div className="gw-stage-viewer">
-            <ProductMediaViewer product={product} eager />
-          </div>
-          <button
-            type="button"
-            className="gw-stage-zoom"
-            onClick={() => setLightboxOpen(true)}
-            aria-label={pick({ en: 'View full screen', ar: 'عرض بملء الشاشة' })}
-          >
-            <Icon name="search" />
-            {pick({ en: 'Full screen', ar: 'ملء الشاشة' })}
-          </button>
+      <main className="pdx-page">
+        <div className="pdx-breadcrumb">
+          <Breadcrumbs items={crumbs} />
         </div>
 
-        {/* Identity, overlaid on the stage at the leading foot. */}
-        <div className="gw-stage-overlay">
-          <div className="gw-stage-trail">
-            <Breadcrumbs items={crumbs} />
-          </div>
-          <p className="gw-kicker gw-stage-origin">
-            {product.brand}
-            {sub ? ` \u00b7 ${pick(sub.name)}` : ''}
-          </p>
-          <h1 id="gw-product-title" className="gw-stage-title">
-            {pick(product.name as { en?: string; ar?: string })}
-          </h1>
-          <div className="px-stage-meta">
-            <span>{mediaMode.replaceAll('_', ' ')}</span>
-            <span className="gw-isolate-ltr">{String(matchedVariant?.sku || product.sku || '')}</span>
-          </div>
-          {stageBadges.length > 0 && (
-            <div className="gw-stage-badges">
-              {stageBadges
-                .filter((badge): badge is { key: string; node: ReactElement } => Boolean(badge))
-                .map((badge) => (
-                  <span key={badge.key}>{badge.node}</span>
-                ))}
-            </div>
-          )}
-          <a className="gw-stage-commit" href="#product-deck">
-            {purchasable
-              ? pick({ en: 'Configure & buy', ar: 'اختر الخيارات واشترِ' })
-              : pick({ en: 'View details', ar: 'عرض التفاصيل' })}
-          </a>
-        </div>
-
-        {/* The honest tier disclosure sits on the stage it describes. */}
-        <div className="gw-stage-tier">
-          <ViewingTierNote product={product} />
-        </div>
-      </section>
-
-      {/* ================================================================
-          2 — THE DECK
-          Commerce controls as an instrument deck on a light ground, with
-          the specification beside them rather than hidden in an accordion.
-          ================================================================ */}
-      <section className="gw-deck" id="product-deck">
-        <div className="gw-deck-inner">
-          <div className="gw-deck-buy">
-            <div className="gw-deck-price">
-              {comingSoon ? (
-                <span className="status-pill">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</span>
-              ) : quoteOnly ? (
-                <span className="status-pill">
-                  {pick({ en: 'Price by quote', ar: 'السعر حسب عرض الطلب' })}
-                </span>
-              ) : (
-                <Price amount={activePrice} compareAt={activeCompareAt} size="lg" />
-              )}
-            </div>
-
-            <p className="gw-deck-desc">{pick(product.description as { en?: string; ar?: string })}</p>
-
-            {purchasable && Boolean(product.wholesaleAvailable) && (
-              <div
-                className="gw-mode"
-                role="group"
-                aria-label={pick({ en: 'Purchase type', ar: 'نوع الشراء' })}
-              >
+        <section className="pdx-main" aria-labelledby="pdx-product-title">
+          <div className="pdx-media" aria-label={pick({ en: 'Product media', ar: 'صور المنتج' })}>
+            <div className="pdx-media-grid">
+              {canUseAdvancedViewer ? (
+                <div className="pdx-media-cell pdx-media-cell--viewer" data-media-mode={mediaMode}>
+                  <ProductMediaViewer product={product} eager />
+                </div>
+              ) : null}
+              {gallery.map((src, imageIndex) => (
                 <button
+                  key={`${src}-${imageIndex}`}
                   type="button"
-                  className={`gw-mode-option${purchaseMode === 'retail' ? ' is-active' : ''}`}
-                  aria-pressed={purchaseMode === 'retail'}
-                  onClick={() => changeMode('retail')}
-                >
-                  <span className="gw-kicker">{pick({ en: 'By the piece', ar: 'بالقطعة' })}</span>
-                  <Price amount={retailPrice} size="sm" />
-                </button>
-                <button
-                  type="button"
-                  className={`gw-mode-option${purchaseMode === 'wholesale' ? ' is-active' : ''}`}
-                  aria-pressed={purchaseMode === 'wholesale'}
-                  onClick={() => changeMode('wholesale')}
-                >
-                  <span className="gw-kicker">{pick({ en: 'Wholesale', ar: 'جملة' })}</span>
-                  <span>
-                    <Price amount={wholesalePrice || retailPrice} size="sm" />
-                    {' · '}
-                    {pick({
-                      en: `Min. ${product.wholesaleMin || 1}`,
-                      ar: `أقل كمية ${product.wholesaleMin || 1}`,
-                    })}
-                  </span>
-                </button>
-              </div>
-            )}
-
-            {purchasable && (
-              <>
-                <ColorSelector
-                  colors={colors}
-                  value={color}
-                  onChange={(next) => {
-                    setColor(next);
-                    setActiveImg(0);
-                    setError('');
-                    {
-                      const nextParams = new URLSearchParams(searchParams);
-                      nextParams.set('color', next);
-                      setSearchParams(nextParams);
-                    }
+                  className="pdx-media-cell"
+                  onClick={() => {
+                    setActiveImg(imageIndex);
+                    setLightboxOpen(true);
                   }}
-                />
-                {needsSize && (
-                  <div className="gw-size-block">
-                    <div className="gw-size-head">
-                      <span className="variant-label">{common.size}</span>
-                      {guide && (
-                        <button
-                          type="button"
-                          className="link-btn"
-                          onClick={() => setGuideOpen(true)}
-                        >
-                          <Icon name="ruler" size={21} />
-                          {productCopy.sizeGuide}
-                        </button>
-                      )}
-                    </div>
-                    <SizeSelector
-                      sizes={sizes}
-                      value={size}
-                      onChange={(next) => {
-                        setSize(next);
-                        setError('');
-                      }}
-                      stockFor={stockForSize}
-                    />
-                  </div>
-                )}
-                {matchedVariant && low && Number(matchedVariant.stock || 0) > 0 && (
-                  <p className="stock-note">{productCopy.lowStock}</p>
-                )}
-                <PurchaseActions
-                  quantity={qty}
-                  onQuantityChange={setQty}
-                  min={minQuantity}
-                  max={Math.max(maxStock, minQuantity)}
-                  onAdd={addToCart}
-                  addDisabled={!matchedVariant || !isVariantPurchasable(product, matchedVariant)}
-                  adding={adding}
-                  favorite={wishlist.has(product.id)}
-                  onFavorite={() => wishlist.toggle(product.id)}
-                />
-                {isWholesale && (
-                  <p className="minimum-note">
-                    {pick({
-                      en: `Wholesale price applies from ${minQuantity} units.`,
-                      ar: `يطبق سعر الجملة ابتداءً من ${minQuantity} قطع.`,
-                    })}
-                  </p>
-                )}
-                {error && (
-                  <p className="form-error" role="alert">
-                    {error}
-                  </p>
-                )}
-              </>
-            )}
-
-            {quoteOnly && (
-              <div className="gw-deck-quote">
-                <p>
-                  {pick({
-                    en: 'This product requires a technical and shipping quote. Minimum order: 1.',
-                    ar: 'هذا المنتج يحتاج عرض سعر فني وحساب شحن. الحد الأدنى للطلب: 1.',
+                  aria-label={pick({
+                    en: `Open product image ${imageIndex + 1} of ${gallery.length}`,
+                    ar: `افتح صورة المنتج ${imageIndex + 1} من ${gallery.length}`,
                   })}
-                </p>
-                <Link
-                  to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`}
-                  className="gw-btn gw-btn--primary"
                 >
-                  {pick({ en: 'Request a Quote', ar: 'اطلب عرض سعر' })}
-                </Link>
-              </div>
-            )}
-
-            {(comingSoon || soldOut) && (
-              <PurchaseActions
-                quantity={1}
-                showQuantity={false}
-                onAdd={() => {}}
-                addDisabled
-                favorite={wishlist.has(product.id)}
-                onFavorite={() => wishlist.toggle(product.id)}
-              />
-            )}
-
-            <div className="gw-deck-secondary">
-              <button
-                type="button"
-                className={`gw-deck-compare${compare.has(product.id) ? ' is-active' : ''}`}
-                onClick={() => compare.toggle(product.id)}
-              >
-                {pick({
-                  en: compare.has(product.id) ? 'Remove from compare' : 'Compare product',
-                  ar: compare.has(product.id) ? 'إزالة من المقارنة' : 'قارن المنتج',
-                })}
-              </button>
-              <ShareButtons
-                title={pick(product.name as { en?: string; ar?: string })}
-                text={pick(product.description as { en?: string; ar?: string })}
-                label={productCopy.share}
-              />
+                  <img
+                    src={src}
+                    alt={`${shareTitle} ${imageIndex + 1}`}
+                    width="1000"
+                    height="1250"
+                    loading={imageIndex < 2 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Fulfilment and specification as open plates, not an accordion.
-              A customer deciding on a 400 LYD uniform should not have to
-              click to discover the fabric or the delivery window. */}
-          <div className="gw-deck-spec">
-            <div className={`gw-fulfilment${showReady ? ' is-ready' : ''}`}>
-              <p className="gw-kicker">{pick({ en: 'Fulfilment', ar: 'التسليم' })}</p>
-              {showReady && (
-                <strong className="gw-fulfilment-ready">
-                  <i className="ready-dot" />
-                  {pick({ en: 'Ready to Ship in Libya', ar: 'متوفر للتسليم الفوري داخل ليبيا' })}
-                </strong>
-              )}
-              <p>{shippingCopy}</p>
-              {Boolean(product.madeInUSA) &&
-                product.claimVerified === true &&
-                Boolean(product.claimEvidenceReference) && (
-                  <p className="gw-fulfilment-origin">
-                    {pick({
-                      en: 'Made in USA · Shababuna manufactured apparel',
-                      ar: 'صُنع في الولايات المتحدة · من تصنيع شبابنا للملابس',
-                    })}
-                  </p>
+          <aside className="pdx-buy">
+            <div className="pdx-identity">
+              <div className="pdx-title-line">
+                <div>
+                  <p className="pdx-brand">{product.brand}</p>
+                  <h1 id="pdx-product-title">{shareTitle}</h1>
+                  {selectedColor ? (
+                    <p className="pdx-color-name">
+                      {pick(selectedColor.name || { en: selectedColor.key, ar: selectedColor.key })}
+                    </p>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  className={`pdx-heart${wishlist.has(product.id) ? ' is-active' : ''}`}
+                  aria-label={pick({ en: 'Save product', ar: 'حفظ المنتج' })}
+                  aria-pressed={wishlist.has(product.id)}
+                  onClick={() => wishlist.toggle(product.id)}
+                >
+                  <Icon name="heart" size={22} />
+                </button>
+              </div>
+
+              <div className="pdx-price-row">
+                {comingSoon ? (
+                  <Badge tone="limited">{pick({ en: 'Coming Soon', ar: 'قريباً' })}</Badge>
+                ) : quoteOnly ? (
+                  <strong>{pick({ en: 'Price on request', ar: 'السعر عند الطلب' })}</strong>
+                ) : (
+                  <Price amount={activePrice} compareAt={activeCompareAt} size="lg" />
                 )}
-              {Boolean(product.customizable) && (
-                <Link to={`/customize?product=${product.slug}`} className="gw-fulfilment-link">
-                  {pick({ en: 'Customize this product', ar: 'صمّم هذا المنتج' })} →
-                </Link>
-              )}
+              </div>
+
+              <div className="pdx-status-row">
+                {showReady ? (
+                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Immediate delivery in Libya', ar: 'تسليم فوري داخل ليبيا' })}</span>
+                ) : null}
+                {!comingSoon && !soldOut && onSale ? <Badge tone="sale">{badge.sale || 'Sale'}</Badge> : null}
+                {!comingSoon && !soldOut && product.newArrival ? <Badge tone="new">{badge.new || 'New'}</Badge> : null}
+              </div>
+
+              <p className="pdx-description">{pick(product.description as { en?: string; ar?: string })}</p>
             </div>
 
-            {details.map((entry) => (
-              <div className="gw-specplate" key={entry.title}>
-                <p className="gw-kicker">{entry.title}</p>
-                <div className="gw-specplate-body">{entry.content}</div>
+            {purchasable && Boolean(product.wholesaleAvailable) ? (
+              <div className="pdx-option-block">
+                <div className="pdx-option-head">
+                  <strong>{pick({ en: 'Purchase type', ar: 'نوع الشراء' })}</strong>
+                </div>
+                <div className="pdx-mode-grid" role="group" aria-label={pick({ en: 'Purchase type', ar: 'نوع الشراء' })}>
+                  <button type="button" className={purchaseMode === 'retail' ? 'is-active' : ''} aria-pressed={purchaseMode === 'retail'} onClick={() => changeMode('retail')}>
+                    <span>{pick({ en: 'Single item', ar: 'بالقطعة' })}</span><Price amount={retailPrice} size="sm" />
+                  </button>
+                  <button type="button" className={purchaseMode === 'wholesale' ? 'is-active' : ''} aria-pressed={purchaseMode === 'wholesale'} onClick={() => changeMode('wholesale')}>
+                    <span>{pick({ en: 'Wholesale', ar: 'جملة' })}</span><Price amount={wholesalePrice || retailPrice} size="sm" />
+                  </button>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            ) : null}
 
-      {/* A sticky commit bar on mobile, so the price and the action are never
-          scrolled away from each other. */}
-      {purchasable && (
-        <div className="gw-buybar">
-          <div className="gw-buybar-price">
-            <Price amount={activePrice} size="sm" />
-          </div>
-          <button
-            type="button"
-            className="gw-btn gw-btn--primary"
-            onClick={addToCart}
-          >
+            {purchasable && colors.length > 0 ? (
+              <div className="pdx-option-block">
+                <div className="pdx-option-head">
+                  <strong>{common.color || pick({ en: 'Color', ar: 'اللون' })}</strong>
+                  {selectedColor ? <span>{pick(selectedColor.name || { en: selectedColor.key, ar: selectedColor.key })}</span> : null}
+                </div>
+                <div className="pdx-colors" role="group" aria-label={common.color || 'Color'}>
+                  {colors.map((entry) => (
+                    <button
+                      key={entry.key}
+                      type="button"
+                      className={entry.key === color ? 'is-active' : ''}
+                      onClick={() => {
+                        setColor(entry.key);
+                        setActiveImg(0);
+                        setError('');
+                        const nextParams = new URLSearchParams(searchParams);
+                        nextParams.set('color', entry.key);
+                        setSearchParams(nextParams);
+                      }}
+                      aria-label={pick(entry.name || { en: entry.key, ar: entry.key })}
+                      aria-pressed={entry.key === color}
+                    >
+                      <ColorSwatch color={entry.hex || '#777777'} className="pdx-color-swatch" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {purchasable && needsSize ? (
+              <div className="pdx-option-block">
+                <div className="pdx-option-head">
+                  <strong>{common.size || pick({ en: 'Size', ar: 'المقاس' })}</strong>
+                  {guide ? (
+                    <button type="button" className="pdx-text-link" onClick={() => setGuideOpen(true)}>
+                      {productCopy.sizeGuide || pick({ en: 'Size guide', ar: 'دليل المقاسات' })}
+                    </button>
+                  ) : null}
+                </div>
+                <div className="pdx-sizes" role="group" aria-label={common.size || 'Size'}>
+                  {sizes.map((entry) => {
+                    const available = stockForSize(entry) > 0;
+                    return (
+                      <button
+                        key={entry}
+                        type="button"
+                        className={entry === size ? 'is-active' : ''}
+                        disabled={!available}
+                        onClick={() => { setSize(entry); setError(''); }}
+                        aria-pressed={entry === size}
+                      >
+                        {entry}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+
+            {purchasable ? (
+              <div className="pdx-purchase">
+                {isWholesale || qty > 1 ? (
+                  <label className="pdx-quantity">
+                    <span>{pick({ en: 'Quantity', ar: 'الكمية' })}</span>
+                    <input
+                      type="number"
+                      min={minQuantity}
+                      max={Math.max(maxStock, minQuantity)}
+                      value={qty}
+                      onChange={(event) => setQty(Math.max(minQuantity, Number(event.target.value) || minQuantity))}
+                    />
+                  </label>
+                ) : null}
+                <button type="button" className="pdx-add" onClick={addToCart} disabled={adding}>
+                  {adding
+                    ? pick({ en: 'Adding…', ar: 'جارٍ الإضافة…' })
+                    : productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
+                </button>
+                {matchedVariant && low && Number(matchedVariant.stock || 0) > 0 ? <p className="stock-note">{productCopy.lowStock}</p> : null}
+                {isWholesale ? (
+                  <p className="minimum-note">{pick({ en: `Wholesale price applies from ${minQuantity} units.`, ar: `يطبق سعر الجملة ابتداءً من ${minQuantity} قطع.` })}</p>
+                ) : null}
+                {error ? <p className="form-error" role="alert">{error}</p> : null}
+              </div>
+            ) : null}
+
+            {quoteOnly ? (
+              <div className="pdx-quote">
+                <p>{pick({ en: 'This product needs a confirmed technical and shipping quote.', ar: 'هذا المنتج يحتاج عرض سعر فني وشحن مؤكد.' })}</p>
+                <Link to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`} className="pdx-add">
+                  {pick({ en: 'Request a quote', ar: 'اطلب عرض سعر' })}
+                </Link>
+              </div>
+            ) : null}
+
+            {(comingSoon || soldOut) ? (
+              <div className="pdx-unavailable">
+                <strong>{comingSoon ? pick({ en: 'Coming soon', ar: 'قريباً' }) : pick({ en: 'Currently unavailable', ar: 'غير متوفر حالياً' })}</strong>
+                <button type="button" className="pdx-secondary" onClick={() => wishlist.toggle(product.id)}>
+                  <Icon name="heart" size={20} /> {pick({ en: 'Save for later', ar: 'احفظه لاحقاً' })}
+                </button>
+              </div>
+            ) : null}
+
+            <div className="pdx-delivery">
+              <strong>{pick({ en: 'Delivery', ar: 'التوصيل' })}</strong>
+              <p>{shippingCopy}</p>
+              {Boolean(product.customizable) ? (
+                <Link to={`/customize?product=${product.slug}`} className="pdx-text-link">
+                  {pick({ en: 'Customize this product', ar: 'خصص هذا المنتج' })}
+                </Link>
+              ) : null}
+            </div>
+
+            <div className="pdx-details">
+              {details.map((entry) => (
+                <details key={entry.title}>
+                  <summary>{entry.title}</summary>
+                  <div>{entry.content}</div>
+                </details>
+              ))}
+            </div>
+
+            <div className="pdx-secondary-actions">
+              <button type="button" className={`pdx-text-link${compare.has(product.id) ? ' is-active' : ''}`} onClick={() => compare.toggle(product.id)}>
+                {pick({ en: compare.has(product.id) ? 'Remove from compare' : 'Compare', ar: compare.has(product.id) ? 'إزالة من المقارنة' : 'قارن' })}
+              </button>
+              <ShareButtons title={shareTitle} text={pick(product.description as { en?: string; ar?: string })} label={productCopy.share} />
+            </div>
+          </aside>
+        </section>
+
+        {isBasketballPerformanceShoe(product) ? <PerformanceProfile product={product} /> : null}
+
+        {(product.material || product.features) ? (
+          <section className="px-technology" aria-labelledby="px-technology-title">
+            <div className="px-section-head">
+              <p className="px-eyebrow">{pick({ en: 'Product intelligence', ar: 'معلومات المنتج' })}</p>
+              <h2 id="px-technology-title">{pick({ en: 'The details that matter.', ar: 'التفاصيل التي تهمك.' })}</h2>
+            </div>
+            <div className="px-technology-grid">
+              {product.material ? <article><span>{pick({ en: 'Material', ar: 'الخامة' })}</span><p>{pick(product.material as { en?: string; ar?: string })}</p></article> : null}
+              {product.fit ? <article><span>{pick({ en: 'Fit', ar: 'القَصّة' })}</span><p>{pick(product.fit as { en?: string; ar?: string })}</p></article> : null}
+              {featureList.length ? <article><span>{pick({ en: 'Features', ar: 'المزايا' })}</span><p>{featureList.join(' · ')}</p></article> : null}
+            </div>
+          </section>
+        ) : null}
+
+        {related.length > 0 ? (
+          <section className="pdx-related">
+            <div className="pdx-section-head"><p>{pick({ en: 'More to explore', ar: 'اكتشف المزيد' })}</p><h2>{productCopy.related || pick({ en: 'Related products', ar: 'منتجات مرتبطة' })}</h2></div>
+            <div className="pdx-related-rail">
+              {related.map((item) => <ProductCard key={String(item?.id)} product={item || {}} />)}
+            </div>
+          </section>
+        ) : null}
+
+        <Recommendations current={product} />
+
+        {recent.length > 0 ? (
+          <section className="pdx-related pdx-recent">
+            <div className="pdx-section-head"><p>{pick({ en: 'Recently viewed', ar: 'شاهدتها مؤخراً' })}</p><h2>{productCopy.recentlyViewed || pick({ en: 'Your recent products', ar: 'منتجاتك الأخيرة' })}</h2></div>
+            <div className="pdx-related-rail">
+              {recent.map((item) => <ProductCard key={String(item?.id)} product={item || {}} />)}
+            </div>
+          </section>
+        ) : null}
+      </main>
+
+      {purchasable ? (
+        <div className="pdx-mobile-buybar">
+          <Price amount={activePrice} size="sm" />
+          <button type="button" className="pdx-add" onClick={addToCart} disabled={adding}>
             {productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
           </button>
         </div>
-      )}
+      ) : null}
 
-      <MediaLightbox
-        open={lightboxOpen}
-        onClose={() => setLightboxOpen(false)}
-        items={gallery}
-        index={activeImg}
-        onIndexChange={setActiveImg}
-        label={pick(product.name as { en?: string; ar?: string })}
-      />
-      {guide && (
+      <MediaLightbox open={lightboxOpen} onClose={() => setLightboxOpen(false)} items={gallery} index={activeImg} onIndexChange={setActiveImg} label={shareTitle} />
+      {guide ? (
         <Modal open={guideOpen} onClose={() => setGuideOpen(false)} title={pick(guide.title)}>
           <SizeGuideTable guide={guide} lang={lang} />
         </Modal>
-      )}
-
-      {/* ================================================================
-          3 — THE CONTINUATION
-          Related work presented as chapters rather than three identical
-          grids stacked on each other.
-          ================================================================ */}
-      {related.length > 0 && (
-        <section className="gw-continue gw-continue--maple">
-          <div className="gw-continue-inner">
-            <div className="gw-continue-head">
-              <p className="gw-kicker">{pick({ en: 'Continue', ar: 'تابع' })}</p>
-              <h2 className="gw-continue-title">{productCopy.related}</h2>
-            </div>
-            <div className="cc-product-grid">
-              {related.map((item) => (
-                <ProductCard key={String(item?.id)} product={(item || {})} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-      {isBasketballPerformanceShoe(product) ? <PerformanceProfile product={product} /> : null}
-
-      {(product.material || product.features) ? (
-        <section className="px-technology" aria-labelledby="px-technology-title">
-          <div className="px-section-head">
-            <p className="px-eyebrow">{pick({ en: 'Product intelligence', ar: 'معلومات المنتج' })}</p>
-            <h2 id="px-technology-title">{pick({ en: 'Built details, without the noise.', ar: 'تفاصيل المنتج بدون تعقيد.' })}</h2>
-          </div>
-          <div className="px-technology-grid">
-            {product.material ? (
-              <article><span>{pick({ en: 'Material', ar: 'الخامة' })}</span><p>{pick(product.material as { en?: string; ar?: string })}</p></article>
-            ) : null}
-            {product.fit ? (
-              <article><span>{pick({ en: 'Fit', ar: 'القَصّة' })}</span><p>{pick(product.fit as { en?: string; ar?: string })}</p></article>
-            ) : null}
-            {featureList.length ? (
-              <article><span>{pick({ en: 'Features', ar: 'المزايا' })}</span><p>{featureList.join(' · ')}</p></article>
-            ) : null}
-          </div>
-        </section>
       ) : null}
-
-      <Recommendations current={product} />
-      {recent.length > 0 && (
-        <section className="gw-continue">
-          <div className="gw-continue-inner">
-            <div className="gw-continue-head">
-              <p className="gw-kicker">{pick({ en: 'Your trail', ar: 'مسارك' })}</p>
-              <h2 className="gw-continue-title">{productCopy.recentlyViewed}</h2>
-            </div>
-            <div className="cc-product-grid">
-              {recent.map((item) => (
-                <ProductCard key={String(item?.id)} product={(item || {})} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
     </>
-  );
-}
-
-function SizeGuideTable({
-  guide,
-  lang,
-}: {
-  guide: {
-    columns?: Array<string | { en?: string; ar?: string }>;
-    rows?: unknown[][];
-  };
-  lang: string;
-}): ReactElement {
-  const columns = guide.columns || [];
-  const rows = guide.rows || [];
-  return (
-    <div className="size-table-wrap">
-      <table className="size-table">
-        <thead>
-          <tr>
-            {columns.map((column, index) => (
-              <th key={index}>
-                {typeof column === 'string'
-                  ? column
-                  : String((column as Record<string, string>)[lang] ?? column.en ?? '')}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={index}>
-              {(row || []).map((cell, cellIndex) => (
-                <td key={cellIndex}>{String(cell ?? '')}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
   );
 }

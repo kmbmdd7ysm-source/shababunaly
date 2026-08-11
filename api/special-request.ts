@@ -3,6 +3,7 @@ import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { validateEncodedFiles } from './_file-security.ts';
 import { verifyTurnstileToken } from './_turnstile.ts';
+import { sendInternalFormNotification } from './_internal-form-notification.ts';
 
 type ApiReq = {
   method?: string;
@@ -204,6 +205,17 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     if (!requestRow?.id) throw new Error('special_request_create_failed');
     const uploaded = [];
     for (const file of files) uploaded.push(await uploadFile(String(requestRow.id), file));
+    const emailResult = await sendInternalFormNotification(
+      {
+        form_type: 'special_request',
+        request_number: requestRow.request_number,
+        request_id: requestRow.id,
+        ...payload,
+        files_received: uploaded.length,
+        file_names: files.map((file) => file.name).join(', '),
+      },
+      `Shababuna special request · ${payload.customerName}`,
+    );
     return res.status(201).json({
       ok: true,
       request: {
@@ -213,6 +225,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         createdAt: requestRow.created_at,
       },
       filesReceived: uploaded.length,
+      notification: emailResult.delivered ? 'delivered' : 'pending',
     });
   } catch (error: unknown) {
     const code = clean(

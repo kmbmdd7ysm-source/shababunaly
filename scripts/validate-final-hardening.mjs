@@ -279,7 +279,7 @@ for (const token of [
   'manual_factory_match_required',
 ])
   has(preflight, token, `production preflight ${token}`);
-const customizePage = read('src/pages/CustomizePage.tsx');
+const customizePage = read('src/pages/AdvancedCustomizePage.tsx');
 for (const token of ['productionPreflight', 'readyForQuote'])
   has(customizePage, token, `preflight quote gate ${token}`);
 
@@ -336,7 +336,19 @@ try {
   assert.equal(catalogProducts.length, 69);
   assert.equal(products.length, 69);
   assert.equal(lhaStoreProducts().length, 25);
-  assert.equal(readyToShipProducts().length, 0);
+  const readyProducts = readyToShipProducts();
+  assert.equal(readyProducts.length, 15);
+  assert.equal(
+    readyProducts.every(
+      (item) =>
+        item.inventoryLocation === 'LY' &&
+        (item.inventoryVerified === true ||
+          (item.legacyLha === true &&
+            item.inventorySource === 'owner_confirmed_lha_ready' &&
+            item.comingSoon !== true)),
+    ),
+    true,
+  );
   assert.equal(products.every(isProductVisible), true);
   assert.equal(
     products
