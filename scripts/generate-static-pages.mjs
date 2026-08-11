@@ -103,13 +103,68 @@ const routes = [
     path: '/',
     title: `${SITE.name} — ${en(SITE.slogan)}`,
     description:
-      'Premium basketball retail, custom manufacturing, team supply and wholesale from Libya to the world.',
+      'Basketball products, performance gear, custom design and culture from Shababuna in Libya.',
     jsonLd: homeSchema,
   },
   {
     path: '/shop',
     title: 'Shop',
     description: 'Shop basketball clothing, footwear, accessories, basketballs and equipment.',
+  },
+  {
+    path: '/discover',
+    title: 'Discover',
+    description: 'Explore new arrivals, trending products, performance picks and Shababuna edits.',
+  },
+  {
+    path: '/discover/trending-now',
+    title: 'Trending Now',
+    description: 'A current edit of established favourites in the Shababuna catalogue.',
+  },
+  {
+    path: '/discover/just-dropped',
+    title: 'Just Dropped',
+    description: 'Recent additions to the live Shababuna catalogue.',
+  },
+  {
+    path: '/discover/new-this-week',
+    title: 'New This Week',
+    description: 'The newest products available to browse at Shababuna.',
+  },
+  {
+    path: '/discover/best-sellers',
+    title: 'Best Sellers',
+    description: 'Established favourites from the current Shababuna catalogue.',
+  },
+  {
+    path: '/discover/performance-picks',
+    title: 'Performance Picks',
+    description: 'Basketball footwear and gear selected for playing, training and movement.',
+  },
+  {
+    path: '/discover/court-essentials',
+    title: 'Court Essentials',
+    description: 'Basketballs, accessories and equipment for the court.',
+  },
+  {
+    path: '/discover/shababuna-selects',
+    title: 'Shababuna Selects',
+    description: 'A rotating edit from products already in the Shababuna catalogue.',
+  },
+  {
+    path: '/releases',
+    title: 'Releases',
+    description: 'Verified product release dates and the newest additions to Shababuna.',
+  },
+  {
+    path: '/basketball/shoe-finder',
+    title: 'Basketball Shoe Finder',
+    description: 'Find basketball footwear using verified catalogue and performance data.',
+  },
+  {
+    path: '/basketball/shoe-finder',
+    title: 'Basketball Shoe Finder',
+    description: 'Find basketball footwear using verified catalogue and performance data.',
   },
   {
     path: '/shop/ready-to-ship',
@@ -163,6 +218,16 @@ const routes = [
     title: 'Our Work',
     description:
       'Shababuna custom manufacturing, club supply and basketball equipment capabilities.',
+  },
+  {
+    path: '/stories',
+    title: 'Stories',
+    description: 'Basketball stories, product intelligence, custom work and Shababuna projects.',
+  },
+  {
+    path: '/stories',
+    title: 'Stories',
+    description: 'Basketball stories, product intelligence, custom work and Shababuna projects.',
   },
   {
     path: '/about',

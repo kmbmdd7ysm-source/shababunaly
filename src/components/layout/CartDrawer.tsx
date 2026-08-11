@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useCart } from '../../context/CartContext';
+import { useCatalog } from '../../context/CatalogContext';
 import { useCommerce } from '../../context/CommerceContext';
 import { getLibyaFreeShippingProgress, SHIPPING_MESSAGES } from '../../config/shipping';
 import SmartImage from '../common/SmartImage';
@@ -10,6 +11,7 @@ import QuantitySelector from '../common/QuantitySelector';
 import Icon from '../icons/Icon';
 import { lockDocumentScroll } from '../../utils/scrollLock';
 import '../../styles/domain-overlays.css';
+import '../../styles/consumer-commerce.css';
 
 export default function CartDrawer(): ReactElement | null {
   const { t, pick, lang } = useLanguage();
@@ -17,6 +19,8 @@ export default function CartDrawer(): ReactElement | null {
   const a11y = (t.a11y || {}) as Record<string, string>;
   const common = (t.common || {}) as Record<string, string>;
   const { format, usdToLydRate, countryCode } = useCommerce();
+  const { readyToShipProducts } = useCatalog();
+  const hasReadyToShip = readyToShipProducts().length > 0;
   const {
     items,
     drawerOpen,
@@ -107,9 +111,11 @@ export default function CartDrawer(): ReactElement | null {
               <button type="button" className="btn-primary" onClick={closeDrawer}>
                 {cartCopy.startShopping}
               </button>
-              <Link to="/shop/ready-to-ship" className="btn-secondary" onClick={closeDrawer}>
-                {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-              </Link>
+              {hasReadyToShip ? (
+                <Link to="/shop/ready-to-ship" className="btn-secondary" onClick={closeDrawer}>
+                  {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                </Link>
+              ) : null}
             </div>
           </div>
         ) : (

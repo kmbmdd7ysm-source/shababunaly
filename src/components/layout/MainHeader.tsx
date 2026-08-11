@@ -1,91 +1,59 @@
 import type { ReactElement } from 'react';
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { SITE } from '../../config';
 import { useLanguage } from '../../context/LanguageContext';
 import { useCart } from '../../context/CartContext';
-import { useCompare } from '../../context/CompareContext';
 import { useAuth } from '../../context/AuthContext';
 import { useWishlist } from '../../hooks/useWishlist';
+import { useCatalog } from '../../context/CatalogContext';
 import { trackEvent } from '../../utils/analytics';
 import { lockDocumentScroll } from '../../utils/scrollLock';
 import { mainNav, megaMenu } from '../../data/navigation';
 import CurrencySelector from '../common/CurrencySelector';
 import Icon from '../icons/Icon';
-import '../../styles/shell.nav.css';
+import '../../styles/design/phase2-chrome.css';
 
 const SearchOverlay = lazy(() => import('./SearchOverlay'));
 
-/*
- * THE SHELL — a floating header over a cinematic navigation overlay.
- *
- * The previous shell was a permanent 76px vertical rail carrying a rotated
- * wordmark and a stack of icons. It was rejected, correctly: the wordmark was
- * cramped into a column too narrow to read, the icon stack collided with its
- * own labels, and a fixed rail on the inline-start edge dominated every page it
- * framed. On mobile the bottom command bar had no brand on it at all and its
- * labels collided with anything pinned to the lower edge.
- *
- * This replaces the archetype rather than resizing it:
- *
- *   DESKTOP  a FLOATING HEADER that begins transparent over a cinematic
- *            opening and condenses into a solid bar once you scroll past it.
- *            The wordmark sits at readable size. Primary destinations sit
- *            inline. Utilities are a compact cluster. Nothing is permanently
- *            occupying an edge of the viewport, so full-bleed compositions
- *            stay full-bleed.
- *
- *   OVERLAY  the full catalogue opens as a CINEMATIC FULL-SCREEN OVERLAY —
- *            departments at display scale, the whole shop tree beside them, and
- *            the account state at the foot. Navigation becomes a moment rather
- *            than a dropdown.
- *
- *   MOBILE   designed on its own terms, not compressed from desktop. A slim
- *            floating bar carries the brand, search, bag and the menu trigger;
- *            everything else lives in the overlay at thumb-reachable size.
- *
- * Behaviour carried over exactly: the lazy search overlay, cart drawer, all
- * three analytics events, route-change close, scroll lock, focus trap, Escape,
- * and the rAF focus restore to the trigger.
- */
+type NavItem = {
+  key?: string;
+  to?: string;
+  label?: { en?: string; ar?: string } | string;
+  icon?: string;
+  mega?: boolean;
+};
+
 export default function MainHeader(): ReactElement {
   const { t, pick, lang, setLang } = useLanguage();
-  const nav = (t.nav || {}) as Record<string, string>;
   const a11y = (t.a11y || {}) as Record<string, string>;
   const { count, openDrawer } = useCart();
-  const compare = useCompare();
   const wishlist = useWishlist();
   const auth = useAuth();
-  // Ready to Ship stays globally discoverable. International shipping caveats
-  // are communicated on the destination page — never by hiding the link.
-  const featuredShopLinks = megaMenu.featured;
+  const { readyToShipProducts } = useCatalog();
   const location = useLocation();
-
-  const [navOpen, setNavOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const hasReadyToShip = readyToShipProducts().length > 0;
+  const [shopOpen, setShopOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  // Prefer cinematic-open from the first layout pass to avoid condensed→expanded CLS.
-  const [condensed, setCondensed] = useState(() => {
+  const [solid, setSolid] = useState(() => {
     if (typeof document === 'undefined') return true;
     return document.documentElement.dataset.cinematicOpen !== 'yes';
   });
-
   const searchButton = useRef<HTMLButtonElement | null>(null);
   const menuButton = useRef<HTMLButtonElement | null>(null);
-  const navPanel = useRef<HTMLDivElement | null>(null);
+  const menuPanel = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => setNavOpen(false), [location.pathname]);
+  useEffect(() => {
+    setMenuOpen(false);
+    setShopOpen(false);
+  }, [location.pathname]);
 
-  /*
-   * The header is transparent only where a route has declared a full-bleed dark
-   * opening (see hooks/useCinematicOpening). Its ink is light, so over a light
-   * page a transparent header would be invisible — solid is the safe default
-   * and the exception has to be earned. rAF-throttled so scrolling stays cheap.
-   */
   useLayoutEffect(() => {
     let frame = 0;
     const evaluate = () => {
       const cinematic = document.documentElement.dataset.cinematicOpen === 'yes';
-      setCondensed(!cinematic || window.scrollY > 24);
+      setSolid(!cinematic || window.scrollY > 18);
     };
     const onScroll = () => {
       if (frame) return;
@@ -103,23 +71,20 @@ export default function MainHeader(): ReactElement {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!navOpen) return undefined;
+    if (!menuOpen) return undefined;
     const unlock = lockDocumentScroll();
-    const focusable = (): HTMLElement[] =>
-      navPanel.current
-        ? ([
-            ...navPanel.current.querySelectorAll('a[href],button:not([disabled]),select'),
-          ] as HTMLElement[])
+    const focusable = () =>
+      menuPanel.current
+        ? ([...menuPanel.current.querySelectorAll('a[href],button:not([disabled]),select')] as HTMLElement[])
         : [];
-    focusable()[0]?.focus();
-    const key = (event: KeyboardEvent) => {
+    requestAnimationFrame(() => focusable()[0]?.focus());
+    const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setNavOpen(false);
+        setMenuOpen(false);
         return;
       }
       if (event.key !== 'Tab') return;
       const items = focusable();
-      if (!items.length) return;
       const first = items[0];
       const last = items.at(-1);
       if (!first || !last) return;
@@ -131,39 +96,27 @@ export default function MainHeader(): ReactElement {
         first.focus();
       }
     };
-    document.addEventListener('keydown', key);
+    document.addEventListener('keydown', onKey);
     const trigger = menuButton.current;
     return () => {
-      document.removeEventListener('keydown', key);
+      document.removeEventListener('keydown', onKey);
       unlock();
-      // The panel is still visible on this tick; focus lands nowhere unless we
-      // wait for it to be hidden.
       requestAnimationFrame(() => trigger?.focus());
     };
-  }, [navOpen]);
+  }, [menuOpen]);
 
   const toggleLang = () => {
     const next = lang === 'en' ? 'ar' : 'en';
     setLang(next);
     trackEvent('language_change', { language: next });
   };
-  type NavItem = {
-    key?: string;
-    to?: string;
-    label?: { en?: string; ar?: string } | string;
-    icon?: string;
-  };
-  const navLabel = (item: NavItem) =>
-    (item.key && nav[item.key]) ||
+  const label = (item: NavItem) =>
     pick(
-      (typeof item.label === 'object' && item.label) || {
-        en: String(item.key || ''),
-        ar: String(item.key || ''),
-      },
+      typeof item.label === 'object'
+        ? item.label
+        : { en: String(item.label || item.key || ''), ar: String(item.label || item.key || '') },
     );
-  const close = () => setNavOpen(false);
-
-  const wordmark = pick({
+  const wordmarkLight = pick({
     en: '/brand/shababuna-wordmark-white.png',
     ar: '/brand/shababuna-wordmark-ar-white.png',
   });
@@ -174,54 +127,96 @@ export default function MainHeader(): ReactElement {
 
   return (
     <>
-      <header className="gw-head" data-condensed={condensed ? 'yes' : 'no'}>
-        <div className="gw-head-inner">
-          <Link to="/" className="gw-head-brand" aria-label={SITE.name}>
-            {/* Two files rather than a CSS filter: the wordmark is a raster, and
-                  inverting it produces grey mush against both grounds. */}
-            <img className="gw-head-brand-light" src={wordmark} alt="" width="168" height="42" />
-            <img className="gw-head-brand-dark" src={wordmarkDark} alt="" width="168" height="42" />
+      <header className="s2-header" data-solid={solid ? 'yes' : 'no'}>
+        <div className="s2-header__inner">
+          <Link className="s2-header__brand" to="/" aria-label={SITE.name}>
+            <img className="s2-header__brand--light" src={wordmarkLight} alt="" width="154" height="40" />
+            <img className="s2-header__brand--dark" src={wordmarkDark} alt="" width="154" height="40" />
           </Link>
 
-          <nav className="gw-head-nav" aria-label={a11y.mainNav}>
-            {mainNav
-              .filter((item) => item.key !== 'home')
-              .map((item: NavItem) => (
-                <NavLink key={String(item.to)} to={String(item.to || '/')} className="gw-head-link">
-                  {navLabel(item)}
+          <nav className="s2-header__nav" aria-label={a11y.mainNav || 'Main navigation'}>
+            {mainNav.map((item) => (
+              <div
+                className="s2-header__nav-item"
+                key={String(item.to)}
+                onMouseEnter={() => item.mega && setShopOpen(true)}
+                onMouseLeave={() => item.mega && setShopOpen(false)}
+                onBlur={(event) => {
+                  if (
+                    item.mega &&
+                    !event.currentTarget.contains(event.relatedTarget as Node | null)
+                  ) {
+                    setShopOpen(false);
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (item.mega && event.key === 'Escape') {
+                    event.preventDefault();
+                    setShopOpen(false);
+                    (event.currentTarget.querySelector('a[href]') as HTMLElement | null)?.focus();
+                  }
+                }}
+              >
+                <NavLink
+                  to={String(item.to || '/')}
+                  className={({ isActive }) => `s2-header__link${isActive ? ' is-active' : ''}`}
+                  onFocus={() => item.mega && setShopOpen(true)}
+                >
+                  {label(item)}
                 </NavLink>
-              ))}
+                {item.mega && shopOpen ? (
+                  <div className="s2-mega" onMouseEnter={() => setShopOpen(true)} onMouseLeave={() => setShopOpen(false)}>
+                    <div className="s2-mega__inner">
+                      <div className="s2-mega__feature">
+                        <span className="s2-overline">{pick({ en: 'Start here', ar: 'ابدأ من هنا' })}</span>
+                        <div className="s2-mega__feature-links">
+                          {megaMenu.featured.filter((entry) => entry.to !== '/shop/ready-to-ship' || hasReadyToShip).map((entry) => (
+                            <Link key={entry.to} to={entry.to} onClick={() => setShopOpen(false)}>
+                              {pick(entry.label)}
+                              <Icon name="arrow" size={18} />
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                      {megaMenu.columns.map((column) => (
+                        <div className="s2-mega__column" key={pick(column.title)}>
+                          <span className="s2-overline">{pick(column.title)}</span>
+                          <div className="s2-mega__links">
+                            {column.links.map((entry) => (
+                              <Link key={entry.to} to={entry.to} onClick={() => setShopOpen(false)}>
+                                {pick(entry.label)}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ))}
           </nav>
 
-          <div className="gw-head-tools">
+          <div className="s2-header__tools">
             <button
               ref={searchButton}
-              className="gw-tool"
+              className="s2-icon-action"
+              type="button"
               onClick={() => setSearchOpen(true)}
-              aria-label={a11y.openSearch}
+              aria-label={a11y.openSearch || pick({ en: 'Search', ar: 'بحث' })}
             >
               <Icon name="search" />
             </button>
             <Link
-              className="gw-tool gw-tool--wide"
+              className="s2-icon-action s2-header__desktop-tool"
               to="/favorites"
-              aria-label={pick({
-                en: `Favorites, ${wishlist.ids.length} items`,
-                ar: `المفضلة، ${wishlist.ids.length}`,
-              })}
+              aria-label={pick({ en: `Favorites, ${wishlist.ids.length}`, ar: `المفضلة، ${wishlist.ids.length}` })}
             >
               <Icon name="heart" />
+              {wishlist.ids.length > 0 ? <span className="s2-count">{wishlist.ids.length}</span> : null}
             </Link>
             <Link
-              className="gw-tool gw-tool--wide"
-              to="/compare"
-              aria-label={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
-            >
-              <Icon name="compare" />
-              {compare.count > 0 && <b className="gw-tally">{compare.count}</b>}
-            </Link>
-            <Link
-              className="gw-tool gw-tool--wide"
+              className="s2-icon-action s2-header__desktop-tool"
               to="/account"
               aria-label={pick({ en: 'Account', ar: 'الحساب' })}
               onClick={() => trackEvent('account_header_click')}
@@ -229,150 +224,90 @@ export default function MainHeader(): ReactElement {
               <Icon name="user" />
             </Link>
             <button
-              className="gw-tool"
+              className="s2-icon-action"
+              type="button"
               onClick={() => {
                 trackEvent('bag_header_click');
                 openDrawer();
               }}
-              aria-label={`${a11y.openCart}${count ? `, ${count}` : ''}`}
+              aria-label={pick({ en: `Bag, ${count} items`, ar: `الحقيبة، ${count}` })}
             >
               <Icon name="bag" />
-              {count > 0 && <b className="gw-tally">{count}</b>}
+              {count > 0 ? <span className="s2-count">{count}</span> : null}
             </button>
-
             <button
               ref={menuButton}
-              className="gw-menu-key"
-              onClick={() => {
-                setSearchOpen(false);
-                setNavOpen(true);
-              }}
-              aria-expanded={navOpen}
-              aria-controls="gw-nav-overlay"
-              aria-label={a11y.openMenu}
+              className="s2-menu-trigger"
+              type="button"
+              aria-expanded={menuOpen}
+              aria-controls="s2-mobile-menu"
+              aria-label={a11y.openMenu || pick({ en: 'Open menu', ar: 'فتح القائمة' })}
+              onClick={() => setMenuOpen(true)}
             >
-              <span className="gw-menu-key-bars" aria-hidden="true">
-                <i />
-                <i />
-              </span>
-              <span className="gw-menu-key-word">{pick({ en: 'Menu', ar: 'القائمة' })}</span>
+              <Icon name="menu" />
+              <span>{pick({ en: 'Menu', ar: 'القائمة' })}</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* ── THE OVERLAY ────────────────────────────────────────────────── */}
       <div
-        ref={navPanel}
-        id="gw-nav-overlay"
-        className={`gw-nav${navOpen ? ' is-open' : ''}`}
-        aria-hidden={!navOpen}
+        id="s2-mobile-menu"
+        ref={menuPanel}
+        className={`s2-menu${menuOpen ? ' is-open' : ''}`}
+        aria-hidden={!menuOpen}
       >
-        <div className="gw-nav-bar">
-          <Link to="/" className="gw-nav-brand" onClick={close} aria-label={SITE.name}>
-            <img src={wordmark} alt="" width="168" height="42" />
+        <div className="s2-menu__top">
+          <Link to="/" className="s2-menu__brand" onClick={() => setMenuOpen(false)} aria-label={SITE.name}>
+            <img src={wordmarkDark} alt="" width="154" height="40" />
           </Link>
-          <button className="gw-nav-close" onClick={close} aria-label={a11y.closeMenu}>
+          <button className="s2-icon-action" type="button" onClick={() => setMenuOpen(false)} aria-label={a11y.closeMenu || pick({ en: 'Close menu', ar: 'إغلاق القائمة' })}>
             <Icon name="close" />
-            <span>{pick({ en: 'Close', ar: 'إغلاق' })}</span>
           </button>
         </div>
 
-        <nav className="gw-nav-body" aria-label={a11y.mobileNav}>
-          <div className="gw-nav-primary">
-            {mainNav.map((item: NavItem) => (
-              <NavLink
-                key={String(item.to)}
-                to={String(item.to || '/')}
-                end={item.to === '/'}
-                onClick={close}
-                className="gw-nav-major"
-              >
-                <Icon name={item.icon || 'grid'} />
-                <span>{navLabel(item)}</span>
+        <div className="s2-menu__body">
+          <nav className="s2-menu__primary" aria-label={a11y.mobileNav || 'Mobile navigation'}>
+            {mainNav.map((item) => (
+              <NavLink key={String(item.to)} to={String(item.to || '/')} onClick={() => setMenuOpen(false)}>
+                <span>{label(item)}</span>
+                <Icon name="arrow" size={20} />
               </NavLink>
             ))}
-          </div>
+          </nav>
 
-          <div className="gw-nav-tree">
-            <div className="gw-nav-col">
-              <p className="gw-spec">{pick({ en: 'Departments', ar: 'الأقسام' })}</p>
-              {featuredShopLinks.map((link) => (
-                <Link key={link.to} to={link.to} onClick={close} className="gw-nav-minor">
-                  {nav[link.key]}
-                </Link>
-              ))}
-            </div>
+          <div className="s2-menu__grid">
             {megaMenu.columns.map((column) => (
-              <div className="gw-nav-col" key={pick(column.title)}>
-                <p className="gw-spec">{pick(column.title)}</p>
-                {column.links.map((link) => (
-                  <Link key={link.to} to={link.to} onClick={close} className="gw-nav-minor">
-                    {pick(link.label)}
+              <section key={pick(column.title)}>
+                <span className="s2-overline">{pick(column.title)}</span>
+                {column.links.map((entry) => (
+                  <Link key={entry.to} to={entry.to} onClick={() => setMenuOpen(false)}>
+                    {pick(entry.label)}
                   </Link>
                 ))}
-              </div>
+              </section>
             ))}
-            <div className="gw-nav-col">
-              <p className="gw-spec">{pick({ en: 'Your account', ar: 'حسابك' })}</p>
-              <Link to="/favorites" onClick={close} className="gw-nav-minor">
-                {pick({ en: 'Favorites', ar: 'المفضلة' })} ({wishlist.ids.length})
-              </Link>
-              <Link to="/compare" onClick={close} className="gw-nav-minor">
-                {pick({ en: 'Compare', ar: 'المقارنة' })} ({compare.count})
-              </Link>
-              <Link to="/order-tracking" onClick={close} className="gw-nav-minor">
-                {pick({ en: 'Track order', ar: 'تتبع الطلب' })}
-              </Link>
-              <Link to="/help" onClick={close} className="gw-nav-minor">
-                {pick({ en: 'Help', ar: 'المساعدة' })}
-              </Link>
-              {auth.user ? (
-                <>
-                  <Link to="/account" onClick={close} className="gw-nav-minor">
-                    {pick({ en: 'View account', ar: 'عرض الحساب' })}
-                  </Link>
-                  <button
-                    type="button"
-                    className="gw-nav-minor gw-nav-minor--button"
-                    onClick={() => {
-                      void (async () => {
-                        if (typeof auth.signOut === 'function') await auth.signOut();
-                        close();
-                      })();
-                    }}
-                  >
-                    {pick({ en: 'Sign out', ar: 'تسجيل الخروج' })}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/account" onClick={close} className="gw-nav-minor">
-                    {pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}
-                  </Link>
-                  <Link to="/account?mode=signup" onClick={close} className="gw-nav-minor">
-                    {pick({ en: 'Create account', ar: 'إنشاء حساب' })}
-                  </Link>
-                </>
-              )}
-            </div>
+            <section>
+              <span className="s2-overline">{pick({ en: 'Your account', ar: 'حسابك' })}</span>
+              <Link to="/favorites" onClick={() => setMenuOpen(false)}>{pick({ en: 'Favorites', ar: 'المفضلة' })}</Link>
+              <Link to="/order-tracking" onClick={() => setMenuOpen(false)}>{pick({ en: 'Track order', ar: 'تتبع الطلب' })}</Link>
+              <Link to="/help" onClick={() => setMenuOpen(false)}>{pick({ en: 'Help', ar: 'المساعدة' })}</Link>
+              <Link to="/account" onClick={() => setMenuOpen(false)}>{auth.user ? pick({ en: 'Account', ar: 'الحساب' }) : pick({ en: 'Sign in', ar: 'تسجيل الدخول' })}</Link>
+            </section>
           </div>
-        </nav>
+        </div>
 
-        <div className="gw-nav-foot">
+        <div className="s2-menu__foot">
           <CurrencySelector />
-          <button className="gw-nav-lang" onClick={toggleLang}>
-            {lang === 'en' ? 'العربية' : 'English'}
-          </button>
-          <p className="gw-spec gw-nav-place">{pick(SITE.address)}</p>
+          <button type="button" className="s2-menu__language" onClick={toggleLang}>{lang === 'en' ? 'العربية' : 'English'}</button>
         </div>
       </div>
 
-      {searchOpen && (
+      {searchOpen ? (
         <Suspense fallback={null}>
           <SearchOverlay open onClose={() => setSearchOpen(false)} triggerRef={searchButton} />
         </Suspense>
-      )}
+      ) : null}
     </>
   );
 }

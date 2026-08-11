@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
 import '../styles/content.css';
 
@@ -64,7 +64,7 @@ export default function AboutPage(): ReactElement {
         description="Shababuna is a basketball retail, custom manufacturing, teams and wholesale platform based in Tripoli, Libya."
         path="/about"
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow="Shababuna · Built Different"
         title={pick({ en: 'More than a basketball store.', ar: 'أكثر من متجر كرة سلة.' })}
         lede={pick({

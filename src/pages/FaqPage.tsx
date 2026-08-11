@@ -1,7 +1,7 @@
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo.tsx';
-import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier';
+import PublicPageHeader from '../components/content/PublicPageHeader';
+import ContentGuide from '../components/content/ContentGuide';
 import Accordion from '../components/common/Accordion';
 import EmptyState from '../components/common/EmptyState';
 import { faqCategories } from '../data/faqs.ts';
@@ -31,7 +31,7 @@ export default function FaqPage() {
     return (
       <>
         <Seo title={faq.title || ''} description={faq.sub || ''} path="/faq" />
-        <RouteMasthead
+        <PublicPageHeader
           eyebrow={faq.label}
           title={faq.title}
           lede={faq.sub}
@@ -52,14 +52,14 @@ export default function FaqPage() {
   return (
     <>
       <Seo title={faq.title || ''} description={faq.sub || ''} path="/faq" />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={faq.label}
         title={faq.title}
         lede={faq.sub}
         trail={[{ label: faq.title || 'FAQ' }]}
         figure={{ value: questionCount, label: pick({ en: 'answers', ar: 'إجابة' }) }}
       />
-      <Dossier
+      <ContentGuide
         chapters={faqCategories.map((cat) => ({
           title: pick(cat.title),
           body: (

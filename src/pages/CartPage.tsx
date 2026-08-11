@@ -8,15 +8,16 @@ import Seo from '../components/common/Seo';
 import SmartImage from '../components/common/SmartImage';
 import QuantitySelector from '../components/common/QuantitySelector';
 import '../styles/domain-commerce.css';
-import '../styles/ledger.css';
 import { useCatalog } from '../context/CatalogContext';
 import { categories } from '../data/categories';
 import Icon from '../components/icons/Icon';
 import '../styles/transact.css';
 import '../styles/domain-misc.css';
+import '../styles/consumer-commerce.css';
 
 export default function CartPage(): ReactElement {
-  const { getProduct, products } = useCatalog();
+  const { getProduct, products, readyToShipProducts } = useCatalog();
+  const hasReadyToShip = readyToShipProducts().length > 0;
   const { t, pick, lang } = useLanguage();
   const cartCopy = (t.cart || {}) as Record<string, string>;
   const nav = (t.nav || {}) as Record<string, string>;
@@ -37,18 +38,15 @@ export default function CartPage(): ReactElement {
     <>
       <Seo title={cartCopy.title || ''} description={cartCopy.title || ''} path="/cart" noindex />
 
-      {/* A LEDGER, not a page with a hero. The bag is a running account: a
-          measured masthead carrying the item count as a figure, then the lines,
-          then the reckoning. */}
-      <section className="gw-ledger" aria-labelledby="gw-cart-title">
-        <div className="gw-ledger-inner">
-          <div className="gw-ledger-head">
+      <section className="cc-cart-page" aria-labelledby="gw-cart-title">
+        <div className="cc-cart-inner">
+          <header className="cc-page-head cc-cart-head">
             <p className="gw-kicker">{nav.cart}</p>
-            <div className="gw-ledger-head-row">
-              <h1 id="gw-cart-title" className="gw-ledger-title">
+            <div className="cc-cart-head__row">
+              <h1 id="gw-cart-title" className="cc-cart-title">
                 {cartCopy.title}
               </h1>
-              <p className="gw-ledger-count">
+              <p className="cc-cart-count">
                 <span className="gw-figure gw-isolate-ltr">{items.length}</span>
                 <span className="gw-kicker">
                   {items.length === 1
@@ -57,18 +55,12 @@ export default function CartPage(): ReactElement {
                 </span>
               </p>
             </div>
-          </div>
+          </header>
 
           {items.length === 0 ? (
-            /* An empty bag was a small dashed box adrift in a tall white field
-               with the footer crowding in — a dead end at the exact moment the
-               visitor is most likely to leave. It is now a departure board:
-               the statement, then every department as a numbered way back into
-               the catalogue with its live count. Same copy, same primary
-               action, but the screen does something. */
-            <div className="gw-ledger-empty">
-              <div className="gw-ledger-empty-say">
-                <div className="gw-empty-orb" aria-hidden="true">
+            <div className="cc-cart-empty">
+              <div className="cc-cart-empty__copy">
+                <div className="cc-cart-empty__art" aria-hidden="true">
                   <svg viewBox="0 0 120 120" width="120" height="120" fill="none">
                     <circle cx="60" cy="60" r="52" stroke="currentColor" strokeWidth="2.5" />
                     <path
@@ -86,23 +78,25 @@ export default function CartPage(): ReactElement {
                   </svg>
                 </div>
 
-                <p className="gw-ledger-empty-line">{cartCopy.empty}</p>
-                <p className="gw-ledger-empty-hint">{cartCopy.emptyHint}</p>
-                <div className="gw-empty-actions">
+                <p className="cc-cart-empty__title">{cartCopy.empty}</p>
+                <p className="cc-cart-empty__hint">{cartCopy.emptyHint}</p>
+                <div className="cc-actions">
                   <Link to="/shop" className="gw-btn gw-btn--primary">
                     {cartCopy.startShopping}
                   </Link>
-                  <Link to="/shop/ready-to-ship" className="gw-btn gw-btn--ghost">
-                    {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
-                  </Link>
+                  {hasReadyToShip ? (
+                    <Link to="/shop/ready-to-ship" className="gw-btn gw-btn--ghost">
+                      {pick({ en: 'Ready to Ship', ar: 'تسليم فوري' })}
+                    </Link>
+                  ) : null}
                 </div>
               </div>
-              <ul className="gw-ledger-gates">
+              <ul className="cc-cart-departments">
                 {categories.map((entry) => (
                   <li key={entry.slug}>
                     <Link to={`/shop/${entry.slug}`}>
-                      <span className="gw-ledger-gate-name">{pick(entry.name)}</span>
-                      <span className="gw-ledger-gate-count gw-isolate-ltr">
+                      <span className="cc-cart-department__name">{pick(entry.name)}</span>
+                      <span className="cc-cart-department__count gw-isolate-ltr">
                         {products.filter((item) => item.category === entry.slug).length}
                       </span>
                     </Link>
@@ -111,8 +105,8 @@ export default function CartPage(): ReactElement {
               </ul>
             </div>
           ) : (
-            <div className="gw-ledger-body">
-              <div className="gw-ledger-lines">
+            <div className="cc-cart-body">
+              <div className="cc-cart-lines">
                 {showFreeShip && (
                   <div className="gw-threshold">
                     <p className="gw-threshold-text">
@@ -202,25 +196,23 @@ export default function CartPage(): ReactElement {
                   })}
                 </ul>
 
-                <Link to="/shop" className="gw-ledger-back">
+                <Link to="/shop" className="cc-cart-continue">
                   <Icon name="back" size={18} /> {cartCopy.continue}
                 </Link>
               </div>
 
-              {/* THE RECKONING — a specification block, with the total set
-                  apart by a heavier rule rather than by colour. */}
-              <aside className="gw-reckoning" aria-labelledby="gw-reckoning-title">
-                <h2 id="gw-reckoning-title" className="gw-kicker gw-reckoning-title">
+              <aside className="cc-cart-summary" aria-labelledby="cc-cart-summary-title">
+                <h2 id="cc-cart-summary-title" className="cc-cart-summary__title">
                   {cartCopy.title}
                 </h2>
-                <dl className="gw-reckoning-rows">
+                <dl className="cc-cart-summary__rows">
                   <div>
                     <dt>{cartCopy.subtotal}</dt>
                     <dd>{format(subtotal, lang)}</dd>
                   </div>
                   <div>
                     <dt>{cartCopy.shipping}</dt>
-                    <dd className="gw-reckoning-muted">
+                    <dd className="cc-cart-summary__muted">
                       {hasPhysical
                         ? cartCopy.shippingCalc
                         : items.some((item) => item.type === 'event') &&
@@ -234,14 +226,14 @@ export default function CartPage(): ReactElement {
                     </dd>
                   </div>
                 </dl>
-                <p className="gw-reckoning-total">
+                <p className="cc-cart-summary__total">
                   <span>{cartCopy.total}</span>
                   <span>{format(subtotal, lang)}</span>
                 </p>
-                <Link to="/checkout" className="gw-btn gw-btn--primary gw-reckoning-commit">
+                <Link to="/checkout" className="gw-btn gw-btn--primary cc-cart-summary__checkout">
                   {cartCopy.checkout}
                 </Link>
-                <p className="gw-reckoning-note">{checkoutCopy.secureNote}</p>
+                <p className="cc-cart-summary__note">{checkoutCopy.secureNote}</p>
               </aside>
             </div>
           )}

@@ -156,6 +156,39 @@ const paths = {
       <path d="M6 8.5a8.5 8.5 0 0 0 12 0" />
     </>
   ),
+  /* Phase 2 commerce/navigation additions — same 24px stroke grammar. */
+  spark: (
+    <>
+      <path d="M12 3.5 13.7 8l4.8 1.7-4.8 1.7L12 16l-1.7-4.6-4.8-1.7L10.3 8 12 3.5Z" />
+      <path d="m18.5 15 .9 2.4 2.4.9-2.4.9-.9 2.3-.9-2.3-2.4-.9 2.4-.9.9-2.4Z" />
+    </>
+  ),
+  shoe: (
+    <>
+      <path d="M4 15.5c3.4.2 5.4-.6 6.8-2.7l1.6-2.5 2.2 2.1c1.4 1.4 2.8 2.1 5.4 2.6v2.3H4v-1.8Z" />
+      <path d="M11.2 12.1 9.7 9.6M13.1 11.5l-1.4-2.4" />
+    </>
+  ),
+  shirt: (
+    <>
+      <path d="M8 5.2 10 4h4l2 1.2 4 2.2-2.5 4-2-1V20h-7V10.4l-2 1-2.5-4 4-2.2Z" />
+      <path d="M10 4c.3 1.5 1 2.2 2 2.2S13.7 5.5 14 4" />
+    </>
+  ),
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="m14.7 9.3-1.8 3.6-3.6 1.8 1.8-3.6 3.6-1.8Z" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="4" y="5.5" width="16" height="14" rx="1.5" />
+      <path d="M8 3.5v4M16 3.5v4M4 9.5h16" />
+      <path d="M8 13h3M13.5 13H16M8 16h3" />
+    </>
+  ),
+
   /* Fallback so a missing key is visibly wrong in review rather than invisible. */
   grid: (
     <>

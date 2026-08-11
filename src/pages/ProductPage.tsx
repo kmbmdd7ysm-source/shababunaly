@@ -9,7 +9,7 @@ import { useCart, type CartItem, cartKey } from '../context/CartContext';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { trackEvent } from '../utils/analytics';
 import Seo from '../components/common/Seo';
-import { resolveProductViewer } from '../utils/productViewerTier';
+import { resolveProductViewer, resolveProductMediaMode } from '../utils/productViewerTier';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import Price from '../components/common/Price';
 import Badge from '../components/common/Badge';
@@ -29,12 +29,14 @@ import Icon from '../components/icons/Icon';
 import PurchaseActions from '../components/shop/PurchaseActions';
 import ViewingTierNote from '../components/product/ViewingTierNote';
 import ProductMediaViewer from '../components/product/ProductMediaViewer';
+import PerformanceProfile from '../components/product/PerformanceProfile';
+import { isBasketballPerformanceShoe } from '../utils/productIntelligence';
 import '../styles/domain-shop.css';
 import '../styles/stage.css';
-import '../styles/catalogue.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
 import '../styles/catalog.css';
 import '../styles/domain-misc.css';
+import '../styles/product-experience.css';
 
 type ColorEntry = { key: string; hex?: string; name?: { en?: string; ar?: string }; image?: string };
 type SizeEntry = string;
@@ -57,6 +59,17 @@ const asVariants = (product: CatalogProduct | undefined): VariantEntry[] =>
   Array.isArray(product?.variants) ? (product.variants as VariantEntry[]) : [];
 const asGallery = (product: CatalogProduct | undefined): string[] =>
   Array.isArray(product?.gallery) ? (product.gallery as string[]).map(String) : [];
+
+const asFeatureList = (product: CatalogProduct | undefined, lang: string): string[] => {
+  const value = product?.features;
+  if (Array.isArray(value)) return value.map(String).filter(Boolean);
+  if (value && typeof value === 'object') {
+    const localized = value as Record<string, unknown>;
+    const selected = localized[lang] ?? localized.en ?? localized.ar;
+    return Array.isArray(selected) ? selected.map(String).filter(Boolean) : [];
+  }
+  return [];
+};
 
 export default function ProductPage(): ReactElement {
   const { slug } = useParams();
@@ -110,6 +123,7 @@ export default function ProductPage(): ReactElement {
   useCinematicOpening();
 
   const viewerTier = resolveProductViewer(product).tier;
+  const mediaMode = resolveProductMediaMode(product);
 
   const gallery = useMemo(() => {
     if (!product) return [] as string[];
@@ -266,16 +280,18 @@ export default function ProductPage(): ReactElement {
             ar: 'الشحن متاح لجميع دول العالم. يتم تأكيد السعر والمدة لكل وجهة، ويبقى الطلب قيد الانتظار حتى إضافة تكلفة الشحن.',
           });
 
+  const featureList = asFeatureList(product, lang);
+
   const details = [
     product.material && { title: productCopy.material, content: <p>{pick(product.material as { en?: string; ar?: string })}</p> },
     product.fit && { title: productCopy.fit, content: <p>{pick(product.fit as { en?: string; ar?: string })}</p> },
     product.care && { title: productCopy.care, content: <p>{pick(product.care as { en?: string; ar?: string })}</p> },
-    (Array.isArray(product.features) ? product.features : []).length > 0 && {
+    featureList.length > 0 && {
       title: productCopy.features,
       content: (
         <ul className="tick-list">
-          {(Array.isArray(product.features) ? product.features : []).map((feature: unknown) => (
-            <li key={String(feature)}>{String(feature)}</li>
+          {featureList.map((feature) => (
+            <li key={feature}>{feature}</li>
           ))}
         </ul>
       ),
@@ -339,7 +355,7 @@ export default function ProductPage(): ReactElement {
         {/* The viewer is the stage, not a column of it. It fills the section
             edge to edge; identity, trail and the angle register are overlaid on
             top of it. Nothing sits beside it competing for the same width. */}
-        <div className="gw-stage-canvas" data-tier={viewerTier}>
+        <div className="gw-stage-canvas" data-tier={viewerTier} data-media-mode={mediaMode}>
           {/*
             The adaptive ProductViewer is the stage. Levels A/B/C/D are chosen
             by verified assets — never by inventing a spin from one photograph.
@@ -371,10 +387,10 @@ export default function ProductPage(): ReactElement {
           <h1 id="gw-product-title" className="gw-stage-title">
             {pick(product.name as { en?: string; ar?: string })}
           </h1>
-          <p className="gw-kicker gw-stage-sku">
-            {productCopy.sku}:{' '}
+          <div className="px-stage-meta">
+            <span>{mediaMode.replaceAll('_', ' ')}</span>
             <span className="gw-isolate-ltr">{String(matchedVariant?.sku || product.sku || '')}</span>
-          </p>
+          </div>
           {stageBadges.length > 0 && (
             <div className="gw-stage-badges">
               {stageBadges
@@ -615,7 +631,7 @@ export default function ProductPage(): ReactElement {
       {/* A sticky commit bar on mobile, so the price and the action are never
           scrolled away from each other. */}
       {purchasable && (
-        <div className="gw-buybar" aria-hidden="true">
+        <div className="gw-buybar">
           <div className="gw-buybar-price">
             <Price amount={activePrice} size="sm" />
           </div>
@@ -623,7 +639,6 @@ export default function ProductPage(): ReactElement {
             type="button"
             className="gw-btn gw-btn--primary"
             onClick={addToCart}
-            tabIndex={-1}
           >
             {productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
           </button>
@@ -656,7 +671,7 @@ export default function ProductPage(): ReactElement {
               <p className="gw-kicker">{pick({ en: 'Continue', ar: 'تابع' })}</p>
               <h2 className="gw-continue-title">{productCopy.related}</h2>
             </div>
-            <div className="gw-catalogue-grid">
+            <div className="cc-product-grid">
               {related.map((item) => (
                 <ProductCard key={String(item?.id)} product={(item || {})} />
               ))}
@@ -664,6 +679,28 @@ export default function ProductPage(): ReactElement {
           </div>
         </section>
       )}
+      {isBasketballPerformanceShoe(product) ? <PerformanceProfile product={product} /> : null}
+
+      {(product.material || product.features) ? (
+        <section className="px-technology" aria-labelledby="px-technology-title">
+          <div className="px-section-head">
+            <p className="px-eyebrow">{pick({ en: 'Product intelligence', ar: 'معلومات المنتج' })}</p>
+            <h2 id="px-technology-title">{pick({ en: 'Built details, without the noise.', ar: 'تفاصيل المنتج بدون تعقيد.' })}</h2>
+          </div>
+          <div className="px-technology-grid">
+            {product.material ? (
+              <article><span>{pick({ en: 'Material', ar: 'الخامة' })}</span><p>{pick(product.material as { en?: string; ar?: string })}</p></article>
+            ) : null}
+            {product.fit ? (
+              <article><span>{pick({ en: 'Fit', ar: 'القَصّة' })}</span><p>{pick(product.fit as { en?: string; ar?: string })}</p></article>
+            ) : null}
+            {featureList.length ? (
+              <article><span>{pick({ en: 'Features', ar: 'المزايا' })}</span><p>{featureList.join(' · ')}</p></article>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
       <Recommendations current={product} />
       {recent.length > 0 && (
         <section className="gw-continue">
@@ -672,7 +709,7 @@ export default function ProductPage(): ReactElement {
               <p className="gw-kicker">{pick({ en: 'Your trail', ar: 'مسارك' })}</p>
               <h2 className="gw-continue-title">{productCopy.recentlyViewed}</h2>
             </div>
-            <div className="gw-catalogue-grid">
+            <div className="cc-product-grid">
               {recent.map((item) => (
                 <ProductCard key={String(item?.id)} product={(item || {})} />
               ))}

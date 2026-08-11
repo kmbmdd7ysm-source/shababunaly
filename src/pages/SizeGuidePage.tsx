@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Seo from '../components/common/Seo.tsx';
-import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier';
+import PublicPageHeader from '../components/content/PublicPageHeader';
+import ContentGuide from '../components/content/ContentGuide';
 import { sizeGuides, sizeUnitNote } from '../data/sizeGuide.ts';
 
 /*
@@ -24,14 +24,14 @@ export default function SizeGuidePage(): ReactElement {
   return (
     <>
       <Seo title={sizeGuide.title || ''} description={sizeGuide.sub || ''} path="/size-guide" />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={sizeGuide.label}
         title={sizeGuide.title}
         lede={sizeGuide.sub}
         trail={[{ label: sizeGuide.title || '' }]}
         figure={{ value: sizeGuides.length, label: pick({ en: 'guides', ar: 'أدلة' }) }}
       />
-      <Dossier
+      <ContentGuide
         meta={pick(sizeUnitNote)}
         aside={pick(sizeUnitNote)}
         chapters={sizeGuides.map((guide) => ({

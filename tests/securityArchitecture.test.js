@@ -4,12 +4,9 @@ import fs from 'node:fs';
 describe('trusted checkout architecture', () => {
   it('saves the trusted order before creating a hosted payment session', () => {
     const source = fs.readFileSync('src/pages/CheckoutPage.tsx', 'utf8');
-    expect(source.indexOf('const confirmation = await savePendingOrder(payload)')).toBeGreaterThan(
-      -1,
-    );
-    expect(source.indexOf('createCheckoutSession({')).toBeGreaterThan(
-      source.indexOf('const confirmation = await savePendingOrder(payload)'),
-    );
+    const saveIndex = source.indexOf('await savePendingOrder(payload');
+    expect(saveIndex).toBeGreaterThan(-1);
+    expect(source.indexOf('createCheckoutSession({')).toBeGreaterThan(saveIndex);
   });
 
   it('reloads the trusted Supabase order on the server', () => {

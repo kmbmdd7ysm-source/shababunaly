@@ -1,4 +1,4 @@
-// Guards the GROUNDWORK design foundation:
+// Guards the retained tokenized design foundation after the Phase 4 public-UI destruction pass:
 //   1. every audited colour pair meets WCAG contrast,
 //   2. no applied rule targets anything but a gw-* class or an owned base element,
 //   3. no raw hex colour is used outside the token file,
@@ -11,9 +11,8 @@ import { readFileSync, existsSync } from 'node:fs';
 const STYLES = 'src/styles';
 const TOKENS = `${STYLES}/tokens.css`;
 const GLOBAL_LAYERS = ['tokens.css', 'fonts.css'];
-// The Phase 2A shell bridge is allowed to target legacy shell class names —
-// that is its entire purpose — but it is still held to tokens-only colours and
-// logical-properties-only layout.
+// Retained bridge layers are still held to tokens-only colours and logical-properties-only layout.
+// Phase 4 removed the obsolete ledger/journey/runs/spine/geometry/catalogue/colophon layers entirely.
 const BRIDGE_LAYERS = [
   'shell.css',
   'catalog.css',
@@ -23,29 +22,28 @@ const BRIDGE_LAYERS = [
   'transact.css',
   'operations.css',
   'masthead.css',
-  'colophon.css',
-  'catalogue.css',
   'product-card.css',
   'stage.css',
-  'ledger.css',
   'checkout.css',
   'composition.css',
   'account.css',
   'command.css',
   'shell.nav.css',
   'sysbanner.css',
-  'journey.css',
-  'runs.css',
-  'spine.css',
   'buildmarker.css',
   'worldclass-polish.css',
   'garment-concept.css',
   'placeholder-stage.css',
+  'design/phase2-chrome.css',
+  'design/phase2-commerce.css',
+  'design/phase2-home.css',
+  'design/phase2-shop.css',
+  'design/phase2-discovery.css',
+  'design/phase2-search.css',
 ];
 const SCOPED_LAYERS = [
   'typography.css',
   'motion.css',
-  'geometry.css',
   'layout.css',
   'lab-home.css',
   'home.css',

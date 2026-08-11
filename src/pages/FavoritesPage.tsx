@@ -8,9 +8,7 @@ import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
 import { categories } from '../data/categories';
 import { useCommerce } from '../context/CommerceContext';
-import '../styles/catalogue.css';
-import '../styles/runs.css';
-import '../styles/ledger.css';
+import '../styles/consumer-commerce.css';
 
 export default function FavoritesPage(): ReactElement {
   const { products } = useCatalog();
@@ -30,23 +28,23 @@ export default function FavoritesPage(): ReactElement {
   return (
     <>
       <Seo title={pick({ en: 'Favorites', ar: 'المفضلة' })} path="/favorites" />
-      <section className="gw-world-headband" aria-labelledby="favorites-title">
-        <div className="gw-cat-head-inner">
-          <p className="gw-kicker">{pick({ en: 'Saved for later', ar: 'محفوظ لاحقًا' })}</p>
-          <div className="gw-cat-head-row">
-            <h1 id="favorites-title" className="gw-cat-title">
+      <section className="cc-cart-page cc-favorites-page" aria-labelledby="favorites-title">
+        <div className="cc-favorites-inner">
+          <p className="cc-eyebrow">{pick({ en: 'Saved for later', ar: 'محفوظ لاحقًا' })}</p>
+          <header className="cc-page-head cc-favorites-head">
+            <h1 id="favorites-title" className="cc-favorites-title">
               {pick({ en: 'Favorites', ar: 'المفضلة' })}
             </h1>
-            <p className="gw-cat-count">
+            <p className="cc-favorites-count">
               <span className="gw-figure gw-isolate-ltr">{savedCount}</span>
               <span className="gw-kicker">{pick({ en: 'saved', ar: 'محفوظ' })}</span>
             </p>
-          </div>
+          </header>
         </div>
       </section>
 
-      <div className="gw-catalogue">
-        <div className="gw-catalogue-inner gw-catalogue-inner--full">
+      <div className="cc-favorites-content">
+        <div className="cc-favorites-content__inner">
           {(userData?.status === 'error' || userData?.status === 'offline') && (
             <div className="gw-notice" role="status" aria-live="polite">
               <div>
@@ -91,18 +89,18 @@ export default function FavoritesPage(): ReactElement {
               </h2>
             </div>
           ) : savedCount ? (
-            <div className="gw-catalogue-grid">
+            <div className="cc-product-grid">
               {savedProducts.map((product) => (
                 <ProductCard key={String(product.id)} product={product} />
               ))}
             </div>
           ) : (
-            <div className="gw-ledger-empty">
-              <div className="gw-ledger-empty-say">
-                <p className="gw-ledger-empty-line">
+            <div className="cc-cart-empty">
+              <div className="cc-cart-empty__copy">
+                <p className="cc-cart-empty__title">
                   {pick({ en: 'Nothing saved yet', ar: 'لا شيء محفوظ بعد' })}
                 </p>
-                <p className="gw-ledger-empty-hint">
+                <p className="cc-cart-empty__hint">
                   {pick({
                     en: 'Save products from the shop and they will appear here.',
                     ar: 'احفظ منتجات من المتجر لتظهر هنا.',
@@ -112,15 +110,12 @@ export default function FavoritesPage(): ReactElement {
                   {pick({ en: 'Browse the shop', ar: 'تصفح المتجر' })}
                 </Link>
               </div>
-              <ul className="gw-ledger-gates">
-                {departments.map((entry, position) => (
+              <ul className="cc-cart-departments">
+                {departments.map((entry) => (
                   <li key={entry.slug}>
                     <Link to={`/shop/${entry.slug}`}>
-                      <span className="gw-ledger-gate-num" aria-hidden="true">
-                        {String(position + 1).padStart(2, '0')}
-                      </span>
-                      <span className="gw-ledger-gate-name">{pick(entry.name)}</span>
-                      <span className="gw-ledger-gate-count gw-isolate-ltr">
+                      <span className="cc-cart-department__name">{pick(entry.name)}</span>
+                      <span className="cc-cart-department__count gw-isolate-ltr">
                         {products.filter((item) => item.category === entry.slug).length}
                       </span>
                     </Link>

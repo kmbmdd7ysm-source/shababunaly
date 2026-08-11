@@ -74,7 +74,7 @@ const trigger = () => screen.getByRole('button', { name: 'Open menu' });
  * focus moves in, Tab is trapped and wraps, Escape closes, focus returns to the
  * trigger — only the selectors and the trigger's label changed.
  */
-const drawer = () => document.querySelector('.gw-nav');
+const drawer = () => document.querySelector('.s2-menu');
 
 /** jsdom runs rAF, but the restore is one frame out, so waitFor is required. */
 const expectFocusReturned = async () => {

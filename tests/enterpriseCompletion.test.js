@@ -22,7 +22,7 @@ describe('enterprise production completion', () => {
     expect(sql).toContain('v_sub+v_ship+v_tax-v_discount');
   });
   it('generates quote and invoice PDFs in the customer workspace', async () => {
-    const workspace = await read('src/components/account/OrganizationWorkspace.jsx');
+    const workspace = await read('src/components/account/OrganizationWorkspace.tsx');
     expect(workspace).toContain('SHABABUNA QUOTE');
     expect(workspace).toContain('SHABABUNA INVOICE');
     expect(workspace).toContain('Download Quote PDF');

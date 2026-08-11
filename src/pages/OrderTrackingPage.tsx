@@ -5,8 +5,9 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { getMyOrders, lookupGuestOrder } from '../services/orders';
 import Seo from '../components/common/Seo';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
-import '../styles/runs.css';
+import '../styles/consumer-commerce.css';
 import OrderCard, { type OrderLike } from '../components/account/OrderCard';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 
@@ -73,29 +74,15 @@ export default function OrderTrackingPage(): ReactElement {
         path="/order-tracking"
         noindex
       />
-      <section className="gw-world-headband" aria-labelledby="tracking-title">
-        <div className="gw-cat-head-inner">
-          <p className="gw-kicker">{ot.label}</p>
-          <div className="gw-cat-head-row">
-            <div>
-              <h1 id="tracking-title" className="gw-cat-title">
-                {ot.title}
-              </h1>
-              <p className="gw-world-lede">{ot.sub}</p>
-            </div>
-            {auth.user && ordersState.orders.length ? (
-              <p className="gw-cat-count">
-                <span className="gw-figure gw-isolate-ltr">{ordersState.orders.length}</span>
-                <span className="gw-kicker">{pick({ en: 'orders', ar: 'طلب' })}</span>
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </section>
-      {/* A LOOKUP DESK: a narrow measured column, because tracking is one
-          focused task with one answer - not a browsing surface. */}
-      <section className="gw-desk">
-        <div className="gw-desk-inner">
+      <PublicPageHeader
+        eyebrow={ot.label}
+        title={ot.title}
+        lede={ot.sub}
+        trail={[{ label: ot.title || pick({ en: 'Order tracking', ar: 'تتبع الطلب' }) }]}
+        figure={auth.user && ordersState.orders.length ? { value: ordersState.orders.length, label: pick({ en: 'orders', ar: 'طلب' }) } : null}
+      />
+      <section className="cc-tracking">
+        <div className="cc-tracking__inner">
           {auth.user && (
             <section aria-labelledby="my-orders-title">
               <div className="section-heading-row">

@@ -2,10 +2,9 @@ import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import { useCatalog } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
-import '../styles/catalogue.css';
 import '../styles/catalog.css';
 
 /*
@@ -33,7 +32,7 @@ export default function LhaStorePage(): ReactElement {
         description="All Libya Hoops Academy clothing and accessories inside Shababuna."
         path="/lha-store"
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={pick({
           en: 'Official store · powered by Shababuna',
           ar: 'المتجر الرسمي · بدعم من شبابنا',
@@ -53,7 +52,7 @@ export default function LhaStorePage(): ReactElement {
           width="320"
           height="96"
         />
-      </RouteMasthead>
+      </PublicPageHeader>
 
       <section className="gw-partner-world" aria-label="LHA">
         <div className="gw-partner-world-inner">
@@ -65,15 +64,15 @@ export default function LhaStorePage(): ReactElement {
           </h2>
         </div>
       </section>
-      <div className="gw-catalogue">
-        <div className="gw-catalogue-inner gw-catalogue-inner--full">
-          <div className="gw-catalogue-bar">
+      <div className="cc-store-listing">
+        <div className="cc-store-listing__inner">
+          <div className="cc-store-listing__bar">
             <p className="gw-kicker">{pick({ en: 'Full collection', ar: 'المجموعة كاملة' })}</p>
             <Link to="/shop" className="gw-btn gw-btn--secondary">
               {pick({ en: 'Back to Shababuna Shop', ar: 'العودة لمتجر شبابنا' })}
             </Link>
           </div>
-          <div className="gw-catalogue-grid">
+          <div className="cc-product-grid">
             {items.map((product, index) => (
               <ProductCard key={String(product.id)} product={product} eager={index < 4} />
             ))}

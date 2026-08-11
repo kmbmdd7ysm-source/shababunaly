@@ -34,6 +34,18 @@ export interface SearchCandidate {
 export const SEARCH_PAGES = [
   {
     type: 'page',
+    title: { en: 'Discover', ar: 'اكتشف' },
+    to: '/discover',
+    keywords: { en: ['trending', 'drops', 'new', 'discover'], ar: ['رائج', 'جديد', 'اكتشف', 'إصدارات'] },
+  },
+  {
+    type: 'page',
+    title: { en: 'Releases', ar: 'الإصدارات' },
+    to: '/releases',
+    keywords: { en: ['release calendar', 'upcoming', 'drops'], ar: ['إصدارات', 'قريباً', 'تقويم'] },
+  },
+  {
+    type: 'page',
     title: { en: 'Shop', ar: 'المتجر' },
     to: '/shop',
     keywords: { en: ['products', 'basketball', 'retail'], ar: ['منتجات', 'كرة السلة', 'متجر'] },
@@ -113,13 +125,13 @@ export const POPULAR_SEARCHES = [
   { id: 'shoes', query: { en: 'Basketball Shoes', ar: 'أحذية كرة السلة' }, to: '/shop/footwear' },
   { id: 'balls', query: { en: 'Basketballs', ar: 'كرات السلة' }, to: '/shop/basketballs' },
   { id: 'custom', query: { en: 'Custom Uniforms', ar: 'أطقم بتصميم خاص' }, to: '/customize' },
-  { id: 'wholesale', query: { en: 'Wholesale', ar: 'الجملة' }, to: '/teams-wholesale' },
+  { id: 'trending', query: { en: 'Trending Now', ar: 'الرائج الآن' }, to: '/discover/trending-now' },
   {
     id: 'equipment',
     query: { en: 'Basketball Equipment', ar: 'معدات كرة السلة' },
     to: '/shop/equipment',
   },
-  { id: 'lha', query: { en: 'LHA', ar: 'LHA' }, to: '/lha-store' },
+  { id: 'performance', query: { en: 'Performance Picks', ar: 'اختيارات الأداء' }, to: '/discover/performance-picks' },
 ];
 
 export const normalizeSearchText = (value: unknown = '') =>

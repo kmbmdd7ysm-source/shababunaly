@@ -1,5 +1,5 @@
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
 import '../styles/composition.css';
@@ -17,7 +17,7 @@ export default function OnlineTrainingPage() {
         })}
         path="/online-training"
       />
-      <RouteMasthead
+      <PublicPageHeader
         title={pick({ en: 'Online Training', ar: 'التدريب أونلاين' })}
         lede={pick({
           en: 'Digital training products and sessions will list here. Source-backed only.',

@@ -1,5 +1,5 @@
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
 import '../styles/composition.css';
@@ -17,7 +17,7 @@ export default function CoachesPage() {
         })}
         path="/coaches"
       />
-      <RouteMasthead
+      <PublicPageHeader
         title={pick({ en: 'Coaches', ar: 'المدربون' })}
         lede={pick({
           en: 'Coach profiles publish here when approved. Coming soon until then.',

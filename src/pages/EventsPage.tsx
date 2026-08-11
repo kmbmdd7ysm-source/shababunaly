@@ -1,5 +1,5 @@
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
 import '../styles/composition.css';
@@ -17,7 +17,7 @@ export default function EventsPage() {
         })}
         path="/events"
       />
-      <RouteMasthead
+      <PublicPageHeader
         title={pick({ en: 'Events', ar: 'الفعاليات' })}
         lede={pick({
           en: 'Upcoming events appear here when confirmed. Coming soon if none are published yet.',

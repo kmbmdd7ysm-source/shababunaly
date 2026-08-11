@@ -1,8 +1,8 @@
 import { useLanguage } from '../context/LanguageContext';
 import { SITE } from '../config.ts';
 import Seo from '../components/common/Seo.tsx';
-import RouteMasthead from '../components/composition/RouteMasthead';
-import Dossier from '../components/composition/Dossier';
+import PublicPageHeader from '../components/content/PublicPageHeader';
+import ContentGuide from '../components/content/ContentGuide';
 import { getLegal } from '../data/legal.ts';
 import NotFoundPage from './NotFoundPage';
 import '../styles/domain-content.css';
@@ -36,7 +36,7 @@ export default function LegalPage({ docKey }: { docKey: string }) {
         description={pick(typed.intro) || ''}
         path={`/${docKey}`}
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={footer.legal}
         title={pick(typed.title) || ''}
         trail={[
@@ -48,7 +48,7 @@ export default function LegalPage({ docKey }: { docKey: string }) {
           label: pick({ en: 'sections', ar: 'أقسام' }),
         }}
       />
-      <Dossier
+      <ContentGuide
         meta={`${legal.lastUpdated}: ${pick(SITE.legalUpdated)}`}
         lede={typed.intro ? pick(typed.intro) : null}
         chapters={chapters}

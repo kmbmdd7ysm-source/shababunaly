@@ -1,9 +1,4 @@
-import type {
-  FormEvent,
-  KeyboardEvent as ReactKeyboardEvent,
-  ReactElement,
-  RefObject,
-} from 'react';
+import type { FormEvent, KeyboardEvent as ReactKeyboardEvent, ReactElement, RefObject } from 'react';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
@@ -15,9 +10,9 @@ import Price from '../common/Price';
 import Icon from '../icons/Icon';
 import { lockDocumentScroll } from '../../utils/scrollLock';
 import type { LocaleText } from '../../types/i18n';
+import '../../styles/design/phase2-search.css';
 
-const FOCUSABLE =
-  'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
 function Highlight({ text, query }: { text: string; query: string }): ReactElement | string {
   const value = String(text || '');
@@ -25,13 +20,7 @@ function Highlight({ text, query }: { text: string; query: string }): ReactEleme
   if (!q) return value;
   const index = value.toLocaleLowerCase().indexOf(q.toLocaleLowerCase());
   if (index < 0) return value;
-  return (
-    <>
-      {value.slice(0, index)}
-      <mark>{value.slice(index, index + q.length)}</mark>
-      {value.slice(index + q.length)}
-    </>
-  );
+  return <>{value.slice(0, index)}<mark>{value.slice(index, index + q.length)}</mark>{value.slice(index + q.length)}</>;
 }
 
 export default function SearchOverlay({
@@ -55,8 +44,8 @@ export default function SearchOverlay({
   const historyManaged = useRef(false);
   const closingFromPop = useRef(false);
   const listId = useId();
-  const results = useMemo(() => searchSite(query, 6, {}, products), [query, products]);
-  const suggestions = useMemo(() => getSearchSuggestions(query, 7, products), [query, products]);
+  const results = useMemo(() => searchSite(query, 8, {}, products), [query, products]);
+  const suggestions = useMemo(() => getSearchSuggestions(query, 6, products), [query, products]);
 
   const closeWithoutHistory = () => {
     closingFromPop.current = true;
@@ -68,9 +57,7 @@ export default function SearchOverlay({
       closingFromPop.current = true;
       onClose();
       window.history.back();
-    } else {
-      onClose();
-    }
+    } else onClose();
   };
 
   useEffect(() => {
@@ -80,41 +67,31 @@ export default function SearchOverlay({
     const unlock = lockDocumentScroll();
     document.documentElement.classList.add('search-modal-open');
     if (!window.history.state?.shababunaSearchOverlay) {
-      window.history.pushState(
-        { ...(window.history.state || {}), shababunaSearchOverlay: true },
-        '',
-        location.pathname + location.search + location.hash,
-      );
+      window.history.pushState({ ...(window.history.state || {}), shababunaSearchOverlay: true }, '', location.pathname + location.search + location.hash);
       historyManaged.current = true;
     }
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 20);
-    const onPopState = () => {
-      if (open) closeWithoutHistory();
-    };
+    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 30);
+    const onPopState = () => { if (open) closeWithoutHistory(); };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
         close('escape');
         return;
       }
-      if (event.key === 'Tab') {
-        const nodes = [...(dialogRef.current?.querySelectorAll(FOCUSABLE) || [])].filter(
-          (node): node is HTMLElement => {
-            const el = node as HTMLElement;
-            return !el.hidden && el.getAttribute('aria-hidden') !== 'true';
-          },
-        );
-        if (!nodes.length) return;
-        const first = nodes[0];
-        const last = nodes.at(-1);
-        if (!first || !last) return;
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+      if (event.key !== 'Tab') return;
+      const nodes = [...(dialogRef.current?.querySelectorAll(FOCUSABLE) || [])].filter((node): node is HTMLElement => {
+        const element = node as HTMLElement;
+        return !element.hidden && element.getAttribute('aria-hidden') !== 'true';
+      });
+      const first = nodes[0];
+      const last = nodes.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
     window.addEventListener('popstate', onPopState);
@@ -128,26 +105,27 @@ export default function SearchOverlay({
       unlock();
       document.documentElement.classList.remove('search-modal-open');
       historyManaged.current = false;
-      if (!closingFromPop.current && window.history.state?.shababunaSearchOverlay)
-        window.history.replaceState(
-          { ...window.history.state, shababunaSearchOverlay: undefined },
-          '',
-          location.pathname + location.search + location.hash,
-        );
+      if (!closingFromPop.current && window.history.state?.shababunaSearchOverlay) {
+        window.history.replaceState({ ...window.history.state, shababunaSearchOverlay: undefined }, '', location.pathname + location.search + location.hash);
+      }
       closingFromPop.current = false;
       trigger?.focus?.();
     };
-    // open is the intentional trigger; close helpers are stable enough for overlay lifecycle.
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- overlay mount/unmount keyed on `open`
+    // Overlay lifecycle intentionally depends on `open` only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   useEffect(() => setActiveIndex(-1), [query]);
   if (!open) return null;
 
+  const go = (to: string) => {
+    const replace = Boolean(historyManaged.current && window.history.state?.shababunaSearchOverlay);
+    navigate(to, { replace });
+    closeWithoutHistory();
+  };
   const activate = (item: { type?: string; to?: string }) => {
     trackEvent('search_suggestion_click', { type: item.type });
-    navigate(String(item.to || '/'));
-    closeWithoutHistory();
+    go(String(item.to || '/'));
   };
   const submit = (event?: FormEvent) => {
     event?.preventDefault?.();
@@ -158,8 +136,7 @@ export default function SearchOverlay({
     const value = query.trim();
     if (!value) return;
     trackEvent('search_query', { language: lang });
-    navigate(`/search?q=${encodeURIComponent(value)}`);
-    closeWithoutHistory();
+    go(`/search?q=${encodeURIComponent(value)}`);
   };
   const onInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     if (!suggestions.length) return;
@@ -171,196 +148,104 @@ export default function SearchOverlay({
       setActiveIndex((index) => (index <= 0 ? suggestions.length - 1 : index - 1));
     }
   };
-  const resultLabel = pick({ en: `${results.total} results`, ar: `${results.total} نتيجة` });
 
   return (
-    <div
-      ref={dialogRef}
-      className="search-overlay open"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={`${listId}-title`}
-    >
-      <div className="search-overlay-inner">
-        <h1 id={`${listId}-title`} className="sr-only">
-          {pick({ en: 'Search Shababuna', ar: 'البحث في شبابنا' })}
-        </h1>
-        <form
-          className="search-mobile-head"
-          role="search"
-          onSubmit={(event) => {
-            void submit(event);
-          }}
-        >
-          <div className="search-input-wrap">
-            <Icon name="search" />
-            <input
-              ref={inputRef}
-              type="search"
-              enterKeyHint="search"
-              autoComplete="off"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              onKeyDown={onInputKeyDown}
-              placeholder={searchCopy.placeholder}
-              aria-label={searchCopy.placeholder}
-              role="combobox"
-              aria-autocomplete="list"
-              aria-expanded={Boolean(query.trim() && suggestions.length)}
-              aria-controls={listId}
-              aria-activedescendant={activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined}
-            />
-            {query && (
-              <button
-                type="button"
-                className="search-clear"
-                onClick={() => {
-                  setQuery('');
-                  inputRef.current?.focus();
-                }}
-                aria-label={pick({ en: 'Clear search', ar: 'مسح البحث' })}
-              >
-                <Icon name="close" size={20} />
-              </button>
-            )}
-          </div>
-          <button type="button" className="search-cancel" onClick={() => close('cancel')}>
-            {pick({ en: 'Cancel', ar: 'إلغاء' })}
+    <div ref={dialogRef} className="s2-search" role="dialog" aria-modal="true" aria-labelledby={`${listId}-title`}>
+      <div className="s2-search__top">
+        <span id={`${listId}-title`} className="s2-search__brand">Shababuna</span>
+        <button type="button" className="s2-icon-action" onClick={() => close('close')} aria-label={pick({ en: 'Close search', ar: 'إغلاق البحث' })}>
+          <Icon name="close" />
+        </button>
+      </div>
+
+      <form className="s2-search__form" role="search" onSubmit={submit}>
+        <Icon name="search" size={30} />
+        <input
+          ref={inputRef}
+          type="search"
+          enterKeyHint="search"
+          autoComplete="off"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          onKeyDown={onInputKeyDown}
+          placeholder={pick({ en: 'Search products, categories, stories…', ar: 'ابحث عن منتجات وفئات وقصص…' })}
+          aria-label={searchCopy.placeholder || pick({ en: 'Search Shababuna', ar: 'ابحث في شبابنا' })}
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={Boolean(query.trim() && suggestions.length)}
+          aria-controls={listId}
+          aria-activedescendant={activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined}
+        />
+        {query ? (
+          <button type="button" className="s2-search__clear" onClick={() => { setQuery(''); inputRef.current?.focus(); }} aria-label={pick({ en: 'Clear search', ar: 'مسح البحث' })}>
+            {pick({ en: 'Clear', ar: 'مسح' })}
           </button>
-        </form>
-        <p className="sr-only" role="status" aria-live="polite">
-          {query.trim() ? resultLabel : ''}
-        </p>
-        <div className="search-screen-content">
-          {!query.trim() ? (
-            <section aria-labelledby={`${listId}-popular`}>
-              <h2 id={`${listId}-popular`}>
-                {pick({ en: 'Popular Search Terms', ar: 'مصطلحات البحث الشائعة' })}
-              </h2>
-              <div className="search-chip-grid">
-                {POPULAR_SEARCHES.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => {
-                      setQuery(pick(item.query));
-                      inputRef.current?.focus();
-                      trackEvent('search_suggestion_click', { type: 'popular' });
-                    }}
-                  >
+        ) : null}
+      </form>
+
+      <div className="s2-search__content">
+        {!query.trim() ? (
+          <div className="s2-search__starter">
+            <section>
+              <span className="s2-overline">{pick({ en: 'Trending searches', ar: 'عمليات بحث رائجة' })}</span>
+              <div className="s2-search__popular">
+                {POPULAR_SEARCHES.slice(0, 7).map((item) => (
+                  <button key={item.id} type="button" onClick={() => { setQuery(pick(item.query)); inputRef.current?.focus(); }}>
                     {pick(item.query)}
                   </button>
                 ))}
               </div>
             </section>
-          ) : (
-            <>
-              <section className="search-suggestions" aria-labelledby={`${listId}-suggestions`}>
-                <h2 id={`${listId}-suggestions`}>
-                  {pick({ en: 'Top Suggestions', ar: 'أفضل الاقتراحات' })}
-                </h2>
-                {suggestions.length > 0 && (
-                  <ul
-                    id={listId}
-                    role="listbox"
-                    aria-label={pick({ en: 'Search suggestions', ar: 'اقتراحات البحث' })}
-                  >
-                    {suggestions.map((item, index) => (
-                      <li
-                        key={item.id}
-                        id={`${listId}-${index}`}
-                        role="option"
-                        aria-selected={activeIndex === index}
-                      >
-                        <button
-                          type="button"
-                          className={activeIndex === index ? 'active' : ''}
-                          onMouseEnter={() => setActiveIndex(index)}
-                          onClick={() => activate(item)}
-                        >
-                          <span>
-                            <Highlight text={pick(item.label)} query={query} />
-                          </span>
-                          <small>
-                            {pick({
-                              en:
-                                {
-                                  product: 'Product',
-                                  category: 'Category',
-                                  page: 'Page',
-                                }[item.type] || 'Result',
-                              ar:
-                                {
-                                  product: 'منتج',
-                                  category: 'فئة',
-                                  page: 'صفحة',
-                                }[item.type] || 'نتيجة',
-                            })}
-                          </small>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-              {results.products.length > 0 && (
-                <section className="search-products" aria-labelledby={`${listId}-products`}>
-                  <div className="search-section-title">
-                    <h2 id={`${listId}-products`}>{searchCopy.products}</h2>
-                    <button type="button" onClick={submit}>
-                      {searchCopy.viewAllResults}
-                    </button>
-                  </div>
-                  <div className="search-product-grid">
-                    {results.products.slice(0, 4).map((product) => (
-                      <Link
-                        key={String(product.id)}
-                        to={`/products/${String(product.slug || '')}`}
-                        onClick={() => {
-                          trackEvent('search_result_click', { type: 'product' });
-                          closeWithoutHistory();
-                        }}
-                      >
-                        <SmartImage
-                          src={String(product.image || '')}
-                          alt={String(pick((product.name || "") as LocaleText) || '')}
-                          width={320}
-                          height={320}
-                        />
-                        <strong>
-                          <Highlight
-                            text={String(pick((product.name || "") as LocaleText) || '')}
-                            query={query}
-                          />
-                        </strong>
-                        <Price
-                          amount={Number(product.price) || 0}
-                          compareAt={product.compareAt == null ? null : Number(product.compareAt)}
-                          size="sm"
-                        />
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-              )}
-              {results.total === 0 && (
-                <div className="notice notice--muted">
-                  <p>{searchCopy.noResults}</p>
-                  <p>{searchCopy.noResultsHint}</p>
+            <section className="s2-search__shortcuts">
+              <span className="s2-overline">{pick({ en: 'Explore', ar: 'اكتشف' })}</span>
+              <Link to="/discover/new-this-week" onClick={(event) => { event.preventDefault(); go('/discover/new-this-week'); }}>{pick({ en: 'New this week', ar: 'جديد هذا الأسبوع' })}</Link>
+              <Link to="/discover/trending-now" onClick={(event) => { event.preventDefault(); go('/discover/trending-now'); }}>{pick({ en: 'Trending now', ar: 'الرائج الآن' })}</Link>
+              <Link to="/discover/performance-picks" onClick={(event) => { event.preventDefault(); go('/discover/performance-picks'); }}>{pick({ en: 'Performance picks', ar: 'اختيارات الأداء' })}</Link>
+              <Link to="/releases" onClick={(event) => { event.preventDefault(); go('/releases'); }}>{pick({ en: 'Releases', ar: 'الإصدارات' })}</Link>
+            </section>
+          </div>
+        ) : (
+          <div className="s2-search__results">
+            <section className="s2-search__suggestions">
+              <span className="s2-overline">{pick({ en: 'Suggestions', ar: 'اقتراحات' })}</span>
+              {suggestions.length ? (
+                <ul id={listId} role="listbox">
+                  {suggestions.map((item, index) => (
+                    <li key={item.id} id={`${listId}-${index}`} role="option" aria-selected={activeIndex === index}>
+                      <button type="button" className={activeIndex === index ? 'is-active' : ''} onMouseEnter={() => setActiveIndex(index)} onClick={() => activate(item)}>
+                        <span><Highlight text={pick(item.label)} query={query} /></span>
+                        <small>{item.type}</small>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : <p>{pick({ en: 'No suggestions yet.', ar: 'لا توجد اقتراحات بعد.' })}</p>}
+            </section>
+
+            <section className="s2-search__products">
+              <div className="s2-search__section-head">
+                <span className="s2-overline">{pick({ en: 'Products', ar: 'المنتجات' })}</span>
+                {results.products.length ? <button type="button" onClick={submit}>{pick({ en: 'View all', ar: 'عرض الكل' })}</button> : null}
+              </div>
+              {results.products.length ? (
+                <div className="s2-search__product-grid">
+                  {results.products.slice(0, 6).map((product) => (
+                    <Link key={String(product.id)} to={`/products/${String(product.slug || '')}`} onClick={(event) => { event.preventDefault(); go(`/products/${String(product.slug || '')}`); }}>
+                      <SmartImage src={String(product.image || '')} alt={String(pick((product.name || '') as LocaleText) || '')} width={520} height={650} />
+                      <strong>{pick((product.name || '') as LocaleText)}</strong>
+                      <Price amount={Number(product.price) || 0} compareAt={product.compareAt == null ? null : Number(product.compareAt)} size="sm" />
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="s2-search__empty">
+                  <p>{searchCopy.noResults || pick({ en: 'No results.', ar: 'لا توجد نتائج.' })}</p>
+                  <Link to="/special-request" onClick={(event) => { event.preventDefault(); go('/special-request'); }}>{pick({ en: 'Send a product request', ar: 'أرسل طلب منتج' })}</Link>
                 </div>
               )}
-              {results.total > 0 && (
-                <button
-                  type="button"
-                  className="btn-secondary block search-view-all"
-                  onClick={submit}
-                >
-                  {searchCopy.viewAllResults}
-                </button>
-              )}
-            </>
-          )}
-        </div>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );

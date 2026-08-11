@@ -17,11 +17,13 @@ import AppErrorBoundary from './components/errors/AppErrorBoundary';
 import './styles/domain-layout.css';
 import './styles/domain-a11y.css';
 import './styles/motion.css';
-/* geometry.css stays with Home/CinematicHero */
 const Home = lazy(() => import('./pages/HomePage'));
 const About = lazy(() => import('./pages/AboutPage'));
 const Shop = lazy(() => import('./pages/ShopPage'));
+const Discover = lazy(() => import('./pages/DiscoverPage'));
+const Releases = lazy(() => import('./pages/ReleasesPage'));
 const Product = lazy(() => import('./pages/ProductPage'));
+const ShoeFinder = lazy(() => import('./pages/ShoeFinderPage'));
 const Cart = lazy(() => import('./pages/CartPage'));
 const Checkout = lazy(() => import('./pages/CheckoutPage'));
 const CheckoutStatus = lazy(() => import('./pages/CheckoutStatusPage'));
@@ -80,7 +82,13 @@ export default function App(): ReactElement {
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/:category" element={<Shop />} />
                 <Route path="/shop/:category/:subcategory" element={<Shop />} />
+                <Route path="/discover" element={<Discover />} />
+                <Route path="/discover/:slug" element={<Discover />} />
+                <Route path="/releases" element={<Releases />} />
+                <Route path="/new" element={<Navigate to="/discover/new-this-week" replace />} />
                 <Route path="/products/:slug" element={<Product />} />
+                <Route path="/basketball/shoe-finder" element={<ShoeFinder />} />
+                <Route path="/basketball" element={<Navigate to="/basketball/shoe-finder" replace />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<CheckoutStatus status="success" />} />
@@ -92,6 +100,7 @@ export default function App(): ReactElement {
                 <Route path="/design-share/:token" element={<DesignShare />} />
                 <Route path="/lha-store" element={<LhaStore />} />
                 <Route path="/our-work" element={<OurWork />} />
+                <Route path="/stories" element={<OurWork />} />
                 <Route path="/programs/*" element={<Programs />} />
                 <Route path="/events/*" element={<Events />} />
                 <Route path="/online-training/*" element={<OnlineTraining />} />

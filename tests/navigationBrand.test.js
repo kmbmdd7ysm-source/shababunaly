@@ -15,13 +15,14 @@ describe('brand and navigation', () => {
 
   it('keeps the requested minimal main navigation', () => {
     expect(mainNav.map((item) => item.to)).toEqual([
-      '/',
+      '/discover/new-this-week',
       '/shop',
+      '/shop/footwear',
+      '/shop/clothing',
+      '/basketball/shoe-finder',
       '/customize',
-      '/teams-wholesale',
-      '/lha-store',
-      '/our-work',
-      '/about',
+      '/discover',
+      '/releases',
     ]);
   });
 

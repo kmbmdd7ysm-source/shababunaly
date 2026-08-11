@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { SITE } from '../config';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/domain-content.css';
 import '../styles/composition.css';
 import Breadcrumbs from '../components/common/Breadcrumbs';
@@ -75,7 +75,7 @@ export default function ContactPage(): ReactElement {
         description="Contact Shababuna in Tripoli for orders, custom basketball products, teams, wholesale and equipment."
         path="/contact"
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow="Shababuna support"
         title={pick({ en: 'Talk to the right team.', ar: 'تواصل مع الفريق المناسب.' })}
         lede={pick({

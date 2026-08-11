@@ -7,7 +7,7 @@ import { getOrderDetails } from '../services/orders';
 import { retryOrderPayment } from '../services/paymentRecovery';
 import { presentOrderStatus } from '../services/orderStatus';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 
@@ -136,7 +136,7 @@ export default function OrderDetailPage(): ReactElement {
         path={`/order-tracking/${encodeURIComponent(orderNumber)}`}
         noindex
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={pick({ en: 'Order', ar: 'الطلب' })}
         title={pick({ en: 'Order Details', ar: 'تفاصيل الطلب' })}
         trail={[

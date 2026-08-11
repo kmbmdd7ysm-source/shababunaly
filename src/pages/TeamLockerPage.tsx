@@ -2,9 +2,9 @@ import type { ReactElement } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
-import '../styles/catalogue.css';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
+import '../styles/consumer-commerce.css';
 import '../styles/workspace.css';
 import ProductCard from '../components/shop/ProductCard';
 import { useAuth } from '../context/AuthContext';
@@ -71,7 +71,7 @@ export default function TeamLockerPage(): ReactElement | null {
           plainly that access is restricted and carries the published product
           count as a figure, so a member can see at a glance whether their
           manager has published anything yet. */}
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={pick({ en: 'Team Locker · private', ar: 'خزانة الفريق · خاصة' })}
         title={storeName || pick({ en: 'Private Team Store', ar: 'متجر الفريق الخاص' })}
         lede={
@@ -116,7 +116,7 @@ export default function TeamLockerPage(): ReactElement | null {
               </p>
             </div>
           ) : productCount ? (
-            <div className="gw-catalogue-grid">
+            <div className="cc-product-grid">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

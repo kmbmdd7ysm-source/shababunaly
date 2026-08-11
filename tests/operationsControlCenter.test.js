@@ -39,9 +39,9 @@ test.describe('operations control center', () => {
   test('adds collections, coupons, taxes, billing and fulfillment operations UI', async () => {
     const page = [
       await read('src/components/operations/OperationsControlCenter.tsx'),
-      await read('src/components/operations/control/MerchandisingManager.jsx'),
-      await read('src/components/operations/control/ProcurementAndBilling.jsx'),
-      await read('src/components/operations/control/FulfillmentManager.jsx'),
+      await read('src/components/operations/control/MerchandisingManager.tsx'),
+      await read('src/components/operations/control/ProcurementAndBilling.tsx'),
+      await read('src/components/operations/control/FulfillmentManager.tsx'),
     ].join('\n');
     const service = await read('src/services/operations.ts');
     assert.match(page, /Collections, coupons & tax rules/);
@@ -55,7 +55,7 @@ test.describe('operations control center', () => {
     const sql = await read('supabase/migrations/20260801024000_shababuna_catalog_crud.sql');
     const ui = [
       await read('src/components/operations/OperationsControlCenter.tsx'),
-      await read('src/components/operations/control/CatalogDraftManager.jsx'),
+      await read('src/components/operations/control/CatalogDraftManager.tsx'),
     ].join('\n');
     assert.match(sql, /staff_create_catalog_product_draft/);
     assert.match(sql, /'draft',false/);

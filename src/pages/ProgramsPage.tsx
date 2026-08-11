@@ -1,5 +1,5 @@
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
 import '../styles/composition.css';
@@ -18,7 +18,7 @@ export default function ProgramsPage() {
         })}
         path="/programs"
       />
-      <RouteMasthead
+      <PublicPageHeader
         title={pick({ en: 'Programs', ar: 'البرامج' })}
         lede={pick({
           en: 'Program details will publish here as schedules are confirmed. Nothing is invented.',

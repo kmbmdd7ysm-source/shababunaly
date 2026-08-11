@@ -2,7 +2,7 @@ import type { FormEvent, ReactElement } from 'react';
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
 import '../styles/domain-forms.css';
 import CountrySelect from '../components/common/CountrySelect';
@@ -158,7 +158,7 @@ export default function SpecialRequestPage(): ReactElement {
         })}
         path="/special-request"
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={pick({ en: 'Special request', ar: 'طلب خاص' })}
         title={pick({ en: 'Can’t find it? Send it.', ar: 'لم تجده؟ أرسل طلبك.' })}
         lede={pick({

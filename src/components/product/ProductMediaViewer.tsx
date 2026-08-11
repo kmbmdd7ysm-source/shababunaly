@@ -1,11 +1,12 @@
 import { lazy, Suspense, useEffect, useId, useState, type KeyboardEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { resolveProductViewer } from '../../utils/productViewerTier.ts';
+import { resolveProductViewer, resolveProductMediaMode } from '../../utils/productViewerTier.ts';
 import MultiAngleEngine from './engines/MultiAngleEngine';
 import Spin360Engine from './engines/Spin360Engine';
 import SpinsetEngine from './engines/SpinsetEngine';
 import StaticMediaEngine from './engines/StaticMediaEngine';
+import VideoGalleryEngine from './engines/VideoGalleryEngine';
 import '../../styles/product.css';
 
 const Realtime3DEngine = lazy(() => import('./engines/Realtime3DEngine'));
@@ -30,6 +31,9 @@ export default function ProductMediaViewer({
   const { pick, dir } = useLanguage();
   const [params] = useSearchParams();
   const { tier, images, frames, model } = resolveProductViewer(product);
+  const mediaMode = resolveProductMediaMode(product);
+  const videos = Array.isArray(product?.videos) ? product.videos.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0) : [];
+  const [hybridView, setHybridView] = useState<'visual' | 'video'>('visual');
   const sources = frames.length > 0 ? frames : images;
   const [index, setIndex] = useState(0);
   const listId = useId();
@@ -38,7 +42,8 @@ export default function ProductMediaViewer({
 
   useEffect(() => {
     setIndex(0);
-  }, [product?.id]);
+    setHybridView(mediaMode === 'VIDEO_GALLERY' ? 'video' : 'visual');
+  }, [product?.id, mediaMode]);
 
   const count = sources.length;
   const step = (delta: number) => {
@@ -93,7 +98,17 @@ export default function ProductMediaViewer({
   }
 
   return (
-    <div className="gw-viewer" data-tier={tier} data-engine="ProductMediaViewer">
+    <div className="gw-viewer" data-tier={tier} data-engine="ProductMediaViewer" data-media-mode={mediaMode}>
+      {mediaMode === 'HYBRID' ? (
+        <div className="gw-viewer-mode-tabs" role="tablist" aria-label={pick({ en: 'Product media type', ar: 'نوع وسائط المنتج' })}>
+          <button type="button" role="tab" aria-selected={hybridView === 'visual'} className={hybridView === 'visual' ? 'is-active' : ''} onClick={() => setHybridView('visual')}>{pick({ en: 'Views', ar: 'الصور' })}</button>
+          <button type="button" role="tab" aria-selected={hybridView === 'video'} className={hybridView === 'video' ? 'is-active' : ''} onClick={() => setHybridView('video')}>{pick({ en: 'Video', ar: 'فيديو' })}</button>
+        </div>
+      ) : null}
+      {(mediaMode === 'VIDEO_GALLERY' || (mediaMode === 'HYBRID' && hybridView === 'video')) ? (
+        <VideoGalleryEngine videos={videos} label={alt} pick={pick} />
+      ) : null}
+      {(mediaMode !== 'VIDEO_GALLERY' && !(mediaMode === 'HYBRID' && hybridView === 'video')) ? (<> 
       {tier === 'A' && (
         <Suspense
           fallback={
@@ -152,8 +167,13 @@ export default function ProductMediaViewer({
         </div>
       )}
 
+      </>) : null}
       <p id={`${listId}-note`} className="gw-spec gw-viewer-note">
-        {accuracyNote}
+        {mediaMode === 'VIDEO_GALLERY'
+          ? pick({ en: 'Verified supplied product video', ar: 'فيديو منتج مرفق وموثّق' })
+          : mediaMode === 'HYBRID'
+            ? pick({ en: 'Verified supplied media — view type depends on the available asset', ar: 'وسائط منتج مرفقة — نوع العرض يعتمد على الأصل المتوفر' })
+            : accuracyNote}
       </p>
     </div>
   );

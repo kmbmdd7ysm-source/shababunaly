@@ -56,10 +56,14 @@ const source = [
 
 for (const route of [
   '/shop',
+  '/discover',
+  '/releases',
+  '/basketball/shoe-finder',
   '/customize',
   '/teams-wholesale',
   '/lha-store',
   '/our-work',
+  '/stories',
   '/operations',
   '/design-share/:token',
 ])

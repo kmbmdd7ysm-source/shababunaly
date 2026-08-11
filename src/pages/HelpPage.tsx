@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
-import RouteMasthead from '../components/composition/RouteMasthead';
+import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/domain-content.css';
 import '../styles/composition.css';
 import { useLanguage } from '../context/LanguageContext';
@@ -178,7 +178,7 @@ export default function HelpPage(): ReactElement {
         })}
         path="/help"
       />
-      <RouteMasthead
+      <PublicPageHeader
         eyebrow={pick({ en: 'Help centre', ar: 'مركز المساعدة' })}
         title={pick({ en: 'Find an answer', ar: 'اعثر على إجابة' })}
         lede={pick({

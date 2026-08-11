@@ -25,7 +25,6 @@ import './styles/fonts.css';
 import './styles/typography.css';
 import './styles/layout.css';
 import './styles/shell.css';
-/* motion.css + geometry.css load with Home/CinematicHero (not every route).
    chrome/shop/customize/account/commerce/content/teams/pwa import with owners */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,

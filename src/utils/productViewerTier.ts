@@ -5,6 +5,7 @@
 export const MIN_SPIN_FRAMES = 24;
 
 export type ViewerTier = 'A' | 'B' | 'C' | 'D';
+export type ProductMediaMode = 'GALLERY' | 'MULTI_ANGLE' | 'SPIN_360' | 'MODEL_3D' | 'VIDEO_GALLERY' | 'HYBRID';
 
 export interface ProductViewerSource {
   id?: string;
@@ -47,6 +48,18 @@ export function verifiedImages(product?: ProductViewerSource | null): string[] {
 export function spinFrames(product?: ProductViewerSource | null): string[] {
   const frames = product && Array.isArray(product.spin360) ? product.spin360.filter(Boolean) : [];
   return frames.length >= MIN_SPIN_FRAMES ? frames.map(String) : [];
+}
+
+export function resolveProductMediaMode(product?: (ProductViewerSource & { videos?: unknown[] }) | null): ProductMediaMode {
+  const resolved = resolveProductViewer(product);
+  const hasVideo = Array.isArray(product?.videos) && product.videos.some(Boolean);
+  const richVisual = resolved.model || resolved.frames.length > 0 || resolved.images.length >= 2;
+  if (hasVideo && richVisual) return 'HYBRID';
+  if (resolved.model) return 'MODEL_3D';
+  if (resolved.frames.length > 0) return 'SPIN_360';
+  if (hasVideo) return 'VIDEO_GALLERY';
+  if (resolved.images.length >= 2) return 'MULTI_ANGLE';
+  return 'GALLERY';
 }
 
 export function resolveProductViewer(product?: ProductViewerSource | null): ResolvedProductViewer {
