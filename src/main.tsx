@@ -25,7 +25,7 @@ import './styles/fonts.css';
 import './styles/typography.css';
 import './styles/layout.css';
 import './styles/shell.css';
-   chrome/shop/customize/account/commerce/content/teams/pwa import with owners */
+/* chrome/shop/customize/account/commerce/content/teams/pwa imports have component/domain owners. */
 
 // App is imported LAST on purpose. Vite emits CSS following the module graph,
 // so importing App above the stylesheets placed every page-level sheet it
