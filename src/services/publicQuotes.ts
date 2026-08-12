@@ -1,4 +1,5 @@
 import { getSupabase } from './supabase.ts';
+import { sendFormspree } from './formspree.ts';
 
 const clean = (value: unknown, max = 3000): string =>
   String(value ?? '')
@@ -40,12 +41,37 @@ export async function submitPublicQuote({
     quote?: { id?: string };
     error?: string;
   };
-  if (!response.ok || !data?.quote?.id) {
+  if (response.ok && data?.quote?.id) return { ...data, idempotencyKey: key };
+
+  // Customer inquiries must not disappear because the database/API layer is
+  // temporarily unavailable. Deliver the same sanitized request straight to
+  // the canonical Formspree inbox and return a stable email-only reference.
+  try {
+    const type = clean(payload.formType || 'quote_request', 80);
+    const organization = clean(payload.organization || payload.customerName || 'Shababuna customer', 180);
+    const reference = `WEB-QT-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${key.replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+    await sendFormspree(
+      {
+        ...payload,
+        formType: type,
+        quoteNumber: reference,
+        referenceId: reference,
+        persistenceStatus: 'direct_formspree_fallback',
+      },
+      `Shababuna ${type === 'custom_design_quote' ? 'custom design' : 'teams & wholesale'} · ${organization}`,
+    );
+    return {
+      ok: true,
+      persisted: false,
+      notification: 'delivered',
+      quote: { id: `email-${key}`, quote_number: reference, status: 'received', created_at: new Date().toISOString() },
+      idempotencyKey: key,
+    };
+  } catch {
     const error = new Error(clean(data?.error || `quote_request_failed:${response.status}`, 180)) as Error & {
       status?: number;
     };
     error.status = response.status;
     throw error;
   }
-  return { ...data, idempotencyKey: key };
 }

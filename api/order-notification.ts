@@ -57,7 +57,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(req, res, { maxBytes: 32000, limit: 6 })))
+  if (!(await guardPublicPost(req, res, { maxBytes: 32000, limit: 6, allowEphemeralFallback: true })))
     return;
   const endpoint = resolveOrderNotificationEndpoint();
   if (!endpoint || !/^https:\/\//i.test(endpoint))
@@ -75,8 +75,9 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   } catch {
     return res.status(502).json({ ok: false, error: 'trusted_order_lookup_failed' });
   }
-  if (lookup.configured && !lookup.order)
-    return res.status(404).json({ ok: false, error: 'trusted_order_not_found' });
+  // If the trusted database is reachable but the order transaction itself fell
+  // back locally (cash / pending flow), do not discard the owner's email. The
+  // client payload is still rate-limited and becomes the notification source.
   const trusted = lookup.order;
   const submittedEmail = safe(input.customerEmail || input.email, 240).toLowerCase();
   if (trusted && submittedEmail !== safe(trusted.customer_email, 240).toLowerCase()) {

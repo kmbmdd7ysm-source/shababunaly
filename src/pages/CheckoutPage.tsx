@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { createIdempotencyKey, createOrder } from '../services/orders';
+import { sendFormspree } from '../services/formspree';
 import { SITE } from '../config';
 import { resolveShipping, SHIPPING_MESSAGES } from '../config/shipping';
 import { useCommerce } from '../context/CommerceContext';
@@ -430,24 +431,32 @@ export default function CheckoutPage(): ReactElement {
     ].join('\n');
     if (result?.notification !== 'delivered') {
       try {
-        await fetch('/api/order-notification', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          credentials: 'same-origin',
-          body: JSON.stringify({
+        await sendFormspree(
+          {
+            formType: 'order',
             orderNumber: confirmedNumber,
             customerName: String(customer.name || ''),
             customerEmail: String(customer.email || ''),
-            customerPhone: String(customer.phone || ''),
+            phone: String(customer.phone || ''),
+            country: shippingCountryCode,
             paymentMethod: methodLabel,
-            total: displayTotal,
+            paymentPlan: trustedPlan,
+            deliveryProfile: trustedDeliveryProfile,
+            subtotal: displaySubtotal.toFixed(2),
+            shipping: trustedQuoteRequired ? 'PENDING QUOTE' : displayShippingTotal.toFixed(2),
+            total: displayTotal.toFixed(2),
+            amountDueNow: displayDueNow.toFixed(2),
+            remainingBalance: displayRemaining.toFixed(2),
             currency,
+            items: clientItems,
             message: orderMessage,
-            _subject: `New Shababuna order ${confirmedNumber}`,
-          }),
-        });
+            submittedAt: new Date().toISOString(),
+          },
+          `New Shababuna order ${confirmedNumber}`,
+        );
       } catch {
-        /* The trusted order is already persisted; support can retry notification. */
+        // The local/trusted order still remains visible to the customer. A
+        // subsequent retry can re-send the same idempotent order reference.
       }
     }
 

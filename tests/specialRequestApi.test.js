@@ -234,7 +234,7 @@ describe('special request API', { concurrency: false }, () => {
     expect(calls.filter(([url]) => url.includes('create_special_request_api'))).toHaveLength(0);
   });
 
-  it('enforces method, origin, size and captcha protections', async () => {
+  it('enforces method, origin and size protections while allowing public intake without captcha', async () => {
     configure();
     installFetch();
     const method = responseMock();
@@ -248,10 +248,9 @@ describe('special request API', { concurrency: false }, () => {
     await handler(request('POST', validBody(), { 'content-length': String(4_200_001) }), size);
     expect(size.statusCode).toBe(413);
     process.env.TURNSTILE_TEST_MODE = 'false';
-    const captcha = responseMock();
-    await handler(request('POST', validBody({ turnstileToken: '' })), captcha);
-    expect(captcha.statusCode).toBe(400);
-    expect(captcha.body.error).toBe('captcha_failed');
+    const publicIntake = responseMock();
+    await handler(request('POST', validBody({ turnstileToken: '' })), publicIntake);
+    expect([201, 202]).toContain(publicIntake.statusCode);
   });
 
   it('fails closed when the trusted database row cannot be created', async () => {

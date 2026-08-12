@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
-import { verifyFormTurnstileToken } from './_turnstile.ts';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { recordBusinessEvent } from './_business-events.ts';
 import { sendInternalFormNotification } from './_internal-form-notification.ts';
@@ -106,16 +105,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     string,
     unknown
   >;
-  const forwarded = req.headers?.['x-forwarded-for'];
-  const captchaOk = await verifyFormTurnstileToken(
-    clean(body.turnstileToken, 3000),
-    String(
-      (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
-        req.socket?.remoteAddress ||
-        '',
-    ),
-  );
-  if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
 
   let payload: ReturnType<typeof normalizePayload>;
   try {

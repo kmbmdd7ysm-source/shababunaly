@@ -27,7 +27,7 @@ function normalizedItems(value: unknown) {
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res);
   if (req.method !== 'POST') { res.setHeader('Allow','POST'); return res.status(405).json({ ok:false,error:'method_not_allowed' }); }
-  if (!(await guardPublicPost(req, res, { maxBytes: 96_000, limit: 8, windowMs: 10 * 60_000, bucket: 'order-intake', honeypot: false }))) return;
+  if (!(await guardPublicPost(req, res, { maxBytes: 96_000, limit: 8, windowMs: 10 * 60_000, bucket: 'order-intake', honeypot: false, allowEphemeralFallback: true }))) return;
   try {
     const body = req.body && typeof req.body === 'object' ? req.body as Record<string, unknown> : {};
     const idempotencyKey = clean(body.idempotencyKey, 36);

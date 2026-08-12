@@ -82,14 +82,14 @@ describe('Formspree public gateway exhaustive', { concurrency: false }, () => {
     expect(pinned.body).toEqual({ ok: true, provider: 'formspree' });
   });
 
-  it('fails captcha before contacting Formspree', async () => {
+  it('accepts a valid public form without captcha and contacts Formspree', async () => {
     configure();
     process.env.TURNSTILE_TEST_MODE = 'false';
     installFetch();
     const result = responseMock();
     await handler(request({ turnstileToken: '' }), result);
-    expect(result.statusCode).toBe(400);
-    expect(result.body.error).toBe('captcha_failed');
+    expect(result.statusCode).toBe(200);
+    expect(result.body).toEqual({ ok: true, provider: 'formspree' });
   });
 
   it('sanitizes keys and scalar/object/null values, removes captcha and caps entries', async () => {

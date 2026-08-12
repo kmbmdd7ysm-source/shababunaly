@@ -7,9 +7,7 @@ const LEGACY_KEYS = ['shababuna-orders-v3', 'shababuna-orders-v2'];
 const MAX_ORDERS = 50;
 const SCHEMA_VERSION = 4;
 const CLOUD_ORDER_HISTORY_KEY = 'orderHistory';
-const allowLocalOrderStorage =
-  Boolean(import.meta.env.DEV) ||
-  ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
+const allowLocalOrderStorage = true; // Cash/pending orders can fall back locally after cloud creation fails.
 const clean = (value: unknown = ''): string => String(value ?? '').trim();
 const emailKey = (value: unknown = ''): string => clean(value).toLowerCase();
 const safeNumber = (value: unknown): number => (Number.isFinite(Number(value)) ? Number(value) : 0);
@@ -20,8 +18,8 @@ export const createIdempotencyKey = (): string => newId();
 function storageAvailable() {
   try {
     const key = '__shababuna_order_storage_test__';
-    localStorage.setItem(key, '1');
-    localStorage.removeItem(key);
+    sessionStorage.setItem(key, '1');
+    sessionStorage.removeItem(key);
     return true;
   } catch {
     return false;
@@ -282,10 +280,10 @@ export function readLocalOrders(): { orders: unknown[]; error?: unknown } {
   if (!allowLocalOrderStorage) return { orders: [], error: null };
   if (!storageAvailable()) return { orders: [], error: new Error('storage_unavailable') };
   try {
-    let orders = parseStored(localStorage.getItem(STORAGE_KEY));
+    let orders = parseStored(sessionStorage.getItem(STORAGE_KEY));
     if (!orders.length) {
       for (const legacy of LEGACY_KEYS) {
-        const migrated = parseStored(localStorage.getItem(legacy));
+        const migrated = parseStored(sessionStorage.getItem(legacy));
         if (migrated.length) {
           orders = migrated;
           writeLocalOrders(orders);
@@ -304,7 +302,7 @@ export function writeLocalOrders(orders: unknown[]): { ok: boolean; error?: unkn
     return { ok: false, error: new Error('local_order_storage_disabled') };
   if (!storageAvailable()) return { ok: false, error: new Error('storage_unavailable') };
   try {
-    localStorage.setItem(
+    sessionStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({ schemaVersion: SCHEMA_VERSION, orders: orders.slice(0, MAX_ORDERS) }),
     );

@@ -53,8 +53,6 @@ export default function ContactPage(): ReactElement {
     if (!form.message.trim()) next.message = pick({ en: 'Required', ar: 'مطلوب' });
     if (!consent)
       next.consent = pick({ en: 'Please accept before sending', ar: 'يرجى الموافقة قبل الإرسال' });
-    if (!turnstileToken)
-      next.captcha = pick({ en: 'Complete the security check', ar: 'أكمل فحص الأمان' });
     setErrors(next);
     if (Object.keys(next).length) return;
     setStatus('sending');

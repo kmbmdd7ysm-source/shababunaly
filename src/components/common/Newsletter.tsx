@@ -27,10 +27,6 @@ export default function Newsletter({ compact = false }: { compact?: boolean } = 
       setError(newsletter.required || '');
       return;
     }
-    if (!turnstileToken) {
-      setError(newsletter.required || '');
-      return;
-    }
     setStatus('sending');
     try {
       await sendFormspree(

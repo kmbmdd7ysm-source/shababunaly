@@ -2,7 +2,6 @@ import { randomUUID } from 'node:crypto';
 import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { validateEncodedFiles } from './_file-security.ts';
-import { verifyFormTurnstileToken } from './_turnstile.ts';
 import { sendInternalFormNotification } from './_internal-form-notification.ts';
 
 type ApiReq = {
@@ -168,17 +167,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const files = validateEncodedFiles(body.files) as EncodedFile[];
     const productImages = files.filter((file) => file.role === 'product_image');
     if (productImages.length > 1) throw new Error('one_product_image_allowed');
-
-    const forwarded = req.headers?.['x-forwarded-for'];
-    const captchaOk = await verifyFormTurnstileToken(
-      clean(body.turnstileToken, 3000),
-      String(
-        (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
-          req.socket?.remoteAddress ||
-          '',
-      ),
-    );
-    if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
 
     const payload = normalizePayload(body, productImages.length === 1);
     const idempotencyKey = /^[0-9a-f-]{36}$/i.test(clean(body.idempotencyKey, 36))

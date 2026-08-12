@@ -53,17 +53,44 @@ export function normalizeFormspreePayload(
   return normalized;
 }
 
-async function postJson(body: Record<string, unknown>): Promise<Record<string, unknown>> {
+async function postCanonicalFormspree(body: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const clean = Object.fromEntries(
+    Object.entries(body)
+      .filter(([key, value]) => key !== 'turnstileToken' && value != null)
+      .map(([key, value]) => [key, stringifyValue(value)]),
+  );
+  const formBody = new URLSearchParams(clean as Record<string, string>);
+  let directError: unknown = null;
+  try {
+    const direct = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: formBody,
+      cache: 'no-store',
+    });
+    const directResult = (await direct.json().catch(() => ({}))) as Record<string, unknown>;
+    if (direct.ok) return { ok: true, provider: 'formspree-direct', ...directResult };
+    directError = new Error(String((directResult as { error?: unknown }).error || `formspree_${direct.status}`));
+  } catch (error) {
+    directError = error;
+  }
+
+  // Same-origin fallback keeps forms working behind browsers/privacy tools that
+  // block a direct cross-origin Formspree request. The API itself forwards to
+  // the exact same canonical endpoint.
   const response = await fetch('/api/formspree', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify(clean),
     credentials: 'same-origin',
     cache: 'no-store',
   });
   const result = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-  if (!response.ok || result.ok === false)
-    throw new Error(String(result.error || `formspree_${response.status}`));
+  if (!response.ok || result.ok === false) {
+    const error = new Error(String(result.error || `formspree_${response.status}`)) as Error & { cause?: unknown };
+    error.cause = directError;
+    throw error;
+  }
   return result;
 }
 
@@ -71,7 +98,7 @@ export async function sendFormspree(
   payload: FormPayload,
   subject = 'Shababuna website message',
 ): Promise<Record<string, unknown>> {
-  return postJson(normalizeFormspreePayload(payload, subject));
+  return postCanonicalFormspree(normalizeFormspreePayload(payload, subject));
 }
 
 async function encodeFile(file: File, role = 'additional_file') {

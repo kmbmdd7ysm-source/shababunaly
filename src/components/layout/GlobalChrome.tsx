@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import AnnouncementStack from './AnnouncementStack';
 import MainHeader from './MainHeader';
 import MobileDock from './MobileDock';
 import '../../styles/sysbanner.css';
@@ -31,7 +30,6 @@ export default function GlobalChrome(): ReactElement {
   return (
     <div className="s2-chrome">
       <div className="s2-chrome__sticky">
-        <AnnouncementStack />
         <MainHeader />
       </div>
       {hideMobileDock ? null : <MobileDock />}

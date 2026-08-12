@@ -181,7 +181,7 @@ describe('remaining special-request branches', { concurrency: false }, () => {
     expect(res.statusCode).toBe(201);
   });
 
-  it('covers scanner failure, duplicate image, captcha and create-row rejection paths', async () => {
+  it('covers scanner failure, duplicate image, public fallback and create-row rejection paths', async () => {
     configure();
     process.env.NODE_ENV = 'production';
     const image = { name: 'product.png', mime: 'image/png', role: 'product_image', base64: png };
@@ -213,7 +213,8 @@ describe('remaining special-request branches', { concurrency: false }, () => {
     delete process.env.TURNSTILE_SECRET_KEY;
     res = resMock();
     await specialRequest(req(body()), res);
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(202);
+    expect(res.body.notification).toBe('delivered');
     process.env.TURNSTILE_TEST_MODE = 'true';
     res = resMock();
     await specialRequest(req(body()), res);

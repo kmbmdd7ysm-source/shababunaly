@@ -323,36 +323,46 @@ export default function ProductPage(): ReactElement {
 
         <section className="pdx-main" aria-labelledby="pdx-product-title">
           <div className="pdx-media" aria-label={pick({ en: 'Product media', ar: 'صور المنتج' })}>
-            <div className="pdx-media-grid">
-              {canUseAdvancedViewer ? (
-                <div className="pdx-media-cell pdx-media-cell--viewer" data-media-mode={mediaMode}>
-                  <ProductMediaViewer product={product} eager />
+            <div className="pdx-gallery-shell">
+              <div className="pdx-gallery-stage">
+                {canUseAdvancedViewer ? (
+                  <div className="pdx-media-cell pdx-media-cell--viewer" data-media-mode={mediaMode}>
+                    <ProductMediaViewer product={product} eager />
+                  </div>
+                ) : gallery.length ? (
+                  <button
+                    type="button"
+                    className="pdx-gallery-main"
+                    onClick={() => setLightboxOpen(true)}
+                    aria-label={pick({ en: 'Open product gallery', ar: 'افتح معرض صور المنتج' })}
+                  >
+                    <img
+                      src={gallery[activeImg] || gallery[0]}
+                      alt={`${shareTitle} ${activeImg + 1}`}
+                      width="1200"
+                      height="1500"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </button>
+                ) : null}
+                {!canUseAdvancedViewer && gallery.length > 1 ? (
+                  <>
+                    <button type="button" className="pdx-gallery-arrow pdx-gallery-arrow--prev" onClick={() => setActiveImg((current) => (current - 1 + gallery.length) % gallery.length)} aria-label={pick({ en: 'Previous image', ar: 'الصورة السابقة' })}>‹</button>
+                    <button type="button" className="pdx-gallery-arrow pdx-gallery-arrow--next" onClick={() => setActiveImg((current) => (current + 1) % gallery.length)} aria-label={pick({ en: 'Next image', ar: 'الصورة التالية' })}>›</button>
+                    <span className="pdx-gallery-count">{activeImg + 1} / {gallery.length}</span>
+                  </>
+                ) : null}
+              </div>
+              {!canUseAdvancedViewer && gallery.length > 1 ? (
+                <div className="pdx-gallery-thumbs" role="list" aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}>
+                  {gallery.map((src, imageIndex) => (
+                    <button key={`${src}-${imageIndex}`} type="button" className={imageIndex === activeImg ? 'is-active' : ''} onClick={() => setActiveImg(imageIndex)} aria-label={pick({ en: `Show image ${imageIndex + 1}`, ar: `اعرض الصورة ${imageIndex + 1}` })}>
+                      <img src={src} alt="" width="120" height="150" loading="lazy" decoding="async" />
+                    </button>
+                  ))}
                 </div>
               ) : null}
-              {gallery.map((src, imageIndex) => (
-                <button
-                  key={`${src}-${imageIndex}`}
-                  type="button"
-                  className="pdx-media-cell"
-                  onClick={() => {
-                    setActiveImg(imageIndex);
-                    setLightboxOpen(true);
-                  }}
-                  aria-label={pick({
-                    en: `Open product image ${imageIndex + 1} of ${gallery.length}`,
-                    ar: `افتح صورة المنتج ${imageIndex + 1} من ${gallery.length}`,
-                  })}
-                >
-                  <img
-                    src={src}
-                    alt={`${shareTitle} ${imageIndex + 1}`}
-                    width="1000"
-                    height="1250"
-                    loading={imageIndex < 2 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                </button>
-              ))}
             </div>
           </div>
 

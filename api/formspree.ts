@@ -1,5 +1,4 @@
 import { guardPublicPost } from './_request-security.ts';
-import { verifyFormTurnstileToken } from './_turnstile.ts';
 import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 
 export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.ts';
@@ -46,12 +45,6 @@ export default async function handler(request: ApiReq, response: ApiRes) {
   if (!endpoint || !/^https:\/\//i.test(endpoint))
     return response.status(503).json({ ok: false, error: 'formspree_not_configured' });
   const payload = (request.body && typeof request.body === 'object' ? request.body : {}) as Record<string, unknown>;
-  const forwarded = request.headers['x-forwarded-for'];
-  const captchaOk = await verifyFormTurnstileToken(
-    String(payload.turnstileToken || ''),
-    String((Array.isArray(forwarded) ? forwarded[0] : forwarded) || request.socket?.remoteAddress || ''),
-  );
-  if (!captchaOk) return response.status(400).json({ ok: false, error: 'captcha_failed' });
   const clean = buildCleanFormPayload(payload);
   const body = new URLSearchParams(clean).toString();
   const signal = AbortSignal.timeout(20000);

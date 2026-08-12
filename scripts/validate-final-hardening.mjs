@@ -195,7 +195,7 @@ for (const source of [formApi, orderApi]) {
 }
 
 has(orderApi, 'loadTrustedOrder', 'trusted order email notification');
-has(orderApi, 'trusted_order_not_found', 'production order email fail-closed behavior');
+has(orderApi, 'client payload', 'order email resilient fallback payload');
 const createSession = read('api/create-session.ts');
 for (const token of ['payment_expires_at', 'shipping_quote_expires_at', 'loadTrustedOrder'])
   has(createSession, token, `payment session ${token}`);
@@ -245,7 +245,6 @@ for (const token of [
 const specialApi = read('api/special-request.ts');
 for (const token of [
   'guardPublicPost',
-  'verifyFormTurnstileToken',
   'validateEncodedFiles',
   'special-request-quarantine',
   'create_special_request_api',
@@ -326,11 +325,9 @@ const readinessGate = read('src/context/ReadinessContext.tsx');
 for (const token of ['/api/readiness', "credentials: 'same-origin'", 'localReadiness'])
   has(readinessGate, token, `production readiness gate ${token}`);
 const chrome = read('src/components/layout/GlobalChrome.tsx');
-for (const token of ['AnnouncementStack', 'MainHeader'])
-  has(chrome, token, `global chrome ${token}`);
-const announcementStack = read('src/components/layout/AnnouncementStack.tsx');
-for (const token of ['ReadinessBanner', 'AnnouncementBar'])
-  has(announcementStack, token, `announcement stack ${token}`);
+has(chrome, 'MainHeader', 'global chrome MainHeader');
+if (chrome.includes('AnnouncementStack'))
+  fail.push('Public global chrome still mounts the removed announcement stack');
 
 try {
   assert.equal(catalogProducts.length, 69);

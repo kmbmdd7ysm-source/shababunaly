@@ -184,7 +184,7 @@ describe('guest order token cryptography', { concurrency: false }, () => {
 });
 
 describe('public quote intake API', { concurrency: false }, () => {
-  it('rejects methods, captcha and every validation class', async () => {
+  it('rejects methods and every validation class while allowing public intake without captcha', async () => {
     configure();
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(reply(true)));
     let res = resMock();
@@ -193,8 +193,7 @@ describe('public quote intake API', { concurrency: false }, () => {
     process.env.TURNSTILE_TEST_MODE = 'false';
     res = resMock();
     await publicQuoteHandler(req(validQuote), res);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.error).toBe('captcha_failed');
+    expect([201, 202]).toContain(res.statusCode);
     process.env.TURNSTILE_TEST_MODE = 'true';
     const cases = [
       [

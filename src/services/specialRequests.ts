@@ -1,4 +1,5 @@
 import { getSupabase } from './supabase.ts';
+import { sendFormspree } from './formspree.ts';
 
 const ACCEPTED = new Map<string, string[]>([
   ['image/jpeg', ['jpg', 'jpeg']],
@@ -94,8 +95,35 @@ export async function submitSpecialRequest({
     error?: string;
     request?: unknown;
   };
-  if (!response.ok || !data.ok) throw new Error(data.error || 'special_request_unavailable');
-  return data.request;
+  if (response.ok && data.ok) return data.request;
+
+  // Preserve the human request even when the upload/database API is down.
+  // Binary attachments stay out of this fallback; their names are included so
+  // the owner can request them safely during follow-up.
+  try {
+    const reference = `WEB-SR-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+    await sendFormspree(
+      {
+        ...payload,
+        formType: 'special_request',
+        requestNumber: reference,
+        referenceId: reference,
+        persistenceStatus: 'direct_formspree_fallback',
+        attachmentStatus: files.length ? 'follow_up_required' : 'none',
+        fileNames: entries.map(({ file }) => file.name).join(', '),
+      },
+      `Shababuna special request · ${String(payload.customerName || payload.name || 'customer')}`,
+    );
+    return {
+      id: `email-${reference}`,
+      requestNumber: reference,
+      status: 'received',
+      persisted: false,
+      attachmentStatus: files.length ? 'follow_up_required' : 'none',
+    };
+  } catch {
+    throw new Error(data.error || 'special_request_unavailable');
+  }
 }
 
 export async function getMySpecialRequests(): Promise<unknown[]> {

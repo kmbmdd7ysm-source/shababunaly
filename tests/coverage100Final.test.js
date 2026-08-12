@@ -772,7 +772,7 @@ describe('100% API and security branch closure', { concurrency: false }, () => {
     );
     let res = resMock();
     await formspreeHandler(req(null), res);
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(200);
     res = resMock();
     await formspreeHandler(req({ turnstileToken: 'test-pass' }), res);
     expect(res.statusCode).toBe(200);

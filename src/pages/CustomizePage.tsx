@@ -54,10 +54,6 @@ export default function CustomizePage(): ReactElement {
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus('');
-    if (!turnstileToken) {
-      setStatus(pick({ en: 'Complete the security check.', ar: 'أكمل فحص الأمان.' }));
-      return;
-    }
     setBusy(true);
     try {
       const result = await submitPublicQuote({
