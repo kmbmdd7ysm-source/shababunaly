@@ -38,7 +38,7 @@ export function getProductionReadiness(): {
   if (!String(import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim()) missing.push('account_key');
   if (!String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim())
     missing.push('request_verification');
-  if (!validHttps(import.meta.env.VITE_FORM_ENDPOINT || 'https://formspree.io/f/mqerbqvd')) {
+  if (!validHttps('https://formspree.io/f/mvzenjgv')) {
     missing.push('message_delivery');
   }
   return { ready: missing.length === 0, needsServerCheck: missing.length === 0, missing };
@@ -102,12 +102,10 @@ export function ReadinessProvider({ children }: { children?: ReactNode }) {
     };
   }, [state]);
 
-  // Latch open from the first paint when we start degraded so the banner never
-  // "pops in" after effects, and never auto-collapses when the readiness fetch
-  // later reports ready (that collapse was ~0.05–0.17 CLS on home).
-  const latchedOpen =
-    (localReadiness.ready && localReadiness.needsServerCheck) || !localReadiness.ready;
-  const open = latchedOpen && !dismissed;
+  // Show the operational warning only while the deployment is actually degraded.
+  // The previous latched behavior kept the warning visible even after /api/readiness
+  // confirmed a healthy production environment.
+  const open = state === 'degraded' && !dismissed;
 
   useEffect(() => {
     document.documentElement.dataset.sysBanner = open ? 'open' : 'closed';

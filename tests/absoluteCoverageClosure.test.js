@@ -355,14 +355,14 @@ describe('absolute API branch coverage', { concurrency: false }, () => {
   it('executes Formspree endpoint, guard, address and non-Error failure branches', async () => {
     configure();
     process.env.VITE_FORM_ENDPOINT = 'https://vite-form.example';
-    expect(resolveFormspreeEndpoint()).toBe('https://vite-form.example');
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mvzenjgv');
     let mode = 'ok';
     vi.stubGlobal(
       'fetch',
       vi.fn().mockImplementation(async (url) => {
         const u = String(url);
         if (rateLimit(u)) return reply(true);
-        if (u === 'https://vite-form.example') {
+        if (u === 'https://formspree.io/f/mvzenjgv') {
           if (mode === 'throw') throw 'offline';
           return reply({ ok: true });
         }

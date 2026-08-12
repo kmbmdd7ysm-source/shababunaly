@@ -8,7 +8,7 @@ const ORDER = /^(SHB|LHA)-\d{8}-\d{7}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function secret(): string {
-  const value = clean(process.env.GUEST_ORDER_ACCESS_SECRET || process.env.CRON_SECRET, 5000);
+  const value = clean(process.env.GUEST_ORDER_ACCESS_SECRET || process.env.CRON_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY, 5000);
   if (value.length < 32) throw new Error('guest_access_not_configured');
   return value;
 }

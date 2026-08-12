@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
 import { validateEncodedFiles } from './_file-security.ts';
-import { verifyTurnstileToken } from './_turnstile.ts';
+import { verifyFormTurnstileToken } from './_turnstile.ts';
 import { sendInternalFormNotification } from './_internal-form-notification.ts';
 
 type ApiReq = {
@@ -155,27 +155,22 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       limit: 5,
       windowMs: 10 * 60_000,
       bucket: 'special-request',
+      allowEphemeralFallback: true,
     }))
   )
     return;
+
+  const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
+    string,
+    unknown
+  >;
   try {
-    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<
-      string,
-      unknown
-    >;
     const files = validateEncodedFiles(body.files) as EncodedFile[];
-    if (
-      files.length > 0 &&
-      process.env.NODE_ENV === 'production' &&
-      !isMalwareScannerConfigured()
-    ) {
-      return res.status(503).json({ ok: false, error: 'secure_file_scanning_unavailable' });
-    }
     const productImages = files.filter((file) => file.role === 'product_image');
     if (productImages.length > 1) throw new Error('one_product_image_allowed');
-    const payload = normalizePayload(body, productImages.length === 1);
+
     const forwarded = req.headers?.['x-forwarded-for'];
-    const captchaOk = await verifyTurnstileToken(
+    const captchaOk = await verifyFormTurnstileToken(
       clean(body.turnstileToken, 3000),
       String(
         (Array.isArray(forwarded) ? forwarded[0] : forwarded) ||
@@ -184,49 +179,125 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       ),
     );
     if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
-    const authHeader = req.headers?.authorization;
-    const user = await resolveSupabaseUser(
-      Array.isArray(authHeader) ? authHeader[0] : authHeader,
-    );
+
+    const payload = normalizePayload(body, productImages.length === 1);
     const idempotencyKey = /^[0-9a-f-]{36}$/i.test(clean(body.idempotencyKey, 36))
       ? clean(body.idempotencyKey, 36)
       : randomUUID();
-    const created = await supabaseAdminRequest('/rest/v1/rpc/create_special_request_api', {
-      method: 'POST',
-      body: JSON.stringify({
-        p_user_id: user?.id || null,
-        p_idempotency_key: idempotencyKey,
-        p_payload: payload,
-      }),
-    });
-    const requestRow = (
-      Array.isArray(created) ? created[0] : created
-    ) as Record<string, unknown> | null;
-    if (!requestRow?.id) throw new Error('special_request_create_failed');
-    const uploaded = [];
-    for (const file of files) uploaded.push(await uploadFile(String(requestRow.id), file));
-    const emailResult = await sendInternalFormNotification(
-      {
-        form_type: 'special_request',
-        request_number: requestRow.request_number,
-        request_id: requestRow.id,
-        ...payload,
-        files_received: uploaded.length,
-        file_names: files.map((file) => file.name).join(', '),
-      },
-      `Shababuna special request · ${payload.customerName}`,
-    );
-    return res.status(201).json({
-      ok: true,
-      request: {
-        id: requestRow.id,
-        requestNumber: requestRow.request_number,
-        status: requestRow.status,
-        createdAt: requestRow.created_at,
-      },
-      filesReceived: uploaded.length,
-      notification: emailResult.delivered ? 'delivered' : 'pending',
-    });
+    const fallbackNumber = `WEB-SR-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${idempotencyKey.replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+
+    // Never pass unscanned customer attachments into email. If secure scanning
+    // is not provisioned, preserve the inquiry details in the canonical inbox
+    // and ask operations to collect the attachment directly from the customer.
+    if (files.length > 0 && process.env.NODE_ENV === 'production' && !isMalwareScannerConfigured()) {
+      const emailResult = await sendInternalFormNotification(
+        {
+          form_type: 'special_request',
+          request_number: fallbackNumber,
+          persistence_status: 'email_only_fallback',
+          attachment_status: 'not_stored_security_scanner_unavailable',
+          files_received: 0,
+          file_names: files.map((file) => file.name).join(', '),
+          ...payload,
+        },
+        `Shababuna special request · ${payload.customerName}`,
+      );
+      if (emailResult.delivered) {
+        return res.status(202).json({
+          ok: true,
+          request: {
+            id: `email-${idempotencyKey}`,
+            requestNumber: fallbackNumber,
+            status: 'received',
+            createdAt: new Date().toISOString(),
+            persisted: false,
+            attachmentStatus: 'not_stored',
+          },
+          filesReceived: 0,
+          notification: 'delivered',
+        });
+      }
+      return res.status(503).json({ ok: false, error: 'secure_file_scanning_unavailable' });
+    }
+
+    try {
+      const authHeader = req.headers?.authorization;
+      const user = await resolveSupabaseUser(
+        Array.isArray(authHeader) ? authHeader[0] : authHeader,
+      );
+      const created = await supabaseAdminRequest('/rest/v1/rpc/create_special_request_api', {
+        method: 'POST',
+        body: JSON.stringify({
+          p_user_id: user?.id || null,
+          p_idempotency_key: idempotencyKey,
+          p_payload: payload,
+        }),
+      });
+      const requestRow = (
+        Array.isArray(created) ? created[0] : created
+      ) as Record<string, unknown> | null;
+      if (!requestRow?.id) throw new Error('special_request_create_failed');
+      const uploaded = [];
+      for (const file of files) uploaded.push(await uploadFile(String(requestRow.id), file));
+      const emailResult = await sendInternalFormNotification(
+        {
+          form_type: 'special_request',
+          request_number: requestRow.request_number,
+          request_id: requestRow.id,
+          persistence_status: 'persisted',
+          ...payload,
+          files_received: uploaded.length,
+          file_names: files.map((file) => file.name).join(', '),
+        },
+        `Shababuna special request · ${payload.customerName}`,
+      );
+      return res.status(201).json({
+        ok: true,
+        request: {
+          id: requestRow.id,
+          requestNumber: requestRow.request_number,
+          status: requestRow.status,
+          createdAt: requestRow.created_at,
+          persisted: true,
+        },
+        filesReceived: uploaded.length,
+        notification: emailResult.delivered ? 'delivered' : 'pending',
+      });
+    } catch (persistenceError: unknown) {
+      // Preserve the human inquiry even during a temporary database/storage
+      // outage. Files are intentionally not attached until they pass the
+      // quarantine/scanner workflow.
+      const emailResult = await sendInternalFormNotification(
+        {
+          form_type: 'special_request',
+          request_number: fallbackNumber,
+          request_id: `email-${idempotencyKey}`,
+          persistence_status: 'email_only_fallback',
+          attachment_status: files.length ? 'not_stored_backend_unavailable' : 'none',
+          files_received: 0,
+          file_names: files.map((file) => file.name).join(', '),
+          ...payload,
+        },
+        `Shababuna special request · ${payload.customerName}`,
+      );
+      if (emailResult.delivered) {
+        return res.status(202).json({
+          ok: true,
+          request: {
+            id: `email-${idempotencyKey}`,
+            requestNumber: fallbackNumber,
+            status: 'received',
+            createdAt: new Date().toISOString(),
+            persisted: false,
+            attachmentStatus: files.length ? 'not_stored' : 'none',
+          },
+          filesReceived: 0,
+          notification: 'delivered',
+        });
+      }
+      void persistenceError;
+      return res.status(503).json({ ok: false, error: 'special_request_unavailable' });
+    }
   } catch (error: unknown) {
     const code = clean(
       error && typeof error === 'object' && 'message' in error

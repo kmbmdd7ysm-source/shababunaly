@@ -73,7 +73,7 @@ function configureRequired() {
   process.env.SUPABASE_URL = 'https://project.supabase.co';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-secret';
   process.env.VITE_SUPABASE_ANON_KEY = 'public-anon-key';
-  process.env.VITE_FORM_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
+  process.env.VITE_FORM_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
   process.env.FORMSPREE_DELIVERY_VERIFIED_AT = new Date().toISOString();
   process.env.FORMSPREE_DELIVERY_EVIDENCE_ID = 'submission-verified-123';
   process.env.TURNSTILE_SECRET_KEY = 'turnstile-secret';
@@ -212,7 +212,7 @@ describe('production readiness endpoint', { concurrency: false }, () => {
     process.env.VITE_SUPABASE_URL = 'https://fallback.supabase.co';
     process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-secret';
     process.env.SUPABASE_PUBLISHABLE_KEY = 'publishable-key';
-    process.env.FORMSPREE_ENDPOINT = 'https://formspree.io/f/fallback123';
+    process.env.FORMSPREE_ENDPOINT = 'https://formspree.io/f/fallback123'; // ignored: owner-pinned endpoint is canonical
     const checks = requiredEnvironment();
     expect(checks.supabase_url).toBe(true);
     expect(checks.supabase_public_key).toBe(true);
@@ -230,6 +230,6 @@ describe('production readiness endpoint', { concurrency: false }, () => {
       skipped: false,
     });
     expect(fallbackFetch.mock.calls[0][0]).toContain('fallback.supabase.co');
-    expect(fallbackFetch.mock.calls[1][0]).toBe('https://formspree.io/f/fallback123');
+    expect(fallbackFetch.mock.calls[1][0]).toBe('https://formspree.io/f/mvzenjgv');
   });
 });

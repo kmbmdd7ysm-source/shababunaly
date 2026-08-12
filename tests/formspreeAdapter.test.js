@@ -48,11 +48,11 @@ describe('Formspree server adapter', () => {
     delete process.env.FORMSPREE_ORDER_ENDPOINT;
     delete process.env.VITE_FORM_ENDPOINT;
     delete process.env.FORMSPREE_ENDPOINT;
-    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mqerbqvd');
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mvzenjgv');
     process.env.VITE_FORM_ENDPOINT = 'https://formspree.io/f/vite';
-    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/vite');
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mvzenjgv');
     process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/server';
-    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/server');
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mvzenjgv');
     expect(sanitize(undefined)).toBe('');
     expect(sanitize(null)).toBe('');
     expect(sanitize('a\0b', 2)).toBe('ab');
@@ -69,7 +69,7 @@ describe('Formspree server adapter', () => {
   });
 
   it('accepts a provider 200 response', async () => {
-    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
+    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal(
       'fetch',
@@ -90,7 +90,7 @@ describe('Formspree server adapter', () => {
   });
 
   it.each([400, 429, 500])('does not report success when provider returns %s', async (status) => {
-    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
+    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal(
       'fetch',
@@ -110,7 +110,7 @@ describe('Formspree server adapter', () => {
   });
 
   it('reports delivery failure on timeout/network rejection', async () => {
-    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
+    process.env.FORMSPREE_ORDER_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('timeout')));
     const res = responseMock();

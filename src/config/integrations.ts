@@ -1,8 +1,8 @@
 /** Canonical Formspree endpoint. Prefer VITE_FORM_ENDPOINT; never silently diverge. */
-export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mqerbqvd';
+export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvzenjgv';
 
 export const integrations = Object.freeze({
-  formspreeEndpoint: String(import.meta.env.VITE_FORM_ENDPOINT || FORMSPREE_ENDPOINT).trim(),
+  formspreeEndpoint: FORMSPREE_ENDPOINT,
   turnstileSiteKey: String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim(),
   onlineCard: Object.freeze({
     provider: String(import.meta.env.VITE_PAYMENTS_PROVIDER || '').trim(),

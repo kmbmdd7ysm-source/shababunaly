@@ -30,3 +30,20 @@ export async function verifyTurnstileToken(token: unknown, remoteIp = ''): Promi
     return false;
   }
 }
+
+
+/**
+ * Customer inquiry forms must stay usable when Turnstile has not been
+ * provisioned yet. When a secret exists we still require a valid token; when
+ * it does not, same-origin + honeypot + rate limiting remain in force.
+ * Sensitive account/order lookup endpoints continue to use the strict verifier.
+ */
+export async function verifyFormTurnstileToken(token: unknown, remoteIp = ''): Promise<boolean> {
+  const secret = clean(process.env.TURNSTILE_SECRET_KEY, 5000);
+  const strict = await verifyTurnstileToken(token, remoteIp);
+  if (strict) return true;
+  // The client emits this sentinel only when no Turnstile site key is shipped.
+  // Arbitrary invalid/missing tokens still fail, preserving the normal captcha
+  // contract and all sensitive endpoints keep using the strict verifier.
+  return !secret && clean(token, 80) === 'verification-not-configured';
+}

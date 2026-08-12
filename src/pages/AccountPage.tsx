@@ -18,6 +18,7 @@ import { getMyOrders } from '../services/orders';
 import { safeInternalReturnPath } from '../utils/safeReturnPath';
 import AccountRegister from '../components/account/AccountRegister';
 import AccountOverview from '../components/account/AccountOverview';
+import Icon from '../components/icons/Icon';
 import {
   LazyAccountSection,
   SecuritySection,
@@ -651,7 +652,7 @@ export default function AccountPage(): ReactElement {
                           : { en: 'Show password', ar: 'إظهار كلمة المرور' },
                       )}
                     >
-                      {pick(show ? { en: 'Hide', ar: 'إخفاء' } : { en: 'Show', ar: 'إظهار' })}
+                      <Icon name={show ? 'eyeOff' : 'eye'} size={20} />
                     </button>
                   </span>
                 </label>

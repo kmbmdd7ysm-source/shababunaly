@@ -41,7 +41,7 @@ Deno.serve(async (request) => {
   const { data, error } = await admin
     .from('orders')
     .select(
-      'order_number,currency,total,payment_method,payment_status,order_status,fulfillment_status,created_at,order_items(product_id,sku,product_name,variant_snapshot,quantity,unit_price,line_total)',
+      'order_number,currency,subtotal,shipping_total,tax_total,discount_total,total,payment_method,payment_plan,amount_due_now,remaining_balance,delivery_profile,shipping_summary,payment_status,order_status,fulfillment_status,created_at,order_items(product_id,sku,product_name,variant_snapshot,quantity,unit_price,line_total)',
     )
     .eq('order_number', orderNumber)
     .eq('customer_email', email)

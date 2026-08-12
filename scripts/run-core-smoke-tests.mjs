@@ -62,7 +62,9 @@ assert.equal(allBrands.includes('LHA'), true);
 
 const checkout = readFileSync('src/pages/CheckoutPage.tsx', 'utf8');
 assert.match(checkout, /paymentPlan = shippingQuoteRequired \? 'pending_shipping_quote'/);
-assert.match(checkout, /paymentMethod === 'cash' \? cashPlan : 'full'/);
+assert.match(checkout, /const immediateLibyaCash = isLibya && allReady && !stagedOrder/);
+assert.match(checkout, /const allowCashPlanChoice = isLibya && !allReady && !stagedOrder/);
+assert.match(checkout, /immediateLibyaCash \? 'full' : allowCashPlanChoice \? cashPlan : 'full'/);
 const migration = [
   readFileSync('supabase/migrations/20260731040000_shababuna_b2b_operations.sql', 'utf8'),
   readFileSync('supabase/migrations/20260731050000_shababuna_final_hardening.sql', 'utf8'),

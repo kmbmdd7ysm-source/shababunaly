@@ -338,7 +338,7 @@ export default function SpecialRequestPage(): ReactElement {
                 })}
               </span>
             </label>
-            <TurnstileWidget onToken={onToken} language={lang} />
+            <TurnstileWidget onToken={onToken} language={lang} optionalWhenUnconfigured />
             <button className="btn-primary block" disabled={busy || !form.consent}>
               {busy
                 ? pick({ en: 'Submitting securely…', ar: 'جاري الإرسال بأمان…' })
@@ -354,12 +354,17 @@ export default function SpecialRequestPage(): ReactElement {
                 <strong>{pick({ en: 'Request received', ar: 'تم استلام الطلب' })}</strong>
                 <span>{String(result.requestNumber || '')}</span>
                 <p>
-                  {pick({
-                    en: 'Your order has not been placed and no payment is due. We will review the request first.',
-                    ar: 'لم يتم إنشاء طلب شراء ولا توجد دفعة مستحقة. سنراجع الطلب أولًا.',
-                  })}
+                  {result.persisted === false
+                    ? pick({
+                        en: 'Your request reached our team by email. If you attached a file that could not be stored safely, we will contact you to collect it securely. No payment is due.',
+                        ar: 'وصل طلبك إلى فريقنا عبر البريد الإلكتروني. إذا تعذر حفظ ملف مرفق بأمان فسنتواصل معك لاستلامه بطريقة آمنة. لا توجد دفعة مستحقة.',
+                      })
+                    : pick({
+                        en: 'Your order has not been placed and no payment is due. We will review the request first.',
+                        ar: 'لم يتم إنشاء طلب شراء ولا توجد دفعة مستحقة. سنراجع الطلب أولًا.',
+                      })}
                 </p>
-                {auth.user && (
+                {auth.user && result.persisted !== false && (
                   <Link to="/account?section=special-requests">
                     {pick({ en: 'Track in account', ar: 'تتبعه داخل الحساب' })}
                   </Link>

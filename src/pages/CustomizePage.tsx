@@ -3,17 +3,15 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import TurnstileWidget from '../components/security/TurnstileWidget';
-import CustomJerseyShowcase from '../components/custom/CustomJerseyShowcase';
+import CustomProductShowcase from '../components/custom/CustomProductShowcase';
 import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
+import { CUSTOM_COLOR_OPTIONS } from '../components/custom/customColors';
 import '../styles/custom-experience.css';
 import '../styles/domain-forms.css';
 
-const FEATURED = CUSTOM_PRODUCT_TYPES.filter((item) =>
-  ['game-jersey', 'game-set', 'game-shorts', 'shooting-shirt', 'hoodie', 'tracksuit', 'team-bag', 'basketball'].includes(item.key),
-);
-const COLOR_OPTIONS = ['#0b0b0b', '#ffffff', '#d71920', '#173f8a', '#0b6539', '#f4c542', '#7b2d8e', '#d8d0c2'];
+const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
   'game-set': '/images/catalog/apparel.svg',
   'game-shorts': '/images/catalog/apparel.svg',
@@ -27,7 +25,8 @@ const fallbackArt: Record<string, string> = {
 export default function CustomizePage(): ReactElement {
   const { pick, lang } = useLanguage();
   const [productType, setProductType] = useState('game-jersey');
-  const [color, setColor] = useState('#0b0b0b');
+  const [bodyColor, setBodyColor] = useState('#0b0b0b');
+  const [trimColor, setTrimColor] = useState('#ffffff');
   const [teamName, setTeamName] = useState('SHABABUNA');
   const [playerName, setPlayerName] = useState('');
   const [playerNumber, setPlayerNumber] = useState('00');
@@ -74,14 +73,15 @@ export default function CustomizePage(): ReactElement {
           quantity: Number(contact.quantity || selected.minimum),
           requirements: [
             `Product: ${pick(selected.label)}`,
-            `Base color: ${color}`,
+            `Body color: ${bodyColor}`,
+            `Trim color: ${trimColor}`,
             `Team name: ${teamName}`,
             `Player name: ${playerName || '—'}`,
             `Player number: ${playerNumber || '—'}`,
             `Logo file: ${logoName || 'none'}`,
             contact.notes ? `Notes: ${contact.notes}` : '',
           ].filter(Boolean).join('\n'),
-          design: { productType, color, teamName, playerName, playerNumber, logoFileName: logoName },
+          design: { productType, bodyColor, trimColor, teamName, playerName, playerNumber, logoFileName: logoName },
           language: lang,
         },
         turnstileToken,
@@ -122,24 +122,22 @@ export default function CustomizePage(): ReactElement {
 
         <section className="cx-configurator" aria-labelledby="cx-design-title">
           <div className="cx-stage-wrap">
-            {productType === 'game-jersey' || productType === 'game-set' ? (
-              <CustomJerseyShowcase color={color} teamName={teamName} playerName={playerName} playerNumber={playerNumber} logoPreview={logoPreview} />
-            ) : (
-              <div className="cx-static-stage">
-                <img src={fallbackArt[productType] || '/images/catalog/apparel.svg'} alt={pick(selected.label)} />
-                <strong>{pick(selected.label)}</strong>
-                <span>{pick({ en: 'Visual customization for this product is completed with our team after submission.', ar: 'يتم استكمال التخصيص البصري لهذا المنتج مع فريقنا بعد الإرسال.' })}</span>
-              </div>
-            )}
+            <CustomProductShowcase productType={productType} bodyColor={bodyColor} trimColor={trimColor} teamName={teamName} playerName={playerName} playerNumber={playerNumber} logoPreview={logoPreview} label={pick(selected.label)} />
           </div>
 
           <div className="cx-controls">
             <p className="cx-step">01 / {pick({ en: 'Identity', ar: 'الهوية' })}</p>
             <h2 id="cx-design-title">{pick(selected.label)}</h2>
             <div className="cx-control-block">
-              <label>{pick({ en: 'Base color', ar: 'اللون الأساسي' })}</label>
+              <label>{pick({ en: 'Fabric / body color', ar: 'لون القماش / الجسم' })}</label>
               <div className="cx-swatches">
-                {COLOR_OPTIONS.map((option) => <button key={option} type="button" className={color === option ? 'is-active' : ''} aria-label={option} aria-pressed={color === option} onClick={() => setColor(option)}><span className={`cx-swatch cx-swatch--${COLOR_OPTIONS.indexOf(option)}`} /></button>)}
+                {CUSTOM_COLOR_OPTIONS.map((option) => <button key={`body-${option.key}`} type="button" className={bodyColor === option.value ? 'is-active' : ''} aria-label={`${pick({en:'Body',ar:'الجسم'})} ${option.key}`} aria-pressed={bodyColor === option.value} onClick={() => setBodyColor(option.value)}><span className="cx-swatch" data-color={option.key} /></button>)}
+              </div>
+            </div>
+            <div className="cx-control-block">
+              <label>{pick({ en: 'Trim / edge color', ar: 'لون الحواف والخطوط' })}</label>
+              <div className="cx-swatches">
+                {CUSTOM_COLOR_OPTIONS.map((option) => <button key={`trim-${option.key}`} type="button" className={trimColor === option.value ? 'is-active' : ''} aria-label={`${pick({en:'Trim',ar:'الحواف'})} ${option.key}`} aria-pressed={trimColor === option.value} onClick={() => setTrimColor(option.value)}><span className="cx-swatch" data-color={option.key} /></button>)}
               </div>
             </div>
             <label className="cx-field"><span>{pick({ en: 'Team name', ar: 'اسم الفريق' })}</span><input value={teamName} maxLength={18} onChange={(e) => setTeamName(e.target.value.toUpperCase())} /></label>
@@ -161,7 +159,7 @@ export default function CustomizePage(): ReactElement {
               <label className="field"><span>{pick({ en: 'Estimated quantity', ar: 'الكمية التقديرية' })}</span><input required inputMode="numeric" value={contact.quantity} onChange={(e) => setContact({ ...contact, quantity: e.target.value.replace(/\D/g, '') })} /></label>
             </div>
             <label className="field"><span>{pick({ en: 'Anything else?', ar: 'أي تفاصيل إضافية؟' })}</span><textarea rows={4} value={contact.notes} onChange={(e) => setContact({ ...contact, notes: e.target.value })} /></label>
-            <TurnstileWidget onToken={setTurnstileToken} language={lang} />
+            <TurnstileWidget onToken={setTurnstileToken} language={lang} optionalWhenUnconfigured />
             <button className="btn-primary block" disabled={busy}>{busy ? pick({ en: 'Sending…', ar: 'جارٍ الإرسال…' }) : pick({ en: 'Send design request', ar: 'إرسال طلب التصميم' })}</button>
             {status ? <p className="form-status" role="status">{status}</p> : null}
           </form>

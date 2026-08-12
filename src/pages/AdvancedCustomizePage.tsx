@@ -1381,7 +1381,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                       })}
                     </p>
                   </div>
-                  <TurnstileWidget onToken={setTurnstileToken} language={lang} />
+                  <TurnstileWidget onToken={setTurnstileToken} language={lang} optionalWhenUnconfigured />
                   <button
                     className="btn-primary block"
                     disabled={busy || !productionPreflight.readyForQuote}

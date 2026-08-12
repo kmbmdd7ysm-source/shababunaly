@@ -26,7 +26,6 @@ import EmptyState from '../components/common/EmptyState';
 import '../styles/domain-account.css';
 import '../styles/domain-commerce.css';
 import '../styles/checkout.css';
-import { sendFormspree } from '../services/formspree';
 import { listAddresses } from '../services/account/addressService';
 import { reportClientError } from '../services/telemetry';
 import '../styles/transact.css';
@@ -140,6 +139,8 @@ export default function CheckoutPage(): ReactElement {
   const largeEquipment = items.some((item) => item.largeEquipment);
   const allReady =
     items.length > 0 && items.every((item) => item.type !== 'product' || item.readyToShip);
+  const immediateLibyaCash = isLibya && allReady && !stagedOrder;
+  const allowCashPlanChoice = isLibya && !allReady && !stagedOrder;
 
   const changeCountry = (nextCode: string) => {
     const normalized = String(normalizeCountryCode(nextCode) || '');
@@ -236,7 +237,7 @@ export default function CheckoutPage(): ReactElement {
   const libyanCardConfigured = isPaymentMethodConfigured('libyan_bank_card');
   const paymentConfigured = paymentMethod === 'cash' || isPaymentMethodConfigured(paymentMethod);
   // prettier-ignore
-  const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : stagedOrder ? 'half' : paymentMethod === 'cash' ? cashPlan : 'full';
+  const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : stagedOrder ? 'half' : paymentMethod === 'cash' ? (immediateLibyaCash ? 'full' : allowCashPlanChoice ? cashPlan : 'full') : 'full';
   const dueRatio = paymentPlan === 'half' ? 0.5 : paymentPlan === 'pending_shipping_quote' ? 0 : 1;
   const amountDueNow = total * dueRatio;
   const remainingBalance = Math.max(0, total - amountDueNow);
@@ -342,6 +343,11 @@ export default function CheckoutPage(): ReactElement {
         displaySubtotal: convert(subtotal) ?? subtotal,
         displayShippingTotal: convert(shippingEstimate) ?? shippingEstimate,
         displayTotal: convert(total) ?? total,
+        displayAmountDueNow: convert(amountDueNow) ?? amountDueNow,
+        displayRemainingBalance: convert(remainingBalance) ?? remainingBalance,
+        displayOutstandingBalance: convert(remainingBalance) ?? remainingBalance,
+        displayAmountPaid: 0,
+        displayAmountRefunded: 0,
         canonicalCurrency: SITE.currency,
         displayCurrency: currency,
         paymentMethod,
@@ -369,7 +375,7 @@ export default function CheckoutPage(): ReactElement {
         discountTotal: 0,
       } as Record<string, unknown>,
       { idempotencyKey: idempotencyRef.current, allowPending: true },
-    )) as { order?: Record<string, unknown>; source?: string };
+    )) as { order?: Record<string, unknown>; source?: string; notification?: string | null; accessToken?: string | null };
 
     const trusted = (result?.order || {}) as Record<string, unknown>;
     const confirmedNumber = String(trusted.orderNumber || fallbackOrderNumber);
@@ -422,45 +428,42 @@ export default function CheckoutPage(): ReactElement {
       `Remaining: ${displayRemaining.toFixed(2)} ${currency}`,
       `Storage source: ${result?.source || 'local'}`,
     ].join('\n');
-    try {
-      await sendFormspree(
-        {
-          formType: 'order',
-          message: orderMessage,
-          email: String(customer.email || ''),
-          orderNumber: confirmedNumber,
-          paymentMethod: methodLabel,
-          paymentPlan: trustedPlan,
-          paymentStatus: trustedPaymentStatus,
-          customerName: String(customer.name || ''),
-          customerEmail: String(customer.email || ''),
-          customerPhone: String(customer.phone || ''),
-          subtotal: displaySubtotal,
-          shippingTotal: trustedQuoteRequired ? 'pending' : displayShippingTotal,
-          total: displayTotal,
-          dueNow: displayDueNow,
-          remainingBalance: displayRemaining,
-          currency,
-          canonicalSubtotal,
-          canonicalShippingTotal: canonicalShipping,
-          canonicalTotal,
-          canonicalDueNow,
-          canonicalRemainingBalance: canonicalRemaining,
-          canonicalCurrency: SITE.currency,
-          language: lang,
-          shippingQuoteRequired: trustedQuoteRequired,
-          deliveryProfile: trustedDeliveryProfile,
-          createdAt: new Date().toISOString(),
-          storageSource: result?.source || 'local',
-        },
-        `New Shababuna order ${confirmedNumber}`,
-      );
-    } catch {
-      /* Durable database outbox remains authoritative. */
+    if (result?.notification !== 'delivered') {
+      try {
+        await fetch('/api/order-notification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            orderNumber: confirmedNumber,
+            customerName: String(customer.name || ''),
+            customerEmail: String(customer.email || ''),
+            customerPhone: String(customer.phone || ''),
+            paymentMethod: methodLabel,
+            total: displayTotal,
+            currency,
+            message: orderMessage,
+            _subject: `New Shababuna order ${confirmedNumber}`,
+          }),
+        });
+      } catch {
+        /* The trusted order is already persisted; support can retry notification. */
+      }
+    }
+
+
+    const guestAccessToken = String(result?.accessToken || '').trim();
+    if (guestAccessToken) {
+      try {
+        sessionStorage.setItem(`shababuna-order-access:${confirmedNumber}`, guestAccessToken);
+      } catch {
+        /* Tracking can still be unlocked later with order number + email. */
+      }
     }
 
     return {
       number: confirmedNumber,
+      accessToken: guestAccessToken || null,
       displayDueNow,
       displayRemaining,
       orderStatus: trustedOrderStatus,
@@ -487,7 +490,10 @@ export default function CheckoutPage(): ReactElement {
           phone: form.phone,
         },
         shipping: digitalOnly
-          ? null
+          ? {
+              country: shippingCountryCode || String(countryCode || 'LY'),
+              digital: true,
+            }
           : {
               firstName: form.firstName,
               lastName: form.lastName,
@@ -647,10 +653,15 @@ export default function CheckoutPage(): ReactElement {
                   {orderConfirmed.shippingQuoteRequired
                     ? pick(SHIPPING_MESSAGES.quoteRequired)
                     : orderConfirmed.paymentMethod === 'cash'
-                      ? pick({
-                          en: 'Your order is pending cash confirmation. We will contact you with the next step.',
-                          ar: 'طلبك قيد تأكيد الدفع النقدي، وسنتواصل معك بالخطوة التالية.',
-                        })
+                      ? orderConfirmed.deliveryProfile === 'ready'
+                        ? pick({
+                            en: 'Your ready-to-ship order is confirmed. Pay the full cash amount when the order is delivered in Libya.',
+                            ar: 'تم تأكيد طلبك الجاهز للتسليم. ادفع القيمة النقدية كاملة عند استلام الطلب داخل ليبيا.',
+                          })
+                        : pick({
+                            en: 'Your reservation order is confirmed. We will contact you with the cash deposit and delivery steps.',
+                            ar: 'تم تأكيد طلب الحجز. سنتواصل معك بشأن الدفعة النقدية وخطوات التسليم.',
+                          })
                       : pick({
                           en: 'Your order is awaiting payment confirmation.',
                           ar: 'طلبك في انتظار تأكيد الدفع.',
@@ -658,7 +669,7 @@ export default function CheckoutPage(): ReactElement {
                 </p>
                 <div className="payment-balance-card">
                   <div>
-                    <span>{pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
+                    <span>{orderConfirmed.paymentMethod === 'cash' && orderConfirmed.deliveryProfile === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
                     <strong>
                       {(Number(orderConfirmed.displayDueNow) || 0).toFixed(2)} {currency}
                     </strong>
@@ -671,7 +682,7 @@ export default function CheckoutPage(): ReactElement {
                   </div>
                 </div>
                 <div className="button-row">
-                  <Link to="/order-tracking" className="btn-primary">
+                  <Link to={`/order-tracking/${encodeURIComponent(String(orderConfirmed.number || ''))}`} className="btn-primary">
                     {pick({ en: 'Track Order', ar: 'تتبع الطلب' })}
                   </Link>
                   <Link to="/shop" className="btn-secondary">
@@ -806,6 +817,8 @@ export default function CheckoutPage(): ReactElement {
                   libyanCardConfigured={libyanCardConfigured}
                   stagedOrder={stagedOrder}
                   shippingQuoteRequired={shippingQuoteRequired}
+                  allowCashPlanChoice={allowCashPlanChoice}
+                  immediateCash={immediateLibyaCash}
                 />
 
                 {stagedOrder && (

@@ -173,7 +173,7 @@ export default function ContactPage(): ReactElement {
                   </span>
                 </label>
                 {errors.consent && <span className="form-error">{errors.consent}</span>}
-                <TurnstileWidget onToken={setTurnstileToken} language={lang} />
+                <TurnstileWidget onToken={setTurnstileToken} language={lang} optionalWhenUnconfigured />
                 {errors.captcha && <span className="form-error">{errors.captcha}</span>}
                 {status === 'error' && (
                   <div className="notice notice--info">

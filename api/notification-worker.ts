@@ -1,3 +1,4 @@
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 import { buildNotificationTemplate } from './_notification-templates.ts';
 
 type ApiReq = {
@@ -14,8 +15,7 @@ const clean = (value: unknown, max = 12000): string =>
     .replace(/\0/g, '')
     .slice(0, max);
 
-const formspreeEndpoint = (): string =>
-  clean(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT, 1000);
+const formspreeEndpoint = (): string => resolveFormspreeEndpoint();
 
 const json = (res: ApiRes, status: number, body: unknown) => {
   res.setHeader('Cache-Control', 'no-store, private');

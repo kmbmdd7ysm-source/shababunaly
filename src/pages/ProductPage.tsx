@@ -33,6 +33,7 @@ import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productE
 import '../styles/catalog.css';
 import '../styles/domain-misc.css';
 import '../styles/product-experience.css';
+import SizeGuideTable from '../components/product/SizeGuideTable';
 
 type ColorEntry = { key: string; hex?: string; name?: { en?: string; ar?: string }; image?: string };
 type SizeEntry = string;

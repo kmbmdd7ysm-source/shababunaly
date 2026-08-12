@@ -90,6 +90,7 @@ export default function Newsletter({ compact = false }: { compact?: boolean } = 
       <TurnstileWidget
         onToken={setTurnstileToken}
         language={document.documentElement.lang || 'en'}
+        optionalWhenUnconfigured
       />
       {error && (
         <p className="form-error" role="alert">

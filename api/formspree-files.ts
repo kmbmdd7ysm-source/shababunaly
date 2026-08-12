@@ -1,6 +1,6 @@
 import { guardPublicPost } from './_request-security.ts';
 import { validateEncodedFiles } from './_file-security.ts';
-import { verifyTurnstileToken } from './_turnstile.ts';
+import { verifyFormTurnstileToken } from './_turnstile.ts';
 
 import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 const ENDPOINT = resolveFormspreeEndpoint();
@@ -27,13 +27,14 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       limit: 5,
       windowMs: 10 * 60_000,
       bucket: 'formspree-files',
+      allowEphemeralFallback: true,
     }))
   )
     return;
   try {
     const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     if (
-      !(await verifyTurnstileToken(
+      !(await verifyFormTurnstileToken(
         body.turnstileToken,
         String(
           (Array.isArray(req.headers?.['x-forwarded-for'])

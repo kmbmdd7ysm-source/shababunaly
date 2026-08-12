@@ -21,7 +21,7 @@ export async function sendInternalFormNotification(
       typeof value === 'object' ? clean(JSON.stringify(value, null, 2)) : clean(value),
     );
   }
-  const email = clean(payload.customerEmail || payload.email, 254);
+  const email = clean(payload.customerEmail || payload.customer_email || payload.email, 254);
   if (email) {
     params.set('email', email);
     params.set('_replyto', email);

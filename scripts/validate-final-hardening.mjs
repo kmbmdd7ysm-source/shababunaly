@@ -245,7 +245,7 @@ for (const token of [
 const specialApi = read('api/special-request.ts');
 for (const token of [
   'guardPublicPost',
-  'verifyTurnstile',
+  'verifyFormTurnstileToken',
   'validateEncodedFiles',
   'special-request-quarantine',
   'create_special_request_api',

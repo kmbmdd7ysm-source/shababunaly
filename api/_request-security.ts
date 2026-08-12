@@ -116,17 +116,31 @@ export async function guardPublicRequest(
     windowMs = 60_000,
     bucket = 'public-request',
     honeypot = true,
+    allowEphemeralFallback = false,
   }: {
     maxBytes?: number;
     limit?: number;
     windowMs?: number;
     bucket?: string;
     honeypot?: boolean;
+    allowEphemeralFallback?: boolean;
   } = {},
 ): Promise<boolean> {
   applyApiHeaders(res);
   const origin = clean(req.headers?.origin, 1000);
-  if (origin && !allowedOrigins.has(origin)) {
+  const requestHost = clean(req.headers?.['x-forwarded-host'] || req.headers?.host, 1000).split(',')[0]?.trim().toLowerCase();
+  let sameOriginHost = false;
+  if (origin && requestHost) {
+    try {
+      const parsed = new URL(origin);
+      sameOriginHost = parsed.host.toLowerCase() === requestHost && ['https:', 'http:'].includes(parsed.protocol);
+    } catch {
+      sameOriginHost = false;
+    }
+  }
+  // Static production origins plus the request's own host (including a Vercel
+  // preview/custom domain) are allowed. Cross-site origins remain rejected.
+  if (origin && !allowedOrigins.has(origin) && !sameOriginHost) {
     res.status(403).json({ ok: false, error: 'origin_not_allowed' });
     return false;
   }
@@ -142,14 +156,20 @@ export async function guardPublicRequest(
     return false;
   }
 
-  const salt = clean(process.env.EDGE_RATE_LIMIT_SALT || process.env.CRON_SECRET, 5000);
+  const salt = clean(
+    process.env.EDGE_RATE_LIMIT_SALT ||
+      process.env.CRON_SECRET ||
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      (allowEphemeralFallback ? process.env.TURNSTILE_SECRET_KEY : ''),
+    5000,
+  );
   const subjectHash = createHash('sha256')
     .update(
       `${salt || 'development'}:${clientAddress(req)}:${clean(req.headers?.['user-agent'], 500)}`,
     )
     .digest('hex');
   if (!salt) {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && !allowEphemeralFallback) {
       res.status(503).json({ ok: false, error: 'security_service_unavailable' });
       return false;
     }
@@ -174,7 +194,7 @@ export async function guardPublicRequest(
       return false;
     }
     if (allowed === null) {
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'production' && !allowEphemeralFallback) {
         res.status(503).json({ ok: false, error: 'security_service_unavailable' });
         return false;
       }
@@ -186,8 +206,16 @@ export async function guardPublicRequest(
       }
     }
   } catch {
-    res.status(503).json({ ok: false, error: 'security_service_unavailable' });
-    return false;
+    if (!allowEphemeralFallback) {
+      res.status(503).json({ ok: false, error: 'security_service_unavailable' });
+      return false;
+    }
+    const fallback = consumeDevelopmentLimit(`${bucket}:${subjectHash}`, limit, windowMs);
+    if (!fallback.allowed) {
+      res.setHeader('Retry-After', String(fallback.retryAfter));
+      res.status(429).json({ ok: false, error: 'rate_limited' });
+      return false;
+    }
   }
   return true;
 }
@@ -201,6 +229,7 @@ export async function guardPublicPost(
     windowMs?: number;
     bucket?: string;
     honeypot?: boolean;
+    allowEphemeralFallback?: boolean;
   } = {},
 ): Promise<boolean> {
   return guardPublicRequest(req, res, { ...options, honeypot: options.honeypot !== false });

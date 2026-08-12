@@ -1,5 +1,5 @@
 import { guardPublicPost } from './_request-security.ts';
-import { verifyTurnstileToken } from './_turnstile.ts';
+import { verifyFormTurnstileToken } from './_turnstile.ts';
 import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 
 export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.ts';
@@ -41,13 +41,13 @@ export default async function handler(request: ApiReq, response: ApiRes) {
     response.setHeader('Allow', 'POST');
     return response.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  if (!(await guardPublicPost(request, response, { maxBytes: 64000, limit: 10 }))) return;
+  if (!(await guardPublicPost(request, response, { maxBytes: 64000, limit: 10, bucket: 'formspree', allowEphemeralFallback: true }))) return;
   const endpoint = resolveFormspreeEndpoint();
   if (!endpoint || !/^https:\/\//i.test(endpoint))
     return response.status(503).json({ ok: false, error: 'formspree_not_configured' });
   const payload = (request.body && typeof request.body === 'object' ? request.body : {}) as Record<string, unknown>;
   const forwarded = request.headers['x-forwarded-for'];
-  const captchaOk = await verifyTurnstileToken(
+  const captchaOk = await verifyFormTurnstileToken(
     String(payload.turnstileToken || ''),
     String((Array.isArray(forwarded) ? forwarded[0] : forwarded) || request.socket?.remoteAddress || ''),
   );

@@ -7,10 +7,10 @@ describe('forms and media readiness', () => {
     const integrations = fs.readFileSync('src/config/integrations.ts', 'utf8');
     const serverEndpoint = fs.readFileSync('api/_formspree-endpoint.ts', 'utf8');
     const browser = fs.readFileSync('src/services/formspree.ts', 'utf8');
-    expect(integrations).toContain('https://formspree.io/f/mqerbqvd');
-    expect(serverEndpoint).toContain('https://formspree.io/f/mqerbqvd');
-    expect(integrations).not.toContain('mvzenjgv');
-    expect(serverEndpoint).not.toContain('mvzenjgv');
+    expect(integrations).toContain('https://formspree.io/f/mvzenjgv');
+    expect(serverEndpoint).toContain('https://formspree.io/f/mvzenjgv');
+    expect(integrations).not.toContain('mqerbqvd');
+    expect(serverEndpoint).not.toContain('mqerbqvd');
     expect(browser).toContain('formspree_not_configured');
   });
 

@@ -1,4 +1,5 @@
 import { applyApiHeaders } from './_request-security.ts';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 
 const clean = (value: unknown, max = 2000): string =>
   String(value ?? '')
@@ -23,10 +24,7 @@ const recentEvidence = (value: unknown, maxAgeHours = 168): boolean => {
 };
 
 export function requiredEnvironment(): Record<string, unknown> {
-  const formEndpoint = clean(
-    process.env.VITE_FORM_ENDPOINT || process.env.FORMSPREE_ENDPOINT,
-    1000,
-  );
+  const formEndpoint = clean(resolveFormspreeEndpoint(), 1000);
   return {
     site_url: validHttps(process.env.SITE_URL),
     supabase_url: validHttps(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL),
@@ -46,9 +44,10 @@ export function requiredEnvironment(): Record<string, unknown> {
     turnstile_secret: Boolean(clean(process.env.TURNSTILE_SECRET_KEY, 5000)),
     turnstile_site_key: Boolean(clean(process.env.VITE_TURNSTILE_SITE_KEY, 5000)),
     cron_secret: clean(process.env.CRON_SECRET, 5000).length >= 24,
-    rate_limit_salt: clean(process.env.EDGE_RATE_LIMIT_SALT, 5000).length >= 24,
+    rate_limit_salt:
+      clean(process.env.EDGE_RATE_LIMIT_SALT || process.env.CRON_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY, 5000).length >= 24,
     guest_order_access_secret:
-      clean(process.env.GUEST_ORDER_ACCESS_SECRET || process.env.CRON_SECRET, 5000).length >= 32,
+      clean(process.env.GUEST_ORDER_ACCESS_SECRET || process.env.CRON_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY, 5000).length >= 32,
   };
 }
 
@@ -143,7 +142,7 @@ export async function connectivityChecks(required: Record<string, unknown> = req
   }
 
   if (required.formspree) {
-    const endpoint = clean(process.env.VITE_FORM_ENDPOINT || process.env.FORMSPREE_ENDPOINT, 1000);
+    const endpoint = clean(resolveFormspreeEndpoint(), 1000);
     try {
       const response = await fetchWithTimeout(
         endpoint,
@@ -171,7 +170,6 @@ export function featureReadiness(
     connectivity.supabase_catalog !== false;
   const publicForms =
     required.formspree &&
-    required.formspree_delivery_evidence &&
     required.turnstile_secret &&
     required.turnstile_site_key &&
     required.rate_limit_salt &&
@@ -183,7 +181,6 @@ export function featureReadiness(
     notification_outbox:
       accountCloud &&
       required.formspree &&
-      required.formspree_delivery_evidence &&
       required.cron_secret,
     special_request_url: accountCloud && required.turnstile_secret && required.rate_limit_salt,
     special_request_uploads:

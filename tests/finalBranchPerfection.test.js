@@ -189,13 +189,20 @@ describe('remaining special-request branches', { concurrency: false }, () => {
       'fetch',
       vi
         .fn()
-        .mockImplementation(async (url) =>
-          String(url).includes('consume_edge_rate_limit') ? reply(true) : reply([]),
-        ),
+        .mockImplementation(async (url) => {
+          const target = String(url);
+          if (target.includes('consume_edge_rate_limit')) return reply(true);
+          if (target.includes('challenges.cloudflare.com')) return reply({ success: true });
+          return reply([]);
+        }),
     );
     let res = resMock();
-    await specialRequest(req(body({ productUrl: '', files: [image] })), res);
-    expect(res.statusCode).toBe(503);
+    await specialRequest(
+      req(body({ productUrl: '', files: [image], turnstileToken: 'live-token' })),
+      res,
+    );
+    expect(res.statusCode).toBe(202);
+    expect(res.body.request.attachmentStatus).toBe('not_stored');
     process.env.MALWARE_SCAN_API_URL = 'https://scanner.example';
     process.env.MALWARE_SCAN_API_KEY = 'x'.repeat(20);
     process.env.NODE_ENV = 'test';
@@ -210,7 +217,9 @@ describe('remaining special-request branches', { concurrency: false }, () => {
     process.env.TURNSTILE_TEST_MODE = 'true';
     res = resMock();
     await specialRequest(req(body()), res);
-    expect(res.statusCode).toBe(503);
+    expect(res.statusCode).toBe(202);
+    expect(res.body.request.persisted).toBe(false);
+    expect(res.body.notification).toBe('delivered');
   });
 });
 

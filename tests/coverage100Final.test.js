@@ -744,10 +744,10 @@ describe('100% API and security branch closure', { concurrency: false }, () => {
 
   it('closes Formspree endpoint, payload, guard, provider and thrown branches', async () => {
     process.env.FORMSPREE_ORDER_ENDPOINT = 'https://one.example';
-    expect(resolveFormspreeEndpoint()).toBe('https://one.example');
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mvzenjgv');
     delete process.env.FORMSPREE_ORDER_ENDPOINT;
     process.env.VITE_FORM_ENDPOINT = 'https://two.example';
-    expect(resolveFormspreeEndpoint()).toBe('https://two.example');
+    expect(resolveFormspreeEndpoint()).toBe('https://formspree.io/f/mvzenjgv');
     expect(sanitize(null)).toBe('');
     expect(sanitize({ a: 1 })).toContain('"a"');
     expect(sanitizeKey(' a b! ')).toBe('a_b_');
@@ -763,7 +763,7 @@ describe('100% API and security branch closure', { concurrency: false }, () => {
       vi.fn().mockImplementation(async (url) => {
         const u = String(url);
         if (u.includes('consume_edge_rate_limit')) return reply(true);
-        if (u === 'https://form.example') {
+        if (u === 'https://formspree.io/f/mvzenjgv') {
           if (mode === 'throw') throw new Error('network');
           return reply(mode === 'ok' ? {} : 'rejected', mode === 'ok' ? 200 : 429);
         }
@@ -792,7 +792,8 @@ describe('100% API and security branch closure', { concurrency: false }, () => {
     process.env.VITE_FORM_ENDPOINT = 'http://bad';
     res = resMock();
     await formspreeHandler(req({ turnstileToken: 'test-pass' }), res);
-    expect(res.statusCode).toBe(503);
+    // Owner-pinned canonical endpoint ignores unsafe environment overrides; current mocked provider still throws.
+    expect(res.statusCode).toBe(502);
   });
 
   it('closes trusted checkout and design-share API remaining branches', async () => {

@@ -804,9 +804,16 @@ describe(
       process.env.NODE_ENV = 'production';
       delete process.env.MALWARE_SCAN_API_URL;
       delete process.env.MALWARE_SCAN_API_KEY;
-      vi.stubGlobal('fetch', vi.fn().mockResolvedValue(reply(true)));
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockImplementation(async (url) =>
+          String(url).includes('challenges.cloudflare.com')
+            ? reply({ success: true })
+            : reply(true),
+        ),
+      );
       const body = {
-        turnstileToken: 'x',
+        turnstileToken: 'live-token',
         customerName: 'User',
         email: 'u@example.com',
         country: 'LY',
@@ -825,8 +832,9 @@ describe(
       };
       const res = resMock();
       await specialRequestHandler(req(body), res);
-      expect(res.statusCode).toBe(503);
-      expect(res.body.error).toBe('secure_file_scanning_unavailable');
+      expect(res.statusCode).toBe(202);
+      expect(res.body.request.attachmentStatus).toBe('not_stored');
+      expect(res.body.notification).toBe('delivered');
     });
     it('builds versioned bilingual notification templates and all fallbacks', () => {
       expect(notificationReference({ entity_id: 'e' }, {})).toBe('e');

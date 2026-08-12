@@ -14,15 +14,18 @@ export default function TurnstileWidget({
   onToken,
   language = 'en',
   action = 'form-submit',
+  optionalWhenUnconfigured = false,
 }: {
   onToken?: (token: string) => void;
   language?: string;
   action?: string;
+  optionalWhenUnconfigured?: boolean;
 }) {
   const host = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (!SITE_KEY) {
       if (import.meta.env.DEV) onToken?.('test-pass');
+      else if (optionalWhenUnconfigured) onToken?.('verification-not-configured');
       return undefined;
     }
     let widgetId: string | number | undefined;
@@ -61,13 +64,15 @@ export default function TurnstileWidget({
       const api = (globalThis as typeof globalThis & { turnstile?: TurnstileApi }).turnstile;
       if (widgetId != null && api) api.remove(widgetId);
     };
-  }, [action, language, onToken]);
+  }, [action, language, onToken, optionalWhenUnconfigured]);
 
-  if (!SITE_KEY && !import.meta.env.DEV)
+  if (!SITE_KEY && !import.meta.env.DEV) {
+    if (optionalWhenUnconfigured) return null;
     return (
       <p className="gw-verify-note" role="status">
         Request verification is temporarily unavailable.
       </p>
     );
+  }
   return <div className="turnstile-wrap" ref={host} aria-label="Bot verification" />;
 }

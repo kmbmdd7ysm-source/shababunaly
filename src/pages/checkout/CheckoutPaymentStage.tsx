@@ -13,6 +13,8 @@ export default function CheckoutPaymentStage({
   libyanCardConfigured,
   stagedOrder,
   shippingQuoteRequired,
+  allowCashPlanChoice,
+  immediateCash,
 }: {
   pick: PickFn;
   isLibya: boolean;
@@ -24,6 +26,8 @@ export default function CheckoutPaymentStage({
   libyanCardConfigured: boolean;
   stagedOrder: boolean;
   shippingQuoteRequired: boolean;
+  allowCashPlanChoice: boolean;
+  immediateCash: boolean;
 }): ReactElement {
   return (
     <>
@@ -40,10 +44,11 @@ export default function CheckoutPaymentStage({
             <span>
               <strong>{pick({ en: 'Cash in Libya', ar: 'دفع نقدي داخل ليبيا' })}</strong>
               <small>
-                {pick({
-                  en: 'Choose 50% to confirm or pay the full amount.',
-                  ar: 'اختر دفع 50% للتأكيد أو دفع القيمة كاملة.',
-                })}
+                {immediateCash
+                  ? pick({ en: 'Immediate-delivery order — pay cash when the order is delivered.', ar: 'طلب تسليم فوري — ادفع نقدًا عند استلام الطلب.' })
+                  : allowCashPlanChoice
+                    ? pick({ en: 'Reservation order — choose 50% to confirm or 100% upfront.', ar: 'طلب بالحجز — اختر 50% للتأكيد أو دفع 100% مقدمًا.' })
+                    : pick({ en: 'Cash payment inside Libya.', ar: 'دفع نقدي داخل ليبيا.' })}
               </small>
             </span>
           </label>
@@ -85,7 +90,7 @@ export default function CheckoutPaymentStage({
         ) : null}
       </fieldset>
 
-      {paymentMethod === 'cash' && !stagedOrder && !shippingQuoteRequired ? (
+      {paymentMethod === 'cash' && allowCashPlanChoice ? (
         <fieldset className="form-block payment-plan">
           <legend>{pick({ en: 'Cash confirmation amount', ar: 'قيمة تأكيد الطلب النقدي' })}</legend>
           <div className="payment-plan-grid">

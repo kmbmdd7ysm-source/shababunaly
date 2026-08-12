@@ -1,3 +1,4 @@
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
 import { guardPublicPost } from './_request-security.ts';
 
 type ApiReq = {
@@ -10,8 +11,7 @@ type ApiRes = {
   status: (c: number) => { json: (b: unknown) => unknown };
 };
 
-export const resolveOrderNotificationEndpoint = (): string =>
-  String(process.env.FORMSPREE_ORDER_ENDPOINT || process.env.VITE_FORM_ENDPOINT || '').trim();
+export const resolveOrderNotificationEndpoint = (): string => resolveFormspreeEndpoint();
 
 const safe = (value: unknown, max = 12000): string =>
   String(value ?? '')
@@ -87,16 +87,22 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         {
           orderNumber: trusted.order_number,
           customerEmail: trusted.customer_email,
-          currency: trusted.currency,
+          canonicalCurrency: trusted.currency,
+          displayCurrency: (trusted.shipping_summary as Record<string, unknown> | undefined)?.displayCurrency || trusted.currency,
           subtotal: trusted.subtotal,
+          displaySubtotal: (trusted.shipping_summary as Record<string, unknown> | undefined)?.displaySubtotal,
           shipping: trusted.shipping_total,
+          displayShipping: (trusted.shipping_summary as Record<string, unknown> | undefined)?.displayShippingTotal,
           tax: trusted.tax_total,
           discount: trusted.discount_total,
           total: trusted.total,
+          displayTotal: (trusted.shipping_summary as Record<string, unknown> | undefined)?.displayTotal,
           paymentMethod: trusted.payment_method,
           paymentPlan: trusted.payment_plan,
           amountDueNow: trusted.amount_due_now,
+          displayAmountDueNow: (trusted.shipping_summary as Record<string, unknown> | undefined)?.displayAmountDueNow,
           remainingBalance: trusted.remaining_balance,
+          displayRemainingBalance: (trusted.shipping_summary as Record<string, unknown> | undefined)?.displayRemainingBalance,
           orderStatus: trusted.order_status,
           paymentStatus: trusted.payment_status,
           items: trusted.items_snapshot,
@@ -117,7 +123,8 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     customer_phone: safe(input.customerPhone, 80),
     payment_method: safe(trusted?.payment_method || input.paymentMethod, 100),
     total: safe(trusted?.total ?? input.total, 100),
-    currency: safe(trusted?.currency || input.currency, 20),
+    currency: safe((trusted?.shipping_summary as Record<string, unknown> | undefined)?.displayCurrency || input.currency || trusted?.currency, 20),
+    canonical_currency: safe(trusted?.currency || 'USD', 20),
     email: safe(input.customerEmail || input.email, 240),
     _replyto: safe(input.customerEmail || input.email, 240),
     message: safe(authoritativeMessage),

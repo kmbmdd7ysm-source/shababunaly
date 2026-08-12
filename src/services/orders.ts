@@ -29,8 +29,9 @@ function storageAvailable() {
 }
 
 export function normalizeOrder(order: Row = {}): Row {
+  const shippingSummary = (order.shippingSummary || order.shipping_summary || order.shipping || {}) as Row;
   const currency = clean(order.currency || order.canonicalCurrency || 'USD').toUpperCase();
-  const displayCurrency = clean(order.displayCurrency || order.currency || 'USD').toUpperCase();
+  const displayCurrency = clean(order.displayCurrency || order.display_currency || shippingSummary.displayCurrency || shippingSummary.display_currency || order.currency || 'USD').toUpperCase();
   const canonicalShippingTotal = Math.max(
     0,
     safeNumber(order.shippingTotal ?? order.shipping_total),
@@ -39,10 +40,34 @@ export function normalizeOrder(order: Row = {}): Row {
     0,
     safeNumber((order.shippingRate as Row | undefined)?.originalAmount ?? (order.shipping_rate as Row | undefined)?.original_amount),
   );
+  const canonicalSubtotalForRate = Math.max(0, safeNumber(order.subtotal));
+  const canonicalTotalForRate = Math.max(0, safeNumber(order.total));
+  const storedDisplaySubtotalForRate = Math.max(
+    0,
+    safeNumber(
+      order.displaySubtotal ??
+        order.display_subtotal ??
+        shippingSummary.displaySubtotal ??
+        shippingSummary.display_subtotal,
+    ),
+  );
+  const storedDisplayTotalForRate = Math.max(
+    0,
+    safeNumber(
+      order.displayTotal ??
+        order.display_total ??
+        shippingSummary.displayTotal ??
+        shippingSummary.display_total,
+    ),
+  );
   const inferredDisplayRate =
-    displayCurrency !== currency && canonicalShippingTotal > 0 && originalShippingAmount > 0
-      ? originalShippingAmount / canonicalShippingTotal
-      : 1;
+    displayCurrency !== currency && canonicalSubtotalForRate > 0 && storedDisplaySubtotalForRate > 0
+      ? storedDisplaySubtotalForRate / canonicalSubtotalForRate
+      : displayCurrency !== currency && canonicalTotalForRate > 0 && storedDisplayTotalForRate > 0
+        ? storedDisplayTotalForRate / canonicalTotalForRate
+        : displayCurrency !== currency && canonicalShippingTotal > 0 && originalShippingAmount > 0
+          ? originalShippingAmount / canonicalShippingTotal
+          : 1;
   const needsLegacyDisplayRepair = (displayValue: unknown, canonicalValue: unknown): boolean =>
     displayCurrency !== currency &&
     inferredDisplayRate > 1.01 &&
@@ -125,6 +150,8 @@ export function normalizeOrder(order: Row = {}): Row {
       repairedDisplayValue(
         order.displaySubtotal ??
           order.display_subtotal ??
+          shippingSummary.displaySubtotal ??
+          shippingSummary.display_subtotal ??
           safeNumber(order.subtotal) * inferredDisplayRate,
         order.subtotal,
       ),
@@ -135,6 +162,8 @@ export function normalizeOrder(order: Row = {}): Row {
       repairedDisplayValue(
         order.displayShippingTotal ??
           order.display_shipping_total ??
+          shippingSummary.displayShippingTotal ??
+          shippingSummary.display_shipping_total ??
           canonicalShippingTotal * inferredDisplayRate,
         canonicalShippingTotal,
       ),
@@ -145,17 +174,38 @@ export function normalizeOrder(order: Row = {}): Row {
     displayTotal: Math.max(
       0,
       repairedDisplayValue(
-        order.displayTotal ?? order.display_total ?? safeNumber(order.total) * inferredDisplayRate,
+        order.displayTotal ?? order.display_total ?? shippingSummary.displayTotal ?? shippingSummary.display_total ?? safeNumber(order.total) * inferredDisplayRate,
         order.total,
       ),
     ),
     paymentMethod: clean(order.paymentMethod || order.payment_method || 'cash_on_delivery'),
     paymentPlan: clean(order.paymentPlan || order.payment_plan || 'full'),
     amountPaid: Math.max(0, safeNumber(order.amountPaid ?? order.amount_paid)),
+    displayAmountPaid: Math.max(
+      0,
+      repairedDisplayValue(
+        order.displayAmountPaid ?? order.display_amount_paid ?? shippingSummary.displayAmountPaid ?? shippingSummary.display_amount_paid ?? safeNumber(order.amountPaid ?? order.amount_paid) * inferredDisplayRate,
+        order.amountPaid ?? order.amount_paid,
+      ),
+    ),
     amountRefunded: Math.max(0, safeNumber(order.amountRefunded ?? order.amount_refunded)),
+    displayAmountRefunded: Math.max(
+      0,
+      repairedDisplayValue(
+        order.displayAmountRefunded ?? order.display_amount_refunded ?? shippingSummary.displayAmountRefunded ?? shippingSummary.display_amount_refunded ?? safeNumber(order.amountRefunded ?? order.amount_refunded) * inferredDisplayRate,
+        order.amountRefunded ?? order.amount_refunded,
+      ),
+    ),
     amountDueNow: Math.max(
       0,
       safeNumber(order.amountDueNow ?? order.amount_due_now ?? order.total),
+    ),
+    displayAmountDueNow: Math.max(
+      0,
+      repairedDisplayValue(
+        order.displayAmountDueNow ?? order.display_amount_due_now ?? shippingSummary.displayAmountDueNow ?? shippingSummary.display_amount_due_now ?? safeNumber(order.amountDueNow ?? order.amount_due_now ?? order.total) * inferredDisplayRate,
+        order.amountDueNow ?? order.amount_due_now ?? order.total,
+      ),
     ),
     outstandingBalance: Math.max(
       0,
@@ -164,6 +214,13 @@ export function normalizeOrder(order: Row = {}): Row {
           order.outstanding_balance ??
           order.remainingBalance ??
           order.remaining_balance,
+      ),
+    ),
+    displayOutstandingBalance: Math.max(
+      0,
+      repairedDisplayValue(
+        order.displayOutstandingBalance ?? order.display_outstanding_balance ?? shippingSummary.displayOutstandingBalance ?? shippingSummary.display_outstanding_balance ?? safeNumber(order.outstandingBalance ?? order.outstanding_balance ?? order.remainingBalance ?? order.remaining_balance) * inferredDisplayRate,
+        order.outstandingBalance ?? order.outstanding_balance ?? order.remainingBalance ?? order.remaining_balance,
       ),
     ),
     remainingBalance: Math.max(
@@ -176,6 +233,13 @@ export function normalizeOrder(order: Row = {}): Row {
             safeNumber(order.outstandingBalance ?? order.outstanding_balance) -
               safeNumber(order.amountDueNow ?? order.amount_due_now),
           ),
+      ),
+    ),
+    displayRemainingBalance: Math.max(
+      0,
+      repairedDisplayValue(
+        order.displayRemainingBalance ?? order.display_remaining_balance ?? shippingSummary.displayRemainingBalance ?? shippingSummary.display_remaining_balance ?? safeNumber(order.remainingBalance ?? order.remaining_balance ?? order.outstandingBalance ?? order.outstanding_balance) * inferredDisplayRate,
+        order.remainingBalance ?? order.remaining_balance ?? order.outstandingBalance ?? order.outstanding_balance,
       ),
     ),
     depositRequired: Boolean(order.depositRequired ?? order.deposit_required),
@@ -269,6 +333,28 @@ async function invokeOrderFunction(name: string, body: Row) {
   if (!supabase) return { data: null, error: new Error('cloud_unconfigured') };
   const { data, error } = await supabase.functions.invoke(name, { body });
   return { data, error: error || null };
+}
+
+async function invokeOrderApi(body: Row) {
+  try {
+    const supabase = await getSupabase();
+    const session = supabase ? (await supabase.auth.getSession()).data?.session : null;
+    const response = await fetch('/api/order-intake', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(body),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) return { data: null, error: new Error(String(data?.error || `order_api_failed:${response.status}`)) };
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
 }
 
 function orderIdentity(order: Row) {
@@ -406,6 +492,15 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
         shippingQuoteRequired: candidate.shippingQuoteRequired,
         deliveryProfile: candidate.deliveryProfile,
         displayCurrency: candidate.displayCurrency,
+        displaySubtotal: candidate.displaySubtotal,
+        displayShippingTotal: candidate.displayShippingTotal,
+        displayTotal: candidate.displayTotal,
+        displayAmountDueNow: candidate.displayAmountDueNow,
+        displayRemainingBalance: candidate.displayRemainingBalance,
+        displayOutstandingBalance: candidate.displayOutstandingBalance,
+        displayAmountPaid: candidate.displayAmountPaid,
+        displayAmountRefunded: candidate.displayAmountRefunded,
+        customer: candidate.customer,
         allReadyToShip: candidate.deliveryProfile === 'ready',
       },
       items: candidateItems.map((item: Row) => ({
@@ -416,10 +511,12 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
         purchaseMode: item.purchaseMode || 'retail',
       })),
     };
-    const cloud = await invokeOrderFunction(
-      candidate.userId ? 'create-order' : 'create-guest-order',
-      payload,
-    );
+    let cloud = await invokeOrderApi(payload);
+    // Keep the Supabase Edge implementation as a secondary path for deployments
+    // that have the function active while the Vercel API is unavailable.
+    if (cloud.error || !cloud.data?.order) {
+      cloud = await invokeOrderFunction(candidate.userId ? 'create-order' : 'create-guest-order', payload);
+    }
     if (!cloud.error && cloud.data?.order) {
       const serverOrder = cloud.data.order;
       const order = normalizeOrder({
@@ -433,6 +530,11 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
         displaySubtotal: candidate.displaySubtotal,
         displayShippingTotal: candidate.displayShippingTotal,
         displayTotal: candidate.displayTotal,
+        displayAmountDueNow: candidate.displayAmountDueNow,
+        displayRemainingBalance: candidate.displayRemainingBalance,
+        displayOutstandingBalance: candidate.displayOutstandingBalance,
+        displayAmountPaid: candidate.displayAmountPaid,
+        displayAmountRefunded: candidate.displayAmountRefunded,
         customer: candidate.customer,
         shipping: serverOrder.shipping_summary || candidate.shipping,
         shippingRate: candidate.shippingRate,
@@ -447,7 +549,7 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
           /* ignore */
         }
       }
-      return { order, source: 'cloud', duplicate: Boolean(cloud.data.duplicate), warning: null };
+      return { order, source: 'cloud', duplicate: Boolean(cloud.data.duplicate), warning: null, notification: cloud.data.notification || null, accessToken: cloud.data.guestAccessToken || cloud.data.accessToken || null };
     }
     if (!allowLocalOrderStorage)
       throw new Error('cloud_order_creation_failed', { cause: cloud.error });

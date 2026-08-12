@@ -283,3 +283,18 @@
   flex-wrap: wrap;
   gap: var(--sh-s-3);
 }
+
+/* Customer checkout controls: explicit spacing/hierarchy so payment copy never runs together. */
+.gw-checkout-steps .payment-methods{display:grid;gap:10px}
+.gw-checkout-steps .payment-choice{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:start;gap:14px;min-block-size:74px;padding:16px 18px;border:1px solid var(--sh-rule-strong);border-radius:var(--sh-r-1);background:var(--sh-chalk);cursor:pointer}
+.gw-checkout-steps .payment-choice input{inline-size:18px;block-size:18px;margin:2px 0 0;accent-color:var(--sh-ink)}
+.gw-checkout-steps .payment-choice>span{display:grid;gap:5px;min-inline-size:0}
+.gw-checkout-steps .payment-choice strong{font-size:.95rem;line-height:1.3}
+.gw-checkout-steps .payment-choice small{display:block;color:var(--sh-ink-70);font-size:.78rem;line-height:1.5}
+.gw-checkout-steps .payment-choice.active{border-color:var(--sh-ink);box-shadow:inset 0 0 0 1px var(--sh-ink)}
+.gw-checkout-steps .payment-plan-grid{margin-block-start:6px}
+.gw-checkout-steps .payment-plan-grid label{cursor:pointer}
+.gw-checkout-steps .field-check{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:start;gap:10px}
+.gw-checkout-steps .field-check input{inline-size:18px;block-size:18px;margin:2px 0 0;accent-color:var(--sh-ink)}
+[dir='rtl'] .gw-checkout-steps .payment-choice,[dir='rtl'] .gw-checkout-steps .field-check{grid-template-columns:20px minmax(0,1fr)}
+@media(max-width:640px){.gw-checkout-steps .payment-choice{padding:14px;min-block-size:68px}.gw-checkout-steps .payment-plan-grid{grid-template-columns:1fr!important}.gw-checkout-steps .payment-plan-grid label{min-height:96px!important;padding:16px!important}}

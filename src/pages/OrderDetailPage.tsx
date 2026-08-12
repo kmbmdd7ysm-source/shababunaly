@@ -89,7 +89,7 @@ export default function OrderDetailPage(): ReactElement {
     : null;
   const canRetryPayment = Boolean(
     order &&
-    order.paymentMethod !== 'cash_on_delivery' &&
+    !['cash', 'cash_on_delivery', 'cod'].includes(String(order.paymentMethod || '')) &&
     payableStatuses.has(String(order.paymentStatus || '')) &&
     payableOrderStatuses.has(String(order.orderStatus || '')) &&
     !order.shippingQuoteRequired &&
@@ -229,28 +229,30 @@ export default function OrderDetailPage(): ReactElement {
                 <div>
                   <dt>{pick({ en: 'Payment method', ar: 'طريقة الدفع' })}</dt>
                   <dd>
-                    {order.paymentMethod === 'cash_on_delivery'
-                      ? pick({ en: 'Cash on Delivery', ar: 'الدفع عند الاستلام' })
-                      : pick({ en: 'Online payment', ar: 'الدفع الإلكتروني' })}
+                    {['cash', 'cash_on_delivery', 'cod'].includes(String(order.paymentMethod || ''))
+                      ? pick({ en: 'Cash in Libya', ar: 'الدفع النقدي في ليبيا' })
+                      : order.paymentMethod === 'libyan_bank_card'
+                        ? pick({ en: 'Libyan bank card', ar: 'بطاقة مصرفية ليبية' })
+                        : pick({ en: 'Online payment', ar: 'الدفع الإلكتروني' })}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Paid', ar: 'المدفوع' })}</dt>
                   <dd>
-                    {(Number(order.amountPaid) || 0).toFixed(2)} {String(order.currency || '')}
+                    {(Number(order.displayAmountPaid ?? order.amountPaid) || 0).toFixed(2)} {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Outstanding balance', ar: 'الرصيد غير المدفوع' })}</dt>
                   <dd>
-                    {(Number(order.outstandingBalance) || 0).toFixed(2)}{' '}
-                    {String(order.currency || '')}
+                    {(Number(order.displayOutstandingBalance ?? order.outstandingBalance) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
                 <div>
-                  <dt>{pick({ en: 'Due now', ar: 'المستحق الآن' })}</dt>
+                  <dt>{['cash', 'cash_on_delivery', 'cod'].includes(String(order.paymentMethod || '')) && String(order.deliveryProfile || '') === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due now', ar: 'المستحق الآن' })}</dt>
                   <dd>
-                    {(Number(order.amountDueNow) || 0).toFixed(2)} {String(order.currency || '')}
+                    {(Number(order.displayAmountDueNow ?? order.amountDueNow) || 0).toFixed(2)} {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
               </dl>

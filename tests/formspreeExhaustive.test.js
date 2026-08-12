@@ -76,10 +76,10 @@ describe('Formspree public gateway exhaustive', { concurrency: false }, () => {
     expect(method.statusCode).toBe(405);
     expect(method.headers.Allow).toBe('POST');
     process.env.FORMSPREE_ORDER_ENDPOINT = 'ftp://invalid.example';
-    const invalid = responseMock();
-    await handler(request({ turnstileToken: 'test-pass' }), invalid);
-    expect(invalid.statusCode).toBe(503);
-    expect(invalid.body.error).toBe('formspree_not_configured');
+    const pinned = responseMock();
+    await handler(request({ turnstileToken: 'test-pass' }), pinned);
+    expect(pinned.statusCode).toBe(200);
+    expect(pinned.body).toEqual({ ok: true, provider: 'formspree' });
   });
 
   it('fails captcha before contacting Formspree', async () => {
