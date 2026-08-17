@@ -1,47 +1,46 @@
-/**
- * Local-only editorial media registry.
- *
- * These aliases intentionally point to files shipped inside /public so the
- * storefront never depends on a third-party CDN for critical imagery.
- * The historical key names are preserved to avoid touching unrelated page logic.
- */
+export type OfficialMediaEntry = {
+  source: string;
+  alt: string;
+  width?: number;
+  height?: number;
+};
+
+const createEntry = (source: string, alt: string, width?: number, height?: number): OfficialMediaEntry => ({
+  source,
+  alt,
+  width,
+  height,
+});
+
 export const OFFICIAL_MEDIA = {
-  nikeWinningPoster: '/media/heroes/home-desktop.webp',
-  nikeWinningCollage: '/media/heroes/discover-desktop.webp',
-  nikeKobeHeroDesktop: '/media/heroes/footwear-desktop.webp',
-  nikeKobeHeroMobile: '/media/heroes/footwear-mobile.webp',
-  nikeKobeGroup: '/images/products/kobe/goat/kobe-8-halo.webp',
-  nikeKobeOne: '/images/products/kobe/goat/kobe-4-gold-medal.webp',
-  nikeKobeTwo: '/images/products/kobe/goat/kobe-5-chaos.webp',
-  nikeKobeThree: '/images/products/kobe/goat/kobe-10-rivalry.webp',
-
-  nikeCustomGameTop: '/images/products/lha-center-logo-tank-white.png',
-  nikeCustomGameShorts: '/images/products/lha-performance-shorts-black.png',
-  nikeCustomPracticeJersey: '/images/products/compression-tank-white.webp',
-  nikeCustomShootingShirt: '/images/products/lha-logo-performance-tee-grey.png',
-  nikeCustomHoodie: '/images/products/own-the-game-pullover-hoodie-grey.jpeg',
-  nikeCustomTeamPants: '/images/products/own-the-game-fleece-pants-black.jpeg',
-  nikeCustomWarmupCrew: '/images/products/own-the-game-crewneck-grey.jpeg',
-  nikeCustomTeamBag: '/images/products/lha-elite-basketball-backpack-white.jpeg',
-  jordanCustomSleeve: '/images/products/lha-one-leg-compression-tights-white.png',
-
-  spaldingPolePad: '/media/atmosphere/arena-wide-2048.webp',
-  spaldingBall: '/images/categories/accessories-hero-player.jpeg',
-  spaldingBackboard: '/media/atmosphere/arena-wide-1600.webp',
-  spaldingPump: '/images/products/lha-elite-basketball-backpack-black.jpeg',
-
-  nbKawhi: '/images/categories/clothing-hero-player.jpeg',
-  nbTyrese: '/images/categories/accessories-hero-player.jpeg',
-  nbCameron: '/images/products/own-the-game-pullover-hoodie-grey.jpeg',
-  nbCooper: '/images/products/lha-logo-performance-tee-grey.png',
-  nbDejounte: '/images/products/own-the-game-zip-hoodie-grey.jpeg',
-  nbZach: '/images/products/lha-center-logo-tank-black.png',
-  nbJamal: '/images/products/hoops-for-troops-tee-grey.png',
-  nbAaron: '/images/products/all-i-know-is-win-tee-white.png',
-  nbNickSmith: '/images/products/lha-one-leg-compression-tights-white.png',
-  nbDarius: '/images/products/lha-elite-basketball-backpack-camo.jpeg',
-
-  nikeWinningCampaignPage: '',
-  newBalanceBasketballPage: '',
-  none: '',
+  nikeWinningPoster: createEntry('/media/official-brand/collage-performance.webp', 'Official basketball editorial collage from Nike signature storytelling.', 1600, 900),
+  nikeWinningCollage: createEntry('/media/official-brand/collage-signatures.webp', 'Official basketball footwear collage sourced from global brand imagery.', 1600, 900),
+  nikeKobeHeroDesktop: createEntry('/media/official-brand/hero-nike-pyramid.webp', 'Official basketball hero product image from Nike signature footwear.', 1600, 900),
+  nikeKobeHeroMobile: createEntry('/media/official-brand/portrait-aone.webp', 'Official basketball hero portrait from Nike signature footwear.', 1200, 1500),
+  nikeKobeGroup: createEntry('/media/official-brand/hero-lebron-hands.webp', 'Official basketball shoe close-up from Nike signature footwear.', 1600, 900),
+  nikeKobeOne: createEntry('/media/official-brand/hero-book2-case.webp', 'Official basketball hero image featuring signature footwear presentation.', 1600, 900),
+  nikeKobeTwo: createEntry('/media/official-brand/hero-sabrina4.webp', 'Official basketball signature shoe artwork.', 1600, 900),
+  nikeKobeThree: createEntry('/media/official-brand/hero-aone-product.webp', 'Official basketball signature product image.', 1600, 900),
+  nikeCustomGameTop: createEntry('/media/official-brand/portrait-atwo.webp', 'Official basketball player editorial image.', 1200, 1500),
+  nikeCustomGameShorts: createEntry('/media/official-brand/collage-apparel.webp', 'Official basketball apparel collage from global brand imagery.', 1200, 1500),
+  nikeCustomShootingShirt: createEntry('/media/official-brand/hero-atwo-court.webp', 'Official basketball court editorial image.', 1600, 900),
+  nikeCustomHoodie: createEntry('/media/official-brand/portrait-closeup.webp', 'Official basketball editorial close-up image.', 1200, 1500),
+  nikeCustomTracksuit: createEntry('/media/official-brand/collage-signatures.webp', 'Official basketball signature collage.', 1600, 900),
+  nikeCustomBag: createEntry('/media/official-brand/hero-book2-case.webp', 'Official basketball lifestyle equipment image.', 1600, 900),
+  nikeCustomBasketball: createEntry('/media/official-brand/hero-atwo-court.webp', 'Official basketball editorial image with visible basketball.', 1600, 900),
+  nikeCustomDuffle: createEntry('/media/official-brand/hero-lebron-hands.webp', 'Official basketball editorial detail shot.', 1600, 900),
+  spaldingGameBall: createEntry('/media/official-brand/hero-atwo-court.webp', 'Official basketball court image with ball.', 1600, 900),
+  spaldingBackboard: createEntry('/media/official-brand/hero-atwo-court.webp', 'Official basketball court and hoop editorial image.', 1600, 900),
+  spaldingPolePad: createEntry('/media/official-brand/hero-focus-closeup.webp', 'Official basketball editorial portrait.', 1600, 900),
+  spaldingPump: createEntry('/media/official-brand/hero-book2-case.webp', 'Official basketball gear still life.', 1600, 900),
+  nbKawhi: createEntry('/media/official-brand/hero-aone-product.webp', 'Official basketball signature shoe product image.', 1600, 900),
+  nbTyrese: createEntry('/media/official-brand/hero-sabrina4.webp', 'Official basketball signature shoe presentation.', 1600, 900),
+  nbCameron: createEntry('/media/official-brand/hero-lebron-hands.webp', 'Official basketball detail image.', 1600, 900),
+  nbCooper: createEntry('/media/official-brand/hero-book2-case.webp', 'Official basketball studio hero image.', 1600, 900),
+  nbDejounte: createEntry('/media/official-brand/hero-atwo-court.webp', 'Official basketball on-court image.', 1600, 900),
+  nbZach: createEntry('/media/official-brand/hero-focus-closeup.webp', 'Official basketball portrait image.', 1600, 900),
+  nbJamal: createEntry('/media/official-brand/collage-signatures.webp', 'Official basketball signature collage.', 1600, 900),
+  nbAaron: createEntry('/media/official-brand/collage-performance.webp', 'Official basketball campaign collage.', 1600, 900),
+  nbNickSmith: createEntry('/media/official-brand/portrait-aone.webp', 'Official basketball product portrait.', 1200, 1500),
+  nbDarius: createEntry('/media/official-brand/portrait-atwo.webp', 'Official basketball player portrait.', 1200, 1500),
 } as const;

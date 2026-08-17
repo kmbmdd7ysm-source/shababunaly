@@ -8,7 +8,6 @@ import CustomProductShowcase from '../components/custom/CustomProductShowcase';
 import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
-import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { CUSTOM_COLOR_OPTIONS } from '../components/custom/customColors';
 import '../styles/custom-experience.css';
@@ -16,18 +15,18 @@ import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': OFFICIAL_MEDIA.nbKawhi,
-  'game-jersey': OFFICIAL_MEDIA.nikeCustomGameTop,
-  'game-shorts': OFFICIAL_MEDIA.nikeCustomGameShorts,
-  'practice-set': OFFICIAL_MEDIA.nikeCustomPracticeJersey,
-  'shooting-shirt': OFFICIAL_MEDIA.nikeCustomShootingShirt,
-  hoodie: OFFICIAL_MEDIA.nikeCustomHoodie,
-  'team-pants': OFFICIAL_MEDIA.nikeCustomTeamPants,
-  tracksuit: OFFICIAL_MEDIA.nikeCustomWarmupCrew,
-  'team-bag': OFFICIAL_MEDIA.nikeCustomTeamBag,
-  sleeve: OFFICIAL_MEDIA.jordanCustomSleeve,
-  basketball: OFFICIAL_MEDIA.spaldingBall,
-  'hoop-padding': OFFICIAL_MEDIA.spaldingPolePad,
+  'game-set': '/media/official-brand/sections/custom-game-set.webp',
+  'game-jersey': '/media/official-brand/sections/custom-game-jersey.webp',
+  'game-shorts': '/media/official-brand/sections/custom-game-shorts.webp',
+  'practice-set': '/media/official-brand/sections/custom-practice-set.webp',
+  'shooting-shirt': '/media/official-brand/sections/custom-shooting-shirt.webp',
+  hoodie: '/media/official-brand/sections/custom-hoodie.webp',
+  'team-pants': '/media/official-brand/sections/custom-team-pants.webp',
+  tracksuit: '/media/official-brand/sections/custom-tracksuit.webp',
+  'team-bag': '/media/official-brand/sections/custom-team-bag.webp',
+  sleeve: '/media/official-brand/sections/custom-sleeve.webp',
+  basketball: '/media/official-brand/sections/custom-basketball.webp',
+  'hoop-padding': '/media/official-brand/sections/custom-hoop-padding.webp',
 };
 
 export default function CustomizePage(): ReactElement {
@@ -129,7 +128,7 @@ export default function CustomizePage(): ReactElement {
           {FEATURED.map((item) => (
             <button key={item.key} type="button" className={`cx-product-card${productType === item.key ? ' is-active' : ''}`} onClick={() => setProductType(item.key)}>
               <div className="cx-product-media">
-                <img src={fallbackArt[item.key] || OFFICIAL_MEDIA.nbKawhi} alt="" />
+                <img src={fallbackArt[item.key]} alt="" />
               </div>
               <strong>{pick(item.label)}</strong>
               <small>{pick({ en: `Minimum ${item.minimum}`, ar: `الحد الأدنى ${item.minimum}` })}</small>

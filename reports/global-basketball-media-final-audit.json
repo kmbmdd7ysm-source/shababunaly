@@ -1,0 +1,645 @@
+{
+  "generatedAt": "2026-08-17",
+  "heroVideos": [
+    {
+      "file": "/media/heroes/clothing-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 402429,
+      "sha256": "7eeed20a2808f35bc7003eff0b99aaca061a2e5f6fef3f9f96f28c2299d78ee0"
+    },
+    {
+      "file": "/media/heroes/clothing-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 450100,
+      "sha256": "0d0dfed76aee9bded085cf4b030b1909f6e6b99f99ae1dcb3090add7352fd17e"
+    },
+    {
+      "file": "/media/heroes/custom-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 329379,
+      "sha256": "42375dc0b2caa50e0ad8f34c768502834581626b5a3f0e0d54d4f1c548d059b0"
+    },
+    {
+      "file": "/media/heroes/custom-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 197434,
+      "sha256": "96afc048d5330b3114e43279476e74fc838aa5245942b6384a1cff418aaabf1d"
+    },
+    {
+      "file": "/media/heroes/discover-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 534496,
+      "sha256": "8ddccfbea3f4431cbf8b574c05ef8ab6287f3b14984885b7069d7f8fe6d61ebb"
+    },
+    {
+      "file": "/media/heroes/discover-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 291036,
+      "sha256": "ecf7c5d1205de667f5d7c38b1a36b6d7eb610a12e850e1ef64be9a08c704ae2f"
+    },
+    {
+      "file": "/media/heroes/footwear-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 479153,
+      "sha256": "41fcbef9ec0038dc1f42c69d85ccdbc9b2e323c56139420890e718648656029b"
+    },
+    {
+      "file": "/media/heroes/footwear-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 236824,
+      "sha256": "b2ab3d4fd2616bc7db978c007f868645b2e93485cde132768254ec50f771126d"
+    },
+    {
+      "file": "/media/heroes/home-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 588739,
+      "sha256": "05650966fa74969cfb30a059b08954dddf684fd350ff140d45daef2abad0fcc5"
+    },
+    {
+      "file": "/media/heroes/home-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 341447,
+      "sha256": "29d91e67b0f9936f48a76841a157152ee8dc11e4c781129ee4acf1d10b724a8f"
+    },
+    {
+      "file": "/media/heroes/shoe-finder-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 254318,
+      "sha256": "912e1efb0919b38f9cbb64f89b43175f5d9a26b86b4c001378f3107a80acb678"
+    },
+    {
+      "file": "/media/heroes/shoe-finder-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 188558,
+      "sha256": "83a6ae33f9627080c25ae4bdeab67ad42664f47318965270f7586d182392b649"
+    },
+    {
+      "file": "/media/heroes/shop-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 824250,
+      "sha256": "474a48d50261238d2020d70d75be426b144298fc25273c7a15cc41172bff512a"
+    },
+    {
+      "file": "/media/heroes/shop-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 388784,
+      "sha256": "4e8628457d82f21869ea28a4aba5a2d5935c4731fd67e61d0306ff4a28016840"
+    },
+    {
+      "file": "/media/heroes/stories-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 415279,
+      "sha256": "9971dd71fc8f4a7c3924c512fc4859506f5a6e4356e466084e3acf161952ad00"
+    },
+    {
+      "file": "/media/heroes/stories-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 169317,
+      "sha256": "3f0d6e466e215e3d18b356183a2ae655772a1b27bf7cd5d1b9a28ae9f72bbfd6"
+    },
+    {
+      "file": "/media/heroes/teams-desktop.mp4",
+      "codec": "h264",
+      "width": 1600,
+      "height": 900,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 624569,
+      "sha256": "893ea3f7d442140777280191745f456dec8bba1e378ca39d958905533c4a012c"
+    },
+    {
+      "file": "/media/heroes/teams-mobile.mp4",
+      "codec": "h264",
+      "width": 900,
+      "height": 1600,
+      "pixelFormat": "yuv420p",
+      "fps": "24/1",
+      "duration": 6.0,
+      "bytes": 290380,
+      "sha256": "edac2eeab9794ec436b1f791aa3ace0249759c37d6e074122f49c6edcd7ccb80"
+    }
+  ],
+  "sectionImages": [
+    {
+      "file": "/media/official-brand/sections/accessories-00.webp",
+      "bytes": 84826,
+      "sha256": "bcdd1033bce3ef384cb34781a7084482f9758b71c8677de540fe3a6b230ba70e"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-01.webp",
+      "bytes": 107574,
+      "sha256": "776ea1f42ccb6b3ebd6e32f1b725743a3aca953d048d6936a054fcae8bfde941"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-02.webp",
+      "bytes": 176990,
+      "sha256": "723f479256237aa6c94a92d7266ac65d26f54f012db985ec8e074ca29dc866f9"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-03.webp",
+      "bytes": 128544,
+      "sha256": "af6cc85e287e0d6f1722757b943b3bfa9de82c2e30f70dda8fc023d740d1384c"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-04.webp",
+      "bytes": 82564,
+      "sha256": "9060c073128e195a99f8c932becc23913f9dba42d4cfef5596b7fedbc0625159"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-05.webp",
+      "bytes": 103420,
+      "sha256": "658da4e0c99952aa61351fcb22c4f0472ebd2e76263a63b870e28688e6d53e32"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-06.webp",
+      "bytes": 176064,
+      "sha256": "29a2d8625ffd5eb27960e89ced3a0bc90b07c6dc9372bd61858295dfba29c494"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-07.webp",
+      "bytes": 128118,
+      "sha256": "c9c7f7c4a07af63e5f67612e60ba5ac0d217cde5d7b646e004757ff7227f8ebf"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-08.webp",
+      "bytes": 88018,
+      "sha256": "3c9b410dac81cf87a11afaa6b232801f6d01d469ed3392b32bcb318fa2313b4f"
+    },
+    {
+      "file": "/media/official-brand/sections/accessories-09.webp",
+      "bytes": 100594,
+      "sha256": "654734afd2b8fe8fe09c16faa143d2503d9677873f5ecc3ee9a1a85f9286e246"
+    },
+    {
+      "file": "/media/official-brand/sections/art-accessories.webp",
+      "bytes": 75070,
+      "sha256": "f0aa7047c08d7d0b6de2559a7d694783afc95a838d8eb7f2fe943c2b386566f2"
+    },
+    {
+      "file": "/media/official-brand/sections/art-basketballs.webp",
+      "bytes": 219120,
+      "sha256": "bc7448c707296ecc8c5923d6a44b4d1692ce1201e09b1b75cbffc6067a93fa74"
+    },
+    {
+      "file": "/media/official-brand/sections/art-clothing.webp",
+      "bytes": 146668,
+      "sha256": "9631b7d3705a1487a9946caf2ff5e0e0fc5b949f258b54b129ee9129e90de72b"
+    },
+    {
+      "file": "/media/official-brand/sections/art-custom.webp",
+      "bytes": 133934,
+      "sha256": "45081104aacb084f07f843937f79af4a973ce0e53f4c32251a82f1e3830b7f83"
+    },
+    {
+      "file": "/media/official-brand/sections/art-equipment.webp",
+      "bytes": 204196,
+      "sha256": "505ee41c11af383eeca7767eff32ec6038c3b0ebda36b14a69eacd731a5cfd10"
+    },
+    {
+      "file": "/media/official-brand/sections/art-footwear.webp",
+      "bytes": 120806,
+      "sha256": "cb4a000d9a830f4ec1a1ffe6ce3aef88da260a0542fbfe29bc8417eeb8cc06ff"
+    },
+    {
+      "file": "/media/official-brand/sections/art-shoe-finder.webp",
+      "bytes": 114458,
+      "sha256": "d0fa90c8b2b5484b9d58c131e7b7a0c1585323de6f2546a8353cffd7b8f04188"
+    },
+    {
+      "file": "/media/official-brand/sections/art-stories.webp",
+      "bytes": 119358,
+      "sha256": "5942a47b53609f056b3633525d51b9416a4b32b5d2ca36e9b5c023551043baf5"
+    },
+    {
+      "file": "/media/official-brand/sections/art-teams.webp",
+      "bytes": 217766,
+      "sha256": "8755604d31c8e9641100d14b22956d5dcc33881106b9bb8422d6a43d9bdafae9"
+    },
+    {
+      "file": "/media/official-brand/sections/basketballs-00.webp",
+      "bytes": 171036,
+      "sha256": "65a3e29539d4e32356a4be49e16fc0b05529cc6da3072dd0287fc7852ef62648"
+    },
+    {
+      "file": "/media/official-brand/sections/basketballs-01.webp",
+      "bytes": 175078,
+      "sha256": "848c6162818030ed0a0628b4d5f4726ec927a681573cf714a133313dbbc27bdb"
+    },
+    {
+      "file": "/media/official-brand/sections/basketballs-02.webp",
+      "bytes": 176804,
+      "sha256": "b8aaf62d9af4422c2264b829772fd7ceaef91b66623bcd7fb0fa6780b5194123"
+    },
+    {
+      "file": "/media/official-brand/sections/basketballs-03.webp",
+      "bytes": 169814,
+      "sha256": "f6bee5b5aa03df1878e2920b49ca45f0bf0e6846e720ce536c25e657dfe9c487"
+    },
+    {
+      "file": "/media/official-brand/sections/basketballs-04.webp",
+      "bytes": 172444,
+      "sha256": "79901fa6ef339b4666fc864b0a3923e1b7fb810c9a60e93ee6c3a45d256ce70c"
+    },
+    {
+      "file": "/media/official-brand/sections/category-accessories.webp",
+      "bytes": 90528,
+      "sha256": "c60a4371087a0b9ce2fdce5785af4f0ab7d1db6692cb2e808b7d824f9a132188"
+    },
+    {
+      "file": "/media/official-brand/sections/category-basketballs.webp",
+      "bytes": 168716,
+      "sha256": "66c81d5ed795a4a560e6a43bb759062de0000ab23745118f957b3d1e1c1d42df"
+    },
+    {
+      "file": "/media/official-brand/sections/category-clothing.webp",
+      "bytes": 181404,
+      "sha256": "c68bf10041f4421f812e4a7d3e29d6b7078ad56bc79f48988ecf3dd92b7edb70"
+    },
+    {
+      "file": "/media/official-brand/sections/category-equipment.webp",
+      "bytes": 176970,
+      "sha256": "8fab95fc88eb1e74b8fabc5a8c1979a16a9fc944385fda1c215e0e10f80fcb47"
+    },
+    {
+      "file": "/media/official-brand/sections/category-footwear.webp",
+      "bytes": 128132,
+      "sha256": "fff5e7ea7158af5bad9d9d5ac7a7571f30d01d7d15c0960de57be8d1c85e7bd5"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-00.webp",
+      "bytes": 165534,
+      "sha256": "3e440a1caab913803b21447810699e17397215deed5bff49f628708707885f77"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-01.webp",
+      "bytes": 164990,
+      "sha256": "41480789583db32a733e79033564d0ab3892af7e3bc8c249c0e023059718be66"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-02.webp",
+      "bytes": 170314,
+      "sha256": "a2f757f214febc8baea5fcaae556b116c4cf7eba53dbc29f4dfbcdf6d6ef1e06"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-03.webp",
+      "bytes": 85314,
+      "sha256": "f5dcef750fd70f7bc82388684589005fc4310841110bf015ec865e66582a303e"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-04.webp",
+      "bytes": 176168,
+      "sha256": "b7a87909742df28f2d95f4f2824ea0d609c1c2281faeec7a8bb59a304721879f"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-05.webp",
+      "bytes": 179182,
+      "sha256": "0211902e22e0a2b69895c4e1adc0eb25923a77b4f772ef8cb029cc475c4fe4c6"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-06.webp",
+      "bytes": 176134,
+      "sha256": "ec61e692e5da9a85115e40a9e1d7de774f06393dbb82b19c621c1cd76668eb35"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-07.webp",
+      "bytes": 82326,
+      "sha256": "179ec388b7ce42f5a76458ec9f1159375c746b983954cb7596084ee61373c5ed"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-08.webp",
+      "bytes": 167940,
+      "sha256": "1382cf0f38ad88401ea09a64e7ed02ff33f7a68f224bc27be1f71374b3409d77"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-09.webp",
+      "bytes": 176862,
+      "sha256": "1a655e9546f7aa5b1d50f354da4387c7b8e6865f5e9b30b84df14fc59e691c76"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-10.webp",
+      "bytes": 176700,
+      "sha256": "a9bc55dfdea83cff7321779de6411baa64745abf155e442f88e52067eba03fa5"
+    },
+    {
+      "file": "/media/official-brand/sections/clothing-11.webp",
+      "bytes": 94016,
+      "sha256": "463fec21c2f7fe16ca4f38dbcaafd45a54580381628d1aa2b913ab36f65fce24"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-basketball.webp",
+      "bytes": 178590,
+      "sha256": "f7026719b7794705b7a33fdccf847c5303e5b00e1cd3f591bba8da2cd6030d2f"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-game-jersey.webp",
+      "bytes": 165392,
+      "sha256": "457b1dd65538f99b0748fdaa78e8049eaddd90042c92553dc05e36f610edd8c4"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-game-set.webp",
+      "bytes": 162966,
+      "sha256": "974c0febe3cdb5e6ffc0623ebdbcb014221d840c1fa01563108900cb04b46d31"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-game-shorts.webp",
+      "bytes": 177778,
+      "sha256": "d6ce1db6969ad5def9d40ccf3fef643dfc8f84fffb4c76905c0fca5fffb34583"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-hoodie.webp",
+      "bytes": 171652,
+      "sha256": "c8f8994827fed2040775267463a839dcdcf66a1860cfe2c3d7d21b6fa5791a59"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-hoop-padding.webp",
+      "bytes": 168880,
+      "sha256": "8cc12a171649229268f2d67ec72725b46e3da15ed5046b8c22b46f26d5496163"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-practice-set.webp",
+      "bytes": 87774,
+      "sha256": "6ff8012232eadbf21fd3a17e9ce8397c2f7b4b243ec69c80e5e2a7d98ca8f8a8"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-shooting-shirt.webp",
+      "bytes": 99290,
+      "sha256": "00b14b53fd6f330f1228e2e22f053ac15c3c217fe2514eaf397f5bd9171b9db4"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-sleeve.webp",
+      "bytes": 105150,
+      "sha256": "95a76febdff56bffea15b65d2019971a156a02024a674abfff361b68fa8e958b"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-team-bag.webp",
+      "bytes": 79024,
+      "sha256": "24eaaae66619c19b4eabfca0f97b16c36fa73e1f29ed814944ff8fac55179ef1"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-team-pants.webp",
+      "bytes": 177378,
+      "sha256": "fd4bf7361945bd38ccc3b16a434f2615242332b9f76c1b4be9b59fef0a74a976"
+    },
+    {
+      "file": "/media/official-brand/sections/custom-tracksuit.webp",
+      "bytes": 173410,
+      "sha256": "135c6433c14aa872c47b8fff198d3c99af9effe098cce9510552536cf88cf49c"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-best.webp",
+      "bytes": 88712,
+      "sha256": "6912ddcb70cf0415ca57f24a9335fc96ea13dbe5794b272a2ac27b5a87b12f78"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-court.webp",
+      "bytes": 169432,
+      "sha256": "d85df43c274d3217103f799c4c9420c70242ec88786001435e074a8d667d24cf"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-dropped.webp",
+      "bytes": 101946,
+      "sha256": "ae99e989f3e042cc3cd955b4204d986347a3323976e2455a6331a4cabcf57d30"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-new.webp",
+      "bytes": 110130,
+      "sha256": "8600ef1eb2b67f7fe0f70729860c1ba4017c33bef32b88335c74bbb17f2c7302"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-performance.webp",
+      "bytes": 127232,
+      "sha256": "35fae787af2764d767d0c5512d7c42e54692952da3812b121f19a29256f869ca"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-ready.webp",
+      "bytes": 146066,
+      "sha256": "25124779f43a18a00473f1b0c320ed1fb1746d4bdfe3c9b9a8c27f3a6960c192"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-selects.webp",
+      "bytes": 103708,
+      "sha256": "2db1cba699a949cdfdaa0fc9316f729cc62744e3aa44b7346d8f5216b89f2ab7"
+    },
+    {
+      "file": "/media/official-brand/sections/discover-trending.webp",
+      "bytes": 127134,
+      "sha256": "c9eadd272a69657e5d37822abdb105841d96bb4d65597aa0561caaa3c1fd7a76"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-00.webp",
+      "bytes": 168574,
+      "sha256": "39171efce3c753381244641854c8ab223f60d13ff10e789b818e01175edc8758"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-01.webp",
+      "bytes": 117128,
+      "sha256": "9ebc61ac17bc420f720eef47c3127ae6220d61b813f4c5283ba7acdd6c9f48b9"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-02.webp",
+      "bytes": 166936,
+      "sha256": "401aa3ba9a428473a5854868e650b53e6c3a151fe4a7cf7fc152a3f97fe0a78e"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-03.webp",
+      "bytes": 122738,
+      "sha256": "0b68e331b9a66f7cf100e756c75c55c6e875e3f93ce653d19203d1d54740bd1c"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-04.webp",
+      "bytes": 168558,
+      "sha256": "1e73bf56b2af0fae2b01fea5056710192ec6ded9f1f7f971f0b6f92a8250243d"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-05.webp",
+      "bytes": 127162,
+      "sha256": "2dbe4796c5d803bccd51c3f4619757310d6f89c161dc69f22039f76bba992706"
+    },
+    {
+      "file": "/media/official-brand/sections/equipment-06.webp",
+      "bytes": 166526,
+      "sha256": "c4e4994dce615123f3e4e8dbf1db48c26949ac83dbbb9b02cdd37fc136ddc9b8"
+    },
+    {
+      "file": "/media/official-brand/sections/footwear-00.webp",
+      "bytes": 107982,
+      "sha256": "3d4d2987409ab6db95ff8ace61ba1b7e594ba13f99938c5e58f66a9905d12ee0"
+    },
+    {
+      "file": "/media/official-brand/sections/footwear-01.webp",
+      "bytes": 101550,
+      "sha256": "23f8c53bd08eb705c1dc2f34a24ce98e53e6fc6439416d4206b8af1093779e56"
+    },
+    {
+      "file": "/media/official-brand/sections/footwear-02.webp",
+      "bytes": 131060,
+      "sha256": "060ac7706c3689b1717bcc70447b04e57565604184f5f4f7fef224cb1eb5cb62"
+    },
+    {
+      "file": "/media/official-brand/sections/home-campaign.webp",
+      "bytes": 194438,
+      "sha256": "728da0be1abe532ebd00aae4bb8f7827c0dafdb5fc4e688bd2f22485504bdd90"
+    },
+    {
+      "file": "/media/official-brand/sections/home-court.webp",
+      "bytes": 164038,
+      "sha256": "35053ba00de6a3cfd8ce905bb696d098f6ff5c413f14e3b7f4e8932da7c0655e"
+    },
+    {
+      "file": "/media/official-brand/sections/home-custom.webp",
+      "bytes": 132784,
+      "sha256": "206cd7e912bbcdc9cb2ca6afa7851f3ac921740c8cb6001ac27cdc3cde2dd12d"
+    },
+    {
+      "file": "/media/official-brand/sections/home-new.webp",
+      "bytes": 100882,
+      "sha256": "95785d2e989bb0c0db558d9d9ddd8819a1a4b630de541db2d4f57a041fb91957"
+    },
+    {
+      "file": "/media/official-brand/sections/home-performance.webp",
+      "bytes": 112678,
+      "sha256": "51666e409324ac691be7e4286f7da7abb72b9d9d8150c92026c4d3e8a4f9c82d"
+    },
+    {
+      "file": "/media/official-brand/sections/home-story-design.webp",
+      "bytes": 74120,
+      "sha256": "eae1884d943a859d997f3024c634fdcf848b715a7de1f44a62e3828caebb2f1b"
+    },
+    {
+      "file": "/media/official-brand/sections/home-story-game.webp",
+      "bytes": 118554,
+      "sha256": "7eff7c4058d91f60090308b5c129a03ac4fd0f7cc73f927a8233c5c5a49b283c"
+    },
+    {
+      "file": "/media/official-brand/sections/teams-equipment.webp",
+      "bytes": 168278,
+      "sha256": "a265ef4739fd2207848c566de7cbe8abcdd230827a09def2ccf6477e5f05a766"
+    },
+    {
+      "file": "/media/official-brand/sections/teams-teamwear.webp",
+      "bytes": 177318,
+      "sha256": "f17345e1df73c198e52f5656f4d0832eed71666b5ba50da1c66cd4dd68b67736"
+    },
+    {
+      "file": "/media/official-brand/sections/teams-training.webp",
+      "bytes": 182696,
+      "sha256": "1d35cb2074bb3a079d1f3f3cc76f2e8c4cdb053abf110d34a31b23c2f16c27de"
+    },
+    {
+      "file": "/media/official-brand/sections/teams-uniforms.webp",
+      "bytes": 177306,
+      "sha256": "9639c2dea7f5d49aafd5927eb1e0d309b52e8b671e44efb0b6e14193dd5829a5"
+    },
+    {
+      "file": "/media/official-brand/sections/work-culture.webp",
+      "bytes": 102182,
+      "sha256": "6383900d9cf09f01427b7e8b3bc8337853c29441f906dd2a77b4cc2c6d13f6a7"
+    },
+    {
+      "file": "/media/official-brand/sections/work-design.webp",
+      "bytes": 90140,
+      "sha256": "d366d6ca0cdb552ecf8b2bdc87eb5b6774cb025a62ab700f09bb036fb9415780"
+    },
+    {
+      "file": "/media/official-brand/sections/work-footwear.webp",
+      "bytes": 129490,
+      "sha256": "534a3b66c514aa14604b3bb8a72d6e013c62beb19345ac69a4b48eef97a16747"
+    },
+    {
+      "file": "/media/official-brand/sections/work-game.webp",
+      "bytes": 164878,
+      "sha256": "85d6fbc4a5020e61f7ebf49a7989cfc51bcff0d9310c0e07ae115308bc53e4fc"
+    }
+  ],
+  "checks": {
+    "heroVideoCount": 18,
+    "duplicateHeroVideoHashes": 0,
+    "sectionImageCount": 86,
+    "duplicateSectionImageHashes": 0,
+    "runtimeYouTubeOrIframe": false,
+    "runtimeEditorialHotlinks": false,
+    "runtimeEditorialProductImageRefs": false,
+    "verifySource": "PASS"
+  }
+}

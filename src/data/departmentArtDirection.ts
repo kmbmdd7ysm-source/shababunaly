@@ -1,70 +1,14 @@
-import { OFFICIAL_MEDIA } from './officialEditorialMedia.ts';
-
-/**
- * Configurable art-direction slots per department/destination.
- * Final photography replaces paths by config — no page rewrites.
- * Temporary atmospheres are concept media, not product photography.
- */
-
-export type ArtSlot = {
-  desktopHero?: string;
-  mobileHero?: string;
-  poster?: string;
-  editorialImage?: string;
-  background?: string;
-  featureMedia?: string;
-};
-
+export type ArtSlot = { desktopHero?: string; mobileHero?: string; poster?: string; editorialImage?: string; background?: string; featureMedia?: string };
+const S='/media/official-brand/sections';
 export const departmentArtDirection: Record<string, ArtSlot> = {
-  clothing: {
-    desktopHero: OFFICIAL_MEDIA.nbKawhi,
-    mobileHero: OFFICIAL_MEDIA.nbKawhi,
-    editorialImage: OFFICIAL_MEDIA.nbCooper,
-    background: OFFICIAL_MEDIA.nikeKobeGroup,
-  },
-  footwear: {
-    desktopHero: OFFICIAL_MEDIA.spaldingBall,
-    mobileHero: OFFICIAL_MEDIA.spaldingBall,
-    editorialImage: OFFICIAL_MEDIA.spaldingBackboard,
-  },
-  accessories: {
-    desktopHero: OFFICIAL_MEDIA.nbJamal,
-    mobileHero: OFFICIAL_MEDIA.nbJamal,
-    editorialImage: OFFICIAL_MEDIA.nikeKobeGroup,
-    background: OFFICIAL_MEDIA.nbCooper,
-  },
-  basketballs: {
-    desktopHero: OFFICIAL_MEDIA.spaldingBackboard,
-    mobileHero: OFFICIAL_MEDIA.nbDejounte,
-    featureMedia: OFFICIAL_MEDIA.spaldingBall,
-  },
-  equipment: {
-    desktopHero: OFFICIAL_MEDIA.nikeKobeGroup,
-    mobileHero: OFFICIAL_MEDIA.nikeKobeOne,
-    background: OFFICIAL_MEDIA.spaldingBall,
-  },
-  'ready-to-ship': {
-    desktopHero: OFFICIAL_MEDIA.nikeKobeHeroDesktop,
-    mobileHero: OFFICIAL_MEDIA.nikeKobeHeroMobile,
-    poster: OFFICIAL_MEDIA.nikeKobeHeroDesktop,
-  },
-  customize: {
-    desktopHero: OFFICIAL_MEDIA.nbCooper,
-    mobileHero: OFFICIAL_MEDIA.nbZach,
-    background: OFFICIAL_MEDIA.nikeKobeGroup,
-  },
-  'teams-wholesale': {
-    desktopHero: OFFICIAL_MEDIA.spaldingBackboard,
-    mobileHero: OFFICIAL_MEDIA.nbDejounte,
-    editorialImage: OFFICIAL_MEDIA.spaldingBall,
-  },
-  lha: {
-    desktopHero: OFFICIAL_MEDIA.nbJamal,
-    mobileHero: OFFICIAL_MEDIA.nbJamal,
-    editorialImage: OFFICIAL_MEDIA.nbKawhi,
-  },
+  clothing:{desktopHero:`${S}/art-clothing.webp`,mobileHero:`${S}/clothing-00.webp`,editorialImage:`${S}/clothing-06.webp`,background:`${S}/clothing-09.webp`},
+  footwear:{desktopHero:`${S}/art-footwear.webp`,mobileHero:`${S}/footwear-00.webp`,editorialImage:`${S}/footwear-01.webp`},
+  accessories:{desktopHero:`${S}/art-accessories.webp`,mobileHero:`${S}/accessories-00.webp`,editorialImage:`${S}/accessories-03.webp`,background:`${S}/accessories-08.webp`},
+  basketballs:{desktopHero:`${S}/art-basketballs.webp`,mobileHero:`${S}/basketballs-00.webp`,featureMedia:`${S}/basketballs-02.webp`},
+  equipment:{desktopHero:`${S}/art-equipment.webp`,mobileHero:`${S}/equipment-00.webp`,background:`${S}/equipment-05.webp`},
+  'ready-to-ship':{desktopHero:`${S}/discover-ready.webp`,mobileHero:`${S}/discover-ready.webp`,poster:`${S}/discover-ready.webp`},
+  customize:{desktopHero:`${S}/art-custom.webp`,mobileHero:`${S}/custom-game-set.webp`,background:`${S}/custom-team-pants.webp`},
+  'teams-wholesale':{desktopHero:`${S}/art-teams.webp`,mobileHero:`${S}/teams-training.webp`,editorialImage:`${S}/teams-equipment.webp`},
+  lha:{desktopHero:`${S}/art-stories.webp`,mobileHero:`${S}/work-culture.webp`,editorialImage:`${S}/work-design.webp`},
 };
-
-export function getDepartmentArt(key: string): ArtSlot {
-  return departmentArtDirection[key] || departmentArtDirection.clothing || {};
-}
+export function getDepartmentArt(key:string):ArtSlot{return departmentArtDirection[key]||departmentArtDirection.clothing||{};}
