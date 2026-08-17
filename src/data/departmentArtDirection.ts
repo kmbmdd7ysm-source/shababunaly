@@ -1,3 +1,5 @@
+import { OFFICIAL_MEDIA } from './officialEditorialMedia.ts';
+
 /**
  * Configurable art-direction slots per department/destination.
  * Final photography replaces paths by config — no page rewrites.
@@ -15,51 +17,51 @@ export type ArtSlot = {
 
 export const departmentArtDirection: Record<string, ArtSlot> = {
   clothing: {
-    desktopHero: '/images/categories/clothing-hero-player.webp',
-    mobileHero: '/images/categories/clothing-hero-player.opt.webp',
-    editorialImage: '/media/atmosphere/fabric-macro-1400.webp',
-    background: '/media/atmosphere/product-stage-1400.webp',
+    desktopHero: OFFICIAL_MEDIA.nbKawhi,
+    mobileHero: OFFICIAL_MEDIA.nbKawhi,
+    editorialImage: OFFICIAL_MEDIA.nbCooper,
+    background: OFFICIAL_MEDIA.nikeKobeGroup,
   },
   footwear: {
-    desktopHero: '/media/atmosphere/court-overhead-1600.webp',
-    mobileHero: '/media/atmosphere/court-overhead-1024.webp',
-    editorialImage: '/media/atmosphere/arena-wide-1600.webp',
+    desktopHero: OFFICIAL_MEDIA.spaldingBall,
+    mobileHero: OFFICIAL_MEDIA.spaldingBall,
+    editorialImage: OFFICIAL_MEDIA.spaldingBackboard,
   },
   accessories: {
-    desktopHero: '/images/categories/accessories-hero-player.webp',
-    mobileHero: '/images/categories/accessories-hero-player.opt.webp',
-    editorialImage: '/media/atmosphere/product-stage-1400.webp',
-    background: '/media/atmosphere/fabric-macro-1400.webp',
+    desktopHero: OFFICIAL_MEDIA.nbJamal,
+    mobileHero: OFFICIAL_MEDIA.nbJamal,
+    editorialImage: OFFICIAL_MEDIA.nikeKobeGroup,
+    background: OFFICIAL_MEDIA.nbCooper,
   },
   basketballs: {
-    desktopHero: '/media/atmosphere/arena-wide-1600.webp',
-    mobileHero: '/media/atmosphere/arena-tall-900.webp',
-    featureMedia: '/media/atmosphere/court-overhead-1600.webp',
+    desktopHero: OFFICIAL_MEDIA.spaldingBackboard,
+    mobileHero: OFFICIAL_MEDIA.nbDejounte,
+    featureMedia: OFFICIAL_MEDIA.spaldingBall,
   },
   equipment: {
-    desktopHero: '/media/atmosphere/product-stage-1400.webp',
-    mobileHero: '/media/atmosphere/product-stage-900.webp',
-    background: '/media/atmosphere/court-overhead-1600.webp',
+    desktopHero: OFFICIAL_MEDIA.nikeKobeGroup,
+    mobileHero: OFFICIAL_MEDIA.nikeKobeOne,
+    background: OFFICIAL_MEDIA.spaldingBall,
   },
   'ready-to-ship': {
-    desktopHero: '/media/atmosphere/ready-ship-1600.webp',
-    mobileHero: '/media/atmosphere/ready-ship-1024.webp',
-    poster: '/media/atmosphere/ready-ship-1600.webp',
+    desktopHero: OFFICIAL_MEDIA.nikeKobeHeroDesktop,
+    mobileHero: OFFICIAL_MEDIA.nikeKobeHeroMobile,
+    poster: OFFICIAL_MEDIA.nikeKobeHeroDesktop,
   },
   customize: {
-    desktopHero: '/media/atmosphere/fabric-macro-1400.webp',
-    mobileHero: '/media/atmosphere/fabric-macro-900.webp',
-    background: '/media/atmosphere/product-stage-1400.webp',
+    desktopHero: OFFICIAL_MEDIA.nbCooper,
+    mobileHero: OFFICIAL_MEDIA.nbZach,
+    background: OFFICIAL_MEDIA.nikeKobeGroup,
   },
   'teams-wholesale': {
-    desktopHero: '/media/atmosphere/arena-wide-1600.webp',
-    mobileHero: '/media/atmosphere/arena-tall-900.webp',
-    editorialImage: '/media/atmosphere/court-overhead-1600.webp',
+    desktopHero: OFFICIAL_MEDIA.spaldingBackboard,
+    mobileHero: OFFICIAL_MEDIA.nbDejounte,
+    editorialImage: OFFICIAL_MEDIA.spaldingBall,
   },
   lha: {
-    desktopHero: '/images/categories/accessories-hero-player.webp',
-    mobileHero: '/images/categories/accessories-hero-player.opt.webp',
-    editorialImage: '/images/categories/clothing-hero-player.webp',
+    desktopHero: OFFICIAL_MEDIA.nbJamal,
+    mobileHero: OFFICIAL_MEDIA.nbJamal,
+    editorialImage: OFFICIAL_MEDIA.nbKawhi,
   },
 };
 

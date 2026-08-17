@@ -2,24 +2,26 @@ import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import EditorialMedia from '../components/common/EditorialMedia';
 import TurnstileWidget from '../components/security/TurnstileWidget';
 import CustomProductShowcase from '../components/custom/CustomProductShowcase';
 import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
+import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
 import { CUSTOM_COLOR_OPTIONS } from '../components/custom/customColors';
 import '../styles/custom-experience.css';
 import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': '/images/catalog/apparel.svg',
-  'game-shorts': '/images/catalog/apparel.svg',
-  'shooting-shirt': '/images/catalog/apparel.svg',
-  hoodie: '/images/catalog/apparel.svg',
-  tracksuit: '/images/catalog/apparel.svg',
-  'team-bag': '/images/catalog/accessories.svg',
-  basketball: '/images/catalog/ball.svg',
+  'game-set': OFFICIAL_MEDIA.nbKawhi,
+  'game-shorts': OFFICIAL_MEDIA.nbCooper,
+  'shooting-shirt': OFFICIAL_MEDIA.nbJamal,
+  hoodie: OFFICIAL_MEDIA.nbZach,
+  tracksuit: OFFICIAL_MEDIA.nbDejounte,
+  'team-bag': OFFICIAL_MEDIA.nbDarius,
+  basketball: OFFICIAL_MEDIA.spaldingBall,
 };
 
 export default function CustomizePage(): ReactElement {
@@ -98,17 +100,28 @@ export default function CustomizePage(): ReactElement {
     <>
       <Seo title="Custom Basketball Uniforms" description="Create a Shababuna custom basketball concept, then send it to our team for a production quote." path="/customize" />
       <main className="cx-page">
-        <header className="cx-hero">
-          <p>{pick({ en: 'SHABABUNA CUSTOM', ar: 'تخصيص شبابنا' })}</p>
-          <h1>{pick({ en: 'Make it yours.', ar: 'خليه لفريقك.' })}</h1>
-          <span>{pick({ en: 'Choose the product. Set the identity. We handle the production details with you.', ar: 'اختر المنتج وحدد الهوية، ونحن نكمل معك تفاصيل الإنتاج.' })}</span>
+        <header className="cx-hero cx-hero--editorial">
+          <div className="cx-hero-media" aria-hidden="true">
+            <EditorialMedia
+              desktopMedia={OFFICIAL_MEDIA.nbCooper}
+              mobileMedia={OFFICIAL_MEDIA.nbJamal}
+              officialVideoSource="newbalance-basketball"
+              loading="eager"
+            />
+            <span className="cx-hero-media__shade" />
+          </div>
+          <div className="cx-hero-copy">
+            <p>{pick({ en: 'SHABABUNA CUSTOM', ar: 'تخصيص شبابنا' })}</p>
+            <h1>{pick({ en: 'Make it yours.', ar: 'خليه لفريقك.' })}</h1>
+            <span>{pick({ en: 'Choose the product. Set the identity. We handle the production details with you.', ar: 'اختر المنتج وحدد الهوية، ونحن نكمل معك تفاصيل الإنتاج.' })}</span>
+          </div>
         </header>
 
         <section className="cx-products" aria-label={pick({ en: 'Choose product', ar: 'اختر المنتج' })}>
           {FEATURED.map((item) => (
             <button key={item.key} type="button" className={`cx-product-card${productType === item.key ? ' is-active' : ''}`} onClick={() => setProductType(item.key)}>
               <div className="cx-product-media">
-                {item.key === 'game-jersey' ? <span className="cx-product-jersey-shape" aria-hidden="true" /> : <img src={fallbackArt[item.key] || '/images/catalog/apparel.svg'} alt="" />}
+                {item.key === 'game-jersey' ? <span className="cx-product-jersey-shape" aria-hidden="true" /> : <img src={fallbackArt[item.key] || OFFICIAL_MEDIA.nbKawhi} alt="" />}
               </div>
               <strong>{pick(item.label)}</strong>
               <small>{pick({ en: `Minimum ${item.minimum}`, ar: `الحد الأدنى ${item.minimum}` })}</small>

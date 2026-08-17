@@ -215,6 +215,7 @@ export default function ShopPage(): ReactElement {
             mobileMedia={SHOP_CAMPAIGN.mobileMedia}
             desktopVideo={SHOP_CAMPAIGN.desktopVideo}
             mobileVideo={SHOP_CAMPAIGN.mobileVideo}
+            officialVideoSource={SHOP_CAMPAIGN.officialVideoSource}
             loading="eager"
           />
           <span className="s2-shop-hero__shade" />
@@ -243,6 +244,7 @@ export default function ShopPage(): ReactElement {
             mobileMedia={world.mobileMedia}
             desktopVideo={world.desktopVideo}
             mobileVideo={world.mobileVideo}
+            officialVideoSource={world.officialVideoSource}
           />
           <span className="s2-category-banner__shade" />
           <strong>{pick(world.title)}</strong>

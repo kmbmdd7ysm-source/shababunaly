@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 import { SITE } from '../src/config.ts';
 import { products } from '../src/data/products.ts';
+import { spaldingOfficialProducts } from '../src/data/spaldingOfficialProducts.ts';
+import { hasRealProductMedia } from '../src/utils/productEligibility.ts';
 import { legal } from '../src/data/legal.ts';
 import {
   createHomeSchema,
@@ -96,6 +98,7 @@ async function emit(route) {
 }
 
 const homeSchema = createHomeSchema();
+const storefrontProducts = [...products, ...spaldingOfficialProducts].filter((product) => hasRealProductMedia(product));
 
 /** @type {Array<Record<string, any>>} */
 const routes = [
@@ -282,7 +285,7 @@ for (const key of Object.keys(legal)) {
   routes.push({ path: `/${key}`, title: en(legal[key].title), description: en(legal[key].intro) });
 }
 
-for (const product of products) {
+for (const product of storefrontProducts) {
   const productSchema = createProductSchema(product);
   routes.push({
     path: `/products/${product.slug}`,

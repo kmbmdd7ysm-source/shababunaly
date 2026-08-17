@@ -5,12 +5,13 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { fetchSiteContent } from '../../services/siteContent';
+import { OFFICIAL_MEDIA } from '../../data/officialEditorialMedia.ts';
 import '../../styles/design/phase2-home.css';
 
-const DEFAULT_DESKTOP_VIDEO = '/media/hero/shababuna-hero-desktop.mp4';
-const DEFAULT_MOBILE_VIDEO = '/media/hero/shababuna-hero-mobile.mp4';
-const DEFAULT_DESKTOP_POSTER = '/media/hero/shababuna-hero-poster.webp';
-const DEFAULT_MOBILE_POSTER = '/media/hero/shababuna-hero-poster-mobile.webp';
+const DEFAULT_DESKTOP_VIDEO = OFFICIAL_MEDIA.none;
+const DEFAULT_MOBILE_VIDEO = OFFICIAL_MEDIA.none;
+const DEFAULT_DESKTOP_POSTER = OFFICIAL_MEDIA.nikeKobeHeroDesktop;
+const DEFAULT_MOBILE_POSTER = OFFICIAL_MEDIA.nikeKobeHeroMobile;
 const safeUrl = (value: unknown) => {
   const url = String(value || '').trim();
   return /^\/(?!\/)/.test(url) || /^https:\/\//i.test(url) ? url : '';
@@ -22,6 +23,7 @@ export default function CinematicHero(): ReactElement {
   const reduced = useReducedMotion();
   const capability = useDeviceCapability();
   const [failed, setFailed] = useState(false);
+  const [officialMotion, setOfficialMotion] = useState<{ embedUrl: string; videoUrl: string }>({ embedUrl: '', videoUrl: '' });
   const [mediaConfig, setMediaConfig] = useState<Record<string, unknown>>({
     enabled: true,
     desktopVideoUrl: DEFAULT_DESKTOP_VIDEO,
@@ -69,6 +71,42 @@ export default function CinematicHero(): ReactElement {
     };
   }, []);
 
+
+  useEffect(() => {
+    if (reduced) {
+      setOfficialMotion({ embedUrl: '', videoUrl: '' });
+      return undefined;
+    }
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 7000);
+    void fetch('/api/official-media?source=nike-winning', {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return (await response.json()) as { embedUrl?: unknown; videoUrl?: unknown };
+      })
+      .then((payload) => {
+        if (!payload) return;
+        const embedUrl = /^https:\/\/www\.youtube-nocookie\.com\/embed\//i.test(String(payload.embedUrl || ''))
+          ? String(payload.embedUrl)
+          : '';
+        const videoUrl = /^https:\/\//i.test(String(payload.videoUrl || '')) ? String(payload.videoUrl) : '';
+        if (embedUrl || videoUrl) setOfficialMotion({ embedUrl, videoUrl });
+      })
+      .catch(() => {
+        // Official Nike imagery remains the fallback if the source blocks server-side retrieval.
+      })
+      .finally(() => window.clearTimeout(timer));
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [reduced]);
+
   const desktop = globalThis.matchMedia?.('(min-width: 900px)')?.matches ?? true;
   const selectedVideo = mediaConfig.enabled
     ? String(desktop ? mediaConfig.desktopVideoUrl || '' : mediaConfig.mobileVideoUrl || '')
@@ -77,10 +115,10 @@ export default function CinematicHero(): ReactElement {
   const mediaAllowed = capability !== 'c' && !reduced && !navigator.connection?.saveData;
 
   useEffect(() => {
-    if (mediaAllowed && selectedVideo && !failed) {
+    if (mediaAllowed && !officialMotion.embedUrl && !officialMotion.videoUrl && selectedVideo && !failed) {
       videoRef.current?.play().catch(() => {});
     }
-  }, [mediaAllowed, selectedVideo, failed]);
+  }, [mediaAllowed, officialMotion.embedUrl, officialMotion.videoUrl, selectedVideo, failed]);
 
   return (
     <section className="s2-hero" aria-labelledby="s2-home-title">
@@ -91,7 +129,29 @@ export default function CinematicHero(): ReactElement {
             <img src={DEFAULT_DESKTOP_POSTER} alt="" width="1940" height="1024" decoding="async" />
           </picture>
         ) : null}
-        {selectedVideo && mediaAllowed && !failed ? (
+        {officialMotion.embedUrl && mediaAllowed && !failed ? (
+          <div className="s2-hero__embed">
+            <iframe
+              src={officialMotion.embedUrl}
+              title="Official basketball campaign video"
+              tabIndex={-1}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
+        ) : officialMotion.videoUrl && mediaAllowed && !failed ? (
+          <video
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="metadata"
+            poster={selectedPoster}
+            onError={() => setFailed(true)}
+          >
+            <source src={officialMotion.videoUrl} type="video/mp4" />
+          </video>
+        ) : selectedVideo && mediaAllowed && !failed ? (
           <video
             ref={videoRef}
             muted

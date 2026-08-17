@@ -85,6 +85,7 @@ export default function DiscoverPage(): ReactElement {
                 mobileMedia={collection.mobileMedia}
                 desktopVideo={collection.desktopVideo}
                 mobileVideo={collection.mobileVideo}
+                officialVideoSource={collection.officialVideoSource}
                 loading={index < 2 ? 'eager' : 'lazy'}
               />
               <span className="s2-discover-card__shade" />
@@ -113,6 +114,7 @@ export default function DiscoverPage(): ReactElement {
           mobileMedia={current.mobileMedia}
           desktopVideo={current.desktopVideo}
           mobileVideo={current.mobileVideo}
+          officialVideoSource={current.officialVideoSource}
           loading="eager"
         />
         <span className="s2-discover-hero__shade" />

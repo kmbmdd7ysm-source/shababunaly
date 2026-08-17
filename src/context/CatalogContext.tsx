@@ -16,8 +16,9 @@ import {
   allSizes as staticSizes,
 } from '../data/products.ts';
 import { getSupabase } from '../services/supabase.ts';
+import { spaldingOfficialProducts } from '../data/spaldingOfficialProducts.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
-import { isReadyToShipEligible, type ProductLike } from '../utils/productEligibility.ts';
+import { hasRealProductMedia, isReadyToShipEligible, type ProductLike } from '../utils/productEligibility.ts';
 
 type LocaleText = { en?: string; ar?: string } | string | null | undefined;
 
@@ -89,6 +90,7 @@ export type CatalogContextValue = {
 
 const CatalogContext = createContext<CatalogContextValue | null>(null);
 const REFRESH_MS = 5 * 60 * 1000;
+const BASE_PRODUCTS = [...(staticProducts as CatalogProduct[]), ...(spaldingOfficialProducts as CatalogProduct[])];
 
 const asRecord = (value: unknown): Record<string, unknown> =>
   value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
@@ -384,7 +386,7 @@ function mergeMarketplaceProducts(
 
 export function CatalogProvider({ children }: { children?: ReactNode }) {
   const [products, setProducts] = useState<CatalogProduct[]>(
-    () => staticProducts as CatalogProduct[],
+    () => BASE_PRODUCTS,
   );
   const [status, setStatus] = useState('static');
   const [error, setError] = useState<unknown>(null);
@@ -397,13 +399,13 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       const client = await getSupabase();
       if (!client) {
         setStatus('static');
-        return staticProducts as CatalogProduct[];
+        return BASE_PRODUCTS;
       }
       const { data, error: queryError } = await client.rpc('get_public_product_catalog');
       if (queryError) throw queryError;
       if (!Array.isArray(data) || !data.length) throw new Error('catalog_empty');
       const merged = mergeCatalogProducts(
-        staticProducts as CatalogProduct[],
+        BASE_PRODUCTS,
         data as CatalogRow[],
       );
       if (!merged.length) throw new Error('catalog_empty');
@@ -416,7 +418,7 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
     } catch (nextError) {
       setError(nextError);
       setStatus('static');
-      return staticProducts as CatalogProduct[];
+      return BASE_PRODUCTS;
     }
   }, []);
 
@@ -492,21 +494,22 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
   }, [refresh]);
 
   const value = useMemo<CatalogContextValue>(() => {
-    const byId = new Map(products.map((product) => [product.id, product]));
+    const visualProducts = products.filter((product) => hasRealProductMedia(product as ProductLike));
+    const byId = new Map(visualProducts.map((product) => [product.id, product]));
     const bySlug = new Map(
-      products
+      visualProducts
         .filter((product) => typeof product.slug === 'string')
         .map((product) => [String(product.slug), product]),
     );
     const colors = Array.from(
       new Map(
-        products
+        visualProducts
           .flatMap((product) => (Array.isArray(product.colors) ? product.colors : []))
           .map((color) => [String(color.key || ''), color] as const)
           .filter(([key]) => Boolean(key)),
       ).values(),
     );
-    const brands = unique(products.map((product) => product.brand)).sort((a, b) => {
+    const brands = unique(visualProducts.map((product) => product.brand)).sort((a, b) => {
       const brandList = staticBrands as string[];
       const ai = brandList.indexOf(a);
       const bi = brandList.indexOf(b);
@@ -514,7 +517,7 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       return a.localeCompare(b);
     });
     return {
-      products,
+      products: visualProducts,
       status,
       error,
       updatedAt,
@@ -522,27 +525,27 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       getProduct: (slug: string) => bySlug.get(slug),
       getProductById: (id: string) => byId.get(id),
       featuredProducts: () =>
-        products.filter((product) => Boolean(product.featured) && !product.legacyLha),
+        visualProducts.filter((product) => Boolean(product.featured) && !product.legacyLha),
       newArrivals: () =>
-        products.filter((product) => Boolean(product.newArrival) && !product.legacyLha),
+        visualProducts.filter((product) => Boolean(product.newArrival) && !product.legacyLha),
       bestSellers: () =>
-        products.filter((product) => Boolean(product.bestSeller) && !product.legacyLha),
+        visualProducts.filter((product) => Boolean(product.bestSeller) && !product.legacyLha),
       readyToShipProducts: () =>
-        products.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY')),
+        visualProducts.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY')),
       lhaStoreProducts: () =>
-        products.filter((product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha')),
+        visualProducts.filter((product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha')),
       productsByCategory: (category: string) =>
         category === 'ready-to-ship'
-          ? products.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY'))
-          : products.filter((product) => product.category === category),
+          ? visualProducts.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY'))
+          : visualProducts.filter((product) => product.category === category),
       productsBySubcategory: (category: string, subcategory: string) =>
-        products.filter(
+        visualProducts.filter(
           (product) => product.category === category && product.subcategory === subcategory,
         ),
       relatedProducts: (item: unknown, limit = 4) =>
         getRelatedProducts(
           item as import('../utils/relatedProducts').RelatedCandidate | null | undefined,
-          products as import('../utils/relatedProducts').RelatedCandidate[],
+          visualProducts as import('../utils/relatedProducts').RelatedCandidate[],
           limit,
         ) as CatalogProduct[],
       isLowStock: (product: unknown) => {
@@ -555,12 +558,12 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
         );
       },
       allColors: colors.length ? colors : staticColors,
-      allSizes: unique(products.flatMap((product) => product.sizes || [])).length
-        ? unique(products.flatMap((product) => product.sizes || []))
+      allSizes: unique(visualProducts.flatMap((product) => product.sizes || [])).length
+        ? unique(visualProducts.flatMap((product) => product.sizes || []))
         : staticSizes,
       allBrands: brands.length ? brands : staticBrands,
       allProductTypes: (() => {
-        const types = unique(products.map((product) => product.productType)).sort();
+        const types = unique(visualProducts.map((product) => product.productType)).sort();
         return types.length ? types : staticProductTypes;
       })(),
     };

@@ -9,6 +9,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { SITE } from '../config';
 import { shippingConfig } from '../config/shipping';
 import { categories } from '../data/categories';
+import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
 // The shared GROUNDWORK layers are global from Phase 2 onward (main.tsx).
 // Only this prototype's own composition ships in the lazy route chunk.
@@ -347,7 +348,7 @@ export default function LabHomePage(): ReactElement {
             <p className="gw-spec">{pick({ en: 'Production drawing', ar: 'رسم الإنتاج' })}</p>
             <img
               className="gw-media gw-media--square gw-workshop-art"
-              src="/images/catalog/jersey.svg"
+              src={OFFICIAL_MEDIA.nbKawhi}
               alt={pick({ en: 'Shababuna custom jersey drawing', ar: 'رسم سيريا شبابنا المخصصة' })}
               width="480"
               height="480"

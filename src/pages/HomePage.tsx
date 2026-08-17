@@ -9,7 +9,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { SITE } from '../config';
-import { CATEGORY_WORLDS, HOME_TRENDS } from '../data/merchandising';
+import { CATEGORY_WORLDS, HOME_TRENDS, SHOP_CAMPAIGN } from '../data/merchandising';
+import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
 import '../styles/design/phase2-home.css';
 import '../styles/design/phase2-commerce.css';
 
@@ -35,8 +36,8 @@ export default function HomePage(): ReactElement {
         path="/"
       />
       <Helmet>
-        <link rel="preload" as="image" href="/media/hero/shababuna-hero-poster.webp" type="image/webp" media="(min-width: 768px)" />
-        <link rel="preload" as="image" href="/media/hero/shababuna-hero-poster-mobile.webp" type="image/webp" media="(max-width: 767px)" />
+        <link rel="preload" as="image" href={OFFICIAL_MEDIA.nikeKobeHeroDesktop} media="(min-width: 768px)" />
+        <link rel="preload" as="image" href={OFFICIAL_MEDIA.nikeKobeHeroMobile} media="(max-width: 767px)" />
       </Helmet>
 
       <CinematicHero />
@@ -57,6 +58,7 @@ export default function HomePage(): ReactElement {
                 mobileMedia={world.mobileMedia}
                 desktopVideo={world.desktopVideo}
                 mobileVideo={world.mobileVideo}
+                officialVideoSource={world.officialVideoSource}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
               <span className="s2-editorial-tile__shade" />
@@ -87,10 +89,11 @@ export default function HomePage(): ReactElement {
       <section className="s2-campaign s2-campaign--dark" aria-labelledby="s2-drop-title">
         <div className="s2-campaign__media">
           <EditorialMedia
-            desktopMedia="/images/products/lha-premium-fleece-set-cream.webp"
-            mobileMedia="/images/products/lha-premium-fleece-set-cream.webp"
-            desktopVideo="/media/editorial/shop-campaign-desktop.mp4"
-            mobileVideo="/media/editorial/shop-campaign-mobile.mp4"
+            desktopMedia={SHOP_CAMPAIGN.desktopMedia}
+            mobileMedia={SHOP_CAMPAIGN.mobileMedia}
+            desktopVideo={SHOP_CAMPAIGN.desktopVideo}
+            mobileVideo={SHOP_CAMPAIGN.mobileVideo}
+            officialVideoSource={SHOP_CAMPAIGN.officialVideoSource}
             loading="lazy"
           />
         </div>
@@ -117,6 +120,7 @@ export default function HomePage(): ReactElement {
                 mobileMedia={world.mobileMedia}
                 desktopVideo={world.desktopVideo}
                 mobileVideo={world.mobileVideo}
+                officialVideoSource={world.officialVideoSource}
               />
               <span className="s2-category-world__shade" />
               <strong>{pick(world.title)}</strong>
@@ -157,7 +161,7 @@ export default function HomePage(): ReactElement {
 
       <section className="s2-split-feature" aria-labelledby="s2-custom-title">
         <div className="s2-split-feature__media">
-          <img src="/images/products/own-the-game-essential-tee-white.webp" alt="" width="1400" height="933" loading="lazy" />
+          <img src={OFFICIAL_MEDIA.nbCooper} alt="" width="1400" height="933" loading="lazy" />
         </div>
         <div className="s2-split-feature__copy">
           <span className="s2-overline">{pick({ en: 'Custom studio', ar: 'استوديو التخصيص' })}</span>
@@ -176,12 +180,12 @@ export default function HomePage(): ReactElement {
         </div>
         <div className="s2-story-pair s2-container">
           <Link to="/our-work" className="s2-story-card">
-            <img src="/images/products/kobe/goat/kobe-8-halo.webp" alt="" width="1600" height="1067" loading="lazy" />
+            <img src={OFFICIAL_MEDIA.nikeKobeThree} alt="" width="1600" height="1067" loading="lazy" />
             <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'Inside the game', ar: 'داخل اللعبة' })}</strong></span>
           </Link>
           <Link to="/our-work" className="s2-story-card">
-            <img src="/images/products/lha-academy-backpack-red.webp" alt="" width="1400" height="933" loading="lazy" />
-            <span><small>{pick({ en: 'Shababuna', ar: 'شبابنا' })}</small><strong>{pick({ en: 'What we make', ar: 'شن نصنعوا' })}</strong></span>
+            <img src={OFFICIAL_MEDIA.nbKawhi} alt="" width="1400" height="933" loading="lazy" />
+            <span><small>{pick({ en: 'Basketball culture', ar: 'ثقافة كرة السلة' })}</small><strong>{pick({ en: 'Beyond the game', ar: 'أبعد من اللعبة' })}</strong></span>
           </Link>
         </div>
       </section>

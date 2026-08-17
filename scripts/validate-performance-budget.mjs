@@ -1,13 +1,20 @@
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const failures = [];
 const required = [
-  ['public/media/hero/shababuna-hero-poster.webp', 40_000],
-  ['public/media/hero/shababuna-hero-poster-mobile.webp', 30_000],
   ['public/images/categories/clothing-hero-player.opt.webp', 80_000],
   ['public/images/categories/accessories-hero-player.opt.webp', 80_000],
 ];
+
+
+const shell = readFileSync('index.html', 'utf8');
+if (!/rel="preload"[\s\S]{0,500}href="https:\/\/(?:static|nmp)\.nike\.com\//i.test(shell)) {
+  failures.push('Home hero preload must use the optimized official Nike CDN source');
+}
+if (/public\/media\/hero\/shababuna-hero/i.test(shell)) {
+  failures.push('Home shell still references bundled experimental hero media');
+}
 
 for (const [file, maximum] of required) {
   if (!existsSync(file)) failures.push(`${file} is missing`);
@@ -51,5 +58,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Performance budgets passed: ${optimizedProducts.length} optimized product assets and critical hero media within limits.`,
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; hero media uses the official external CDN and no oversized launch video is bundled.`,
 );

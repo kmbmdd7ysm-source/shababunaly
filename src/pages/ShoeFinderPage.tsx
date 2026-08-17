@@ -1,10 +1,12 @@
 import { useMemo, useState, type ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import EditorialMedia from '../components/common/EditorialMedia';
 import ProductCard from '../components/shop/ProductCard';
 import { useCatalog } from '../context/CatalogContext';
 import { useCompare } from '../context/CompareContext';
 import { useLanguage } from '../context/LanguageContext';
+import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
 import {
   PERFORMANCE_METRICS,
   rankBasketballShoes,
@@ -45,15 +47,25 @@ export default function ShoeFinderPage(): ReactElement {
         path="/basketball/shoe-finder"
       />
       <div className="bf-page">
-        <header className="bf-hero">
-          <p className="bf-eyebrow">{pick({ en: 'Basketball intelligence', ar: 'ذكاء كرة السلة' })}</p>
-          <h1>{pick({ en: 'Find your next shoe.', ar: 'اعثر على حذائك القادم.' })}</h1>
-          <p>
-            {pick({
-              en: 'Tell us how you play. We rank only with verified attributes and first-party catalogue data — never invented performance scores.',
-              ar: 'حدد طريقة لعبك. الترتيب يعتمد فقط على الخصائص الموثقة وبيانات الكتالوج — بدون اختلاق تقييمات أداء.',
-            })}
-          </p>
+        <header className="bf-hero bf-hero--editorial">
+          <div className="bf-hero-copy">
+            <p className="bf-eyebrow">{pick({ en: 'Basketball intelligence', ar: 'ذكاء كرة السلة' })}</p>
+            <h1>{pick({ en: 'Find your next shoe.', ar: 'اعثر على حذائك القادم.' })}</h1>
+            <p>
+              {pick({
+                en: 'Tell us how you play. We rank only with verified attributes and first-party catalogue data — never invented performance scores.',
+                ar: 'حدد طريقة لعبك. الترتيب يعتمد فقط على الخصائص الموثقة وبيانات الكتالوج — بدون اختلاق تقييمات أداء.',
+              })}
+            </p>
+          </div>
+          <div className="bf-hero-media" aria-hidden="true">
+            <EditorialMedia
+              desktopMedia={OFFICIAL_MEDIA.nikeWinningCollage}
+              mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile}
+              officialVideoSource="nike-winning"
+              loading="eager"
+            />
+          </div>
         </header>
 
         <form

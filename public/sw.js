@@ -11,7 +11,6 @@ const CORE = [
   '/', '/offline', '/favicon.svg', '/favicon.png', '/site.webmanifest',
   '/brand/shababuna-monogram.svg',
   '/brand/shababuna-wordmark-black.png', '/brand/shababuna-wordmark-white.png',
-  '/media/hero/shababuna-hero-poster.webp', '/media/hero/shababuna-hero-poster-mobile.webp',
 ];
 const PRIVATE = /(?:\/api(?:\/|$)|\/auth\b|\/account\b|\/checkout\b|\/order-tracking\b|\/operations\b|\/team-locker\b|\/design-share\b|\/special-request\b|supabase\.co\/(?:auth|rest|storage)|\/(?:profiles|user_state|addresses)\b)/i;
 

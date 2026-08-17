@@ -703,7 +703,7 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image: url('/media/atmosphere/product-stage-1400.webp');
+  background-image: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200');
   background-size: cover;
   background-position: center 55%;
   opacity: 0.55;
@@ -711,7 +711,7 @@
 
 @media (max-width: 1099px) {
   .gw-lab-stage::before {
-    background-image: url('/media/atmosphere/product-stage-900.webp');
+    background-image: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200');
   }
 }
 

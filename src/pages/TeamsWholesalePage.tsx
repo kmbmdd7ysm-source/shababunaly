@@ -3,17 +3,19 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import CountrySelect from '../components/common/CountrySelect';
+import EditorialMedia from '../components/common/EditorialMedia';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { submitPublicQuote } from '../services/publicQuotes';
+import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
 import '../styles/domain-forms.css';
 import '../styles/teams-stories.css';
 
 const SERVICES = [
-  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: '/images/products/own-the-game-sleeveless-top-black.webp' },
-  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: '/images/products/lha-performance-shorts-black.webp' },
-  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: '/images/products/lha-premium-fleece-set-grey.webp' },
-  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: '/media/atmosphere/arena-wide-1600.webp' },
+  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: OFFICIAL_MEDIA.nbCooper },
+  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: OFFICIAL_MEDIA.nbJamal },
+  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: OFFICIAL_MEDIA.nbKawhi },
+  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: OFFICIAL_MEDIA.nbAaron },
 ];
 
 export default function TeamsWholesalePage(): ReactElement {
@@ -53,7 +55,7 @@ export default function TeamsWholesalePage(): ReactElement {
       <main className="tw-page">
         <header className="tw-hero">
           <div className="tw-hero-copy"><p>SHABABUNA TEAM</p><h1>{pick({ en: 'Build your program.', ar: 'جهّز فريقك.' })}</h1><span>{pick({ en: 'Uniforms, training, teamwear and equipment — handled through one Shababuna team.', ar: 'أطقم لعب وتدريب وملابس فريق ومعدات — كلها عبر فريق شبابنا.' })}</span><a href="#team-quote" className="btn-primary">{pick({ en: 'Start a team request', ar: 'ابدأ طلب فريق' })}</a></div>
-          <div className="tw-hero-visual"><img src="/images/products/lha-premium-fleece-set-black.webp" alt="" /></div>
+          <div className="tw-hero-visual"><EditorialMedia desktopMedia={OFFICIAL_MEDIA.nikeWinningPoster} mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile} officialVideoSource="nike-winning" loading="eager" /></div>
         </header>
 
         <section className="tw-services" aria-labelledby="tw-services-title">
