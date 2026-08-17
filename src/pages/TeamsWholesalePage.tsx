@@ -55,7 +55,7 @@ export default function TeamsWholesalePage(): ReactElement {
       <main className="tw-page">
         <header className="tw-hero">
           <div className="tw-hero-copy"><p>SHABABUNA TEAM</p><h1>{pick({ en: 'Build your program.', ar: 'جهّز فريقك.' })}</h1><span>{pick({ en: 'Uniforms, training, teamwear and equipment — handled through one Shababuna team.', ar: 'أطقم لعب وتدريب وملابس فريق ومعدات — كلها عبر فريق شبابنا.' })}</span><a href="#team-quote" className="btn-primary">{pick({ en: 'Start a team request', ar: 'ابدأ طلب فريق' })}</a></div>
-          <div className="tw-hero-visual"><EditorialMedia desktopMedia={OFFICIAL_MEDIA.nikeWinningPoster} mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile} officialVideoSource="nike-winning" loading="eager" /></div>
+          <div className="tw-hero-visual"><EditorialMedia desktopMedia={OFFICIAL_MEDIA.nbCooper} mobileMedia={OFFICIAL_MEDIA.nbJamal} loading="eager" /></div>
         </header>
 
         <section className="tw-services" aria-labelledby="tw-services-title">

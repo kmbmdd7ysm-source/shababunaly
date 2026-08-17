@@ -55,7 +55,7 @@ export default function OurWorkPage(): ReactElement {
             <p>{pick({ en: 'Campaigns, product intelligence, custom work and the basketball culture around what we sell.', ar: 'حملات ومعلومات منتجات وأعمال مخصصة وثقافة كرة السلة حول ما نقدمه.' })}</p>
           </div>
           <div className="story-hero-media">
-            <EditorialMedia desktopMedia={OFFICIAL_MEDIA.nikeKobeGroup} mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile} officialVideoSource="newbalance-basketball" loading="eager" />
+            <EditorialMedia desktopMedia={OFFICIAL_MEDIA.nikeKobeGroup} mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile} loading="eager" />
           </div>
         </header>
 

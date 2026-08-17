@@ -1,3 +1,4 @@
+import type { OfficialVideoSource } from '../components/common/EditorialMedia';
 import { OFFICIAL_MEDIA } from './officialEditorialMedia.ts';
 
 export type LocaleCopy = { en: string; ar: string };
@@ -12,12 +13,10 @@ export type MerchandisingWorld = {
   mobileMedia?: string;
   desktopVideo?: string;
   mobileVideo?: string;
-  officialVideoSource?: 'nike-winning' | 'newbalance-basketball';
+  officialVideoSource?: OfficialVideoSource;
   theme?: 'light' | 'dark';
 };
 
-const HERO_VIDEO_DESKTOP = OFFICIAL_MEDIA.none;
-const HERO_VIDEO_MOBILE = OFFICIAL_MEDIA.none;
 const DISCOVER_VIDEO_DESKTOP = OFFICIAL_MEDIA.none;
 const DISCOVER_VIDEO_MOBILE = OFFICIAL_MEDIA.none;
 const SHOP_VIDEO_DESKTOP = OFFICIAL_MEDIA.none;
@@ -29,11 +28,10 @@ export const HOME_TRENDS: MerchandisingWorld[] = [
     title: { en: 'New this week', ar: 'جديد هذا الأسبوع' },
     eyebrow: { en: 'Fresh in', ar: 'وصل حديثًا' },
     to: '/discover/new-this-week',
-    desktopMedia: OFFICIAL_MEDIA.nikeKobeGroup,
-    mobileMedia: OFFICIAL_MEDIA.nikeKobeGroup,
+    desktopMedia: OFFICIAL_MEDIA.nbDarius,
+    mobileMedia: OFFICIAL_MEDIA.nbDarius,
     desktopVideo: DISCOVER_VIDEO_DESKTOP,
     mobileVideo: DISCOVER_VIDEO_MOBILE,
-    officialVideoSource: 'newbalance-basketball',
     theme: 'dark',
   },
   {
@@ -43,7 +41,6 @@ export const HOME_TRENDS: MerchandisingWorld[] = [
     to: '/discover/performance-picks',
     desktopMedia: OFFICIAL_MEDIA.nikeKobeOne,
     mobileMedia: OFFICIAL_MEDIA.nikeKobeOne,
-    officialVideoSource: 'nike-winning',
     theme: 'dark',
   },
   {
@@ -51,9 +48,8 @@ export const HOME_TRENDS: MerchandisingWorld[] = [
     title: { en: 'Court essentials', ar: 'أساسيات الملعب' },
     eyebrow: { en: 'Every session', ar: 'لكل حصة' },
     to: '/discover/court-essentials',
-    desktopMedia: OFFICIAL_MEDIA.nbJamal,
-    mobileMedia: OFFICIAL_MEDIA.nbJamal,
-    officialVideoSource: 'newbalance-basketball',
+    desktopMedia: OFFICIAL_MEDIA.nbAaron,
+    mobileMedia: OFFICIAL_MEDIA.nbAaron,
     theme: 'dark',
   },
 ];
@@ -65,16 +61,16 @@ export const CATEGORY_WORLDS: MerchandisingWorld[] = [
     to: '/shop/footwear',
     desktopMedia: OFFICIAL_MEDIA.nikeKobeTwo,
     mobileMedia: OFFICIAL_MEDIA.nikeKobeTwo,
-    officialVideoSource: 'nike-winning',
+    officialVideoSource: 'adidas-ant-20-foot-hoop',
     theme: 'dark',
   },
   {
     slug: 'clothing',
     title: { en: 'Apparel', ar: 'الملابس' },
     to: '/shop/clothing',
-    desktopMedia: OFFICIAL_MEDIA.nbKawhi,
-    mobileMedia: OFFICIAL_MEDIA.nbKawhi,
-    officialVideoSource: 'newbalance-basketball',
+    desktopMedia: OFFICIAL_MEDIA.nbJamal,
+    mobileMedia: OFFICIAL_MEDIA.nbJamal,
+    officialVideoSource: 'newbalance-quiet-noise',
     theme: 'dark',
   },
   {
@@ -83,7 +79,6 @@ export const CATEGORY_WORLDS: MerchandisingWorld[] = [
     to: '/shop/basketballs',
     desktopMedia: OFFICIAL_MEDIA.spaldingBall,
     mobileMedia: OFFICIAL_MEDIA.spaldingBall,
-    officialVideoSource: 'nike-winning',
     theme: 'dark',
   },
   {
@@ -92,7 +87,6 @@ export const CATEGORY_WORLDS: MerchandisingWorld[] = [
     to: '/shop/accessories',
     desktopMedia: OFFICIAL_MEDIA.spaldingPump,
     mobileMedia: OFFICIAL_MEDIA.spaldingPump,
-    officialVideoSource: 'nike-winning',
     theme: 'dark',
   },
   {
@@ -101,7 +95,6 @@ export const CATEGORY_WORLDS: MerchandisingWorld[] = [
     to: '/shop/equipment',
     desktopMedia: OFFICIAL_MEDIA.spaldingBackboard,
     mobileMedia: OFFICIAL_MEDIA.spaldingBackboard,
-    officialVideoSource: 'nike-winning',
     theme: 'dark',
   },
 ];
@@ -122,13 +115,13 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     slug: 'trending-now',
     title: { en: 'Trending now', ar: 'الرائج الآن' },
     eyebrow: { en: 'Discover', ar: 'اكتشف' },
-    copy: { en: 'An edit of established favourites from the current catalogue.', ar: 'مختارات من المنتجات المفضلة في الكتالوج الحالي.' },
+    copy: { en: 'A basketball-focused edit of products and stories from the current catalogue.', ar: 'مختارات مركزة على كرة السلة من المنتجات والقصص داخل الكتالوج الحالي.' },
     to: '/discover/trending-now',
-    desktopMedia: OFFICIAL_MEDIA.nikeKobeTwo,
-    mobileMedia: OFFICIAL_MEDIA.nikeKobeTwo,
+    desktopMedia: OFFICIAL_MEDIA.nikeKobeThree,
+    mobileMedia: OFFICIAL_MEDIA.nikeKobeThree,
     desktopVideo: DISCOVER_VIDEO_DESKTOP,
     mobileVideo: DISCOVER_VIDEO_MOBILE,
-    officialVideoSource: 'newbalance-basketball',
+    officialVideoSource: 'footlocker-hoops-lives-here',
     theme: 'dark',
     rule: 'best',
   },
@@ -136,11 +129,11 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     slug: 'just-dropped',
     title: { en: 'Just dropped', ar: 'وصل للتو' },
     eyebrow: { en: 'Latest', ar: 'الأحدث' },
-    copy: { en: 'Recent additions to the live catalogue.', ar: 'أحدث الإضافات إلى الكتالوج الحالي.' },
+    copy: { en: 'Recent additions to the live catalogue, selected for the basketball customer first.', ar: 'أحدث الإضافات للكتالوج المباشر، مختارة أولاً لعميل كرة السلة.' },
     to: '/discover/just-dropped',
     desktopMedia: OFFICIAL_MEDIA.nikeKobeGroup,
     mobileMedia: OFFICIAL_MEDIA.nikeKobeGroup,
-    officialVideoSource: 'nike-winning',
+    officialVideoSource: 'nike-kobe-conductor',
     theme: 'dark',
     rule: 'new',
   },
@@ -152,7 +145,7 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     to: '/discover/new-this-week',
     desktopMedia: OFFICIAL_MEDIA.nbCooper,
     mobileMedia: OFFICIAL_MEDIA.nbCooper,
-    officialVideoSource: 'newbalance-basketball',
+    officialVideoSource: 'footlocker-ant-adidas',
     theme: 'dark',
     rule: 'new',
   },
@@ -164,7 +157,7 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     to: '/discover/best-sellers',
     desktopMedia: OFFICIAL_MEDIA.nbKawhi,
     mobileMedia: OFFICIAL_MEDIA.nbKawhi,
-    officialVideoSource: 'newbalance-basketball',
+    officialVideoSource: 'footlocker-melo-puma',
     theme: 'dark',
     rule: 'best',
   },
@@ -174,9 +167,8 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     eyebrow: { en: 'Basketball', ar: 'كرة السلة' },
     copy: { en: 'Footwear and gear selected for playing, training and movement.', ar: 'أحذية وتجهيزات للعب والتدريب والحركة.' },
     to: '/discover/performance-picks',
-    desktopMedia: OFFICIAL_MEDIA.nikeKobeOne,
-    mobileMedia: OFFICIAL_MEDIA.nikeKobeOne,
-    officialVideoSource: 'nike-winning',
+    desktopMedia: OFFICIAL_MEDIA.nbAaron,
+    mobileMedia: OFFICIAL_MEDIA.nbAaron,
     theme: 'dark',
     rule: 'performance',
   },
@@ -188,7 +180,6 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     to: '/discover/court-essentials',
     desktopMedia: OFFICIAL_MEDIA.spaldingBall,
     mobileMedia: OFFICIAL_MEDIA.spaldingBall,
-    officialVideoSource: 'nike-winning',
     theme: 'dark',
     rule: 'court',
   },
@@ -200,7 +191,6 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     to: '/discover/ready-now',
     desktopMedia: OFFICIAL_MEDIA.nbNickSmith,
     mobileMedia: OFFICIAL_MEDIA.nbNickSmith,
-    officialVideoSource: 'newbalance-basketball',
     theme: 'dark',
     rule: 'ready',
   },
@@ -214,18 +204,24 @@ export const DISCOVER_COLLECTIONS: DiscoverCollection[] = [
     mobileMedia: OFFICIAL_MEDIA.nbZach,
     desktopVideo: DISCOVER_VIDEO_DESKTOP,
     mobileVideo: DISCOVER_VIDEO_MOBILE,
-    officialVideoSource: 'newbalance-basketball',
     theme: 'dark',
     rule: 'featured',
   },
 ];
 
+export const HOME_CAMPAIGN = {
+  title: { en: 'Made to move.', ar: 'مصنوع للحركة.' },
+  copy: { en: 'Basketball culture, performance and product in one edit.', ar: 'ثقافة كرة السلة والأداء والمنتج في مختارات واحدة.' },
+  desktopMedia: OFFICIAL_MEDIA.nbCameron,
+  mobileMedia: OFFICIAL_MEDIA.nbCameron,
+};
+
 export const SHOP_CAMPAIGN = {
   title: { en: 'Made for the court.', ar: 'مصنوع للملعب.' },
   copy: { en: 'Product first. Everything else stays out of the way.', ar: 'المنتج أولاً. والباقي يخليه واضح.' },
-  desktopMedia: OFFICIAL_MEDIA.nbKawhi,
-  mobileMedia: OFFICIAL_MEDIA.nbKawhi,
+  desktopMedia: OFFICIAL_MEDIA.nbTyrese,
+  mobileMedia: OFFICIAL_MEDIA.nbTyrese,
   desktopVideo: SHOP_VIDEO_DESKTOP,
   mobileVideo: SHOP_VIDEO_MOBILE,
-  officialVideoSource: 'newbalance-basketball' as const,
+  officialVideoSource: 'adidas-basketball-is-everything' as const,
 };

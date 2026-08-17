@@ -79,7 +79,7 @@ export default function CinematicHero(): ReactElement {
     }
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), 7000);
-    void fetch('/api/official-media?source=nike-winning', {
+    void fetch('/api/official-media?source=nike-only-basketball', {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal: controller.signal,

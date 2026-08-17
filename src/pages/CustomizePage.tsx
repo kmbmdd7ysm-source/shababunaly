@@ -16,12 +16,17 @@ import '../styles/domain-forms.css';
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
   'game-set': OFFICIAL_MEDIA.nbKawhi,
-  'game-shorts': OFFICIAL_MEDIA.nbCooper,
-  'shooting-shirt': OFFICIAL_MEDIA.nbJamal,
-  hoodie: OFFICIAL_MEDIA.nbZach,
-  tracksuit: OFFICIAL_MEDIA.nbDejounte,
-  'team-bag': OFFICIAL_MEDIA.nbDarius,
+  'game-jersey': OFFICIAL_MEDIA.nikeCustomGameTop,
+  'game-shorts': OFFICIAL_MEDIA.nikeCustomGameShorts,
+  'practice-set': OFFICIAL_MEDIA.nikeCustomPracticeJersey,
+  'shooting-shirt': OFFICIAL_MEDIA.nikeCustomShootingShirt,
+  hoodie: OFFICIAL_MEDIA.nikeCustomHoodie,
+  'team-pants': OFFICIAL_MEDIA.nikeCustomTeamPants,
+  tracksuit: OFFICIAL_MEDIA.nikeCustomWarmupCrew,
+  'team-bag': OFFICIAL_MEDIA.nikeCustomTeamBag,
+  sleeve: OFFICIAL_MEDIA.jordanCustomSleeve,
   basketball: OFFICIAL_MEDIA.spaldingBall,
+  'hoop-padding': OFFICIAL_MEDIA.spaldingPolePad,
 };
 
 export default function CustomizePage(): ReactElement {
@@ -105,7 +110,7 @@ export default function CustomizePage(): ReactElement {
             <EditorialMedia
               desktopMedia={OFFICIAL_MEDIA.nbCooper}
               mobileMedia={OFFICIAL_MEDIA.nbJamal}
-              officialVideoSource="newbalance-basketball"
+              officialVideoSource="jordan-too-easy"
               loading="eager"
             />
             <span className="cx-hero-media__shade" />
@@ -121,7 +126,7 @@ export default function CustomizePage(): ReactElement {
           {FEATURED.map((item) => (
             <button key={item.key} type="button" className={`cx-product-card${productType === item.key ? ' is-active' : ''}`} onClick={() => setProductType(item.key)}>
               <div className="cx-product-media">
-                {item.key === 'game-jersey' ? <span className="cx-product-jersey-shape" aria-hidden="true" /> : <img src={fallbackArt[item.key] || OFFICIAL_MEDIA.nbKawhi} alt="" />}
+                <img src={fallbackArt[item.key] || OFFICIAL_MEDIA.nbKawhi} alt="" />
               </div>
               <strong>{pick(item.label)}</strong>
               <small>{pick({ en: `Minimum ${item.minimum}`, ar: `الحد الأدنى ${item.minimum}` })}</small>

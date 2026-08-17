@@ -2,7 +2,20 @@ import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
-export type OfficialVideoSource = 'nike-winning' | 'newbalance-basketball';
+export type OfficialVideoSource =
+  | 'nike-winning'
+  | 'newbalance-basketball'
+  | 'nike-kobe-hard-year'
+  | 'nike-only-basketball'
+  | 'nike-kobe-conductor'
+  | 'jordan-too-easy'
+  | 'under-armour-curry-make-that-old'
+  | 'newbalance-quiet-noise'
+  | 'adidas-basketball-is-everything'
+  | 'adidas-ant-20-foot-hoop'
+  | 'footlocker-hoops-lives-here'
+  | 'footlocker-ant-adidas'
+  | 'footlocker-melo-puma';
 
 type EditorialMediaProps = {
   desktopMedia: string;

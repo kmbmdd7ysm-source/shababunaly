@@ -11,12 +11,65 @@ type ApiRes = {
   };
 };
 
-const SOURCES = {
+type DirectSource = {
+  sourceUrl: string;
+  embedUrl?: string;
+  videoUrl?: string;
+};
+
+const PAGE_SOURCES = {
   'nike-winning': 'https://about.nike.com/en/newsroom/releases/winning-isnt-for-everyone-campaign',
   'newbalance-basketball': 'https://www.newbalance.com/basketball/',
 } as const;
 
-type SourceKey = keyof typeof SOURCES;
+const DIRECT_SOURCES = {
+  'nike-kobe-hard-year': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/have-a-hard-year-kobe',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/OMIekuAY22A?autoplay=1&mute=1&controls=0&loop=1&playlist=OMIekuAY22A&playsinline=1&rel=0&modestbranding=1',
+  },
+  'nike-only-basketball': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/only-basketball',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/V9fsOaa97F4?autoplay=1&mute=1&controls=0&loop=1&playlist=V9fsOaa97F4&playsinline=1&rel=0&modestbranding=1',
+  },
+  'nike-kobe-conductor': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/the-conductor',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/qQYz0I5dE_A?autoplay=1&mute=1&controls=0&loop=1&playlist=qQYz0I5dE_A&playsinline=1&rel=0&modestbranding=1',
+  },
+  'jordan-too-easy': {
+    sourceUrl: 'https://abancommercials.com/jordan/too-easy-jordan-brand-commercial/276840/',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/if0w26YMM_U?autoplay=1&mute=1&controls=0&loop=1&playlist=if0w26YMM_U&playsinline=1&rel=0&modestbranding=1',
+  },
+  'under-armour-curry-make-that-old': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/make-that-old',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/PSEOq0C-8Ug?autoplay=1&mute=1&controls=0&loop=1&playlist=PSEOq0C-8Ug&playsinline=1&rel=0&modestbranding=1',
+  },
+  'newbalance-quiet-noise': {
+    sourceUrl: 'https://www.soleretriever.com/news/articles/new-balance-basketball-quiet-noise-campaign',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/z4nXqRWskRQ?autoplay=1&mute=1&controls=0&loop=1&playlist=z4nXqRWskRQ&playsinline=1&rel=0&modestbranding=1',
+  },
+  'adidas-basketball-is-everything': {
+    sourceUrl: 'https://hypebeast.com/2013/10/adidas-basketball-presents-basketball-is-everything-featuring-derrick-rose',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/JKWhh8mC0Ww?autoplay=1&mute=1&controls=0&loop=1&playlist=JKWhh8mC0Ww&playsinline=1&rel=0&modestbranding=1',
+  },
+  'adidas-ant-20-foot-hoop': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/what-if-we-played-like-pressure-didn-t-exist',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/UCWkNZ5Y8-E?autoplay=1&mute=1&controls=0&loop=1&playlist=UCWkNZ5Y8-E&playsinline=1&rel=0&modestbranding=1',
+  },
+  'footlocker-hoops-lives-here': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/hoops-lives-here',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/CsMYxGP1Xwc?autoplay=1&mute=1&controls=0&loop=1&playlist=CsMYxGP1Xwc&playsinline=1&rel=0&modestbranding=1',
+  },
+  'footlocker-ant-adidas': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/the-heart-of-sneakers',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/WBC_TXu6CxQ?autoplay=1&mute=1&controls=0&loop=1&playlist=WBC_TXu6CxQ&playsinline=1&rel=0&modestbranding=1',
+  },
+  'footlocker-melo-puma': {
+    sourceUrl: 'https://www.adsoftheworld.com/campaigns/the-heart-of-sneakers',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/oqk19IFWo5k?autoplay=1&mute=1&controls=0&loop=1&playlist=oqk19IFWo5k&playsinline=1&rel=0&modestbranding=1',
+  },
+} as const satisfies Record<string, DirectSource>;
+
+type SourceKey = keyof typeof PAGE_SOURCES | keyof typeof DIRECT_SOURCES;
 
 const FETCH_TIMEOUT_MS = 9000;
 const MAX_HTML_BYTES = 8_000_000;
@@ -99,13 +152,27 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   }
 
   const source = first(req.query?.source).trim() as SourceKey;
-  if (!(source in SOURCES)) return json(res, 400, { ok: false, error: 'invalid_source' });
+  const isDirect = source in DIRECT_SOURCES;
+  const isPage = source in PAGE_SOURCES;
+  if (!isDirect && !isPage) return json(res, 400, { ok: false, error: 'invalid_source' });
   if (req.method === 'HEAD') return res.status(204).end();
+
+  if (isDirect) {
+    const asset = DIRECT_SOURCES[source as keyof typeof DIRECT_SOURCES];
+    return json(res, 200, {
+      ok: true,
+      source,
+      sourceUrl: asset.sourceUrl,
+      videoUrl: asset.videoUrl || '',
+      embedUrl: asset.embedUrl || '',
+    });
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const response = await fetch(SOURCES[source], {
+    const sourceUrl = PAGE_SOURCES[source as keyof typeof PAGE_SOURCES];
+    const response = await fetch(sourceUrl, {
       redirect: 'follow',
       signal: controller.signal,
       headers: {
@@ -132,7 +199,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     return json(res, 200, {
       ok: true,
       source,
-      sourceUrl: SOURCES[source],
+      sourceUrl,
       videoUrl,
       embedUrl,
     });

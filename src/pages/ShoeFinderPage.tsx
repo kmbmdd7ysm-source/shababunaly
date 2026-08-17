@@ -60,9 +60,9 @@ export default function ShoeFinderPage(): ReactElement {
           </div>
           <div className="bf-hero-media" aria-hidden="true">
             <EditorialMedia
-              desktopMedia={OFFICIAL_MEDIA.nikeWinningCollage}
+              desktopMedia={OFFICIAL_MEDIA.nikeKobeThree}
               mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile}
-              officialVideoSource="nike-winning"
+              officialVideoSource="under-armour-curry-make-that-old"
               loading="eager"
             />
           </div>
