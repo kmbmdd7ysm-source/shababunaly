@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import EditorialMedia from '../components/common/EditorialMedia';
 import ProductCard from '../components/shop/ProductCard';
 import EmptyState from '../components/common/EmptyState';
 import { useCatalog, type CatalogProduct } from '../context/CatalogContext';
@@ -79,10 +80,13 @@ export default function DiscoverPage(): ReactElement {
               to={collection.to}
               className={`s2-discover-card s2-discover-card--${(index % 4) + 1}`}
             >
-              <picture>
-                {collection.mobileMedia ? <source media="(max-width: 699px)" srcSet={collection.mobileMedia} /> : null}
-                <img src={collection.desktopMedia} alt="" width="1600" height="1067" loading={index < 2 ? 'eager' : 'lazy'} />
-              </picture>
+              <EditorialMedia
+                desktopMedia={collection.desktopMedia}
+                mobileMedia={collection.mobileMedia}
+                desktopVideo={collection.desktopVideo}
+                mobileVideo={collection.mobileVideo}
+                loading={index < 2 ? 'eager' : 'lazy'}
+              />
               <span className="s2-discover-card__shade" />
               <span className="s2-discover-card__copy">
                 {collection.eyebrow ? <small>{pick(collection.eyebrow)}</small> : null}
@@ -104,10 +108,13 @@ export default function DiscoverPage(): ReactElement {
       <Seo title={pick(current.title)} description={current.copy ? pick(current.copy) : pick(current.title)} path={`/discover/${current.slug}`} />
 
       <header className="s2-discover-hero">
-        <picture>
-          {current.mobileMedia ? <source media="(max-width: 699px)" srcSet={current.mobileMedia} /> : null}
-          <img src={current.desktopMedia} alt="" width="1600" height="1067" />
-        </picture>
+        <EditorialMedia
+          desktopMedia={current.desktopMedia}
+          mobileMedia={current.mobileMedia}
+          desktopVideo={current.desktopVideo}
+          mobileVideo={current.mobileVideo}
+          loading="eager"
+        />
         <span className="s2-discover-hero__shade" />
         <div className="s2-discover-hero__copy">
           {current.eyebrow ? <span className="s2-overline">{pick(current.eyebrow)}</span> : null}

@@ -7,21 +7,27 @@ import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { fetchSiteContent } from '../../services/siteContent';
 import '../../styles/design/phase2-home.css';
 
-const ENV_DESKTOP_VIDEO = String(import.meta.env.VITE_HERO_VIDEO_URL || '').trim();
-const ENV_MOBILE_VIDEO = String(import.meta.env.VITE_HERO_MOBILE_VIDEO_URL || '').trim();
-const safeUrl = (value: unknown) => /^https:\/\//i.test(String(value || '').trim()) ? String(value).trim() : '';
+const DEFAULT_DESKTOP_VIDEO = '/media/hero/shababuna-hero-desktop.mp4';
+const DEFAULT_MOBILE_VIDEO = '/media/hero/shababuna-hero-mobile.mp4';
+const DEFAULT_DESKTOP_POSTER = '/media/hero/shababuna-hero-poster.webp';
+const DEFAULT_MOBILE_POSTER = '/media/hero/shababuna-hero-poster-mobile.webp';
+const safeUrl = (value: unknown) => {
+  const url = String(value || '').trim();
+  return /^\/(?!\/)/.test(url) || /^https:\/\//i.test(url) ? url : '';
+};
 
 export default function CinematicHero(): ReactElement {
   const { pick } = useLanguage();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const reduced = useReducedMotion();
   const capability = useDeviceCapability();
-  const [videoEnabled, setVideoEnabled] = useState(false);
   const [failed, setFailed] = useState(false);
   const [mediaConfig, setMediaConfig] = useState<Record<string, unknown>>({
     enabled: true,
-    desktopVideoUrl: ENV_DESKTOP_VIDEO,
-    mobileVideoUrl: ENV_MOBILE_VIDEO,
+    desktopVideoUrl: DEFAULT_DESKTOP_VIDEO,
+    mobileVideoUrl: DEFAULT_MOBILE_VIDEO,
+    desktopPosterUrl: DEFAULT_DESKTOP_POSTER,
+    mobilePosterUrl: DEFAULT_MOBILE_POSTER,
   });
   const [shellActive, setShellActive] = useState(
     () => typeof document !== 'undefined' && Boolean(document.getElementById('lcp-shell')),
@@ -50,16 +56,16 @@ export default function CinematicHero(): ReactElement {
       if (!active || !content) return;
       setMediaConfig({
         enabled: content.enabled !== false,
-        desktopVideoUrl: safeUrl(content.desktopVideoUrl) || ENV_DESKTOP_VIDEO,
-        mobileVideoUrl: safeUrl(content.mobileVideoUrl) || ENV_MOBILE_VIDEO,
+        desktopVideoUrl: safeUrl(content.desktopVideoUrl) || DEFAULT_DESKTOP_VIDEO,
+        mobileVideoUrl: safeUrl(content.mobileVideoUrl) || DEFAULT_MOBILE_VIDEO,
+        desktopPosterUrl: safeUrl(content.desktopPosterUrl) || DEFAULT_DESKTOP_POSTER,
+        mobilePosterUrl: safeUrl(content.mobilePosterUrl) || DEFAULT_MOBILE_POSTER,
       });
     }).catch(() => {});
-    const id = globalThis.requestIdleCallback?.(() => void load(), { timeout: 1800 });
-    const timer = id == null ? setTimeout(() => void load(), 700) : null;
+    const timer = setTimeout(() => void load(), 300);
     return () => {
       active = false;
-      if (id != null) globalThis.cancelIdleCallback?.(id);
-      if (timer) clearTimeout(timer);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -67,43 +73,33 @@ export default function CinematicHero(): ReactElement {
   const selectedVideo = mediaConfig.enabled
     ? String(desktop ? mediaConfig.desktopVideoUrl || '' : mediaConfig.mobileVideoUrl || '')
     : '';
-  const mediaAllowed = capability === 'a' && !reduced && !navigator.connection?.saveData;
+  const selectedPoster = String(desktop ? mediaConfig.desktopPosterUrl || DEFAULT_DESKTOP_POSTER : mediaConfig.mobilePosterUrl || DEFAULT_MOBILE_POSTER);
+  const mediaAllowed = capability !== 'c' && !reduced && !navigator.connection?.saveData;
 
   useEffect(() => {
-    if (!selectedVideo || !mediaAllowed) return undefined;
-    const enable = () => setVideoEnabled(true);
-    addEventListener('pointerdown', enable, { once: true, passive: true });
-    addEventListener('keydown', enable, { once: true });
-    addEventListener('scroll', enable, { once: true, passive: true });
-    return () => {
-      removeEventListener('pointerdown', enable);
-      removeEventListener('keydown', enable);
-      removeEventListener('scroll', enable);
-    };
-  }, [mediaAllowed, selectedVideo]);
-
-  useEffect(() => {
-    if (videoEnabled && !failed) videoRef.current?.play().catch(() => {});
-  }, [videoEnabled, failed]);
+    if (mediaAllowed && selectedVideo && !failed) {
+      videoRef.current?.play().catch(() => {});
+    }
+  }, [mediaAllowed, selectedVideo, failed]);
 
   return (
     <section className="s2-hero" aria-labelledby="s2-home-title">
       <div className="s2-hero__media" aria-hidden="true">
         {!shellActive ? (
           <picture>
-            <source media="(max-width: 767px)" srcSet="/media/hero/shababuna-hero-poster-mobile.webp" />
-            <img src="/media/hero/shababuna-hero-poster.webp" alt="" width="1940" height="1024" decoding="async" />
+            <source media="(max-width: 767px)" srcSet={DEFAULT_MOBILE_POSTER} />
+            <img src={DEFAULT_DESKTOP_POSTER} alt="" width="1940" height="1024" decoding="async" />
           </picture>
         ) : null}
-        {selectedVideo && videoEnabled && !failed ? (
+        {selectedVideo && mediaAllowed && !failed ? (
           <video
             ref={videoRef}
             muted
             loop
             playsInline
             autoPlay
-            preload="none"
-            poster="/media/hero/shababuna-hero-poster.webp"
+            preload="metadata"
+            poster={selectedPoster}
             onError={() => setFailed(true)}
           >
             <source src={selectedVideo} type="video/mp4" />

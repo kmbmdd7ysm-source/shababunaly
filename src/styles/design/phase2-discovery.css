@@ -30,9 +30,12 @@
 .s2-discover-card--3 { grid-column: span 5; }
 .s2-discover-card picture,
 .s2-discover-card img,
+.s2-discover-card video,
 .s2-discover-card__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-.s2-discover-card img { object-fit: cover; transition: transform 600ms var(--s2-ease, ease); }
-.s2-discover-card:hover img { transform: scale(1.025); }
+.s2-discover-card img,
+.s2-discover-card video { object-fit: cover; transition: transform 600ms var(--s2-ease, ease); }
+.s2-discover-card:hover img,
+.s2-discover-card:hover video { transform: scale(1.025); }
 .s2-discover-card__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 58%, transparent), transparent 55%); }
 .s2-discover-card__copy { position: absolute; z-index: 2; inset-inline: 24px; inset-block-end: 24px; display: grid; gap: 5px; }
 .s2-discover-card__copy small { opacity: 0.8; }
@@ -42,8 +45,10 @@
 .s2-discover-hero { position: relative; min-height: min(74svh, 820px); overflow: hidden; color: var(--sh-chalk); }
 .s2-discover-hero picture,
 .s2-discover-hero img,
+.s2-discover-hero video,
 .s2-discover-hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-.s2-discover-hero img { object-fit: cover; }
+.s2-discover-hero img,
+.s2-discover-hero video { object-fit: cover; }
 .s2-discover-hero__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 70%, transparent), transparent 62%); }
 .s2-discover-hero__copy { position: absolute; z-index: 2; inset-inline: var(--s2-gutter, 44px); inset-block-end: clamp(40px, 7vw, 90px); max-width: 780px; }
 .s2-discover-hero h1 { margin: 8px 0 12px; font-size: clamp(3.2rem, 7vw, 7.5rem); line-height: 0.9; letter-spacing: -0.065em; }

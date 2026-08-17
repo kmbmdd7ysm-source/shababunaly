@@ -1,11 +1,11 @@
 {
   "status": "incomplete",
-  "generatedAt": "2026-08-12T01:19:12.711Z",
+  "generatedAt": "2026-08-17T05:29:49.573Z",
   "productionReady": false,
   "totals": {
-    "products": 69,
-    "variants": 982,
-    "incompleteProducts": 69,
+    "products": 119,
+    "variants": 1582,
+    "incompleteProducts": 119,
     "placeholderProducts": 44,
     "verifiedStockProducts": 0,
     "readyToShipProducts": 0
@@ -919,6 +919,1006 @@
       "slug": "electric-ball-pump-kit",
       "issues": [
         "final_media_missing",
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-3-protro-halo",
+      "slug": "nike-kobe-3-protro-halo",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-3-low-protro-warning-label",
+      "slug": "nike-kobe-3-low-protro-warning-label",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-zoom-kobe-3-mpls",
+      "slug": "nike-zoom-kobe-3-mpls",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-3-protro-christmas",
+      "slug": "nike-kobe-3-protro-christmas",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-zoom-kobe-3-lakers",
+      "slug": "nike-zoom-kobe-3-lakers",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-mambacita",
+      "slug": "nike-kobe-4-protro-mambacita",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-gold-medal-2024",
+      "slug": "nike-kobe-4-protro-gold-medal-2024",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-gift-of-mamba",
+      "slug": "nike-kobe-4-protro-gift-of-mamba",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-girl-dad",
+      "slug": "nike-kobe-4-protro-girl-dad",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-philly-2024",
+      "slug": "nike-kobe-4-protro-philly-2024",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-year-of-the-mamba-eggplant",
+      "slug": "nike-kobe-5-protro-year-of-the-mamba-eggplant",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-lower-merion-aces-2026",
+      "slug": "nike-kobe-5-protro-lower-merion-aces-2026",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-dodgers",
+      "slug": "nike-kobe-5-protro-dodgers",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-chaos-2020",
+      "slug": "nike-kobe-5-protro-chaos-2020",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-x-ray",
+      "slug": "nike-kobe-5-protro-x-ray",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-total-orange",
+      "slug": "nike-kobe-6-protro-total-orange",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-3d-all-star",
+      "slug": "nike-kobe-6-protro-3d-all-star",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-all-star-sail",
+      "slug": "nike-kobe-6-protro-all-star-sail",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-reverse-grinch",
+      "slug": "nike-kobe-6-protro-reverse-grinch",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-grinch-2020",
+      "slug": "nike-kobe-6-protro-grinch-2020",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-7-duke",
+      "slug": "nike-kobe-7-duke",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-7-yin-and-yang",
+      "slug": "nike-kobe-7-yin-and-yang",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-7-olympic",
+      "slug": "nike-kobe-7-olympic",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-7-what-the-kobe",
+      "slug": "nike-kobe-7-what-the-kobe",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-7-all-star-galaxy",
+      "slug": "nike-kobe-7-all-star-galaxy",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-what-the-kobe-2025",
+      "slug": "nike-kobe-8-protro-what-the-kobe-2025",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-halo",
+      "slug": "nike-kobe-8-protro-halo",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-venice-beach-2024",
+      "slug": "nike-kobe-8-protro-venice-beach-2024",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-8-system-easter",
+      "slug": "nike-kobe-8-system-easter",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-radiant-emerald",
+      "slug": "nike-kobe-8-protro-radiant-emerald",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-9-elite-low-protro-halo",
+      "slug": "nike-kobe-9-elite-low-protro-halo",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-9-elite-protro-masterpiece-2025",
+      "slug": "nike-kobe-9-elite-protro-masterpiece-2025",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-9-em-protro-mambacita",
+      "slug": "nike-kobe-9-em-protro-mambacita",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-9-em-protro-think-pink",
+      "slug": "nike-kobe-9-em-protro-think-pink",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-9-em-philippines-2026",
+      "slug": "nike-kobe-9-em-philippines-2026",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-10-elite-rivalry",
+      "slug": "nike-kobe-10-elite-rivalry",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-10-pain",
+      "slug": "nike-kobe-10-pain",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-10-tb-gym-red",
+      "slug": "nike-kobe-10-tb-gym-red",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-10-gs-independence-day",
+      "slug": "nike-kobe-10-gs-independence-day",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-10-all-star",
+      "slug": "nike-kobe-10-all-star",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-fade-to-black",
+      "slug": "nike-kobe-11-elite-low-fade-to-black",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-11-protro-low-mamba-day",
+      "slug": "nike-kobe-11-protro-low-mamba-day",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-11-gs-8-24",
+      "slug": "nike-kobe-11-gs-8-24",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-usa",
+      "slug": "nike-kobe-11-elite-low-usa",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-protro-fade-to-black-2026",
+      "slug": "nike-kobe-11-elite-low-protro-fade-to-black-2026",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-mid-pure-platinum",
+      "slug": "nike-kobe-12-ad-mid-pure-platinum",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-gs-triple-black",
+      "slug": "nike-kobe-12-ad-gs-triple-black",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-tb-fir",
+      "slug": "nike-kobe-12-ad-tb-fir",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-protro-purple-stardust",
+      "slug": "nike-kobe-12-ad-protro-purple-stardust",
+      "issues": [
+        "inventory_not_verified",
+        "inventory_location_missing",
+        "country_of_origin_missing",
+        "variant_supplierSku_missing",
+        "variant_cost_missing",
+        "variant_barcode_missing",
+        "variant_warehouse_missing",
+        "variant_leadTimeDays_missing",
+        "variant_weightKg_missing",
+        "variant_lengthCm_missing",
+        "variant_widthCm_missing",
+        "variant_heightCm_missing",
+        "variant_hsCode_missing",
+        "variant_countryOfOrigin_missing"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-cool-grey",
+      "slug": "nike-kobe-12-ad-cool-grey",
+      "issues": [
         "inventory_not_verified",
         "inventory_location_missing",
         "country_of_origin_missing",

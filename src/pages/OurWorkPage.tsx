@@ -7,28 +7,28 @@ import '../styles/teams-stories.css';
 
 const stories = [
   {
-    image: '/images/catalog/apparel.svg',
+    image: '/images/products/own-the-game-sleeveless-top-black.webp',
     category: { en: 'Custom teamwear', ar: 'ملابس الفرق' },
     title: { en: 'From identity to game night.', ar: 'من الهوية إلى ليلة المباراة.' },
     copy: { en: 'A visual path through custom game sets, roster details and production-ready design.', ar: 'مسار بصري لأطقم اللعب المخصصة وتفاصيل القائمة والتصميم الجاهز للإنتاج.' },
     to: '/customize',
   },
   {
-    image: '/images/catalog/shoe.svg',
+    image: '/images/products/kobe/goat/kobe-4-gold-medal.webp',
     category: { en: 'Performance', ar: 'الأداء' },
     title: { en: 'Shop basketball by how you play.', ar: 'تسوق كرة السلة حسب طريقة لعبك.' },
     copy: { en: 'Performance discovery without invented ratings. Verified data when it exists, honest unknowns when it does not.', ar: 'اكتشاف منتجات الأداء دون تقييمات مختلقة. بيانات موثقة عندما تتوفر ووضوح عندما لا تتوفر.' },
     to: '/basketball/shoe-finder',
   },
   {
-    image: '/images/catalog/ball.svg',
+    image: '/images/products/lha-premium-fleece-set-black.webp',
     category: { en: 'Programs', ar: 'البرامج' },
     title: { en: 'One order. The whole program.', ar: 'طلب واحد. برنامج كامل.' },
     copy: { en: 'Uniforms, training, equipment and club supply organized as one basketball project.', ar: 'أطقم وتدريب ومعدات وتجهيز النادي ضمن مشروع كرة سلة واحد.' },
     to: '/teams-wholesale',
   },
   {
-    image: '/images/catalog/bag.svg',
+    image: '/images/products/lha-elite-basketball-backpack-black.webp',
     category: { en: 'Culture', ar: 'الثقافة' },
     title: { en: 'Beyond the forty minutes.', ar: 'أبعد من الأربعين دقيقة.' },
     copy: { en: 'Travel, recovery and off-court products around the everyday life of basketball.', ar: 'السفر والاستشفاء ومنتجات خارج الملعب حول الحياة اليومية لكرة السلة.' },
@@ -53,7 +53,7 @@ export default function OurWorkPage(): ReactElement {
             <p>{pick({ en: 'Campaigns, product intelligence, custom work and the basketball culture around what we sell.', ar: 'حملات ومعلومات منتجات وأعمال مخصصة وثقافة كرة السلة حول ما نقدمه.' })}</p>
           </div>
           <div className="story-hero-media">
-            <SmartImage src="/media/atmosphere/court-overhead-1600.webp" alt="" width={1600} height={1067} sizes="(min-width: 760px) 50vw, 100vw" />
+            <SmartImage src="/images/products/kobe/goat/kobe-8-halo.webp" alt="" width={1600} height={1067} sizes="(min-width: 760px) 50vw, 100vw" />
           </div>
         </header>
 

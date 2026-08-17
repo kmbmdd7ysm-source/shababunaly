@@ -6,6 +6,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext';
 import { useCommerce } from '../context/CommerceContext';
 import Seo from '../components/common/Seo';
+import EditorialMedia from '../components/common/EditorialMedia';
 import Filters from '../components/shop/Filters';
 import SortSelect from '../components/shop/SortSelect';
 import ProductCard from '../components/shop/ProductCard';
@@ -209,10 +210,13 @@ export default function ShopPage(): ReactElement {
 
       {showShopHero ? (
         <section className="s2-shop-hero" aria-labelledby="s2-shop-title">
-          <picture>
-            <source media="(max-width: 699px)" srcSet={SHOP_CAMPAIGN.mobileMedia} />
-            <img src={SHOP_CAMPAIGN.desktopMedia} alt="" width="1400" height="933" />
-          </picture>
+          <EditorialMedia
+            desktopMedia={SHOP_CAMPAIGN.desktopMedia}
+            mobileMedia={SHOP_CAMPAIGN.mobileMedia}
+            desktopVideo={SHOP_CAMPAIGN.desktopVideo}
+            mobileVideo={SHOP_CAMPAIGN.mobileVideo}
+            loading="eager"
+          />
           <span className="s2-shop-hero__shade" />
           <div className="s2-shop-hero__copy">
             <span className="s2-overline">Shababuna</span>
@@ -234,10 +238,12 @@ export default function ShopPage(): ReactElement {
 
       {world && category !== 'ready-to-ship' ? (
         <Link to={`/shop/${world.slug}`} className="s2-category-banner">
-          <picture>
-            {world.mobileMedia ? <source media="(max-width: 699px)" srcSet={world.mobileMedia} /> : null}
-            <img src={world.desktopMedia} alt="" width="1600" height="1067" loading="lazy" />
-          </picture>
+          <EditorialMedia
+            desktopMedia={world.desktopMedia}
+            mobileMedia={world.mobileMedia}
+            desktopVideo={world.desktopVideo}
+            mobileVideo={world.mobileVideo}
+          />
           <span className="s2-category-banner__shade" />
           <strong>{pick(world.title)}</strong>
         </Link>

@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import EditorialMedia from '../components/common/EditorialMedia';
 import CinematicHero from '../components/experience/CinematicHero';
 import ProductCard from '../components/shop/ProductCard';
 import { useLanguage } from '../context/LanguageContext';
@@ -51,10 +52,13 @@ export default function HomePage(): ReactElement {
         <div className="s2-editorial-grid s2-container">
           {HOME_TRENDS.map((world, index) => (
             <Link key={world.slug} to={world.to} className={`s2-editorial-tile s2-editorial-tile--${index + 1}`}>
-              <picture>
-                {world.mobileMedia ? <source media="(max-width: 699px)" srcSet={world.mobileMedia} /> : null}
-                <img src={world.desktopMedia} alt="" width="1600" height="1067" loading={index === 0 ? 'eager' : 'lazy'} />
-              </picture>
+              <EditorialMedia
+                desktopMedia={world.desktopMedia}
+                mobileMedia={world.mobileMedia}
+                desktopVideo={world.desktopVideo}
+                mobileVideo={world.mobileVideo}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
               <span className="s2-editorial-tile__shade" />
               <span className="s2-editorial-tile__copy">
                 {world.eyebrow ? <small>{pick(world.eyebrow)}</small> : null}
@@ -81,10 +85,15 @@ export default function HomePage(): ReactElement {
       ) : null}
 
       <section className="s2-campaign s2-campaign--dark" aria-labelledby="s2-drop-title">
-        <picture className="s2-campaign__media">
-          <source media="(max-width: 699px)" srcSet="/media/atmosphere/arena-tall-1200.webp" />
-          <img src="/media/atmosphere/arena-wide-2048.webp" alt="" width="2048" height="1152" loading="lazy" />
-        </picture>
+        <div className="s2-campaign__media">
+          <EditorialMedia
+            desktopMedia="/images/products/lha-premium-fleece-set-cream.webp"
+            mobileMedia="/images/products/lha-premium-fleece-set-cream.webp"
+            desktopVideo="/media/editorial/shop-campaign-desktop.mp4"
+            mobileVideo="/media/editorial/shop-campaign-mobile.mp4"
+            loading="lazy"
+          />
+        </div>
         <span className="s2-campaign__shade" />
         <div className="s2-campaign__copy">
           <span className="s2-overline">{pick({ en: 'The edit', ar: 'مختاراتنا' })}</span>
@@ -103,10 +112,12 @@ export default function HomePage(): ReactElement {
         <div className="s2-category-strip">
           {CATEGORY_WORLDS.map((world) => (
             <Link key={world.slug} to={world.to} className="s2-category-world">
-              <picture>
-                {world.mobileMedia ? <source media="(max-width: 699px)" srcSet={world.mobileMedia} /> : null}
-                <img src={world.desktopMedia} alt="" width="1400" height="933" loading="lazy" />
-              </picture>
+              <EditorialMedia
+                desktopMedia={world.desktopMedia}
+                mobileMedia={world.mobileMedia}
+                desktopVideo={world.desktopVideo}
+                mobileVideo={world.mobileVideo}
+              />
               <span className="s2-category-world__shade" />
               <strong>{pick(world.title)}</strong>
             </Link>
@@ -146,7 +157,7 @@ export default function HomePage(): ReactElement {
 
       <section className="s2-split-feature" aria-labelledby="s2-custom-title">
         <div className="s2-split-feature__media">
-          <img src="/media/atmosphere/fabric-macro-1400.webp" alt="" width="1400" height="933" loading="lazy" />
+          <img src="/images/products/own-the-game-essential-tee-white.webp" alt="" width="1400" height="933" loading="lazy" />
         </div>
         <div className="s2-split-feature__copy">
           <span className="s2-overline">{pick({ en: 'Custom studio', ar: 'استوديو التخصيص' })}</span>
@@ -165,11 +176,11 @@ export default function HomePage(): ReactElement {
         </div>
         <div className="s2-story-pair s2-container">
           <Link to="/our-work" className="s2-story-card">
-            <img src="/media/atmosphere/court-overhead-1600.webp" alt="" width="1600" height="1067" loading="lazy" />
+            <img src="/images/products/kobe/goat/kobe-8-halo.webp" alt="" width="1600" height="1067" loading="lazy" />
             <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'Inside the game', ar: 'داخل اللعبة' })}</strong></span>
           </Link>
           <Link to="/our-work" className="s2-story-card">
-            <img src="/media/atmosphere/product-stage-1400.webp" alt="" width="1400" height="933" loading="lazy" />
+            <img src="/images/products/lha-academy-backpack-red.webp" alt="" width="1400" height="933" loading="lazy" />
             <span><small>{pick({ en: 'Shababuna', ar: 'شبابنا' })}</small><strong>{pick({ en: 'What we make', ar: 'شن نصنعوا' })}</strong></span>
           </Link>
         </div>

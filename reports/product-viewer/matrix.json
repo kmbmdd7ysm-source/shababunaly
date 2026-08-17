@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-10T23:55:28.149Z",
+  "generatedAt": "2026-08-17T05:29:49.225Z",
   "minimumSpinFrames": 24,
-  "totalProducts": 69,
+  "totalProducts": 119,
   "currentTierCounts": {
     "A": 0,
     "B": 0,
     "C": 23,
-    "D": 46
+    "D": 96
   },
   "targetTierCounts": {
-    "A": 34,
+    "A": 84,
     "B": 35
   },
   "levelDBreakdown": {
-    "oneVerifiedPhotograph": 2,
+    "oneVerifiedPhotograph": 52,
     "placeholderConceptArtOnly": 44
   },
   "modelsManifestPresent": false,
@@ -1116,6 +1116,1256 @@
       ],
       "required3dModelling": [],
       "complexity": "medium — turntable rig session, 24–36 frames, optimisation",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-3-protro-halo",
+      "slug": "nike-kobe-3-protro-halo",
+      "name": "Nike Zoom Kobe 3 Protro 'Halo'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-3-low-protro-warning-label",
+      "slug": "nike-kobe-3-low-protro-warning-label",
+      "name": "Nike Zoom Kobe 3 Low Protro 'Warning Label'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-zoom-kobe-3-mpls",
+      "slug": "nike-zoom-kobe-3-mpls",
+      "name": "Nike Zoom Kobe 3 'MPLS'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-3-protro-christmas",
+      "slug": "nike-kobe-3-protro-christmas",
+      "name": "Nike Zoom Kobe 3 Protro 'Christmas'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-zoom-kobe-3-lakers",
+      "slug": "nike-zoom-kobe-3-lakers",
+      "name": "Nike Zoom Kobe 3 'Lakers'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-mambacita",
+      "slug": "nike-kobe-4-protro-mambacita",
+      "name": "Nike Zoom Kobe 4 Protro 'Mambacita'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-gold-medal-2024",
+      "slug": "nike-kobe-4-protro-gold-medal-2024",
+      "name": "Nike Zoom Kobe 4 Protro 'Gold Medal' 2024",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-gift-of-mamba",
+      "slug": "nike-kobe-4-protro-gift-of-mamba",
+      "name": "Nike Zoom Kobe 4 Protro 'Gift of Mamba'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-girl-dad",
+      "slug": "nike-kobe-4-protro-girl-dad",
+      "name": "Nike Zoom Kobe 4 Protro 'Girl Dad'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-4-protro-philly-2024",
+      "slug": "nike-kobe-4-protro-philly-2024",
+      "name": "Nike Zoom Kobe 4 Protro 'Philly' 2024",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-year-of-the-mamba-eggplant",
+      "slug": "nike-kobe-5-protro-year-of-the-mamba-eggplant",
+      "name": "Nike Zoom Kobe 5 Protro 'Year of the Mamba - Eggplant'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-lower-merion-aces-2026",
+      "slug": "nike-kobe-5-protro-lower-merion-aces-2026",
+      "name": "Nike Zoom Kobe 5 Protro 'Lower Merion Aces' 2026",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-dodgers",
+      "slug": "nike-kobe-5-protro-dodgers",
+      "name": "Nike Zoom Kobe 5 Protro 'Dodgers'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-chaos-2020",
+      "slug": "nike-kobe-5-protro-chaos-2020",
+      "name": "Nike Zoom Kobe 5 Protro 'Chaos' 2020",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-5-protro-x-ray",
+      "slug": "nike-kobe-5-protro-x-ray",
+      "name": "Nike Zoom Kobe 5 Protro 'X-Ray'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-total-orange",
+      "slug": "nike-kobe-6-protro-total-orange",
+      "name": "Nike Zoom Kobe 6 Protro 'Total Orange'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-3d-all-star",
+      "slug": "nike-kobe-6-protro-3d-all-star",
+      "name": "Nike Zoom Kobe 6 Protro '3D All-Star'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-all-star-sail",
+      "slug": "nike-kobe-6-protro-all-star-sail",
+      "name": "Nike Zoom Kobe 6 Protro 'All-Star Sail'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-reverse-grinch",
+      "slug": "nike-kobe-6-protro-reverse-grinch",
+      "name": "Nike Zoom Kobe 6 Protro 'Reverse Grinch'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-6-protro-grinch-2020",
+      "slug": "nike-kobe-6-protro-grinch-2020",
+      "name": "Nike Zoom Kobe 6 Protro 'Grinch' 2020",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-7-duke",
+      "slug": "nike-kobe-7-duke",
+      "name": "Nike Zoom Kobe 7 'Duke'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-7-yin-and-yang",
+      "slug": "nike-kobe-7-yin-and-yang",
+      "name": "Nike Zoom Kobe 7 System 'Yin And Yang'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-7-olympic",
+      "slug": "nike-kobe-7-olympic",
+      "name": "Nike Zoom Kobe 7 System 'Olympic'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-7-what-the-kobe",
+      "slug": "nike-kobe-7-what-the-kobe",
+      "name": "Nike Zoom Kobe 7 System 'What The Kobe'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-7-all-star-galaxy",
+      "slug": "nike-kobe-7-all-star-galaxy",
+      "name": "Nike Zoom Kobe 7 'All Star - Galaxy'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-what-the-kobe-2025",
+      "slug": "nike-kobe-8-protro-what-the-kobe-2025",
+      "name": "Nike Kobe 8 Protro 'What The Kobe' 2025",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-halo",
+      "slug": "nike-kobe-8-protro-halo",
+      "name": "Nike Kobe 8 Protro 'Halo'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-venice-beach-2024",
+      "slug": "nike-kobe-8-protro-venice-beach-2024",
+      "name": "Nike Kobe 8 Protro 'Venice Beach' 2024",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-8-system-easter",
+      "slug": "nike-kobe-8-system-easter",
+      "name": "Nike Kobe 8 System 'Easter'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-8-protro-radiant-emerald",
+      "slug": "nike-kobe-8-protro-radiant-emerald",
+      "name": "Nike Kobe 8 Protro 'Radiant Emerald'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-9-elite-low-protro-halo",
+      "slug": "nike-kobe-9-elite-low-protro-halo",
+      "name": "Nike Kobe 9 Elite Low Protro 'Halo'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-9-elite-protro-masterpiece-2025",
+      "slug": "nike-kobe-9-elite-protro-masterpiece-2025",
+      "name": "Nike Kobe 9 Elite Protro 'Masterpiece' 2025",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-9-em-protro-mambacita",
+      "slug": "nike-kobe-9-em-protro-mambacita",
+      "name": "Nike Kobe 9 EM Protro 'Mambacita'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-9-em-protro-think-pink",
+      "slug": "nike-kobe-9-em-protro-think-pink",
+      "name": "Nike Kobe 9 EM Protro 'Think Pink'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-9-em-philippines-2026",
+      "slug": "nike-kobe-9-em-philippines-2026",
+      "name": "Nike Kobe 9 EM 'Philippines' 2026",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-10-elite-rivalry",
+      "slug": "nike-kobe-10-elite-rivalry",
+      "name": "Nike Kobe 10 Elite 'Rivalry'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-10-pain",
+      "slug": "nike-kobe-10-pain",
+      "name": "Nike Kobe 10 'Pain'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-10-tb-gym-red",
+      "slug": "nike-kobe-10-tb-gym-red",
+      "name": "Nike Kobe 10 TB 'Gym Red'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-10-gs-independence-day",
+      "slug": "nike-kobe-10-gs-independence-day",
+      "name": "Nike Kobe 10 GS 'Independence Day'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-10-all-star",
+      "slug": "nike-kobe-10-all-star",
+      "name": "Nike Kobe 10 'All Star'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-fade-to-black",
+      "slug": "nike-kobe-11-elite-low-fade-to-black",
+      "name": "Nike Kobe 11 Elite Low 'Fade To Black'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-11-protro-low-mamba-day",
+      "slug": "nike-kobe-11-protro-low-mamba-day",
+      "name": "Nike Kobe 11 Protro Low 'Mamba Day'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-11-gs-8-24",
+      "slug": "nike-kobe-11-gs-8-24",
+      "name": "Nike Kobe 11 GS '8 24'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-usa",
+      "slug": "nike-kobe-11-elite-low-usa",
+      "name": "Nike Kobe 11 Elite Low 'USA'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-protro-fade-to-black-2026",
+      "slug": "nike-kobe-11-elite-low-protro-fade-to-black-2026",
+      "name": "Nike Kobe 11 Elite Low Protro 'Fade To Black' 2026",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-mid-pure-platinum",
+      "slug": "nike-kobe-12-ad-mid-pure-platinum",
+      "name": "Nike Kobe A.D. Mid 'Pure Platinum'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-gs-triple-black",
+      "slug": "nike-kobe-12-ad-gs-triple-black",
+      "name": "Nike Kobe A.D. GS 'Triple Black'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-tb-fir",
+      "slug": "nike-kobe-12-ad-tb-fir",
+      "name": "Nike Kobe A.D. TB 'Fir'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-protro-purple-stardust",
+      "slug": "nike-kobe-12-ad-protro-purple-stardust",
+      "name": "Nike Kobe A.D. Protro 'Purple Stardust'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
+      "performanceImpact": "existing single image, no additional payload",
+      "recommendedPhase": "P5 — photography intake"
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-cool-grey",
+      "slug": "nike-kobe-12-ad-cool-grey",
+      "name": "Nike Kobe A.D. 'Cool Grey'",
+      "category": "footwear",
+      "brand": "Nike",
+      "customizable": false,
+      "assetCount": 1,
+      "placeholderMedia": false,
+      "spinFrames": 0,
+      "currentTier": "D",
+      "targetTier": "A",
+      "missingAssets": [
+        "only one verified image"
+      ],
+      "requiredPhotography": [
+        "front, back, side and one macro detail on a chalk-white sweep"
+      ],
+      "required3dModelling": [
+        "base mesh, UV layout, AO bake, desktop + mobile LOD, quantised .glb"
+      ],
+      "complexity": "high — 3D modelling, UVs, bakes, LODs",
       "performanceImpact": "existing single image, no additional payload",
       "recommendedPhase": "P5 — photography intake"
     },

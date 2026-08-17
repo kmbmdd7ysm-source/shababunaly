@@ -330,8 +330,8 @@ if (chrome.includes('AnnouncementStack'))
   fail.push('Public global chrome still mounts the removed announcement stack');
 
 try {
-  assert.equal(catalogProducts.length, 69);
-  assert.equal(products.length, 69);
+  assert.equal(catalogProducts.length, 119);
+  assert.equal(products.length, 119);
   assert.equal(lhaStoreProducts().length, 25);
   const readyProducts = readyToShipProducts();
   assert.equal(readyProducts.length, 15);

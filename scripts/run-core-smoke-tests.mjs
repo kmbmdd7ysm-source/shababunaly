@@ -39,8 +39,8 @@ const csvRoundTrip = parseRosterCsv(
 assert.equal(csvRoundTrip[0].number, '20');
 assert.equal(csvRoundTrip[0].jerseySize, 'L');
 
-assert.equal(catalogProducts.length, 69);
-assert.equal(products.length, 69);
+assert.equal(catalogProducts.length, 119);
+assert.equal(products.length, 119);
 assert.equal(lhaStoreProducts().length, 25);
 assert.equal(readyToShipProducts().length, 15);
 assert.equal(readyToShipProducts().every((item) => item.legacyLha === true && item.inventorySource === 'owner_confirmed_lha_ready' && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
