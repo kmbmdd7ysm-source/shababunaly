@@ -93,9 +93,27 @@ export async function submitSpecialRequest({
   const data = (await response.json().catch(() => ({}))) as {
     ok?: boolean;
     error?: string;
-    request?: unknown;
+    request?: Record<string, unknown>;
+    notification?: string;
   };
-  if (response.ok && data.ok) return data.request;
+  if (response.ok && data.ok) {
+    if (data.notification !== 'delivered') {
+      const requestNumber = String(data.request?.requestNumber || data.request?.request_number || '');
+      await sendFormspree(
+        {
+          ...payload,
+          formType: 'special_request',
+          requestNumber,
+          referenceId: requestNumber || String(data.request?.id || ''),
+          persistenceStatus: 'persisted_email_retry',
+          attachmentStatus: files.length ? 'stored_or_follow_up_required' : 'none',
+          fileNames: entries.map(({ file }) => file.name).join(', '),
+        },
+        `Shababuna special request · ${String(payload.customerName || payload.name || 'customer')}`,
+      );
+    }
+    return data.request;
+  }
 
   // Preserve the human request even when the upload/database API is down.
   // Binary attachments stay out of this fallback; their names are included so

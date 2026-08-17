@@ -1,5 +1,4 @@
 import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
-import { verifyTurnstileToken } from './_turnstile.ts';
 import { supabaseAdminRequest } from './_supabase-admin.ts';
 import {
   createGuestOrderToken,
@@ -48,7 +47,7 @@ const SELECT = [
 
 async function findOrder(orderNumber: string): Promise<Record<string, unknown> | null> {
   const rows = await supabaseAdminRequest(
-    `/rest/v1/orders?select=${encodeURIComponent(SELECT)}&order_number=eq.${encodeURIComponent(orderNumber)}&user_id=is.null&limit=1`,
+    `/rest/v1/orders?select=${encodeURIComponent(SELECT)}&order_number=eq.${encodeURIComponent(orderNumber)}&limit=1`,
   );
   return Array.isArray(rows) ? (rows[0] as Record<string, unknown>) || null : null;
 }
@@ -103,23 +102,28 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     }
     const email = normalizeGuestEmail(body.email);
     if (!email) return res.status(200).json({ ok: true, order: null });
-    const forwarded = req.headers['x-forwarded-for'];
-    const captchaOk = await verifyTurnstileToken(
-      clean(body.turnstileToken, 3000),
-      String((Array.isArray(forwarded) ? forwarded[0] : forwarded) || req.socket?.remoteAddress || ''),
-    );
-    if (!captchaOk) return res.status(400).json({ ok: false, error: 'captcha_failed' });
     const storedEmail = orderEmail(order);
     if (!storedEmail || storedEmail !== email)
       return res.status(200).json({ ok: true, order: null });
-    const accessToken = createGuestOrderToken({ orderNumber, email });
-    const verified = verifyGuestOrderToken(accessToken, orderNumber);
-    if (!verified) return res.status(503).json({ ok: false, error: 'guest_token_unavailable' });
+    let accessToken = '';
+    let expiresAt: string | null = null;
+    try {
+      accessToken = createGuestOrderToken({ orderNumber, email });
+      const verified = verifyGuestOrderToken(accessToken, orderNumber);
+      if (verified) expiresAt = new Date(verified.exp * 1000).toISOString();
+      else accessToken = '';
+    } catch {
+      // Exact order-number + checkout-email matching has already succeeded.
+      // Token signing is an optimization for refresh/cross-page access, not a
+      // reason to block the customer from viewing their own order.
+      accessToken = '';
+    }
     return res.status(200).json({
       ok: true,
       order: publicOrder(order),
       accessToken,
-      expiresAt: new Date(verified.exp * 1000).toISOString(),
+      expiresAt,
+      sessionOnly: !accessToken,
     });
   } catch {
     return res.status(503).json({ ok: false, error: 'guest_order_access_unavailable' });

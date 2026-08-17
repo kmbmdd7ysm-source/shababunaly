@@ -74,20 +74,29 @@ export default function CheckoutPaymentStage({
             </span>
           </label>
         ) : null}
-        {onlineCardConfigured ? (
-          <label className={`payment-choice ${paymentMethod === 'online_card' ? 'active' : ''}`}>
-            <input
-              type="radio"
-              name="payment"
-              checked={paymentMethod === 'online_card'}
-              onChange={() => setPaymentMethod('online_card')}
-            />
-            <span>
-              <strong>{pick({ en: 'Card & Digital Payment', ar: 'بطاقة ودفع إلكتروني' })}</strong>
-              <small>Visa · Mastercard · Apple Pay · Google Pay · Samsung Pay</small>
-            </span>
-          </label>
-        ) : null}
+        <label
+          className={`payment-choice payment-choice--card ${paymentMethod === 'online_card' ? 'active' : ''}${onlineCardConfigured ? '' : ' is-unavailable'}`}
+          aria-disabled={!onlineCardConfigured}
+        >
+          <input
+            type="radio"
+            name="payment"
+            checked={paymentMethod === 'online_card'}
+            disabled={!onlineCardConfigured}
+            onChange={() => setPaymentMethod('online_card')}
+          />
+          <span>
+            <strong>{pick({ en: 'Card & Digital Payment', ar: 'بطاقة ودفع إلكتروني' })}</strong>
+            <small>
+              {onlineCardConfigured
+                ? 'Visa · Mastercard · Apple Pay · Google Pay'
+                : pick({
+                    en: 'Secure card checkout will appear here as soon as the payment provider is connected.',
+                    ar: 'سيظهر الدفع الآمن بالبطاقة هنا فور ربط مزود الدفع.',
+                  })}
+            </small>
+          </span>
+        </label>
       </fieldset>
 
       {paymentMethod === 'cash' && allowCashPlanChoice ? (

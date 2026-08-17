@@ -9,7 +9,6 @@ import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
 import '../styles/consumer-commerce.css';
 import OrderCard, { type OrderLike } from '../components/account/OrderCard';
-import TurnstileWidget from '../components/security/TurnstileWidget';
 
 export default function OrderTrackingPage(): ReactElement {
   const { t, pick } = useLanguage();
@@ -20,7 +19,6 @@ export default function OrderTrackingPage(): ReactElement {
   const [email, setEmail] = useState('');
   const [lookup, setLookup] = useState<{ state: string; order: Record<string, unknown> | null; error: string | null }>({ state: 'idle', order: null, error: null });
   const [ordersState, setOrdersState] = useState<{ state: string; orders: unknown[]; error: string | null }>({ state: 'idle', orders: [], error: null });
-  const [turnstileToken, setTurnstileToken] = useState('');
 
   const load = useCallback(async () => {
     if (!auth.user) return;
@@ -47,11 +45,7 @@ export default function OrderTrackingPage(): ReactElement {
       return;
     }
     setLookup({ state: 'loading', order: null, error: null });
-    if (!turnstileToken) {
-      setLookup({ state: 'captcha-required', order: null, error: null });
-      return;
-    }
-    const result = await lookupGuestOrder(orderNumber, email, turnstileToken);
+    const result = await lookupGuestOrder(orderNumber, email);
     setLookup({
       state: String(result.state || 'idle'),
       order: (result.order as Record<string, unknown> | null) || null,
@@ -59,10 +53,16 @@ export default function OrderTrackingPage(): ReactElement {
     });
     const order = result.order as Record<string, unknown> | null | undefined;
     const accessToken = result.accessToken;
-    if (order && accessToken) {
-      const number = String(order.orderNumber || '');
-      sessionStorage.setItem(`shababuna-order-access:${number}`, String(accessToken));
-      navigate(`/order-tracking/${encodeURIComponent(number)}`);
+    if (order) {
+      const number = String(order.orderNumber || order.order_number || orderNumber).trim();
+      if (accessToken) {
+        sessionStorage.setItem(`shababuna-order-access:${number}`, String(accessToken));
+      } else {
+        sessionStorage.setItem(`shababuna-order-snapshot:${number}`, JSON.stringify(order));
+      }
+      navigate(`/order-tracking/${encodeURIComponent(number)}`, {
+        state: accessToken ? { accessToken } : { verifiedOrder: order },
+      });
     }
   };
 
@@ -180,7 +180,6 @@ export default function OrderTrackingPage(): ReactElement {
                   required
                 />
               </label>
-              <TurnstileWidget action="guest-order-lookup" onToken={setTurnstileToken} />
               <button
                 type="submit"
                 className="btn-primary block"
@@ -191,14 +190,6 @@ export default function OrderTrackingPage(): ReactElement {
                   : ot.track}
               </button>
             </form>
-            {lookup.state === 'captcha-required' && (
-              <div className="notice notice--info" role="alert">
-                {pick({
-                  en: 'Complete the security check before looking up the order.',
-                  ar: 'أكمل فحص الأمان قبل البحث عن الطلب.',
-                })}
-              </div>
-            )}
             {lookup.state === 'invalid' && (
               <div className="notice notice--info" role="alert">
                 {pick({

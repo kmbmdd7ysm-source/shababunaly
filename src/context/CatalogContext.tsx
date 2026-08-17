@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -320,6 +321,67 @@ function unique(values: unknown[]): string[] {
   ];
 }
 
+function marketplaceProductKey(product: CatalogProduct): string {
+  const sku = String(product.sourceSku || '')
+    .replace(/[^a-z0-9]/gi, '')
+    .toLowerCase();
+  if (sku.length >= 6) return `sku:${sku}`;
+  const nameValue =
+    typeof product.name === 'string'
+      ? product.name
+      : String(asRecord(product.name).en || asRecord(product.name).ar || '');
+  const normalizedName = nameValue.toLowerCase().replace(/[^a-z0-9]+/g, '');
+  return normalizedName ? `name:${normalizedName}` : `id:${product.id}`;
+}
+
+function mergeMarketplaceProducts(
+  baseProducts: CatalogProduct[],
+  marketplaceProducts: CatalogProduct[],
+): CatalogProduct[] {
+  if (!Array.isArray(marketplaceProducts) || !marketplaceProducts.length) return baseProducts;
+
+  const merged = [...baseProducts];
+  const indexByKey = new Map<string, number>();
+  merged.forEach((product, index) => {
+    indexByKey.set(marketplaceProductKey(product), index);
+  });
+
+  for (const marketplaceProduct of marketplaceProducts) {
+    if (!marketplaceProduct?.id) continue;
+    const key = marketplaceProductKey(marketplaceProduct);
+    const existingIndex = indexByKey.get(key);
+    if (existingIndex == null) {
+      indexByKey.set(key, merged.length);
+      merged.push(marketplaceProduct);
+      continue;
+    }
+
+    // Keep the project's existing product as the source of truth for its local media,
+    // inventory and merchandising. Only enrich marketplace provenance metadata.
+    const existing = merged[existingIndex];
+    const marketplaces = new Set<string>();
+    const existingSources = Array.isArray(existing.sourceMarketplaces)
+      ? existing.sourceMarketplaces
+      : existing.sourceMarketplace
+        ? [existing.sourceMarketplace]
+        : [];
+    const incomingSources = Array.isArray(marketplaceProduct.sourceMarketplaces)
+      ? marketplaceProduct.sourceMarketplaces
+      : marketplaceProduct.sourceMarketplace
+        ? [marketplaceProduct.sourceMarketplace]
+        : [];
+    [...existingSources, ...incomingSources].forEach((source) => {
+      if (source) marketplaces.add(String(source));
+    });
+    merged[existingIndex] = {
+      ...existing,
+      sourceMarketplaces: [...marketplaces],
+    };
+  }
+
+  return merged;
+}
+
 export function CatalogProvider({ children }: { children?: ReactNode }) {
   const [products, setProducts] = useState<CatalogProduct[]>(
     () => staticProducts as CatalogProduct[],
@@ -327,6 +389,7 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
   const [status, setStatus] = useState('static');
   const [error, setError] = useState<unknown>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
+  const marketplaceProductsRef = useRef<CatalogProduct[]>([]);
 
   const refresh = useCallback(async ({ quiet = false }: { quiet?: boolean } = {}) => {
     if (!quiet) setStatus((current) => (current === 'ready' ? 'refreshing' : 'loading'));
@@ -344,16 +407,63 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
         data as CatalogRow[],
       );
       if (!merged.length) throw new Error('catalog_empty');
-      setProducts(merged);
+      const withMarketplace = mergeMarketplaceProducts(merged, marketplaceProductsRef.current);
+      setProducts(withMarketplace);
       setStatus('ready');
       setError(null);
       setUpdatedAt(new Date().toISOString());
-      return merged;
+      return withMarketplace;
     } catch (nextError) {
       setError(nextError);
       setStatus('static');
       return staticProducts as CatalogProduct[];
     }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let cancelled = false;
+
+    const loadMarketplaceCatalog = async () => {
+      const series = [4, 5, 6, 7, 8, 9, 10, 11, 12];
+      const urls = [
+        ...series.map((number) => `/api/kobe-marketplace-catalog?series=${number}&source=goat`),
+        '/api/kobe-stockx-catalog',
+      ];
+      const responses = await Promise.allSettled(
+        urls.map(async (url) => {
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+            signal: controller.signal,
+          });
+          if (!response.ok) return [] as CatalogProduct[];
+          const payload = (await response.json()) as { items?: unknown };
+          return Array.isArray(payload.items) ? (payload.items as CatalogProduct[]) : [];
+        }),
+      );
+
+      if (cancelled) return;
+      const marketplaceProducts = responses.flatMap((result) =>
+        result.status === 'fulfilled' ? result.value : [],
+      );
+      if (!marketplaceProducts.length) return;
+
+      marketplaceProductsRef.current = marketplaceProducts;
+      setProducts((current) => mergeMarketplaceProducts(current, marketplaceProducts));
+    };
+
+    const idleId =
+      typeof window.requestIdleCallback === 'function'
+        ? window.requestIdleCallback(() => void loadMarketplaceCatalog(), { timeout: 2200 })
+        : window.setTimeout(() => void loadMarketplaceCatalog(), 1100);
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+      if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
+    };
   }, []);
 
   useEffect(() => {

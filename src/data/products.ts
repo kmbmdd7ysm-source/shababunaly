@@ -1,4 +1,5 @@
 import { products as sourceLhaProducts } from './lhaProducts.ts';
+import { kobeGoatProducts as sourceKobeGoatProducts } from './kobeGoatProducts.ts';
 import { isProductVisible, isReadyToShipEligible } from '../utils/productEligibility.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
 
@@ -1132,7 +1133,11 @@ const lhaProducts = (sourceLhaProducts as Array<Record<string, unknown>>).map(
   normalizeLhaCatalogProduct,
 );
 
-export const catalogProducts = [...shababunaProducts, ...lhaProducts];
+const kobeGoatProducts = (sourceKobeGoatProducts as Array<Record<string, unknown>>).map(
+  normalizeCatalogProduct,
+);
+
+export const catalogProducts = [...shababunaProducts, ...kobeGoatProducts, ...lhaProducts];
 export const products = catalogProducts.filter(isProductVisible);
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
 export const getProductById = (id: string) => products.find((p) => p.id === id);

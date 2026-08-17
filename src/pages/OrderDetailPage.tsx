@@ -9,7 +9,6 @@ import { presentOrderStatus } from '../services/orderStatus';
 import Seo from '../components/common/Seo';
 import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
-import TurnstileWidget from '../components/security/TurnstileWidget';
 
 const payableStatuses = new Set(['pending', 'partially_paid', 'failed']);
 const payableOrderStatuses = new Set(['awaiting_payment', 'received', 'final_payment_required']);
@@ -27,15 +26,24 @@ export default function OrderDetailPage(): ReactElement {
   const auth = useAuth();
   const { pick, lang } = useLanguage();
   const storageKey = `shababuna-order-access:${orderNumber}`;
-  const locationState = (location.state || {}) as { accessToken?: string };
+  const locationState = (location.state || {}) as { accessToken?: string; verifiedOrder?: Record<string, unknown> };
   const [accessToken, setAccessToken] = useState(
     locationState.accessToken || sessionStorage.getItem(storageKey) || '',
   );
   const [email, setEmail] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState('');
+  const snapshotKey = `shababuna-order-snapshot:${orderNumber}`;
+  const initialVerifiedOrder = (() => {
+    if (locationState.verifiedOrder) return locationState.verifiedOrder;
+    try {
+      const raw = sessionStorage.getItem(snapshotKey);
+      return raw ? (JSON.parse(raw) as Record<string, unknown>) : null;
+    } catch {
+      return null;
+    }
+  })();
   const [state, setState] = useState<OrderDetailState>({
-    state: 'loading',
-    order: null,
+    state: initialVerifiedOrder ? 'success' : 'loading',
+    order: initialVerifiedOrder,
     error: null,
   });
   const [paymentState, setPaymentState] = useState({ busy: false, message: '', error: false });
@@ -43,9 +51,8 @@ export default function OrderDetailPage(): ReactElement {
   const load = useCallback(
     async ({
       verifiedEmail = '',
-      captcha = '',
       token = accessToken,
-    }: { verifiedEmail?: string; captcha?: string; token?: string } = {}) => {
+    }: { verifiedEmail?: string; token?: string } = {}) => {
       setState((current) => ({ ...current, state: 'loading' }));
       const detailQuery: {
         orderNumber?: string;
@@ -56,7 +63,6 @@ export default function OrderDetailPage(): ReactElement {
       } = { orderNumber };
       if (auth.user?.id) detailQuery.userId = String(auth.user.id);
       if (verifiedEmail) detailQuery.email = verifiedEmail;
-      if (captcha) detailQuery.turnstileToken = captcha;
       if (token) detailQuery.accessToken = token;
       const result = (await getOrderDetails(detailQuery)) as OrderDetailState & {
         accessToken?: string;
@@ -64,6 +70,8 @@ export default function OrderDetailPage(): ReactElement {
       if (result.accessToken) {
         setAccessToken(String(result.accessToken));
         sessionStorage.setItem(storageKey, String(result.accessToken));
+      } else if (result.order && verifiedEmail) {
+        sessionStorage.setItem(snapshotKey, JSON.stringify(result.order));
       }
       setState({
         state: String(result.state || 'error'),
@@ -71,11 +79,11 @@ export default function OrderDetailPage(): ReactElement {
         error: result.error ?? null,
       });
     },
-    [accessToken, auth.user?.id, orderNumber, storageKey],
+    [accessToken, auth.user?.id, orderNumber, snapshotKey, storageKey],
   );
 
   useEffect(() => {
-    if (!auth.loading) void load();
+    if (!auth.loading && !state.order) void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, orderNumber]);
 
@@ -157,13 +165,13 @@ export default function OrderDetailPage(): ReactElement {
               className="track-form"
               onSubmit={(event) => {
                 event.preventDefault();
-                void load({ verifiedEmail: email, captcha: turnstileToken, token: '' });
+                void load({ verifiedEmail: email, token: '' });
               }}
             >
               <p>
                 {pick({
-                  en: 'Enter the checkout email and complete the security check. A short-lived access token will be created for this order.',
-                  ar: 'أدخل البريد المستخدم عند الدفع وأكمل فحص الأمان. سيتم إنشاء رمز وصول قصير المدة لهذا الطلب.',
+                  en: 'Enter the same email used at checkout to open this order.',
+                  ar: 'أدخل نفس البريد المستخدم عند الدفع لفتح هذا الطلب.',
                 })}
               </p>
               <label className="field">
@@ -176,9 +184,8 @@ export default function OrderDetailPage(): ReactElement {
                   required
                 />
               </label>
-              <TurnstileWidget action="guest-order-detail" onToken={setTurnstileToken} />
-              <button className="btn-primary" type="submit" disabled={!turnstileToken}>
-                {pick({ en: 'Verify Order', ar: 'التحقق من الطلب' })}
+              <button className="btn-primary" type="submit" disabled={!email.trim()}>
+                {pick({ en: 'Open Order', ar: 'فتح الطلب' })}
               </button>
             </form>
           )}

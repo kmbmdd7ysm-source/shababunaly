@@ -10,6 +10,7 @@ export async function sendInternalFormNotification(
   const endpoint = resolveFormspreeEndpoint();
   if (!endpoint || !/^https:\/\//i.test(endpoint)) return { delivered: false };
   const params = new URLSearchParams();
+  params.set('subject', clean(subject, 180));
   params.set('_subject', clean(subject, 180));
   params.set('_template', 'table');
   for (const [key, value] of Object.entries(payload)) {

@@ -141,7 +141,7 @@ export default function CheckoutPage(): ReactElement {
   const allReady =
     items.length > 0 && items.every((item) => item.type !== 'product' || item.readyToShip);
   const immediateLibyaCash = isLibya && allReady && !stagedOrder;
-  const allowCashPlanChoice = isLibya && !allReady && !stagedOrder;
+  const allowCashPlanChoice = isLibya && !allReady;
 
   const changeCountry = (nextCode: string) => {
     const normalized = String(normalizeCountryCode(nextCode) || '');
@@ -238,7 +238,7 @@ export default function CheckoutPage(): ReactElement {
   const libyanCardConfigured = isPaymentMethodConfigured('libyan_bank_card');
   const paymentConfigured = paymentMethod === 'cash' || isPaymentMethodConfigured(paymentMethod);
   // prettier-ignore
-  const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : stagedOrder ? 'half' : paymentMethod === 'cash' ? (immediateLibyaCash ? 'full' : allowCashPlanChoice ? cashPlan : 'full') : 'full';
+  const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : paymentMethod === 'cash' ? (immediateLibyaCash ? 'full' : allowCashPlanChoice ? cashPlan : 'full') : 'full';
   const dueRatio = paymentPlan === 'half' ? 0.5 : paymentPlan === 'pending_shipping_quote' ? 0 : 1;
   const amountDueNow = total * dueRatio;
   const remainingBalance = Math.max(0, total - amountDueNow);
@@ -417,10 +417,15 @@ export default function CheckoutPage(): ReactElement {
       `Address: ${[form.address, form.apartment, form.city, form.state, form.postal, shippingCountryCode].filter(Boolean).join(', ')}`,
       '',
       'Items:',
-      ...clientItems.map(
-        (item) =>
-          `${item.quantity} × ${item.name}${item.purchaseMode ? ` [${item.purchaseMode}]` : ''} — ${item.displayLineTotal.toFixed(2)} ${currency}`,
-      ),
+      ...clientItems.map((item) => {
+        const attributes = [
+          item.sku ? `SKU ${String(item.sku)}` : '',
+          item.size ? `Size ${String(item.size)}` : '',
+          item.color ? `Color ${String(item.color)}` : '',
+          item.variantKey ? `Variant ${String(item.variantKey)}` : '',
+        ].filter(Boolean);
+        return `${item.quantity} × ${item.name}${item.purchaseMode ? ` [${item.purchaseMode}]` : ''}${attributes.length ? ` — ${attributes.join(' · ')}` : ''} — ${item.displayUnitPrice.toFixed(2)} ${currency} each — ${item.displayLineTotal.toFixed(2)} ${currency}`;
+      }),
       '',
       `Subtotal: ${displaySubtotal.toFixed(2)} ${currency}`,
       `Shipping: ${trustedQuoteRequired ? 'PENDING QUOTE' : `${displayShippingTotal.toFixed(2)} ${currency}`}`,
@@ -521,6 +526,9 @@ export default function CheckoutPage(): ReactElement {
             id: item.id,
             type: item.type,
             sku: item.sku,
+            variantKey: item.key,
+            size: String(item.size || ''),
+            color: String(item.color || ''),
             name: pick((item.name || "") as LocaleText),
             quantity,
             unitPrice: price,
@@ -830,42 +838,40 @@ export default function CheckoutPage(): ReactElement {
                   immediateCash={immediateLibyaCash}
                 />
 
-                {stagedOrder && (
-                  <div className="notice notice--info">
+                <div className={`checkout-context-card${shippingQuoteRequired ? ' is-pending' : ''}`}>
+                  <span className="checkout-context-card__icon" aria-hidden="true">
+                    <Icon name={shippingQuoteRequired ? 'alert' : deliveryProfile === 'ready' ? 'check' : 'orders'} size={20} />
+                  </span>
+                  <span className="checkout-context-card__copy">
                     <strong>
-                      {pick({ en: 'Wholesale payment terms', ar: 'شروط دفع الجملة' })}
+                      {shippingQuoteRequired
+                        ? pick({ en: 'Shipping quote required', ar: 'يحتاج تسعير الشحن' })
+                        : deliveryProfile === 'ready'
+                          ? pick({ en: 'Ready for delivery', ar: 'جاهز للتسليم' })
+                          : stagedOrder
+                            ? pick({ en: 'Made to order', ar: 'تصنيع حسب الطلب' })
+                            : pick({ en: 'Delivery', ar: 'التوصيل' })}
                     </strong>
-                    <p>
-                      {pick({
-                        en: '50% before production and 50% when the goods arrive. Estimated 30–60 days.',
-                        ar: '50% قبل التصنيع و50% عند وصول البضاعة. المدة التقديرية 30–60 يومًا.',
-                      })}
-                    </p>
-                  </div>
-                )}
-                {shippingQuoteRequired && (
-                  <div className="notice notice--info">
-                    <strong>
-                      {pick({
-                        en: 'Worldwide shipping — quote pending',
-                        ar: 'شحن عالمي — السعر قيد التحديد',
-                      })}
-                    </strong>
-                    <p>{pick(SHIPPING_MESSAGES.quoteRequired)}</p>
-                    <p>
-                      {pick({
-                        en: 'No payment is collected until the shipping price is added and approved.',
-                        ar: 'لن يتم تحصيل الدفع حتى تتم إضافة واعتماد سعر الشحن.',
-                      })}
-                    </p>
-                  </div>
-                )}
-                {!shippingQuoteRequired && (
-                  <div className="delivery-promise">
-                    <i className={deliveryProfile === 'ready' ? 'ready-dot' : ''} />
-                    <span>{pick(deliveryCopy)}</span>
-                  </div>
-                )}
+                    <small>
+                      {shippingQuoteRequired
+                        ? pick({
+                            en: 'Place the order now. We confirm the shipping price before collecting payment.',
+                            ar: 'أرسل الطلب الآن. نؤكد سعر الشحن قبل تحصيل أي دفع.',
+                          })
+                        : stagedOrder
+                          ? paymentMethod === 'cash' && cashPlan === 'full'
+                            ? pick({
+                                en: 'Paid in full at confirmation; production starts after approval.',
+                                ar: 'دفع كامل عند التأكيد؛ يبدأ الإنتاج بعد الاعتماد.',
+                              })
+                            : pick({
+                                en: '50% confirms production; the remaining 50% is due when the goods arrive.',
+                                ar: '50% لتأكيد الإنتاج، و50% عند وصول البضاعة.',
+                              })
+                          : pick(deliveryCopy)}
+                    </small>
+                  </span>
+                </div>
 
                 {errors.payment && (
                   <div className="form-error" role="alert">

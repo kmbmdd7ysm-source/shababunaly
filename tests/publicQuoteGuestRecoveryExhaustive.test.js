@@ -375,7 +375,7 @@ describe('guest order access and payment recovery APIs', { concurrency: false },
     await guestAccessHandler(req({ orderNumber: 'SHB-20260801-0000001', accessToken: token }), res);
     expect(res.body.order).toBe(null);
   });
-  it('fails captcha and trusted storage safely', async () => {
+  it('matches guest email directly and fails trusted storage safely', async () => {
     configure();
     process.env.TURNSTILE_TEST_MODE = 'false';
     vi.stubGlobal(
@@ -391,7 +391,8 @@ describe('guest order access and payment recovery APIs', { concurrency: false },
       req({ orderNumber: 'SHB-20260801-0000001', email: 'guest@example.com' }),
       res,
     );
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.order.order_number).toBe('SHB-20260801-0000001');
     process.env.TURNSTILE_TEST_MODE = 'true';
     vi.stubGlobal(
       'fetch',

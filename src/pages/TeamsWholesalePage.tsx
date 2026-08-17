@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import CountrySelect from '../components/common/CountrySelect';
-import TurnstileWidget from '../components/security/TurnstileWidget';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { submitPublicQuote } from '../services/publicQuotes';
@@ -25,14 +24,12 @@ export default function TeamsWholesalePage(): ReactElement {
   const [form, setForm] = useState({
     name: '', email: String(auth.user?.email || ''), phone: '', organization: String(meta.organization_name || ''), type: String(meta.organization_type || 'club'), country: 'LY', quantity: '10', deadline: '', needs: '',
   });
-  const [turnstileToken, setTurnstileToken] = useState('');
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState('');
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus('');
-    if (!turnstileToken) { setStatus(pick({ en: 'Complete the security check.', ar: 'أكمل فحص الأمان.' })); return; }
     setBusy(true);
     try {
       const result = await submitPublicQuote({
@@ -42,7 +39,6 @@ export default function TeamsWholesalePage(): ReactElement {
           productGroup: service, quantity: Number(form.quantity || 1), deadline: form.deadline, requirements: form.needs,
           paymentTerms: '50% before production / 50% on arrival', estimatedTimeline: '30–60 days', language: lang,
         },
-        turnstileToken,
         idempotencyKey: globalThis.crypto?.randomUUID?.(),
       }) as { quote?: Record<string, unknown> };
       setStatus(pick({ en: `Request ${String(result.quote?.quote_number || '')} received. Our team will contact you with the next step.`, ar: `تم استلام الطلب ${String(result.quote?.quote_number || '')}. سيتواصل معك فريقنا بالخطوة التالية.` }));
@@ -84,7 +80,6 @@ export default function TeamsWholesalePage(): ReactElement {
             <div className="field-row"><label className="field"><span>{pick({ en: 'Organization type', ar: 'نوع المؤسسة' })}</span><select value={form.type} onChange={(e)=>setForm({...form,type:e.target.value})}><option value="club">Club</option><option value="academy">Academy</option><option value="federation">Federation</option><option value="school_university">School / University</option><option value="wholesale">Wholesale</option></select></label><label className="field"><span>{pick({ en: 'Country', ar: 'الدولة' })}</span><CountrySelect value={form.country} onChange={(country)=>setForm({...form,country})} /></label></div>
             <div className="field-row"><label className="field"><span>{pick({ en: 'Estimated quantity', ar: 'الكمية التقديرية' })}</span><input required inputMode="numeric" value={form.quantity} onChange={(e)=>setForm({...form,quantity:e.target.value.replace(/\D/g,'')})} /></label><label className="field"><span>{pick({ en: 'Needed by', ar: 'الموعد المطلوب' })}</span><input type="date" value={form.deadline} onChange={(e)=>setForm({...form,deadline:e.target.value})} /></label></div>
             <label className="field"><span>{pick({ en: 'What do you need?', ar: 'شنو تحتاج؟' })}</span><textarea required rows={5} value={form.needs} onChange={(e)=>setForm({...form,needs:e.target.value})} placeholder={pick({ en: 'Example: 24 home/away uniforms, sizes ready, logo available.', ar: 'مثال: 24 طقم أساسي واحتياطي، المقاسات جاهزة، والشعار موجود.' })} /></label>
-            <TurnstileWidget onToken={setTurnstileToken} language={lang} optionalWhenUnconfigured />
             <button className="btn-primary block" disabled={busy}>{busy ? pick({ en: 'Sending…', ar: 'جارٍ الإرسال…' }) : pick({ en: 'Send team request', ar: 'إرسال طلب الفريق' })}</button>
             {status ? <p className="form-status" role="status">{status}</p> : null}
           </form>

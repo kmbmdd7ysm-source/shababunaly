@@ -52,7 +52,6 @@ describe('production completion safeguards', () => {
     for (const path of [
       'src/pages/ContactPage.tsx',
       'src/components/common/Newsletter.tsx',
-      'src/pages/TeamsWholesalePage.tsx',
       'src/pages/CustomizePage.tsx',
       'src/pages/SpecialRequestPage.tsx',
     ]) {

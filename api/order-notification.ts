@@ -114,8 +114,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         2,
       )
     : safe(input.message);
+  const notificationSubject = safe(input._subject || `New Shababuna order ${String(input.orderNumber)}`, 180);
   const params = new URLSearchParams({
-    _subject: safe(input._subject || `New Shababuna order ${String(input.orderNumber)}`, 180),
+    subject: notificationSubject,
+    _subject: notificationSubject,
     _template: 'table',
     form_type: 'order',
     order_number: safe(input.orderNumber, 80),

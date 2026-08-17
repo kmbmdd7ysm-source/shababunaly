@@ -29,17 +29,22 @@ export function normalizeFormspreePayload(
   const customerEmail = String(payload.customerEmail || payload.email || '')
     .trim()
     .toLowerCase();
+  const customerName = String(payload.customerName || payload.name || 'Shababuna customer');
+  const details = String(payload.details || payload.description || payload.message || '');
   const normalized: Record<string, string> = {
+    subject,
     _subject: subject,
     _template: 'table',
     request_type: String(payload.formType || payload.requestType || 'website'),
     reference_id: referenceOf(payload),
-    customer_name: String(payload.customerName || payload.name || 'Shababuna customer'),
+    name: customerName,
+    customer_name: customerName,
     customer_email: customerEmail,
     phone: String(payload.phone || ''),
     whatsapp: String(payload.whatsapp || ''),
     country: String(payload.country || payload.countryCode || ''),
-    details: String(payload.details || payload.description || payload.message || ''),
+    message: details,
+    details,
     amount: String(payload.amount ?? payload.total ?? payload.totalUsd ?? ''),
     currency: String(payload.currency || 'USD'),
     payment_method: String(payload.paymentMethod || ''),

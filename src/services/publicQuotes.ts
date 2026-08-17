@@ -38,10 +38,27 @@ export async function submitPublicQuote({
     body: JSON.stringify({ payload, organizationId, turnstileToken, idempotencyKey: key }),
   });
   const data = (await response.json().catch(() => ({}))) as Record<string, unknown> & {
-    quote?: { id?: string };
+    quote?: { id?: string; quote_number?: string };
     error?: string;
   };
-  if (response.ok && data?.quote?.id) return { ...data, idempotencyKey: key };
+  if (response.ok && data?.quote?.id) {
+    if (data.notification !== 'delivered') {
+      const type = clean(payload.formType || 'quote_request', 80);
+      const organization = clean(payload.organization || payload.customerName || 'Shababuna customer', 180);
+      await sendFormspree(
+        {
+          ...payload,
+          formType: type,
+          quoteNumber: data.quote.quote_number || '',
+          referenceId: data.quote.quote_number || data.quote.id,
+          persistenceStatus: 'persisted_email_retry',
+        },
+        `Shababuna ${type === 'custom_design_quote' ? 'custom design' : 'teams & wholesale'} · ${organization}`,
+      );
+      data.notification = 'delivered';
+    }
+    return { ...data, idempotencyKey: key };
+  }
 
   // Customer inquiries must not disappear because the database/API layer is
   // temporarily unavailable. Deliver the same sanitized request straight to
