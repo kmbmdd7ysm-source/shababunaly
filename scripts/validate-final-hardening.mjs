@@ -209,8 +209,10 @@ for (const token of [
 const commerceContext = read('src/context/CommerceContext.tsx');
 has(commerceContext, 'fetchPublicShippingRates', 'public country shipping rates');
 const hero = read('src/components/experience/CinematicHero.tsx');
-for (const token of ['home_hero', 'mobileVideoUrl', 'useReducedMotion', 'saveData'])
+for (const token of ['LOCAL_HERO_MEDIA', 'HERO.desktopVideo', 'HERO.mobileVideo', 'useReducedMotion', 'saveData'])
   has(hero, token, `hero runtime ${token}`);
+if (/fetchSiteContent|youtube|iframe|official-media/u.test(hero))
+  fail.push('Home hero must remain local-only and must not depend on runtime external media');
 
 for (const file of readdirSync('api').filter((name) => name.endsWith('.js'))) {
   try {

@@ -5,6 +5,7 @@ import SmartImage from '../components/common/SmartImage';
 import EditorialMedia from '../components/common/EditorialMedia';
 import { useLanguage } from '../context/LanguageContext';
 import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import '../styles/teams-stories.css';
 
 const stories = [
@@ -55,7 +56,14 @@ export default function OurWorkPage(): ReactElement {
             <p>{pick({ en: 'Campaigns, product intelligence, custom work and the basketball culture around what we sell.', ar: 'حملات ومعلومات منتجات وأعمال مخصصة وثقافة كرة السلة حول ما نقدمه.' })}</p>
           </div>
           <div className="story-hero-media">
-            <EditorialMedia desktopMedia={OFFICIAL_MEDIA.nikeKobeGroup} mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile} loading="eager" />
+            <EditorialMedia
+              desktopMedia={LOCAL_HERO_MEDIA.stories.desktopPoster}
+              mobileMedia={LOCAL_HERO_MEDIA.stories.mobilePoster}
+              desktopVideo={LOCAL_HERO_MEDIA.stories.desktopVideo}
+              mobileVideo={LOCAL_HERO_MEDIA.stories.mobileVideo}
+              poster={LOCAL_HERO_MEDIA.stories.desktopPoster}
+              loading="eager"
+            />
           </div>
         </header>
 

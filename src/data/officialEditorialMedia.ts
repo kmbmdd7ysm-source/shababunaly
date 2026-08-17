@@ -1,68 +1,47 @@
+/**
+ * Local-only editorial media registry.
+ *
+ * These aliases intentionally point to files shipped inside /public so the
+ * storefront never depends on a third-party CDN for critical imagery.
+ * The historical key names are preserved to avoid touching unrelated page logic.
+ */
 export const OFFICIAL_MEDIA = {
-  nikeWinningPoster:
-    'https://nmp.about.nike.com/about/prod/b3f9a9bd-e57a-4974-8df1-913f6e138f28/nike-oly-anthem-thumb-16x9-1x.jpg?m=eyJlZGl0cyI6eyJqcGVnIjp7InF1YWxpdHkiOjEwMH0sIndlYnAiOnsicXVhbGl0eSI6MTAwfSwiZXh0cmFjdCI6eyJsZWZ0IjowLCJ0b3AiOjAsIndpZHRoIjoxOTIwLCJoZWlnaHQiOjEwODB9LCJyZXNpemUiOnsid2lkdGgiOjM4NDB9fX0%3D&s=57195fc662f4c17b27e1b143fe2a5ef5776d0b7ebd1a9c2fd43d2190f8707177',
-  nikeWinningCollage:
-    'https://nmp.about.nike.com/about/prod/2c338b75-a0e3-4833-8d5a-fc9a925c46ac/nike-brand-anthem-lead-image.jpg?m=eyJlZGl0cyI6eyJqcGVnIjp7InF1YWxpdHkiOjEwMH0sIndlYnAiOnsicXVhbGl0eSI6MTAwfSwiZXh0cmFjdCI6eyJsZWZ0IjowLCJ0b3AiOjAsIndpZHRoIjozMjAwLCJoZWlnaHQiOjIxMzN9LCJyZXNpemUiOnsid2lkdGgiOjM4NDB9fX0%3D&s=06382fc2976fa1f0ced87c26b1e8f1877b6fd0b7c27e57d6d766a8b68ca9bae5',
-  nikeKobeHeroDesktop:
-    'https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_1824%2Cc_limit/3036dacb-a49c-4b39-8fd8-d4946ab58cb1/kobe-bryant.png',
-  nikeKobeHeroMobile:
-    'https://nmp.about.nike.com/about/prod/054e39db-eabb-42b4-b0ca-5f970bb2a60e/kobe-3-protro-1.jpeg?m=eyJlZGl0cyI6eyJqcGVnIjp7InF1YWxpdHkiOjEwMH0sIndlYnAiOnsicXVhbGl0eSI6MTAwfSwiZXh0cmFjdCI6eyJsZWZ0IjowLCJ0b3AiOjE1MCwid2lkdGgiOjMyMDAsImhlaWdodCI6MjEzM30sInJlc2l6ZSI6eyJ3aWR0aCI6Mzg0MH19fQ%3D%3D&s=ddacd7938e8b4e21ac8a19c09d23a202338f137390b1f7a6da220be6682f78a5',
-  nikeKobeGroup:
-    'https://nmp.about.nike.com/about/prod/0323ada7-f3eb-460c-88a9-14fdf2babff3/kobe-protro-footwear-group-featured-2.jpg?m=eyJlZGl0cyI6eyJqcGVnIjp7InF1YWxpdHkiOjEwMH0sIndlYnAiOnsicXVhbGl0eSI6MTAwfSwiZXh0cmFjdCI6eyJsZWZ0IjowLCJ0b3AiOjAsIndpZHRoIjozMjAwLCJoZWlnaHQiOjIxMzR9LCJyZXNpemUiOnsid2lkdGgiOjM4NDB9fX0%3D&s=9a6b1c147137c44b8de10c19647f653704e96d5a1457a878edc17435cb8916ff',
-  nikeKobeOne:
-    'https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/02a00d6f-a31d-4e63-a6a2-10db6b76ad6c/kobe-bryant.jpg',
-  nikeKobeTwo:
-    'https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/0c0bc6b2-52c3-4481-a4fc-6edb2e48a2cc/kobe-bryant.jpg',
-  nikeKobeThree:
-    'https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/f7190e02-7ca2-4bb4-9ce8-d82b6848b7b9/kobe-bryant.jpg',
-  nikeCustomGameTop:
-    'https://static.nike.com/a/images/t_PDP_144_v1/f_auto%2Cq_auto%3Aeco%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/9c9fa06e-dc6d-4658-b446-86ad752c1e8e/M%2BNK%2BDF%2BSI%2BGM%2BSL%2BTOP.png',
-  nikeCustomGameShorts:
-    'https://static.nike.com/a/images/t_PDP_144_v1/f_auto%2Cq_auto%3Aeco/5108ea6b-bad3-4721-8cd3-4e990ec6dec8/M%2BNK%2BDF%2BSI%2BGM%2BPRO%2B6IN%2BSHORT.png',
-  nikeCustomPracticeJersey:
-    'https://static.nike.com/a/images/t_PDP_144_v1/f_auto%2Cq_auto%3Aeco%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/54c32efa-6965-4dd8-a72c-e42274976018/M%2BNK%2BDF%2BSI%2BPRAC%2BMESH%2BJERSEY.png',
-  nikeCustomShootingShirt:
-    'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/912db4b1-9546-4677-8593-4a56d1bcd54c/M%2BNK%2BDF%2BSI%2BSS%2BTEE.png',
-  nikeCustomHoodie:
-    'https://static.nike.com/a/images/t_PDP_144_v1/f_auto%2Cq_auto%3Aeco/96b9673e-657d-4107-8ad7-4ebb37815855/KB%2BM%2BNK%2BDF%2BFLC%2BPO%2BHDY%2BSSNL2.png',
-  nikeCustomTeamPants:
-    'https://static.nike.com/a/images/t_PDP_144_v1/f_auto%2Cq_auto%3Aeco/84fa7cde-548c-480d-9969-830c2e3cc4ab/M%2BNK%2BDF%2BSI%2BPANT.png',
-  nikeCustomWarmupCrew:
-    'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/80cd0f5c-ea33-4532-bc09-2bbf20d3d947/M%2BNK%2BTF%2BSI%2BBRSH%2BCREW.png',
-  nikeCustomTeamBag:
-    'https://static.nike.com/a/images/t_PDP_144_v1/f_auto%2Cq_auto%3Aeco%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/1574438c-8f6d-4548-9daa-c99ac91f6437/NK%2BUSA%2BVARSITY%2BELITE%2BBKPK.png',
-  jordanCustomSleeve:
-    'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_126ab356-44d8-4a06-89b4-fcdcc8df0245%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/q0crfjmmndz16co7f5p0/JORDAN%2BSHOOTER%2BSLEEVES.png',
-  spaldingPolePad:
-    'https://assets.fotlinc.com/transform/spalding-large/066aa1ec-7893-4659-8cff-9d4b8e9df114/AC_8040SP_0_0_0_0_0',
-  nbKawhi:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw0c083df0/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Kawhi.jpg?sfrm=jpg&sw=1200',
-  nbTyrese:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw3de5b0d9/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Tyrese.jpg?sfrm=jpg&sw=1600',
-  nbCameron:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw17c91005/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cameron.jpg?sfrm=jpg&sw=1600',
-  nbCooper:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200',
-  nbDejounte:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw3359b724/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Dejounte.jpg?sfrm=jpg&sw=1200',
-  nbZach:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dwf8503979/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Zach.jpg?sfrm=jpg&sw=1200',
-  nbJamal:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw5faf97ad/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Jamal.jpg?sfrm=jpg&sw=1200',
-  nbAaron:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw9215a147/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Aaron.jpg?sfrm=jpg&sw=1200',
-  nbNickSmith:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dwc5325f89/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_SmithJR.jpg?sfrm=jpg&sw=1200',
-  nbDarius:
-    'https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw2e331ac0/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Darius-1.jpg?sfrm=jpg&sw=1200',
-  spaldingBall:
-    'https://assets.fotlinc.com/transform/spalding-large/759a09d8-8f68-4ba8-99c4-e1d02562b265/IN_77523E_0_0_0_0_0',
-  spaldingBackboard:
-    'https://assets.fotlinc.com/transform/spalding-large/027d1372-c2ad-4b84-a0f7-87785aaa85d7/EQ_791351_0_0_0_0_0',
-  spaldingPump:
-    'https://assets.fotlinc.com/transform/spalding-large/60b6351f-0925-4056-83dd-a23894f15e38/AC_8324SP_0_0_0_0_0',
-  nikeWinningCampaignPage:
-    'https://about.nike.com/en/newsroom/releases/winning-isnt-for-everyone-campaign',
-  newBalanceBasketballPage: 'https://www.newbalance.com/basketball/',
+  nikeWinningPoster: '/media/heroes/home-desktop.webp',
+  nikeWinningCollage: '/media/heroes/discover-desktop.webp',
+  nikeKobeHeroDesktop: '/media/heroes/footwear-desktop.webp',
+  nikeKobeHeroMobile: '/media/heroes/footwear-mobile.webp',
+  nikeKobeGroup: '/images/products/kobe/goat/kobe-8-halo.webp',
+  nikeKobeOne: '/images/products/kobe/goat/kobe-4-gold-medal.webp',
+  nikeKobeTwo: '/images/products/kobe/goat/kobe-5-chaos.webp',
+  nikeKobeThree: '/images/products/kobe/goat/kobe-10-rivalry.webp',
+
+  nikeCustomGameTop: '/images/products/lha-center-logo-tank-white.png',
+  nikeCustomGameShorts: '/images/products/lha-performance-shorts-black.png',
+  nikeCustomPracticeJersey: '/images/products/compression-tank-white.webp',
+  nikeCustomShootingShirt: '/images/products/lha-logo-performance-tee-grey.png',
+  nikeCustomHoodie: '/images/products/own-the-game-pullover-hoodie-grey.jpeg',
+  nikeCustomTeamPants: '/images/products/own-the-game-fleece-pants-black.jpeg',
+  nikeCustomWarmupCrew: '/images/products/own-the-game-crewneck-grey.jpeg',
+  nikeCustomTeamBag: '/images/products/lha-elite-basketball-backpack-white.jpeg',
+  jordanCustomSleeve: '/images/products/lha-one-leg-compression-tights-white.png',
+
+  spaldingPolePad: '/media/atmosphere/arena-wide-2048.webp',
+  spaldingBall: '/images/categories/accessories-hero-player.jpeg',
+  spaldingBackboard: '/media/atmosphere/arena-wide-1600.webp',
+  spaldingPump: '/images/products/lha-elite-basketball-backpack-black.jpeg',
+
+  nbKawhi: '/images/categories/clothing-hero-player.jpeg',
+  nbTyrese: '/images/categories/accessories-hero-player.jpeg',
+  nbCameron: '/images/products/own-the-game-pullover-hoodie-grey.jpeg',
+  nbCooper: '/images/products/lha-logo-performance-tee-grey.png',
+  nbDejounte: '/images/products/own-the-game-zip-hoodie-grey.jpeg',
+  nbZach: '/images/products/lha-center-logo-tank-black.png',
+  nbJamal: '/images/products/hoops-for-troops-tee-grey.png',
+  nbAaron: '/images/products/all-i-know-is-win-tee-white.png',
+  nbNickSmith: '/images/products/lha-one-leg-compression-tights-white.png',
+  nbDarius: '/images/products/lha-elite-basketball-backpack-camo.jpeg',
+
+  nikeWinningCampaignPage: '',
+  newBalanceBasketballPage: '',
   none: '',
 } as const;

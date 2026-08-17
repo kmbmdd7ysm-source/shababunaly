@@ -93,43 +93,6 @@ export default function ProductPage(): ReactElement {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [error, setError] = useState('');
   const [adding, setAdding] = useState(false);
-  const [marketplaceGallery, setMarketplaceGallery] = useState<string[]>([]);
-
-  useEffect(() => {
-    setMarketplaceGallery([]);
-    const sourceUrl = String(product?.sourceUrl || '').trim();
-    if (!product || !/^https:\/\/(?:www\.)?(?:goat\.com|stockx\.com)\//i.test(sourceUrl)) return;
-
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 7000);
-    const endpoint = `/api/marketplace-gallery?url=${encodeURIComponent(sourceUrl)}`;
-
-    void fetch(endpoint, {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-      signal: controller.signal,
-    })
-      .then(async (response) => {
-        if (!response.ok) return null;
-        return (await response.json()) as { images?: unknown };
-      })
-      .then((payload) => {
-        const images = Array.isArray(payload?.images)
-          ? payload.images.map(String).filter((src) => /^https:\/\//i.test(src))
-          : [];
-        if (images.length) setMarketplaceGallery(images);
-      })
-      .catch(() => {
-        /* Local product media remains the reliable fallback if a marketplace is unavailable. */
-      })
-      .finally(() => window.clearTimeout(timer));
-
-    return () => {
-      window.clearTimeout(timer);
-      controller.abort();
-    };
-  }, [product]);
-
   useEffect(() => {
     if (!product) return;
     record(product.id);
@@ -163,12 +126,11 @@ export default function ProductPage(): ReactElement {
       ...colors.map((entry) => entry.image).filter(Boolean),
       product.hoverImage,
       ...asGallery(product),
-      ...marketplaceGallery,
     ]
       .filter(Boolean)
       .map(String)
       .filter((src, index, list) => list.indexOf(src) === index);
-  }, [product, color, marketplaceGallery]);
+  }, [product, color]);
 
   if (!product) return <NotFoundPage />;
 

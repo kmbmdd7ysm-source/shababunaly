@@ -6,7 +6,7 @@ import ProductCard from '../components/shop/ProductCard';
 import { useCatalog } from '../context/CatalogContext';
 import { useCompare } from '../context/CompareContext';
 import { useLanguage } from '../context/LanguageContext';
-import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import {
   PERFORMANCE_METRICS,
   rankBasketballShoes,
@@ -60,9 +60,11 @@ export default function ShoeFinderPage(): ReactElement {
           </div>
           <div className="bf-hero-media" aria-hidden="true">
             <EditorialMedia
-              desktopMedia={OFFICIAL_MEDIA.nikeKobeThree}
-              mobileMedia={OFFICIAL_MEDIA.nikeKobeHeroMobile}
-              officialVideoSource="under-armour-curry-make-that-old"
+              desktopMedia={LOCAL_HERO_MEDIA.shoeFinder.desktopPoster}
+              mobileMedia={LOCAL_HERO_MEDIA.shoeFinder.mobilePoster}
+              desktopVideo={LOCAL_HERO_MEDIA.shoeFinder.desktopVideo}
+              mobileVideo={LOCAL_HERO_MEDIA.shoeFinder.mobileVideo}
+              poster={LOCAL_HERO_MEDIA.shoeFinder.desktopPoster}
               loading="eager"
             />
           </div>

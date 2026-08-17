@@ -353,8 +353,9 @@ function mergeMarketplaceProducts(
     const key = marketplaceProductKey(marketplaceProduct);
     const existingIndex = indexByKey.get(key);
     if (existingIndex == null) {
-      indexByKey.set(key, merged.length);
-      merged.push(marketplaceProduct);
+      // Reliability rule: never introduce a customer-facing product whose primary
+      // media only exists on a third-party marketplace CDN. Marketplace data may
+      // enrich an existing local product, but published media must ship locally.
       continue;
     }
 

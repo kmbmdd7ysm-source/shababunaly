@@ -11,6 +11,7 @@ import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { SITE } from '../config';
 import { CATEGORY_WORLDS, HOME_CAMPAIGN, HOME_TRENDS } from '../data/merchandising';
 import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import '../styles/design/phase2-home.css';
 import '../styles/design/phase2-commerce.css';
 
@@ -36,8 +37,8 @@ export default function HomePage(): ReactElement {
         path="/"
       />
       <Helmet>
-        <link rel="preload" as="image" href={OFFICIAL_MEDIA.nikeKobeHeroDesktop} media="(min-width: 768px)" />
-        <link rel="preload" as="image" href={OFFICIAL_MEDIA.nikeKobeHeroMobile} media="(max-width: 767px)" />
+        <link rel="preload" as="image" href={LOCAL_HERO_MEDIA.home.desktopPoster} media="(min-width: 768px)" />
+        <link rel="preload" as="image" href={LOCAL_HERO_MEDIA.home.mobilePoster} media="(max-width: 767px)" />
       </Helmet>
 
       <CinematicHero />
@@ -56,8 +57,6 @@ export default function HomePage(): ReactElement {
               <EditorialMedia
                 desktopMedia={world.desktopMedia}
                 mobileMedia={world.mobileMedia}
-                desktopVideo={world.desktopVideo}
-                mobileVideo={world.mobileVideo}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
               <span className="s2-editorial-tile__shade" />
@@ -114,8 +113,6 @@ export default function HomePage(): ReactElement {
               <EditorialMedia
                 desktopMedia={world.desktopMedia}
                 mobileMedia={world.mobileMedia}
-                desktopVideo={world.desktopVideo}
-                mobileVideo={world.mobileVideo}
               />
               <span className="s2-category-world__shade" />
               <strong>{pick(world.title)}</strong>

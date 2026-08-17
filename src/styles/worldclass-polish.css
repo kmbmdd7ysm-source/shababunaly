@@ -850,66 +850,66 @@ textarea {
 .gw-gate-shell[data-dept='clothing'],
 .gw-world-headband[data-dept='clothing'],
 .gw-world-headband[data-dept='all'] {
-  --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw0c083df0/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Kawhi.jpg?sfrm=jpg&sw=1200');
-  --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw0c083df0/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Kawhi.jpg?sfrm=jpg&sw=1200');
+  --gw-gate-art: url('/media/heroes/clothing-desktop.webp');
+  --gw-dept-art: url('/media/heroes/clothing-desktop.webp');
 }
 .gw-gate-shell[data-dept='footwear'],
 .gw-world-headband[data-dept='footwear'] {
-  --gw-gate-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/02a00d6f-a31d-4e63-a6a2-10db6b76ad6c/kobe-bryant.jpg');
-  --gw-dept-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/02a00d6f-a31d-4e63-a6a2-10db6b76ad6c/kobe-bryant.jpg');
+  --gw-gate-art: url('/media/heroes/footwear-desktop.webp');
+  --gw-dept-art: url('/media/heroes/footwear-desktop.webp');
 }
 .gw-gate-shell[data-dept='accessories'],
 .gw-world-headband[data-dept='accessories'] {
-  --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw5faf97ad/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Jamal.jpg?sfrm=jpg&sw=1200');
-  --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw5faf97ad/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Jamal.jpg?sfrm=jpg&sw=1200');
+  --gw-gate-art: url('/media/heroes/teams-desktop.webp');
+  --gw-dept-art: url('/media/heroes/teams-desktop.webp');
 }
 .gw-gate-shell[data-dept='basketballs'],
 .gw-world-headband[data-dept='basketballs'] {
-  --gw-gate-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/0c0bc6b2-52c3-4481-a4fc-6edb2e48a2cc/kobe-bryant.jpg');
-  --gw-dept-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/0c0bc6b2-52c3-4481-a4fc-6edb2e48a2cc/kobe-bryant.jpg');
+  --gw-gate-art: url('/media/heroes/shoe-finder-desktop.webp');
+  --gw-dept-art: url('/media/heroes/shoe-finder-desktop.webp');
 }
 .gw-gate-shell[data-dept='equipment'],
 .gw-world-headband[data-dept='equipment'] {
-  --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200');
-  --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200');
+  --gw-gate-art: url('/media/heroes/custom-desktop.webp');
+  --gw-dept-art: url('/media/heroes/custom-desktop.webp');
 }
 .gw-gate-shell[data-dept='ready-to-ship'],
 .gw-world-headband[data-dept='ready-to-ship'] {
-  --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw3359b724/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Dejounte.jpg?sfrm=jpg&sw=1200');
-  --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw3359b724/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Dejounte.jpg?sfrm=jpg&sw=1200');
+  --gw-gate-art: url('/media/heroes/stories-desktop.webp');
+  --gw-dept-art: url('/media/heroes/stories-desktop.webp');
 }
 
 @media (max-width: 640px) {
   .gw-gate-shell[data-dept='clothing'],
   .gw-world-headband[data-dept='clothing'],
   .gw-world-headband[data-dept='all'] {
-    --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw0c083df0/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Kawhi.jpg?sfrm=jpg&sw=1200');
-    --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw0c083df0/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Kawhi.jpg?sfrm=jpg&sw=1200');
+    --gw-gate-art: url('/media/heroes/clothing-desktop.webp');
+    --gw-dept-art: url('/media/heroes/clothing-desktop.webp');
   }
   .gw-gate-shell[data-dept='footwear'],
   .gw-world-headband[data-dept='footwear'] {
-    --gw-gate-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/02a00d6f-a31d-4e63-a6a2-10db6b76ad6c/kobe-bryant.jpg');
-    --gw-dept-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/02a00d6f-a31d-4e63-a6a2-10db6b76ad6c/kobe-bryant.jpg');
+    --gw-gate-art: url('/media/heroes/footwear-desktop.webp');
+    --gw-dept-art: url('/media/heroes/footwear-desktop.webp');
   }
   .gw-gate-shell[data-dept='accessories'],
   .gw-world-headband[data-dept='accessories'] {
-    --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw5faf97ad/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Jamal.jpg?sfrm=jpg&sw=1200');
-    --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw5faf97ad/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Jamal.jpg?sfrm=jpg&sw=1200');
+    --gw-gate-art: url('/media/heroes/teams-desktop.webp');
+    --gw-dept-art: url('/media/heroes/teams-desktop.webp');
   }
   .gw-gate-shell[data-dept='basketballs'],
   .gw-world-headband[data-dept='basketballs'] {
-    --gw-gate-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/0c0bc6b2-52c3-4481-a4fc-6edb2e48a2cc/kobe-bryant.jpg');
-    --gw-dept-art: url('https://static.nike.com/a/images/f_auto/dpr_1.0%2Ccs_srgb/w_906%2Cc_limit/0c0bc6b2-52c3-4481-a4fc-6edb2e48a2cc/kobe-bryant.jpg');
+    --gw-gate-art: url('/media/heroes/shoe-finder-desktop.webp');
+    --gw-dept-art: url('/media/heroes/shoe-finder-desktop.webp');
   }
   .gw-gate-shell[data-dept='equipment'],
   .gw-world-headband[data-dept='equipment'] {
-    --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200');
-    --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200');
+    --gw-gate-art: url('/media/heroes/custom-desktop.webp');
+    --gw-dept-art: url('/media/heroes/custom-desktop.webp');
   }
   .gw-gate-shell[data-dept='ready-to-ship'],
   .gw-world-headband[data-dept='ready-to-ship'] {
-    --gw-gate-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw3359b724/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Dejounte.jpg?sfrm=jpg&sw=1200');
-    --gw-dept-art: url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw3359b724/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Dejounte.jpg?sfrm=jpg&sw=1200');
+    --gw-gate-art: url('/media/heroes/stories-desktop.webp');
+    --gw-dept-art: url('/media/heroes/stories-desktop.webp');
   }
 }
 

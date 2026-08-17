@@ -9,6 +9,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
 import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { CUSTOM_COLOR_OPTIONS } from '../components/custom/customColors';
 import '../styles/custom-experience.css';
 import '../styles/domain-forms.css';
@@ -108,9 +109,11 @@ export default function CustomizePage(): ReactElement {
         <header className="cx-hero cx-hero--editorial">
           <div className="cx-hero-media" aria-hidden="true">
             <EditorialMedia
-              desktopMedia={OFFICIAL_MEDIA.nbCooper}
-              mobileMedia={OFFICIAL_MEDIA.nbJamal}
-              officialVideoSource="jordan-too-easy"
+              desktopMedia={LOCAL_HERO_MEDIA.custom.desktopPoster}
+              mobileMedia={LOCAL_HERO_MEDIA.custom.mobilePoster}
+              desktopVideo={LOCAL_HERO_MEDIA.custom.desktopVideo}
+              mobileVideo={LOCAL_HERO_MEDIA.custom.mobileVideo}
+              poster={LOCAL_HERO_MEDIA.custom.desktopPoster}
               loading="eager"
             />
             <span className="cx-hero-media__shade" />

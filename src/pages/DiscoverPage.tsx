@@ -7,6 +7,7 @@ import EmptyState from '../components/common/EmptyState';
 import { useCatalog, type CatalogProduct } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
 import { DISCOVER_COLLECTIONS, type DiscoverCollection } from '../data/merchandising';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { isReadyToShipEligible } from '../utils/productEligibility';
 import '../styles/design/phase2-discovery.css';
 import '../styles/design/phase2-commerce.css';
@@ -65,8 +66,17 @@ export default function DiscoverPage(): ReactElement {
           path="/discover"
         />
 
-        <header className="s2-discover-head">
-          <div className="s2-container">
+        <header className="s2-discover-hero s2-discover-hero--landing">
+          <EditorialMedia
+            desktopMedia={LOCAL_HERO_MEDIA.discover.desktopPoster}
+            mobileMedia={LOCAL_HERO_MEDIA.discover.mobilePoster}
+            desktopVideo={LOCAL_HERO_MEDIA.discover.desktopVideo}
+            mobileVideo={LOCAL_HERO_MEDIA.discover.mobileVideo}
+            poster={LOCAL_HERO_MEDIA.discover.desktopPoster}
+            loading="eager"
+          />
+          <span className="s2-discover-hero__shade" />
+          <div className="s2-discover-hero__copy">
             <span className="s2-overline">Shababuna</span>
             <h1>{pick({ en: 'Discover', ar: 'اكتشف' })}</h1>
             <p>{pick({ en: 'Products, drops and the game around them.', ar: 'منتجات وإصدارات وكل ما يدور حول اللعبة.' })}</p>
@@ -83,9 +93,6 @@ export default function DiscoverPage(): ReactElement {
               <EditorialMedia
                 desktopMedia={collection.desktopMedia}
                 mobileMedia={collection.mobileMedia}
-                desktopVideo={collection.desktopVideo}
-                mobileVideo={collection.mobileVideo}
-                officialVideoSource={collection.officialVideoSource}
                 loading={index < 2 ? 'eager' : 'lazy'}
               />
               <span className="s2-discover-card__shade" />
@@ -112,9 +119,6 @@ export default function DiscoverPage(): ReactElement {
         <EditorialMedia
           desktopMedia={current.desktopMedia}
           mobileMedia={current.mobileMedia}
-          desktopVideo={current.desktopVideo}
-          mobileVideo={current.mobileVideo}
-          officialVideoSource={current.officialVideoSource}
           loading="eager"
         />
         <span className="s2-discover-hero__shade" />

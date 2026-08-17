@@ -9,11 +9,11 @@ const required = [
 
 
 const shell = readFileSync('index.html', 'utf8');
-if (!/rel="preload"[\s\S]{0,500}href="https:\/\/(?:static|nmp)\.nike\.com\//i.test(shell)) {
-  failures.push('Home hero preload must use the optimized official Nike CDN source');
+if (!/rel="preload"[\s\S]{0,500}href="\/media\/heroes\/home-desktop\.webp"/i.test(shell)) {
+  failures.push('Home hero preload must use the local optimized desktop poster');
 }
-if (/public\/media\/hero\/shababuna-hero/i.test(shell)) {
-  failures.push('Home shell still references bundled experimental hero media');
+if (/https:\/\/(?:static|nmp)\.nike\.com/i.test(shell)) {
+  failures.push('Home shell must not depend on a third-party hero CDN');
 }
 
 for (const [file, maximum] of required) {
@@ -46,7 +46,7 @@ for (const file of walk('public')) {
     statSync(file).size > 4_000_000
   ) {
     failures.push(
-      `${file} is bundled above the 4 MB launch-media budget; use an external optimized source`,
+      `${file} is bundled above the 4 MB launch-media budget; compress the local hero video`,
     );
   }
 }
@@ -58,5 +58,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; hero media uses the official external CDN and no oversized launch video is bundled.`,
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; critical hero media is local and no launch video exceeds 4 MB.`,
 );

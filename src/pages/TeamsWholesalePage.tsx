@@ -8,6 +8,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { OFFICIAL_MEDIA } from '../data/officialEditorialMedia.ts';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import '../styles/domain-forms.css';
 import '../styles/teams-stories.css';
 
@@ -55,7 +56,14 @@ export default function TeamsWholesalePage(): ReactElement {
       <main className="tw-page">
         <header className="tw-hero">
           <div className="tw-hero-copy"><p>SHABABUNA TEAM</p><h1>{pick({ en: 'Build your program.', ar: 'جهّز فريقك.' })}</h1><span>{pick({ en: 'Uniforms, training, teamwear and equipment — handled through one Shababuna team.', ar: 'أطقم لعب وتدريب وملابس فريق ومعدات — كلها عبر فريق شبابنا.' })}</span><a href="#team-quote" className="btn-primary">{pick({ en: 'Start a team request', ar: 'ابدأ طلب فريق' })}</a></div>
-          <div className="tw-hero-visual"><EditorialMedia desktopMedia={OFFICIAL_MEDIA.nbCooper} mobileMedia={OFFICIAL_MEDIA.nbJamal} loading="eager" /></div>
+          <div className="tw-hero-visual"><EditorialMedia
+            desktopMedia={LOCAL_HERO_MEDIA.teams.desktopPoster}
+            mobileMedia={LOCAL_HERO_MEDIA.teams.mobilePoster}
+            desktopVideo={LOCAL_HERO_MEDIA.teams.desktopVideo}
+            mobileVideo={LOCAL_HERO_MEDIA.teams.mobileVideo}
+            poster={LOCAL_HERO_MEDIA.teams.desktopPoster}
+            loading="eager"
+          /></div>
         </header>
 
         <section className="tw-services" aria-labelledby="tw-services-title">

@@ -15,6 +15,7 @@ import Icon from '../components/icons/Icon';
 import { useCatalog } from '../context/CatalogContext';
 import { categories, getCategory, getSubcategory } from '../data/categories';
 import { CATEGORY_WORLDS, SHOP_CAMPAIGN } from '../data/merchandising';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { lockDocumentScroll } from '../utils/scrollLock';
 import { isReadyToShipEligible, type ProductLike } from '../utils/productEligibility';
 import '../styles/design/phase2-shop.css';
@@ -197,6 +198,7 @@ export default function ShopPage(): ReactElement {
     + Number(filters.inStock) + Number(filters.readyOnly && category !== 'ready-to-ship') + Number(filters.newOnly)
     + Number(filters.bestOnly) + Number(filters.customizableOnly) + Number(Boolean(filters.priceMin)) + Number(Boolean(filters.priceMax));
   const world = CATEGORY_WORLDS.find((entry) => entry.slug === category);
+  const categoryHero = category === 'footwear' ? LOCAL_HERO_MEDIA.footwear : category === 'clothing' ? LOCAL_HERO_MEDIA.clothing : null;
   const showShopHero = !category && activeCount === 0 && sort === 'featured';
   const featured = featuredProducts().slice(0, 4);
 
@@ -215,7 +217,6 @@ export default function ShopPage(): ReactElement {
             mobileMedia={SHOP_CAMPAIGN.mobileMedia}
             desktopVideo={SHOP_CAMPAIGN.desktopVideo}
             mobileVideo={SHOP_CAMPAIGN.mobileVideo}
-            officialVideoSource={SHOP_CAMPAIGN.officialVideoSource}
             loading="eager"
           />
           <span className="s2-shop-hero__shade" />
@@ -242,9 +243,9 @@ export default function ShopPage(): ReactElement {
           <EditorialMedia
             desktopMedia={world.desktopMedia}
             mobileMedia={world.mobileMedia}
-            desktopVideo={world.desktopVideo}
-            mobileVideo={world.mobileVideo}
-            officialVideoSource={world.officialVideoSource}
+            desktopVideo={categoryHero?.desktopVideo}
+            mobileVideo={categoryHero?.mobileVideo}
+            poster={categoryHero?.desktopPoster || world.desktopMedia}
           />
           <span className="s2-category-banner__shade" />
           <strong>{pick(world.title)}</strong>

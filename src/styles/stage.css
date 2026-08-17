@@ -575,8 +575,8 @@
   z-index: 0;
   pointer-events: none;
   background-image: image-set(
-    url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200') 1x,
-    url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200') 2x
+    url('/media/heroes/custom-desktop.webp') 1x,
+    url('/media/heroes/custom-desktop.webp') 2x
   );
   background-size: cover;
   background-position: center 62%;
@@ -585,7 +585,7 @@
 
 @media (max-width: 899px) {
   .gw-stage-canvas::before {
-    background-image: image-set(url('https://www.newbalance.com/dw/image/v2/AAGI_PRD/on/demandware.static/-/Library-Sites-NBUS-NBCA/default/dw31afcce6/images/page-designer/2026/February/NB-5214_HCB_Roster_Image_Cooper.jpg?sfrm=jpg&sw=1200') 1x);
+    background-image: image-set(url('/media/heroes/custom-desktop.webp') 1x);
     background-position: center 58%;
   }
 }
