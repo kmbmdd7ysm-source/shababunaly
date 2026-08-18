@@ -102,59 +102,75 @@ export default function ContactPage(): ReactElement {
             ) : (
               <form className="contact-form" onSubmit={(e) => { void submit(e); }} noValidate>
                 <label className="field" data-field="type">
-                  <span>{pick({ en: 'Inquiry type', ar: 'نوع الاستفسار' })}</span>
-                  <select value={form.type} onChange={set('type')}>
+                  <span className="field__label">{pick({ en: 'Inquiry type', ar: 'نوع الاستفسار' })}</span>
+                  <div className="field__control field__control--select">
+                    <select value={form.type} onChange={set('type')}>
                     {types.map(([key, label]) => (
                       <option key={String(key)} value={String(key)}>
                         {pick(label as { en: string; ar: string })}
                       </option>
                     ))}
-                  </select>
+                    </select>
+                  </div>
                 </label>
                 <div className="field-row">
                   <label className="field" data-field="name">
-                    <span>{pick({ en: 'Full name', ar: 'الاسم الكامل' })}</span>
-                    <input value={form.name} onChange={set('name')} autoComplete="name" />
+                    <span className="field__label">{pick({ en: 'Full name', ar: 'الاسم الكامل' })}</span>
+                    <div className="field__control">
+                      <input value={form.name} onChange={set('name')} autoComplete="name" />
+                    </div>
                     {errors.name && <span className="form-error">{errors.name}</span>}
                   </label>
                   <label className="field" data-field="email">
-                    <span>Email</span>
-                    <input
+                    <span className="field__label">Email</span>
+                    <div className="field__control field__control--latin">
+                      <input
                       type="email"
                       value={form.email}
                       onChange={set('email')}
                       autoComplete="email"
-                    />
+                      />
+                    </div>
                     {errors.email && <span className="form-error">{errors.email}</span>}
                   </label>
                 </div>
                 <div className="field-row">
                   <label className="field" data-field="phone">
-                    <span>{pick({ en: 'Phone / WhatsApp', ar: 'الهاتف / واتساب' })}</span>
-                    <input value={form.phone} onChange={set('phone')} autoComplete="tel" />
+                    <span className="field__label">{pick({ en: 'Phone / WhatsApp', ar: 'الهاتف / واتساب' })}</span>
+                    <div className="field__control field__control--latin">
+                      <input value={form.phone} onChange={set('phone')} autoComplete="tel" />
+                    </div>
                   </label>
                   <label className="field" data-field="country">
-                    <span>{pick({ en: 'Country', ar: 'الدولة' })}</span>
-                    <input
+                    <span className="field__label">{pick({ en: 'Country', ar: 'الدولة' })}</span>
+                    <div className="field__control">
+                      <input
                       value={form.country}
                       onChange={set('country')}
                       autoComplete="country-name"
-                    />
+                      />
+                    </div>
                   </label>
                 </div>
                 <label className="field" data-field="organization">
-                  <span>{pick({ en: 'Organization', ar: 'المؤسسة' })}</span>
-                  <input value={form.organization} onChange={set('organization')} />
+                  <span className="field__label">{pick({ en: 'Organization', ar: 'المؤسسة' })}</span>
+                  <div className="field__control">
+                    <input value={form.organization} onChange={set('organization')} />
+                  </div>
                 </label>
                 {form.type === 'order' && (
                   <label className="field" data-field="order-number">
-                    <span>{pick({ en: 'Order number', ar: 'رقم الطلب' })}</span>
-                    <input value={form.orderNumber} onChange={set('orderNumber')} />
+                    <span className="field__label">{pick({ en: 'Order number', ar: 'رقم الطلب' })}</span>
+                    <div className="field__control field__control--latin">
+                      <input value={form.orderNumber} onChange={set('orderNumber')} />
+                    </div>
                   </label>
                 )}
                 <label className="field" data-field="message">
-                  <span>{pick({ en: 'How can we help?', ar: 'كيف يمكننا مساعدتك؟' })}</span>
-                  <textarea rows={7} value={form.message} onChange={set('message')} />
+                  <span className="field__label">{pick({ en: 'How can we help?', ar: 'كيف يمكننا مساعدتك؟' })}</span>
+                  <div className="field__control field__control--textarea">
+                    <textarea rows={7} value={form.message} onChange={set('message')} />
+                  </div>
                   {errors.message && <span className="form-error">{errors.message}</span>}
                 </label>
                 <label className="field-check">

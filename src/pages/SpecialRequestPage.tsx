@@ -240,48 +240,60 @@ export default function SpecialRequestPage(): ReactElement {
           >
             <div className="field-row">
               <label className="field" data-field="name">
-                <span>{pick({ en: 'Customer name', ar: 'اسم العميل' })}</span>
-                <input
-                  required
-                  minLength={2}
-                  autoComplete="name"
-                  value={form.customerName}
-                  onChange={(e) => set('customerName', e.target.value)}
-                />
+                <span className="field__label">{pick({ en: 'Customer name', ar: 'اسم العميل' })}</span>
+                <div className="field__control">
+                  <input
+                    required
+                    minLength={2}
+                    autoComplete="name"
+                    value={form.customerName}
+                    onChange={(e) => set('customerName', e.target.value)}
+                  />
+                </div>
               </label>
               <label className="field" data-field="email">
-                <span>Email</span>
-                <input
-                  required
-                  type="email"
-                  autoComplete="email"
-                  value={form.email}
-                  onChange={(e) => set('email', e.target.value)}
-                />
+                <span className="field__label">Email</span>
+                <div className="field__control field__control--latin">
+                  <input
+                    required
+                    type="email"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => set('email', e.target.value)}
+                  />
+                </div>
               </label>
             </div>
-            <label className="field" data-field="phone">
-              <span>{pick({ en: 'Phone', ar: 'الهاتف' })}</span>
-              <input
-                autoComplete="tel"
-                value={form.phone}
-                onChange={(e) => set('phone', e.target.value)}
-              />
-            </label>
-            <label className="field" data-field="country">
-              <span>{pick({ en: 'Country', ar: 'الدولة' })}</span>
-              <CountrySelect value={form.country} onChange={(value) => set('country', value)} />
-            </label>
+            <div className="field-row">
+              <label className="field" data-field="phone">
+                <span className="field__label">{pick({ en: 'Phone', ar: 'الهاتف' })}</span>
+                <div className="field__control field__control--latin">
+                  <input
+                    autoComplete="tel"
+                    value={form.phone}
+                    onChange={(e) => set('phone', e.target.value)}
+                  />
+                </div>
+              </label>
+              <label className="field" data-field="country">
+                <span className="field__label">{pick({ en: 'Country', ar: 'الدولة' })}</span>
+                <div className="field__control">
+                  <CountrySelect value={form.country} onChange={(value) => set('country', value)} />
+                </div>
+              </label>
+            </div>
             <label className="field" data-field="product-name">
-              <span>{pick({ en: 'Product name', ar: 'اسم المنتج' })}</span>
-              <input
-                value={form.productName}
-                onChange={(e) => set('productName', e.target.value)}
-                placeholder={pick({
-                  en: 'What are you looking for?',
-                  ar: 'عمّ تبحث؟',
-                })}
-              />
+              <span className="field__label">{pick({ en: 'Product name', ar: 'اسم المنتج' })}</span>
+              <div className="field__control">
+                <input
+                  value={form.productName}
+                  onChange={(e) => set('productName', e.target.value)}
+                  placeholder={pick({
+                    en: 'What are you looking for?',
+                    ar: 'عمّ تبحث؟',
+                  })}
+                />
+              </div>
             </label>
             <fieldset className="special-reference">
               <legend>
@@ -291,17 +303,19 @@ export default function SpecialRequestPage(): ReactElement {
                 })}
               </legend>
               <label className="field" data-field="product-link">
-                <span>{pick({ en: 'Product link', ar: 'رابط المنتج' })}</span>
-                <input
-                  type="url"
-                  inputMode="url"
-                  placeholder="https://"
-                  value={form.productUrl}
-                  onChange={(e) => set('productUrl', e.target.value)}
-                />
+                <span className="field__label">{pick({ en: 'Product link', ar: 'رابط المنتج' })}</span>
+                <div className="field__control field__control--latin">
+                  <input
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://"
+                    value={form.productUrl}
+                    onChange={(e) => set('productUrl', e.target.value)}
+                  />
+                </div>
               </label>
               <label className="custom-upload">
-                <span>{pick({ en: 'Product image', ar: 'صورة المنتج' })}</span>
+                <span className="field__label">{pick({ en: 'Product image', ar: 'صورة المنتج' })}</span>
                 <input
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
@@ -317,12 +331,14 @@ export default function SpecialRequestPage(): ReactElement {
               </label>
             </fieldset>
             <label className="field" data-field="message">
-              <span>{pick({ en: 'Short note (optional)', ar: 'ملاحظة قصيرة (اختياري)' })}</span>
-              <textarea
-                rows={3}
-                value={form.description}
-                onChange={(e) => set('description', e.target.value)}
-              />
+              <span className="field__label">{pick({ en: 'Short note (optional)', ar: 'ملاحظة قصيرة (اختياري)' })}</span>
+              <div className="field__control field__control--textarea">
+                <textarea
+                  rows={3}
+                  value={form.description}
+                  onChange={(e) => set('description', e.target.value)}
+                />
+              </div>
             </label>
             <label className="checkbox-line">
               <input

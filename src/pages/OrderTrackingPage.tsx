@@ -158,19 +158,22 @@ export default function OrderTrackingPage(): ReactElement {
               noValidate
             >
               <label className="field" data-field="order-number">
-                <span>{ot.orderNumber}</span>
-                <input
+                <span className="field__label">{ot.orderNumber}</span>
+                <div className="field__control field__control--latin">
+                  <input
                   value={orderNumber}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     setOrderNumber(event.target.value)
                   }
                   autoComplete="off"
                   required
-                />
+                  />
+                </div>
               </label>
               <label className="field" data-field="email">
-                <span>{ot.email}</span>
-                <input
+                <span className="field__label">{ot.email}</span>
+                <div className="field__control field__control--latin">
+                  <input
                   type="email"
                   value={email}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -178,7 +181,8 @@ export default function OrderTrackingPage(): ReactElement {
                   }
                   autoComplete="email"
                   required
-                />
+                  />
+                </div>
               </label>
               <button
                 type="submit"
