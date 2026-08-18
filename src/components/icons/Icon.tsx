@@ -224,7 +224,7 @@ export default function Icon({
   const icon = paths[name as keyof typeof paths];
   return (
     <svg
-      className={className}
+      className={`sh-icon ${className}`.trim()}
       viewBox="0 0 24 24"
       width={size}
       height={size}

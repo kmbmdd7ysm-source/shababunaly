@@ -40,6 +40,7 @@ import App from './App';
 import './styles/worldclass-polish.css';
 import './styles/customer-experience.css';
 import './styles/arabic-hardening.css';
+import './styles/icon-hardening.css';
 
 installGlobalErrorMonitoring();
 
