@@ -41,6 +41,7 @@ import './styles/worldclass-polish.css';
 import './styles/customer-experience.css';
 import './styles/arabic-hardening.css';
 import './styles/icon-hardening.css';
+import './styles/form-control-luxury.css';
 
 installGlobalErrorMonitoring();
 

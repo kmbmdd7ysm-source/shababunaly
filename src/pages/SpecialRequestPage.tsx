@@ -239,7 +239,7 @@ export default function SpecialRequestPage(): ReactElement {
             noValidate
           >
             <div className="field-row">
-              <label className="field">
+              <label className="field" data-field="name">
                 <span>{pick({ en: 'Customer name', ar: 'اسم العميل' })}</span>
                 <input
                   required
@@ -249,7 +249,7 @@ export default function SpecialRequestPage(): ReactElement {
                   onChange={(e) => set('customerName', e.target.value)}
                 />
               </label>
-              <label className="field">
+              <label className="field" data-field="email">
                 <span>Email</span>
                 <input
                   required
@@ -260,7 +260,7 @@ export default function SpecialRequestPage(): ReactElement {
                 />
               </label>
             </div>
-            <label className="field">
+            <label className="field" data-field="phone">
               <span>{pick({ en: 'Phone', ar: 'الهاتف' })}</span>
               <input
                 autoComplete="tel"
@@ -268,11 +268,11 @@ export default function SpecialRequestPage(): ReactElement {
                 onChange={(e) => set('phone', e.target.value)}
               />
             </label>
-            <label className="field">
+            <label className="field" data-field="country">
               <span>{pick({ en: 'Country', ar: 'الدولة' })}</span>
               <CountrySelect value={form.country} onChange={(value) => set('country', value)} />
             </label>
-            <label className="field">
+            <label className="field" data-field="product-name">
               <span>{pick({ en: 'Product name', ar: 'اسم المنتج' })}</span>
               <input
                 value={form.productName}
@@ -290,7 +290,7 @@ export default function SpecialRequestPage(): ReactElement {
                   ar: 'رابط أو صورة — واحد على الأقل يساعدنا',
                 })}
               </legend>
-              <label className="field">
+              <label className="field" data-field="product-link">
                 <span>{pick({ en: 'Product link', ar: 'رابط المنتج' })}</span>
                 <input
                   type="url"
@@ -316,7 +316,7 @@ export default function SpecialRequestPage(): ReactElement {
                 </small>
               </label>
             </fieldset>
-            <label className="field">
+            <label className="field" data-field="message">
               <span>{pick({ en: 'Short note (optional)', ar: 'ملاحظة قصيرة (اختياري)' })}</span>
               <textarea
                 rows={3}

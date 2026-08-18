@@ -157,7 +157,7 @@ export default function OrderTrackingPage(): ReactElement {
               }}
               noValidate
             >
-              <label className="field">
+              <label className="field" data-field="order-number">
                 <span>{ot.orderNumber}</span>
                 <input
                   value={orderNumber}
@@ -168,7 +168,7 @@ export default function OrderTrackingPage(): ReactElement {
                   required
                 />
               </label>
-              <label className="field">
+              <label className="field" data-field="email">
                 <span>{ot.email}</span>
                 <input
                   type="email"

@@ -101,7 +101,7 @@ export default function ContactPage(): ReactElement {
               </div>
             ) : (
               <form className="contact-form" onSubmit={(e) => { void submit(e); }} noValidate>
-                <label className="field">
+                <label className="field" data-field="type">
                   <span>{pick({ en: 'Inquiry type', ar: 'نوع الاستفسار' })}</span>
                   <select value={form.type} onChange={set('type')}>
                     {types.map(([key, label]) => (
@@ -112,12 +112,12 @@ export default function ContactPage(): ReactElement {
                   </select>
                 </label>
                 <div className="field-row">
-                  <label className="field">
+                  <label className="field" data-field="name">
                     <span>{pick({ en: 'Full name', ar: 'الاسم الكامل' })}</span>
                     <input value={form.name} onChange={set('name')} autoComplete="name" />
                     {errors.name && <span className="form-error">{errors.name}</span>}
                   </label>
-                  <label className="field">
+                  <label className="field" data-field="email">
                     <span>Email</span>
                     <input
                       type="email"
@@ -129,11 +129,11 @@ export default function ContactPage(): ReactElement {
                   </label>
                 </div>
                 <div className="field-row">
-                  <label className="field">
+                  <label className="field" data-field="phone">
                     <span>{pick({ en: 'Phone / WhatsApp', ar: 'الهاتف / واتساب' })}</span>
                     <input value={form.phone} onChange={set('phone')} autoComplete="tel" />
                   </label>
-                  <label className="field">
+                  <label className="field" data-field="country">
                     <span>{pick({ en: 'Country', ar: 'الدولة' })}</span>
                     <input
                       value={form.country}
@@ -142,17 +142,17 @@ export default function ContactPage(): ReactElement {
                     />
                   </label>
                 </div>
-                <label className="field">
+                <label className="field" data-field="organization">
                   <span>{pick({ en: 'Organization', ar: 'المؤسسة' })}</span>
                   <input value={form.organization} onChange={set('organization')} />
                 </label>
                 {form.type === 'order' && (
-                  <label className="field">
+                  <label className="field" data-field="order-number">
                     <span>{pick({ en: 'Order number', ar: 'رقم الطلب' })}</span>
                     <input value={form.orderNumber} onChange={set('orderNumber')} />
                   </label>
                 )}
-                <label className="field">
+                <label className="field" data-field="message">
                   <span>{pick({ en: 'How can we help?', ar: 'كيف يمكننا مساعدتك؟' })}</span>
                   <textarea rows={7} value={form.message} onChange={set('message')} />
                   {errors.message && <span className="form-error">{errors.message}</span>}

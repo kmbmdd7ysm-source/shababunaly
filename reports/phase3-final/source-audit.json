@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T20:03:39.708Z",
+  "generatedAt": "2026-08-18T20:15:22.335Z",
   "phase": 3,
   "scope": "destruction source QA and release-honesty pass",
   "sourcePassed": true,
@@ -19,8 +19,8 @@
     "lhaProducts": 25,
     "kobeProducts": 50,
     "heroPosterBytes": 696756,
-    "cssFiles": 63,
-    "cssLines": 22197,
+    "cssFiles": 64,
+    "cssLines": 22554,
     "importantCount": 1135,
     "nodeModulesPresent": false
   },
