@@ -212,7 +212,13 @@ const hero = read('src/components/experience/CinematicHero.tsx');
 for (const token of ['LOCAL_HERO_MEDIA', 'HERO.desktopVideo', 'HERO.mobileVideo', 'useReducedMotion', 'saveData'])
   has(hero, token, `hero runtime ${token}`);
 if (/fetchSiteContent|youtube|iframe|official-media/u.test(hero))
-  fail.push('Home hero must remain local-only and must not depend on runtime external media');
+  fail.push('Home hero must not depend on runtime embeds or resolver services');
+const heroMediaMap = read('src/data/localHeroMedia.ts');
+const remoteHeroUrls = [...heroMediaMap.matchAll(/https:\/\/[^'"]+/g)].map((match) => match[0]);
+if (remoteHeroUrls.some((url) => !url.startsWith('https://underarmour.scene7.com/is/content/Underarmour/')))
+  fail.push('Hero video map contains an unapproved remote media host');
+if (!remoteHeroUrls.length)
+  fail.push('Hero video map must include verified official basketball video sources');
 
 for (const file of readdirSync('api').filter((name) => name.endsWith('.js'))) {
   try {

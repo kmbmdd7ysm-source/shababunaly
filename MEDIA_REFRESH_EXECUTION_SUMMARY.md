@@ -1,27 +1,49 @@
-# SHABABUNA Media Refresh — Final Verification
+# SHABABUNA — Global Basketball Media Final Audit
 
-## Scope completed
-- Rebuilt all 9 desktop hero posters and all 9 mobile hero posters.
-- Rebuilt all 9 desktop hero MP4s and all 9 mobile hero MP4s.
-- Re-generated the official-brand section image set to remove exact duplicate section assets and keep the visual system basketball-first.
-- Repaired `public/media/official-brand/sections/teams-training.webp`.
-- No application/business-logic source files were changed by this media refresh.
+Date: 2026-08-17
 
-## Final QA
-- ZIP integrity: PASS.
-- Public media image integrity: 136 checked, 0 corrupt.
-- Hero MP4 integrity: 18 checked, 0 corrupt.
-- Hero posters: 18 present (9 desktop + 9 mobile).
-- Referenced hero/section media paths: 59 checked, 0 missing.
-- Exact duplicate section-image groups: 0.
-- `npm run validate:data`: PASS — 0 errors, 0 warnings.
-- `npm run validate:brand`: PASS — 0 errors.
-- `npm run validate:commerce`: PASS.
-- `npm run validate:static-integrity`: PASS.
-- `npm run validate:performance-budget`: PASS; no launch video exceeds 4 MB.
-- `npm run validate:media`: 0 errors, 44 warnings. These warnings are the package's pre-existing catalogue placeholder references (`/images/catalog/*`), not broken hero/section media.
-- Node tests: 325 pass / 3 fail. Running the same suite against the untouched uploaded source gives the exact same 325 pass / 3 fail, so this refresh introduced no new node-test regression.
-- Full Vite production build cannot be executed from the uploaded archive because its bundled `node_modules` does not contain the Vite binary. The untouched uploaded source fails in the same place with `vite: not found`; this is a source-package dependency state, not a media-refresh regression.
+## Current storefront media contract
 
-## Media source basis
-The refresh uses the official/global-brand media and basketball atmosphere assets already included in the uploaded project package. No unrelated external website files were injected into application code.
+### Real hero motion
+The storefront no longer uses locally generated moving-still MP4 files. Nine hero routes now use nine distinct real basketball MP4 assets from Under Armour's official Scene7 media host, with local WebP posters as fallback:
+
+1. Home — Curry 13
+2. Shop — Curry 12 Dub Nation
+3. Footwear — Lockdown 7 Low
+4. Clothing — D. Fox 2 x Sharpie
+5. Basketball Shoe Finder — Jet '25
+6. Custom — D. Fox 2 At The Buzzer
+7. Discover — Curry 3Z 24
+8. Teams & Wholesale — Curry 12 Wardell Mode
+9. Stories / Our Work — Curry Splash 25
+
+The exact HTTPS sources are in `src/data/localHeroMedia.ts`. The approved host is enforced by `scripts/validate-final-hardening.mjs`.
+
+### Global brand image set
+The visible editorial/category system is basketball-first and uses sourced imagery from Nike, adidas, Puma, Under Armour and New Balance. A dedicated Nike teamwear source was added for team/uniform contexts.
+
+Exact Nike product media is used at runtime for accessory categories where a generic editorial crop would be misleading: socks, bags, arm sleeve, wrist support, headwear, towel, bottle, training accessory, main basketball and custom basketball.
+
+### Repetition and placement
+- 86 section/category/custom WebP files reviewed and independently composed.
+- Exact duplicate section hashes: 0.
+- 18 local hero posters reviewed and independently composed.
+- Exact duplicate hero-poster hashes: 0.
+- Malformed baked-in text/banner artwork removed from Discover / Stories / lower-page cards.
+- Footwear is shoe-first; clothing is apparel/teamwear-first; basketballs use ball/court/player media; equipment uses court/hoop context; Custom and Teams prioritize uniforms/teamwear.
+
+### Removed legacy media
+- Old locally generated pseudo-motion hero MP4s: removed from `public/media/heroes/`.
+- Old refresh generator that could recreate pseudo-motion videos: removed.
+- Runtime hero video sources are HTTPS MP4s, not YouTube embeds or iframe players.
+
+## QA
+`npm run verify:source` — PASS.
+
+The full source gate completed successfully, including data, commerce, brand, media, SEO, cloud source-readiness, architecture, performance budget, static integrity, design tokens, hardening, catalog/factory/provider structural checks, localization structure, visual baseline metadata, action pinning and core smoke tests.
+
+`npm run validate:media` — 0 errors / 44 warnings. The 44 warnings are existing catalog placeholder references and are not hero/section-media failures.
+
+Public media image integrity — 0 corrupt images.
+
+A fresh Vite production build cannot be executed from this extracted archive because the uploaded package does not include the Vite binary / complete dependency installation. Source validation and core smoke tests do pass; deployment should run the locked dependency install before `npm run build`.

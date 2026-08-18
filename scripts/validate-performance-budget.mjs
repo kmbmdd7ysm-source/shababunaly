@@ -58,5 +58,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; critical hero media is local and no launch video exceeds 4 MB.`,
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; hero posters are local and no bundled video exceeds 4 MB.`,
 );

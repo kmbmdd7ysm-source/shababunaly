@@ -13,8 +13,8 @@ const createEntry = (source: string, alt: string, width?: number, height?: numbe
 });
 
 export const OFFICIAL_MEDIA = {
-  nikeWinningPoster: createEntry('/media/official-brand/collage-performance.webp', 'Official basketball editorial collage from Nike signature storytelling.', 1600, 900),
-  nikeWinningCollage: createEntry('/media/official-brand/collage-signatures.webp', 'Official basketball footwear collage sourced from global brand imagery.', 1600, 900),
+  nikeWinningPoster: createEntry('/media/official-brand/collage-performance.webp', 'Global basketball editorial collage sourced from basketball brand imagery.', 1600, 900),
+  nikeWinningCollage: createEntry('/media/official-brand/collage-signatures.webp', 'Global basketball footwear collage sourced from basketball brand imagery.', 1600, 900),
   nikeKobeHeroDesktop: createEntry('/media/official-brand/hero-nike-pyramid.webp', 'Official basketball hero product image from Nike signature footwear.', 1600, 900),
   nikeKobeHeroMobile: createEntry('/media/official-brand/portrait-aone.webp', 'Official basketball hero portrait from Nike signature footwear.', 1200, 1500),
   nikeKobeGroup: createEntry('/media/official-brand/hero-lebron-hands.webp', 'Official basketball shoe close-up from Nike signature footwear.', 1600, 900),
@@ -33,7 +33,7 @@ export const OFFICIAL_MEDIA = {
   spaldingBackboard: createEntry('/media/official-brand/hero-atwo-court.webp', 'Official basketball court and hoop editorial image.', 1600, 900),
   spaldingPolePad: createEntry('/media/official-brand/hero-focus-closeup.webp', 'Official basketball editorial portrait.', 1600, 900),
   spaldingPump: createEntry('/media/official-brand/hero-book2-case.webp', 'Official basketball gear still life.', 1600, 900),
-  nbKawhi: createEntry('/media/official-brand/hero-aone-product.webp', 'Official basketball signature shoe product image.', 1600, 900),
+  nbKawhi: createEntry('/media/official-brand/sections/custom-game-jersey.webp', 'Basketball teamwear reference image for the customization workshop.', 1000, 1250),
   nbTyrese: createEntry('/media/official-brand/hero-sabrina4.webp', 'Official basketball signature shoe presentation.', 1600, 900),
   nbCameron: createEntry('/media/official-brand/hero-lebron-hands.webp', 'Official basketball detail image.', 1600, 900),
   nbCooper: createEntry('/media/official-brand/hero-book2-case.webp', 'Official basketball studio hero image.', 1600, 900),

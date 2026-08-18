@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-08-17T00:00:00Z",
+  "summary": {
+    "heroVideos": 18,
+    "heroPosters": 18,
+    "sectionImages": 86,
+    "rootOfficialBrandImages": 18
+  },
+  "brandSources": [
+    "Nike",
+    "adidas",
+    "Puma",
+    "Under Armour",
+    "New Balance"
+  ],
+  "sourceDirectory": "assets/source/global-basketball-refresh",
+  "notes": [
+    "Refreshed hero posters and hero MP4 files.",
+    "Refreshed official-brand root images and section image library.",
+    "Resolved exact duplicate section and hero-poster hashes so each output is unique at file level."
+  ]
+}

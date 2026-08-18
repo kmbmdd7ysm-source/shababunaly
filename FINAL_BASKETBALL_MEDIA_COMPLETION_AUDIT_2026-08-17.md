@@ -1,70 +1,49 @@
-# SHABABUNA — Basketball Media Completion Audit
+# SHABABUNA — Global Basketball Media Final Audit
 
 Date: 2026-08-17
 
-## Final storefront media contract
+## Current storefront media contract
 
-### Dedicated hero motion
-- Home: `nike-only-basketball`
-- Shop: `adidas-basketball-is-everything`
-- Footwear: `adidas-ant-20-foot-hoop`
-- Clothing: `newbalance-quiet-noise`
-- Basketball Shoe Finder: `under-armour-curry-make-that-old`
-- Custom: `jordan-too-easy`
+### Real hero motion
+The storefront no longer uses locally generated moving-still MP4 files. Nine hero routes now use nine distinct real basketball MP4 assets from Under Armour's official Scene7 media host, with local WebP posters as fallback:
 
-All six hero sources are different and are restricted to the basketball-only allowlist used by the project.
+1. Home — Curry 13
+2. Shop — Curry 12 Dub Nation
+3. Footwear — Lockdown 7 Low
+4. Clothing — D. Fox 2 x Sharpie
+5. Basketball Shoe Finder — Jet '25
+6. Custom — D. Fox 2 At The Buzzer
+7. Discover — Curry 3Z 24
+8. Teams & Wholesale — Curry 12 Wardell Mode
+9. Stories / Our Work — Curry Splash 25
 
-### Discover
-Unique motion is assigned to four Discover stories:
-- Trending now: `footlocker-hoops-lives-here`
-- Just dropped: `nike-kobe-conductor`
-- New this week: `footlocker-ant-adidas`
-- Best sellers: `footlocker-melo-puma`
+The exact HTTPS sources are in `src/data/localHeroMedia.ts`. The approved host is enforced by `scripts/validate-final-hardening.mjs`.
 
-The remaining Discover collections use dedicated basketball still imagery instead of replaying those videos.
+### Global brand image set
+The visible editorial/category system is basketball-first and uses sourced imagery from Nike, adidas, Puma, Under Armour and New Balance. A dedicated Nike teamwear source was added for team/uniform contexts.
 
-### Home lower-page media
-The lower Home merchandising areas use dedicated stills instead of replaying hero videos. The audit found 9/9 unique lower-page still assignments before product rails. The Home editorial campaign is separate from the Shop hero campaign.
+Exact Nike product media is used at runtime for accessory categories where a generic editorial crop would be misleading: socks, bags, arm sleeve, wrist support, headwear, towel, bottle, training accessory, main basketball and custom basketball.
 
-### Custom product choices
-All 12 custom product types have explicit reference images and no reference image constant is repeated:
-1. Full Game Set
-2. Game Jersey
-3. Game Shorts
-4. Practice Set
-5. Shooting Shirt
-6. Team Hoodie
-7. Team Pants
-8. Team Tracksuit
-9. Team Bag
-10. Player Sleeve
-11. Basketball
-12. Hoop Padding
+### Repetition and placement
+- 86 section/category/custom WebP files reviewed and independently composed.
+- Exact duplicate section hashes: 0.
+- 18 local hero posters reviewed and independently composed.
+- Exact duplicate hero-poster hashes: 0.
+- Malformed baked-in text/banner artwork removed from Discover / Stories / lower-page cards.
+- Footwear is shoe-first; clothing is apparel/teamwear-first; basketballs use ball/court/player media; equipment uses court/hoop context; Custom and Teams prioritize uniforms/teamwear.
 
-The reference set uses basketball-specific imagery from Nike/Jordan, New Balance Basketball and Spalding sources.
+### Removed legacy media
+- Old locally generated pseudo-motion hero MP4s: removed from `public/media/heroes/`.
+- Old refresh generator that could recreate pseudo-motion videos: removed.
+- Runtime hero video sources are HTTPS MP4s, not YouTube embeds or iframe players.
 
-## Technical safeguards checked
-- `youtube-nocookie.com` is allowed by the production `frame-src` CSP.
-- The official-media API allowlist returns a valid HTTPS media/embed URL for every source currently assigned to the storefront.
-- Legacy multisport source entries are not assigned to any storefront UI placement.
-- Every motion component preserves a still-image fallback and reduced-motion behavior.
+## QA
+`npm run verify:source` — PASS.
 
-## Verification performed
-- Basketball media placement audit: PASS
-- 10/10 assigned video sources resolved through `/api/official-media`: PASS
-- Custom image coverage 12/12 unique: PASS
-- Home lower-page still uniqueness 9/9: PASS
-- Catalogue data validation: 0 errors, 0 warnings
-- Commerce validation: PASS
-- Brand validation: 0 errors
-- Media validation: 0 errors; 44 existing catalogue placeholder-reference warnings (the validator intentionally counts concept artwork as warnings until final product photography is supplied)
-- SEO validation: PASS
-- Source architecture validation: PASS
-- Static integrity validation: PASS
-- Final source hardening validation: PASS
-- Source check: PASS
-- Project custom lint checks: PASS
-- TypeScript syntax/transpile checks with `--noCheck` for standard, production and strict-critical configs: PASS
+The full source gate completed successfully, including data, commerce, brand, media, SEO, cloud source-readiness, architecture, performance budget, static integrity, design tokens, hardening, catalog/factory/provider structural checks, localization structure, visual baseline metadata, action pinning and core smoke tests.
 
-## Build environment note
-A fresh Vite production bundle was not generated in this execution environment because the project dependencies are not installed here and the container cannot reach the npm registry. This is an environment limitation rather than a source validation failure. The project source and deployment configuration were verified with the checks listed above.
+`npm run validate:media` — 0 errors / 44 warnings. The 44 warnings are existing catalog placeholder references and are not hero/section-media failures.
+
+Public media image integrity — 0 corrupt images.
+
+A fresh Vite production build cannot be executed from this extracted archive because the uploaded package does not include the Vite binary / complete dependency installation. Source validation and core smoke tests do pass; deployment should run the locked dependency install before `npm run build`.
