@@ -2,8 +2,10 @@ import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
+import EditorialMedia from '../components/common/EditorialMedia';
 import { useCatalog, type CatalogProduct } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import '../styles/design/phase2-discovery.css';
 import '../styles/design/phase2-commerce.css';
 
@@ -41,8 +43,17 @@ export default function ReleasesPage(): ReactElement {
         path="/releases"
       />
 
-      <header className="s2-releases-head">
-        <div className="s2-container">
+      <header className="s2-discover-hero">
+        <EditorialMedia
+          desktopMedia={LOCAL_HERO_MEDIA.releases.desktopPoster}
+          mobileMedia={LOCAL_HERO_MEDIA.releases.mobilePoster}
+          desktopVideo={LOCAL_HERO_MEDIA.releases.desktopVideo}
+          mobileVideo={LOCAL_HERO_MEDIA.releases.mobileVideo}
+          poster={LOCAL_HERO_MEDIA.releases.desktopPoster}
+          loading="eager"
+        />
+        <span className="s2-discover-hero__shade" />
+        <div className="s2-discover-hero__copy">
           <span className="s2-overline">{pick({ en: 'Calendar', ar: 'التقويم' })}</span>
           <h1>{pick({ en: 'Releases', ar: 'الإصدارات' })}</h1>
           <p>{pick({ en: 'Only verified dates appear on the release calendar.', ar: 'التقويم يعرض فقط المواعيد الموثقة.' })}</p>

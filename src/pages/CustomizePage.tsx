@@ -15,18 +15,18 @@ import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': '/media/official-brand/clean/global-teamwear.webp',
-  'game-jersey': '/media/official-brand/portrait-atwo.webp',
-  'game-shorts': '/images/products/lha-performance-shorts-black.webp',
-  'practice-set': '/media/official-brand/clean/puma_athlete.png',
-  'shooting-shirt': '/images/products/own-the-game-sleeveless-top-black.webp',
-  hoodie: '/images/products/own-the-game-pullover-hoodie-black.webp',
-  'team-pants': '/images/products/own-the-game-fleece-pants-black.webp',
-  tracksuit: '/images/products/own-the-game-zip-hoodie-black.webp',
-  'team-bag': '/images/products/lha-elite-basketball-backpack-black.webp',
+  'game-set': 'https://underarmour.scene7.com/is/image/Underarmour/PS6015648-481_F?bgc=f0f0f0&hei=1000&op_usm=1.75%2C0.3%2C2%2C0&qlt=85&rp=standard-0pad%7Cpdp&wid=800',
+  'game-jersey': 'https://underarmour.scene7.com/is/image/Underarmour/PS6014671-001_HF?bgc=f0f0f0&hei=1000&op_usm=1.75%2C0.3%2C2%2C0&qlt=85&rp=standard-0pad%7Cpdp&wid=800',
+  'game-shorts': 'https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/49fb4ad3ab90450aa0b1a806fecd3038_9366/ADIDAS_BASKETBALL_WOVEN_SHORTS_Blue_KB7526_21_model.jpg',
+  'practice-set': 'https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg',
+  'shooting-shirt': 'https://underarmour.scene7.com/is/image/Underarmour/V5-1361522-001_FC?bgc=F0F0F0&hei=1000&qlt=85&resmode=sharp2&wid=800',
+  hoodie: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/7abfa976-e388-47c9-98e7-5a9674283025/M%2BNK%2BTF%2BSI%2BBRSH%2BPO%2BHD.png',
+  'team-pants': 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/0ed51568-d206-48eb-9269-da458f1fb596/M%2BNK%2BTF%2BSI%2BBRSH%2BOPHEM%2BPANT%2BSKU.png',
+  tracksuit: 'https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/91da3015525041989f8eacff1c2e9888_9366/adidas_Basketball_Woven_Track_Jacket_Blue_KB7531_20_01_model.jpg',
+  'team-bag': 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/08d0700a-d0fc-4645-a3ff-d14ea52b3905/NK%2BVARSITY%2BELITE%2BBKPK.png',
   sleeve: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/96bc8662-7933-4af7-9dfa-736537b4ee1f/NIKE%2BDRI-FIT%2BSLEEVE%2BJ%2BMORANT.png',
-  basketball: 'https://content.stylitics.com/images/items/24600049',
-  'hoop-padding': '/media/official-brand/clean/global-court.webp',
+  basketball: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/0b3db21c-204c-4b52-91c8-6a04a40aaea8/NK%2BELT%2BALL%2BCOURT%2B8P%2B2.0.png',
+  'hoop-padding': 'https://i.ytimg.com/vi/UCWkNZ5Y8-E/maxresdefault.jpg',
 };
 
 export default function CustomizePage(): ReactElement {

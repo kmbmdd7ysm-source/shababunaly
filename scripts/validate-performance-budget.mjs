@@ -9,11 +9,11 @@ const required = [
 
 
 const shell = readFileSync('index.html', 'utf8');
-if (!/rel="preload"[\s\S]{0,500}href="\/media\/heroes\/home-desktop\.webp"/i.test(shell)) {
-  failures.push('Home hero preload must use the local optimized desktop poster');
+if (!/rel="preload"[\s\S]{0,500}href="https:\/\/i\.ytimg\.com\/vi\/_Ra6wkIoJp0\/maxresdefault\.jpg"/i.test(shell)) {
+  failures.push('Home hero preload must use the approved external official-film poster');
 }
-if (/https:\/\/(?:static|nmp)\.nike\.com/i.test(shell)) {
-  failures.push('Home shell must not depend on a third-party hero CDN');
+if (/href="\/media\/heroes\//i.test(shell)) {
+  failures.push('Home shell must not preload legacy local hero media');
 }
 
 for (const [file, maximum] of required) {
@@ -58,5 +58,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; hero posters are local and no bundled video exceeds 4 MB.`,
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; home uses the approved external official-film poster and no bundled video exceeds 4 MB.`,
 );

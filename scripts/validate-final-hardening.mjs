@@ -211,14 +211,18 @@ has(commerceContext, 'fetchPublicShippingRates', 'public country shipping rates'
 const hero = read('src/components/experience/CinematicHero.tsx');
 for (const token of ['LOCAL_HERO_MEDIA', 'HERO.desktopVideo', 'HERO.mobileVideo', 'useReducedMotion', 'saveData'])
   has(hero, token, `hero runtime ${token}`);
-if (/fetchSiteContent|youtube|iframe|official-media/u.test(hero))
-  fail.push('Home hero must not depend on runtime embeds or resolver services');
+if (/fetchSiteContent|official-media/u.test(hero))
+  fail.push('Home hero must not depend on runtime resolver services');
+if (!hero.includes('iframe') || !hero.includes('youtube'))
+  fail.push('Home hero must support the approved official YouTube embed renderer');
 const heroMediaMap = read('src/data/localHeroMedia.ts');
-const remoteHeroUrls = [...heroMediaMap.matchAll(/https:\/\/[^'"]+/g)].map((match) => match[0]);
-if (remoteHeroUrls.some((url) => !url.startsWith('https://underarmour.scene7.com/is/content/Underarmour/')))
-  fail.push('Hero video map contains an unapproved remote media host');
-if (!remoteHeroUrls.length)
-  fail.push('Hero video map must include verified official basketball video sources');
+if (!heroMediaMap.includes('https://www.youtube-nocookie.com/embed/'))
+  fail.push('Hero video map must use privacy-enhanced official YouTube embeds');
+if (/\/media\/heroes\/|\/media\/official-brand\//u.test(heroMediaMap))
+  fail.push('Hero video map still references legacy local fake-motion media');
+const filmIds = [...heroMediaMap.matchAll(/^\s*\w+:\s*'([A-Za-z0-9_-]{6,})'/gmu)].map((match) => match[1]);
+if (filmIds.length < 13 || new Set(filmIds).size !== filmIds.length)
+  fail.push('Hero video map must include 13 distinct external basketball films');
 
 for (const file of readdirSync('api').filter((name) => name.endsWith('.js'))) {
   try {

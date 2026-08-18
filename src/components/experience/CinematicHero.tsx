@@ -8,6 +8,7 @@ import { LOCAL_HERO_MEDIA } from '../../data/localHeroMedia';
 import '../../styles/design/phase2-home.css';
 
 const HERO = LOCAL_HERO_MEDIA.home;
+const isEmbed = (url: string) => /youtube(?:-nocookie)?\.com\/embed\//i.test(url);
 
 export default function CinematicHero(): ReactElement {
   const { pick } = useLanguage();
@@ -20,22 +21,14 @@ export default function CinematicHero(): ReactElement {
 
   useEffect(() => {
     const shell = document.getElementById('lcp-shell');
-    if (!shell) {
-      setShellActive(false);
-      return undefined;
-    }
+    if (!shell) { setShellActive(false); return undefined; }
     const fade = globalThis.setTimeout(() => shell.classList.add('is-retiring'), 900);
-    const remove = globalThis.setTimeout(() => {
-      shell.remove();
-      setShellActive(false);
-    }, 1250);
-    return () => {
-      globalThis.clearTimeout(fade);
-      globalThis.clearTimeout(remove);
-    };
+    const remove = globalThis.setTimeout(() => { shell.remove(); setShellActive(false); }, 1250);
+    return () => { globalThis.clearTimeout(fade); globalThis.clearTimeout(remove); };
   }, []);
 
   const mediaAllowed = capability !== 'c' && !reduced && !navigator.connection?.saveData;
+  const embedded = isEmbed(HERO.desktopVideo);
 
   return (
     <section className="s2-hero" aria-labelledby="s2-home-title">
@@ -47,18 +40,23 @@ export default function CinematicHero(): ReactElement {
           </picture>
         ) : null}
         {mediaAllowed && !failed ? (
-          <video
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload="auto"
-            poster={HERO.desktopPoster}
-            onError={() => setFailed(true)}
-          >
-            <source media="(max-width: 899px)" src={HERO.mobileVideo} type="video/mp4" />
-            <source src={HERO.desktopVideo} type="video/mp4" />
-          </video>
+          embedded ? (
+            <div className="s2-hero__embed">
+              <iframe
+                src={HERO.desktopVideo}
+                title=""
+                tabIndex={-1}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                referrerPolicy="strict-origin-when-cross-origin"
+                onError={() => setFailed(true)}
+              />
+            </div>
+          ) : (
+            <video muted loop playsInline autoPlay preload="auto" poster={HERO.desktopPoster} onError={() => setFailed(true)}>
+              <source media="(max-width: 899px)" src={HERO.mobileVideo} type="video/mp4" />
+              <source src={HERO.desktopVideo} type="video/mp4" />
+            </video>
+          )
         ) : null}
         <span className="s2-hero__scrim" />
       </div>
@@ -70,9 +68,7 @@ export default function CinematicHero(): ReactElement {
           <Link to="/discover">{pick({ en: 'Discover', ar: 'اكتشف' })}</Link>
         </div>
       </div>
-      <a className="s2-hero__scroll" href="#s2-trending" aria-label={pick({ en: 'Explore more', ar: 'اكتشف المزيد' })}>
-        <span />
-      </a>
+      <a className="s2-hero__scroll" href="#s2-trending" aria-label={pick({ en: 'Explore more', ar: 'اكتشف المزيد' })}><span /></a>
     </section>
   );
 }

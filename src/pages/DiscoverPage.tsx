@@ -48,6 +48,17 @@ export default function DiscoverPage(): ReactElement {
   const { pick } = useLanguage();
   const { products } = useCatalog();
   const current = slug ? DISCOVER_COLLECTIONS.find((collection) => collection.slug === slug) : null;
+  const discoverHeroBySlug = {
+    'trending-now': LOCAL_HERO_MEDIA.stories,
+    'just-dropped': LOCAL_HERO_MEDIA.footwear,
+    'new-this-week': LOCAL_HERO_MEDIA.shop,
+    'best-sellers': LOCAL_HERO_MEDIA.home,
+    'performance-picks': LOCAL_HERO_MEDIA.accessories,
+    'court-essentials': LOCAL_HERO_MEDIA.basketballs,
+    'ready-now': LOCAL_HERO_MEDIA.teams,
+    'shababuna-selects': LOCAL_HERO_MEDIA.discover,
+  } as const;
+  const currentHero = current ? discoverHeroBySlug[current.slug as keyof typeof discoverHeroBySlug] : LOCAL_HERO_MEDIA.discover;
 
   if (slug && !current) return <Navigate to="/discover" replace />;
 
@@ -119,8 +130,8 @@ export default function DiscoverPage(): ReactElement {
         <EditorialMedia
           desktopMedia={current.desktopMedia}
           mobileMedia={current.mobileMedia}
-          desktopVideo={LOCAL_HERO_MEDIA.discover.desktopVideo}
-          mobileVideo={LOCAL_HERO_MEDIA.discover.mobileVideo}
+          desktopVideo={currentHero.desktopVideo}
+          mobileVideo={currentHero.mobileVideo}
           poster={current.desktopMedia}
           loading="eager"
         />

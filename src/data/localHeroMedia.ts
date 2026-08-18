@@ -1,95 +1,46 @@
 /**
- * Hero media runtime map.
- * Local optimized WebP posters provide first paint/fallback. Motion uses direct,
- * official Under Armour Scene7 basketball MP4 sources — never locally generated
- * pseudo-motion/slideshow videos.
+ * External official basketball film map.
+ * Every hero uses a different full-motion film from an official Nike, adidas,
+ * PUMA or New Balance channel. Local fake-motion MP4s are intentionally not used.
  */
-const OFFICIAL_BASKETBALL_VIDEO = {
-  curry13: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6007670-419',
-  curry12DubNation: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027630-001',
-  lockdown7Low: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027646-600',
-  fox2Sharpie: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6017491-100',
-  jet25GradeSchool: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6001587-102',
-  fox2Buzzer: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6012728-001',
-  curry3z24: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027627-004',
-  curry12Wardell: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027634-001',
-  currySplash25: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3028459-016',
-  fox2Blue: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6000777-400',
-  jet25Unisex: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6001585-100',
-  lockdown8: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6009400-100',
+const yt = (id: string) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&disablekb=1`;
+const thumb = (id: string) => `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+
+const FILMS = {
+  home: '_Ra6wkIoJp0',             // Nike — LeBron / Winning Isn't For Everyone
+  shop: '57FHMzbXycg',             // New Balance Hoops — We Got Now 2026
+  footwear: 'v6-FRL9Mpys',         // adidas — Anthony Edwards / No Lie
+  clothing: 'qd-ZtNsNiH4',         // Under Armour — Rule Yourself / Stephen Curry
+  accessories: 'ucuL5-dyFzs',      // Nike — A'ja Wilson / Teaching The Pro
+  basketballs: 'EiTqiIy80G8',      // Nike — LeBron / Just Do It
+  equipment: 'u_49Qh9II8M',        // PUMA Hoops — Uproar Palace Guard
+  shoeFinder: '98dmoVm83Vs',       // Nike — LeBron XXIII Behind the Design
+  custom: 'UCWkNZ5Y8-E',           // adidas — Anthony Edwards 20 Foot Hoop
+  discover: 'bfLEcKIHziQ',         // Nike — I Am the Pressure
+  teams: 'AK1kNfqqe64',            // New Balance Basketball — Tyrese Maxey
+  stories: 'G0sUuHddK_M',          // Nike — Sabrina 4 Behind the Design
+  releases: 'tD4X436fjnE',         // adidas — Damian Lillard / Dame 9
 } as const;
 
+const entry = (id: string) => ({
+  desktopVideo: yt(id),
+  mobileVideo: yt(id),
+  desktopPoster: thumb(id),
+  mobilePoster: thumb(id),
+});
+
 export const LOCAL_HERO_MEDIA = {
-  home: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.curry13,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.curry13,
-    desktopPoster: '/media/heroes/home-desktop.webp',
-    mobilePoster: '/media/heroes/home-mobile.webp',
-  },
-  shop: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.curry12DubNation,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.curry12DubNation,
-    desktopPoster: '/media/heroes/shop-desktop.webp',
-    mobilePoster: '/media/heroes/shop-mobile.webp',
-  },
-  footwear: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.lockdown7Low,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.lockdown7Low,
-    desktopPoster: '/media/heroes/footwear-desktop.webp',
-    mobilePoster: '/media/heroes/footwear-mobile.webp',
-  },
-  clothing: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Sharpie,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Sharpie,
-    desktopPoster: '/media/heroes/clothing-desktop.webp',
-    mobilePoster: '/media/heroes/clothing-mobile.webp',
-  },
-  accessories: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Blue,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Blue,
-    desktopPoster: '/images/products/lha-elite-basketball-backpack-black.webp',
-    mobilePoster: '/images/products/lha-elite-basketball-backpack-black.webp',
-  },
-  basketballs: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.jet25Unisex,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.jet25Unisex,
-    desktopPoster: '/media/official-brand/hero-atwo-court.webp',
-    mobilePoster: '/media/official-brand/portrait-atwo.webp',
-  },
-  equipment: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.lockdown8,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.lockdown8,
-    desktopPoster: '/media/official-brand/hero-lebron-hands.webp',
-    mobilePoster: '/media/official-brand/portrait-lebron.webp',
-  },
-  shoeFinder: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.jet25GradeSchool,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.jet25GradeSchool,
-    desktopPoster: '/media/heroes/shoe-finder-desktop.webp',
-    mobilePoster: '/media/heroes/shoe-finder-mobile.webp',
-  },
-  custom: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Buzzer,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Buzzer,
-    desktopPoster: '/media/heroes/custom-desktop.webp',
-    mobilePoster: '/media/heroes/custom-mobile.webp',
-  },
-  discover: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.curry3z24,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.curry3z24,
-    desktopPoster: '/media/heroes/discover-desktop.webp',
-    mobilePoster: '/media/heroes/discover-mobile.webp',
-  },
-  teams: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.curry12Wardell,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.curry12Wardell,
-    desktopPoster: '/media/heroes/teams-desktop.webp',
-    mobilePoster: '/media/heroes/teams-mobile.webp',
-  },
-  stories: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.currySplash25,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.currySplash25,
-    desktopPoster: '/media/heroes/stories-desktop.webp',
-    mobilePoster: '/media/heroes/stories-mobile.webp',
-  },
+  home: entry(FILMS.home),
+  shop: entry(FILMS.shop),
+  footwear: entry(FILMS.footwear),
+  clothing: entry(FILMS.clothing),
+  accessories: entry(FILMS.accessories),
+  basketballs: entry(FILMS.basketballs),
+  equipment: entry(FILMS.equipment),
+  shoeFinder: entry(FILMS.shoeFinder),
+  custom: entry(FILMS.custom),
+  discover: entry(FILMS.discover),
+  teams: entry(FILMS.teams),
+  stories: entry(FILMS.stories),
+  releases: entry(FILMS.releases),
 } as const;

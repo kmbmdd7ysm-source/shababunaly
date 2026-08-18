@@ -850,66 +850,66 @@ textarea {
 .gw-gate-shell[data-dept='clothing'],
 .gw-world-headband[data-dept='clothing'],
 .gw-world-headband[data-dept='all'] {
-  --gw-gate-art: url('/media/heroes/clothing-desktop.webp');
-  --gw-dept-art: url('/media/heroes/clothing-desktop.webp');
+  --gw-gate-art: url('https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg');
+  --gw-dept-art: url('https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg');
 }
 .gw-gate-shell[data-dept='footwear'],
 .gw-world-headband[data-dept='footwear'] {
-  --gw-gate-art: url('/media/heroes/footwear-desktop.webp');
-  --gw-dept-art: url('/media/heroes/footwear-desktop.webp');
+  --gw-gate-art: url('https://about.underarmour.com/content/ua/about/en/stories/2026/02/under-armour-drops-the-curry-13---the-final-chapter-in-a-signatu/_jcr_content/root/container/image.coreimg.jpg');
+  --gw-dept-art: url('https://about.underarmour.com/content/ua/about/en/stories/2026/02/under-armour-drops-the-curry-13---the-final-chapter-in-a-signatu/_jcr_content/root/container/image.coreimg.jpg');
 }
 .gw-gate-shell[data-dept='accessories'],
 .gw-world-headband[data-dept='accessories'] {
-  --gw-gate-art: url('/media/heroes/teams-desktop.webp');
-  --gw-dept-art: url('/media/heroes/teams-desktop.webp');
+  --gw-gate-art: url('https://i.ytimg.com/vi/ucuL5-dyFzs/maxresdefault.jpg');
+  --gw-dept-art: url('https://i.ytimg.com/vi/ucuL5-dyFzs/maxresdefault.jpg');
 }
 .gw-gate-shell[data-dept='basketballs'],
 .gw-world-headband[data-dept='basketballs'] {
-  --gw-gate-art: url('/media/heroes/shoe-finder-desktop.webp');
-  --gw-dept-art: url('/media/heroes/shoe-finder-desktop.webp');
+  --gw-gate-art: url('https://preview.thenewsmarket.com/Previews/NBAS/StillAssets/1920x1080/557260.png');
+  --gw-dept-art: url('https://preview.thenewsmarket.com/Previews/NBAS/StillAssets/1920x1080/557260.png');
 }
 .gw-gate-shell[data-dept='equipment'],
 .gw-world-headband[data-dept='equipment'] {
-  --gw-gate-art: url('/media/heroes/custom-desktop.webp');
-  --gw-dept-art: url('/media/heroes/custom-desktop.webp');
+  --gw-gate-art: url('https://i.ytimg.com/vi/LRJP140fv3E/maxresdefault.jpg');
+  --gw-dept-art: url('https://i.ytimg.com/vi/LRJP140fv3E/maxresdefault.jpg');
 }
 .gw-gate-shell[data-dept='ready-to-ship'],
 .gw-world-headband[data-dept='ready-to-ship'] {
-  --gw-gate-art: url('/media/heroes/stories-desktop.webp');
-  --gw-dept-art: url('/media/heroes/stories-desktop.webp');
+  --gw-gate-art: url('https://i.ytimg.com/vi/57FHMzbXycg/maxresdefault.jpg');
+  --gw-dept-art: url('https://i.ytimg.com/vi/57FHMzbXycg/maxresdefault.jpg');
 }
 
 @media (max-width: 640px) {
   .gw-gate-shell[data-dept='clothing'],
   .gw-world-headband[data-dept='clothing'],
   .gw-world-headband[data-dept='all'] {
-    --gw-gate-art: url('/media/heroes/clothing-desktop.webp');
-    --gw-dept-art: url('/media/heroes/clothing-desktop.webp');
+    --gw-gate-art: url('https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg');
+    --gw-dept-art: url('https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg');
   }
   .gw-gate-shell[data-dept='footwear'],
   .gw-world-headband[data-dept='footwear'] {
-    --gw-gate-art: url('/media/heroes/footwear-desktop.webp');
-    --gw-dept-art: url('/media/heroes/footwear-desktop.webp');
+    --gw-gate-art: url('https://about.underarmour.com/content/ua/about/en/stories/2026/02/under-armour-drops-the-curry-13---the-final-chapter-in-a-signatu/_jcr_content/root/container/image.coreimg.jpg');
+    --gw-dept-art: url('https://about.underarmour.com/content/ua/about/en/stories/2026/02/under-armour-drops-the-curry-13---the-final-chapter-in-a-signatu/_jcr_content/root/container/image.coreimg.jpg');
   }
   .gw-gate-shell[data-dept='accessories'],
   .gw-world-headband[data-dept='accessories'] {
-    --gw-gate-art: url('/media/heroes/teams-desktop.webp');
-    --gw-dept-art: url('/media/heroes/teams-desktop.webp');
+    --gw-gate-art: url('https://i.ytimg.com/vi/ucuL5-dyFzs/maxresdefault.jpg');
+    --gw-dept-art: url('https://i.ytimg.com/vi/ucuL5-dyFzs/maxresdefault.jpg');
   }
   .gw-gate-shell[data-dept='basketballs'],
   .gw-world-headband[data-dept='basketballs'] {
-    --gw-gate-art: url('/media/heroes/shoe-finder-desktop.webp');
-    --gw-dept-art: url('/media/heroes/shoe-finder-desktop.webp');
+    --gw-gate-art: url('https://preview.thenewsmarket.com/Previews/NBAS/StillAssets/1920x1080/557260.png');
+    --gw-dept-art: url('https://preview.thenewsmarket.com/Previews/NBAS/StillAssets/1920x1080/557260.png');
   }
   .gw-gate-shell[data-dept='equipment'],
   .gw-world-headband[data-dept='equipment'] {
-    --gw-gate-art: url('/media/heroes/custom-desktop.webp');
-    --gw-dept-art: url('/media/heroes/custom-desktop.webp');
+    --gw-gate-art: url('https://i.ytimg.com/vi/LRJP140fv3E/maxresdefault.jpg');
+    --gw-dept-art: url('https://i.ytimg.com/vi/LRJP140fv3E/maxresdefault.jpg');
   }
   .gw-gate-shell[data-dept='ready-to-ship'],
   .gw-world-headband[data-dept='ready-to-ship'] {
-    --gw-gate-art: url('/media/heroes/stories-desktop.webp');
-    --gw-dept-art: url('/media/heroes/stories-desktop.webp');
+    --gw-gate-art: url('https://i.ytimg.com/vi/57FHMzbXycg/maxresdefault.jpg');
+    --gw-dept-art: url('https://i.ytimg.com/vi/57FHMzbXycg/maxresdefault.jpg');
   }
 }
 

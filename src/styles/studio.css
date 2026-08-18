@@ -703,7 +703,7 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image: url('/media/heroes/custom-desktop.webp');
+  background-image: url('https://i.ytimg.com/vi/ab-hGGFEigQ/maxresdefault.jpg');
   background-size: cover;
   background-position: center 55%;
   opacity: 0.55;
@@ -711,7 +711,7 @@
 
 @media (max-width: 1099px) {
   .gw-lab-stage::before {
-    background-image: url('/media/heroes/custom-desktop.webp');
+    background-image: url('https://i.ytimg.com/vi/ab-hGGFEigQ/maxresdefault.jpg');
   }
 }
 

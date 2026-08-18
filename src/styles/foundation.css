@@ -227,3 +227,26 @@ body.scroll-locked {
   background: color-mix(in srgb, var(--sh-ink, #111) 18%, transparent);
   color: inherit;
 }
+
+/* External official basketball campaign embeds: one full-bleed video per media slot. */
+.s2-official-video-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050505;
+  pointer-events: none;
+}
+.s2-official-video-frame iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 177.78vh);
+  height: max(100%, 56.25vw);
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
+}

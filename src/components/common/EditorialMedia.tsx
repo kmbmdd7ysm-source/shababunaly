@@ -17,6 +17,10 @@ function videoType(url: string): string {
   return 'video/mp4';
 }
 
+function isEmbed(url?: string): boolean {
+  return Boolean(url && /youtube(?:-nocookie)?\.com\/embed\//i.test(url));
+}
+
 export default function EditorialMedia({
   desktopMedia,
   mobileMedia,
@@ -28,7 +32,23 @@ export default function EditorialMedia({
 }: EditorialMediaProps): ReactElement {
   const reducedMotion = useReducedMotion();
   const [failed, setFailed] = useState(false);
+  const chosenEmbed = isEmbed(desktopVideo) ? desktopVideo : isEmbed(mobileVideo) ? mobileVideo : undefined;
   const hasMotion = !reducedMotion && !failed && Boolean(desktopVideo || mobileVideo);
+
+  if (hasMotion && chosenEmbed) {
+    return (
+      <div className="s2-official-video-frame" aria-hidden="true">
+        <iframe
+          src={chosenEmbed}
+          title=""
+          tabIndex={-1}
+          allow="autoplay; encrypted-media; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+          onError={() => setFailed(true)}
+        />
+      </div>
+    );
+  }
 
   if (hasMotion) {
     return (
