@@ -185,7 +185,7 @@ export default function AccountPage(): ReactElement {
     setMsg(
       auth.user
         ? pick({
-            en: 'Email verified successfully. Your account is ready on every device.',
+            en: 'Email verified successfully. Your account is ready.',
             ar: 'تم تأكيد البريد بنجاح. حسابك جاهز لتسجيل الدخول من أي جهاز.',
           })
         : pick({
@@ -911,7 +911,7 @@ export default function AccountPage(): ReactElement {
                     clearPhotoPreview();
                     setMsg(
                       pick({
-                        en: 'Profile photo updated and saved on every device.',
+                        en: 'Profile photo updated and saved to your account.',
                         ar: 'تم تحديث الصورة الشخصية وحفظها على جميع الأجهزة.',
                       }),
                     );

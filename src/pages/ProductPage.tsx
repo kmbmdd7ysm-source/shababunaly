@@ -222,6 +222,8 @@ export default function ProductPage(): ReactElement {
       sku: matchedVariant.sku,
       maxStock: Math.max(getVariantPurchaseLimit(matchedVariant), qty),
       inventoryTracking: matchedVariant.inventoryTracking !== false,
+      inventoryPoolKey: matchedVariant.inventoryPoolKey ? String(matchedVariant.inventoryPoolKey) : undefined,
+      inventoryPoolStock: Number.isFinite(Number(matchedVariant.inventoryPoolStock)) ? Number(matchedVariant.inventoryPoolStock) : undefined,
       minQuantity,
       href: `/products/${product.slug}`,
       quantity: qty,
@@ -259,8 +261,8 @@ export default function ProductPage(): ReactElement {
       })
     : isWholesale
       ? pick({
-          en: 'Wholesale estimate: 30–60 days. 50% before production and 50% when the goods arrive.',
-          ar: 'المدة التقديرية للجملة: 30–60 يومًا. 50% قبل التصنيع و50% عند وصول البضاعة.',
+          en: 'Wholesale timing and payment terms are confirmed in the approved quote for the product, quantity and destination.',
+          ar: 'يتم تأكيد مدة الجملة وشروط الدفع في عرض السعر المعتمد حسب المنتج والكمية والوجهة.',
         })
       : isLibya
         ? pick({
@@ -400,7 +402,7 @@ export default function ProductPage(): ReactElement {
 
               <div className="pdx-status-row">
                 {showReady ? (
-                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Immediate delivery in Libya', ar: 'تسليم فوري داخل ليبيا' })}</span>
+                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Verified stock in Libya', ar: 'مخزون موثق داخل ليبيا' })}</span>
                 ) : null}
                 {!comingSoon && !soldOut && onSale ? <Badge tone="sale">{badge.sale || 'Sale'}</Badge> : null}
                 {!comingSoon && !soldOut && product.newArrival ? <Badge tone="new">{badge.new || 'New'}</Badge> : null}
@@ -514,7 +516,7 @@ export default function ProductPage(): ReactElement {
 
             {quoteOnly ? (
               <div className="pdx-quote">
-                <p>{pick({ en: 'This product needs a confirmed technical and shipping quote.', ar: 'هذا المنتج يحتاج عرض سعر فني وشحن مؤكد.' })}</p>
+                <p>{pick({ en: 'This product is available by confirmed quote. Request the final price and order details before checkout.', ar: 'هذا المنتج متوفر بعرض سعر مؤكد. اطلب السعر النهائي وتفاصيل الطلب قبل إتمام الشراء.' })}</p>
                 <Link to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`} className="pdx-add">
                   {pick({ en: 'Request a quote', ar: 'اطلب عرض سعر' })}
                 </Link>

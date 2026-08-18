@@ -16,8 +16,8 @@ type ReleaseRecord = CatalogProduct & {
 
 const parseRelease = (product: CatalogProduct): Date | null => {
   const record = product as ReleaseRecord;
-  const raw = record.releaseInfo?.verified ? record.releaseInfo.date : record.releaseDate;
-  if (!raw) return null;
+  if (record.releaseInfo?.verified !== true || !record.releaseInfo.date) return null;
+  const raw = record.releaseInfo.date;
   const date = new Date(raw);
   return Number.isNaN(date.getTime()) ? null : date;
 };

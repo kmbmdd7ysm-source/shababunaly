@@ -44,22 +44,21 @@ describe('phase 3 basketball intelligence', () => {
     expect(isBasketballPerformanceShoe({ category: 'clothing', subcategory: 'in-court' })).toBe(false);
   });
 
-  it('does not award a match for unknown attributes', () => {
+  it('excludes shoes with no verified performance evidence from ranking', () => {
     const unknown = { id: 'a', price: 100, category: 'footwear', subcategory: 'in-court' };
     const verified = {
       id: 'b', price: 130, category: 'footwear', subcategory: 'in-court',
       performanceProfile: { positions: ['PG'], courtTypes: ['indoor'], traction: { value: 9, verified: true, source: 'test' } },
     };
     const results = rankBasketballShoes([unknown, verified], { position: 'PG', court: 'indoor', priority: 'traction' });
+    expect(results).toHaveLength(1);
     expect(results[0].product.id).toBe('b');
-    expect(results[1].score).toBe(0);
-    expect(results[1].unverified).toEqual(expect.arrayContaining(['position', 'court', 'traction']));
   });
 
   it('uses first-party price as a safe hard filter', () => {
     const products = [
-      { id: 'a', price: 100, category: 'footwear', subcategory: 'in-court' },
-      { id: 'b', price: 180, category: 'footwear', subcategory: 'in-court' },
+      { id: 'a', price: 100, category: 'footwear', subcategory: 'in-court', performanceProfile: { provenance: 'verified test' } },
+      { id: 'b', price: 180, category: 'footwear', subcategory: 'in-court', performanceProfile: { provenance: 'verified test' } },
     ];
     const results = rankBasketballShoes(products, { maxPrice: 120 });
     expect(results.map((item) => item.product.id)).toEqual(['a']);

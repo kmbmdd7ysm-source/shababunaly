@@ -40,10 +40,11 @@ assert.equal(csvRoundTrip[0].number, '20');
 assert.equal(csvRoundTrip[0].jerseySize, 'L');
 
 assert.equal(catalogProducts.length, 119);
-assert.equal(products.length, 119);
+assert.equal(products.length, 75);
+assert.equal(catalogProducts.length - products.length, 44);
 assert.equal(lhaStoreProducts().length, 25);
-assert.equal(readyToShipProducts().length, 15);
-assert.equal(readyToShipProducts().every((item) => item.legacyLha === true && item.inventorySource === 'owner_confirmed_lha_ready' && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
+assert.equal(readyToShipProducts().length, 25);
+assert.equal(readyToShipProducts().every((item) => item.legacyLha === true && item.inventorySource === 'owner_confirmed_lha_color_stock' && item.inventoryVerified === true && item.inventoryTracking === true && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
 assert.equal(products.every(isProductVisible), true);
 assert.equal(
   products
@@ -56,8 +57,11 @@ assert.equal(
   products.every((item) => item.name.en === item.name.ar),
   true,
 );
-assert.equal(allBrands.length, 15);
-assert.equal(allBrands.includes('Shababuna'), true);
+const masterBrands = new Set(catalogProducts.map((item) => item.brand));
+assert.equal(masterBrands.size, 15);
+assert.equal(masterBrands.has('Shababuna'), true);
+assert.equal(allBrands.length, 2);
+assert.equal(allBrands.includes('Nike'), true);
 assert.equal(allBrands.includes('LHA'), true);
 
 const checkout = readFileSync('src/pages/CheckoutPage.tsx', 'utf8');

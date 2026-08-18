@@ -190,22 +190,6 @@
   transform: none;
   clip-path: none;
 }
-@keyframes heroReveal {
-to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes markDrift {
-to {
-    transform: translate3d(0, -12px, 0) rotate(0.8deg);
-  }
-}
-@keyframes lhaFloat {
-to {
-    transform: translate3d(4vw, -2vw, 0) scale(1.08);
-  }
-}
 @keyframes heartPulse {
 0%,
   100% {
@@ -237,21 +221,6 @@ from {
   }to {
     opacity: 1;
     transform: none;
-  }
-}
-@keyframes hero-rise {
-from {
-    opacity: 0;
-    transform: translateY(24px);
-  }to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes scroll-dot {
-50% {
-    transform: translateY(17px);
-    opacity: 0.2;
   }
 }
 @keyframes route-premium-in {

@@ -531,8 +531,8 @@ describe('navigation/search edge coverage', () => {
       '/products/a',
       '/products/a#x',
       '/order-tracking/SHB',
-      '/events',
-      '/online-training',
+      '/favorites',
+      '/compare',
     ])
       expect(safeInternalReturnPath(path, '/safe')).toBe(path);
     for (const value of [

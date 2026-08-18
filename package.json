@@ -33,7 +33,7 @@
     "qa:full": "npm run qa && npm run test:db && npm run test:e2e && npm run test:a11y && npm run visual && npm run test:pwa-upgrade && npm run security:audit && npm run lighthouse && npm run pagespeed && npm run test:integrations && npm run verify:release",
     "coverage:critical": "npm run coverage:node",
     "test:a11y": "npm run build && npm run test:a11y:run",
-    "catalog:generate": "node scripts/sync-product-catalog.mjs",
+    "catalog:generate": "node --experimental-strip-types scripts/sync-product-catalog.mjs",
     "validate:cloud-readiness": "node scripts/validate-cloud-readiness.mjs",
     "test:db": "node scripts/test-db.mjs",
     "validate:seo": "node scripts/validate-seo.mjs",
@@ -62,7 +62,7 @@
     "postbuild": "node --experimental-strip-types scripts/generate-static-pages.mjs && node scripts/generate-build-provenance.mjs",
     "test:integrations": "node --experimental-strip-types scripts/verify-live-integrations.mjs",
     "security:sbom": "cyclonedx-npm --output-file reports/sbom.cdx.json --output-format JSON --omit dev",
-    "verify:source": "npm run validate:data && npm run validate:commerce && npm run validate:brand && npm run validate:media && npm run validate:seo && npm run validate:cloud-readiness && npm run validate:world-class && npm run validate:performance-budget && npm run validate:static-integrity && npm run validate:design-tokens && npm run generate:product-viewer-matrix && npm run validate:final-hardening && npm run validate:catalog-completeness && npm run validate:factory-readiness && npm run validate:arabic-review && npm run validate:provider-readiness && npm run validate:visual-baselines && npm run validate:action-pinning && npm run test:core && node scripts/check-source.mjs",
+    "verify:source": "npm run validate:data && npm run validate:phase1-truth && npm run validate:phase2-systems && npm run validate:phase3-release && npm run validate:independent-final && npm run validate:commerce && npm run validate:brand && npm run validate:media && npm run validate:seo && npm run validate:cloud-readiness && npm run validate:world-class && npm run validate:performance-budget && npm run validate:static-integrity && npm run validate:design-tokens && npm run generate:product-viewer-matrix && npm run validate:final-hardening && npm run validate:catalog-completeness && npm run validate:factory-readiness && npm run validate:arabic-review && npm run validate:provider-readiness && npm run validate:visual-baselines && npm run validate:action-pinning && npm run test:core && node scripts/check-source.mjs",
     "validate:design-tokens": "node scripts/validate-design-tokens.mjs",
     "generate:product-viewer-matrix": "node --experimental-strip-types scripts/generate-product-viewer-matrix.mjs",
     "validate:catalog-completeness": "node --experimental-strip-types scripts/validate-catalog-completeness.mjs",
@@ -95,7 +95,11 @@
     "verify:release-evidence-sha": "node scripts/verify-release-evidence-sha.mjs",
     "postinstall": "node scripts/ensure-offscreencanvas-types.mjs",
     "media:manifest": "node scripts/generate-media-manifest.mjs",
-    "validate:architecture": "node --experimental-strip-types scripts/validate-world-class.mjs"
+    "validate:architecture": "node --experimental-strip-types scripts/validate-world-class.mjs",
+    "validate:phase1-truth": "node --experimental-strip-types scripts/validate-phase1-truth.mjs",
+    "validate:phase2-systems": "node scripts/validate-phase2-systems.mjs",
+    "validate:phase3-release": "node --experimental-strip-types scripts/validate-phase3-release.mjs",
+    "validate:independent-final": "node --experimental-strip-types scripts/validate-independent-final.mjs"
   },
   "dependencies": {
     "@google/model-viewer": "^3.5.0",

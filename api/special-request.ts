@@ -196,7 +196,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
           request: {
             id: `email-${idempotencyKey}`,
             requestNumber: fallbackNumber,
-            status: 'received',
+            status: 'email_only',
             createdAt: new Date().toISOString(),
             persisted: false,
             attachmentStatus: 'not_stored',
@@ -274,7 +274,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
           request: {
             id: `email-${idempotencyKey}`,
             requestNumber: fallbackNumber,
-            status: 'received',
+            status: 'email_only',
             createdAt: new Date().toISOString(),
             persisted: false,
             attachmentStatus: files.length ? 'not_stored' : 'none',

@@ -53,8 +53,9 @@ export function buildCatalog(input = products) {
             category: product.category || null,
             subcategory: product.subcategory || null,
             productType: product.productType || null,
-            retailAvailable: product.retailAvailable !== false,
-            wholesaleAvailable: Boolean(product.wholesaleAvailable),
+            quoteOnly: product.quoteOnly === true,
+            retailAvailable: product.quoteOnly !== true && product.retailAvailable !== false,
+            wholesaleAvailable: product.quoteOnly !== true && Boolean(product.wholesaleAvailable),
             wholesalePrice: Number.isFinite(Number(product.wholesalePrice))
               ? Number(product.wholesalePrice)
               : null,
@@ -71,7 +72,20 @@ export function buildCatalog(input = products) {
               product.deliveryProfile || (product.readyToShip ? 'ready' : 'standard'),
             inventorySource:
               product.inventorySource || (inventoryTracking ? 'catalog' : 'supplier-order'),
+            inventoryPoolKey: variant.inventoryPoolKey || null,
+            inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock))
+              ? Number(variant.inventoryPoolStock)
+              : null,
+            inventoryVerified: variant.inventoryVerified === true || product.inventoryVerified === true,
+            inventoryLocation: product.inventoryLocation || null,
             mediaStatus: product.mediaStatus || null,
+            // Preserve source-currency pricing metadata in the trusted DB row.
+            // This lets the server recompute the store price atomically when
+            // the editable site exchange rate changes.
+            pricingRateSource: product.pricingRateSource || null,
+            priceLydSource: Number.isFinite(Number(product.priceLydSource))
+              ? Number(product.priceLydSource)
+              : null,
             madeInUSA: Boolean(product.madeInUSA),
             storefronts: Array.isArray(product.storefronts) ? product.storefronts : ['shop'],
           },

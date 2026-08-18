@@ -92,14 +92,14 @@ export function ProductContentCard({
         <label>
           <span>
             {pick({
-              en: 'Product image URL or /public path',
-              ar: 'رابط صورة المنتج أو مسار public',
+              en: 'Local product image path',
+              ar: 'مسار صورة المنتج المحلي',
             })}
           </span>
           <input
             value={values.imageUrl}
             onChange={set('imageUrl')}
-            placeholder="/images/products/item.webp"
+            placeholder="e.g. /images/products/product-name.webp"
           />
         </label>
         <div className="operations-form-grid operations-form-grid--descriptions">
@@ -130,7 +130,13 @@ export function ProductContentCard({
         </div>
         <button
           className="btn-primary compact"
-          disabled={saving === key || !values.nameEn.trim()}
+          disabled={
+            saving === key ||
+            !values.nameEn.trim() ||
+            (Boolean(values.imageUrl.trim()) &&
+              (!/^\/(?:images|media)\/[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(values.imageUrl.trim()) ||
+                values.imageUrl.includes('..')))
+          }
           onClick={() => {
             void Promise.resolve(
               run(

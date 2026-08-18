@@ -3,7 +3,7 @@ export const mainNav = [
   { to: '/shop', key: 'shop', label: { en: 'Shop', ar: 'تسوق' }, mega: true, icon: 'shop' },
   { to: '/shop/footwear', key: 'footwear', label: { en: 'Footwear', ar: 'الأحذية' }, icon: 'shoe' },
   { to: '/shop/clothing', key: 'apparel', label: { en: 'Apparel', ar: 'الملابس' }, icon: 'shirt' },
-  { to: '/basketball/shoe-finder', key: 'basketball', label: { en: 'Basketball', ar: 'كرة السلة' }, icon: 'basketball' },
+  { to: '/shop/basketballs', key: 'basketball', label: { en: 'Basketball', ar: 'كرة السلة' }, icon: 'basketball' },
   { to: '/customize', key: 'customize', label: { en: 'Custom', ar: 'صمّم' }, icon: 'customize' },
   { to: '/discover', key: 'discover', label: { en: 'Discover', ar: 'اكتشف' }, icon: 'compass' },
   { to: '/releases', key: 'releases', label: { en: 'Releases', ar: 'الإصدارات' }, icon: 'calendar' },
@@ -42,6 +42,7 @@ export const megaMenu = {
       links: [
         { to: '/customize', label: { en: 'Custom', ar: 'التخصيص' } },
         { to: '/teams-wholesale', label: { en: 'Teams & Wholesale', ar: 'الأندية والجملة' } },
+        { to: '/basketball/shoe-finder', label: { en: 'Shoe Finder', ar: 'مساعد اختيار الحذاء' } },
         { to: '/stories', label: { en: 'Stories', ar: 'القصص' } },
         { to: '/lha-store', label: { en: 'LHA', ar: 'LHA' } },
         { to: '/about', label: { en: 'About', ar: 'عن شبابنا' } },
@@ -82,6 +83,7 @@ export const footerNav = {
   ],
   legal: [
     { to: '/privacy-policy', label: { en: 'Privacy', ar: 'الخصوصية' } },
+    { to: '/refund-policy', label: { en: 'Refunds', ar: 'الاسترداد' } },
     { to: '/terms', label: { en: 'Terms', ar: 'الشروط' } },
     { to: '/cookies', label: { en: 'Cookies', ar: 'ملفات الارتباط' } },
   ],

@@ -9,28 +9,28 @@ import '../styles/teams-stories.css';
 
 const stories = [
   {
-    image: 'https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg',
+    image: '/media/localized-brand/adidas_team.png',
     category: { en: 'Team identity', ar: 'هوية الفريق' },
     title: { en: 'Build the look. Build the program.', ar: 'ابنِ الشكل. وابنِ البرنامج.' },
     copy: { en: 'A global basketball reference for thinking about uniforms, roster identity and presentation before production.', ar: 'مرجع بصري عالمي لكرة السلة للتفكير في الأطقم وهوية الفريق وطريقة العرض قبل الإنتاج.' },
     to: '/customize',
   },
   {
-    image: 'https://about.underarmour.com/content/ua/about/en/stories/2026/02/under-armour-drops-the-curry-13---the-final-chapter-in-a-signatu/_jcr_content/root/container/image.coreimg.jpg',
+    image: '/media/localized-brand/nike_green_product.webp',
     category: { en: 'Performance', ar: 'الأداء' },
     title: { en: 'Shop basketball by how you play.', ar: 'تسوق كرة السلة حسب طريقة لعبك.' },
     copy: { en: 'Performance discovery without invented ratings. Verified data when it exists, honest unknowns when it does not.', ar: 'اكتشاف منتجات الأداء دون تقييمات مختلقة. بيانات موثقة عندما تتوفر ووضوح عندما لا تتوفر.' },
     to: '/basketball/shoe-finder',
   },
   {
-    image: 'https://i.ytimg.com/vi/57FHMzbXycg/maxresdefault.jpg',
+    image: '/images/products/own-the-game-pullover-hoodie-black.webp',
     category: { en: 'Programs', ar: 'البرامج' },
     title: { en: 'One order. The whole program.', ar: 'طلب واحد. برنامج كامل.' },
     copy: { en: 'Uniforms, training, equipment and club supply organized as one basketball project.', ar: 'أطقم وتدريب ومعدات وتجهيز النادي ضمن مشروع كرة سلة واحد.' },
     to: '/teams-wholesale',
   },
   {
-    image: 'https://preview.thenewsmarket.com/Previews/NBAS/StillAssets/1920x1080/557260.png',
+    image: '/media/localized-brand/portrait_closeup.webp',
     category: { en: 'Culture', ar: 'الثقافة' },
     title: { en: 'Beyond the forty minutes.', ar: 'أبعد من الأربعين دقيقة.' },
     copy: { en: 'Travel, recovery and off-court products around the everyday life of basketball.', ar: 'السفر والاستشفاء ومنتجات خارج الملعب حول الحياة اليومية لكرة السلة.' },

@@ -12,10 +12,10 @@ import '../styles/domain-forms.css';
 import '../styles/teams-stories.css';
 
 const SERVICES = [
-  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: 'https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg' },
-  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: 'https://about.underarmour.com/content/ua/about/en/stories/2025/02/under-armour-and-curry-brand-celebrate-a-good-weekend-in-the-bay/_jcr_content/root/container/container/multiimage_1789046347/images/images1_245081.coreimg.jpg' },
-  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: 'https://i.ytimg.com/vi/57FHMzbXycg/maxresdefault.jpg' },
-  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: 'https://i.ytimg.com/vi/LRJP140fv3E/maxresdefault.jpg' },
+  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: '/media/localized-brand/adidas_team.png' },
+  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: '/media/localized-brand/ua_dribble.png' },
+  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: '/images/products/own-the-game-pullover-hoodie-black.webp' },
+  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: '/media/localized-brand/puma_court.png' },
 ];
 
 export default function TeamsWholesalePage(): ReactElement {
@@ -39,11 +39,14 @@ export default function TeamsWholesalePage(): ReactElement {
           formType: 'teams_wholesale_quote', customerName: form.name, customerEmail: form.email, phone: form.phone,
           organization: form.organization, accountType: form.type, country: form.country, package: service,
           productGroup: service, quantity: Number(form.quantity || 1), deadline: form.deadline, requirements: form.needs,
-          paymentTerms: '50% before production / 50% on arrival', estimatedTimeline: '30–60 days', language: lang,
+          paymentTerms: 'Confirmed in the approved quote', estimatedTimeline: 'Confirmed after product, quantity and destination review', language: lang,
         },
         idempotencyKey: globalThis.crypto?.randomUUID?.(),
-      }) as { quote?: Record<string, unknown> };
-      setStatus(pick({ en: `Request ${String(result.quote?.quote_number || '')} received. Our team will contact you with the next step.`, ar: `تم استلام الطلب ${String(result.quote?.quote_number || '')}. سيتواصل معك فريقنا بالخطوة التالية.` }));
+      }) as { quote?: Record<string, unknown>; persisted?: boolean };
+      const reference = String(result.quote?.quote_number || '');
+      setStatus(result.persisted === false
+        ? pick({ en: `Request ${reference} was delivered by email, but it is not yet saved in the account system. Our team will follow up; do not submit a duplicate.`, ar: `تم توصيل الطلب ${reference} بالبريد، لكنه لم يُحفظ بعد في نظام الحسابات. سيتابع معك فريقنا؛ لا ترسل طلبًا مكررًا.` })
+        : pick({ en: `Request ${reference} received and saved. Our team will contact you with the next step.`, ar: `تم استلام وحفظ الطلب ${reference}. سيتواصل معك فريقنا بالخطوة التالية.` }));
     } catch {
       setStatus(pick({ en: 'The request could not be submitted. Check the details and try again.', ar: 'تعذر إرسال الطلب. تحقق من البيانات وحاول مرة أخرى.' }));
     } finally { setBusy(false); }
@@ -82,7 +85,7 @@ export default function TeamsWholesalePage(): ReactElement {
         </section>
 
         <section id="team-quote" className="tw-quote team-quote-grid">
-          <div className="tw-quote-copy"><p>{pick({ en: 'TEAM REQUEST', ar: 'طلب فريق' })}</p><h2>{pick({ en: 'Tell us the essentials.', ar: 'اعطينا الأساسيات.' })}</h2><span>{pick({ en: 'No technical questionnaire. We only collect what is needed to contact you and prepare the right next step.', ar: 'بدون استبيان تقني معقد. نطلب فقط البيانات اللازمة للتواصل وتجهيز الخطوة التالية.' })}</span><ul><li>{pick({ en: 'Custom: estimated 30–60 days after approval.', ar: 'المخصص: تقدير 30–60 يومًا بعد الاعتماد.' })}</li><li>{pick({ en: 'Standard custom terms: 50% before production / 50% on arrival.', ar: 'شروط التخصيص القياسية: 50% قبل الإنتاج / 50% عند الوصول.' })}</li></ul><Link to="/customize" className="text-link">{pick({ en: 'Want to build a visual concept first?', ar: 'تبي تبني فكرة بصرية أولاً؟' })}</Link></div>
+          <div className="tw-quote-copy"><p>{pick({ en: 'TEAM REQUEST', ar: 'طلب فريق' })}</p><h2>{pick({ en: 'Tell us the essentials.', ar: 'اعطينا الأساسيات.' })}</h2><span>{pick({ en: 'No technical questionnaire. We only collect what is needed to contact you and prepare the right next step.', ar: 'بدون استبيان تقني معقد. نطلب فقط البيانات اللازمة للتواصل وتجهيز الخطوة التالية.' })}</span><ul><li>{pick({ en: 'Timing is confirmed after the product, quantity and destination are reviewed.', ar: 'يتم تأكيد المدة بعد مراجعة المنتج والكمية والوجهة.' })}</li><li>{pick({ en: 'Payment terms are confirmed in the approved quote before any production commitment.', ar: 'يتم تأكيد شروط الدفع في عرض السعر المعتمد قبل أي التزام بالإنتاج.' })}</li></ul><Link to="/customize" className="text-link">{pick({ en: 'Want to build a visual concept first?', ar: 'تبي تبني فكرة بصرية أولاً؟' })}</Link></div>
           <form onSubmit={(e) => { void submit(e); }}>
             <div className="field-row"><label className="field"><span>{pick({ en: 'Full name', ar: 'الاسم الكامل' })}</span><input required value={form.name} onChange={(e)=>setForm({...form,name:e.target.value})} autoComplete="name" /></label><label className="field"><span>{pick({ en: 'Team / Organization', ar: 'الفريق / المؤسسة' })}</span><input required value={form.organization} onChange={(e)=>setForm({...form,organization:e.target.value})} autoComplete="organization" /></label></div>
             <div className="field-row"><label className="field"><span>Email</span><input required type="email" value={form.email} onChange={(e)=>setForm({...form,email:e.target.value})} autoComplete="email" /></label><label className="field"><span>{pick({ en: 'Phone / WhatsApp', ar: 'الهاتف / واتساب' })}</span><input value={form.phone} onChange={(e)=>setForm({...form,phone:e.target.value})} autoComplete="tel" /></label></div>

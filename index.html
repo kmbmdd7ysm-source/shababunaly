@@ -2,13 +2,14 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
+    <script src="/locale-bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
     <meta name="color-scheme" content="light" />
     <meta
       data-rh="true"
       name="description"
-      content="SHABABUNA — premium basketball retail, custom manufacturing, team supply, wholesale and equipment. Built Different in Libya for the world."
+      content="SHABABUNA — premium basketball retail, custom design requests, team and wholesale supply requests, and equipment. Built Different in Libya for the world."
     />
     <meta data-rh="true" name="robots" content="index, follow, max-image-preview:large" />
     <link data-rh="true" rel="canonical" href="https://shababuna.ly/" />
@@ -19,7 +20,7 @@
     <meta
       data-rh="true"
       property="og:description"
-      content="Basketball retail, custom manufacturing, teams, wholesale and equipment — from Libya to the world."
+      content="Basketball retail, custom design requests, teams, wholesale and equipment — from Libya to the world."
     />
     <meta
       data-rh="true"
@@ -36,7 +37,7 @@
     <meta
       data-rh="true"
       name="twitter:description"
-      content="Premium basketball retail, custom manufacturing, teams, wholesale and equipment."
+      content="Premium basketball retail, custom design requests, teams, wholesale and equipment."
     />
     <meta
       data-rh="true"
@@ -50,8 +51,8 @@
     <link
       rel="preload"
       as="image"
-      href="https://i.ytimg.com/vi/_Ra6wkIoJp0/maxresdefault.jpg"
-      imagesrcset="https://i.ytimg.com/vi/_Ra6wkIoJp0/maxresdefault.jpg 1600w"
+      href="/media/hero-posters/home.webp"
+      imagesrcset="/media/hero-posters/home.webp 1600w"
       imagesizes="100vw"
       fetchpriority="high"
     />
@@ -68,7 +69,8 @@
         inset: 0 0 auto 0;
         z-index: 9999;
         width: 100%;
-        height: min(78vh, 820px);
+        min-height: max(640px, 92svh);
+        height: max(640px, 92svh);
         background: #050505;
         overflow: hidden;
         pointer-events: none;
@@ -90,7 +92,7 @@
       }
       .skip-link {
         position: absolute;
-        left: -9999px;
+        inset-inline-start: -9999px;
       }
     </style>
     <!-- Self-hosted faces are declared in src/styles/fonts.css and are deliberately
@@ -110,7 +112,7 @@
     <section id="lcp-shell" class="gw-hero-ssr" aria-hidden="true">
       <img
         class="gw-hero-poster"
-        src="https://i.ytimg.com/vi/_Ra6wkIoJp0/maxresdefault.jpg"
+        src="/media/hero-posters/home.webp"
         width="1600"
         height="900"
         fetchpriority="high"

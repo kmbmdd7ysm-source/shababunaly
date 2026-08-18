@@ -10,6 +10,8 @@ export interface VariantLike {
   size?: unknown;
   color?: unknown;
   unitPrice?: unknown;
+  inventoryPoolKey?: unknown;
+  inventoryPoolStock?: unknown;
 }
 
 export interface ProductLike {
@@ -86,7 +88,11 @@ export function hasValidSku(product: ProductLike | null | undefined): boolean {
 
 export function isProductPublishable(product: ProductLike | null | undefined): boolean {
   if (!product || product.status !== PRODUCT_STATUSES.ACTIVE) return false;
-  if (!hasValidSku(product) || !hasUsableProductMedia(product)) return false;
+  // Storefront publication is fail-closed: a concept/placeholder SVG is useful
+  // for internal planning but must never make a sellable product public. A
+  // product only publishes when its primary media is explicitly trusted and
+  // is not one of the /images/catalog/* placeholder assets.
+  if (!hasValidSku(product) || !hasRealProductMedia(product)) return false;
   if (!hasSellablePrice(product) && product.quoteOnly !== true) return false;
   if (NON_SELLABLE_INVENTORY_SOURCES.has(String(product.inventorySource || '').toLowerCase()))
     return false;
@@ -143,14 +149,10 @@ export function isReadyToShipEligible(
   if (product.readyToShip !== true) return false;
   if (String(product.inventoryLocation || '').toUpperCase() !== 'LY') return false;
 
-  // LHA is a separate owner-confirmed fulfilment lane. The owner explicitly
-  // confirmed every active LHA item is immediate-delivery in Libya unless it
-  // is marked Coming Soon. This must not be converted into fake numeric stock.
-  if (String(product.inventorySource || '') === 'owner_confirmed_lha_ready') {
-    return product.comingSoon !== true && product.available !== false;
-  }
-
-  // All other Ready-to-Ship products remain evidence-based tracked inventory.
+  // LHA owner-confirmed stock is numeric and colour-pooled: five physical pieces
+  // per listed colour. It therefore follows the same tracked-inventory rule as
+  // every other Ready-to-Ship product instead of bypassing verification.
+  // All Ready-to-Ship products remain evidence-based tracked inventory.
   if (product.inventoryTracking !== true) return false;
   if (product.inventoryVerified === false) return false;
   return Array.isArray(product.variants)

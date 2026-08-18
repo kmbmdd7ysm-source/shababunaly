@@ -1,44 +1,31 @@
-# Final audit — 35 problem groups (solvable scope)
+# SHABABUNA current source audit — Phase 1 truth layer
 
-Status key: PASS | BLOCKED_EXTERNAL | HUMAN_REQUIRED
+Generated: 2026-08-18T02:38:19.275Z
 
-1. Visual/structural reset — PASS (new journey/home/shop/customize system)
-2. Announcement/Dismiss document-flow — PASS
-3. Ready to Ship visibility + honesty — PASS (count 0; no fabricate)
-4. Rectangular UI reduction — PASS (organic paths/pills; residual focus chrome OK)
-5. Typography/editorial hierarchy — PASS
-6. Page structure beyond boxes — PASS
-7. Empty bag premium — PASS (SVG basketball)
-8. Add-to-bag QuickAddSheet — PASS (EN/AR continuum)
-9. Design system tokens — PASS
-10. Original icon system — PASS
-11. Media generation (non-Hero) — PASS (conceptual labeled)
-12. Product master audit — PASS (69 products; pending commercial fields documented)
-13. ProductMediaViewer levels A–D — PASS (Realtime3D TSX + bridge)
-14. Customize Studio — PASS (core continuum; submit may need API)
-15. Teams/Wholesale — PASS UI; quote API BLOCKED_EXTERNAL (Vercel SSO)
-16. Cart/Checkout/Auth/Account — PASS (staging-safe)
-17. Remaining public routes — PASS
-18. Operations modular — PASS (operations.ts typed)
-19. Performance budgets — PASS scripts; live LH needs deploy
-20. Accessibility WCAG target — PASS continuum; residual React fetchPriority warn
-21. Arabic/RTL — PASS technical; ARABIC_HUMAN_REVIEW HUMAN_REQUIRED (0/10)
-22. Toolchain ESLint/Vitest — known pre-existing red on main; validators green
-23. TypeScript migration — PASS 99.66% (+model-viewer bridge)
-24. CSS architecture — PASS extinction path
-25. Protected systems — PASS (no fabricate inventory/payments)
-26. Business rules currency/shipping/Formspree — PASS validators
-27. Deployed API verification — BLOCKED_EXTERNAL (Vercel SSO 401)
-28. Database/RLS live — BLOCKED_EXTERNAL
-29. Live payments — BLOCKED_EXTERNAL
-30. Hero final media — deferred (user-provided later)
-31. Ready-to-Ship stock > 0 — BLOCKED_EXTERNAL (verified inventory)
-32. Full lighthouse 3-run deploy evidence — BLOCKED_EXTERNAL / needs public preview
-33. Human Arabic review — HUMAN_REQUIRED
-34. Production domain probe — BLOCKED_EXTERNAL (egress/unreachable)
-35. Final release SHA evidence — regenerated this stretch
+## Executed and verified in this snapshot
 
-## Verdict
-All **solvable in-repo** groups PASS.
-Remaining require external unlock or human sign-off.
-**NOT FINAL COMPLETE.**
+- Published catalogue: **119 products / 1482 variants**.
+- LHA: **25 products**, owner-confirmed **5 pieces per listed color**, tracked as shared color inventory pools.
+- Ready to Ship: **25**, all backed by currently verified tracked inventory in the catalogue audit.
+- Kobe: **50 products**, **1200 LYD source price**, converted with the site's **9 LYD/USD** rate to a clean **$135** store price; men's sizes stop at **US 12 / EU 46**.
+- Customer-facing catalogue prices are whole 5-unit steps with no decimal pricing.
+- Unsupported About claims/brand-film placeholder were removed.
+- Incomplete Programs / Events / Online Training / Coaches routes are not published.
+- `/our-work` redirects to `/stories`; `/basketball` redirects to the basketball shop hub.
+- Release dates require explicit verification.
+- RTL design-token validation passes.
+- Node tests and source validators are current with the 119-product catalogue.
+
+## Truthfully still outside Phase 1
+
+- Production-complete products: **0/119**. Missing supplier/commercial metadata remains a later operational-data gate.
+- Placeholder/final-media backlog: **44 products**; this is not hidden by the audit.
+- Product viewer remains below the final Tier A/B target; media/360/3D work is a later phase.
+- Factory profiles, live payment/signature providers, browser visual approval, human Arabic approval and fresh live-cloud evidence remain external/later gates.
+- A full Vite production build cannot be reproduced in this sandbox from the uploaded archive because its bundled dependency tree is incomplete; the final source package therefore must rely on `package-lock.json` + clean `npm ci`, not the broken partial `node_modules` snapshot.
+
+## Phase 1 hard assertion
+
+Phase 1 truth audit: **1529 checks / 0 failures**.
+
+Correct classification: **Phase 1 executed and source-verified; whole-site Production Verified is intentionally not claimed.**

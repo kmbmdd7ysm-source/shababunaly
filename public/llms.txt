@@ -1,6 +1,6 @@
 # SHABABUNA
 
-> SHABABUNA is a bilingual basketball retail, custom manufacturing, teams and wholesale platform based in Tripoli, Libya.
+> SHABABUNA is a bilingual basketball retail, custom design, teams and wholesale platform based in Tripoli, Libya.
 
 Canonical site: https://shababuna.ly
 Contact: shababuna.info@gmail.com
@@ -11,7 +11,7 @@ Main sections:
 - /customize — custom product design and quote requests
 - /teams-wholesale — clubs, academies, federations, distributors and bulk supply
 - /lha-store — official LHA clothing and accessories shop
-- /our-work — client project system
+- /stories — basketball stories and editorial content
 
 Commerce rules:
 - Base currency USD; optional LYD conversion uses the Shababuna backend exchange rate.
@@ -19,4 +19,4 @@ Commerce rules:
 - Ready-to-ship delivery inside Libya is 24–72 hours.
 - Standard non-ready delivery to Libya is estimated at 14–18 days.
 - International shipping is quoted per destination before payment.
-- Custom and wholesale production is estimated at 30–60 days.
+- Custom and wholesale timing and payment terms are confirmed in the approved quote for the specific request.

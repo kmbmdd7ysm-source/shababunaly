@@ -2,6 +2,7 @@ import { products as sourceLhaProducts } from './lhaProducts.ts';
 import { kobeGoatProducts as sourceKobeGoatProducts } from './kobeGoatProducts.ts';
 import { isProductVisible, isReadyToShipEligible } from '../utils/productEligibility.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
+import { roundStorePrice, roundStorePriceDown } from '../config/commerce.ts';
 
 const C = {
   black: { key: 'black', name: { en: 'Black', ar: 'أسود' }, hex: '#101010' },
@@ -34,6 +35,8 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
   const colors = Array.isArray(input.colors) && input.colors.length ? (input.colors as Array<{ key: string; [k: string]: unknown }>) : [C.black];
   const sizes = Array.isArray(input.sizes) && input.sizes.length ? (input.sizes as string[]) : ['OS'];
   const inventoryVerified = input.inventoryVerified === true;
+  const cleanPrice = roundStorePrice(input.price || 0);
+  const cleanWholesalePrice = roundStorePriceDown(input.wholesalePrice || 0);
   const inventoryTracking =
     inventoryVerified && (input.inventoryTracking ?? Boolean(input.readyToShip));
   const variants: Array<Record<string, unknown>> = [];
@@ -49,8 +52,8 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
         inventoryTracking,
         availabilityState: inventoryTracking && stock <= 0 ? 'out_of_stock' : 'in_stock',
         readyToShip: Boolean(input.readyToShip && inventoryTracking && stock > 0),
-        unitPrice: Number(input.price),
-        wholesalePrice: Number(input.wholesalePrice || 0) || null,
+        unitPrice: cleanPrice,
+        wholesalePrice: cleanWholesalePrice || null,
       });
     });
   });
@@ -63,7 +66,7 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
   const mediaStatus = mediaPath.startsWith('/images/catalog/')
     ? 'placeholder'
     : input.mediaStatus || 'supplied';
-  const quoteOnly = input.quoteOnly === true || !(Number(input.price) > 0);
+  const quoteOnly = input.quoteOnly === true || !(cleanPrice > 0);
   const status = 'active';
   const available = input.available !== false;
   return {
@@ -98,6 +101,8 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
     spin360: [],
     model3d: null,
     ...input,
+    price: cleanPrice,
+    wholesalePrice: cleanWholesalePrice || null,
     brand: input.brand || 'Shababuna',
     status,
     available,
@@ -1059,27 +1064,33 @@ const subcategoryMap = {
 };
 
 export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Record<string, unknown> {
-  const inventoryTracking = item.inventoryVerified === true;
-  const price = Number(item.price || 0);
+  const price = roundStorePrice(item.price || 0);
   const quoteOnly = price <= 0;
-  const comingSoon = item.comingSoon === true;
-  // LHA stock state is owner-confirmed: every active LHA item is available for
-  // immediate Libya delivery unless the catalogue explicitly marks it Coming Soon.
-  const ownerConfirmedReady = !comingSoon && !quoteOnly;
+  const ownerConfirmedStock = item.inventorySource === 'owner_confirmed_lha_color_stock';
+  const inventoryTracking = ownerConfirmedStock || item.inventoryVerified === true;
+  const comingSoon = ownerConfirmedStock ? false : item.comingSoon === true;
   const variants = (Array.isArray(item.variants) ? item.variants as Array<Record<string, unknown>> : []).map((variant) => ({
     ...variant,
     stock: inventoryTracking ? Math.max(0, Number(variant.stock) || 0) : 0,
     active: variant.active !== false,
     inventoryTracking,
-    availabilityState:
-      inventoryTracking && Number(variant.stock) <= 0 ? 'out_of_stock' : 'in_stock',
-    readyToShip: ownerConfirmedReady || (inventoryTracking && item.readyToShip === true && Number(variant.stock) > 0),
+    inventoryVerified: inventoryTracking,
+    availabilityState: inventoryTracking && Number(variant.stock) <= 0 ? 'out_of_stock' : 'in_stock',
+    readyToShip: ownerConfirmedStock
+      ? Number(variant.stock) > 0
+      : Boolean(item.readyToShip && inventoryTracking && Number(variant.stock) > 0),
     unitPrice: price,
-    wholesalePrice: price > 0 ? Math.round(price * 0.82 * 100) / 100 : null,
+    wholesalePrice: price > 0 ? roundStorePriceDown(price * 0.82) || null : null,
   }));
-  const stock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0) : 0;
-  const readyToShip = ownerConfirmedReady || (inventoryTracking && item.readyToShip === true && stock > 0);
+  const stockByColor = ownerConfirmedStock ? ((item.stockByColor || {}) as Record<string, unknown>) : {};
+  const pooledStock = Object.values(stockByColor).reduce((sum: number, value) => sum + Math.max(0, Number(value) || 0), 0);
+  const variantStock = inventoryTracking ? variants.reduce((sum: number, variant) => sum + Math.max(0, Number(variant.stock) || 0), 0) : 0;
+  const stock = ownerConfirmedStock ? pooledStock : variantStock;
+  const readyToShip = ownerConfirmedStock
+    ? stock > 0
+    : Boolean(item.readyToShip && inventoryTracking && stock > 0);
   const fallbackImage = item.image || '/images/catalog/apparel.svg';
+  const status = comingSoon ? 'coming_soon' : item.available === false ? 'archived' : 'active';
   return {
     ...item,
     id: `lha-${item.id}`,
@@ -1094,31 +1105,37 @@ export function normalizeLhaCatalogProduct(item: Record<string, unknown>): Recor
         : item.category,
     subcategory: (subcategoryMap as Record<string, string>)[String(item.subcategory || '')] || item.subcategory,
     readyToShip,
-    retailAvailable: true,
-    wholesaleAvailable: price > 0,
+    // A zero/unknown retail price is a quote workflow, never a $0 checkout.
+    // Stock can still be truthfully visible/Ready-to-Ship while the customer
+    // requests pricing, but direct retail/wholesale purchase stays fail-closed.
+    retailAvailable: price > 0,
+    wholesaleAvailable: price > 0 && roundStorePriceDown(price * 0.82) > 0,
     wholesaleMin: item.subcategory === 'balls' ? 6 : 10,
-    wholesalePrice: price > 0 ? Math.round(price * 0.82 * 100) / 100 : 0,
+    wholesalePrice: price > 0 ? roundStorePriceDown(price * 0.82) : 0,
     minimumOrder: 1,
     customizable: false,
     madeInUSA: false,
     legacyLha: true,
     variants,
+    stockByColor,
+    stockPerColor: ownerConfirmedStock ? Number(item.stockPerColor || 5) : undefined,
     stock,
     price,
     inventoryTracking,
     inventoryVerified: inventoryTracking,
-    inventorySource: ownerConfirmedReady
-      ? 'owner_confirmed_lha_ready'
+    inventorySource: ownerConfirmedStock
+      ? 'owner_confirmed_lha_color_stock'
       : inventoryTracking
         ? 'verified_inventory'
         : 'supplier_order',
     inventoryLocation: readyToShip ? 'LY' : null,
+    inventoryVerifiedAt: ownerConfirmedStock ? item.inventoryVerifiedAt || '2026-08-17' : null,
     deliveryProfile: readyToShip ? 'ready' : quoteOnly ? 'custom' : 'standard',
-    status: comingSoon ? 'coming_soon' : 'active',
-    available: !comingSoon,
+    status,
+    available: ownerConfirmedStock ? true : item.available !== false && !comingSoon,
     comingSoon,
     quoteOnly,
-    availability: comingSoon ? 'coming-soon' : 'in-stock',
+    availability: comingSoon ? 'coming-soon' : inventoryTracking && stock <= 0 ? 'sold-out' : 'in-stock',
     image: fallbackImage,
     socialImage: item.socialImage || fallbackImage,
     mediaStatus: item.image ? 'supplied' : 'placeholder',

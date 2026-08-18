@@ -12,6 +12,7 @@ describe('currency conversion', () => {
   it('stores canonical USD and converts using rate 9', () => {
     expect(convertPrice(100, 'USD', 'LYD', 9)).toBe(900);
     expect(convertPrice(900, 'LYD', 'USD', 9)).toBe(100);
+    expect(convertPrice(153, 'USD', 'USD', 9)).toBe(155);
     const usd = Money.fromMajor(10, 'USD');
     expect(usd.convert('USD', 9)).toBe(usd);
   });
@@ -19,7 +20,7 @@ describe('currency conversion', () => {
     expect(roundLydPrice(901)).toBe(905);
     expect(Number.isNaN(roundLydPrice('x'))).toBe(true);
     expect(formatMoney(901, 'LYD', 'en')).toContain('905 LYD');
-    expect(formatMoney(10, 'USD', 'en')).toBe('$10.00');
+    expect(formatMoney(10, 'USD', 'en')).toBe('$10');
     expect(formatMoney(10, 'USD', 'ar')).toContain('USD');
     expect(formatMoney('x', 'USD', 'en')).toBe('Price unavailable');
     expect(formatMoney('x', 'USD', 'ar')).toBe('السعر غير متاح');

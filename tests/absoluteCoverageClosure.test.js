@@ -767,7 +767,7 @@ describe('absolute pure-module branch coverage', { concurrency: false }, () => {
       readyToShip: false,
       variants: [{ stock: 0 }],
     });
-    expect(lha.availability).toBe('in-stock');
+    expect(lha.availability).toBe('sold-out');
     expect(
       bestSellers([
         { bestSeller: true, legacyLha: false },

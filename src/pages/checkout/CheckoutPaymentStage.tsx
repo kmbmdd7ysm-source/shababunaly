@@ -11,7 +11,6 @@ export default function CheckoutPaymentStage({
   setCashPlan,
   onlineCardConfigured,
   libyanCardConfigured,
-  stagedOrder,
   shippingQuoteRequired,
   allowCashPlanChoice,
   immediateCash,
@@ -29,18 +28,25 @@ export default function CheckoutPaymentStage({
   allowCashPlanChoice: boolean;
   immediateCash: boolean;
 }): ReactElement {
+  if (shippingQuoteRequired) {
+    return (
+      <div className="notice notice--info" role="status">
+        <strong>{pick({ en: 'Payment comes after the shipping quote.', ar: 'الدفع بعد تأكيد سعر الشحن.' })}</strong>
+        <p>{pick({
+          en: 'Submit the order details now. Shababuna confirms the real shipping amount before any payment is collected.',
+          ar: 'أرسل بيانات الطلب الآن. يؤكد شبابنا قيمة الشحن الفعلية قبل تحصيل أي مبلغ.',
+        })}</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <fieldset className="form-block payment-methods">
         <legend>{pick({ en: 'Payment method', ar: 'طريقة الدفع' })}</legend>
         {isLibya ? (
           <label className={`payment-choice ${paymentMethod === 'cash' ? 'active' : ''}`}>
-            <input
-              type="radio"
-              name="payment"
-              checked={paymentMethod === 'cash'}
-              onChange={() => setPaymentMethod('cash')}
-            />
+            <input type="radio" name="payment" checked={paymentMethod === 'cash'} onChange={() => setPaymentMethod('cash')} />
             <span>
               <strong>{pick({ en: 'Cash in Libya', ar: 'دفع نقدي داخل ليبيا' })}</strong>
               <small>
@@ -54,49 +60,23 @@ export default function CheckoutPaymentStage({
           </label>
         ) : null}
         {isLibya && libyanCardConfigured ? (
-          <label
-            className={`payment-choice ${paymentMethod === 'libyan_bank_card' ? 'active' : ''}`}
-          >
-            <input
-              type="radio"
-              name="payment"
-              checked={paymentMethod === 'libyan_bank_card'}
-              onChange={() => setPaymentMethod('libyan_bank_card')}
-            />
+          <label className={`payment-choice ${paymentMethod === 'libyan_bank_card' ? 'active' : ''}`}>
+            <input type="radio" name="payment" checked={paymentMethod === 'libyan_bank_card'} onChange={() => setPaymentMethod('libyan_bank_card')} />
             <span>
               <strong>{pick({ en: 'Libyan Bank Card', ar: 'بطاقة مصرفية ليبية' })}</strong>
-              <small>
-                {pick({
-                  en: 'Full payment for retail orders through the connected bank provider.',
-                  ar: 'دفع كامل للطلبات العادية عبر مزود المصرف المرتبط.',
-                })}
-              </small>
+              <small>{pick({ en: 'Full payment through the connected Libyan bank provider.', ar: 'دفع كامل عبر مزود البطاقة المصرفية الليبية المرتبط.' })}</small>
             </span>
           </label>
         ) : null}
-        <label
-          className={`payment-choice payment-choice--card ${paymentMethod === 'online_card' ? 'active' : ''}${onlineCardConfigured ? '' : ' is-unavailable'}`}
-          aria-disabled={!onlineCardConfigured}
-        >
-          <input
-            type="radio"
-            name="payment"
-            checked={paymentMethod === 'online_card'}
-            disabled={!onlineCardConfigured}
-            onChange={() => setPaymentMethod('online_card')}
-          />
-          <span>
-            <strong>{pick({ en: 'Card & Digital Payment', ar: 'بطاقة ودفع إلكتروني' })}</strong>
-            <small>
-              {onlineCardConfigured
-                ? 'Visa · Mastercard · Apple Pay · Google Pay'
-                : pick({
-                    en: 'Secure card checkout will appear here as soon as the payment provider is connected.',
-                    ar: 'سيظهر الدفع الآمن بالبطاقة هنا فور ربط مزود الدفع.',
-                  })}
-            </small>
-          </span>
-        </label>
+        {onlineCardConfigured ? (
+          <label className={`payment-choice payment-choice--card ${paymentMethod === 'online_card' ? 'active' : ''}`}>
+            <input type="radio" name="payment" checked={paymentMethod === 'online_card'} onChange={() => setPaymentMethod('online_card')} />
+            <span>
+              <strong>{pick({ en: 'Card & Digital Payment', ar: 'بطاقة ودفع إلكتروني' })}</strong>
+              <small>Visa · Mastercard · Apple Pay · Google Pay</small>
+            </span>
+          </label>
+        ) : null}
       </fieldset>
 
       {paymentMethod === 'cash' && allowCashPlanChoice ? (
@@ -104,22 +84,12 @@ export default function CheckoutPaymentStage({
           <legend>{pick({ en: 'Cash confirmation amount', ar: 'قيمة تأكيد الطلب النقدي' })}</legend>
           <div className="payment-plan-grid">
             <label className={cashPlan === 'half' ? 'active' : ''}>
-              <input
-                type="radio"
-                name="cash-plan"
-                checked={cashPlan === 'half'}
-                onChange={() => setCashPlan('half')}
-              />
+              <input type="radio" name="cash-plan" checked={cashPlan === 'half'} onChange={() => setCashPlan('half')} />
               <strong>50%</strong>
               <span>{pick({ en: 'Pay half to confirm', ar: 'ادفع النصف لتأكيد الطلب' })}</span>
             </label>
             <label className={cashPlan === 'full' ? 'active' : ''}>
-              <input
-                type="radio"
-                name="cash-plan"
-                checked={cashPlan === 'full'}
-                onChange={() => setCashPlan('full')}
-              />
+              <input type="radio" name="cash-plan" checked={cashPlan === 'full'} onChange={() => setCashPlan('full')} />
               <strong>100%</strong>
               <span>{pick({ en: 'Pay in full', ar: 'ادفع القيمة كاملة' })}</span>
             </label>

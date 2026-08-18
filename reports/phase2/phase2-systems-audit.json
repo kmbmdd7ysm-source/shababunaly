@@ -1,0 +1,265 @@
+{
+  "generatedAt": "2026-08-18T15:14:27.688Z",
+  "phase": 2,
+  "scope": "production systems and customer experience source audit",
+  "checks": 51,
+  "failures": 0,
+  "passed": true,
+  "results": [
+    {
+      "name": "hero:home",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:shop",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:footwear",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:clothing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:accessories",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:basketballs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:equipment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:shoeFinder",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:custom",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:discover",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:teams",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:stories",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:releases",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:13-direct-mp4s",
+      "ok": true,
+      "detail": "found 13"
+    },
+    {
+      "name": "hero:13-unique-mp4s",
+      "ok": true,
+      "detail": "unique 13"
+    },
+    {
+      "name": "hero:native-home-video",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:native-editorial-video",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:no-youtube-player-runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:no-fake-drift",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:local-first-paint-poster",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:no-legacy-youtube-component",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:file-object-state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:client-upload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:magic-validation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:quarantine-bucket",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:malware-fail-closed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:media-assets-row",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:quote-asset-id",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:quote-reassociation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom:no-4xx-email-fallback",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "checkout:pending-method-supported",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "checkout:provider-gates",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "checkout:international-quote-without-provider",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "checkout:quote-no-payment-collection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "checkout:hidden-unconfigured-methods",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:url-query-state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:url-filter-updates",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:arabic-normalization",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:alias-expansion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:fuzzy-edit-distance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:canonical-stories-route",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "search:category-routing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shoe-finder:verified-filter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "shoe-finder:honest-copy",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "locale:bootstrap-exists",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "locale:bootstrap-loaded-early",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pwa:private-routes-network-only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pwa:cross-origin-not-cached",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pwa:html-no-store",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "viewer:dev-fixture-dev-only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "viewer:fixture-default-off",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

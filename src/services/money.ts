@@ -1,4 +1,4 @@
-import { commerceConfig, isSupportedDisplayCurrency } from '../config/commerce.ts';
+import { commerceConfig, isSupportedDisplayCurrency, roundStorePrice } from '../config/commerce.ts';
 import type { Currency } from '../domain/types.ts';
 
 const MINOR_SCALE = 100;
@@ -68,10 +68,7 @@ export class Money {
 }
 
 export function roundLydPrice(value: unknown): number {
-  const amount = Number(value);
-  if (!Number.isFinite(amount)) return amount;
-  const rounded = Math.ceil(amount / 5) * 5;
-  return Object.is(rounded, -0) ? 0 : rounded;
+  return roundStorePrice(value);
 }
 
 export function convertPrice(
@@ -83,7 +80,7 @@ export function convertPrice(
   assertCurrency(fromCurrency);
   assertCurrency(toCurrency);
   const converted = Money.fromMajor(amount, fromCurrency).convert(toCurrency, rate).toMajor();
-  return toCurrency === 'LYD' ? roundLydPrice(converted) : converted;
+  return roundStorePrice(converted);
 }
 
 export function sumMoney(
@@ -105,10 +102,10 @@ export function formatMoney(amount: unknown, currency: string, lang: 'en' | 'ar'
   }
 
   const locale = lang === 'ar' ? 'ar-LY-u-nu-latn' : 'en-US';
-  const displayValue = currency === 'LYD' ? roundLydPrice(value) : value;
+  const displayValue = roundStorePrice(value);
   const number = new Intl.NumberFormat(locale, {
-    minimumFractionDigits: currency === 'LYD' ? 0 : 2,
-    maximumFractionDigits: currency === 'LYD' ? 0 : 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
     useGrouping: true,
   }).format(displayValue);
 
@@ -128,10 +125,10 @@ export function getAccessibleMoneyLabel(
 ): string {
   const value = Number(amount);
   if (!Number.isFinite(value)) return lang === 'ar' ? 'السعر غير متاح' : 'Price unavailable';
-  const displayValue = currency === 'LYD' ? roundLydPrice(value) : value;
+  const displayValue = roundStorePrice(value);
   const formatted = new Intl.NumberFormat(lang === 'ar' ? 'ar-LY-u-nu-latn' : 'en-US', {
-    minimumFractionDigits: currency === 'LYD' ? 0 : 2,
-    maximumFractionDigits: currency === 'LYD' ? 0 : 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(displayValue);
   if (lang === 'ar') {
     return currency === 'LYD' ? `${formatted} دينار ليبي` : `${formatted} دولار أمريكي`;

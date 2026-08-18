@@ -110,7 +110,7 @@ export default function QuickAddSheet({
     if (!sizes.includes(size)) setSize(String(sizes[0] || ''));
   }, [sizes, size]);
 
-  if (!open) return null;
+  if (!open || product.quoteOnly === true || Number(product.price ?? 0) <= 0) return null;
 
   const selected =
     variants.find(
@@ -122,7 +122,7 @@ export default function QuickAddSheet({
     colors.find((entry) => entry.key === color)?.image || product.image || '';
 
   const commit = () => {
-    if (!selected || status === 'adding') return;
+    if (!selected || status === 'adding' || !Number.isFinite(unitPrice) || unitPrice <= 0) return;
     setStatus('adding');
     addItem({
       key: cartKey('product', String(product.id || ''), `${color}-${size}-retail`),
@@ -140,6 +140,8 @@ export default function QuickAddSheet({
       sku: String(selected.sku || ''),
       maxStock: getVariantPurchaseLimit(selected as import('../../utils/productEligibility').VariantLike),
       inventoryTracking: selected.inventoryTracking !== false,
+      inventoryPoolKey: selected.inventoryPoolKey ? String(selected.inventoryPoolKey) : undefined,
+      inventoryPoolStock: Number.isFinite(Number(selected.inventoryPoolStock)) ? Number(selected.inventoryPoolStock) : undefined,
       href: `/products/${String(product.slug || '')}`,
       quantity: 1,
       purchaseMode: 'retail',

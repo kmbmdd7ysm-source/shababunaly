@@ -1,28 +1,31 @@
-# SHABABUNA final source audit
+# SHABABUNA current source audit — Phase 1 truth layer
 
-Generated: 2026-08-02 UTC
+Generated: 2026-08-18T02:38:19.275Z
 
-## Source findings
+## Executed and verified in this snapshot
 
-- 29 ordered Supabase migrations, including BI, external signature evidence and malware quarantine lifecycle.
-- 69 active catalog products and 982 generated variants.
-- 309 passing Node/API/source-contract tests.
-- Full-project coverage infrastructure includes all executable `src` and `api` files and rejects missing files.
-- Database concurrency tests cover inventory, duplicate payments, refunds and returns.
-- B2B pgTAP lifecycle covers roster through financial reconciliation.
-- Operations UI is split into focused modules.
-- Infected/expired quarantined files are physically deleted.
-- PageSpeed Insights and Lighthouse are both release requirements.
-- Production verification requires fresh evidence and never accepts `not_run` reports.
+- Published catalogue: **119 products / 1482 variants**.
+- LHA: **25 products**, owner-confirmed **5 pieces per listed color**, tracked as shared color inventory pools.
+- Ready to Ship: **25**, all backed by currently verified tracked inventory in the catalogue audit.
+- Kobe: **50 products**, **1200 LYD source price**, converted with the site's **9 LYD/USD** rate to a clean **$135** store price; men's sizes stop at **US 12 / EU 46**.
+- Customer-facing catalogue prices are whole 5-unit steps with no decimal pricing.
+- Unsupported About claims/brand-film placeholder were removed.
+- Incomplete Programs / Events / Online Training / Coaches routes are not published.
+- `/our-work` redirects to `/stories`; `/basketball` redirects to the basketball shop hub.
+- Release dates require explicit verification.
+- RTL design-token validation passes.
+- Node tests and source validators are current with the 119-product catalogue.
 
-## Unresolved evidence/data boundary
+## Truthfully still outside Phase 1
 
-- Strict TypeScript migration: 7/205 files.
-- 0/69 products production-complete, 0 verified stock, 0 Ready to Ship, 44 placeholders.
-- 0 manufacturer-approved factory profiles.
-- 0/10 Arabic review sections approved.
-- No reviewed visual baseline.
-- No selected/approved live payment or legal-signature provider.
-- Build, database, browser and performance suites were not executable in this sandbox.
+- Production-complete products: **0/119**. Missing supplier/commercial metadata remains a later operational-data gate.
+- Placeholder/final-media backlog: **44 products**; this is not hidden by the audit.
+- Product viewer remains below the final Tier A/B target; media/360/3D work is a later phase.
+- Factory profiles, live payment/signature providers, browser visual approval, human Arabic approval and fresh live-cloud evidence remain external/later gates.
+- A full Vite production build cannot be reproduced in this sandbox from the uploaded archive because its bundled dependency tree is incomplete; the final source package therefore must rely on `package-lock.json` + clean `npm ci`, not the broken partial `node_modules` snapshot.
 
-Correct classification: source-hardened/integration-ready, not Production Verified.
+## Phase 1 hard assertion
+
+Phase 1 truth audit: **1529 checks / 0 failures**.
+
+Correct classification: **Phase 1 executed and source-verified; whole-site Production Verified is intentionally not claimed.**

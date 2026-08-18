@@ -137,6 +137,7 @@ export default function ShopPage(): ReactElement {
       if (filters.colors.length && !(product.colors || []).some((color) => filters.colors.includes(String(color.key)))) return false;
       if (filters.brands.length && !filters.brands.includes(String(product.brand || ''))) return false;
       if (filters.productTypes.length && !filters.productTypes.includes(String(product.productType || ''))) return false;
+      if (product.quoteOnly === true && (min != null || max != null)) return false;
       if (min != null && Number(product.price || 0) < min) return false;
       if (max != null && Number(product.price || 0) > max) return false;
       if (filters.inStock && !(product.inventoryVerified === true && product.inventoryTracking === true && Number(product.stock) > 0)) return false;

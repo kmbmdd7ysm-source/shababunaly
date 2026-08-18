@@ -19,7 +19,7 @@ describe('brand and navigation', () => {
       '/shop',
       '/shop/footwear',
       '/shop/clothing',
-      '/basketball/shoe-finder',
+      '/shop/basketballs',
       '/customize',
       '/discover',
       '/releases',

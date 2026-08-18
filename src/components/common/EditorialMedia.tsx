@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
-import YouTubeBackground from './YouTubeBackground';
 
 type EditorialMediaProps = {
   desktopMedia: string;
@@ -18,10 +17,6 @@ function videoType(url: string): string {
   return 'video/mp4';
 }
 
-function isEmbed(url?: string): boolean {
-  return Boolean(url && /youtube(?:-nocookie)?\.com\/embed\//i.test(url));
-}
-
 export default function EditorialMedia({
   desktopMedia,
   mobileMedia,
@@ -33,12 +28,7 @@ export default function EditorialMedia({
 }: EditorialMediaProps): ReactElement {
   const reducedMotion = useReducedMotion();
   const [failed, setFailed] = useState(false);
-  const chosenEmbed = isEmbed(desktopVideo) ? desktopVideo : isEmbed(mobileVideo) ? mobileVideo : undefined;
   const hasMotion = !reducedMotion && !failed && Boolean(desktopVideo || mobileVideo);
-
-  if (hasMotion && chosenEmbed) {
-    return <YouTubeBackground src={chosenEmbed} className="s2-official-video-frame" />;
-  }
 
   if (hasMotion) {
     return (
@@ -47,6 +37,8 @@ export default function EditorialMedia({
         loop
         playsInline
         autoPlay
+        disablePictureInPicture
+        controls={false}
         preload={loading === 'eager' ? 'auto' : 'metadata'}
         poster={poster || mobileMedia || desktopMedia}
         onError={() => setFailed(true)}

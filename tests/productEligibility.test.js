@@ -34,15 +34,17 @@ describe('product publishing eligibility', () => {
     expect(hasValidSku({ ...approved, sku: 'x' })).toBe(false);
     expect(hasValidSku({ ...approved, sku: null })).toBe(false);
   });
-  it('allows clearly labelled placeholder media but blocks unverified inventory', () => {
+  it('keeps placeholder media internal and blocks unverified inventory', () => {
     const placeholder = {
       ...approved,
       image: '/images/catalog/concept.webp',
       mediaStatus: 'concept',
       inventorySource: 'supplier_order',
     };
-    expect(isProductPublishable(placeholder)).toBe(true);
-    expect(isProductVisible(placeholder)).toBe(true);
+    expect(hasUsableProductMedia(placeholder)).toBe(true);
+    expect(hasRealProductMedia(placeholder)).toBe(false);
+    expect(isProductPublishable(placeholder)).toBe(false);
+    expect(isProductVisible(placeholder)).toBe(false);
     const unsafe = { ...placeholder, inventorySource: 'unverified_catalog' };
     expect(isProductPublishable(unsafe)).toBe(false);
     expect(getProductPublishIssues(unsafe)).toEqual(

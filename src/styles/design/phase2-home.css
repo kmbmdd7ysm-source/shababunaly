@@ -13,36 +13,6 @@
 .s2-hero__scrim { position: absolute; inset: 0; width: 100%; height: 100%; }
 .s2-hero__media img,
 .s2-hero__media video { object-fit: cover; object-position: center; }
-.s2-hero__embed { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.s2-hero__embed iframe {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  width: max(100vw, 177.78vh);
-  height: max(56.25vw, 100vh);
-  transform: translate(-50%, -50%);
-  border: 0;
-  pointer-events: none;
-}
-.s2-official-video-frame { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.s2-official-video-frame iframe {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  width: max(100%, 177.78vh);
-  height: max(100%, 56.25vw);
-  transform: translate(-50%, -50%);
-  border: 0;
-  pointer-events: none;
-}
-.s2-hero__media picture {
-  animation: s2-hero-drift 18s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-@keyframes s2-hero-drift {
-  from { transform: scale(1); }
-  to { transform: scale(1.055); }
-}
 .s2-hero__scrim {
   background: linear-gradient(90deg, color-mix(in srgb, var(--sh-night) 62%, transparent) 0%, var(--sh-black-22) 52%, var(--sh-black-08) 100%);
 }
@@ -225,8 +195,3 @@
 }
 
 /* Home hero film is presentation-only; player UI stays outside the clipped viewport. */
-.s2-hero__embed.s2-background-embed { position:absolute; inset:0; overflow:hidden; }
-.s2-hero__embed.s2-background-embed iframe {
-  top:50%; left:50%; width:100%; height:100%; min-width:177.78vh; min-height:56.25vw;
-  transform:translate(-50%,-50%) scale(1.18); border:0; pointer-events:none;
-}

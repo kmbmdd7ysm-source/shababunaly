@@ -143,7 +143,7 @@ export function coverPage({
     ['Pattern', design.pattern || '-'],
     ['Neckline', design.neckline || '-'],
     ['Number font', design.font || '-'],
-    ['Timeline', '30-60 days after proof and deposit approval'],
+    ['Timeline', 'Confirmed in the approved quote'],
   ];
   const out = [
     rect(0, 0, 595, 842, '1 1 1'),

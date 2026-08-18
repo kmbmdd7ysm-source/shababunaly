@@ -101,6 +101,8 @@ export default function ProductCard({
       sku: String(variant.sku || ''),
       maxStock: getVariantPurchaseLimit(variant as VariantLike),
       inventoryTracking: variant.inventoryTracking !== false,
+      inventoryPoolKey: variant.inventoryPoolKey ? String(variant.inventoryPoolKey) : undefined,
+      inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock)) ? Number(variant.inventoryPoolStock) : undefined,
       href: to,
       quantity: 1,
       purchaseMode: 'retail',

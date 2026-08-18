@@ -9,11 +9,14 @@ const required = [
 
 
 const shell = readFileSync('index.html', 'utf8');
-if (!/rel="preload"[\s\S]{0,500}href="https:\/\/i\.ytimg\.com\/vi\/_Ra6wkIoJp0\/maxresdefault\.jpg"/i.test(shell)) {
-  failures.push('Home hero preload must use the approved external official-film poster');
+if (!/rel="preload"[\s\S]{0,500}href="\/media\/hero-posters\/home\.webp"/i.test(shell)) {
+  failures.push('Home hero preload must use the local optimized hero poster');
 }
-if (/href="\/media\/heroes\//i.test(shell)) {
-  failures.push('Home shell must not preload legacy local hero media');
+if (/i\.ytimg\.com|youtube(?:-nocookie)?\.com/i.test(shell)) {
+  failures.push('Home first paint must not depend on YouTube media');
+}
+if (!existsSync('public/media/hero-posters/home.webp') || statSync('public/media/hero-posters/home.webp').size > 160_000) {
+  failures.push('Home hero poster must exist locally and stay under the 160 KB transition budget');
 }
 
 for (const [file, maximum] of required) {
@@ -58,5 +61,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; home uses the approved external official-film poster and no bundled video exceeds 4 MB.`,
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; home uses a local optimized first-paint poster, no YouTube first-paint dependency, and no bundled video exceeds 4 MB.`,
 );

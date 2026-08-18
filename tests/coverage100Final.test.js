@@ -978,7 +978,7 @@ describe('100% data, studio and document branch closure', { concurrency: false }
         available: false,
       }),
     ).toMatchObject({
-      status: 'active',
+      status: 'archived',
       mediaStatus: 'placeholder',
       stock: 0,
       quoteOnly: true,

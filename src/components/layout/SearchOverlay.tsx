@@ -233,7 +233,11 @@ export default function SearchOverlay({
                     <Link key={String(product.id)} to={`/products/${String(product.slug || '')}`} onClick={(event) => { event.preventDefault(); go(`/products/${String(product.slug || '')}`); }}>
                       <SmartImage src={String(product.image || '')} alt={String(pick((product.name || '') as LocaleText) || '')} width={520} height={650} />
                       <strong>{pick((product.name || '') as LocaleText)}</strong>
-                      <Price amount={Number(product.price) || 0} compareAt={product.compareAt == null ? null : Number(product.compareAt)} size="sm" />
+                      {product.quoteOnly ? (
+                        <span className="status-pill">{pick({ en: 'Price on request', ar: 'السعر عند الطلب' })}</span>
+                      ) : (
+                        <Price amount={Number(product.price) || 0} compareAt={product.compareAt == null ? null : Number(product.compareAt)} size="sm" />
+                      )}
                     </Link>
                   ))}
                 </div>

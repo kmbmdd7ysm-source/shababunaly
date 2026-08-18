@@ -10,15 +10,22 @@ import { getSearchFacets, searchSite } from '../utils/search';
 import '../styles/design/phase2-search.css';
 import '../styles/design/phase2-commerce.css';
 
+const parseCsvParam = (params: URLSearchParams, key: string): string[] =>
+  (params.get(key) || '').split(',').map((value) => value.trim()).filter(Boolean);
+
 export default function SearchPage(): ReactElement {
   const { pick } = useLanguage();
   const { products } = useCatalog();
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useState(params.get('q') || '');
-  const [types, setTypes] = useState<string[]>([]);
-  const [brands, setBrands] = useState<string[]>([]);
+  const [types, setTypes] = useState<string[]>(() => parseCsvParam(params, 'type'));
+  const [brands, setBrands] = useState<string[]>(() => parseCsvParam(params, 'brand'));
 
-  useEffect(() => setQuery(params.get('q') || ''), [params]);
+  useEffect(() => {
+    setQuery(params.get('q') || '');
+    setTypes(parseCsvParam(params, 'type'));
+    setBrands(parseCsvParam(params, 'brand'));
+  }, [params]);
 
   const results = useMemo(
     () => searchSite(query, 999, { types, brands }, products),
@@ -26,14 +33,33 @@ export default function SearchPage(): ReactElement {
   );
   const facets = useMemo(() => getSearchFacets(products), [products]);
 
-  const toggle = (value: string, setter: (next: (current: string[]) => string[]) => void) => {
-    setter((current) => current.includes(value) ? current.filter((entry) => entry !== value) : [...current, value]);
+  const writeParams = (nextQuery: string, nextTypes: string[], nextBrands: string[]) => {
+    const next = new URLSearchParams();
+    const value = nextQuery.trim();
+    if (value) next.set('q', value);
+    if (nextTypes.length) next.set('type', [...nextTypes].sort().join(','));
+    if (nextBrands.length) next.set('brand', [...nextBrands].sort().join(','));
+    setParams(next, { replace: true });
   };
 
-  const submit = () => {
-    const value = query.trim();
-    setParams(value ? { q: value } : {});
+  const toggleType = (value: string) => {
+    const next = types.includes(value) ? types.filter((entry) => entry !== value) : [...types, value];
+    setTypes(next);
+    writeParams(query, next, brands);
   };
+
+  const toggleBrand = (value: string) => {
+    const next = brands.includes(value) ? brands.filter((entry) => entry !== value) : [...brands, value];
+    setBrands(next);
+    writeParams(query, types, next);
+  };
+
+  const clearTypes = () => {
+    setTypes([]);
+    writeParams(query, [], brands);
+  };
+
+  const submit = () => writeParams(query, types, brands);
 
   return (
     <>
@@ -71,7 +97,7 @@ export default function SearchPage(): ReactElement {
 
       <div className="s2-search-page-tools s2-container">
         <div className="s2-search-page-filters">
-          <button type="button" className={!types.length ? 'is-active' : ''} onClick={() => setTypes([])}>
+          <button type="button" className={!types.length ? 'is-active' : ''} onClick={clearTypes}>
             {pick({ en: 'All', ar: 'الكل' })}
           </button>
           {facets.types.map((type) => (
@@ -79,7 +105,7 @@ export default function SearchPage(): ReactElement {
               type="button"
               key={type}
               className={types.includes(type) ? 'is-active' : ''}
-              onClick={() => toggle(type, setTypes)}
+              onClick={() => toggleType(type)}
             >
               {type === 'products' ? pick({ en: 'Products', ar: 'المنتجات' }) : pick({ en: 'Pages', ar: 'الصفحات' })}
             </button>
@@ -91,7 +117,7 @@ export default function SearchPage(): ReactElement {
             <div>
               {(facets.brands as string[]).filter(Boolean).map((brand) => (
                 <label key={brand}>
-                  <input type="checkbox" checked={brands.includes(brand)} onChange={() => toggle(brand, setBrands)} />
+                  <input type="checkbox" checked={brands.includes(brand)} onChange={() => toggleBrand(brand)} />
                   <span>{brand}</span>
                 </label>
               ))}

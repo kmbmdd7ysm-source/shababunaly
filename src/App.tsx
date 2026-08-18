@@ -52,10 +52,6 @@ const DesignShare = lazy(() => import('./pages/DesignSharePage'));
 // Isolated design-direction prototype. Additive, noindex, robots-disallowed and
 // absent from the pre-render route list. Removing it is one line plus two files.
 const LabHome = lazy(() => import('./pages/LabHomePage'));
-const Programs = lazy(() => import('./pages/ProgramsPage'));
-const Events = lazy(() => import('./pages/EventsPage'));
-const OnlineTraining = lazy(() => import('./pages/OnlineTrainingPage'));
-const Coaches = lazy(() => import('./pages/CoachesPage'));
 
 export default function App(): ReactElement {
   usePageTracking();
@@ -89,7 +85,7 @@ export default function App(): ReactElement {
                 <Route path="/new" element={<Navigate to="/discover/new-this-week" replace />} />
                 <Route path="/products/:slug" element={<Product />} />
                 <Route path="/basketball/shoe-finder" element={<ShoeFinder />} />
-                <Route path="/basketball" element={<Navigate to="/basketball/shoe-finder" replace />} />
+                <Route path="/basketball" element={<Navigate to="/shop/basketballs" replace />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<CheckoutStatus status="success" />} />
@@ -101,12 +97,8 @@ export default function App(): ReactElement {
                 <Route path="/team-locker/:slug" element={<TeamLocker />} />
                 <Route path="/design-share/:token" element={<DesignShare />} />
                 <Route path="/lha-store" element={<LhaStore />} />
-                <Route path="/our-work" element={<OurWork />} />
+                <Route path="/our-work" element={<Navigate to="/stories" replace />} />
                 <Route path="/stories" element={<OurWork />} />
-                <Route path="/programs/*" element={<Programs />} />
-                <Route path="/events/*" element={<Events />} />
-                <Route path="/online-training/*" element={<OnlineTraining />} />
-                <Route path="/coaches/*" element={<Coaches />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/help" element={<Help />} />

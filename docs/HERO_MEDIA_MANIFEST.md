@@ -1,36 +1,44 @@
-# Hero and campaign media manifest
+# Hero media manifest — Phase 2 runtime
 
-## Current runtime architecture
+## Runtime architecture
 
-The site uses **local optimized WebP posters** for fast first paint and fallback, plus **real basketball MP4 sources hosted by Under Armour's official Scene7 media service** for hero motion. The old locally generated pseudo-motion MP4 files have been removed so they cannot be mistaken for real campaign video.
+All customer-facing hero motion is rendered with the native HTML `<video>` element. No YouTube/Vimeo iframe or third-party player chrome is used. Hero posters are local files under `public/media/hero-posters/` and remain static; there is no Ken Burns / fake image-motion fallback.
 
-The CSP already permits HTTPS media through `media-src 'self' blob: https:`. If a remote video cannot load, every hero falls back to its local poster without blocking the page.
+The current video payloads are **direct MP4 renditions on Under Armour's Scene7/Dynamic Media host**. They are not self-hosted bytes. This is intentionally stated in the source so a future licensed first-party MP4/WebM package can replace the URL map without changing page components.
 
-## Active hero video map
+## Active hero map
 
-| Route | Official basketball video source |
+| Runtime key | Placement |
 | --- | --- |
-| Home | Under Armour Curry 13 product video |
-| Shop | Under Armour Curry 12 Dub Nation product video |
-| Footwear | Under Armour Lockdown 7 Low product video |
-| Clothing | Under Armour D. Fox 2 x Sharpie product video |
-| Shoe Finder | Under Armour Jet '25 product video |
-| Custom | Under Armour D. Fox 2 At The Buzzer product video |
-| Discover | Under Armour Curry 3Z 24 product video |
-| Teams | Under Armour Curry 12 Wardell Mode product video |
-| Stories | Under Armour Curry Splash 25 product video |
+| `home` | Home |
+| `shop` | Shop landing |
+| `footwear` | Footwear category |
+| `clothing` | Clothing category |
+| `accessories` | Accessories category |
+| `basketballs` | Basketballs category |
+| `equipment` | Equipment category |
+| `shoeFinder` | Shoe Finder |
+| `custom` | Custom |
+| `discover` | Discover landing / collection mapping |
+| `teams` | Teams & Wholesale |
+| `stories` | Stories |
+| `releases` | Releases |
 
-The exact URLs live in `src/data/localHeroMedia.ts` and are restricted by `validate-final-hardening.mjs` to the official `underarmour.scene7.com/is/content/Underarmour/` host.
+There are 13 distinct direct MP4 URLs in `src/data/localHeroMedia.ts`. `scripts/validate-phase2-systems.mjs` and `scripts/validate-final-hardening.mjs` fail if the native-video contract regresses.
 
-## Playback and fallback rules
+## Playback / fallback contract
 
-- Muted autoplay only.
-- `playsInline` and looping are preserved.
-- Reduced-motion and data-saver users get the poster instead of motion.
-- Video errors permanently fall back to the poster for the current render.
-- Desktop and mobile keep independent local poster crops.
-- No YouTube iframe or third-party player UI is used.
+- `muted`, `autoPlay`, `loop`, `playsInline`.
+- No controls or player branding.
+- Reduced-motion / data-saver / lower-capability paths use the static local poster.
+- Video load failure falls back to the local poster.
+- The Home first-paint preload is local and matches the React hero geometry.
+- Posters never animate to imitate video.
 
-## Image sourcing
+## Editorial stills
 
-Hero posters and editorial section art are locally optimized from the global basketball source set in `assets/source/global-basketball-refresh/`, including Nike, adidas, Puma, Under Armour and New Balance basketball imagery. Exact Nike accessory/product imagery that is better served from the source page is referenced directly in `src/data/categories.ts`.
+Active category, merchandising, Custom, Teams and Stories still-image maps use local project assets. The previous runtime static-image hotlinks were removed from those mappings.
+
+## Source independence boundary
+
+The poster/editorial still layer is local. The hero video bytes remain on the external direct MP4 host. Full deletion-proof video delivery requires licensed MP4/WebM files to be stored on Shababuna-controlled storage/CDN and then substituted in `src/data/localHeroMedia.ts`.

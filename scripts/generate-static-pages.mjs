@@ -165,11 +165,6 @@ const routes = [
     description: 'Find basketball footwear using verified catalogue and performance data.',
   },
   {
-    path: '/basketball/shoe-finder',
-    title: 'Basketball Shoe Finder',
-    description: 'Find basketball footwear using verified catalogue and performance data.',
-  },
-  {
     path: '/shop/ready-to-ship',
     title: 'Ready to Ship',
     description: 'Verified in-stock basketball products delivered inside Libya in 24–72 hours.',
@@ -217,17 +212,6 @@ const routes = [
     description: 'Official Libya Hoops Academy clothing and accessories inside Shababuna.',
   },
   {
-    path: '/our-work',
-    title: 'Our Work',
-    description:
-      'Shababuna custom manufacturing, club supply and basketball equipment capabilities.',
-  },
-  {
-    path: '/stories',
-    title: 'Stories',
-    description: 'Basketball stories, product intelligence, custom work and Shababuna projects.',
-  },
-  {
     path: '/stories',
     title: 'Stories',
     description: 'Basketball stories, product intelligence, custom work and Shababuna projects.',
@@ -236,13 +220,13 @@ const routes = [
     path: '/about',
     title: 'About',
     description:
-      'Shababuna is a basketball retail, custom manufacturing, team supply and wholesale platform based in Tripoli, Libya.',
+      'Shababuna is a basketball retail, custom design, team supply and wholesale platform based in Tripoli, Libya.',
   },
   {
     path: '/contact',
     title: 'Contact',
     description:
-      'Contact Shababuna for orders, custom manufacturing, teams, wholesale and partnerships.',
+      'Contact Shababuna for orders, custom design requests, teams, wholesale and partnerships.',
   },
   {
     path: '/help',

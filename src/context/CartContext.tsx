@@ -24,6 +24,10 @@ import {
   type ProductLike,
   type VariantLike,
 } from '../utils/productEligibility.ts';
+import {
+  enforceInventoryPools,
+  getMaxInventoryPoolQuantity,
+} from '../utils/inventoryPools.ts';
 
 export type CartItem = {
   key: string;
@@ -42,6 +46,8 @@ export type CartItem = {
   retailPrice?: number;
   wholesalePrice?: number | null;
   inventoryTracking?: boolean;
+  inventoryPoolKey?: string;
+  inventoryPoolStock?: number;
   readyToShip?: boolean;
   deliveryProfile?: string;
   unavailable?: boolean;
@@ -79,46 +85,49 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
 
   switch (action.type) {
     case 'ADD': {
-      const item = action.item,
-        existing = state.find((i) => i.key === item.key);
-      if (existing)
+      const item = action.item;
+      const existing = state.find((i) => i.key === item.key);
+      const limit = getMaxInventoryPoolQuantity(state, item, existing?.key);
+      if (!existing && item.type === 'product' && limit < Math.max(1, Number(item.minQuantity || 1))) {
+        return state;
+      }
+      if (existing) {
         return state.map((i) =>
           i.key !== item.key
             ? i
             : {
                 ...i,
+                ...item,
                 quantity:
                   i.type === 'product'
-                    ? Math.min(i.quantity + item.quantity, i.maxStock ?? Infinity)
+                    ? Math.max(i.minQuantity ?? 1, Math.min(i.quantity + item.quantity, limit))
                     : 1,
                 updatedAt: new Date().toISOString(),
               },
         );
+      }
       return [
         ...state,
         {
           ...item,
           quantity:
             item.type === 'product'
-              ? Math.max(item.minQuantity ?? 1, Math.min(item.quantity, item.maxStock ?? Infinity))
+              ? Math.max(item.minQuantity ?? 1, Math.min(item.quantity, limit))
               : 1,
           updatedAt: new Date().toISOString(),
         },
       ];
     }
     case 'UPDATE_QTY':
-      return state.map((i) =>
-        i.key !== action.key
-          ? i
-          : {
-              ...i,
-              quantity: Math.max(
-                i.minQuantity ?? 1,
-                Math.min(action.quantity, i.maxStock ?? Infinity),
-              ),
-              updatedAt: new Date().toISOString(),
-            },
-      );
+      return state.map((i) => {
+        if (i.key !== action.key) return i;
+        const limit = getMaxInventoryPoolQuantity(state, i, i.key);
+        return {
+          ...i,
+          quantity: Math.max(i.minQuantity ?? 1, Math.min(action.quantity, limit)),
+          updatedAt: new Date().toISOString(),
+        };
+      });
     case 'REMOVE':
       return state.filter((i) => i.key !== action.key);
     case 'CLEAR':
@@ -126,7 +135,7 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
     case 'REPLACE':
       return Array.isArray(action.items) ? action.items : state;
     case 'RECONCILE_CATALOG':
-      return state.map((item): CartItem => {
+      return enforceInventoryPools(state.map((item): CartItem => {
         if (item.type !== 'product') return item;
         const product = action.byId.get(item.id) as Record<string, unknown> | undefined;
         if (!product) return { ...item, unavailable: true, maxStock: 0 };
@@ -152,6 +161,8 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
           minQuantity: wholesale ? Number(product.wholesaleMin || product.minimumOrder || 1) : 1,
           maxStock,
           inventoryTracking: tracked,
+          inventoryPoolKey: variant.inventoryPoolKey ? String(variant.inventoryPoolKey) : undefined,
+          inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock)) ? Number(variant.inventoryPoolStock) : undefined,
           readyToShip: Boolean(product.readyToShip && (!tracked || maxStock > 0)),
           deliveryProfile: wholesale ? 'custom' : product.readyToShip ? 'ready' : 'standard',
           unavailable: !purchasable,
@@ -162,7 +173,7 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
                 Math.min(Number(item.quantity || 1), maxStock || 99),
               ),
         };
-      });
+      }));
     default:
       return state;
   }

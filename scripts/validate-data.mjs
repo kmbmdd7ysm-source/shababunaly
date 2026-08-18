@@ -5,7 +5,7 @@ import {
   lhaStoreProducts,
   readyToShipProducts,
 } from '../src/data/products.ts';
-import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.ts';
+import { getProductPublishIssues, hasRealProductMedia, isProductVisible } from '../src/utils/productEligibility.ts';
 import { products as sourceLhaProducts } from '../src/data/lhaProducts.ts';
 import { categories } from '../src/data/categories.ts';
 
@@ -143,11 +143,14 @@ for (const requiredBrand of [
 ]) {
   if (!catalogBrands.includes(requiredBrand)) err(`catalogue brand is missing: ${requiredBrand}`);
 }
+const publishedBrands = Array.from(
+  new Set(products.map((product) => product.brand).filter(Boolean)),
+);
 if (
-  allBrands.length !== catalogBrands.length ||
-  !catalogBrands.every((brand) => allBrands.includes(brand))
+  allBrands.length !== publishedBrands.length ||
+  !publishedBrands.every((brand) => allBrands.includes(brand))
 )
-  err('storefront brand filter is missing active catalogue brands');
+  err('storefront brand filter is missing published catalogue brands');
 
 const lha = lhaStoreProducts();
 if (lha.length !== sourceLhaProducts.length)
@@ -163,6 +166,11 @@ for (const source of sourceLhaProducts) {
     err(`LHA price changed for ${source.slug}: ${source.price} -> ${copied.price}`);
 }
 
+
+const visibleWithoutRealMedia = products.filter((product) => !hasRealProductMedia(product));
+if (visibleWithoutRealMedia.length)
+  err(`published catalogue contains ${visibleWithoutRealMedia.length} product(s) without trusted real media`);
+const hiddenPlaceholderCount = catalogProducts.filter((product) => !isProductVisible(product)).length;
 const readyCount = readyToShipProducts().length;
 const customCount = products.filter((product) => product.customizable).length;
 const wholesaleCount = products.filter((product) => product.wholesaleAvailable).length;
@@ -173,11 +181,13 @@ if (!readyCount)
   console.info(
     '  i Ready to Ship remains intentionally empty until verified Libya inventory is entered.',
   );
-if (draftCustomCount) err('custom product catalogue definitions must not remain hidden');
+if (draftCustomCount)
+  console.info(`  i ${draftCustomCount} customizable catalogue definition(s) stay hidden until real product media is approved.`);
 if (!wholesaleCount) err('verified wholesale catalogue is empty');
 
 console.info(`Published products: ${products.length}`);
 console.info(`All catalog records: ${catalogProducts.length}`);
+console.info(`Hidden until production-complete media: ${hiddenPlaceholderCount}`);
 console.info(`Brands: ${allBrands.length}`);
 console.info(`Ready to ship: ${readyCount}`);
 console.info(`Published customizable: ${customCount}`);

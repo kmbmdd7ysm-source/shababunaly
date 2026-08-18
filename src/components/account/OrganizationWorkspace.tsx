@@ -614,7 +614,7 @@ function QuoteWorkspaceRow({ item, pick, lang, onSaved }: { item: Row; pick: Pic
           heading: 'Terms',
           rows: [
             'Custom and wholesale production requires an approved proof and deposit.',
-            'Estimated production window: 30–60 days after approval and confirmed deposit.',
+            'Production timing and payment terms follow the approved quote for this order.',
             'This document is generated from the trusted account record.',
           ],
         },

@@ -10,7 +10,7 @@ export function createHomeSchema() {
         alternateName: SITE.shortName,
         url: SITE.domain,
         logo: `${SITE.domain}${SITE.logo}`,
-        description: 'Basketball retail, custom manufacturing, team supply and wholesale.',
+        description: 'Basketball retail, custom design requests, team supply and wholesale.',
         areaServed: 'Worldwide',
         ...(SITE.email ? { email: SITE.email } : {}),
         ...(Object.values(SITE.social).some(Boolean)
@@ -45,7 +45,7 @@ export function createProductSchema(product) {
     offers: {
       '@type': 'Offer',
       priceCurrency: product.currency || SITE.currency,
-      price: Number(product.price).toFixed(2),
+      price: String(Math.round(Number(product.price))),
       availability:
         product.availability === 'sold-out'
           ? 'https://schema.org/OutOfStock'

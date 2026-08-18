@@ -1,5 +1,5 @@
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import EditorialMedia from '../components/common/EditorialMedia';
@@ -7,6 +7,7 @@ import TurnstileWidget from '../components/security/TurnstileWidget';
 import CustomProductShowcase from '../components/custom/CustomProductShowcase';
 import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
+import { uploadCustomDesignAsset, validateCustomLogo } from '../services/customDesignAssets';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { CUSTOM_COLOR_OPTIONS } from '../components/custom/customColors';
@@ -15,18 +16,18 @@ import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': 'https://underarmour.scene7.com/is/image/Underarmour/PS6015648-481_F?bgc=f0f0f0&hei=1000&op_usm=1.75%2C0.3%2C2%2C0&qlt=85&rp=standard-0pad%7Cpdp&wid=800',
-  'game-jersey': 'https://underarmour.scene7.com/is/image/Underarmour/PS6014671-001_HF?bgc=f0f0f0&hei=1000&op_usm=1.75%2C0.3%2C2%2C0&qlt=85&rp=standard-0pad%7Cpdp&wid=800',
-  'game-shorts': 'https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/49fb4ad3ab90450aa0b1a806fecd3038_9366/ADIDAS_BASKETBALL_WOVEN_SHORTS_Blue_KB7526_21_model.jpg',
-  'practice-set': 'https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg',
-  'shooting-shirt': 'https://underarmour.scene7.com/is/image/Underarmour/V5-1361522-001_FC?bgc=F0F0F0&hei=1000&qlt=85&resmode=sharp2&wid=800',
-  hoodie: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/7abfa976-e388-47c9-98e7-5a9674283025/M%2BNK%2BTF%2BSI%2BBRSH%2BPO%2BHD.png',
-  'team-pants': 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/0ed51568-d206-48eb-9269-da458f1fb596/M%2BNK%2BTF%2BSI%2BBRSH%2BOPHEM%2BPANT%2BSKU.png',
-  tracksuit: 'https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/91da3015525041989f8eacff1c2e9888_9366/adidas_Basketball_Woven_Track_Jacket_Blue_KB7531_20_01_model.jpg',
-  'team-bag': 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/08d0700a-d0fc-4645-a3ff-d14ea52b3905/NK%2BVARSITY%2BELITE%2BBKPK.png',
-  sleeve: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/96bc8662-7933-4af7-9dfa-736537b4ee1f/NIKE%2BDRI-FIT%2BSLEEVE%2BJ%2BMORANT.png',
-  basketball: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/0b3db21c-204c-4b52-91c8-6a04a40aaea8/NK%2BELT%2BALL%2BCOURT%2B8P%2B2.0.png',
-  'hoop-padding': 'https://i.ytimg.com/vi/UCWkNZ5Y8-E/maxresdefault.jpg',
+  'game-set': '/media/localized-brand/nike-teamwear-courtside.webp',
+  'game-jersey': '/media/localized-brand/adidas_team.png',
+  'game-shorts': '/images/products/lha-performance-shorts-black.webp',
+  'practice-set': '/media/localized-brand/ua_dribble.png',
+  'shooting-shirt': '/images/products/own-the-game-sleeveless-top-black.webp',
+  hoodie: '/images/products/own-the-game-pullover-hoodie-black.webp',
+  'team-pants': '/images/products/own-the-game-fleece-pants-black.webp',
+  tracksuit: '/images/products/lha-premium-fleece-set-black.webp',
+  'team-bag': '/images/products/lha-elite-basketball-backpack-black.webp',
+  sleeve: '/media/localized-brand/portrait_atwo.webp',
+  basketball: '/media/hero-posters/basketballs.webp',
+  'hoop-padding': '/media/localized-brand/puma_court.png',
 };
 
 export default function CustomizePage(): ReactElement {
@@ -39,6 +40,8 @@ export default function CustomizePage(): ReactElement {
   const [playerNumber, setPlayerNumber] = useState('00');
   const [logoPreview, setLogoPreview] = useState('');
   const [logoName, setLogoName] = useState('');
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const requestKeyRef = useRef(globalThis.crypto?.randomUUID?.() || `00000000-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, '0').slice(0, 12)}`);
   const [contact, setContact] = useState({ name: '', email: '', phone: '', organization: '', country: 'LY', quantity: '10', notes: '' });
   const [turnstileToken, setTurnstileToken] = useState('');
   const [busy, setBusy] = useState(false);
@@ -46,16 +49,29 @@ export default function CustomizePage(): ReactElement {
   const selected = useMemo(() => FEATURED.find((item) => item.key === productType) || FEATURED[0]!, [productType]);
 
   const logoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith('image/') || file.size > 2 * 1024 * 1024) {
-      setStatus(pick({ en: 'Use a PNG, JPG or WEBP logo under 2 MB.', ar: 'استخدم شعار PNG أو JPG أو WEBP أقل من 2 ميغابايت.' }));
+    const file = event.target.files?.[0] || null;
+    if (!file) {
+      setLogoFile(null);
+      setLogoName('');
+      setLogoPreview('');
+      return;
+    }
+    try {
+      validateCustomLogo(file);
+    } catch {
+      setLogoFile(null);
+      setLogoName('');
+      setLogoPreview('');
+      event.currentTarget.value = '';
+      setStatus(pick({ en: 'Use a real PNG, JPG or WEBP logo under 2 MB.', ar: 'استخدم شعار PNG أو JPG أو WEBP حقيقي أقل من 2 ميغابايت.' }));
       return;
     }
     const reader = new FileReader();
     reader.onload = () => setLogoPreview(String(reader.result || ''));
     reader.readAsDataURL(file);
+    setLogoFile(file);
     setLogoName(file.name);
+    setStatus('');
   };
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
@@ -63,6 +79,12 @@ export default function CustomizePage(): ReactElement {
     setStatus('');
     setBusy(true);
     try {
+      const idempotencyKey = requestKeyRef.current;
+      let logoAsset: { id: string; scanStatus: string; name: string } | null = null;
+      if (logoFile) {
+        setStatus(pick({ en: 'Securely uploading and quarantining your logo…', ar: 'جارٍ رفع الشعار بأمان إلى منطقة الفحص…' }));
+        logoAsset = await uploadCustomDesignAsset({ file: logoFile, idempotencyKey, turnstileToken });
+      }
       const result = await submitPublicQuote({
         payload: {
           formType: 'custom_design_quote',
@@ -82,18 +104,26 @@ export default function CustomizePage(): ReactElement {
             `Player name: ${playerName || '—'}`,
             `Player number: ${playerNumber || '—'}`,
             `Logo file: ${logoName || 'none'}`,
+            logoAsset?.id ? `Logo asset: ${logoAsset.id} (${logoAsset.scanStatus})` : '',
             contact.notes ? `Notes: ${contact.notes}` : '',
           ].filter(Boolean).join('\n'),
-          design: { productType, bodyColor, trimColor, teamName, playerName, playerNumber, logoFileName: logoName },
+          logoAssetId: logoAsset?.id || null,
+          design: { productType, bodyColor, trimColor, teamName, playerName, playerNumber, logoFileName: logoName, logoAssetId: logoAsset?.id || null, logoScanStatus: logoAsset?.scanStatus || null },
           language: lang,
         },
         turnstileToken,
-        idempotencyKey: globalThis.crypto?.randomUUID?.(),
-      }) as { quote?: Record<string, unknown>; notification?: string };
-      setStatus(pick({
-        en: `Design request ${String(result.quote?.quote_number || '')} received. Our team will contact you to finalize it.`,
-        ar: `تم استلام طلب التصميم ${String(result.quote?.quote_number || '')}. سيتواصل معك فريقنا لإكماله.`,
-      }));
+        idempotencyKey,
+      }) as { quote?: Record<string, unknown>; notification?: string; persisted?: boolean };
+      const reference = String(result.quote?.quote_number || '');
+      setStatus(result.persisted === false
+        ? pick({
+            en: `Design request ${reference} was delivered by email, but it is not yet saved in the account system. Our team will follow up; do not submit a duplicate.`,
+            ar: `تم توصيل طلب التصميم ${reference} بالبريد، لكنه لم يُحفظ بعد في نظام الحسابات. سيتابع معك فريقنا؛ لا ترسل طلبًا مكررًا.`,
+          })
+        : pick({
+            en: `Design request ${reference} received and saved. Our team will contact you to finalize it.`,
+            ar: `تم استلام وحفظ طلب التصميم ${reference}. سيتواصل معك فريقنا لإكماله.`,
+          }));
     } catch {
       setStatus(pick({ en: 'We could not submit the request. Check the details and try again.', ar: 'تعذر إرسال الطلب. تحقق من البيانات وحاول مرة أخرى.' }));
     } finally {
@@ -157,7 +187,7 @@ export default function CustomizePage(): ReactElement {
               </div>
             </div>
             <label className="cx-field"><span>{pick({ en: 'Team name', ar: 'اسم الفريق' })}</span><input value={teamName} maxLength={18} onChange={(e) => setTeamName(e.target.value.toUpperCase())} /></label>
-            <label className="cx-upload"><span>{pick({ en: 'Team logo', ar: 'شعار الفريق' })}</span><input type="file" accept="image/png,image/jpeg,image/webp" onChange={logoChange} /><small>{logoName || pick({ en: 'PNG / JPG / WEBP · optional', ar: 'PNG / JPG / WEBP · اختياري' })}</small></label>
+            <label className="cx-upload"><span>{pick({ en: 'Team logo', ar: 'شعار الفريق' })}</span><input type="file" accept="image/png,image/jpeg,image/webp" onChange={logoChange} /><small>{logoName || pick({ en: 'PNG / JPG / WEBP · optional · securely scanned before staff access', ar: 'PNG / JPG / WEBP · اختياري · يُفحص أمنيًا قبل وصول الفريق إليه' })}</small></label>
             {(productType === 'game-jersey' || productType === 'game-set') ? <div className="cx-two"><label className="cx-field"><span>{pick({ en: 'Player name', ar: 'اسم اللاعب' })}</span><input value={playerName} maxLength={14} onChange={(e) => setPlayerName(e.target.value.toUpperCase())} /></label><label className="cx-field"><span>{pick({ en: 'Number', ar: 'الرقم' })}</span><input inputMode="numeric" value={playerNumber} maxLength={2} onChange={(e) => setPlayerNumber(e.target.value.replace(/\D/g, '').slice(0,2))} /></label></div> : null}
             <p className="cx-explain">{pick({ en: 'This is a fast concept preview, not a production proof. Your Shababuna specialist confirms placement, sizing, fabrics and final artwork with you after submission.', ar: 'هذه معاينة سريعة للفكرة وليست بروفة إنتاج نهائية. يتواصل معك مختص شبابنا لتأكيد الأماكن والمقاسات والخامة والتصميم النهائي.' })}</p>
           </div>

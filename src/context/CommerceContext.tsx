@@ -68,7 +68,8 @@ export function CommerceProvider({ children }: { children?: ReactNode }) {
   // A safe public fallback is available immediately so selecting LYD can never
   // merely relabel an unconverted USD amount while the cloud setting loads.
   const [usdToLydRate, setUsdToLydRate] = useState<number>(commerceConfig.fallbackUsdToLydRate);
-  const [rateStatus, setRateStatus] = useState('fallback');
+  const [rateStatus, setRateStatus] = useState('loading');
+  const hasVerifiedRate = useRef(false);
   const [shippingRates, setShippingRates] = useState({});
   const [shippingRatesStatus, setShippingRatesStatus] = useState('idle');
   const channel = useRef<ReturnType<typeof createChannel> | null>(null);
@@ -78,32 +79,40 @@ export function CommerceProvider({ children }: { children?: ReactNode }) {
   const explicitCountry = useRef(false);
 
   useEffect(() => {
-    // USD visitors already have every amount they need. Avoid booting the
-    // cloud client on the anonymous home page; fetch the authoritative rate
-    // only when LYD is actually selected or an authenticated profile needs it.
-    if (currency !== 'LYD' && !userId) {
-      setUsdToLydRate(commerceConfig.fallbackUsdToLydRate);
-      setRateStatus('fallback');
-      return undefined;
-    }
-
+    // The site rate is also a pricing input (Kobe is sourced at 1200 LYD), so
+    // USD visitors need the authoritative rate too. Fetch it for every
+    // session, then refresh while the tab is visible; otherwise a staff rate
+    // change could leave USD product prices stale until a full reload.
     let active = true;
-    setRateStatus('loading');
-    fetchUsdToLydRate()
-      .then((rate) => {
+    const refreshRate = async () => {
+      if (!active) return;
+      setRateStatus((current) => (current === 'ready' ? current : 'loading'));
+      try {
+        const rate = await fetchUsdToLydRate();
         if (!active) return;
         setUsdToLydRate(rate);
+        hasVerifiedRate.current = true;
         setRateStatus('ready');
-      })
-      .catch(() => {
+      } catch {
         if (!active) return;
-        setUsdToLydRate(commerceConfig.fallbackUsdToLydRate);
-        setRateStatus('fallback');
-      });
+        // Never overwrite a previously verified site rate with the code
+        // fallback during a transient outage. If no authoritative rate has
+        // ever been loaded in this session, rateReady remains false so
+        // site-rate-priced products fail closed instead of exposing a stale
+        // USD price.
+        if (hasVerifiedRate.current) setRateStatus('stale');
+        else setRateStatus('fallback');
+      }
+    };
+    void refreshRate();
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') void refreshRate();
+    }, 5 * 60 * 1000);
     return () => {
       active = false;
+      window.clearInterval(timer);
     };
-  }, [currency, userId]);
+  }, []);
 
   useEffect(() => {
     const path = globalThis.location?.pathname || '/';
@@ -322,7 +331,7 @@ export function CommerceProvider({ children }: { children?: ReactNode }) {
       config: commerceConfig,
       usdToLydRate,
       rateStatus,
-      rateReady: rateStatus === 'ready' || rateStatus === 'fallback',
+      rateReady: rateStatus === 'ready' || rateStatus === 'stale',
       shippingRates,
       shippingRatesStatus,
     }),

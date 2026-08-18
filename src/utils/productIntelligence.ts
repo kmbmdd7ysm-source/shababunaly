@@ -116,6 +116,7 @@ export function rankBasketballShoes(
 ): ShoeMatch[] {
   return products
     .filter(isBasketballPerformanceShoe)
+    .filter(hasVerifiedPerformanceData)
     .filter((product) => !prefs.maxPrice || Number(product.price || 0) <= prefs.maxPrice)
     .map((product) => {
       const profile = getPerformanceProfile(product);

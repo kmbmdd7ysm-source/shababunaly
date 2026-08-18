@@ -1,5 +1,6 @@
 import { products } from '../src/data/products.ts';
 import { supabaseAdminRequest } from './_supabase-admin.ts';
+import { roundStorePrice } from '../src/config/commerce.ts';
 
 type RequestedLine = {
   productId: string;
@@ -37,7 +38,11 @@ const nameEn = (value: unknown): string => {
   return '';
 };
 
-function trustedRow(product: ProductRow, variant: Record<string, unknown>) {
+function trustedRow(
+  product: ProductRow,
+  variant: Record<string, unknown>,
+  siteRate: number | null = null,
+) {
   const inventoryTracking =
     variant.inventoryTracking === true ||
     (variant.inventoryTracking == null && product.inventoryTracking === true);
@@ -61,6 +66,13 @@ function trustedRow(product: ProductRow, variant: Record<string, unknown>) {
         : 'in_stock';
   const productId = text(product.id);
   const sku = text(variant.sku);
+  const siteRatePrice =
+    product.pricingRateSource === 'site_exchange_rate' &&
+    Number(product.priceLydSource) > 0 &&
+    siteRate != null &&
+    siteRate > 0
+      ? roundStorePrice(Number(product.priceLydSource) / siteRate)
+      : null;
   return {
     variant_id: `${productId}:${sku}`,
     product_id: productId,
@@ -72,7 +84,7 @@ function trustedRow(product: ProductRow, variant: Record<string, unknown>) {
     color: text(variant.color) || null,
     size: text(variant.size) || null,
     currency: text(product.currency || 'USD'),
-    unit_price: num(variant.unitPrice) ?? num(product.price) ?? 0,
+    unit_price: siteRatePrice ?? num(variant.unitPrice) ?? num(product.price) ?? 0,
     compare_at_price: num(variant.compareAt) ?? num(product.compareAt),
     availability_state: availabilityState,
     inventory_tracking: inventoryTracking,
@@ -85,8 +97,9 @@ function trustedRow(product: ProductRow, variant: Record<string, unknown>) {
       category: text(product.category) || null,
       subcategory: text(product.subcategory) || null,
       productType: text(product.productType) || null,
-      retailAvailable: product.retailAvailable !== false,
-      wholesaleAvailable: product.wholesaleAvailable === true,
+      quoteOnly: product.quoteOnly === true,
+      retailAvailable: product.quoteOnly !== true && product.retailAvailable !== false,
+      wholesaleAvailable: product.quoteOnly !== true && product.wholesaleAvailable === true,
       wholesalePrice: num(variant.wholesalePrice) ?? num(product.wholesalePrice),
       wholesaleMin: num(product.wholesaleMin),
       minimumOrder: num(product.minimumOrder) ?? 1,
@@ -95,11 +108,30 @@ function trustedRow(product: ProductRow, variant: Record<string, unknown>) {
       readyToShip,
       deliveryProfile: text(product.deliveryProfile || (readyToShip ? 'ready' : 'standard')),
       inventorySource: text(product.inventorySource || (inventoryTracking ? 'catalog' : 'supplier-order')),
+      inventoryPoolKey: text(variant.inventoryPoolKey) || null,
+      inventoryPoolStock: num(variant.inventoryPoolStock),
+      inventoryVerified: variant.inventoryVerified === true || product.inventoryVerified === true,
+      inventoryLocation: text(product.inventoryLocation) || null,
       mediaStatus: text(product.mediaStatus) || null,
+      pricingRateSource: text(product.pricingRateSource) || null,
+      priceLydSource: num(product.priceLydSource),
       madeInUSA: product.madeInUSA === true,
       storefronts: Array.isArray(product.storefronts) ? product.storefronts : ['shop'],
     },
   };
+}
+
+async function fetchAuthoritativeSiteRate(): Promise<number | null> {
+  try {
+    const rows = (await supabaseAdminRequest(
+      '/rest/v1/commerce_settings?setting_key=eq.usd_to_lyd_rate&select=numeric_value&limit=1',
+      { method: 'GET' },
+    )) as Array<{ numeric_value?: unknown }>;
+    const rate = Number(rows?.[0]?.numeric_value);
+    return Number.isFinite(rate) && rate > 0 ? rate : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -111,6 +143,7 @@ function trustedRow(product: ProductRow, variant: Record<string, unknown>) {
  */
 export async function syncUntrackedRequestedCatalog(lines: RequestedLine[]): Promise<number> {
   const rows: ReturnType<typeof trustedRow>[] = [];
+  const siteRate = await fetchAuthoritativeSiteRate();
   for (const line of lines) {
     const product = (products as ProductRow[]).find((entry) => text(entry.id) === line.productId);
     if (!product || product.available === false || product.comingSoon === true) continue;
@@ -121,11 +154,15 @@ export async function syncUntrackedRequestedCatalog(lines: RequestedLine[]): Pro
       (entry) => `${text(product.id)}:${text(entry.sku)}` === line.variantId,
     );
     if (!variant || variant.active === false) continue;
+    // Never restore a site-rate product using the code fallback price. If the
+    // authoritative cloud rate cannot be read, let the transactional catalogue
+    // remain untouched and fail closed rather than charging a stale amount.
+    if (product.pricingRateSource === 'site_exchange_rate' && siteRate == null) continue;
     const tracking =
       variant.inventoryTracking === true ||
       (variant.inventoryTracking == null && product.inventoryTracking === true);
     if (tracking) continue;
-    rows.push(trustedRow(product, variant));
+    rows.push(trustedRow(product, variant, siteRate));
   }
   if (!rows.length) return 0;
   await supabaseAdminRequest('/rest/v1/product_catalog?on_conflict=variant_id', {

@@ -213,16 +213,18 @@ for (const token of ['LOCAL_HERO_MEDIA', 'HERO.desktopVideo', 'HERO.mobileVideo'
   has(hero, token, `hero runtime ${token}`);
 if (/fetchSiteContent|official-media/u.test(hero))
   fail.push('Home hero must not depend on runtime resolver services');
-if (!hero.includes('iframe') || !hero.includes('youtube'))
-  fail.push('Home hero must support the approved official YouTube embed renderer');
+if (!hero.includes('<video') || !hero.includes('autoPlay') || !hero.includes('muted') || !hero.includes('playsInline'))
+  fail.push('Home hero must use a native muted autoplay inline video element');
+if (hero.includes('YouTubeBackground') || /youtube|vimeo/i.test(hero))
+  fail.push('Home hero must not embed third-party player chrome');
 const heroMediaMap = read('src/data/localHeroMedia.ts');
-if (!heroMediaMap.includes('https://www.youtube-nocookie.com/embed/'))
-  fail.push('Hero video map must use privacy-enhanced official YouTube embeds');
+if (/youtube(?:-nocookie)?\.com|vimeo\.com|i\.ytimg\.com/i.test(heroMediaMap))
+  fail.push('Hero video map must not use YouTube/Vimeo embeds or thumbnails');
 if (/\/media\/heroes\/|\/media\/official-brand\//u.test(heroMediaMap))
   fail.push('Hero video map still references legacy local fake-motion media');
-const filmIds = [...heroMediaMap.matchAll(/^\s*\w+:\s*'([A-Za-z0-9_-]{6,})'/gmu)].map((match) => match[1]);
-if (filmIds.length < 13 || new Set(filmIds).size !== filmIds.length)
-  fail.push('Hero video map must include 13 distinct external basketball films');
+const filmUrls = [...heroMediaMap.matchAll(/https:\/\/underarmour\.scene7\.com\/is\/content\/Underarmour\/auto_dim7_[A-Za-z0-9-]+/gmu)].map((match) => match[0]);
+if (filmUrls.length < 13 || new Set(filmUrls).size < 13)
+  fail.push('Hero video map must include at least 13 distinct direct official basketball MP4 renditions');
 
 for (const file of readdirSync('api').filter((name) => name.endsWith('.js'))) {
   try {
@@ -343,17 +345,20 @@ if (chrome.includes('AnnouncementStack'))
 
 try {
   assert.equal(catalogProducts.length, 119);
-  assert.equal(products.length, 119);
+  assert.equal(products.length, 75);
+  assert.equal(catalogProducts.length - products.length, 44);
   assert.equal(lhaStoreProducts().length, 25);
   const readyProducts = readyToShipProducts();
-  assert.equal(readyProducts.length, 15);
+  assert.equal(readyProducts.length, 25);
   assert.equal(
     readyProducts.every(
       (item) =>
         item.inventoryLocation === 'LY' &&
         (item.inventoryVerified === true ||
           (item.legacyLha === true &&
-            item.inventorySource === 'owner_confirmed_lha_ready' &&
+            item.inventorySource === 'owner_confirmed_lha_color_stock' &&
+            item.inventoryVerified === true &&
+            item.inventoryTracking === true &&
             item.comingSoon !== true)),
     ),
     true,

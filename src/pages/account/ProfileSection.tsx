@@ -247,7 +247,7 @@ export default function ProfileSection({
                 setProfile((current) => ({ ...current, avatarUrl: '' }));
                 setMsg(
                   pick({
-                    en: 'Profile photo removed on every device.',
+                    en: 'Profile photo removed from your account.',
                     ar: 'تمت إزالة الصورة الشخصية من جميع الأجهزة.',
                   }),
                 );

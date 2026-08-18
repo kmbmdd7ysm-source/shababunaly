@@ -1,4 +1,8 @@
-const KOBE_SHOE_SIZES = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12', '13', '14'];
+import { commerceConfig, roundStorePrice } from '../config/commerce.ts';
+
+const KOBE_SHOE_SIZES = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12'];
+const KOBE_PRICE_LYD = 1200;
+const KOBE_PRICE_USD = roundStorePrice(KOBE_PRICE_LYD / commerceConfig.fallbackUsdToLydRate);
 
 const GOAT_LISTED_COLORWAY = {
   key: 'listed-colorway',
@@ -470,19 +474,24 @@ export const kobeGoatProducts = entries.map((entry) => {
     sku: entry.sku,
     name: { en: entry.name, ar: entry.name },
     description: {
-      en: `${entry.name}. Nike Kobe basketball shoe reference sourced from the GOAT listing. Price and availability are confirmed on request.`,
-      ar: `${entry.name}. إصدار كرة سلة من Nike Kobe بمرجع من قائمة GOAT. يتم تأكيد السعر والتوفر عند الطلب.`,
+      en: `${entry.name}. Nike Kobe basketball shoe reference sourced from the GOAT listing. Retail price is set by Shababuna; availability is confirmed when ordering.`,
+      ar: `${entry.name}. إصدار كرة سلة من Nike Kobe بمرجع من قائمة GOAT. سعر البيع محدد من شبابنا، ويتم تأكيد التوفر عند الطلب.`,
     },
     category: 'footwear',
     subcategory: 'in-court',
     productType: 'Basketball Shoe',
     brand: 'Nike',
-    price: 0,
-    quoteOnly: true,
+    price: KOBE_PRICE_USD,
+    priceLydSource: KOBE_PRICE_LYD,
+    pricingRateSource: 'site_exchange_rate',
+    quoteOnly: false,
     wholesaleAvailable: false,
     retailAvailable: true,
     minimumOrder: 1,
     sizes: KOBE_SHOE_SIZES,
+    sizeSystem: 'US Men',
+    maxUsMensSize: 12,
+    maxEuSize: 46,
     colors: [GOAT_LISTED_COLORWAY],
     image: entry.image,
     mediaStatus: 'supplied',

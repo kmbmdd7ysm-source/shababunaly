@@ -49,6 +49,7 @@ function normalizePayload(body: Record<string, unknown>) {
     language: clean(raw.language || 'en', 5) === 'ar' ? 'ar' : 'en',
     designId: clean(raw.designId, 120) || null,
     rosterId: clean(raw.rosterId, 120) || null,
+    logoAssetId: UUID.test(clean(raw.logoAssetId, 36)) ? clean(raw.logoAssetId, 36) : null,
     design: raw.design && typeof raw.design === 'object' ? raw.design : null,
     roster: Array.isArray(raw.roster) ? raw.roster.slice(0, 500) : [],
     submittedAt: new Date().toISOString(),
@@ -82,6 +83,24 @@ async function findDuplicate(idempotencyKey: string) {
     `/rest/v1/quote_requests?select=id,quote_number,status,created_at&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&limit=1`,
   )) as Array<Record<string, unknown>>;
   return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function verifyCustomLogoAsset(
+  assetId: string | null,
+  idempotencyKey: string,
+  userId?: string,
+): Promise<Record<string, unknown> | null> {
+  if (!assetId) return null;
+  const rows = (await supabaseAdminRequest(
+    `/rest/v1/media_assets?select=id,owner_user_id,entity_type,entity_id,scan_status,original_name&id=eq.${encodeURIComponent(assetId)}&entity_type=eq.custom_design_logo&entity_id=eq.${encodeURIComponent(idempotencyKey)}&limit=1`,
+  )) as Array<Record<string, unknown>>;
+  const row = Array.isArray(rows) ? rows[0] || null : null;
+  if (!row) throw new Error('invalid_logo_asset');
+  if (row.owner_user_id && (!userId || String(row.owner_user_id) !== userId))
+    throw new Error('invalid_logo_asset_owner');
+  if (!['quarantined', 'scanning', 'clean'].includes(String(row.scan_status || '')))
+    throw new Error('logo_asset_blocked');
+  return row;
 }
 
 export default async function handler(req: ApiReq, res: ApiRes) {
@@ -144,6 +163,9 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         ? String((user as { id?: unknown }).id || '')
         : undefined;
     const organizationId = await verifiedOrganizationId(userId, body.organizationId);
+    const logoAsset = payload.formType === 'custom_design_quote'
+      ? await verifyCustomLogoAsset(payload.logoAssetId, idempotencyKey, userId)
+      : null;
     const now = new Date();
     const suffix = randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase();
     const quoteNumber = `QT-${now.toISOString().slice(0, 10).replace(/-/g, '')}-${suffix}`;
@@ -175,6 +197,13 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       Array.isArray(created) ? created[0] : created
     ) as Record<string, unknown> | null;
     if (!quote?.id) throw new Error('quote_create_failed');
+    if (logoAsset?.id) {
+      await supabaseAdminRequest(`/rest/v1/media_assets?id=eq.${encodeURIComponent(String(logoAsset.id))}`, {
+        method: 'PATCH',
+        headers: { Prefer: 'return=minimal' },
+        body: JSON.stringify({ entity_type: 'quote_logo', entity_id: quote.id, updated_at: new Date().toISOString() }),
+      });
+    }
 
     // Analytics/audit enrichment is best-effort and must never prevent the
     // actual customer request from reaching the owner.
@@ -215,6 +244,15 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       notification: emailResult.delivered ? 'delivered' : 'pending',
     });
   } catch (persistenceError: unknown) {
+    const persistenceCode = clean(
+      persistenceError && typeof persistenceError === 'object' && 'message' in persistenceError
+        ? (persistenceError as { message?: unknown }).message
+        : persistenceError,
+      160,
+    );
+    if (['invalid_logo_asset', 'invalid_logo_asset_owner', 'logo_asset_blocked'].includes(persistenceCode)) {
+      return res.status(400).json({ ok: false, error: persistenceCode });
+    }
     // A team/custom inquiry is primarily a human follow-up request. If the
     // database is temporarily unavailable, do not discard the customer's
     // message: deliver the complete sanitized request to the owner through the
@@ -241,7 +279,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         quote: {
           id: `email-${idempotencyKey}`,
           quote_number: quoteNumber,
-          status: 'received',
+          status: 'email_only',
           created_at: now.toISOString(),
         },
         notification: 'delivered',

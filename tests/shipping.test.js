@@ -87,7 +87,7 @@ describe('shipping rules', () => {
     expect(shippingConfig.libya.standardDelivery).toEqual({ minDays: 14, maxDays: 18 });
     expect(shippingConfig.custom).toEqual({ minDays: 30, maxDays: 60 });
     expect(SHIPPING_MESSAGES.ready.en).toContain('24–72');
-    expect(SHIPPING_MESSAGES.custom.ar).toContain('30–60');
+    expect(SHIPPING_MESSAGES.custom.ar).toContain('العرض المعتمد');
     expect(SHIPPING_MESSAGES.announcement.en).toContain('70 USD');
     expect(SHIPPING_MESSAGES.announcement.en).toContain('630 LYD');
   });

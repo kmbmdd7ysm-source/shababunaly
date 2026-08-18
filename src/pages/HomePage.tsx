@@ -152,7 +152,7 @@ export default function HomePage(): ReactElement {
 
       <section className="s2-split-feature" aria-labelledby="s2-custom-title">
         <div className="s2-split-feature__media">
-          <img src="https://preview.thenewsmarket.com/Previews/ADID/StillAssets/640x480/691341_v3.jpg" alt="" width="1400" height="900" loading="lazy" />
+          <img src="/media/localized-brand/adidas_team.png" alt="" width="1400" height="900" loading="lazy" />
         </div>
         <div className="s2-split-feature__copy">
           <span className="s2-overline">{pick({ en: 'Custom studio', ar: 'استوديو التخصيص' })}</span>
@@ -167,15 +167,15 @@ export default function HomePage(): ReactElement {
             <span className="s2-overline">{pick({ en: 'Culture', ar: 'الثقافة' })}</span>
             <h2 id="s2-stories-title">{pick({ en: 'Stories & work', ar: 'قصص وأعمال' })}</h2>
           </div>
-          <Link className="s2-text-link" to="/our-work">{pick({ en: 'View stories', ar: 'عرض القصص' })}</Link>
+          <Link className="s2-text-link" to="/stories">{pick({ en: 'View stories', ar: 'عرض القصص' })}</Link>
         </div>
         <div className="s2-story-pair s2-container">
-          <Link to="/our-work" className="s2-story-card">
-            <img src="https://i.ytimg.com/vi/LRJP140fv3E/maxresdefault.jpg" alt="" width="1400" height="900" loading="lazy" />
+          <Link to="/stories" className="s2-story-card">
+            <img src="/media/localized-brand/puma_court.png" alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'Inside the game', ar: 'داخل اللعبة' })}</strong></span>
           </Link>
-          <Link to="/our-work" className="s2-story-card">
-            <img src="https://preview.thenewsmarket.com/Previews/NBAS/StillAssets/1920x1080/557260.png" alt="" width="1400" height="900" loading="lazy" />
+          <Link to="/stories" className="s2-story-card">
+            <img src="/media/localized-brand/portrait_closeup.webp" alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball culture', ar: 'ثقافة كرة السلة' })}</small><strong>{pick({ en: 'Beyond the game', ar: 'أبعد من اللعبة' })}</strong></span>
           </Link>
         </div>

@@ -83,8 +83,8 @@ const HELP_TOPICS = [
     id: 'custom-wholesale',
     title: { en: 'Custom, Teams & Wholesale', ar: 'التصميم الخاص والأندية والجملة' },
     summary: {
-      en: 'Custom apparel starts from ten pieces, custom basketballs from six and basketball hoop systems from one unit. Approved custom and wholesale orders use 50% before production and 50% when the goods arrive, with a 30–60 day estimate.',
-      ar: 'يبدأ تصنيع الملابس المخصصة من عشر قطع، والكرات المخصصة من ست كرات، ومنظومات السلات من وحدة واحدة. تُدفع 50% قبل التصنيع و50% عند وصول البضاعة، والمدة التقديرية 30–60 يومًا.',
+      en: 'Custom apparel requests start from ten pieces, custom basketball requests from six and hoop or equipment requests from one unit. Final timing and payment terms are confirmed in the approved quote for the exact request.',
+      ar: 'تبدأ طلبات الملابس المخصصة من عشر قطع وطلبات الكرات المخصصة من ست كرات وطلبات السلات أو المعدات من وحدة واحدة. ويتم تأكيد المدة وشروط الدفع النهائية في عرض السعر المعتمد للطلب المحدد.',
     },
     keywords: {
       en: ['custom', 'uniform', 'wholesale', 'club', 'academy', 'minimum order'],

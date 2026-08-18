@@ -77,8 +77,8 @@ export const legal = {
       S(
         'Payment Terms',
         'شروط الدفع',
-        'Retail cash orders inside Libya may be confirmed with 50% or paid in full. Retail card and digital-payment orders require full payment. Custom, club and wholesale orders normally require 50% before production and 50% when the goods arrive, unless the approved quote states otherwise.',
-        'يمكن تأكيد طلبات الأفراد النقدية داخل ليبيا بدفع 50% أو دفع القيمة كاملة. وتتطلب طلبات الأفراد بالبطاقة أو الدفع الإلكتروني الدفع الكامل. وتتطلب طلبات التصميم والأندية والجملة عادةً 50% قبل التصنيع و50% عند وصول البضاعة، ما لم ينص العرض المعتمد على غير ذلك.',
+        'Retail cash orders inside Libya use the payment options shown at checkout. Card and digital-payment methods are offered only when their production provider is connected. Custom, club and wholesale payment terms are defined by the approved quote before payment is requested.',
+        'تستخدم طلبات الأفراد النقدية داخل ليبيا خيارات الدفع الظاهرة في صفحة الدفع. ولا تُعرض طرق البطاقة أو الدفع الرقمي إلا عند ربط مزودها الفعلي. أما شروط دفع التصميم والأندية والجملة فتُحدد في عرض السعر المعتمد قبل طلب الدفع.',
       ),
       S(
         'International Orders',
@@ -149,8 +149,8 @@ export const legal = {
       S(
         'Custom, Club & Wholesale',
         'التصميم والأندية والجملة',
-        'Estimated production and delivery is normally 30–60 days depending on the product, quantity, approval date, materials and order timing. Estimates begin after deposit and final design approval.',
-        'تبلغ مدة التصنيع والوصول عادةً 30–60 يومًا حسب المنتج والكمية وتاريخ الاعتماد والخامات ووقت الطلب. ويبدأ التقدير بعد دفع العربون واعتماد التصميم النهائي.',
+        'Production and delivery timing is confirmed in the approved quote after the product, quantity, materials, destination and approval requirements are reviewed. No generic timeline overrides the approved quote.',
+        'يتم تأكيد مدة التصنيع والتوصيل في عرض السعر المعتمد بعد مراجعة المنتج والكمية والخامات والوجهة ومتطلبات الاعتماد. ولا تتجاوز أي مدة عامة ما يرد في العرض المعتمد.',
       ),
       S(
         'Worldwide Shipping',

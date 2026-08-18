@@ -38,9 +38,9 @@ export function getProductionReadiness(): {
   if (!String(import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim()) missing.push('account_key');
   if (!String(import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim())
     missing.push('request_verification');
-  if (!validHttps('https://formspree.io/f/mvzenjgv')) {
-    missing.push('message_delivery');
-  }
+  // Message delivery is a server-owned capability. The browser must never infer
+  // provider health from a hard-coded third-party URL; /api/readiness verifies
+  // provider configuration, recent delivery evidence and connectivity.
   return { ready: missing.length === 0, needsServerCheck: missing.length === 0, missing };
 }
 

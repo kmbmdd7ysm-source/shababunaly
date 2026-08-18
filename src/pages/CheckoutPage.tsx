@@ -83,7 +83,11 @@ export default function CheckoutPage(): ReactElement {
   });
   const [agree, setAgree] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(
-    isCashEligibleCountry(countryCode) ? 'cash' : 'online_card',
+    isCashEligibleCountry(countryCode)
+      ? 'cash'
+      : isPaymentMethodConfigured('online_card')
+        ? 'online_card'
+        : 'pending',
   );
   const [cashPlan, setCashPlan] = useState('half');
   const [orderConfirmed, setOrderConfirmed] = useState<Record<string, unknown> | null>(null);
@@ -155,7 +159,7 @@ export default function CheckoutPage(): ReactElement {
       return next;
     });
     if (!isCashEligibleCountry(normalized) && paymentMethod === 'cash')
-      setPaymentMethod('online_card');
+      setPaymentMethod(isPaymentMethodConfigured('online_card') ? 'online_card' : 'pending');
   };
 
   const applySavedAddress = (address: Record<string, unknown> | undefined) => {
@@ -176,8 +180,11 @@ export default function CheckoutPage(): ReactElement {
     }));
     setCountryCode(nextCountry);
     if (!isCashEligibleCountry(nextCountry) && paymentMethod === 'cash')
-      setPaymentMethod('online_card');
+      setPaymentMethod(isPaymentMethodConfigured('online_card') ? 'online_card' : 'pending');
   };
+
+  const onlineCardConfigured = isPaymentMethodConfigured('online_card');
+  const libyanCardConfigured = isPaymentMethodConfigured('libyan_bank_card');
 
   useEffect(() => {
     let active = true;
@@ -210,7 +217,7 @@ export default function CheckoutPage(): ReactElement {
         usdToLydRate,
         largeEquipment,
         customOrder: stagedOrder,
-        internationalRates: shippingRates,
+        internationalRates: onlineCardConfigured ? shippingRates : {},
       }),
     [
       shippingCountryCode,
@@ -220,6 +227,7 @@ export default function CheckoutPage(): ReactElement {
       largeEquipment,
       stagedOrder,
       shippingRates,
+      onlineCardConfigured,
     ],
   );
   const shippingQuoteRequired = shipping.status === 'quote_required';
@@ -234,9 +242,7 @@ export default function CheckoutPage(): ReactElement {
         : shippingQuoteRequired
           ? 'international_pending'
           : 'international';
-  const onlineCardConfigured = isPaymentMethodConfigured('online_card');
-  const libyanCardConfigured = isPaymentMethodConfigured('libyan_bank_card');
-  const paymentConfigured = paymentMethod === 'cash' || isPaymentMethodConfigured(paymentMethod);
+  const paymentConfigured = paymentMethod === 'cash' || (paymentMethod !== 'pending' && isPaymentMethodConfigured(paymentMethod));
   // prettier-ignore
   const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : paymentMethod === 'cash' ? (immediateLibyaCash ? 'full' : allowCashPlanChoice ? cashPlan : 'full') : 'full';
   const dueRatio = paymentPlan === 'half' ? 0.5 : paymentPlan === 'pending_shipping_quote' ? 0 : 1;
@@ -271,7 +277,7 @@ export default function CheckoutPage(): ReactElement {
     if (
       !shippingQuoteRequired &&
       paymentMethod !== 'cash' &&
-      !isPaymentMethodConfigured(paymentMethod)
+      (paymentMethod === 'pending' || !isPaymentMethodConfigured(paymentMethod))
     )
       next.payment = pick({
         en: 'No online payment method is currently available.',
@@ -861,12 +867,12 @@ export default function CheckoutPage(): ReactElement {
                         : stagedOrder
                           ? paymentMethod === 'cash' && cashPlan === 'full'
                             ? pick({
-                                en: 'Paid in full at confirmation; production starts after approval.',
-                                ar: 'دفع كامل عند التأكيد؛ يبدأ الإنتاج بعد الاعتماد.',
+                                en: 'Payment follows the confirmed order terms; production starts only after approval.',
+                                ar: 'يتم الدفع حسب شروط الطلب المؤكدة، ولا يبدأ الإنتاج إلا بعد الاعتماد.',
                               })
                             : pick({
-                                en: '50% confirms production; the remaining 50% is due when the goods arrive.',
-                                ar: '50% لتأكيد الإنتاج، و50% عند وصول البضاعة.',
+                                en: 'The required deposit and remaining balance follow the approved quote for this order.',
+                                ar: 'تتبع الدفعة المطلوبة والرصيد المتبقي عرض السعر المعتمد لهذا الطلب.',
                               })
                           : pick(deliveryCopy)}
                     </small>
@@ -925,10 +931,20 @@ export default function CheckoutPage(): ReactElement {
                         : `${pick({ en: 'Confirm Order', ar: 'تأكيد الطلب' })} · ${format(amountDueNow, lang)}`}
                 </button>
                 <p className="summary-note">
-                  {pick({
-                    en: 'Card details are never stored on Shababuna. Real card processing is completed by the connected payment provider.',
-                    ar: 'لا يتم تخزين بيانات البطاقة داخل شبابنا. تتم معالجة الدفع الفعلي عبر مزود الدفع المرتبط.',
-                  })}
+                  {paymentMethod === 'online_card' || paymentMethod === 'libyan_bank_card'
+                    ? pick({
+                        en: 'Card details are never stored on Shababuna. Card processing is completed by the connected payment provider.',
+                        ar: 'لا يتم تخزين بيانات البطاقة داخل شبابنا. تتم معالجة البطاقة عبر مزود الدفع المرتبط.',
+                      })
+                    : shippingQuoteRequired
+                      ? pick({
+                          en: 'No payment is collected until the shipping quote is confirmed.',
+                          ar: 'لا يتم تحصيل أي دفع قبل تأكيد سعر الشحن.',
+                        })
+                      : pick({
+                          en: 'Your selected payment method is confirmed before the order is finalized.',
+                          ar: 'يتم تأكيد طريقة الدفع المختارة قبل إتمام الطلب.',
+                        })}
                 </p>
                 <Link to="/cart" className="link-btn">
                   <Icon name="back" size={18} /> {checkout.backToCart}

@@ -9,10 +9,6 @@ const ALLOWED_PREFIXES = [
   '/compare',
   '/help',
   '/order-tracking',
-  '/programs',
-  '/events',
-  '/coaches',
-  '/online-training',
 ] as const;
 
 export function safeInternalReturnPath(value: unknown, fallback = ''): string {

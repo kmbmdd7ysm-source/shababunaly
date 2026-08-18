@@ -15,3 +15,26 @@ export function isSupportedDisplayCurrency(value: unknown): value is Currency {
     (commerceConfig.supportedDisplayCurrencies as readonly string[]).includes(value)
   );
 }
+
+
+/**
+ * Customer-facing prices are intentionally clean whole numbers in 5-unit steps.
+ * The catalogue and currency conversion layers both use this helper so a price
+ * cannot render as 153.62 in one place and 155 somewhere else.
+ */
+export function roundStorePrice(value: unknown): number {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return amount;
+  if (amount <= 0) return 0;
+  const rounded = Math.ceil(amount / 5) * 5;
+  return Object.is(rounded, -0) ? 0 : rounded;
+}
+
+
+/** Clean wholesale price floor. Returns 0 when no lower 5-unit price exists. */
+export function roundStorePriceDown(value: unknown): number {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount <= 0) return 0;
+  const rounded = Math.floor(amount / 5) * 5;
+  return rounded > 0 ? rounded : 0;
+}

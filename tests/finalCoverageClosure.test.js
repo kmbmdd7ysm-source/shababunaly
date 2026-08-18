@@ -256,7 +256,7 @@ describe('coverage closure for localization and navigation', { concurrency: fals
       '/products/item',
       '/products/?x=1',
       '/account#orders',
-      '/events/1',
+      '/favorites',
     ]) {
       expect(safeInternalReturnPath(value, '/fallback')).toBe(value);
     }

@@ -1,0 +1,964 @@
+{
+  "generatedAt": "2026-08-18T15:14:27.903Z",
+  "phase": 3,
+  "scope": "destruction source QA and release-honesty pass",
+  "sourcePassed": true,
+  "releaseVerdict": "SOURCE_VERIFIED_EXTERNAL_GATES_PENDING",
+  "checks": 187,
+  "failures": [],
+  "warnings": [
+    "hero-video-first-party-ownership — 13 hero videos remain direct external MP4 sources; local licensed video payloads were not present in the user ZIP.",
+    "provider-readiness — Payment/signature provider selection and live evidence are still external inputs.",
+    "factory-readiness — No approved manufacturer evidence is present; quote flows must remain quote-specific.",
+    "arabic-human-review — Arabic keys are structurally complete but human approval is not current.",
+    "visual-human-review — Visual baselines are not marked as human-reviewed.",
+    "browser-build-current-environment — No installed Vite toolchain exists in this ZIP/environment, so no fresh browser-build claim is made."
+  ],
+  "metrics": {
+    "publishedProducts": 75,
+    "lhaProducts": 25,
+    "kobeProducts": 50,
+    "heroPosterBytes": 696756,
+    "cssFiles": 61,
+    "cssLines": 21478,
+    "importantCount": 1072,
+    "nodeModulesPresent": false
+  },
+  "results": [
+    {
+      "name": "routes:lazy-imports-found",
+      "ok": true,
+      "detail": "found 33"
+    },
+    {
+      "name": "route-target:Home",
+      "ok": true,
+      "detail": "HomePage"
+    },
+    {
+      "name": "route-target:About",
+      "ok": true,
+      "detail": "AboutPage"
+    },
+    {
+      "name": "route-target:Shop",
+      "ok": true,
+      "detail": "ShopPage"
+    },
+    {
+      "name": "route-target:Discover",
+      "ok": true,
+      "detail": "DiscoverPage"
+    },
+    {
+      "name": "route-target:Releases",
+      "ok": true,
+      "detail": "ReleasesPage"
+    },
+    {
+      "name": "route-target:Product",
+      "ok": true,
+      "detail": "ProductPage"
+    },
+    {
+      "name": "route-target:ShoeFinder",
+      "ok": true,
+      "detail": "ShoeFinderPage"
+    },
+    {
+      "name": "route-target:Cart",
+      "ok": true,
+      "detail": "CartPage"
+    },
+    {
+      "name": "route-target:Checkout",
+      "ok": true,
+      "detail": "CheckoutPage"
+    },
+    {
+      "name": "route-target:CheckoutStatus",
+      "ok": true,
+      "detail": "CheckoutStatusPage"
+    },
+    {
+      "name": "route-target:Customize",
+      "ok": true,
+      "detail": "CustomizePage"
+    },
+    {
+      "name": "route-target:AdvancedCustomize",
+      "ok": true,
+      "detail": "AdvancedCustomizePage"
+    },
+    {
+      "name": "route-target:TeamsWholesale",
+      "ok": true,
+      "detail": "TeamsWholesalePage"
+    },
+    {
+      "name": "route-target:LhaStore",
+      "ok": true,
+      "detail": "LhaStorePage"
+    },
+    {
+      "name": "route-target:OurWork",
+      "ok": true,
+      "detail": "OurWorkPage"
+    },
+    {
+      "name": "route-target:Contact",
+      "ok": true,
+      "detail": "ContactPage"
+    },
+    {
+      "name": "route-target:Faq",
+      "ok": true,
+      "detail": "FaqPage"
+    },
+    {
+      "name": "route-target:SizeGuide",
+      "ok": true,
+      "detail": "SizeGuidePage"
+    },
+    {
+      "name": "route-target:Search",
+      "ok": true,
+      "detail": "SearchPage"
+    },
+    {
+      "name": "route-target:OrderTracking",
+      "ok": true,
+      "detail": "OrderTrackingPage"
+    },
+    {
+      "name": "route-target:OrderDetail",
+      "ok": true,
+      "detail": "OrderDetailPage"
+    },
+    {
+      "name": "route-target:Legal",
+      "ok": true,
+      "detail": "LegalPage"
+    },
+    {
+      "name": "route-target:NotFound",
+      "ok": true,
+      "detail": "NotFoundPage"
+    },
+    {
+      "name": "route-target:Compare",
+      "ok": true,
+      "detail": "ComparePage"
+    },
+    {
+      "name": "route-target:Favorites",
+      "ok": true,
+      "detail": "FavoritesPage"
+    },
+    {
+      "name": "route-target:Account",
+      "ok": true,
+      "detail": "AccountPage"
+    },
+    {
+      "name": "route-target:Offline",
+      "ok": true,
+      "detail": "OfflinePage"
+    },
+    {
+      "name": "route-target:Help",
+      "ok": true,
+      "detail": "HelpPage"
+    },
+    {
+      "name": "route-target:Operations",
+      "ok": true,
+      "detail": "OperationsPage"
+    },
+    {
+      "name": "route-target:SpecialRequest",
+      "ok": true,
+      "detail": "SpecialRequestPage"
+    },
+    {
+      "name": "route-target:TeamLocker",
+      "ok": true,
+      "detail": "TeamLockerPage"
+    },
+    {
+      "name": "route-target:DesignShare",
+      "ok": true,
+      "detail": "DesignSharePage"
+    },
+    {
+      "name": "route-target:LabHome",
+      "ok": true,
+      "detail": "LabHomePage"
+    },
+    {
+      "name": "route-unpublished:/programs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap-unpublished:/programs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "route-unpublished:/events",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap-unpublished:/events",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "route-unpublished:/online-training",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap-unpublished:/online-training",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "route-unpublished:/coaches",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap-unpublished:/coaches",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "route:our-work-redirects",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap:stories-current",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap:no-our-work-duplicate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap:no-duplicates",
+      "ok": true,
+      "detail": "24 urls"
+    },
+    {
+      "name": "prerender:no-duplicate-static-paths",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:50% before production / 50% on arrival",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:50% before production and 50% when the goods arrive",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:50% deposit / 50% on arrival",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:50% confirms production",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:Standard custom terms: 50%",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:Estimated production window: 30–60",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:no-fixed-contract:Wholesale estimate: 30–60",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seo:no-unverified-custom-manufacturing-claim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seo:manifest-no-unverified-manufacturing-claim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seo:llms-no-unverified-manufacturing-claim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seo:structured-data-no-unverified-manufacturing-claim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seo:generator-no-unverified-manufacturing-claim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer-copy:footer-no-unverified-manufacturing-claim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer-copy:no-fixed-custom-30-60-shipping",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer-copy:no-fixed-custom-30-60-pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "home:stories-direct-link",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "llms:stories-current-route",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "schema:clean-integer-price",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teams:quote-specific-payment-terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "advanced:quote-specific-payment-terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:home",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:shop",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:footwear",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:clothing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:accessories",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:basketballs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:equipment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:shoeFinder",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:custom",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:discover",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:teams",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:stories",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:releases",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:13-direct-video-sources",
+      "ok": true,
+      "detail": "found 13"
+    },
+    {
+      "name": "hero:13-unique-video-sources",
+      "ok": true,
+      "detail": "unique 13"
+    },
+    {
+      "name": "hero:native-video-components",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:no-youtube-vimeo-runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:no-decorative-infinite-scroll-loop",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero:13-local-posters",
+      "ok": true,
+      "detail": "found 13"
+    },
+    {
+      "name": "hero-poster:exists:home.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:home.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:home.webp",
+      "ok": true,
+      "detail": "68266 bytes"
+    },
+    {
+      "name": "hero-poster:exists:shop.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:shop.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:shop.webp",
+      "ok": true,
+      "detail": "23168 bytes"
+    },
+    {
+      "name": "hero-poster:exists:footwear.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:footwear.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:footwear.webp",
+      "ok": true,
+      "detail": "12674 bytes"
+    },
+    {
+      "name": "hero-poster:exists:clothing.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:clothing.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:clothing.webp",
+      "ok": true,
+      "detail": "22086 bytes"
+    },
+    {
+      "name": "hero-poster:exists:accessories.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:accessories.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:accessories.webp",
+      "ok": true,
+      "detail": "161174 bytes"
+    },
+    {
+      "name": "hero-poster:exists:basketballs.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:basketballs.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:basketballs.webp",
+      "ok": true,
+      "detail": "119848 bytes"
+    },
+    {
+      "name": "hero-poster:exists:equipment.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:equipment.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:equipment.webp",
+      "ok": true,
+      "detail": "24198 bytes"
+    },
+    {
+      "name": "hero-poster:exists:shoe-finder.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:shoe-finder.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:shoe-finder.webp",
+      "ok": true,
+      "detail": "15708 bytes"
+    },
+    {
+      "name": "hero-poster:exists:custom.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:custom.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:custom.webp",
+      "ok": true,
+      "detail": "60234 bytes"
+    },
+    {
+      "name": "hero-poster:exists:discover.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:discover.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:discover.webp",
+      "ok": true,
+      "detail": "63626 bytes"
+    },
+    {
+      "name": "hero-poster:exists:teams.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:teams.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:teams.webp",
+      "ok": true,
+      "detail": "10928 bytes"
+    },
+    {
+      "name": "hero-poster:exists:stories.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:stories.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:stories.webp",
+      "ok": true,
+      "detail": "55910 bytes"
+    },
+    {
+      "name": "hero-poster:exists:releases.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:webp:releases.webp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hero-poster:budget:releases.webp",
+      "ok": true,
+      "detail": "58936 bytes"
+    },
+    {
+      "name": "hero-poster:aggregate-budget",
+      "ok": true,
+      "detail": "696756 bytes"
+    },
+    {
+      "name": "locale:first-paint-lang-dir",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a11y:skip-link-localized",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a11y:skip-link-logical-position",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "responsive:viewport-meta",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "responsive:root-inline-guard",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "responsive:media-inline-guard",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "responsive:main-overflow-guard",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a11y:reduced-motion-global",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "truth:lha-count-25",
+      "ok": true,
+      "detail": "found 25"
+    },
+    {
+      "name": "truth:lha-stock-five-per-color",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "truth:kobe-count-50",
+      "ok": true,
+      "detail": "found 50"
+    },
+    {
+      "name": "truth:kobe-site-rate-price",
+      "ok": true,
+      "detail": "expected 135"
+    },
+    {
+      "name": "truth:kobe-max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "truth:clean-retail-prices",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:catalog-master-119",
+      "ok": true,
+      "detail": "found 119"
+    },
+    {
+      "name": "independent:catalog-published-75",
+      "ok": true,
+      "detail": "found 75"
+    },
+    {
+      "name": "independent:catalog-hidden-44",
+      "ok": true,
+      "detail": "hidden 44"
+    },
+    {
+      "name": "independent:published-media-real",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:master-variants-1482",
+      "ok": true,
+      "detail": "found 1482"
+    },
+    {
+      "name": "independent:trusted-variants-786",
+      "ok": true,
+      "detail": "found 786"
+    },
+    {
+      "name": "independent:generated-trusted-rows-786",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:deploy-preserves-tracked-inventory",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:deploy-reprices-site-rate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:no-stale-stockPerVariant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:lha-25",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:lha-capacity-five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:lha-every-pool-five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:ready-to-ship-25",
+      "ok": true,
+      "detail": "found 25"
+    },
+    {
+      "name": "independent:kobe-50",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:kobe-source-1200",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:kobe-max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:kobe-site-rate-source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:kobe-clean-current-price",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:commerce-rate-all-sessions",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:commerce-retains-verified-rate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:rate-ready-excludes-fallback",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:site-rate-fail-closed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:tracked-stock-safe-fallback",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:cloud-catalog-authoritative",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:no-static-resurrection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:lha-stock-from-cloud-quantity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:lha-stock-by-color-pool",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:cloud-media-local-trust",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:lha-ready-requires-positive-stock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:formspree-same-origin-only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:quote-client-no-formspree-bypass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:special-client-no-formspree-bypass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:quote-api-email-only-status",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:special-api-email-only-status",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:teams-email-only-truthful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:custom-email-only-truthful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:advanced-email-only-truthful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:custom3d-no-eager-loader",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:custom3d-explicit-opt-in",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:db-color-pool-advisory-lock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:db-site-rate-price-locked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:db-rate-update-reprices",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:trusted-api-reads-authoritative-rate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:trusted-api-fails-closed-without-rate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:published-media-local-and-present",
+      "ok": true,
+      "detail": "external 0, missing 0"
+    },
+    {
+      "name": "independent:primary-media-byte-unique",
+      "ok": true,
+      "detail": "duplicate groups 0"
+    }
+  ]
+}

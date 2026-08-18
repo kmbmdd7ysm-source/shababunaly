@@ -202,8 +202,11 @@ describe('LHA catalog normalizer and selectors exhaustive', () => {
     const normal = normalizeLhaProduct(base);
     expect(normal.sizes.length).toBeGreaterThan(1);
     expect(normal.colors).toHaveLength(1);
-    expect(normal.inventoryTracking).toBe(false);
-    expect(normal.stock).toBe(0);
+    expect(normal.inventoryTracking).toBe(true);
+    expect(normal.inventoryVerified).toBe(true);
+    expect(normal.stock).toBe(5);
+    expect(normal.stockByColor).toEqual({ black: 5 });
+    expect(normal.variants.every((variant) => variant.stock === 5 && variant.inventoryPoolStock === 5)).toBe(true);
     expect(normal.availability).toBe('in-stock');
     expect(normal.mediaStatus).toBe('missing');
     expect(normal.image).toBe(null);
@@ -230,9 +233,10 @@ describe('LHA catalog normalizer and selectors exhaustive', () => {
       hoverImage: '/hover.webp',
       socialImage: '/social.webp',
     });
-    expect(verified.stock).toBe(6);
-    expect(verified.variants[0].stock).toBe(4);
-    expect(verified.variants[1].stock).toBe(2);
+    expect(verified.stock).toBe(5);
+    expect(verified.stockByColor).toEqual({ red: 5 });
+    expect(verified.variants[0].stock).toBe(5);
+    expect(verified.variants[1].stock).toBe(5);
     expect(verified.readyToShip).toBe(true);
     expect(verified.inventoryLocation).toBe('LY');
     expect(verified.mediaStatus).toBe('supplied');
@@ -254,14 +258,16 @@ describe('LHA catalog normalizer and selectors exhaustive', () => {
       available: false,
       image: '/x.webp',
     });
-    expect(coming.status).toBe('coming_soon');
-    expect(coming.availability).toBe('sold-out');
+    expect(coming.status).toBe('active');
+    expect(coming.comingSoon).toBe(false);
+    expect(coming.availability).toBe('in-stock');
     const archived = normalizeLhaProduct({ ...base, available: false });
-    expect(archived.status).toBe('archived');
+    expect(archived.status).toBe('active');
+    expect(archived.available).toBe(true);
     const sold = normalizeLhaProduct({ ...base, inventoryVerified: true, stockPerVariant: 0 });
-    expect(sold.availability).toBe('sold-out');
+    expect(sold.availability).toBe('in-stock');
     const digital = normalizeLhaProduct({ ...base, fulfillmentType: 'digital' });
-    expect(digital.availability).toBe('sold-out');
+    expect(digital.availability).toBe('in-stock');
     const custom = normalizeLhaProduct({
       ...base,
       sizes: ['OS'],
@@ -453,8 +459,9 @@ describe('global catalog normalizer and selectors exhaustive', () => {
   });
 
   it('executes all global catalog selectors and ordering', () => {
-    expect(catalogProducts.length).toBe(69);
-    expect(products.length).toBe(69);
+    expect(catalogProducts.length).toBe(119);
+    expect(products.length).toBe(75);
+    expect(catalogProducts.filter((product) => !products.includes(product))).toHaveLength(44);
     const first = products[0];
     expect(getProduct(first.slug).id).toBe(first.id);
     expect(getProductById(first.id).slug).toBe(first.slug);
@@ -463,8 +470,8 @@ describe('global catalog normalizer and selectors exhaustive', () => {
     expect(newArrivals().every((p) => p.newArrival && !p.legacyLha)).toBe(true);
     expect(bestSellers().every((p) => p.bestSeller && !p.legacyLha)).toBe(true);
     const ready = readyToShipProducts();
-    expect(ready.length).toBe(15);
-    expect(ready.every((product) => product.legacyLha === true && product.readyToShip === true && product.comingSoon !== true)).toBe(true);
+    expect(ready.length).toBe(25);
+    expect(ready.every((product) => product.legacyLha === true && product.readyToShip === true && product.inventoryVerified === true && product.inventorySource === 'owner_confirmed_lha_color_stock' && product.comingSoon !== true)).toBe(true);
     expect(lhaStoreProducts()).toHaveLength(25);
     expect(productsByCategory('ready-to-ship')).toEqual(ready);
     expect(productsByCategory(first.category).length).toBeGreaterThan(0);

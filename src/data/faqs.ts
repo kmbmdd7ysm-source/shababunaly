@@ -59,15 +59,15 @@ export const faqCategories = [
       {
         q: { en: 'When does custom production begin?', ar: 'متى يبدأ التصنيع المخصص؟' },
         a: {
-          en: 'After the 50% deposit is confirmed and the final design proof, names, numbers, colors and sizes are approved.',
-          ar: 'بعد تأكيد دفعة 50% واعتماد البروفة النهائية والأسماء والأرقام والألوان والمقاسات.',
+          en: 'Only after the approved quote states the required payment terms and the final design proof, names, numbers, colors and sizes are approved.',
+          ar: 'فقط بعد أن يحدد عرض السعر المعتمد شروط الدفع المطلوبة واعتماد البروفة النهائية والأسماء والأرقام والألوان والمقاسات.',
         },
       },
       {
         q: { en: 'How long does custom production take?', ar: 'كم يستغرق التصنيع المخصص؟' },
         a: {
-          en: 'The normal estimate is 30–60 days depending on product, quantity, approval date, materials and order timing.',
-          ar: 'المدة المعتادة 30–60 يومًا حسب المنتج والكمية وتاريخ الاعتماد والخامات ووقت الطلب.',
+          en: 'The timeline is confirmed in the approved quote after the product, quantity, materials, destination and approval requirements are reviewed.',
+          ar: 'يتم تأكيد المدة في عرض السعر المعتمد بعد مراجعة المنتج والكمية والخامات والوجهة ومتطلبات الاعتماد.',
         },
       },
     ],
@@ -79,15 +79,15 @@ export const faqCategories = [
       {
         q: { en: 'Which payment methods are supported?', ar: 'ما طرق الدفع المتاحة؟' },
         a: {
-          en: 'Inside Libya, checkout supports cash, Libyan bank card, and connected card or digital-wallet methods. Outside Libya, cash is removed and online payment is used. Bank and card providers are activated through secure server-side integrations.',
-          ar: 'داخل ليبيا يدعم الدفع النقدي والبطاقة المصرفية الليبية وطرق البطاقة أو المحافظ المرتبطة. وخارج ليبيا يُلغى الدفع النقدي ويُستخدم الدفع الإلكتروني. ويتم تفعيل مزودي المصارف والبطاقات عبر ربط آمن من الخادم.',
+          en: 'Inside Libya, cash is available when the order is eligible. Card or digital-payment methods appear only when their production provider is actually connected. Outside Libya, payment and shipping options are confirmed for the destination before fulfilment.',
+          ar: 'داخل ليبيا يتوفر الدفع النقدي عندما يكون الطلب مؤهلاً. ولا تظهر طرق البطاقة أو الدفع الرقمي إلا عندما يكون مزودها الفعلي مربوطًا وجاهزًا. وخارج ليبيا يتم تأكيد خيارات الدفع والشحن للوجهة قبل التنفيذ.',
         },
       },
       {
         q: { en: 'Can I pay 50%?', ar: 'هل يمكن دفع 50%؟' },
         a: {
-          en: 'For retail cash orders inside Libya, you can choose 50% to confirm or pay in full. Card retail orders are paid in full. Custom, club and wholesale orders use 50% before production and 50% on arrival unless the quote states otherwise.',
-          ar: 'في طلبات الأفراد النقدية داخل ليبيا يمكنك اختيار 50% للتأكيد أو الدفع كاملًا. أما طلبات الأفراد بالبطاقة فتُدفع كاملة. وتستخدم طلبات التصميم والأندية والجملة 50% قبل التصنيع و50% عند الوصول ما لم ينص العرض على غير ذلك.',
+          en: 'Retail cash orders inside Libya can use the options shown at checkout. Card methods appear only when a production provider is connected. Custom, club and wholesale payment terms are defined by the approved quote before any payment is requested.',
+          ar: 'تستخدم طلبات الأفراد النقدية داخل ليبيا الخيارات الظاهرة في صفحة الدفع. ولا تظهر طرق البطاقة إلا عند ربط مزود فعلي. أما شروط دفع التصميم والأندية والجملة فتُحدد في عرض السعر المعتمد قبل طلب أي دفعة.',
         },
       },
     ],

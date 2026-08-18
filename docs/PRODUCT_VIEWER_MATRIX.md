@@ -9,64 +9,20 @@ and a single image is never presented as a rotation.
 | **A** | Real-time 3D — verified optimised model | **0** |
 | **B** | True 360 spinset — ≥ 24 real frames | **0** |
 | **C** | Premium multi-angle — ≥ 2 verified images | **23** |
-| **D** | Asset-blocked — one image or placeholder art | **96** |
+| **D** | Asset-blocked — one image or placeholder art | **52** |
 
 Level D is two different problems with very different costs:
 
 - **52** products have exactly one *real* photograph. They need additional angles only.
-- **44** products have no photography at all and are showing purpose-built concept artwork.
+- **0** products have no photography at all and are showing purpose-built concept artwork.
   They need a first shoot before any viewer tier is possible.
 
-Target distribution once assets land: **84** at Level A, **35** at Level B.
+Target distribution once assets land: **50** at Level A, **25** at Level B.
 
 ## Every product
 
 | ID | Product | Category | Assets | Spin frames | Now | Target | Missing | Complexity | Phase |
 | --- | --- | --- | ---: | ---: | :-: | :-: | --- | --- | --- |
-| s001 | Shababuna Pro Game Set | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s002 | Shababuna Elite Game Jersey | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s003 | Shababuna Court Game Shorts | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s004 | Shababuna Reversible Practice Jersey | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s005 | Shababuna Practice Shorts | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s006 | Built Different Performance Tee | clothing | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s007 | Shababuna Heavyweight Hoodie | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s008 | Shababuna Travel Pants | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s009 | Shababuna Team Tracksuit | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s010 | Shababuna Compression Top | clothing | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s011 | Shababuna Pro Basketball Socks | clothing | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s020 | Nike In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s021 | adidas In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s022 | Jordan In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s023 | Under Armour In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s024 | Puma In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s025 | New Balance In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s026 | Li-Ning In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s027 | ANTA In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s028 | Peak In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s029 | 361° In-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s030 | Nike Off-Court Basketball Shoe | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s031 | Shababuna Recovery Slides | footwear | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s040 | Shababuna Elite Basketball Backpack | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s041 | Shababuna Team Duffle | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s042 | Shababuna Performance Arm Sleeve | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s043 | Basketball Ankle Support | accessories | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s044 | Shababuna Team Towel | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s045 | Custom Team Sticker Pack | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s046 | Basketball Training Cone Set | accessories | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s047 | Shababuna Court Cap | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s048 | Shababuna Performance Bottle | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s049 | Custom Woven Team Patch | accessories | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s050 | Molten Indoor Game Basketball | basketballs | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s051 | Wilson Indoor / Outdoor Basketball | basketballs | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s052 | Spalding Outdoor Basketball | basketballs | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s053 | Shababuna Custom Team Basketball | basketballs | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s060 | Competition Basketball Hoop System | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s061 | Tempered Glass Backboard | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s062 | Professional Spring Rim | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s063 | 24-Second Shot Clock Set | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s064 | Basketball Ball Cart | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
-| s066 | Professional Court Padding Set | equipment | 0 *(placeholder)* | 0 | **D** | A | no verified photography at all | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
-| s065 | Electric Ball Pump Kit | equipment | 0 *(placeholder)* | 0 | **D** | B | no verified photography at all | medium — turntable rig session, 24–36 frames, optimisation | P5 — photography intake |
 | goat-nike-kobe-3-protro-halo | Nike Zoom Kobe 3 Protro 'Halo' | footwear | 1 | 0 | **D** | A | only one verified image | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
 | goat-nike-kobe-3-low-protro-warning-label | Nike Zoom Kobe 3 Low Protro 'Warning Label' | footwear | 1 | 0 | **D** | A | only one verified image | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |
 | goat-nike-zoom-kobe-3-mpls | Nike Zoom Kobe 3 'MPLS' | footwear | 1 | 0 | **D** | A | only one verified image | high — 3D modelling, UVs, bakes, LODs | P5 — photography intake |

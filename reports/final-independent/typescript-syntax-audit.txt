@@ -1,0 +1,2 @@
+TypeScript syntax audit: 336 TS/TSX files, 0 parse error(s).
+PASS: all active TypeScript/TSX source parses successfully.

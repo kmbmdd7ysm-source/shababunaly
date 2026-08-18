@@ -37,7 +37,7 @@ function buildDevelopmentFrames(): string[] {
  */
 export default function SpinsetEngine({
   frames,
-  allowDevelopmentFixture = true,
+  allowDevelopmentFixture = false,
   productName = '',
 }: SpinsetEngineProps): ReactElement {
   const { pick } = useLanguage();

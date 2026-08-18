@@ -61,7 +61,7 @@ export function organizationSchema(): Array<Record<string, unknown>> {
       alternateName: SITE.shortName,
       url: SITE.domain,
       logo: `${SITE.domain}${SITE.logo}`,
-      description: 'Basketball retail, custom manufacturing, team supply and wholesale.',
+      description: 'Basketball retail, custom design requests, team supply and wholesale.',
       areaServed: 'Worldwide',
     },
     {

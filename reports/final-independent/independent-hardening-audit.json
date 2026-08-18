@@ -1,0 +1,1101 @@
+{
+  "generatedAt": "2026-08-18T15:14:45.551Z",
+  "status": "PASS",
+  "checks": 216,
+  "failures": 0,
+  "metrics": {
+    "sourceFilesAudited": 478,
+    "jsonFilesAudited": 97,
+    "masterProducts": 119,
+    "publishedProducts": 75,
+    "hiddenProducts": 44,
+    "masterVariants": 1482,
+    "trustedVariants": 786,
+    "visibleMediaReferences": 154,
+    "uniqueVisibleMediaPaths": 78,
+    "primaryImages": 75,
+    "primaryImageDuplicateGroups": 0
+  },
+  "results": [
+    {
+      "name": "catalog:master-119",
+      "ok": true,
+      "detail": "found 119"
+    },
+    {
+      "name": "catalog:published-75",
+      "ok": true,
+      "detail": "found 75"
+    },
+    {
+      "name": "catalog:hidden-incomplete-44",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog:published-media-real",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog:ready-lha-25",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:products-25",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p014:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p014:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p014:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p015:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p015:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p015:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p016:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p016:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p016:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p017:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p017:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p017:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p018:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p018:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p019:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p019:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p019:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p020:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p020:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p020:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p021:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p021:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p021:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p022:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p022:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p022:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p023:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p023:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p023:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p024:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p024:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p024:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p025:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p025:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p025:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p026:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p026:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p026:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p027:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p027:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p027:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p027:color:camo:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p028:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p028:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p028:color:red:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p028:color:beige:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p030:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p030:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p030:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p031:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p031:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p031:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p029:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p029:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p029:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p029:color:cream:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p032:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p032:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p032:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p032:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p033:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p033:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p033:color:white:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p033:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p034:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p034:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p034:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p034:color:cream:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p035:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p035:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p035:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p035:color:cream:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p036:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p036:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p036:color:cream:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p037:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p037:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p037:color:grey:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p037:color:cream:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p038:capacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:lha-p038:color:black:five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lha:no-stale-stockPerVariant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "commerce:zero-price-is-quote-only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "commerce:zero-price-not-retail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "commerce:zero-price-not-purchasable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:count-50",
+      "ok": true,
+      "detail": "found 50"
+    },
+    {
+      "name": "kobe:goat-nike-kobe-3-protro-halo:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-3-protro-halo:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-3-low-protro-warning-label:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-3-low-protro-warning-label:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-zoom-kobe-3-mpls:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-zoom-kobe-3-mpls:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-3-protro-christmas:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-3-protro-christmas:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-zoom-kobe-3-lakers:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-zoom-kobe-3-lakers:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-mambacita:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-mambacita:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-gold-medal-2024:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-gold-medal-2024:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-gift-of-mamba:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-gift-of-mamba:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-girl-dad:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-girl-dad:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-philly-2024:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-4-protro-philly-2024:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-year-of-the-mamba-eggplant:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-year-of-the-mamba-eggplant:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-lower-merion-aces-2026:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-lower-merion-aces-2026:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-dodgers:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-dodgers:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-chaos-2020:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-chaos-2020:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-x-ray:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-5-protro-x-ray:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-total-orange:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-total-orange:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-3d-all-star:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-3d-all-star:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-all-star-sail:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-all-star-sail:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-reverse-grinch:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-reverse-grinch:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-grinch-2020:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-6-protro-grinch-2020:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-duke:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-duke:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-yin-and-yang:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-yin-and-yang:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-olympic:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-olympic:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-what-the-kobe:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-what-the-kobe:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-all-star-galaxy:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-7-all-star-galaxy:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-what-the-kobe-2025:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-what-the-kobe-2025:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-halo:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-halo:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-venice-beach-2024:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-venice-beach-2024:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-system-easter:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-system-easter:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-radiant-emerald:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-8-protro-radiant-emerald:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-elite-low-protro-halo:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-elite-low-protro-halo:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-elite-protro-masterpiece-2025:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-elite-protro-masterpiece-2025:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-em-protro-mambacita:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-em-protro-mambacita:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-em-protro-think-pink:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-em-protro-think-pink:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-em-philippines-2026:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-9-em-philippines-2026:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-elite-rivalry:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-elite-rivalry:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-pain:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-pain:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-tb-gym-red:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-tb-gym-red:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-gs-independence-day:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-gs-independence-day:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-all-star:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-10-all-star:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-elite-low-fade-to-black:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-elite-low-fade-to-black:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-protro-low-mamba-day:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-protro-low-mamba-day:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-gs-8-24:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-gs-8-24:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-elite-low-usa:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-elite-low-usa:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-elite-low-protro-fade-to-black-2026:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-11-elite-low-protro-fade-to-black-2026:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-mid-pure-platinum:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-mid-pure-platinum:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-gs-triple-black:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-gs-triple-black:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-tb-fir:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-tb-fir:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-protro-purple-stardust:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-protro-purple-stardust:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-cool-grey:1200-lyd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:goat-nike-kobe-12-ad-cool-grey:max-us12",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:rate-9-clean-135",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kobe:rate-8-clean-150",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog:trusted-rows-786",
+      "ok": true,
+      "detail": "found 786"
+    },
+    {
+      "name": "catalog:deploy-preserves-tracked-stock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog:deploy-reprices-site-rate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cloud:authoritative-no-static-resurrection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cloud:lha-stock-from-db",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cloud:local-product-media-trusted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "forms:no-browser-third-party-post",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "quotes:server-only-fallback",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "special:server-only-fallback",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "quotes:email-only-explicit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "special:email-only-explicit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom3d:no-eager-model-viewer-import",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom3d:explicit-opt-in",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "db:staff-color-pool-lock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "db:manual-kobe-price-locked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "db:rate-change-reprices-kobe",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "media:visible-no-hotlinks",
+      "ok": true,
+      "detail": "found 0"
+    },
+    {
+      "name": "media:visible-local-present",
+      "ok": true,
+      "detail": "missing 0"
+    },
+    {
+      "name": "media:primary-byte-unique",
+      "ok": true,
+      "detail": "duplicate groups 0"
+    },
+    {
+      "name": "source:no-merge-markers",
+      "ok": true,
+      "detail": "files 0"
+    },
+    {
+      "name": "source:relative-imports-resolve",
+      "ok": true,
+      "detail": "missing 0"
+    },
+    {
+      "name": "source:json-valid",
+      "ok": true,
+      "detail": "invalid 0"
+    }
+  ]
+}

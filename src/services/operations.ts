@@ -777,6 +777,14 @@ export async function updateCatalogProduct({
 }): Promise<unknown> {
   const client = await getSupabase();
   if (!client) throw new Error('cloud_not_configured');
+  const normalizedImageUrl = imageUrl == null ? null : String(imageUrl).trim();
+  if (
+    normalizedImageUrl &&
+    (!/^\/(?:images|media)\/[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(normalizedImageUrl) ||
+      normalizedImageUrl.includes('..'))
+  ) {
+    throw new Error('product_image_must_be_local');
+  }
   const { data, error } = await client.rpc('staff_update_catalog_product', {
     p_product_id: String(productId || '').trim(),
     p_name_en: nameEn == null ? null : String(nameEn).trim(),
@@ -787,7 +795,7 @@ export async function updateCatalogProduct({
     p_category: category == null ? null : String(category).trim(),
     p_subcategory: subcategory == null ? null : String(subcategory).trim(),
     p_product_type: productType == null ? null : String(productType).trim(),
-    p_image_url: imageUrl == null ? null : String(imageUrl).trim(),
+    p_image_url: normalizedImageUrl,
     p_featured: featured == null ? null : Boolean(featured),
     p_new_arrival: newArrival == null ? null : Boolean(newArrival),
     p_best_seller: bestSeller == null ? null : Boolean(bestSeller),

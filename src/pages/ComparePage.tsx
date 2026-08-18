@@ -55,6 +55,8 @@ export default function ComparePage(): ReactElement {
       sku: String(variant.sku || ''),
       maxStock: getVariantPurchaseLimit(variant as VariantLike),
       inventoryTracking: variant.inventoryTracking !== false,
+      inventoryPoolKey: variant.inventoryPoolKey ? String(variant.inventoryPoolKey) : undefined,
+      inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock)) ? Number(variant.inventoryPoolStock) : undefined,
       href: `/products/${String(product.slug || '')}`,
       quantity: 1,
       purchaseMode: 'retail',
@@ -96,7 +98,11 @@ export default function ComparePage(): ReactElement {
                           <button className="cc-remove" type="button" onClick={() => compare.remove(product.id)} aria-label={pick({ en: 'Remove from comparison', ar: 'إزالة من المقارنة' })}><Icon name="close" size={18} /></button>
                           <Link className="cc-product-media" to={`/products/${String(product.slug || '')}`}><SmartImage src={String(product.image || '')} alt={pick(product.name as { en?: string; ar?: string })} width={900} height={1125} /></Link>
                           <Link className="cc-product-name" to={`/products/${String(product.slug || '')}`}>{pick(product.name as { en?: string; ar?: string })}</Link>
-                          <Price amount={Number(product.price || 0)} compareAt={product.compareAt == null ? null : Number(product.compareAt)} />
+                          {product.quoteOnly ? (
+                            <span className="status-pill">{pick({ en: 'Price on request', ar: 'السعر عند الطلب' })}</span>
+                          ) : (
+                            <Price amount={Number(product.price || 0)} compareAt={product.compareAt == null ? null : Number(product.compareAt)} />
+                          )}
                           <button className="gw-btn gw-btn--primary cc-product-action" type="button" disabled={action.type === 'unavailable'} onClick={() => add(product)}>{action.type === 'choose-options' ? pick({ en: 'Choose options', ar: 'اختر الخيارات' }) : action.type === 'quote' ? pick({ en: 'Request price', ar: 'اطلب السعر' }) : action.type === 'unavailable' ? pick({ en: 'Unavailable', ar: 'غير متوفر' }) : pick({ en: 'Add to bag', ar: 'أضف للحقيبة' })}</button>
                         </th>
                       );

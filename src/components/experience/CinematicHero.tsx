@@ -5,11 +5,9 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { LOCAL_HERO_MEDIA } from '../../data/localHeroMedia';
-import YouTubeBackground from '../common/YouTubeBackground';
 import '../../styles/design/phase2-home.css';
 
 const HERO = LOCAL_HERO_MEDIA.home;
-const isEmbed = (url: string) => /youtube(?:-nocookie)?\.com\/embed\//i.test(url);
 
 export default function CinematicHero(): ReactElement {
   const { pick } = useLanguage();
@@ -29,7 +27,6 @@ export default function CinematicHero(): ReactElement {
   }, []);
 
   const mediaAllowed = capability !== 'c' && !reduced && !navigator.connection?.saveData;
-  const embedded = isEmbed(HERO.desktopVideo);
 
   return (
     <section className="s2-hero" aria-labelledby="s2-home-title">
@@ -41,14 +38,20 @@ export default function CinematicHero(): ReactElement {
           </picture>
         ) : null}
         {mediaAllowed && !failed ? (
-          embedded ? (
-            <YouTubeBackground src={HERO.desktopVideo} className="s2-hero__embed" />
-          ) : (
-            <video muted loop playsInline autoPlay preload="auto" poster={HERO.desktopPoster} onError={() => setFailed(true)}>
-              <source media="(max-width: 899px)" src={HERO.mobileVideo} type="video/mp4" />
-              <source src={HERO.desktopVideo} type="video/mp4" />
-            </video>
-          )
+          <video
+            muted
+            loop
+            playsInline
+            autoPlay
+            controls={false}
+            disablePictureInPicture
+            preload="auto"
+            poster={HERO.desktopPoster}
+            onError={() => setFailed(true)}
+          >
+            <source media="(max-width: 899px)" src={HERO.mobileVideo} type="video/mp4" />
+            <source src={HERO.desktopVideo} type="video/mp4" />
+          </video>
         ) : null}
         <span className="s2-hero__scrim" />
       </div>

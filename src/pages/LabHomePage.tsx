@@ -223,8 +223,8 @@ export default function LabHomePage(): ReactElement {
             </h1>
             <p className="gw-lead">
               {pick({
-                en: 'Basketball retail, custom manufacturing, club supply and wholesale — built in one global platform.',
-                ar: 'متجر كرة سلة وتصنيع مخصص وتجهيز أندية وجملة — ضمن منصة عالمية واحدة.',
+                en: 'Basketball retail, custom design, club supply and wholesale — built in one global platform.',
+                ar: 'متجر كرة سلة وتصميم خاص وتجهيز أندية وجملة — ضمن منصة عالمية واحدة.',
               })}
             </p>
             <div className="gw-cluster">

@@ -15,8 +15,8 @@ import '../styles/content.css';
  *
  * NOW: a masthead carrying the pillar count as a figure, then the claim set as
  * a single full-measure statement, the four pillars as NUMBERED plates on
- * hairline rules, and the reach section as a dark chapter with the reserved
- * brand-film slot honestly labelled as reserved rather than dressed as content.
+ * hairline rules, and the reach section as a dark chapter with only verified public content.
+ * Unsupported media placeholders are not rendered in the customer experience.
  *
  * Every sentence is the original copy. Nothing was invented.
  */
@@ -25,8 +25,8 @@ const pillars = [
     n: '01',
     title: { en: 'Basketball Specialist', ar: 'متخصصون في كرة السلة' },
     text: {
-      en: 'Retail, custom manufacturing, club supply and equipment under one focused platform.',
-      ar: 'متجر وتصنيع مخصص وتجهيز أندية ومعدات داخل منصة واحدة متخصصة.',
+      en: 'Retail, custom design requests, club supply and equipment under one focused platform.',
+      ar: 'متجر وطلبات تصميم مخصص وتجهيز أندية ومعدات داخل منصة واحدة متخصصة.',
     },
   },
   {
@@ -61,7 +61,7 @@ export default function AboutPage(): ReactElement {
     <>
       <Seo
         title="About Shababuna"
-        description="Shababuna is a basketball retail, custom manufacturing, teams and wholesale platform based in Tripoli, Libya."
+        description="Shababuna is a basketball retail, custom design, teams and wholesale platform based in Tripoli, Libya."
         path="/about"
       />
       <PublicPageHeader
@@ -86,8 +86,8 @@ export default function AboutPage(): ReactElement {
           </p>
           <p className="gw-manifesto-body">
             {pick({
-              en: 'Shababuna combines individual retail, ready-to-ship inventory in Libya, custom apparel manufacturing in the United States, team and wholesale ordering, and specialist basketball equipment. Every route is designed around how the customer actually buys.',
-              ar: 'تجمع شبابنا بين البيع بالقطعة والمخزون الجاهز داخل ليبيا وتصنيع الملابس المخصصة في الولايات المتحدة وطلبات الأندية والجملة ومعدات كرة السلة المتخصصة. كل مسار مصمم حسب طريقة شراء العميل فعليًا.',
+              en: 'Shababuna combines individual retail, owner-confirmed ready-to-ship LHA inventory in Libya, custom design requests, team and wholesale ordering, and specialist basketball products. Every route is designed around how the customer actually buys.',
+              ar: 'تجمع شبابنا بين البيع بالقطعة ومخزون LHA المؤكد والجاهز داخل ليبيا وطلبات التصميم المخصص وطلبات الأندية والجملة ومنتجات كرة السلة المتخصصة. كل مسار مصمم حسب طريقة شراء العميل فعليًا.',
             })}
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function AboutPage(): ReactElement {
       </section>
 
       <section className="gw-reach">
-        <div className="gw-reach-inner">
+        <div className="gw-reach-inner gw-reach-inner--single">
           <div className="gw-reach-copy">
             <p className="gw-spec">FROM TRIPOLI TO THE WORLD</p>
             <h2 className="gw-reach-title">
@@ -119,8 +119,8 @@ export default function AboutPage(): ReactElement {
             </h2>
             <p className="gw-reach-body">
               {pick({
-                en: 'Libya receives local delivery rules, cash and Libyan bank-card options, and ready-to-ship inventory. International customers receive USD pricing and destination-specific shipping approval.',
-                ar: 'تحصل ليبيا على قواعد توصيل محلية ودفع نقدي وبطاقة مصرفية ليبية ومخزون جاهز. ويحصل العملاء الدوليون على أسعار بالدولار واعتماد شحن خاص بكل وجهة.',
+                en: 'Libya receives local delivery rules, cash where eligible, and verified ready-to-ship inventory. International customers receive USD pricing and destination-specific shipping approval before fulfilment.',
+                ar: 'تحصل ليبيا على قواعد توصيل محلية ودفع نقدي عند الأهلية ومخزون موثق وجاهز للتسليم. ويحصل العملاء الدوليون على أسعار بالدولار واعتماد شحن خاص بكل وجهة قبل التنفيذ.',
               })}
             </p>
             <div className="gw-cluster">
@@ -131,19 +131,6 @@ export default function AboutPage(): ReactElement {
                 {pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}
               </Link>
             </div>
-          </div>
-          {/* Honestly labelled as reserved. No brand film exists yet, and this
-              slot must not be dressed up as if one does. */}
-          <div className="gw-reach-slot" role="note">
-            <span className="gw-spec">
-              {pick({ en: 'Brand film · reserved', ar: 'فيلم العلامة · محجوز' })}
-            </span>
-            <p>
-              {pick({
-                en: 'Reserved for the Shababuna story film. No final footage exists yet.',
-                ar: 'محجوز لفيلم قصة شبابنا. لا توجد لقطات نهائية بعد.',
-              })}
-            </p>
           </div>
         </div>
       </section>

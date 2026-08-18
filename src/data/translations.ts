@@ -556,7 +556,7 @@ export const translations: Record<string, Record<string, unknown>> = {
     },
     footer: {
       tagline:
-        'Basketball retail, custom manufacturing, team supply and wholesale. Built Different.',
+        'Basketball retail, custom design, team supply and wholesale. Built Different.',
       shop: 'Shop',
       customize: 'Customize',
       teamsWholesale: 'Teams & Wholesale',
@@ -1153,7 +1153,7 @@ export const translations: Record<string, Record<string, unknown>> = {
       invalid: 'أدخل عنوان بريد صحيحاً.',
     },
     footer: {
-      tagline: 'متجر كرة سلة وتصنيع مخصص وتجهيز أندية وجملة. BUILT DIFFERENT.',
+      tagline: 'متجر كرة سلة وتصميم خاص وتجهيز أندية وجملة. BUILT DIFFERENT.',
       shop: 'المتجر',
       customize: 'تصميم خاص',
       teamsWholesale: 'الأندية والجملة',

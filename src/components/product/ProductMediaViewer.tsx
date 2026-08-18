@@ -38,7 +38,7 @@ export default function ProductMediaViewer({
   const [index, setIndex] = useState(0);
   const listId = useId();
   // Development-only spinset fixture — never treated as catalogue Tier B photography.
-  const showDevSpin = params.get('devSpin') === '1' || params.get('fixture') === 'spin';
+  const showDevSpin = import.meta.env.DEV && (params.get('devSpin') === '1' || params.get('fixture') === 'spin');
 
   useEffect(() => {
     setIndex(0);

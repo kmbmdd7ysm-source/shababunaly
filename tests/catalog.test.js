@@ -2,7 +2,7 @@ import { describe, expect, it } from './test-api.js';
 import { catalogProducts, products, lhaStoreProducts } from '../src/data/products.ts';
 import { categories } from '../src/data/categories.ts';
 import { products as sourceLhaProducts } from '../src/data/lhaProducts.ts';
-import { getProductPublishIssues, isProductVisible } from '../src/utils/productEligibility.ts';
+import { getProductPublishIssues, hasRealProductMedia, isProductVisible } from '../src/utils/productEligibility.ts';
 
 describe('SHABABUNA catalogue', () => {
   it('contains every required shop department', () => {
@@ -26,10 +26,8 @@ describe('SHABABUNA catalogue', () => {
     }
   });
 
-  it('publishes every catalogue brand with safe supplier-order handling', () => {
-    const visibleBrands = new Set(
-      catalogProducts.filter(isProductVisible).map((item) => item.brand),
-    );
+  it('keeps every master-catalogue brand while publishing only production-media products', () => {
+    const masterBrands = new Set(catalogProducts.map((item) => item.brand));
     for (const brand of [
       'Nike',
       'Jordan',
@@ -44,10 +42,13 @@ describe('SHABABUNA catalogue', () => {
       'Shababuna',
       'LHA',
     ]) {
-      expect(visibleBrands.has(brand)).toBe(true);
+      expect(masterBrands.has(brand)).toBe(true);
     }
-    expect(products).toHaveLength(catalogProducts.length);
+    expect(catalogProducts).toHaveLength(119);
+    expect(products).toHaveLength(75);
+    expect(catalogProducts.length - products.length).toBe(44);
     expect(products.every(isProductVisible)).toBe(true);
+    expect(products.every(hasRealProductMedia)).toBe(true);
   });
 
   it('preserves product-specific wholesale minimums on customizable manufacturing products', () => {

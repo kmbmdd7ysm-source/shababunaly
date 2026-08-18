@@ -181,8 +181,8 @@ export const SHIPPING_MESSAGES = Object.freeze({
     ar: 'المدة المتوقعة للوصول إلى ليبيا: 14–18 يومًا.',
   }),
   custom: Object.freeze({
-    en: 'Custom, club and wholesale orders: approximately 30–60 days depending on the product, quantity and order date.',
-    ar: 'طلبات التصميم الخاص والأندية والجملة: تقريبًا 30–60 يومًا حسب المنتج والكمية ووقت الطلب.',
+    en: 'Custom, club and wholesale timing is confirmed in the approved quote for the specific product, quantity and destination.',
+    ar: 'تُؤكَّد مدة طلبات التصميم الخاص والأندية والجملة في العرض المعتمد حسب المنتج والكمية والوجهة.',
   }),
   internationalConfigured: Object.freeze({
     en: 'International shipping is priced at checkout. Delivery time will be confirmed after ordering.',

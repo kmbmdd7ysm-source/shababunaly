@@ -1,3 +1,5 @@
+import { roundStorePrice } from '../config/commerce.ts';
+
 // LHA catalogue supplied with the project. Product names, prices and approved media are preserved.
 
 const DEFAULT_CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -15,36 +17,41 @@ const C = {
 
 // Factory: fills defaults + builds variants/inventory from sizes × colours.
 export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, unknown> {
-  const isPhysicalActive =
-    (p.fulfillmentType || 'physical') === 'physical' && p.available !== false && !p.comingSoon;
+  // Owner-confirmed inventory truth: every LHA product currently has five
+  // physical pieces in each listed colour. The stock pool is colour-level;
+  // sizes share the same five-piece pool rather than multiplying inventory.
+  const OWNER_STOCK_PER_COLOR = 5;
   const sizes = (Array.isArray(p.sizes) ? p.sizes : DEFAULT_CLOTHING_SIZES) as string[];
   const colors = (
     Array.isArray(p.colors) ? p.colors : [C.black]
   ) as Array<{ key: string; [k: string]: unknown }>;
-  const inventoryTracking = p.inventoryVerified === true;
+  const cleanPrice = roundStorePrice(p.price || 0);
+  const stockByColor = Object.fromEntries(colors.map((color) => [color.key, OWNER_STOCK_PER_COLOR]));
   const variants: Array<Record<string, unknown>> = [];
+
   for (const color of colors) {
     for (const size of sizes) {
-      const directKey = `${color.key}:${size}`;
-      const stockByVariant = (p.stockByVariant || {}) as Record<string, unknown>;
-      const explicit = stockByVariant[directKey] ?? color.stock ?? p.stockPerVariant ?? 0;
       variants.push({
         size,
         color: color.key,
         sku: `${p.sku}-${color.key.slice(0, 2).toUpperCase()}-${String(size).replace(/[^A-Za-z0-9]/g, '')}`,
-        stock: inventoryTracking ? Math.max(0, Number(explicit) || 0) : 0,
-        inventoryTracking,
-        readyToShip: inventoryTracking && p.readyToShip === true && Number(explicit) > 0,
+        // A variant can consume up to the whole colour pool, but all sizes of
+        // this colour share that same pool in the cart.
+        stock: OWNER_STOCK_PER_COLOR,
+        inventoryPoolKey: `color:${color.key}`,
+        inventoryPoolStock: OWNER_STOCK_PER_COLOR,
+        inventoryTracking: true,
+        inventoryVerified: true,
+        availabilityState: 'in_stock',
+        readyToShip: true,
       });
     }
   }
-  const stock = inventoryTracking
-    ? variants.reduce((sum: number, variant) => sum + Number(variant.stock || 0), 0)
-    : 0;
-  const status = p.comingSoon ? 'coming_soon' : p.available === false ? 'archived' : 'active';
+
+  const stock = colors.length * OWNER_STOCK_PER_COLOR;
   return {
     currency: 'USD',
-    lowStockThreshold: 6,
+    lowStockThreshold: OWNER_STOCK_PER_COLOR,
     featured: false,
     newArrival: false,
     bestSeller: false,
@@ -60,21 +67,23 @@ export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, 
     claimVerified: false,
     madeInUSA: false,
     ...p,
-    status,
+    price: cleanPrice,
+    comingSoon: false,
+    available: true,
+    status: 'active',
     sizes,
     colors,
     variants,
+    stockByColor,
+    stockPerColor: OWNER_STOCK_PER_COLOR,
     stock,
-    inventoryTracking,
-    inventoryVerified: inventoryTracking,
-    inventorySource: inventoryTracking ? 'verified_inventory' : 'supplier_order',
-    readyToShip: inventoryTracking && p.readyToShip === true && stock > 0,
-    inventoryLocation: inventoryTracking && p.readyToShip === true && stock > 0 ? 'LY' : null,
-    availability: !isPhysicalActive
-      ? 'sold-out'
-      : inventoryTracking && stock <= 0
-        ? 'sold-out'
-        : 'in-stock',
+    inventoryTracking: true,
+    inventoryVerified: true,
+    inventorySource: 'owner_confirmed_lha_color_stock',
+    inventoryLocation: 'LY',
+    inventoryVerifiedAt: '2026-08-17',
+    readyToShip: true,
+    availability: 'in-stock',
     image: p.image ?? null,
     hoverImage: p.hoverImage && p.hoverImage !== p.image ? p.hoverImage : null,
     socialImage: p.socialImage ?? p.image ?? null,
@@ -109,7 +118,6 @@ export const products = [
       { ...C.black, image: '/images/products/all-i-know-is-win-tee-black.webp' },
       { ...C.white, image: '/images/products/all-i-know-is-win-tee-white.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Performance cotton blend', ar: 'مزيج قطني للأداء' },
     fit: { en: 'Regular athletic fit', ar: 'قصة رياضية عادية' },
     care: { en: 'Machine wash cold, wash inside out.', ar: 'يُغسل بارداً ومقلوباً.' },
@@ -139,7 +147,6 @@ export const products = [
       { ...C.black, image: '/images/products/hoops-for-troops-tee-black.webp' },
       { ...C.grey, image: '/images/products/hoops-for-troops-tee-grey.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Moisture-wicking performance knit', ar: 'نسيج أداء طارد للرطوبة' },
     fit: { en: 'Athletic fit', ar: 'قصة رياضية' },
     care: { en: 'Machine wash cold, do not iron print.', ar: 'يُغسل بارداً، ولا تُكوى الطباعة.' },
@@ -169,7 +176,6 @@ export const products = [
       { ...C.black, image: '/images/products/hoopers-performance-tee-black.webp' },
       { ...C.grey, image: '/images/products/hoopers-performance-tee-grey.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Quick-dry performance polyester', ar: 'بوليستر أداء سريع الجفاف' },
     fit: { en: 'Athletic fit', ar: 'قصة رياضية' },
     care: { en: 'Machine wash cold, hang dry.', ar: 'يُغسل بارداً ويُجفف بالتعليق.' },
@@ -199,7 +205,6 @@ export const products = [
       { ...C.grey, image: '/images/products/hoopers-long-sleeve-performance-grey.webp' },
       { ...C.black, image: '/images/products/hoopers-long-sleeve-performance-black.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Quick-dry stretch performance knit', ar: 'نسيج أداء مرن سريع الجفاف' },
     fit: { en: 'Athletic fit', ar: 'قصة رياضية' },
     care: { en: 'Machine wash cold, hang dry.', ar: 'يُغسل بارداً ويُجفف بالتعليق.' },
@@ -226,7 +231,6 @@ export const products = [
     productType: 'Performance Shorts',
     price: 17,
     colors: [{ ...C.black, image: '/images/products/lha-performance-shorts-black.webp' }],
-    stockPerVariant: 12,
     material: { en: 'Quick-dry performance polyester', ar: 'بوليستر أداء سريع الجفاف' },
     fit: { en: 'Regular basketball fit', ar: 'قصة كرة سلة عادية' },
     care: { en: 'Machine wash cold, hang dry.', ar: 'يُغسل بارداً ويُجفف بالتعليق.' },
@@ -256,7 +260,6 @@ export const products = [
       { ...C.black, image: '/images/products/lha-logo-performance-tee-black.webp' },
       { ...C.grey, image: '/images/products/lha-logo-performance-tee-grey.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Quick-dry performance polyester', ar: 'بوليستر أداء سريع الجفاف' },
     fit: { en: 'Athletic fit', ar: 'قصة رياضية' },
     care: { en: 'Machine wash cold, hang dry.', ar: 'يُغسل بارداً ويُجفف بالتعليق.' },
@@ -286,7 +289,6 @@ export const products = [
       { ...C.black, image: '/images/products/libya-hoops-academy-tee-black.webp' },
       { ...C.grey, image: '/images/products/libya-hoops-academy-tee-grey.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Performance cotton blend', ar: 'مزيج قطني للأداء' },
     fit: { en: 'Regular athletic fit', ar: 'قصة رياضية عادية' },
     care: { en: 'Machine wash cold.', ar: 'يُغسل بارداً.' },
@@ -316,7 +318,6 @@ export const products = [
       { ...C.white, image: '/images/products/lha-chest-logo-tank-white.webp' },
       { ...C.black, image: '/images/products/lha-chest-logo-tank-black.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Stretch performance knit', ar: 'نسيج أداء مرن' },
     fit: { en: 'Compression fit', ar: 'قصة ضاغطة' },
     care: { en: 'Machine wash cold.', ar: 'يُغسل بارداً.' },
@@ -346,7 +347,6 @@ export const products = [
       { ...C.white, image: '/images/products/lha-center-logo-tank-white.webp' },
       { ...C.black, image: '/images/products/lha-center-logo-tank-black.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Stretch performance knit', ar: 'نسيج أداء مرن' },
     fit: { en: 'Compression fit', ar: 'قصة ضاغطة' },
     care: { en: 'Machine wash cold.', ar: 'يُغسل بارداً.' },
@@ -376,7 +376,6 @@ export const products = [
       { ...C.white, image: '/images/products/lha-compression-long-sleeve-white.webp' },
       { ...C.black, image: '/images/products/lha-compression-long-sleeve-black.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Four-way stretch compression fabric', ar: 'قماش ضاغط بمرونة رباعية' },
     fit: { en: 'Compression fit', ar: 'قصة ضاغطة' },
     care: { en: 'Machine wash cold, hang dry.', ar: 'يُغسل بارداً ويُجفف بالتعليق.' },
@@ -408,7 +407,6 @@ export const products = [
       { ...C.black, image: '/images/products/lha-full-length-compression-tights-black.webp' },
       { ...C.white, image: '/images/products/lha-full-length-compression-tights-white.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Four-way stretch compression knit', ar: 'نسيج ضاغط بمرونة رباعية' },
     fit: { en: 'Second-skin compression fit', ar: 'قصة ضاغطة محكمة' },
     care: { en: 'Machine wash cold, no fabric softener.', ar: 'يُغسل بارداً، بدون منعّم أقمشة.' },
@@ -439,7 +437,6 @@ export const products = [
       { ...C.black, image: '/images/products/lha-one-leg-compression-tights-black.webp' },
       { ...C.white, image: '/images/products/lha-one-leg-compression-tights-white.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Four-way stretch compression knit', ar: 'نسيج ضاغط بمرونة رباعية' },
     fit: { en: 'Second-skin asymmetric fit', ar: 'قصة ضاغطة غير متماثلة' },
     care: { en: 'Machine wash cold, no fabric softener.', ar: 'يُغسل بارداً، بدون منعّم أقمشة.' },
@@ -469,7 +466,6 @@ export const products = [
       { ...C.black, image: '/images/products/lha-sleeve-logo-performance-tee-black.webp' },
       { ...C.white, image: '/images/products/lha-sleeve-logo-performance-tee-white.webp' },
     ],
-    stockPerVariant: 12,
     material: {
       en: 'Moisture-wicking stretch performance knit',
       ar: 'نسيج أداء مرن وطارد للرطوبة',
@@ -507,7 +503,6 @@ export const products = [
       { ...C.white, image: '/images/products/lha-elite-basketball-backpack-white.webp' },
       { ...C.camo, image: '/images/products/lha-elite-basketball-backpack-camo.webp' },
     ],
-    stockPerVariant: 10,
     material: {
       en: 'Durable performance polyester with reinforced base',
       ar: 'بوليستر متين للأداء مع قاعدة معززة',
@@ -543,7 +538,6 @@ export const products = [
       { ...C.red, image: '/images/products/lha-academy-backpack-red.webp' },
       { ...C.beige, image: '/images/products/lha-academy-backpack-beige.webp' },
     ],
-    stockPerVariant: 12,
     material: {
       en: 'Durable woven polyester with reinforced lower panel',
       ar: 'بوليستر منسوج متين مع جزء سفلي معزز',
@@ -577,7 +571,6 @@ export const products = [
       { ...C.black, image: '/images/products/compression-shorts-black.webp' },
       { ...C.white, image: '/images/products/compression-shorts-white.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Four-way stretch compression knit', ar: 'نسيج ضاغط بمرونة رباعية' },
     fit: { en: 'Second-skin compression fit', ar: 'قصة ضاغطة محكمة' },
     care: { en: 'Machine wash cold, no fabric softener.', ar: 'يُغسل بارداً، بدون منعّم أقمشة.' },
@@ -608,7 +601,6 @@ export const products = [
       { ...C.black, image: '/images/products/lha-court-socks-black.webp' },
       { ...C.white, image: '/images/products/lha-court-socks-white.webp' },
     ],
-    stockPerVariant: 18,
     material: { en: 'Breathable performance knit', ar: 'نسيج أداء جيد التهوية' },
     fit: { en: 'Supportive crew fit', ar: 'قصة طويلة داعمة' },
     care: { en: 'Machine wash cold, tumble dry low.', ar: 'يُغسل بارداً ويُجفف بحرارة منخفضة.' },
@@ -645,7 +637,6 @@ export const products = [
       },
       { ...C.cream, image: '/images/products/lha-premium-fleece-set-cream.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Heavyweight brushed fleece', ar: 'فليس ثقيل مبطن وناعم' },
     fit: { en: 'Relaxed oversized unisex fit', ar: 'قصة واسعة ومريحة للجنسين' },
     care: {
@@ -697,7 +688,6 @@ export const products = [
       { ...C.grey, image: '/images/products/own-the-game-essential-tee-grey.webp' },
       { ...C.white, image: '/images/products/own-the-game-essential-tee-white.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Premium cotton blend', ar: 'مزيج قطني فاخر' },
     fit: { en: 'Relaxed athletic fit', ar: 'قصة رياضية مريحة' },
     care: { en: 'Machine wash cold.', ar: 'يُغسل بارداً.' },
@@ -731,7 +721,6 @@ export const products = [
       { ...C.white, image: '/images/products/own-the-game-sleeveless-top-white.webp' },
       { ...C.grey, image: '/images/products/own-the-game-sleeveless-top-grey.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Breathable cotton blend', ar: 'مزيج قطني جيد التهوية' },
     fit: { en: 'Oversized sleeveless fit', ar: 'قصة واسعة بدون أكمام' },
     care: { en: 'Machine wash cold.', ar: 'يُغسل بارداً.' },
@@ -770,7 +759,6 @@ export const products = [
       },
       { ...C.cream, image: '/images/products/own-the-game-zip-hoodie-cream.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Heavyweight brushed fleece', ar: 'فليس ثقيل مبطن وناعم' },
     fit: { en: 'Relaxed oversized unisex fit', ar: 'قصة واسعة ومريحة للجنسين' },
     care: {
@@ -811,7 +799,6 @@ export const products = [
       },
       { ...C.cream, image: '/images/products/own-the-game-crewneck-cream.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Heavyweight brushed fleece', ar: 'فليس ثقيل مبطن وناعم' },
     fit: { en: 'Relaxed oversized unisex fit', ar: 'قصة واسعة ومريحة للجنسين' },
     care: {
@@ -848,7 +835,6 @@ export const products = [
       { ...C.black, image: '/images/products/own-the-game-fleece-shorts-black.webp' },
       { ...C.cream, image: '/images/products/own-the-game-fleece-shorts-cream.webp' },
     ],
-    stockPerVariant: 12,
     material: { en: 'Heavyweight brushed fleece', ar: 'فليس ثقيل مبطن وناعم' },
     fit: { en: 'Relaxed above-knee fit', ar: 'قصة مريحة فوق الركبة' },
     care: {
@@ -889,7 +875,6 @@ export const products = [
       },
       { ...C.cream, image: '/images/products/own-the-game-pullover-hoodie-cream.webp' },
     ],
-    stockPerVariant: 10,
     material: { en: 'Heavyweight brushed fleece', ar: 'فليس ثقيل مبطن وناعم' },
     fit: { en: 'Relaxed oversized unisex fit', ar: 'قصة واسعة ومريحة للجنسين' },
     care: {
@@ -922,7 +907,6 @@ export const products = [
     comingSoon: true,
     price: 0,
     colors: [{ ...C.black, image: '/images/products/own-the-game-fleece-pants-black.webp' }],
-    stockPerVariant: 12,
     material: { en: 'Heavyweight brushed fleece', ar: 'فليس ثقيل مبطن وناعم' },
     fit: { en: 'Relaxed straight-leg fit', ar: 'قصة مستقيمة ومريحة' },
     care: {

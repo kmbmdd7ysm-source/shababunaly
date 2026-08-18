@@ -19,6 +19,8 @@ import { getSupabase } from '../services/supabase.ts';
 import { spaldingOfficialProducts } from '../data/spaldingOfficialProducts.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
 import { hasRealProductMedia, isReadyToShipEligible, type ProductLike } from '../utils/productEligibility.ts';
+import { applySiteRatePricing } from '../utils/siteRatePricing.ts';
+import { useCommerce } from './CommerceContext.tsx';
 
 type LocaleText = { en?: string; ar?: string } | string | null | undefined;
 
@@ -92,6 +94,35 @@ const CatalogContext = createContext<CatalogContextValue | null>(null);
 const REFRESH_MS = 5 * 60 * 1000;
 const BASE_PRODUCTS = [...(staticProducts as CatalogProduct[]), ...(spaldingOfficialProducts as CatalogProduct[])];
 
+function failClosedTrackedInventory(product: CatalogProduct): CatalogProduct {
+  if (product.inventoryTracking !== true) return product;
+  return {
+    ...product,
+    stock: 0,
+    readyToShip: false,
+    inventoryVerified: false,
+    available: false,
+    availability: 'unavailable',
+    inventoryRuntimeStatus: 'cloud_required',
+    variants: (product.variants || []).map((variant) => ({
+      ...variant,
+      stock: 0,
+      readyToShip: false,
+      inventoryVerified: false,
+      inventoryPoolStock: variant.inventoryPoolKey ? 0 : variant.inventoryPoolStock,
+      availabilityState: 'unavailable',
+    })),
+  };
+}
+
+// Static LHA data defines the initial owner-confirmed capacity (five per colour)
+// and seeds the database, but it must never be used as live remaining stock in
+// production after sales have occurred. Until the cloud catalogue answers,
+// tracked inventory fails closed instead of momentarily resurrecting five.
+const SAFE_FALLBACK_PRODUCTS = import.meta.env.PROD
+  ? BASE_PRODUCTS.map(failClosedTrackedInventory)
+  : BASE_PRODUCTS;
+
 const asRecord = (value: unknown): Record<string, unknown> =>
   value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
 
@@ -101,6 +132,12 @@ const finiteNumber = (value: unknown): number | null => {
   return Number.isFinite(n) ? n : null;
 };
 
+const trustedLocalMediaPath = (value: unknown): string | null => {
+  const path = typeof value === 'string' ? value.trim() : '';
+  if (!path || !path.startsWith('/') || path.startsWith('//')) return null;
+  return path;
+};
+
 function rowData(row: CatalogRow | null | undefined): Record<string, unknown> {
   return row?.variant_data && typeof row.variant_data === 'object'
     ? (row.variant_data as Record<string, unknown>)
@@ -108,11 +145,10 @@ function rowData(row: CatalogRow | null | undefined): Record<string, unknown> {
 }
 
 function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogProduct {
-  const ownerConfirmedLhaReady =
+  const ownerConfirmedLhaStock =
     product.legacyLha === true &&
-    product.comingSoon !== true &&
-    product.available !== false &&
-    product.quoteOnly !== true;
+    product.inventorySource === 'owner_confirmed_lha_color_stock' &&
+    product.inventoryVerified === true;
   const activeRows = rows.filter((row) => row && row.variant_id && row.sku);
   if (!activeRows.length) return product;
   const variants = activeRows.map((row) => {
@@ -124,16 +160,31 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       size: String(row.size || 'OS'),
       color: String(row.color || 'black'),
       sku: String(row.sku),
-      stock: ownerConfirmedLhaReady
-        ? 0
-        : row.inventory_tracking
+      // Once the cloud catalogue is available, its remaining quantity is
+      // authoritative. LHA starts with five physical pieces per colour, but a
+      // sale must never be "healed" back to five by the static source.
+      stock: row.inventory_tracking ? Math.max(0, Number(row.inventory_quantity) || 0) : 0,
+      inventoryPoolKey: ownerConfirmedLhaStock
+        ? String(
+            data.inventoryPoolKey ||
+              (product.variants || []).find((entry) => String(entry.sku) === String(row.sku))
+                ?.inventoryPoolKey ||
+              `color:${String(row.color || 'black')}`,
+          )
+        : data.inventoryPoolKey
+          ? String(data.inventoryPoolKey)
+          : undefined,
+      inventoryPoolStock: ownerConfirmedLhaStock
+        ? row.inventory_tracking
           ? Math.max(0, Number(row.inventory_quantity) || 0)
-          : 0,
-      inventoryTracking: ownerConfirmedLhaReady ? false : Boolean(row.inventory_tracking),
-      availabilityState: ownerConfirmedLhaReady
-        ? 'in_stock'
-        : String(row.availability_state || 'in_stock'),
-      unitPrice: ownerConfirmedLhaReady
+          : 0
+        : Number.isFinite(Number(data.inventoryPoolStock))
+          ? Number(data.inventoryPoolStock)
+          : undefined,
+      inventoryTracking: Boolean(row.inventory_tracking),
+      inventoryVerified: Boolean(row.inventory_tracking),
+      availabilityState: String(row.availability_state || 'in_stock'),
+      unitPrice: ownerConfirmedLhaStock
         ? Number(product.price)
         : Number.isFinite(unitPrice)
           ? unitPrice
@@ -142,11 +193,11 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       wholesalePrice: Number.isFinite(wholesalePrice)
         ? wholesalePrice
         : Number(product.wholesalePrice || 0) || null,
-      readyToShip:
-        ownerConfirmedLhaReady ||
-        (Boolean(data.readyToShip) &&
+      readyToShip: ownerConfirmedLhaStock
+        ? Boolean(row.inventory_tracking) && Number(row.inventory_quantity) > 0
+        : Boolean(data.readyToShip) &&
           Boolean(row.inventory_tracking) &&
-          Number(row.inventory_quantity) > 0),
+          Number(row.inventory_quantity) > 0,
       catalogUpdatedAt: row.updated_at || null,
     };
   });
@@ -156,7 +207,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     : 0;
   const firstRow = activeRows[0];
   const data = rowData(firstRow);
-  const readyToShip = ownerConfirmedLhaReady || activeRows.some((row) => {
+  const readyToShip = activeRows.some((row) => {
     const variant = rowData(row);
     return (
       Boolean(variant.readyToShip) &&
@@ -164,7 +215,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       Number(row.inventory_quantity) > 0
     );
   });
-  const hasAvailableVariant = ownerConfirmedLhaReady || activeRows.some((row) =>
+  const hasAvailableVariant = activeRows.some((row) =>
     row.inventory_tracking
       ? Number(row.inventory_quantity) > 0
       : !['out_of_stock', 'unavailable'].includes(String(row.availability_state || '')),
@@ -228,9 +279,10 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     description,
     comingSoon,
     readyToShip,
-    inventoryTracking: ownerConfirmedLhaReady ? false : tracked,
+    inventoryTracking: ownerConfirmedLhaStock ? true : tracked,
+    inventoryVerified: ownerConfirmedLhaStock ? true : product.inventoryVerified,
     variants,
-    stock: ownerConfirmedLhaReady ? 0 : stock,
+    stock: ownerConfirmedLhaStock ? Number(product.stock || 0) : stock,
     availability: !comingSoon && hasAvailableVariant ? 'in-stock' : 'sold-out',
     available: !comingSoon && hasAvailableVariant,
     priceVaries: new Set(retailPrices.map((value) => value.toFixed(2))).size > 1,
@@ -250,9 +302,14 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     next.subcategory = String(data.subcategory || product.subcategory || '');
   if ((data.productType as string | undefined) || product.productType)
     next.productType = String(data.productType || product.productType || '');
-  if (data.imageUrl || product.image) next.image = data.imageUrl || product.image;
-  if (data.socialImageUrl || product.socialImage)
-    next.socialImage = data.socialImageUrl || product.socialImage;
+  // A remote operations value must never replace audited local storefront
+  // media. Product images are promoted into the code-shipped catalogue only
+  // after they have been localized and reviewed.
+  const localImage = trustedLocalMediaPath(product.image) || trustedLocalMediaPath(data.imageUrl);
+  const localSocialImage =
+    trustedLocalMediaPath(product.socialImage) || trustedLocalMediaPath(data.socialImageUrl);
+  if (localImage) next.image = localImage;
+  if (localSocialImage) next.socialImage = localSocialImage;
   next.featured = data.featured == null ? Boolean(product.featured) : Boolean(data.featured);
   next.newArrival =
     data.newArrival == null ? Boolean(product.newArrival) : Boolean(data.newArrival);
@@ -286,11 +343,35 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
   next.deliveryProfile = readyToShip
     ? 'ready'
     : data.deliveryProfile || product.deliveryProfile || 'standard';
-  if (ownerConfirmedLhaReady) {
-    next.inventorySource = 'owner_confirmed_lha_ready';
+  if (ownerConfirmedLhaStock) {
+    const poolStock = new Map<string, number>();
+    for (const variant of variants) {
+      const key = String(variant.inventoryPoolKey || '');
+      if (!key) continue;
+      const current = Math.max(0, Number(variant.inventoryPoolStock) || 0);
+      const previous = poolStock.get(key);
+      // Every size row in a colour pool should carry the same remaining
+      // quantity. Taking the minimum is fail-closed if a stale row diverges.
+      poolStock.set(key, previous == null ? current : Math.min(previous, current));
+    }
+    const currentStockByColor = Object.fromEntries(
+      [...poolStock.entries()].map(([key, value]) => [key.replace(/^color:/, ''), value]),
+    );
+    const currentStock = [...poolStock.values()].reduce((sum, value) => sum + value, 0);
+    next.inventorySource = 'owner_confirmed_lha_color_stock';
     next.inventoryLocation = 'LY';
-    next.inventoryVerified = false;
-    next.readyToShip = true;
+    next.inventoryVerified = variants.length > 0 && variants.every((variant) => variant.inventoryTracking === true);
+    next.inventoryTracking = true;
+    next.stockByColor = currentStockByColor;
+    next.stockPerColor = product.stockPerColor;
+    next.stock = currentStock;
+    next.readyToShip = currentStock > 0;
+    next.available = !comingSoon && currentStock > 0;
+    next.availability = !comingSoon && currentStock > 0 ? 'in-stock' : 'sold-out';
+    next.inventoryVerifiedAt = activeRows.reduce<unknown>((latest, row) => {
+      const stamp = row.updated_at;
+      return !latest || String(stamp || '') > String(latest) ? stamp : latest;
+    }, null);
   } else if (data.inventorySource || product.inventorySource) {
     next.inventorySource = data.inventorySource || product.inventorySource;
   }
@@ -300,8 +381,9 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
 export function mergeCatalogProducts(
   baseProducts: CatalogProduct[],
   rows: CatalogRow[],
+  { authoritative = false }: { authoritative?: boolean } = {},
 ): CatalogProduct[] {
-  if (!Array.isArray(rows) || !rows.length) return baseProducts;
+  if (!Array.isArray(rows) || !rows.length) return authoritative ? [] : baseProducts;
   const grouped = new Map<string, CatalogRow[]>();
   for (const row of rows) {
     if (!row?.product_id) continue;
@@ -310,7 +392,10 @@ export function mergeCatalogProducts(
     group.push(row);
     grouped.set(key, group);
   }
-  return baseProducts.map((product) => overlayProduct(product, grouped.get(product.id) || []));
+  const candidates = authoritative
+    ? baseProducts.filter((product) => grouped.has(product.id))
+    : baseProducts;
+  return candidates.map((product) => overlayProduct(product, grouped.get(product.id) || []));
 }
 
 function unique(values: unknown[]): string[] {
@@ -386,8 +471,25 @@ function mergeMarketplaceProducts(
 }
 
 export function CatalogProvider({ children }: { children?: ReactNode }) {
-  const [products, setProducts] = useState<CatalogProduct[]>(
-    () => BASE_PRODUCTS,
+  const commerce = useCommerce();
+  const [sourceProducts, setSourceProducts] = useState<CatalogProduct[]>(
+    () => SAFE_FALLBACK_PRODUCTS,
+  );
+  const products = useMemo(
+    () =>
+      sourceProducts.map((product) => {
+        const priced = applySiteRatePricing(product, commerce.usdToLydRate);
+        if (product.pricingRateSource === 'site_exchange_rate' && !commerce.rateReady) {
+          return {
+            ...priced,
+            available: false,
+            availability: 'unavailable',
+            pricingRateUnavailable: true,
+          };
+        }
+        return priced;
+      }),
+    [sourceProducts, commerce.usdToLydRate, commerce.rateReady],
   );
   const [status, setStatus] = useState('static');
   const [error, setError] = useState<unknown>(null);
@@ -400,7 +502,7 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       const client = await getSupabase();
       if (!client) {
         setStatus('static');
-        return BASE_PRODUCTS;
+        return SAFE_FALLBACK_PRODUCTS;
       }
       const { data, error: queryError } = await client.rpc('get_public_product_catalog');
       if (queryError) throw queryError;
@@ -408,20 +510,21 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       const merged = mergeCatalogProducts(
         BASE_PRODUCTS,
         data as CatalogRow[],
+        { authoritative: true },
       );
       if (!merged.length) throw new Error('catalog_empty');
       const withMarketplace = mergeMarketplaceProducts(merged, marketplaceProductsRef.current);
-      setProducts(withMarketplace);
+      setSourceProducts(withMarketplace);
       setStatus('ready');
       setError(null);
       setUpdatedAt(new Date().toISOString());
-      return withMarketplace;
+      return withMarketplace.map((product) => applySiteRatePricing(product, commerce.usdToLydRate));
     } catch (nextError) {
       setError(nextError);
       setStatus('static');
-      return BASE_PRODUCTS;
+      return SAFE_FALLBACK_PRODUCTS;
     }
-  }, []);
+  }, [commerce.usdToLydRate]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -453,7 +556,7 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       if (!marketplaceProducts.length) return;
 
       marketplaceProductsRef.current = marketplaceProducts;
-      setProducts((current) => mergeMarketplaceProducts(current, marketplaceProducts));
+      setSourceProducts((current) => mergeMarketplaceProducts(current, marketplaceProducts));
     };
 
     const idleId =

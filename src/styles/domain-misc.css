@@ -52,8 +52,8 @@
 
 #skip-link {
   position: fixed;
-  left: 50%;
-  top: -60px;
+  inset-inline-start: 50%;
+  inset-block-start: -60px;
   transform: translateX(-50%);
   z-index: 2000;
   background: var(--black);
@@ -61,11 +61,11 @@
   padding: 0.7em 1.4em;
   border-radius: var(--radius);
   font-weight: 700;
-  transition: top 0.2s;
+  transition: inset-block-start 0.2s;
 }
 
 #skip-link:focus {
-  top: 12px;
+  inset-block-start: 12px;
 }
 
 .tick-list {

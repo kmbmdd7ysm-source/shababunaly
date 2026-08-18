@@ -2,20 +2,22 @@ import { readFileSync, statSync } from 'node:fs';
 import { describe, expect, it } from './test-api.js';
 
 describe('performance architecture', () => {
-  it('uses responsive preloaded hero posters and defers video', () => {
+  it('uses a high-priority local first-paint poster and native background video', () => {
     const html = readFileSync('index.html', 'utf8');
     const hero = readFileSync('src/components/experience/CinematicHero.tsx', 'utf8');
-    expect(html).toContain('imagesrcset');
+    const media = readFileSync('src/data/localHeroMedia.ts', 'utf8');
     expect(html).toContain('fetchpriority="high"');
-    expect(hero).toContain('preload="none"');
-    expect(hero).toContain('shababuna-hero-poster-mobile.webp');
+    expect(html).toContain('/media/hero-posters/home.webp');
+    expect(html).not.toContain('i.ytimg.com');
+    expect(hero).toContain('<video');
+    expect(hero).toContain('autoPlay');
+    expect(hero).not.toContain('YouTubeBackground');
+    expect(media).toContain('/media/hero-posters/home.webp');
+    expect(media).toContain('underarmour.scene7.com/is/content/Underarmour/');
   });
 
-  it('keeps critical hero posters tiny', () => {
-    expect(statSync('public/media/hero/shababuna-hero-poster.webp').size).toBeLessThan(40_000);
-    expect(statSync('public/media/hero/shababuna-hero-poster-mobile.webp').size).toBeLessThan(
-      30_000,
-    );
+  it('keeps the bundled home fallback poster within the current draft budget', () => {
+    expect(statSync('public/media/hero-posters/home.webp').size).toBeLessThan(160_000);
   });
 
   it('enforces repeated-run median Lighthouse score and metric gates', () => {

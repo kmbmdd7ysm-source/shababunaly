@@ -53,8 +53,8 @@ export default function ShoeFinderPage(): ReactElement {
             <h1>{pick({ en: 'Find your next shoe.', ar: 'اعثر على حذائك القادم.' })}</h1>
             <p>
               {pick({
-                en: 'Tell us how you play. We rank only with verified attributes and first-party catalogue data — never invented performance scores.',
-                ar: 'حدد طريقة لعبك. الترتيب يعتمد فقط على الخصائص الموثقة وبيانات الكتالوج — بدون اختلاق تقييمات أداء.',
+                en: 'Tell us how you play. Only shoes with verified performance evidence enter the ranking — unknown data is excluded, never guessed.',
+                ar: 'حدد طريقة لعبك. لا يدخل الترتيب إلا الحذاء الذي عنده بيانات أداء موثقة — البيانات المجهولة تُستبعد ولا يتم تخمينها.',
               })}
             </p>
           </div>
@@ -166,8 +166,8 @@ export default function ShoeFinderPage(): ReactElement {
               </div>
             ) : (
               <div className="bf-empty">
-                <h3>{pick({ en: 'No products meet that verified filter yet.', ar: 'لا توجد منتجات تطابق الفلاتر الموثقة حاليًا.' })}</h3>
-                <p>{pick({ en: 'Try removing the budget limit or browse all basketball footwear.', ar: 'جرّب إزالة حد الميزانية أو تصفح جميع أحذية كرة السلة.' })}</p>
+                <h3>{pick({ en: 'No fully verified performance match yet.', ar: 'لا توجد مطابقة أداء موثقة بالكامل حاليًا.' })}</h3>
+                <p>{pick({ en: 'We do not rank shoes with missing performance evidence. Browse all basketball footwear while verified data is completed.', ar: 'لا نرتّب أحذية ببيانات أداء ناقصة. تقدر تتصفح كل أحذية كرة السلة إلى أن تكتمل البيانات الموثقة.' })}</p>
                 <Link className="gw-btn gw-btn--primary" to="/shop/footwear">{pick({ en: 'Browse footwear', ar: 'تصفح الأحذية' })}</Link>
               </div>
             )}

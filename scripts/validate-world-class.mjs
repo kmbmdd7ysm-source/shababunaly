@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { catalogProducts, products, readyToShipProducts } from '../src/data/products.ts';
-import { isProductVisible } from '../src/utils/productEligibility.ts';
+import { hasRealProductMedia, isProductVisible } from '../src/utils/productEligibility.ts';
 import { CUSTOM_PRODUCT_TYPES } from '../src/data/customization.ts';
 
 const failures = [];
@@ -107,7 +107,7 @@ for (const type of CUSTOM_PRODUCT_TYPES) {
 }
 for (const tab of ['designs', 'rosters', 'quotes', 'production'])
   requireText(workspace, tab, `organization workspace ${tab}`);
-for (const feature of ['50%', '30–60', 'submitPublicQuote'])
+for (const feature of ['Confirmed in the approved quote', 'submitPublicQuote'])
   requireText(teams, feature, `Teams & Wholesale ${feature}`);
 for (const rpc of [
   'create_or_get_my_organization',
@@ -195,7 +195,7 @@ if (
   readyToShipProducts().some((product) => {
     const ownerConfirmedLha =
       product.legacyLha === true &&
-      product.inventorySource === 'owner_confirmed_lha_ready' &&
+      product.inventorySource === 'owner_confirmed_lha_color_stock' &&
       product.comingSoon !== true &&
       product.available !== false;
     return product.inventoryLocation !== 'LY' || (!product.inventoryVerified && !ownerConfirmedLha);
@@ -212,8 +212,8 @@ if (
   )
 )
   failures.push('Unverified Made in USA claim is visible');
-if (catalogProducts.some((product) => product.customizable && !isProductVisible(product)))
-  failures.push('Custom product definitions must not remain hidden');
+if (catalogProducts.some((product) => product.customizable && hasRealProductMedia(product) && !isProductVisible(product)))
+  failures.push('Custom product with approved real media is unexpectedly hidden');
 
 for (const forbidden of [
   'HERO VIDEO SLOT',

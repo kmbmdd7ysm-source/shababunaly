@@ -1,38 +1,17 @@
-# Official / verified basketball editorial media sources
+# Basketball editorial media source policy
 
-The public editorial layer is intentionally basketball-only. Product catalogue photography remains tied to product records; campaign and hero media are used only for editorial presentation.
+The storefront's active static editorial layer uses local project assets. Hero motion is rendered through native HTML `<video>` using the 13 direct MP4 references declared in `src/data/localHeroMedia.ts`.
 
-## Basketball hero / campaign references
-- Nike — `Only Basketball`: https://www.adsoftheworld.com/campaigns/only-basketball
-- Nike / Kobe — `The Conductor`: https://www.adsoftheworld.com/campaigns/the-conductor
-- Jordan Brand — `Too Easy`: https://abancommercials.com/jordan/too-easy-jordan-brand-commercial/276840/
-- adidas Basketball — `Basketball Is Everything`: https://hypebeast.com/2013/10/adidas-basketball-presents-basketball-is-everything-featuring-derrick-rose
-- adidas / Anthony Edwards — `20 Foot Hoop`: https://www.adsoftheworld.com/campaigns/what-if-we-played-like-pressure-didn-t-exist
-- Under Armour / Stephen Curry — `Make That Old`: https://www.adsoftheworld.com/campaigns/make-that-old
-- New Balance Basketball — `Quiet Noise`: https://www.soleretriever.com/news/articles/new-balance-basketball-quiet-noise-campaign
-- Foot Locker — `Hoops Lives Here`: https://www.adsoftheworld.com/campaigns/hoops-lives-here
-- Foot Locker / adidas / Anthony Edwards and Foot Locker / PUMA / LaMelo Ball — `The Heart of Sneakers`: https://www.adsoftheworld.com/campaigns/the-heart-of-sneakers
+## Runtime rules
 
-The app uses privacy-enhanced `youtube-nocookie.com` embeds for the verified campaign films above. Every motion placement also has a basketball image fallback and respects reduced-motion preferences.
+- No YouTube/Vimeo iframe player is used for hero playback.
+- No third-party player branding or controls are overlaid in the hero.
+- Local static posters are the reduced-motion/error fallback.
+- Runtime category, Custom, Teams and Stories still-image mappings do not hotlink external image CDNs.
+- A video URL is not described as self-hosted unless the MP4/WebM bytes are stored on Shababuna-controlled storage/CDN.
 
-## Basketball still-image sources
-### Nike / Jordan
-- Kobe editorial imagery and custom basketball product references use `static.nike.com` and `nmp.about.nike.com` assets.
-- Custom reference cards include basketball game top, game shorts, practice jersey, shooting shirt, Kobe hoodie, team pants, warm-up crew, team bag, and Jordan shooter sleeve.
+## Rights boundary
 
-### New Balance Basketball
-- Basketball roster/editorial imagery is referenced from New Balance's official Demandware CDN, including Kawhi Leonard, Tyrese Maxey, Cameron Brink, Cooper Flagg, Dejounte Murray, Jamal Murray, Zach LaVine, Aaron Nesmith, Nick Smith Jr. and Darius Bazley imagery used across the editorial system.
+Third-party media remains the property of its respective owner and is subject to the source owner's terms. A technical source reference does not imply sponsorship, affiliation or a right to redistribute the media. First-party hosting must only be used for files Shababuna is licensed to store and serve.
 
-### Spalding
-- Basketball, pump, backboard/hoop equipment and pole-padding product imagery use Spalding's official `assets.fotlinc.com` CDN.
-
-## Placement rules enforced in this version
-- Hero motion is basketball-only.
-- Home, Shop, Footwear, Clothing, Shoe Finder and Custom use different hero media sources.
-- Discover campaign videos are unique per collection where motion is used; remaining collections use dedicated basketball stills.
-- Home lower merchandising cards do not replay the hero films.
-- All 12 Custom product choices have an explicit, non-repeated reference image.
-- Multisport Nike campaign sources remain available only as legacy resolver entries and are not assigned to the storefront UI.
-
-## Rights
-Third-party marks, photographs, campaign films and product media remain the property of their respective owners and are subject to the source site's terms. Their inclusion here is a technical source reference and does not imply sponsorship or affiliation.
+For the current machine-checked runtime state see `reports/phase2/phase2-systems-audit.json` and `docs/HERO_MEDIA_MANIFEST.md`.

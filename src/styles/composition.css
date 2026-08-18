@@ -261,6 +261,20 @@
   }
 }
 
+
+.gw-reach-inner--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .gw-reach-inner--single {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gw-reach-inner--single .gw-reach-copy {
+    max-inline-size: 760px;
+  }
+}
+
 .gw-reach .gw-spec {
   margin: 0 0 var(--sh-s-2);
   color: var(--sh-night-ink-70);

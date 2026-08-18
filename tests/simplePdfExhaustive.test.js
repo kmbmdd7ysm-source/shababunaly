@@ -82,7 +82,7 @@ describe('simple PDF renderer branch-complete behavior', () => {
     });
     expect(cover).toContain('#050505');
     expect(cover).toContain('home');
-    expect(cover).toContain('30-60 days');
+    expect(cover).toContain('Confirmed in the approved quote');
     const design = {
       primary: '#010203',
       secondary: '#fefefe',

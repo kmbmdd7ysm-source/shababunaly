@@ -550,8 +550,8 @@ ${design.notes || ''}`.trim(),
         requirements:
           `${contact.notes || ''}
 ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
-        paymentTerms: '50% deposit / 50% on arrival',
-        estimatedTimeline: '30–60 days',
+        paymentTerms: 'Confirmed in the approved quote',
+        estimatedTimeline: 'Confirmed after production review',
         language: lang,
         productionPreflight,
       };
@@ -560,25 +560,33 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
         organizationId: organization?.id ? String(organization.id) : null,
         turnstileToken,
         idempotencyKey: globalThis.crypto?.randomUUID?.(),
-      })) as { quote: Record<string, unknown> };
+      })) as { quote: Record<string, unknown>; persisted?: boolean; notification?: string };
       const rosterFile = normalizedRoster.length
         ? new File([rosterToCsv(normalizedRoster)], 'shababuna-team-roster.csv', {
             type: 'text/csv',
           })
         : null;
       const attachments = [...files, ...(rosterFile ? [rosterFile] : [])].slice(0, 5);
-      const delivered = await deliverQuoteEmail({ quote: result.quote, quotePayload, attachments });
-      setStatus(
-        delivered
-          ? pick({
-              en: `Request ${result.quote.quote_number} was saved and delivered for review.`,
-              ar: `تم حفظ الطلب ${result.quote.quote_number} وإرساله للمراجعة.`,
-            })
-          : pick({
-              en: `Request ${result.quote.quote_number} is saved securely. Email delivery is queued for retry; do not create another request.`,
-              ar: `تم حفظ الطلب ${result.quote.quote_number} بأمان. تم وضع البريد في قائمة إعادة المحاولة؛ لا تنشئ طلبًا جديدًا.`,
-            }),
-      );
+      if (result.persisted === false) {
+        setPendingSubmission(null);
+        setStatus(pick({
+          en: `Request ${String(result.quote.quote_number || '')} was delivered by email, but the quote itself is not yet saved in the account system. Our team will follow up; do not create a duplicate.`,
+          ar: `تم توصيل الطلب ${String(result.quote.quote_number || '')} بالبريد، لكن عرض السعر نفسه لم يُحفظ بعد في نظام الحسابات. سيتابع معك فريقنا؛ لا تنشئ طلبًا مكررًا.`,
+        }));
+      } else {
+        const delivered = await deliverQuoteEmail({ quote: result.quote, quotePayload, attachments });
+        setStatus(
+          delivered
+            ? pick({
+                en: `Request ${result.quote.quote_number} was saved and delivered for review.`,
+                ar: `تم حفظ الطلب ${result.quote.quote_number} وإرساله للمراجعة.`,
+              })
+            : pick({
+                en: `Request ${result.quote.quote_number} is saved securely. Email delivery is queued for retry; do not create another request.`,
+                ar: `تم حفظ الطلب ${result.quote.quote_number} بأمان. تم وضع البريد في قائمة إعادة المحاولة؛ لا تنشئ طلبًا جديدًا.`,
+              }),
+        );
+      }
       setStep('review');
     } catch {
       setStatus(
@@ -663,11 +671,11 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
             </div>
             <div>
               <dt>{pick({ en: 'Production', ar: 'التصنيع' })}</dt>
-              <dd className="gw-isolate-ltr">30–60</dd>
+              <dd>{pick({ en: 'Quote', ar: 'حسب العرض' })}</dd>
             </div>
             <div>
               <dt>{pick({ en: 'Terms', ar: 'الشروط' })}</dt>
-              <dd>50% / 50%</dd>
+              <dd>{pick({ en: 'Quote', ar: 'حسب العرض' })}</dd>
             </div>
           </dl>
         </div>
@@ -1232,11 +1240,11 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   </article>
                   <article>
                     <span>{pick({ en: 'Timeline', ar: 'المدة' })}</span>
-                    <strong>30–60 {pick({ en: 'days', ar: 'يومًا' })}</strong>
+                    <strong>{pick({ en: 'Confirmed in quote', ar: 'تُحدد في العرض' })}</strong>
                   </article>
                   <article>
                     <span>{pick({ en: 'Payment', ar: 'الدفع' })}</span>
-                    <strong>50% / 50%</strong>
+                    <strong>{pick({ en: 'Confirmed in quote', ar: 'تُحدد في العرض' })}</strong>
                   </article>
                 </div>
                 <div
@@ -1376,8 +1384,8 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                     <strong>{pick({ en: 'Before production', ar: 'قبل التصنيع' })}</strong>
                     <p>
                       {pick({
-                        en: 'Shababuna confirms price, shipping and timeline, then sends a final proof. Production begins only after proof approval and the 50% deposit.',
-                        ar: 'تؤكد شبابنا السعر والشحن والمدة ثم ترسل البروفة النهائية. يبدأ التصنيع فقط بعد اعتماد البروفة ودفع 50%.',
+                        en: 'Shababuna confirms price, shipping, timeline and payment terms in the approved quote, then sends a final proof. Production begins only after proof approval and the required payment is confirmed.',
+                        ar: 'تؤكد شبابنا السعر والشحن والمدة وشروط الدفع في عرض السعر المعتمد ثم ترسل البروفة النهائية. يبدأ التصنيع فقط بعد اعتماد البروفة وتأكيد الدفعة المطلوبة.',
                       })}
                     </p>
                   </div>

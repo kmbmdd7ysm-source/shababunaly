@@ -64,25 +64,10 @@ async function postCanonicalFormspree(body: Record<string, unknown>): Promise<Re
       .filter(([key, value]) => key !== 'turnstileToken' && value != null)
       .map(([key, value]) => [key, stringifyValue(value)]),
   );
-  const formBody = new URLSearchParams(clean as Record<string, string>);
-  let directError: unknown = null;
-  try {
-    const direct = await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: formBody,
-      cache: 'no-store',
-    });
-    const directResult = (await direct.json().catch(() => ({}))) as Record<string, unknown>;
-    if (direct.ok) return { ok: true, provider: 'formspree-direct', ...directResult };
-    directError = new Error(String((directResult as { error?: unknown }).error || `formspree_${direct.status}`));
-  } catch (error) {
-    directError = error;
-  }
 
-  // Same-origin fallback keeps forms working behind browsers/privacy tools that
-  // block a direct cross-origin Formspree request. The API itself forwards to
-  // the exact same canonical endpoint.
+  // Customer browsers never post directly to a third-party inbox. The
+  // Shababuna API is the sole browser-facing boundary so sanitization, abuse
+  // controls, observability and provider changes stay server-side.
   const response = await fetch('/api/formspree', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -92,9 +77,7 @@ async function postCanonicalFormspree(body: Record<string, unknown>): Promise<Re
   });
   const result = (await response.json().catch(() => ({}))) as Record<string, unknown>;
   if (!response.ok || result.ok === false) {
-    const error = new Error(String(result.error || `formspree_${response.status}`)) as Error & { cause?: unknown };
-    error.cause = directError;
-    throw error;
+    throw new Error(String(result.error || `formspree_${response.status}`));
   }
   return result;
 }
