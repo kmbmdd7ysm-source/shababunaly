@@ -223,3 +223,10 @@
   .s2-split-feature__copy { padding: 44px 18px 64px; }
   .s2-team-teaser { min-height: 320px; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding-inline: 18px; }
 }
+
+/* Home hero film is presentation-only; player UI stays outside the clipped viewport. */
+.s2-hero__embed.s2-background-embed { position:absolute; inset:0; overflow:hidden; }
+.s2-hero__embed.s2-background-embed iframe {
+  top:50%; left:50%; width:100%; height:100%; min-width:177.78vh; min-height:56.25vw;
+  transform:translate(-50%,-50%) scale(1.18); border:0; pointer-events:none;
+}

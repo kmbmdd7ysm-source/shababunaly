@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import YouTubeBackground from './YouTubeBackground';
 
 type EditorialMediaProps = {
   desktopMedia: string;
@@ -36,18 +37,7 @@ export default function EditorialMedia({
   const hasMotion = !reducedMotion && !failed && Boolean(desktopVideo || mobileVideo);
 
   if (hasMotion && chosenEmbed) {
-    return (
-      <div className="s2-official-video-frame" aria-hidden="true">
-        <iframe
-          src={chosenEmbed}
-          title=""
-          tabIndex={-1}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          referrerPolicy="strict-origin-when-cross-origin"
-          onError={() => setFailed(true)}
-        />
-      </div>
-    );
+    return <YouTubeBackground src={chosenEmbed} className="s2-official-video-frame" />;
   }
 
   if (hasMotion) {

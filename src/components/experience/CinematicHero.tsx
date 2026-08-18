@@ -5,6 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { LOCAL_HERO_MEDIA } from '../../data/localHeroMedia';
+import YouTubeBackground from '../common/YouTubeBackground';
 import '../../styles/design/phase2-home.css';
 
 const HERO = LOCAL_HERO_MEDIA.home;
@@ -41,16 +42,7 @@ export default function CinematicHero(): ReactElement {
         ) : null}
         {mediaAllowed && !failed ? (
           embedded ? (
-            <div className="s2-hero__embed">
-              <iframe
-                src={HERO.desktopVideo}
-                title=""
-                tabIndex={-1}
-                allow="autoplay; encrypted-media; picture-in-picture"
-                referrerPolicy="strict-origin-when-cross-origin"
-                onError={() => setFailed(true)}
-              />
-            </div>
+            <YouTubeBackground src={HERO.desktopVideo} className="s2-hero__embed" />
           ) : (
             <video muted loop playsInline autoPlay preload="auto" poster={HERO.desktopPoster} onError={() => setFailed(true)}>
               <source media="(max-width: 899px)" src={HERO.mobileVideo} type="video/mp4" />
