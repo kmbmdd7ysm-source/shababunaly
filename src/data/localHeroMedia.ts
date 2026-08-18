@@ -1,19 +1,22 @@
 /**
  * Hero media runtime map.
- * Posters are local, optimized fallbacks. Video sources below are real Under Armour
- * basketball product videos served by Under Armour's official Scene7 media host.
- * Keeping posters local preserves fast LCP and a clean fallback if a remote video is unavailable.
+ * Local optimized WebP posters provide first paint/fallback. Motion uses direct,
+ * official Under Armour Scene7 basketball MP4 sources — never locally generated
+ * pseudo-motion/slideshow videos.
  */
 const OFFICIAL_BASKETBALL_VIDEO = {
   curry13: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6007670-419',
   curry12DubNation: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027630-001',
   lockdown7Low: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027646-600',
   fox2Sharpie: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6017491-100',
-  jet25: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6001587-102',
+  jet25GradeSchool: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6001587-102',
   fox2Buzzer: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6012728-001',
   curry3z24: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027627-004',
   curry12Wardell: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027634-001',
   currySplash25: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3028459-016',
+  fox2Blue: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6000777-400',
+  jet25Unisex: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6001585-100',
+  lockdown8: 'https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6009400-100',
 } as const;
 
 export const LOCAL_HERO_MEDIA = {
@@ -41,9 +44,27 @@ export const LOCAL_HERO_MEDIA = {
     desktopPoster: '/media/heroes/clothing-desktop.webp',
     mobilePoster: '/media/heroes/clothing-mobile.webp',
   },
+  accessories: {
+    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Blue,
+    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.fox2Blue,
+    desktopPoster: '/images/products/lha-elite-basketball-backpack-black.webp',
+    mobilePoster: '/images/products/lha-elite-basketball-backpack-black.webp',
+  },
+  basketballs: {
+    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.jet25Unisex,
+    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.jet25Unisex,
+    desktopPoster: '/media/official-brand/hero-atwo-court.webp',
+    mobilePoster: '/media/official-brand/portrait-atwo.webp',
+  },
+  equipment: {
+    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.lockdown8,
+    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.lockdown8,
+    desktopPoster: '/media/official-brand/hero-lebron-hands.webp',
+    mobilePoster: '/media/official-brand/portrait-lebron.webp',
+  },
   shoeFinder: {
-    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.jet25,
-    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.jet25,
+    desktopVideo: OFFICIAL_BASKETBALL_VIDEO.jet25GradeSchool,
+    mobileVideo: OFFICIAL_BASKETBALL_VIDEO.jet25GradeSchool,
     desktopPoster: '/media/heroes/shoe-finder-desktop.webp',
     mobilePoster: '/media/heroes/shoe-finder-mobile.webp',
   },

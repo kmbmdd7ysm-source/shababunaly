@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-08-17",
   "runtimeHeroArchitecture": "remote-official-mp4-with-local-poster-fallback",
-  "heroRoutes": 9,
+  "heroRoutes": 12,
   "officialRemoteHeroVideos": [
     "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6007670-419",
     "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027630-001",
@@ -11,9 +11,12 @@
     "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6012728-001",
     "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027627-004",
     "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3027634-001",
-    "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3028459-016"
+    "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_3028459-016",
+    "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6000777-400",
+    "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6001585-100",
+    "https://underarmour.scene7.com/is/content/Underarmour/auto_dim7_6009400-100"
   ],
-  "remoteHeroVideoCount": 9,
+  "remoteHeroVideoCount": 12,
   "localPseudoMotionMp4Count": 0,
   "heroPosterCount": 18,
   "sectionImageCount": 86,

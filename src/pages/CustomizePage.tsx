@@ -15,18 +15,18 @@ import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': '/media/official-brand/sections/custom-game-set.webp',
-  'game-jersey': '/media/official-brand/sections/custom-game-jersey.webp',
-  'game-shorts': '/media/official-brand/sections/custom-game-shorts.webp',
-  'practice-set': '/media/official-brand/sections/custom-practice-set.webp',
-  'shooting-shirt': '/media/official-brand/sections/custom-shooting-shirt.webp',
-  hoodie: '/media/official-brand/sections/custom-hoodie.webp',
-  'team-pants': '/media/official-brand/sections/custom-team-pants.webp',
-  tracksuit: '/media/official-brand/sections/custom-tracksuit.webp',
-  'team-bag': '/media/official-brand/sections/custom-team-bag.webp',
-  sleeve: '/media/official-brand/sections/custom-sleeve.webp',
-  basketball: '/media/official-brand/sections/custom-basketball.webp',
-  'hoop-padding': '/media/official-brand/sections/custom-hoop-padding.webp',
+  'game-set': '/media/official-brand/clean/global-teamwear.webp',
+  'game-jersey': '/media/official-brand/portrait-atwo.webp',
+  'game-shorts': '/images/products/lha-performance-shorts-black.webp',
+  'practice-set': '/media/official-brand/clean/puma_athlete.png',
+  'shooting-shirt': '/images/products/own-the-game-sleeveless-top-black.webp',
+  hoodie: '/images/products/own-the-game-pullover-hoodie-black.webp',
+  'team-pants': '/images/products/own-the-game-fleece-pants-black.webp',
+  tracksuit: '/images/products/own-the-game-zip-hoodie-black.webp',
+  'team-bag': '/images/products/lha-elite-basketball-backpack-black.webp',
+  sleeve: 'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/96bc8662-7933-4af7-9dfa-736537b4ee1f/NIKE%2BDRI-FIT%2BSLEEVE%2BJ%2BMORANT.png',
+  basketball: 'https://content.stylitics.com/images/items/24600049',
+  'hoop-padding': '/media/official-brand/clean/global-court.webp',
 };
 
 export default function CustomizePage(): ReactElement {

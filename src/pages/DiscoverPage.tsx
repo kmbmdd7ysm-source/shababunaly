@@ -119,6 +119,9 @@ export default function DiscoverPage(): ReactElement {
         <EditorialMedia
           desktopMedia={current.desktopMedia}
           mobileMedia={current.mobileMedia}
+          desktopVideo={LOCAL_HERO_MEDIA.discover.desktopVideo}
+          mobileVideo={LOCAL_HERO_MEDIA.discover.mobileVideo}
+          poster={current.desktopMedia}
           loading="eager"
         />
         <span className="s2-discover-hero__shade" />

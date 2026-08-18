@@ -198,7 +198,8 @@ export default function ShopPage(): ReactElement {
     + Number(filters.inStock) + Number(filters.readyOnly && category !== 'ready-to-ship') + Number(filters.newOnly)
     + Number(filters.bestOnly) + Number(filters.customizableOnly) + Number(Boolean(filters.priceMin)) + Number(Boolean(filters.priceMax));
   const world = CATEGORY_WORLDS.find((entry) => entry.slug === category);
-  const categoryHero = category === 'footwear' ? LOCAL_HERO_MEDIA.footwear : category === 'clothing' ? LOCAL_HERO_MEDIA.clothing : null;
+  const categoryHeroMap = { footwear: LOCAL_HERO_MEDIA.footwear, clothing: LOCAL_HERO_MEDIA.clothing, accessories: LOCAL_HERO_MEDIA.accessories, basketballs: LOCAL_HERO_MEDIA.basketballs, equipment: LOCAL_HERO_MEDIA.equipment } as const;
+  const categoryHero = category ? categoryHeroMap[category as keyof typeof categoryHeroMap] || null : null;
   const showShopHero = !category && activeCount === 0 && sort === 'featured';
   const featured = featuredProducts().slice(0, 4);
 

@@ -152,7 +152,7 @@ export default function HomePage(): ReactElement {
 
       <section className="s2-split-feature" aria-labelledby="s2-custom-title">
         <div className="s2-split-feature__media">
-          <img src="/media/official-brand/sections/home-custom.webp" alt="" width="1400" height="900" loading="lazy" />
+          <img src="/media/official-brand/clean/global-teamwear.webp" alt="" width="1400" height="900" loading="lazy" />
         </div>
         <div className="s2-split-feature__copy">
           <span className="s2-overline">{pick({ en: 'Custom studio', ar: 'استوديو التخصيص' })}</span>
@@ -171,11 +171,11 @@ export default function HomePage(): ReactElement {
         </div>
         <div className="s2-story-pair s2-container">
           <Link to="/our-work" className="s2-story-card">
-            <img src="/media/official-brand/sections/home-story-game.webp" alt="" width="1400" height="900" loading="lazy" />
+            <img src="/media/official-brand/clean/global-portrait-atwo.webp" alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'Inside the game', ar: 'داخل اللعبة' })}</strong></span>
           </Link>
           <Link to="/our-work" className="s2-story-card">
-            <img src="/media/official-brand/sections/home-story-design.webp" alt="" width="1400" height="900" loading="lazy" />
+            <img src="/media/official-brand/clean/global-hands.webp" alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball culture', ar: 'ثقافة كرة السلة' })}</small><strong>{pick({ en: 'Beyond the game', ar: 'أبعد من اللعبة' })}</strong></span>
           </Link>
         </div>

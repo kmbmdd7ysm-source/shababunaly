@@ -2,35 +2,38 @@
 
 ## Current runtime architecture
 
-The site uses **local optimized WebP posters** for fast first paint and fallback, plus **real basketball MP4 sources hosted by Under Armour's official Scene7 media service** for hero motion. The old locally generated pseudo-motion MP4 files have been removed so they cannot be mistaken for real campaign video.
+The site uses **local optimized WebP posters** for fast first paint and fallback, plus **real basketball MP4 sources hosted by Under Armour's official Scene7 media service** for hero motion. Locally generated pseudo-motion/slideshow MP4 files are not bundled or referenced.
 
-The CSP already permits HTTPS media through `media-src 'self' blob: https:`. If a remote video cannot load, every hero falls back to its local poster without blocking the page.
+The CSP permits HTTPS media through `media-src 'self' blob: https:`. If a remote video cannot load, the hero falls back to its local poster without blocking navigation or content.
 
 ## Active hero video map
 
-| Route | Official basketball video source |
+| Route / world | Runtime video |
 | --- | --- |
-| Home | Under Armour Curry 13 product video |
-| Shop | Under Armour Curry 12 Dub Nation product video |
-| Footwear | Under Armour Lockdown 7 Low product video |
-| Clothing | Under Armour D. Fox 2 x Sharpie product video |
-| Shoe Finder | Under Armour Jet '25 product video |
-| Custom | Under Armour D. Fox 2 At The Buzzer product video |
-| Discover | Under Armour Curry 3Z 24 product video |
-| Teams | Under Armour Curry 12 Wardell Mode product video |
-| Stories | Under Armour Curry Splash 25 product video |
+| Home | Curry 13 official product video |
+| Shop | Curry 12 Dub Nation official product video |
+| Footwear | Lockdown 7 Low official product video |
+| Clothing | D. Fox 2 x Sharpie official product video |
+| Accessories | D. Fox 2 official product video |
+| Basketballs | UA Jet '25 official product video |
+| Equipment | Lockdown 8 official product video |
+| Shoe Finder | UA Jet '25 Grade School official product video |
+| Custom | D. Fox 2 At The Buzzer official product video |
+| Discover | Curry 3Z 24 official product video |
+| Teams | Curry 12 Wardell Mode official product video |
+| Stories | Curry Splash 25 official product video |
 
-The exact URLs live in `src/data/localHeroMedia.ts` and are restricted by `validate-final-hardening.mjs` to the official `underarmour.scene7.com/is/content/Underarmour/` host.
+The exact URLs live in `src/data/localHeroMedia.ts` and are restricted by `validate-final-hardening.mjs` to the approved `underarmour.scene7.com/is/content/Underarmour/` path.
 
 ## Playback and fallback rules
 
 - Muted autoplay only.
 - `playsInline` and looping are preserved.
 - Reduced-motion and data-saver users get the poster instead of motion.
-- Video errors permanently fall back to the poster for the current render.
-- Desktop and mobile keep independent local poster crops.
+- Video errors fall back to the poster for the current render.
 - No YouTube iframe or third-party player UI is used.
+- Local hero poster files are exact-hash unique.
 
 ## Image sourcing
 
-Hero posters and editorial section art are locally optimized from the global basketball source set in `assets/source/global-basketball-refresh/`, including Nike, adidas, Puma, Under Armour and New Balance basketball imagery. Exact Nike accessory/product imagery that is better served from the source page is referenced directly in `src/data/categories.ts`.
+Hero posters and editorial section art use individual basketball images rather than multi-image collages in the active Phase 3 page configuration. High-resolution single-image sources are stored under `public/media/official-brand/clean/` and existing optimized brand/product directories.
