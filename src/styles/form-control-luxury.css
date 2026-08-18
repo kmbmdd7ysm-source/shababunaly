@@ -711,3 +711,334 @@ html[dir='rtl'] .cx-request-form .field__control > :is(input, textarea) {
 .cx-request-form .field[data-field='country'] { --field-glyph: var(--sh-form-glyph-globe); }
 .cx-request-form .field[data-field='quantity'] { --field-glyph: var(--sh-form-glyph-hash); }
 .cx-request-form .field[data-field='message'] { --field-glyph: var(--sh-form-glyph-pen); }
+
+/* --------------------------------------------------------------------------
+   FINAL CONTROL SLOT FIX
+   --------------------------------------------------------------------------
+   The earlier premium pass reserved icon space with logical padding while the
+   glyph itself was absolutely positioned. In Arabic pages, controls that are
+   intentionally LTR (email, phone, quantity, dates, URLs) resolve logical
+   padding from their own direction, while the icon position resolves from the
+   page RTL direction. That can reserve space on the opposite side and let text
+   render beneath the glyph.
+
+   This layer removes that dependency completely: icon, value and accessory are
+   separate grid tracks. No value can ever occupy the icon track, regardless of
+   RTL/LTR, text length, browser bidi behaviour or autofill. Visual treatment is
+   intentionally unchanged. */
+
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-areas: 'icon control';
+  align-items: stretch;
+  min-inline-size: 0;
+  min-block-size: var(--sh-form-target);
+  border: 1px solid var(--sh-form-rule);
+  border-radius: var(--sh-form-radius);
+  background: var(--sh-form-surface-alt);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  overflow: visible;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+:is(
+  .gw-contact .field__control--select,
+  .cc-tracking__inner .field__control--select,
+  .team-quote-grid form .field__control--select,
+  .gw-request .special-request-form .field__control--select,
+  .cx-request-form .field__control--select,
+  .gw-contact .field__control--date,
+  .cc-tracking__inner .field__control--date,
+  .team-quote-grid form .field__control--date,
+  .gw-request .special-request-form .field__control--date,
+  .cx-request-form .field__control--date
+) {
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  grid-template-areas: 'icon control accessory';
+}
+
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+)::before {
+  grid-area: icon;
+  position: static;
+  inset: auto;
+  align-self: center;
+  justify-self: center;
+  inline-size: var(--sh-form-icon-size);
+  block-size: var(--sh-form-icon-size);
+  margin: 0;
+  transform: none;
+  background-image: var(--field-glyph);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.78;
+  pointer-events: none;
+  z-index: 1;
+}
+
+:is(
+  .gw-contact .field__control--textarea,
+  .cc-tracking__inner .field__control--textarea,
+  .team-quote-grid form .field__control--textarea,
+  .gw-request .special-request-form .field__control--textarea,
+  .cx-request-form .field__control--textarea
+) {
+  align-items: start;
+}
+
+:is(
+  .gw-contact .field__control--textarea,
+  .cc-tracking__inner .field__control--textarea,
+  .team-quote-grid form .field__control--textarea,
+  .gw-request .special-request-form .field__control--textarea,
+  .cx-request-form .field__control--textarea
+)::before {
+  align-self: start;
+  margin-block-start: 18px;
+}
+
+:is(
+  .gw-contact .field__control--select,
+  .cc-tracking__inner .field__control--select,
+  .team-quote-grid form .field__control--select,
+  .gw-request .special-request-form .field__control--select,
+  .cx-request-form .field__control--select,
+  .gw-contact .field__control--date,
+  .cc-tracking__inner .field__control--date,
+  .team-quote-grid form .field__control--date,
+  .gw-request .special-request-form .field__control--date,
+  .cx-request-form .field__control--date
+)::after {
+  grid-area: accessory;
+  position: static;
+  inset: auto;
+  align-self: center;
+  justify-self: center;
+  inline-size: var(--sh-form-icon-size);
+  block-size: var(--sh-form-icon-size);
+  margin: 0;
+  transform: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.78;
+  pointer-events: none;
+  z-index: 1;
+}
+
+:is(
+  .gw-contact .field__control--select,
+  .cc-tracking__inner .field__control--select,
+  .team-quote-grid form .field__control--select,
+  .gw-request .special-request-form .field__control--select,
+  .cx-request-form .field__control--select
+)::after {
+  background-image: var(--sh-form-glyph-chevron);
+}
+
+:is(
+  .gw-contact .field__control--date,
+  .cc-tracking__inner .field__control--date,
+  .team-quote-grid form .field__control--date,
+  .gw-request .special-request-form .field__control--date,
+  .cx-request-form .field__control--date
+)::after {
+  background-image: var(--sh-form-glyph-calendar);
+}
+
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) > :is(input, select, textarea) {
+  grid-area: control;
+  align-self: stretch;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: calc(var(--sh-form-target) - 2px);
+  margin: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: var(--sh-form-text);
+  padding-inline: 10px 16px !important;
+  font: inherit;
+  line-height: 1.25;
+}
+
+html[dir='rtl'] :is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+):not(.field__control--latin) > :is(input, select, textarea) {
+  direction: rtl;
+  text-align: right;
+}
+
+:is(
+  .gw-contact .field__control--latin,
+  .cc-tracking__inner .field__control--latin,
+  .team-quote-grid form .field__control--latin,
+  .gw-request .special-request-form .field__control--latin,
+  .cx-request-form .field__control--latin
+) > :is(input, select, textarea) {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: plaintext;
+}
+
+:is(
+  .gw-contact .field__control--textarea,
+  .cc-tracking__inner .field__control--textarea,
+  .team-quote-grid form .field__control--textarea,
+  .gw-request .special-request-form .field__control--textarea,
+  .cx-request-form .field__control--textarea
+) > textarea {
+  min-block-size: 132px;
+  padding-block: 16px !important;
+  resize: vertical;
+}
+
+:is(
+  .gw-contact .field__control--select,
+  .cc-tracking__inner .field__control--select,
+  .team-quote-grid form .field__control--select,
+  .gw-request .special-request-form .field__control--select,
+  .cx-request-form .field__control--select
+) > select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-inline-end: 8px !important;
+}
+
+:is(
+  .gw-contact .field__control--date,
+  .cc-tracking__inner .field__control--date,
+  .team-quote-grid form .field__control--date,
+  .gw-request .special-request-form .field__control--date,
+  .cx-request-form .field__control--date
+) > input[type='date']::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* CountrySelect participates as the value track. The field icon owns its own
+   track, while the country component keeps its internal country/code/chevron
+   layout. */
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) > .country-combobox {
+  grid-area: control;
+  align-self: stretch;
+  inline-size: 100%;
+  min-inline-size: 0;
+  direction: ltr;
+}
+
+html[dir='rtl'] :is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) > .country-combobox {
+  direction: rtl;
+}
+
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) .country-combobox__trigger {
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: calc(var(--sh-form-target) - 2px);
+  margin: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding-inline: 10px 14px !important;
+}
+
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+):hover {
+  border-color: var(--sh-form-rule-strong);
+  background-color: #fbfbf9;
+}
+
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+):focus-within {
+  border-color: #111;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Never let legacy per-input focus styles create a second inner ring. */
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) > :is(input, select, textarea):focus-visible,
+:is(
+  .gw-contact .field__control,
+  .cc-tracking__inner .field__control,
+  .team-quote-grid form .field__control,
+  .gw-request .special-request-form .field__control,
+  .cx-request-form .field__control
+) .country-combobox__trigger:focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
