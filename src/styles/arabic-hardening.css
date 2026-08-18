@@ -1,0 +1,419 @@
+/* ========================================================================== 
+   SHABABUNA — Arabic typography & RTL hardening
+   --------------------------------------------------------------------------
+   Locale-scoped final cascade. This file intentionally changes ONLY the
+   Arabic presentation layer: no content, commerce logic, media, dimensions,
+   routes, data or English styling are touched.
+
+   Why this exists:
+   - Several commerce/editorial routes use intentionally tight Latin display
+     leading (0.80–1.00). Cairo needs a taller line box, otherwise multi-line
+     Arabic headings can visually collide or clip.
+   - Arabic overrides were spread across many route sheets and therefore did
+     not share one consistent optical hierarchy.
+   - Small translated labels inherited Latin uppercase/tracking treatments in
+     a few late-cascade components.
+   ========================================================================== */
+
+/* A stronger Arabic scale: close to the English hierarchy without copying
+   Latin metrics. The variable Cairo face supports 400–900. */
+html[lang='ar'] {
+  --sh-t-hero-ar: clamp(2.85rem, 1.5rem + 6vw, 6.65rem);
+  --sh-t-display-ar: clamp(2.1rem, 1.35rem + 3.4vw, 4.15rem);
+  --sh-t-title-ar: clamp(1.55rem, 1.2rem + 1.55vw, 2.5rem);
+  --sh-t-lead-ar: clamp(1.04rem, 0.98rem + 0.34vw, 1.32rem);
+  --sh-t-body-ar: 1.0625rem;
+
+  --sh-lh-hero-ar: 1.22;
+  --sh-lh-display-ar: 1.26;
+  --sh-lh-title-ar: 1.32;
+  --sh-lh-body-ar: 1.78;
+}
+
+html[lang='ar'] body {
+  font-family: var(--sh-font-text);
+  font-size: var(--sh-t-body-ar);
+  line-height: var(--sh-lh-body-ar);
+  font-weight: 450;
+  letter-spacing: 0;
+}
+
+/* Arabic display type must derive impact from weight/scale, never from Latin
+   compression, negative tracking or uppercase. Keeping the display stack is
+   deliberate: Arabic glyphs resolve to Cairo while Latin brand/product text
+   still resolves to Archivo through unicode-range. */
+html[lang='ar'] #root :where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--sh-font-display);
+  font-stretch: normal;
+  letter-spacing: 0 !important;
+  text-transform: none;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+  text-wrap: balance;
+}
+
+html[lang='ar'] #root h1 {
+  font-weight: 820 !important;
+  line-height: 1.22 !important;
+}
+
+html[lang='ar'] #root h2 {
+  font-weight: 780 !important;
+  line-height: 1.26 !important;
+}
+
+html[lang='ar'] #root h3 {
+  font-weight: 720 !important;
+  line-height: 1.32 !important;
+}
+
+html[lang='ar'] #root :where(h4, h5, h6) {
+  font-weight: 700;
+  line-height: 1.38 !important;
+}
+
+/* Long-form and supporting copy gets a single readable rhythm. The selector
+   avoids prices/figures and other deliberately isolated LTR data. */
+html[lang='ar'] #root :where(
+    p,
+    li,
+    blockquote,
+    dd,
+    .gw-body,
+    .gw-lead,
+    .prose,
+    .legal-content,
+    .policy-content,
+    .help-content,
+    .faq-list,
+    .pdx-description,
+    .pdx-delivery,
+    .pdx-details,
+    .tw-service-card-copy,
+    .tw-hero-copy,
+    .tw-quote-copy,
+    .cx-hero-copy,
+    .bf-hero
+  ) {
+  letter-spacing: 0 !important;
+  line-height: 1.72;
+  text-transform: none !important;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+/* Form/control copy previously varied by domain stylesheet. Arabic controls
+   now share the same native font and enough vertical room for dots/descenders. */
+html[lang='ar'] #root :where(input, textarea, select, option, label, legend, summary) {
+  font-family: var(--sh-font-text) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+  text-transform: none !important;
+}
+
+html[lang='ar'] #root :where(input, textarea, select) {
+  font-weight: 500;
+}
+
+html[lang='ar'] #root :where(
+    button,
+    [role='button'],
+    [role='tab'],
+    nav a,
+    .btn-primary,
+    .btn-secondary,
+    .gw-btn,
+    .gw-studio-btn,
+    .quick-add,
+    .checkout-submit,
+    .accordion-trigger,
+    .s2-text-link,
+    .s2-dark-link
+  ) {
+  letter-spacing: 0 !important;
+  line-height: 1.45 !important;
+  text-transform: none !important;
+}
+
+/* Small UI language: remove Latin tracking/uppercase only from translated UI
+   labels. These selectors are deliberately semantic rather than universal so
+   Latin product/brand marks can retain their identity in Arabic mode. */
+html[lang='ar'] #root :where(
+    .gw-kicker,
+    .gw-spec,
+    .gw-stamp,
+    .s2-overline,
+    .s2-hero__eyebrow,
+    .px-eyebrow,
+    .bf-eyebrow,
+    .section-label,
+    .field-label,
+    .design-preview-label,
+    .gw-register-label,
+    .gw-drawer-label,
+    .gw-menu-key,
+    .gw-announce-link,
+    .gw-announce-dismiss,
+    .gw-sysbanner-dismiss,
+    .gw-studio-accuracy,
+    .gw-family-card-kicker,
+    .gw-tier-note,
+    .ready-badge,
+    .s2-product-card__badge,
+    .product-card-badges .badge,
+    .status-badge,
+    .workspace-status
+  ) {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.5 !important;
+  font-weight: 700 !important;
+}
+
+html[lang='ar'] #root :where(
+    .gw-kicker,
+    .gw-spec,
+    .s2-overline,
+    .s2-hero__eyebrow,
+    .px-eyebrow,
+    .bf-eyebrow,
+    .section-label,
+    .field-label,
+    .design-preview-label,
+    .gw-register-label,
+    .gw-menu-key,
+    .gw-studio-accuracy,
+    .gw-family-card-kicker,
+    .gw-tier-note,
+    .ready-badge,
+    .s2-product-card__badge,
+    .product-card-badges .badge,
+    .status-badge,
+    .workspace-status
+  ) {
+  font-size: clamp(0.78rem, 0.74rem + 0.15vw, 0.9rem);
+}
+
+/* --------------------------------------------------------------------------
+   High-impact display surfaces
+   Route sheets intentionally use 0.80–1.00 line-height for English Archivo.
+   This is the collision-prone set in Arabic. A single final rule prevents
+   route order from reintroducing compressed Arabic after earlier overrides.
+   -------------------------------------------------------------------------- */
+html[lang='ar'] #root :where(
+    .gw-hero-title,
+    .gw-display,
+    .gw-title,
+    .display-title,
+    .section-title,
+    .page-hero h1,
+    .s2-hero h1,
+    .s2-shop-hero h1,
+    .s2-plp-head h1,
+    .s2-discover-head h1,
+    .s2-releases-head h1,
+    .s2-discover-hero h1,
+    .tw-hero-copy h1,
+    .cx-hero h1,
+    .bf-hero h1,
+    .gw-stage-title,
+    .gw-lab-title,
+    .gw-toolbench-title,
+    .gw-gate-title,
+    .gw-checkout-title,
+    .gw-account-title,
+    .gw-review-head h1,
+    .gw-terminal-title,
+    .gw-entrance-title,
+    .gw-ledger-title,
+    .gw-ledger-empty-line,
+    .gw-teams-hero-title,
+    .gw-teams-title,
+    .gw-console-title,
+    .gw-matrix-blank-title,
+    .gw-modulehead-title,
+    .cc-favorites-title,
+    .cc-cart-title,
+    .sb-pagehead__title,
+    .product-title,
+    .pdx-identity h1,
+    .cart-drawer-empty > p,
+    .cc-cart-empty__title,
+    .gw-manifesto-claim,
+    .gw-request-rail-title
+  ) {
+  font-family: var(--sh-font-display) !important;
+  font-stretch: normal !important;
+  font-weight: 820 !important;
+  line-height: 1.22 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-wrap: balance;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none;
+}
+
+/* A handful of legacy route rules explicitly made Arabic materially smaller
+   than English. Bring those surfaces back to optical parity while retaining
+   Arabic-safe leading, so Arabic feels equally deliberate rather than secondary. */
+html[lang='ar'] #root .s2-hero h1 {
+  font-size: var(--sh-t-hero-ar) !important;
+}
+
+html[lang='ar'] #root .gw-checkout-title {
+  font-size: clamp(1.85rem, 1.3rem + 2.4vw, 3.05rem) !important;
+}
+
+html[lang='ar'] #root .product-title {
+  font-size: clamp(1.7rem, 1.25rem + 1.8vw, 2.9rem) !important;
+}
+
+html[lang='ar'] #root .gw-stage-title {
+  font-size: clamp(1.9rem, 1.25rem + 3vw, 3.7rem) !important;
+}
+
+html[lang='ar'] #root .section-title {
+  font-size: var(--sh-t-title-ar) !important;
+}
+
+html[lang='ar'] #root .gw-manifesto-claim {
+  font-size: clamp(1.75rem, 1.15rem + 2.8vw, 3.2rem) !important;
+}
+
+html[lang='ar'] #root :where(
+    .s2-section__head h2,
+    .s2-campaign__copy h2,
+    .s2-split-feature__copy h2,
+    .s2-team-teaser h2,
+    .s2-release-empty h2,
+    .tw-section-head h2,
+    .tw-quote-copy h2,
+    .pdx-section-head h2,
+    .px-section-head h2,
+    .gw-desk h2,
+    .gw-continue-title,
+    .sb-content-guide__section h2
+  ) {
+  font-family: var(--sh-font-display) !important;
+  font-stretch: normal !important;
+  font-weight: 780 !important;
+  line-height: 1.26 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-wrap: balance;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+html[lang='ar'] #root :where(
+    .s2-editorial-tile__copy strong,
+    .s2-discover-card__copy strong,
+    .s2-category-banner strong,
+    .gw-principle-title,
+    .gw-helptopic-title,
+    .gw-lifecycle-inner > article h3,
+    .gw-family-card-name,
+    .product-card-name,
+    .cart-line-name
+  ) {
+  font-family: var(--sh-font-display) !important;
+  font-stretch: normal !important;
+  font-weight: 720 !important;
+  line-height: 1.34 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* The product-card Arabic override was intentionally smaller than English.
+   Lift it back to parity so the Arabic catalog does not look visually weaker. */
+html[lang='ar'] #root .product-card-name {
+  font-size: 1rem !important;
+}
+
+/* Editorial copy placed on imagery must grow vertically rather than collide. */
+html[lang='ar'] #root :where(
+    .s2-hero__content,
+    .s2-shop-hero__copy,
+    .s2-discover-hero__copy,
+    .s2-discover-card__copy,
+    .s2-editorial-tile__copy,
+    .s2-campaign__copy,
+    .cx-hero-copy,
+    .tw-hero-copy
+  ) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+/* Arabic actions can be wider than their English equivalents. Wrapping the
+   row is safer than allowing labels to overlap adjacent controls. */
+html[lang='ar'] #root :where(
+    .s2-hero__actions,
+    .pdx-secondary-actions,
+    .bf-builder-actions,
+    .cart-line-controls,
+    .gw-stack
+  ) {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+
+/* Tables/forms: preserve RTL reading order but keep mixed technical values and
+   prices isolated by their existing dir=ltr wrappers. */
+html[lang='ar'] #root :where(th, td) {
+  line-height: 1.55;
+}
+
+html[lang='ar'] #root :where(.field-check span, .contact-consent span) {
+  line-height: 1.6 !important;
+}
+
+/* Latin wordmarks remain optically identical in both locales. The surrounding
+   page is RTL, but these marks are brand assets/text rather than Arabic copy. */
+html[lang='ar'] #root :where(.contact-info h2, .contact-brand-wordmark) {
+  font-family: var(--sh-font-display) !important;
+  font-weight: 650 !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.055em !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+}
+
+/* Very narrow screens need slightly less display scale, not tighter leading. */
+@media (max-width: 640px) {
+  html[lang='ar'] {
+    --sh-t-hero-ar: clamp(2.55rem, 12vw, 4.7rem);
+    --sh-t-display-ar: clamp(2rem, 9.5vw, 3.65rem);
+    --sh-t-title-ar: clamp(1.5rem, 7vw, 2.35rem);
+  }
+
+  html[lang='ar'] #root :where(
+      .s2-hero h1,
+      .s2-shop-hero h1,
+      .s2-discover-head h1,
+      .s2-releases-head h1,
+      .s2-discover-hero h1,
+      .tw-hero-copy h1,
+      .cx-hero h1,
+      .bf-hero h1,
+      .gw-stage-title,
+      .gw-gate-title
+    ) {
+    line-height: 1.24 !important;
+    max-inline-size: 100% !important;
+  }
+
+  html[lang='ar'] #root :where(.s2-section__head, .s2-plp-head .s2-container) {
+    align-items: flex-start;
+  }
+
+  html[lang='ar'] .s2-section__head {
+    flex-wrap: wrap;
+  }
+}
