@@ -222,9 +222,13 @@ if (/youtube(?:-nocookie)?\.com|vimeo\.com|i\.ytimg\.com/i.test(heroMediaMap))
   fail.push('Hero video map must not use YouTube/Vimeo embeds or thumbnails');
 if (/\/media\/heroes\/|\/media\/official-brand\//u.test(heroMediaMap))
   fail.push('Hero video map still references legacy local fake-motion media');
-const filmUrls = [...heroMediaMap.matchAll(/https:\/\/underarmour\.scene7\.com\/is\/content\/Underarmour\/auto_dim7_[A-Za-z0-9-]+/gmu)].map((match) => match[0]);
+const filmUrls = [...heroMediaMap.matchAll(/\/media\/hero-videos\/[a-z-]+\.mp4/gmu)].map((match) => match[0]);
 if (filmUrls.length < 13 || new Set(filmUrls).size < 13)
-  fail.push('Hero video map must include at least 13 distinct direct official basketball MP4 renditions');
+  fail.push('Hero video map must include at least 13 distinct local basketball MP4 renditions');
+for (const url of filmUrls) {
+  if (!existsSync(`public/${url.replace(/^\//u, '')}`))
+    fail.push(`Hero video file is missing: ${url}`);
+}
 
 for (const file of readdirSync('api').filter((name) => name.endsWith('.js'))) {
   try {

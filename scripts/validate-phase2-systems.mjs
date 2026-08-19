@@ -34,9 +34,10 @@ const spinEngine = read('src/components/product/engines/SpinsetEngine.tsx');
 // Hero/media architecture.
 const heroKeys = ['home','shop','footwear','clothing','accessories','basketballs','equipment','shoeFinder','custom','discover','teams','stories','releases'];
 for (const key of heroKeys) record(`hero:${key}`, new RegExp(`\\b${key}: entry\\(`).test(heroMap));
-const mp4s = [...heroMap.matchAll(/https:\/\/underarmour\.scene7\.com\/is\/content\/Underarmour\/auto_dim7_[A-Za-z0-9-]+/g)].map((m) => m[0]);
-record('hero:13-direct-mp4s', mp4s.length === 13, `found ${mp4s.length}`);
+const mp4s = [...heroMap.matchAll(/\/media\/hero-videos\/[a-z-]+\.mp4/g)].map((m) => m[0]);
+record('hero:13-local-mp4s', mp4s.length === 13, `found ${mp4s.length}`);
 record('hero:13-unique-mp4s', new Set(mp4s).size === 13, `unique ${new Set(mp4s).size}`);
+record('hero:all-local-mp4-files-exist', mp4s.every((url) => exists(`public${url}`)), `missing ${mp4s.filter((url) => !exists(`public${url}`)).length}`);
 record('hero:native-home-video', heroPlayer.includes('<video') && heroPlayer.includes('autoPlay') && heroPlayer.includes('muted') && heroPlayer.includes('playsInline'));
 record('hero:native-editorial-video', editorialMedia.includes('<video') && editorialMedia.includes('autoPlay') && editorialMedia.includes('muted') && editorialMedia.includes('playsInline'));
 record('hero:no-youtube-player-runtime', !/(youtube-nocookie|youtube\.com\/embed|youtu\.be|i\.ytimg\.com|vimeo\.com)/i.test(`${heroMap}\n${heroPlayer}\n${editorialMedia}\n${index}`));

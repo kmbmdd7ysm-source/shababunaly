@@ -13,7 +13,8 @@ describe('performance architecture', () => {
     expect(hero).toContain('autoPlay');
     expect(hero).not.toContain('YouTubeBackground');
     expect(media).toContain('/media/hero-posters/home.webp');
-    expect(media).toContain('underarmour.scene7.com/is/content/Underarmour/');
+    expect(media).toContain('/media/hero-videos/home.mp4');
+    expect(media.match(/\/media\/hero-videos\/[a-z-]+\.mp4/g)?.length).toBe(13);
   });
 
   it('keeps the bundled home fallback poster within the current draft budget', () => {

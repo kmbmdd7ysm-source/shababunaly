@@ -1,37 +1,23 @@
-# Global basketball media provenance — current runtime
+# SHABABUNA Media Source Provenance
 
-## Hero motion
+## Current hero video source of truth
 
-`src/data/localHeroMedia.ts` contains 13 distinct direct MP4 renditions on `underarmour.scene7.com/is/content/Underarmour/`. The native `<video>` player is used; no iframe player is part of the current hero runtime.
+`src/data/localHeroMedia.ts` now references 13 distinct, self-hosted MP4 files under `public/media/hero-videos/`. These are the replacement basketball videos supplied by the user on 2026-08-19. The runtime uses native muted autoplay `<video>` elements with local poster fallbacks. No external hero-video host is required.
 
-The current direct video keys are:
+Current hero slots:
 
-- Curry 13 — `auto_dim7_6007670-419`
-- Curry 12 Dub Nation — `auto_dim7_3027630-001`
-- Lockdown 7 Low — `auto_dim7_3027646-600`
-- D. Fox 2 x Sharpie — `auto_dim7_6017491-100`
-- UA Jet 25 — `auto_dim7_6001587-102`
-- D. Fox 2 At The Buzzer — `auto_dim7_6012728-001`
-- Curry 3Z 24 — `auto_dim7_3027627-004`
-- Curry 12 Wardell — `auto_dim7_3027634-001`
-- Curry Splash 25 — `auto_dim7_3028459-016`
-- D. Fox 2 — `auto_dim7_6000777-400`
-- Curry 13 Grade School — `auto_dim7_6014870-419`
-- Lockdown 8 Patches Grade School — `auto_dim7_6015212-361`
-- Curry 12 Team — `auto_dim7_6000736-103`
+- Home — `/media/hero-videos/home.mp4`
+- Shop — `/media/hero-videos/shop.mp4`
+- Footwear — `/media/hero-videos/footwear.mp4`
+- Clothing — `/media/hero-videos/clothing.mp4`
+- Accessories — `/media/hero-videos/accessories.mp4`
+- Basketballs — `/media/hero-videos/basketballs.mp4`
+- Equipment — `/media/hero-videos/equipment.mp4`
+- Shoe Finder — `/media/hero-videos/shoe-finder.mp4`
+- Custom — `/media/hero-videos/custom.mp4`
+- Discover — `/media/hero-videos/discover.mp4`
+- Teams — `/media/hero-videos/teams.mp4`
+- Stories — `/media/hero-videos/stories.mp4`
+- Releases — `/media/hero-videos/releases.mp4`
 
-These are direct remote MP4 references, not first-party stored video files. The project does not describe them as self-hosted.
-
-## Local still media
-
-Editorial stills selected for active storefront mappings are localized under `public/media/localized-brand/`, `public/media/official-brand/` and existing local product image folders. Runtime category/custom/story mappings no longer require external static-image hotlinks.
-
-## Verification
-
-The current source truth is generated/checked by:
-
-- `npm run validate:phase2-systems`
-- `npm run validate:media`
-- `npm run validate:final-hardening`
-
-Historical media reports that described the old YouTube or nine-video architecture are stored under `reports/archive/phase2-pre-native-video/` and are not current release evidence.
+All corresponding first-paint posters are local under `public/media/hero-posters/`. Editorial and campaign stills are local under `public/media/localized-brand/`.

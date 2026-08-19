@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-18T20:15:22.093Z",
+  "generatedAt": "2026-08-19T20:37:12.579Z",
   "phase": 2,
   "scope": "production systems and customer experience source audit",
-  "checks": 51,
+  "checks": 52,
   "failures": 0,
   "passed": true,
   "results": [
@@ -72,7 +72,7 @@
       "detail": ""
     },
     {
-      "name": "hero:13-direct-mp4s",
+      "name": "hero:13-local-mp4s",
       "ok": true,
       "detail": "found 13"
     },
@@ -80,6 +80,11 @@
       "name": "hero:13-unique-mp4s",
       "ok": true,
       "detail": "unique 13"
+    },
+    {
+      "name": "hero:all-local-mp4-files-exist",
+      "ok": true,
+      "detail": "missing 0"
     },
     {
       "name": "hero:native-home-video",

@@ -24,7 +24,9 @@ describe('phase 2 production systems', () => {
     expect(home).toContain('<video');
     expect(home).toContain('autoPlay');
     expect(editorial).toContain('<video');
-    expect(map.match(/underarmour\.scene7\.com\/is\/content\/Underarmour\/auto_dim7_/g)?.length).toBe(13);
+    const localMp4s = map.match(/\/media\/hero-videos\/[a-z-]+\.mp4/g) || [];
+    expect(localMp4s.length).toBe(13);
+    expect(new Set(localMp4s).size).toBe(13);
     expect(`${map}\n${home}\n${editorial}`).not.toContain('youtube-nocookie.com');
   });
 
