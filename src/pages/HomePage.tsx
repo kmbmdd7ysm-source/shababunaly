@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import EditorialMedia from '../components/common/EditorialMedia';
@@ -10,7 +9,7 @@ import { useCatalog } from '../context/CatalogContext';
 import { useCinematicOpening } from '../hooks/useCinematicOpening';
 import { SITE } from '../config';
 import { CATEGORY_WORLDS, HOME_CAMPAIGN, HOME_TRENDS } from '../data/merchandising';
-import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
+import { EDITORIAL as E } from '../data/editorialAssets.ts';
 import '../styles/design/phase2-home.css';
 import '../styles/design/phase2-commerce.css';
 
@@ -35,11 +34,6 @@ export default function HomePage(): ReactElement {
         description="Basketball products, performance gear, custom design and culture from Shababuna."
         path="/"
       />
-      <Helmet>
-        <link rel="preload" as="image" href={LOCAL_HERO_MEDIA.home.desktopPoster} media="(min-width: 768px)" />
-        <link rel="preload" as="image" href={LOCAL_HERO_MEDIA.home.mobilePoster} media="(max-width: 767px)" />
-      </Helmet>
-
       <CinematicHero />
 
       <section id="s2-trending" className="s2-section s2-section--flush" aria-labelledby="s2-trending-title">
@@ -152,7 +146,7 @@ export default function HomePage(): ReactElement {
 
       <section className="s2-split-feature" aria-labelledby="s2-custom-title">
         <div className="s2-split-feature__media">
-          <img src="/media/localized-brand/adidas_team.png" alt="" width="1400" height="900" loading="lazy" />
+          <img src={E.shanghaiPlayers} alt="" width="1400" height="900" loading="lazy" />
         </div>
         <div className="s2-split-feature__copy">
           <span className="s2-overline">{pick({ en: 'Custom studio', ar: 'استوديو التخصيص' })}</span>
@@ -171,11 +165,11 @@ export default function HomePage(): ReactElement {
         </div>
         <div className="s2-story-pair s2-container">
           <Link to="/stories" className="s2-story-card">
-            <img src="/media/localized-brand/puma_court.png" alt="" width="1400" height="900" loading="lazy" />
+            <img src={E.curryHeroBall} alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'Inside the game', ar: 'داخل اللعبة' })}</strong></span>
           </Link>
           <Link to="/stories" className="s2-story-card">
-            <img src="/media/localized-brand/portrait_closeup.webp" alt="" width="1400" height="900" loading="lazy" />
+            <img src={E.lameloSpaceStanding} alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball culture', ar: 'ثقافة كرة السلة' })}</small><strong>{pick({ en: 'Beyond the game', ar: 'أبعد من اللعبة' })}</strong></span>
           </Link>
         </div>

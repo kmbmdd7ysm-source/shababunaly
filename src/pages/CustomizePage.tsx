@@ -10,24 +10,25 @@ import { submitPublicQuote } from '../services/publicQuotes';
 import { uploadCustomDesignAsset, validateCustomLogo } from '../services/customDesignAssets';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
+import { EDITORIAL as E } from '../data/editorialAssets.ts';
 import { CUSTOM_COLOR_OPTIONS } from '../components/custom/customColors';
 import '../styles/custom-experience.css';
 import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': '/media/localized-brand/nike-teamwear-courtside.webp',
-  'game-jersey': '/media/localized-brand/adidas_team.png',
-  'game-shorts': '/images/products/lha-performance-shorts-black.webp',
-  'practice-set': '/media/localized-brand/ua_dribble.png',
-  'shooting-shirt': '/images/products/own-the-game-sleeveless-top-black.webp',
-  hoodie: '/images/products/own-the-game-pullover-hoodie-black.webp',
-  'team-pants': '/images/products/own-the-game-fleece-pants-black.webp',
-  tracksuit: '/images/products/lha-premium-fleece-set-black.webp',
-  'team-bag': '/images/products/lha-elite-basketball-backpack-black.webp',
-  sleeve: '/media/localized-brand/portrait_atwo.webp',
-  basketball: '/media/hero-posters/basketballs.webp',
-  'hoop-padding': '/media/localized-brand/puma_court.png',
+  'game-set': E.shanghaiPlayers,
+  'game-jersey': E.curryHeroBall,
+  'game-shorts': E.curryPatternRear,
+  'practice-set': E.curryDrive,
+  'shooting-shirt': E.curryBallPortrait,
+  hoodie: E.curryWhiteHoodClose,
+  'team-pants': E.lameloSpaceStanding,
+  tracksuit: E.lameloSpaceSeated,
+  'team-bag': E.lameloChairA,
+  sleeve: E.curryBallPortrait,
+  basketball: E.curryPortraitBall,
+  'hoop-padding': E.curryLayupWide,
 };
 
 export default function CustomizePage(): ReactElement {
@@ -138,11 +139,8 @@ export default function CustomizePage(): ReactElement {
         <header className="cx-hero cx-hero--editorial">
           <div className="cx-hero-media" aria-hidden="true">
             <EditorialMedia
-              desktopMedia={LOCAL_HERO_MEDIA.custom.desktopPoster}
-              mobileMedia={LOCAL_HERO_MEDIA.custom.mobilePoster}
               desktopVideo={LOCAL_HERO_MEDIA.custom.desktopVideo}
               mobileVideo={LOCAL_HERO_MEDIA.custom.mobileVideo}
-              poster={LOCAL_HERO_MEDIA.custom.desktopPoster}
               loading="eager"
             />
             <span className="cx-hero-media__shade" />

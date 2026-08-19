@@ -1,13 +1,5 @@
 // Generated from optimized files that exist in public/.
 export const OPTIMIZED_IMAGES: Record<string, string> = {
-  '/images/categories/accessories-hero-player.webp':
-    '/images/categories/accessories-hero-player.opt.webp',
-  '/images/categories/accessories-hero-player.jpeg':
-    '/images/categories/accessories-hero-player.opt.webp',
-  '/images/categories/clothing-hero-player.webp':
-    '/images/categories/clothing-hero-player.opt.webp',
-  '/images/categories/clothing-hero-player.jpeg':
-    '/images/categories/clothing-hero-player.opt.webp',
   '/images/products/all-i-know-is-win-tee-black.webp':
     '/images/products/all-i-know-is-win-tee-black.opt.webp',
   '/images/products/all-i-know-is-win-tee-black.png':

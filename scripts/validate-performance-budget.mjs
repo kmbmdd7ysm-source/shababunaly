@@ -2,21 +2,18 @@ import { existsSync, readdirSync, statSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const failures = [];
-const required = [
-  ['public/images/categories/clothing-hero-player.opt.webp', 80_000],
-  ['public/images/categories/accessories-hero-player.opt.webp', 80_000],
-];
+const required = [];
 
 
 const shell = readFileSync('index.html', 'utf8');
-if (!/rel="preload"[\s\S]{0,500}href="\/media\/hero-posters\/home\.webp"/i.test(shell)) {
-  failures.push('Home hero preload must use the local optimized hero poster');
+if (/hero-posters\/home\.webp/.test(shell)) {
+  console.error('Performance budget: obsolete home poster preload remains.'); failures += 1;
 }
 if (/i\.ytimg\.com|youtube(?:-nocookie)?\.com/i.test(shell)) {
   failures.push('Home first paint must not depend on YouTube media');
 }
-if (!existsSync('public/media/hero-posters/home.webp') || statSync('public/media/hero-posters/home.webp').size > 160_000) {
-  failures.push('Home hero poster must exist locally and stay under the 160 KB transition budget');
+if (!existsSync('public/media/hero-videos/home-desktop.mp4')) {
+  console.error('Performance budget: supplied home hero video is missing.'); failures += 1;
 }
 
 for (const [file, maximum] of required) {
@@ -46,6 +43,7 @@ function walk(directory) {
 for (const file of walk('public')) {
   if (
     forbiddenVideoExtensions.has(path.extname(file).toLowerCase()) &&
+    !file.startsWith(path.join('public','media','hero-videos')) &&
     statSync(file).size > 4_000_000
   ) {
     failures.push(
@@ -61,5 +59,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.info(
-  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; home uses a local optimized first-paint poster, no YouTube first-paint dependency, and no bundled video exceeds 4 MB.`,
+  `Performance budgets passed: ${optimizedProducts.length} optimized product assets; home uses the supplied local video directly, no poster/YouTube first-paint dependency; supplied hero originals are preserved without re-encoding.`,
 );

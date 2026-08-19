@@ -79,11 +79,8 @@ export default function DiscoverPage(): ReactElement {
 
         <header className="s2-discover-hero s2-discover-hero--landing">
           <EditorialMedia
-            desktopMedia={LOCAL_HERO_MEDIA.discover.desktopPoster}
-            mobileMedia={LOCAL_HERO_MEDIA.discover.mobilePoster}
             desktopVideo={LOCAL_HERO_MEDIA.discover.desktopVideo}
             mobileVideo={LOCAL_HERO_MEDIA.discover.mobileVideo}
-            poster={LOCAL_HERO_MEDIA.discover.desktopPoster}
             loading="eager"
           />
           <span className="s2-discover-hero__shade" />
@@ -132,7 +129,6 @@ export default function DiscoverPage(): ReactElement {
           mobileMedia={current.mobileMedia}
           desktopVideo={currentHero.desktopVideo}
           mobileVideo={currentHero.mobileVideo}
-          poster={current.desktopMedia}
           loading="eager"
         />
         <span className="s2-discover-hero__shade" />

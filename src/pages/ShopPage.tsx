@@ -247,7 +247,6 @@ export default function ShopPage(): ReactElement {
             mobileMedia={world.mobileMedia}
             desktopVideo={categoryHero?.desktopVideo}
             mobileVideo={categoryHero?.mobileVideo}
-            poster={categoryHero?.desktopPoster || world.desktopMedia}
           />
           <span className="s2-category-banner__shade" />
           <strong>{pick(world.title)}</strong>

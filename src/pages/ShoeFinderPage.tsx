@@ -60,11 +60,8 @@ export default function ShoeFinderPage(): ReactElement {
           </div>
           <div className="bf-hero-media" aria-hidden="true">
             <EditorialMedia
-              desktopMedia={LOCAL_HERO_MEDIA.shoeFinder.desktopPoster}
-              mobileMedia={LOCAL_HERO_MEDIA.shoeFinder.mobilePoster}
               desktopVideo={LOCAL_HERO_MEDIA.shoeFinder.desktopVideo}
               mobileVideo={LOCAL_HERO_MEDIA.shoeFinder.mobileVideo}
-              poster={LOCAL_HERO_MEDIA.shoeFinder.desktopPoster}
               loading="eager"
             />
           </div>

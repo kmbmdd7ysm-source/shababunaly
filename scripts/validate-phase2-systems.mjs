@@ -35,14 +35,14 @@ const spinEngine = read('src/components/product/engines/SpinsetEngine.tsx');
 const heroKeys = ['home','shop','footwear','clothing','accessories','basketballs','equipment','shoeFinder','custom','discover','teams','stories','releases'];
 for (const key of heroKeys) record(`hero:${key}`, new RegExp(`\\b${key}: entry\\(`).test(heroMap));
 const mp4s = [...heroMap.matchAll(/\/media\/hero-videos\/[a-z-]+\.mp4/g)].map((m) => m[0]);
-record('hero:13-local-mp4s', mp4s.length === 13, `found ${mp4s.length}`);
-record('hero:13-unique-mp4s', new Set(mp4s).size === 13, `unique ${new Set(mp4s).size}`);
+record('hero:15-local-mp4-source-refs', mp4s.length === 15, `found ${mp4s.length}`);
+record('hero:15-unique-mp4-sources', new Set(mp4s).size === 15, `unique ${new Set(mp4s).size}`);
 record('hero:all-local-mp4-files-exist', mp4s.every((url) => exists(`public${url}`)), `missing ${mp4s.filter((url) => !exists(`public${url}`)).length}`);
 record('hero:native-home-video', heroPlayer.includes('<video') && heroPlayer.includes('autoPlay') && heroPlayer.includes('muted') && heroPlayer.includes('playsInline'));
 record('hero:native-editorial-video', editorialMedia.includes('<video') && editorialMedia.includes('autoPlay') && editorialMedia.includes('muted') && editorialMedia.includes('playsInline'));
 record('hero:no-youtube-player-runtime', !/(youtube-nocookie|youtube\.com\/embed|youtu\.be|i\.ytimg\.com|vimeo\.com)/i.test(`${heroMap}\n${heroPlayer}\n${editorialMedia}\n${index}`));
 record('hero:no-fake-drift', !/s2-hero-drift|@keyframes\s+[^}]*hero[^}]*scale\(/i.test(homeCss));
-record('hero:local-first-paint-poster', index.includes('/media/hero-posters/home.webp') && exists('public/media/hero-posters/home.webp'));
+record('hero:video-only-first-paint', !index.includes('/media/hero-posters/') && exists('public/media/hero-videos/home-desktop.mp4'));
 record('hero:no-legacy-youtube-component', !exists('src/components/common/YouTubeBackground.tsx'));
 
 // Real custom logo upload, quarantine and quote association.

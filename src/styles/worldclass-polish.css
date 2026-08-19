@@ -850,66 +850,66 @@ textarea {
 .gw-gate-shell[data-dept='clothing'],
 .gw-world-headband[data-dept='clothing'],
 .gw-world-headband[data-dept='all'] {
-  --gw-gate-art: url('/media/localized-brand/adidas_team.png');
-  --gw-dept-art: url('/media/localized-brand/adidas_team.png');
+  --gw-gate-art: url('/media/editorial/4B96D94D-6244-4035-B0ED-ED86F43A9E30.jpeg');
+  --gw-dept-art: url('/media/editorial/4B96D94D-6244-4035-B0ED-ED86F43A9E30.jpeg');
 }
 .gw-gate-shell[data-dept='footwear'],
 .gw-world-headband[data-dept='footwear'] {
-  --gw-gate-art: url('/media/localized-brand/nike_green_product.webp');
-  --gw-dept-art: url('/media/localized-brand/nike_green_product.webp');
+  --gw-gate-art: url('/media/editorial/ECE22685-D424-4DA0-9DFA-A8C6CC6FE9F3.jpeg');
+  --gw-dept-art: url('/media/editorial/ECE22685-D424-4DA0-9DFA-A8C6CC6FE9F3.jpeg');
 }
 .gw-gate-shell[data-dept='accessories'],
 .gw-world-headband[data-dept='accessories'] {
-  --gw-gate-art: url('/media/localized-brand/portrait_aone.webp');
-  --gw-dept-art: url('/media/localized-brand/portrait_aone.webp');
+  --gw-gate-art: url('/media/editorial/199347CA-B0A5-415C-8005-2AC0C822ABA4.jpeg');
+  --gw-dept-art: url('/media/editorial/199347CA-B0A5-415C-8005-2AC0C822ABA4.jpeg');
 }
 .gw-gate-shell[data-dept='basketballs'],
 .gw-world-headband[data-dept='basketballs'] {
-  --gw-gate-art: url('/media/localized-brand/portrait_closeup.webp');
-  --gw-dept-art: url('/media/localized-brand/portrait_closeup.webp');
+  --gw-gate-art: url('/media/editorial/031A6FBE-9004-4B96-81E7-DCEFAE75C0EA.jpeg');
+  --gw-dept-art: url('/media/editorial/031A6FBE-9004-4B96-81E7-DCEFAE75C0EA.jpeg');
 }
 .gw-gate-shell[data-dept='equipment'],
 .gw-world-headband[data-dept='equipment'] {
-  --gw-gate-art: url('/media/localized-brand/puma_court.png');
-  --gw-dept-art: url('/media/localized-brand/puma_court.png');
+  --gw-gate-art: url('/media/editorial/B6FA2B00-7C16-4854-8E50-504FC829FC72.jpeg');
+  --gw-dept-art: url('/media/editorial/B6FA2B00-7C16-4854-8E50-504FC829FC72.jpeg');
 }
 .gw-gate-shell[data-dept='ready-to-ship'],
 .gw-world-headband[data-dept='ready-to-ship'] {
-  --gw-gate-art: url('/images/products/own-the-game-pullover-hoodie-black.webp');
-  --gw-dept-art: url('/images/products/own-the-game-pullover-hoodie-black.webp');
+  --gw-gate-art: url('/media/editorial/C902867A-93A1-410C-A318-0C1BEC305FA3.jpeg');
+  --gw-dept-art: url('/media/editorial/C902867A-93A1-410C-A318-0C1BEC305FA3.jpeg');
 }
 
 @media (max-width: 640px) {
   .gw-gate-shell[data-dept='clothing'],
   .gw-world-headband[data-dept='clothing'],
   .gw-world-headband[data-dept='all'] {
-    --gw-gate-art: url('/media/localized-brand/adidas_team.png');
-    --gw-dept-art: url('/media/localized-brand/adidas_team.png');
+    --gw-gate-art: url('/media/editorial/4B96D94D-6244-4035-B0ED-ED86F43A9E30.jpeg');
+    --gw-dept-art: url('/media/editorial/4B96D94D-6244-4035-B0ED-ED86F43A9E30.jpeg');
   }
   .gw-gate-shell[data-dept='footwear'],
   .gw-world-headband[data-dept='footwear'] {
-    --gw-gate-art: url('/media/localized-brand/nike_green_product.webp');
-    --gw-dept-art: url('/media/localized-brand/nike_green_product.webp');
+    --gw-gate-art: url('/media/editorial/ECE22685-D424-4DA0-9DFA-A8C6CC6FE9F3.jpeg');
+    --gw-dept-art: url('/media/editorial/ECE22685-D424-4DA0-9DFA-A8C6CC6FE9F3.jpeg');
   }
   .gw-gate-shell[data-dept='accessories'],
   .gw-world-headband[data-dept='accessories'] {
-    --gw-gate-art: url('/media/localized-brand/portrait_aone.webp');
-    --gw-dept-art: url('/media/localized-brand/portrait_aone.webp');
+    --gw-gate-art: url('/media/editorial/199347CA-B0A5-415C-8005-2AC0C822ABA4.jpeg');
+    --gw-dept-art: url('/media/editorial/199347CA-B0A5-415C-8005-2AC0C822ABA4.jpeg');
   }
   .gw-gate-shell[data-dept='basketballs'],
   .gw-world-headband[data-dept='basketballs'] {
-    --gw-gate-art: url('/media/localized-brand/portrait_closeup.webp');
-    --gw-dept-art: url('/media/localized-brand/portrait_closeup.webp');
+    --gw-gate-art: url('/media/editorial/031A6FBE-9004-4B96-81E7-DCEFAE75C0EA.jpeg');
+    --gw-dept-art: url('/media/editorial/031A6FBE-9004-4B96-81E7-DCEFAE75C0EA.jpeg');
   }
   .gw-gate-shell[data-dept='equipment'],
   .gw-world-headband[data-dept='equipment'] {
-    --gw-gate-art: url('/media/localized-brand/puma_court.png');
-    --gw-dept-art: url('/media/localized-brand/puma_court.png');
+    --gw-gate-art: url('/media/editorial/B6FA2B00-7C16-4854-8E50-504FC829FC72.jpeg');
+    --gw-dept-art: url('/media/editorial/B6FA2B00-7C16-4854-8E50-504FC829FC72.jpeg');
   }
   .gw-gate-shell[data-dept='ready-to-ship'],
   .gw-world-headband[data-dept='ready-to-ship'] {
-    --gw-gate-art: url('/images/products/own-the-game-pullover-hoodie-black.webp');
-    --gw-dept-art: url('/images/products/own-the-game-pullover-hoodie-black.webp');
+    --gw-gate-art: url('/media/editorial/C902867A-93A1-410C-A318-0C1BEC305FA3.jpeg');
+    --gw-dept-art: url('/media/editorial/C902867A-93A1-410C-A318-0C1BEC305FA3.jpeg');
   }
 }
 

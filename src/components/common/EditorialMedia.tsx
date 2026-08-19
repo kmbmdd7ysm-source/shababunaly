@@ -1,59 +1,22 @@
 import type { ReactElement } from 'react';
-import { useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 type EditorialMediaProps = {
-  desktopMedia: string;
+  desktopMedia?: string;
   mobileMedia?: string;
   desktopVideo?: string;
   mobileVideo?: string;
   alt?: string;
   loading?: 'eager' | 'lazy';
-  poster?: string;
 };
-
-function videoType(url: string): string {
-  if (/\.webm($|\?)/i.test(url)) return 'video/webm';
-  return 'video/mp4';
-}
-
-export default function EditorialMedia({
-  desktopMedia,
-  mobileMedia,
-  desktopVideo,
-  mobileVideo,
-  alt = '',
-  loading = 'lazy',
-  poster,
-}: EditorialMediaProps): ReactElement {
+function videoType(url: string): string { return /\.webm($|\?)/i.test(url) ? 'video/webm' : 'video/mp4'; }
+export default function EditorialMedia({desktopMedia='',mobileMedia,desktopVideo,mobileVideo,alt='',loading='lazy'}: EditorialMediaProps): ReactElement {
   const reducedMotion = useReducedMotion();
-  const [failed, setFailed] = useState(false);
-  const hasMotion = !reducedMotion && !failed && Boolean(desktopVideo || mobileVideo);
-
-  if (hasMotion) {
-    return (
-      <video
-        muted
-        loop
-        playsInline
-        autoPlay
-        disablePictureInPicture
-        controls={false}
-        preload={loading === 'eager' ? 'auto' : 'metadata'}
-        poster={poster || mobileMedia || desktopMedia}
-        onError={() => setFailed(true)}
-        aria-hidden={alt ? undefined : true}
-      >
-        {mobileVideo ? <source media="(max-width: 699px)" src={mobileVideo} type={videoType(mobileVideo)} /> : null}
-        {desktopVideo ? <source src={desktopVideo} type={videoType(desktopVideo)} /> : null}
-      </video>
-    );
+  if (desktopVideo || mobileVideo) {
+    return <video muted loop playsInline autoPlay={!reducedMotion} disablePictureInPicture controls={false} preload={loading === 'eager' ? 'auto' : 'metadata'} aria-hidden={alt ? undefined : true}>
+      {mobileVideo ? <source media="(max-width: 699px)" src={mobileVideo} type={videoType(mobileVideo)} /> : null}
+      {desktopVideo ? <source src={desktopVideo} type={videoType(desktopVideo)} /> : null}
+    </video>;
   }
-
-  return (
-    <picture>
-      {mobileMedia ? <source media="(max-width: 699px)" srcSet={mobileMedia} /> : null}
-      <img src={desktopMedia} alt={alt} width="1600" height="1067" loading={loading} />
-    </picture>
-  );
+  return <picture>{mobileMedia ? <source media="(max-width: 699px)" srcSet={mobileMedia} /> : null}<img src={desktopMedia} alt={alt} width="1600" height="1067" loading={loading} decoding="async" /></picture>;
 }

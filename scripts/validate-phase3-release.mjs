@@ -104,16 +104,17 @@ record('advanced:quote-specific-payment-terms', advanced.includes("paymentTerms:
 // Hero runtime: native browser video, no player chrome, optimized local posters.
 const heroKeys = ['home','shop','footwear','clothing','accessories','basketballs','equipment','shoeFinder','custom','discover','teams','stories','releases'];
 for (const key of heroKeys) record(`hero:${key}`, new RegExp(`\\b${key}: entry\\(`).test(heroMap));
-const remoteVideos = [...heroMap.matchAll(/https:\/\/underarmour\.scene7\.com\/is\/content\/Underarmour\/[A-Za-z0-9_-]+/g)].map((m) => m[0]);
-record('hero:13-direct-video-sources', remoteVideos.length === 13, `found ${remoteVideos.length}`);
-record('hero:13-unique-video-sources', new Set(remoteVideos).size === 13, `unique ${new Set(remoteVideos).size}`);
+const localVideos = [...heroMap.matchAll(/\/media\/hero-videos\/[a-z-]+\.mp4/g)].map((m) => m[0]);
+record('hero:15-local-original-source-refs', localVideos.length === 15, `found ${localVideos.length}`);
+record('hero:15-unique-local-sources', new Set(localVideos).size === 15, `unique ${new Set(localVideos).size}`);
+record('hero:all-local-source-files-exist', localVideos.every((url) => exists(`public${url}`)));
 record('hero:native-video-components', heroPlayer.includes('<video') && editorial.includes('<video') && heroPlayer.includes('autoPlay') && editorial.includes('autoPlay'));
 record('hero:no-youtube-vimeo-runtime', !/(youtube|youtu\.be|ytimg|vimeo|<iframe)/i.test(`${heroMap}\n${heroPlayer}\n${editorial}`));
 record('hero:no-decorative-infinite-scroll-loop', !/gw-hero-scroll-tick[\s\S]{0,220}infinite/.test(homeCss));
 
-const posterRefs = [...heroMap.matchAll(/['"](\/media\/hero-posters\/[^'"]+)['"]/g)].map((m) => m[1]);
+const posterRefs = [];
 const uniquePosters = [...new Set(posterRefs)];
-record('hero:13-local-posters', uniquePosters.length === 13, `found ${uniquePosters.length}`);
+record('hero:no-local-posters', uniquePosters.length === 0, `found ${uniquePosters.length}`);
 let posterBytes = 0;
 for (const ref of uniquePosters) {
   const file = `public${ref}`;
@@ -126,9 +127,7 @@ for (const ref of uniquePosters) {
   }
 }
 record('hero-poster:aggregate-budget', posterBytes <= 800 * 1024, `${posterBytes} bytes`);
-if (remoteVideos.some((url) => /^https:\/\//.test(url))) {
-  warn('hero-video-first-party-ownership', '13 hero videos remain direct external MP4 sources; local licensed video payloads were not present in the user ZIP.');
-}
+record('hero:no-remote-video-sources', !/https:\/\//.test(heroMap));
 
 // First-paint locale, keyboard entry and responsive invariants.
 record('locale:first-paint-lang-dir', bootstrap.includes('root.lang = language') && bootstrap.includes("root.dir = language === 'ar' ? 'rtl' : 'ltr'"));

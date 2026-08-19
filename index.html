@@ -48,45 +48,14 @@
     <link rel="apple-touch-icon" href="/favicon.png" />
     <link rel="mask-icon" href="/favicon.svg" color="#050505" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link
-      rel="preload"
-      as="image"
-      href="/media/hero-posters/home.webp"
-      imagesrcset="/media/hero-posters/home.webp 1600w"
-      imagesizes="100vw"
-      fetchpriority="high"
-    />
     <style>
-      /* Critical LCP shell — paints before JS; absolute so late removal avoids CLS */
+      /* Critical base paint. Hero media is video-only and mounts with React. */
       html,
       body {
         margin: 0;
         background: #050505;
       }
-      #lcp-shell.gw-hero-ssr {
-        /* Fixed overlay so it remains the LCP candidate until retired */
-        position: fixed;
-        inset: 0 0 auto 0;
-        z-index: 9999;
-        width: 100%;
-        min-height: max(640px, 92svh);
-        height: max(640px, 92svh);
-        background: #050505;
-        overflow: hidden;
-        pointer-events: none;
-      }
-      #lcp-shell.gw-hero-ssr.is-retiring {
-        opacity: 0;
-        transition: opacity 240ms ease;
-      }
-
-      #lcp-shell .gw-hero-poster {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      #root {
+#root {
         position: relative;
         z-index: 1;
       }
@@ -97,29 +66,14 @@
     </style>
     <!-- Self-hosted faces are declared in src/styles/fonts.css and are deliberately
          NOT preloaded yet: no live route paints them, so a preload would cost every
-         visitor ~36 KB for nothing and would compete with the hero poster above for
-         LCP priority. The preload lands with the phase that adopts the typography
+         visitor ~36 KB for nothing and would compete with hero video startup.
+         The preload lands with the phase that adopts the typography
          site-wide; until then the faces load on demand, which today means only on
          the /lab/home prototype. -->
     <title>SHABABUNA | BUILT DIFFERENT</title>
   </head>
   <body>
     <a id="skip-link" class="skip-link" href="#main-content">Skip to content</a>
-    <!--
-      Static LCP shell OUTSIDE #root so React mount does not reset LCP.
-      Home retires it after the LCP window; non-home routes remove immediately.
-    -->
-    <section id="lcp-shell" class="gw-hero-ssr" aria-hidden="true">
-      <img
-        class="gw-hero-poster"
-        src="/media/hero-posters/home.webp"
-        width="1600"
-        height="900"
-        fetchpriority="high"
-        decoding="sync"
-        alt=""
-      />
-    </section>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

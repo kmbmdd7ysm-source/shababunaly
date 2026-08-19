@@ -45,11 +45,8 @@ export default function ReleasesPage(): ReactElement {
 
       <header className="s2-discover-hero">
         <EditorialMedia
-          desktopMedia={LOCAL_HERO_MEDIA.releases.desktopPoster}
-          mobileMedia={LOCAL_HERO_MEDIA.releases.mobilePoster}
           desktopVideo={LOCAL_HERO_MEDIA.releases.desktopVideo}
           mobileVideo={LOCAL_HERO_MEDIA.releases.mobileVideo}
-          poster={LOCAL_HERO_MEDIA.releases.desktopPoster}
           loading="eager"
         />
         <span className="s2-discover-hero__shade" />

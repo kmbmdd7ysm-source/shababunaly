@@ -575,8 +575,8 @@
   z-index: 0;
   pointer-events: none;
   background-image: image-set(
-    url('/media/localized-brand/nike-teamwear-courtside.webp') 1x,
-    url('/media/localized-brand/nike-teamwear-courtside.webp') 2x
+    url('/media/editorial/C40AFE70-7A5E-4932-8F61-2B63DD9FF314.jpeg') 1x,
+    url('/media/editorial/C40AFE70-7A5E-4932-8F61-2B63DD9FF314.jpeg') 2x
   );
   background-size: cover;
   background-position: center 62%;
@@ -585,7 +585,7 @@
 
 @media (max-width: 899px) {
   .gw-stage-canvas::before {
-    background-image: image-set(url('/media/localized-brand/nike-teamwear-courtside.webp') 1x);
+    background-image: image-set(url('/media/editorial/C40AFE70-7A5E-4932-8F61-2B63DD9FF314.jpeg') 1x);
     background-position: center 58%;
   }
 }
