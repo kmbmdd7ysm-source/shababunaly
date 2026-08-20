@@ -102,14 +102,14 @@
     "validate:independent-final": "node --experimental-strip-types scripts/validate-independent-final.mjs"
   },
   "dependencies": {
-    "@google/model-viewer": "^3.5.0",
-    "@react-three/fiber": "^8.17.10",
-    "@supabase/supabase-js": "2.110.6",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-helmet-async": "2.0.5",
-    "react-router-dom": "6.30.4",
-    "three": "0.163.0"
+    "@google/model-viewer": "^4.3.1",
+    "@react-three/fiber": "^9.7.0",
+    "@supabase/supabase-js": "2.112.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-helmet-async": "3.0.0",
+    "react-router-dom": "7.18.2",
+    "three": "0.185.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
@@ -121,8 +121,8 @@
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
     "@types/node": "22.19.1",
-    "@types/react": "18.3.27",
-    "@types/react-dom": "18.3.7",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
     "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "4.7.0",
     "@vitest/coverage-v8": "3.2.4",
