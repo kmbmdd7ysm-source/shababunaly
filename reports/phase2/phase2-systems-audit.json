@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T20:37:12.579Z",
+  "generatedAt": "2026-08-21T21:28:52.707Z",
   "phase": 2,
   "scope": "production systems and customer experience source audit",
   "checks": 52,
@@ -72,14 +72,14 @@
       "detail": ""
     },
     {
-      "name": "hero:13-local-mp4s",
+      "name": "hero:15-local-mp4-source-refs",
       "ok": true,
-      "detail": "found 13"
+      "detail": "found 15"
     },
     {
-      "name": "hero:13-unique-mp4s",
+      "name": "hero:15-unique-mp4-sources",
       "ok": true,
-      "detail": "unique 13"
+      "detail": "unique 15"
     },
     {
       "name": "hero:all-local-mp4-files-exist",
@@ -107,7 +107,7 @@
       "detail": ""
     },
     {
-      "name": "hero:local-first-paint-poster",
+      "name": "hero:video-only-first-paint",
       "ok": true,
       "detail": ""
     },

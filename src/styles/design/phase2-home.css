@@ -151,18 +151,28 @@
 .s2-story-card strong { font-size: clamp(1.6rem, 2.4vw, 3rem); letter-spacing: -0.04em; }
 
 .s2-team-teaser {
-  min-height: 280px;
-  background: var(--sh-ink);
+  position: relative;
+  min-height: min(78svh, 820px);
+  overflow: hidden;
   color: var(--sh-chalk);
-  padding: clamp(52px, 7vw, 100px) var(--s2-gutter, 44px);
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 32px;
 }
-.s2-team-teaser h2 { margin: 8px 0 0; font-size: clamp(2.4rem, 5vw, 5.8rem); line-height: 0.94; letter-spacing: -0.05em; }
+.s2-team-teaser__media,
+.s2-team-teaser__media img,
+.s2-team-teaser__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.s2-team-teaser__media img { object-fit: cover; object-position: center; }
+.s2-team-teaser__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 78%, transparent) 4%, color-mix(in srgb, var(--sh-night) 18%, transparent) 64%, transparent); }
+.s2-team-teaser__copy {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 760px);
+  padding: clamp(52px, 7vw, 100px) var(--s2-gutter, 44px);
+}
+.s2-team-teaser h2 { margin: 8px 0 14px; font-size: clamp(2.8rem, 6vw, 6.8rem); line-height: 0.92; letter-spacing: -0.055em; }
 [lang='ar'] .s2-team-teaser h2 { line-height: 1.15; letter-spacing: 0; }
-.s2-team-teaser a { min-height: 46px; display: inline-flex; align-items: center; border-bottom: 1px solid currentColor; }
+.s2-team-teaser p { margin: 0 0 28px; max-width: 520px; color: color-mix(in srgb, var(--sh-chalk) 80%, transparent); line-height: 1.55; }
+.s2-team-teaser a { min-height: 46px; display: inline-flex; align-items: center; border-bottom: 1px solid currentColor; font-weight: 650; }
 
 @media (max-width: 850px) {
   .s2-editorial-grid { grid-template-columns: 1fr; grid-template-rows: none; }
@@ -191,7 +201,9 @@
   .s2-story-card { min-height: 62svh; }
   .s2-split-feature__media { min-height: 62svh; }
   .s2-split-feature__copy { padding: 44px 18px 64px; }
-  .s2-team-teaser { min-height: 320px; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding-inline: 18px; }
+  .s2-team-teaser { min-height: 72svh; }
+  .s2-team-teaser__media img { object-position: center 28%; }
+  .s2-team-teaser__copy { padding: 48px 18px 54px; }
 }
 
 /* Home hero film is presentation-only; player UI stays outside the clipped viewport. */

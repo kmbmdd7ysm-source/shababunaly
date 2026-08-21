@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-18T20:15:22.616Z",
+  "generatedAt": "2026-08-21T21:23:03.024Z",
   "status": "PASS",
-  "checks": 216,
+  "checks": 200,
   "failures": 0,
   "metrics": {
-    "sourceFilesAudited": 478,
-    "jsonFilesAudited": 97,
+    "sourceFilesAudited": 481,
+    "jsonFilesAudited": 96,
     "masterProducts": 119,
     "publishedProducts": 75,
     "hiddenProducts": 44,
@@ -38,7 +38,7 @@
       "detail": ""
     },
     {
-      "name": "catalog:ready-lha-25",
+      "name": "catalog:ready-lha-priced-only",
       "ok": true,
       "detail": ""
     },
@@ -238,42 +238,22 @@
       "detail": ""
     },
     {
-      "name": "lha:lha-p027:capacity",
+      "name": "lha:lha-p027:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p027:color:black:five",
+      "name": "lha:lha-p027:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p027:color:white:five",
+      "name": "lha:lha-p028:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p027:color:camo:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p028:capacity",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p028:color:black:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p028:color:red:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p028:color:beige:five",
+      "name": "lha:lha-p028:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
@@ -308,147 +288,82 @@
       "detail": ""
     },
     {
-      "name": "lha:lha-p029:capacity",
+      "name": "lha:lha-p029:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p029:color:black:five",
+      "name": "lha:lha-p029:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p029:color:grey:five",
+      "name": "lha:lha-p032:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p029:color:cream:five",
+      "name": "lha:lha-p032:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p032:capacity",
+      "name": "lha:lha-p033:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p032:color:black:five",
+      "name": "lha:lha-p033:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p032:color:grey:five",
+      "name": "lha:lha-p034:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p032:color:white:five",
+      "name": "lha:lha-p034:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p033:capacity",
+      "name": "lha:lha-p035:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p033:color:black:five",
+      "name": "lha:lha-p035:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p033:color:white:five",
+      "name": "lha:lha-p036:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p033:color:grey:five",
+      "name": "lha:lha-p036:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p034:capacity",
+      "name": "lha:lha-p037:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p034:color:black:five",
+      "name": "lha:lha-p037:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p034:color:grey:five",
+      "name": "lha:lha-p038:coming-soon",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "lha:lha-p034:color:cream:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p035:capacity",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p035:color:black:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p035:color:grey:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p035:color:cream:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p036:capacity",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p036:color:black:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p036:color:cream:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p037:capacity",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p037:color:black:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p037:color:grey:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p037:color:cream:five",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p038:capacity",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "lha:lha-p038:color:black:five",
+      "name": "lha:lha-p038:no-fabricated-stock",
       "ok": true,
       "detail": ""
     },
@@ -1048,7 +963,12 @@
       "detail": ""
     },
     {
-      "name": "custom3d:explicit-opt-in",
+      "name": "custom3d:dormant-assets-preserved",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "custom3d:hidden-from-public-ui",
       "ok": true,
       "detail": ""
     },

@@ -207,6 +207,11 @@ const routes = [
       'Club, academy, federation and wholesale basketball supply with staged payments and production tracking.',
   },
   {
+    path: '/gift-cards',
+    title: 'Gift Cards',
+    description: 'Request a digital Shababuna gift card for a basketball player, teammate or friend.',
+  },
+  {
     path: '/lha-store',
     title: 'LHA Official Store',
     description: 'Official Libya Hoops Academy clothing and accessories inside Shababuna.',

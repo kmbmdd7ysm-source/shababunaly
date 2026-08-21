@@ -1,6 +1,5 @@
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import EditorialMedia from '../components/common/EditorialMedia';
 import TurnstileWidget from '../components/security/TurnstileWidget';
@@ -18,17 +17,17 @@ import '../styles/domain-forms.css';
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
   'game-set': E.shanghaiPlayers,
-  'game-jersey': E.curryHeroBall,
-  'game-shorts': E.curryPatternRear,
-  'practice-set': E.curryDrive,
-  'shooting-shirt': E.curryBallPortrait,
-  hoodie: E.curryWhiteHoodClose,
-  'team-pants': E.lameloSpaceStanding,
-  tracksuit: E.lameloSpaceSeated,
-  'team-bag': E.lameloChairA,
-  sleeve: E.curryBallPortrait,
+  'game-jersey': E.usaWomanCelebrate,
+  'game-shorts': E.curryPatternShot,
+  'practice-set': E.kidsTunnel,
+  'shooting-shirt': E.tatumDark,
+  hoodie: E.lebronFullBody,
+  'team-pants': E.lameloSpaceSeated,
+  tracksuit: E.franceGroup,
+  'team-bag': E.jordanShoeBox,
+  sleeve: E.lebronClose,
   basketball: E.curryPortraitBall,
-  'hoop-padding': E.curryLayupWide,
+  'hoop-padding': E.jordanBuilding,
 };
 
 export default function CustomizePage(): ReactElement {
@@ -192,7 +191,7 @@ export default function CustomizePage(): ReactElement {
         </section>
 
         <section className="cx-request">
-          <div><p className="cx-step">02 / {pick({ en: 'Send concept', ar: 'إرسال الفكرة' })}</p><h2>{pick({ en: 'We finish it with you.', ar: 'نكملها معك.' })}</h2><p>{pick({ en: 'Send the concept and your contact details. We review it, confirm the real production setup and return with the quote.', ar: 'أرسل الفكرة وبيانات التواصل. نراجعها ونؤكد إعداد الإنتاج الحقيقي ثم نرجع لك بعرض السعر.' })}</p><Link to="/customize/advanced" className="cx-advanced-link">{pick({ en: 'Need the advanced production studio?', ar: 'تحتاج استوديو الإنتاج المتقدم؟' })}</Link></div>
+          <div><p className="cx-step">02 / {pick({ en: 'Send concept', ar: 'إرسال الفكرة' })}</p><h2>{pick({ en: 'We finish it with you.', ar: 'نكملها معك.' })}</h2><p>{pick({ en: 'Send the concept and your contact details. We review it, confirm the real production setup and return with the quote.', ar: 'أرسل الفكرة وبيانات التواصل. نراجعها ونؤكد إعداد الإنتاج الحقيقي ثم نرجع لك بعرض السعر.' })}</p></div>
           <form onSubmit={(e) => { void submit(e); }} className="cx-request-form">
             <div className="cx-request-grid">
               <label className="field" data-field="name"><span className="field__label">{pick({ en: 'Full name', ar: 'الاسم الكامل' })}</span><div className="field__control"><input required value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} autoComplete="name" /></div></label>

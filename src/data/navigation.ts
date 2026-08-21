@@ -59,6 +59,7 @@ export const footerNav = {
     { to: '/shop/accessories', label: { en: 'Accessories', ar: 'الإكسسوارات' } },
     { to: '/shop/basketballs', label: { en: 'Basketballs', ar: 'كرات السلة' } },
     { to: '/shop/equipment', label: { en: 'Equipment', ar: 'المعدات' } },
+    { to: '/gift-cards', label: { en: 'Gift Cards', ar: 'بطاقات الهدايا' } },
   ],
   discover: [
     { to: '/discover', label: { en: 'Discover', ar: 'اكتشف' } },

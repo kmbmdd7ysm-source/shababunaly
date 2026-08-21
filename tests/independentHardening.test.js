@@ -14,16 +14,25 @@ describe('independent final hardening invariants', () => {
     expect(read('src/data/lhaProducts.ts').includes('stockPerVariant:')).toBe(false);
   });
 
-  it('keeps every LHA colour pool at exactly five shared physical pieces', () => {
+  it('keeps priced LHA stock verified and unpriced LHA products Coming Soon', () => {
     const lha = lhaStoreProducts();
     expect(lha).toHaveLength(lhaSourceProducts.length);
     for (const product of lha) {
-      expect(product.stockPerColor).toBe(5);
-      const colors = new Set(product.variants.map((variant) => variant.inventoryPoolKey));
-      expect(colors.size).toBeGreaterThan(0);
-      for (const color of colors) {
-        const variants = product.variants.filter((variant) => variant.inventoryPoolKey === color);
-        expect(variants.every((variant) => variant.inventoryPoolStock === 5)).toBe(true);
+      if (Number(product.price || 0) > 0) {
+        expect(product.stockPerColor).toBe(5);
+        expect(product.readyToShip).toBe(true);
+        expect(product.comingSoon).toBe(false);
+        const colors = new Set(product.variants.map((variant) => variant.inventoryPoolKey));
+        expect(colors.size).toBeGreaterThan(0);
+        for (const color of colors) {
+          const variants = product.variants.filter((variant) => variant.inventoryPoolKey === color);
+          expect(variants.every((variant) => variant.inventoryPoolStock === 5)).toBe(true);
+        }
+      } else {
+        expect(product.comingSoon).toBe(true);
+        expect(product.readyToShip).toBe(false);
+        expect(product.available).toBe(false);
+        expect(product.inventoryTracking).toBe(false);
       }
     }
   });
@@ -110,12 +119,15 @@ describe('independent final hardening invariants', () => {
     expect(read('api/special-request.ts')).toContain("status: 'email_only'");
   });
 
-  it('does not load the 3D model-viewer engine until the customer explicitly opens 3D', () => {
+  it('preserves the dormant 3D implementation while hiding it from the public custom flow', () => {
     const source = read('src/components/custom/CustomJerseyShowcase.tsx');
+    const customPage = read('src/pages/CustomizePage.tsx');
+    const app = read('src/App.tsx');
     expect(source.startsWith("import '../product/engines/loadModelViewer.ts'")).toBe(false);
     expect(source.includes("import(" + "'../product/engines/loadModelViewer.ts')")).toBe(true);
     expect(source.includes('modelRequested')).toBe(true);
-    expect(source.includes('Open 3D preview')).toBe(true);
+    expect(customPage.includes('/customize/advanced')).toBe(false);
+    expect(app.includes('<Route path="/customize/advanced" element={<Navigate to="/customize" replace />} />')).toBe(true);
   });
 
   it('treats a successful cloud catalogue response as authoritative instead of resurrecting static archived products', () => {

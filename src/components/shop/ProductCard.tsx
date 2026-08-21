@@ -36,6 +36,7 @@ type CardProduct = ProductLike & {
   newArrival?: boolean;
   bestSeller?: boolean;
   readyToShip?: boolean;
+  reservationAvailable?: boolean;
 };
 
 const asCardProduct = (product: unknown): CardProduct => (product || {}) as CardProduct;
@@ -63,6 +64,7 @@ export default function ProductCard({
 
   const availability = resolveAvailabilityState(p, { countryCode });
   const comingSoon = availability === 'COMING_SOON';
+  const reservationAvailable = p.reservationAvailable === true;
   const soldOut = availability === 'OUT_OF_STOCK';
   const low = isLowStock(p) && p.inventoryVerified === true;
   const availabilityCopy = availabilityLabel(availability, lang === 'ar' ? 'ar' : 'en');
@@ -122,7 +124,9 @@ export default function ProductCard({
     ? availabilityCopy.label
     : soldOut
       ? availabilityCopy.label
-      : availability === 'READY_TO_SHIP'
+      : reservationAvailable
+        ? pick({ en: 'Available to Reserve', ar: 'متوفر بالحجز' })
+        : availability === 'READY_TO_SHIP'
         ? availabilityCopy.label
         : p.newArrival
           ? pick({ en: 'New', ar: 'جديد' })
@@ -134,11 +138,15 @@ export default function ProductCard({
                 ? pick({ en: 'Limited', ar: 'كمية محدودة' })
                 : null;
 
-  const actionLabel = action.type === 'choose-options'
-    ? pick({ en: 'Choose options', ar: 'اختر الخيارات' })
-    : action.type === 'quote'
-      ? pick({ en: 'Request price', ar: 'اطلب السعر' })
-      : common.quickAdd || pick({ en: 'Quick add', ar: 'إضافة سريعة' });
+  const actionLabel = reservationAvailable
+    ? action.type === 'choose-options'
+      ? pick({ en: 'Reserve options', ar: 'اختر للحجز' })
+      : pick({ en: 'Reserve', ar: 'احجز' })
+    : action.type === 'choose-options'
+      ? pick({ en: 'Choose options', ar: 'اختر الخيارات' })
+      : action.type === 'quote'
+        ? pick({ en: 'Request price', ar: 'اطلب السعر' })
+        : common.quickAdd || pick({ en: 'Quick add', ar: 'إضافة سريعة' });
 
   return (
     <article className="s2-product-card" data-product-id={String(p.id || '')}>

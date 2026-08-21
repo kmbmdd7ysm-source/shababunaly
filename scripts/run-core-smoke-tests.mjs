@@ -42,9 +42,13 @@ assert.equal(csvRoundTrip[0].jerseySize, 'L');
 assert.equal(catalogProducts.length, 119);
 assert.equal(products.length, 75);
 assert.equal(catalogProducts.length - products.length, 44);
-assert.equal(lhaStoreProducts().length, 25);
-assert.equal(readyToShipProducts().length, 25);
-assert.equal(readyToShipProducts().every((item) => item.legacyLha === true && item.inventorySource === 'owner_confirmed_lha_color_stock' && item.inventoryVerified === true && item.inventoryTracking === true && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
+const smokeLha = lhaStoreProducts();
+assert.equal(smokeLha.length, 25);
+const smokePricedLha = smokeLha.filter((item) => Number(item.price || 0) > 0);
+const smokeUnpricedLha = smokeLha.filter((item) => Number(item.price || 0) <= 0);
+assert.equal(readyToShipProducts().length, smokePricedLha.length);
+assert.equal(smokePricedLha.every((item) => item.legacyLha === true && item.readyToShip === true && item.inventorySource === 'owner_confirmed_lha_color_stock' && item.inventoryVerified === true && item.inventoryTracking === true && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
+assert.equal(smokeUnpricedLha.every((item) => item.comingSoon === true && item.readyToShip !== true && item.available === false), true);
 assert.equal(products.every(isProductVisible), true);
 assert.equal(
   products

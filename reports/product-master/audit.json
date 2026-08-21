@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-10T05:09:46.770Z",
-  "products": 69,
-  "variants": 982,
+  "generatedAt": "2026-08-21T21:27:08.274Z",
+  "products": 75,
+  "variants": 786,
   "duplicates": [],
   "structuralIssueCount": 0,
   "structural": [],
-  "missingCommercialFieldProducts": 69,
+  "missingCommercialFieldProducts": 75,
   "missingCommercial": [
     {
-      "id": "s001",
-      "sku": "SHA-GAME-PRO",
-      "slug": "shababuna-pro-game-set",
+      "id": "goat-nike-kobe-3-protro-halo",
+      "sku": "GOAT-K03-01",
+      "slug": "nike-kobe-3-protro-halo",
       "missing": [
         "supplierSKU",
         "cost",
@@ -26,9 +26,9 @@
       ]
     },
     {
-      "id": "s002",
-      "sku": "SHA-JER-ELT",
-      "slug": "shababuna-elite-game-jersey",
+      "id": "goat-nike-kobe-3-low-protro-warning-label",
+      "sku": "GOAT-K03-02",
+      "slug": "nike-kobe-3-low-protro-warning-label",
       "missing": [
         "supplierSKU",
         "cost",
@@ -44,9 +44,9 @@
       ]
     },
     {
-      "id": "s003",
-      "sku": "SHA-SHT-CRT",
-      "slug": "shababuna-court-game-shorts",
+      "id": "goat-nike-zoom-kobe-3-mpls",
+      "sku": "GOAT-K03-03",
+      "slug": "nike-zoom-kobe-3-mpls",
       "missing": [
         "supplierSKU",
         "cost",
@@ -62,9 +62,9 @@
       ]
     },
     {
-      "id": "s004",
-      "sku": "SHA-PRC-REV",
-      "slug": "shababuna-reversible-practice-jersey",
+      "id": "goat-nike-kobe-3-protro-christmas",
+      "sku": "GOAT-K03-04",
+      "slug": "nike-kobe-3-protro-christmas",
       "missing": [
         "supplierSKU",
         "cost",
@@ -80,9 +80,9 @@
       ]
     },
     {
-      "id": "s005",
-      "sku": "SHA-PRC-SHT",
-      "slug": "shababuna-practice-shorts",
+      "id": "goat-nike-zoom-kobe-3-lakers",
+      "sku": "GOAT-K03-05",
+      "slug": "nike-zoom-kobe-3-lakers",
       "missing": [
         "supplierSKU",
         "cost",
@@ -98,9 +98,9 @@
       ]
     },
     {
-      "id": "s006",
-      "sku": "SHA-TEE-BD",
-      "slug": "built-different-performance-tee",
+      "id": "goat-nike-kobe-4-protro-mambacita",
+      "sku": "GOAT-K04-01",
+      "slug": "nike-kobe-4-protro-mambacita",
       "missing": [
         "supplierSKU",
         "cost",
@@ -116,9 +116,9 @@
       ]
     },
     {
-      "id": "s007",
-      "sku": "SHA-HOOD-HVY",
-      "slug": "shababuna-heavyweight-hoodie",
+      "id": "goat-nike-kobe-4-protro-gold-medal-2024",
+      "sku": "GOAT-K04-02",
+      "slug": "nike-kobe-4-protro-gold-medal-2024",
       "missing": [
         "supplierSKU",
         "cost",
@@ -134,9 +134,9 @@
       ]
     },
     {
-      "id": "s008",
-      "sku": "SHA-PANT-TRV",
-      "slug": "shababuna-travel-pants",
+      "id": "goat-nike-kobe-4-protro-gift-of-mamba",
+      "sku": "GOAT-K04-03",
+      "slug": "nike-kobe-4-protro-gift-of-mamba",
       "missing": [
         "supplierSKU",
         "cost",
@@ -152,9 +152,9 @@
       ]
     },
     {
-      "id": "s009",
-      "sku": "SHA-TRK-PRO",
-      "slug": "shababuna-team-tracksuit",
+      "id": "goat-nike-kobe-4-protro-girl-dad",
+      "sku": "GOAT-K04-04",
+      "slug": "nike-kobe-4-protro-girl-dad",
       "missing": [
         "supplierSKU",
         "cost",
@@ -170,9 +170,9 @@
       ]
     },
     {
-      "id": "s010",
-      "sku": "SHA-CMP-TOP",
-      "slug": "shababuna-compression-top",
+      "id": "goat-nike-kobe-4-protro-philly-2024",
+      "sku": "GOAT-K04-05",
+      "slug": "nike-kobe-4-protro-philly-2024",
       "missing": [
         "supplierSKU",
         "cost",
@@ -188,9 +188,9 @@
       ]
     },
     {
-      "id": "s011",
-      "sku": "SHA-SOCK-PRO",
-      "slug": "shababuna-pro-basketball-socks",
+      "id": "goat-nike-kobe-5-protro-year-of-the-mamba-eggplant",
+      "sku": "GOAT-K05-01",
+      "slug": "nike-kobe-5-protro-year-of-the-mamba-eggplant",
       "missing": [
         "supplierSKU",
         "cost",
@@ -206,9 +206,9 @@
       ]
     },
     {
-      "id": "s020",
-      "sku": "SHA-SHO-NIK",
-      "slug": "nike-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-5-protro-lower-merion-aces-2026",
+      "sku": "GOAT-K05-02",
+      "slug": "nike-kobe-5-protro-lower-merion-aces-2026",
       "missing": [
         "supplierSKU",
         "cost",
@@ -224,9 +224,9 @@
       ]
     },
     {
-      "id": "s021",
-      "sku": "SHA-SHO-ADI",
-      "slug": "adidas-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-5-protro-dodgers",
+      "sku": "GOAT-K05-03",
+      "slug": "nike-kobe-5-protro-dodgers",
       "missing": [
         "supplierSKU",
         "cost",
@@ -242,9 +242,9 @@
       ]
     },
     {
-      "id": "s022",
-      "sku": "SHA-SHO-JOR",
-      "slug": "jordan-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-5-protro-chaos-2020",
+      "sku": "GOAT-K05-04",
+      "slug": "nike-kobe-5-protro-chaos-2020",
       "missing": [
         "supplierSKU",
         "cost",
@@ -260,9 +260,9 @@
       ]
     },
     {
-      "id": "s023",
-      "sku": "SHA-SHO-UA",
-      "slug": "under-armour-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-5-protro-x-ray",
+      "sku": "GOAT-K05-05",
+      "slug": "nike-kobe-5-protro-x-ray",
       "missing": [
         "supplierSKU",
         "cost",
@@ -278,9 +278,9 @@
       ]
     },
     {
-      "id": "s024",
-      "sku": "SHA-SHO-PUM",
-      "slug": "puma-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-6-protro-total-orange",
+      "sku": "GOAT-K06-01",
+      "slug": "nike-kobe-6-protro-total-orange",
       "missing": [
         "supplierSKU",
         "cost",
@@ -296,9 +296,9 @@
       ]
     },
     {
-      "id": "s025",
-      "sku": "SHA-SHO-NB",
-      "slug": "new-balance-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-6-protro-3d-all-star",
+      "sku": "GOAT-K06-02",
+      "slug": "nike-kobe-6-protro-3d-all-star",
       "missing": [
         "supplierSKU",
         "cost",
@@ -314,9 +314,9 @@
       ]
     },
     {
-      "id": "s026",
-      "sku": "SHA-SHO-LN",
-      "slug": "li-ning-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-6-protro-all-star-sail",
+      "sku": "GOAT-K06-03",
+      "slug": "nike-kobe-6-protro-all-star-sail",
       "missing": [
         "supplierSKU",
         "cost",
@@ -332,9 +332,9 @@
       ]
     },
     {
-      "id": "s027",
-      "sku": "SHA-SHO-ANT",
-      "slug": "anta-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-6-protro-reverse-grinch",
+      "sku": "GOAT-K06-04",
+      "slug": "nike-kobe-6-protro-reverse-grinch",
       "missing": [
         "supplierSKU",
         "cost",
@@ -350,9 +350,9 @@
       ]
     },
     {
-      "id": "s028",
-      "sku": "SHA-SHO-PEA",
-      "slug": "peak-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-6-protro-grinch-2020",
+      "sku": "GOAT-K06-05",
+      "slug": "nike-kobe-6-protro-grinch-2020",
       "missing": [
         "supplierSKU",
         "cost",
@@ -368,9 +368,9 @@
       ]
     },
     {
-      "id": "s029",
-      "sku": "SHA-SHO-361",
-      "slug": "361-in-court-basketball-shoe",
+      "id": "goat-nike-kobe-7-duke",
+      "sku": "GOAT-K07-01",
+      "slug": "nike-kobe-7-duke",
       "missing": [
         "supplierSKU",
         "cost",
@@ -386,9 +386,9 @@
       ]
     },
     {
-      "id": "s030",
-      "sku": "SHA-LIFE-NIK",
-      "slug": "nike-off-court-basketball-shoe",
+      "id": "goat-nike-kobe-7-yin-and-yang",
+      "sku": "GOAT-K07-02",
+      "slug": "nike-kobe-7-yin-and-yang",
       "missing": [
         "supplierSKU",
         "cost",
@@ -404,9 +404,9 @@
       ]
     },
     {
-      "id": "s031",
-      "sku": "SHA-SLD-REC",
-      "slug": "shababuna-recovery-slides",
+      "id": "goat-nike-kobe-7-olympic",
+      "sku": "GOAT-K07-03",
+      "slug": "nike-kobe-7-olympic",
       "missing": [
         "supplierSKU",
         "cost",
@@ -422,9 +422,9 @@
       ]
     },
     {
-      "id": "s040",
-      "sku": "SHA-BAG-ELT",
-      "slug": "shababuna-elite-basketball-backpack",
+      "id": "goat-nike-kobe-7-what-the-kobe",
+      "sku": "GOAT-K07-04",
+      "slug": "nike-kobe-7-what-the-kobe",
       "missing": [
         "supplierSKU",
         "cost",
@@ -440,9 +440,9 @@
       ]
     },
     {
-      "id": "s041",
-      "sku": "SHA-BAG-DUF",
-      "slug": "shababuna-team-duffle",
+      "id": "goat-nike-kobe-7-all-star-galaxy",
+      "sku": "GOAT-K07-05",
+      "slug": "nike-kobe-7-all-star-galaxy",
       "missing": [
         "supplierSKU",
         "cost",
@@ -458,9 +458,9 @@
       ]
     },
     {
-      "id": "s042",
-      "sku": "SHA-SLV-ARM",
-      "slug": "shababuna-performance-arm-sleeve",
+      "id": "goat-nike-kobe-8-protro-what-the-kobe-2025",
+      "sku": "GOAT-K08-01",
+      "slug": "nike-kobe-8-protro-what-the-kobe-2025",
       "missing": [
         "supplierSKU",
         "cost",
@@ -476,9 +476,9 @@
       ]
     },
     {
-      "id": "s043",
-      "sku": "SHA-SUP-ANK",
-      "slug": "basketball-ankle-support",
+      "id": "goat-nike-kobe-8-protro-halo",
+      "sku": "GOAT-K08-02",
+      "slug": "nike-kobe-8-protro-halo",
       "missing": [
         "supplierSKU",
         "cost",
@@ -494,9 +494,9 @@
       ]
     },
     {
-      "id": "s044",
-      "sku": "SHA-TWL-TEAM",
-      "slug": "shababuna-team-towel",
+      "id": "goat-nike-kobe-8-protro-venice-beach-2024",
+      "sku": "GOAT-K08-03",
+      "slug": "nike-kobe-8-protro-venice-beach-2024",
       "missing": [
         "supplierSKU",
         "cost",
@@ -512,9 +512,9 @@
       ]
     },
     {
-      "id": "s045",
-      "sku": "SHA-STK-TEAM",
-      "slug": "custom-team-sticker-pack",
+      "id": "goat-nike-kobe-8-system-easter",
+      "sku": "GOAT-K08-04",
+      "slug": "nike-kobe-8-system-easter",
       "missing": [
         "supplierSKU",
         "cost",
@@ -530,9 +530,9 @@
       ]
     },
     {
-      "id": "s046",
-      "sku": "SHA-TRN-CONE",
-      "slug": "basketball-training-cone-set",
+      "id": "goat-nike-kobe-8-protro-radiant-emerald",
+      "sku": "GOAT-K08-05",
+      "slug": "nike-kobe-8-protro-radiant-emerald",
       "missing": [
         "supplierSKU",
         "cost",
@@ -548,9 +548,9 @@
       ]
     },
     {
-      "id": "s047",
-      "sku": "SHA-CAP-CRT",
-      "slug": "shababuna-court-cap",
+      "id": "goat-nike-kobe-9-elite-low-protro-halo",
+      "sku": "GOAT-K09-01",
+      "slug": "nike-kobe-9-elite-low-protro-halo",
       "missing": [
         "supplierSKU",
         "cost",
@@ -566,9 +566,9 @@
       ]
     },
     {
-      "id": "s048",
-      "sku": "SHA-BTL-PRO",
-      "slug": "shababuna-performance-bottle",
+      "id": "goat-nike-kobe-9-elite-protro-masterpiece-2025",
+      "sku": "GOAT-K09-02",
+      "slug": "nike-kobe-9-elite-protro-masterpiece-2025",
       "missing": [
         "supplierSKU",
         "cost",
@@ -584,9 +584,9 @@
       ]
     },
     {
-      "id": "s049",
-      "sku": "SHA-PAT-WOV",
-      "slug": "custom-woven-team-patch",
+      "id": "goat-nike-kobe-9-em-protro-mambacita",
+      "sku": "GOAT-K09-03",
+      "slug": "nike-kobe-9-em-protro-mambacita",
       "missing": [
         "supplierSKU",
         "cost",
@@ -602,9 +602,9 @@
       ]
     },
     {
-      "id": "s050",
-      "sku": "SHA-BAL-MOL",
-      "slug": "molten-indoor-game-basketball",
+      "id": "goat-nike-kobe-9-em-protro-think-pink",
+      "sku": "GOAT-K09-04",
+      "slug": "nike-kobe-9-em-protro-think-pink",
       "missing": [
         "supplierSKU",
         "cost",
@@ -620,9 +620,9 @@
       ]
     },
     {
-      "id": "s051",
-      "sku": "SHA-BAL-WIL",
-      "slug": "wilson-indoor-outdoor-basketball",
+      "id": "goat-nike-kobe-9-em-philippines-2026",
+      "sku": "GOAT-K09-05",
+      "slug": "nike-kobe-9-em-philippines-2026",
       "missing": [
         "supplierSKU",
         "cost",
@@ -638,9 +638,9 @@
       ]
     },
     {
-      "id": "s052",
-      "sku": "SHA-BAL-SPA",
-      "slug": "spalding-outdoor-basketball",
+      "id": "goat-nike-kobe-10-elite-rivalry",
+      "sku": "GOAT-K10-01",
+      "slug": "nike-kobe-10-elite-rivalry",
       "missing": [
         "supplierSKU",
         "cost",
@@ -656,9 +656,9 @@
       ]
     },
     {
-      "id": "s053",
-      "sku": "SHA-BAL-CUS",
-      "slug": "shababuna-custom-team-basketball",
+      "id": "goat-nike-kobe-10-pain",
+      "sku": "GOAT-K10-02",
+      "slug": "nike-kobe-10-pain",
       "missing": [
         "supplierSKU",
         "cost",
@@ -674,9 +674,9 @@
       ]
     },
     {
-      "id": "s060",
-      "sku": "SHA-HOP-CMP",
-      "slug": "competition-basketball-hoop-system",
+      "id": "goat-nike-kobe-10-tb-gym-red",
+      "sku": "GOAT-K10-03",
+      "slug": "nike-kobe-10-tb-gym-red",
       "missing": [
         "supplierSKU",
         "cost",
@@ -692,9 +692,9 @@
       ]
     },
     {
-      "id": "s061",
-      "sku": "SHA-BRD-GLS",
-      "slug": "tempered-glass-backboard",
+      "id": "goat-nike-kobe-10-gs-independence-day",
+      "sku": "GOAT-K10-04",
+      "slug": "nike-kobe-10-gs-independence-day",
       "missing": [
         "supplierSKU",
         "cost",
@@ -710,9 +710,9 @@
       ]
     },
     {
-      "id": "s062",
-      "sku": "SHA-RIM-PRO",
-      "slug": "professional-spring-rim",
+      "id": "goat-nike-kobe-10-all-star",
+      "sku": "GOAT-K10-05",
+      "slug": "nike-kobe-10-all-star",
       "missing": [
         "supplierSKU",
         "cost",
@@ -728,9 +728,9 @@
       ]
     },
     {
-      "id": "s063",
-      "sku": "SHA-CLK-24",
-      "slug": "24-second-shot-clock-set",
+      "id": "goat-nike-kobe-11-elite-low-fade-to-black",
+      "sku": "GOAT-K11-01",
+      "slug": "nike-kobe-11-elite-low-fade-to-black",
       "missing": [
         "supplierSKU",
         "cost",
@@ -746,9 +746,9 @@
       ]
     },
     {
-      "id": "s064",
-      "sku": "SHA-CART-BAL",
-      "slug": "basketball-ball-cart",
+      "id": "goat-nike-kobe-11-protro-low-mamba-day",
+      "sku": "GOAT-K11-02",
+      "slug": "nike-kobe-11-protro-low-mamba-day",
       "missing": [
         "supplierSKU",
         "cost",
@@ -764,9 +764,9 @@
       ]
     },
     {
-      "id": "s066",
-      "sku": "SHA-CRT-PAD",
-      "slug": "professional-court-padding-set",
+      "id": "goat-nike-kobe-11-gs-8-24",
+      "sku": "GOAT-K11-03",
+      "slug": "nike-kobe-11-gs-8-24",
       "missing": [
         "supplierSKU",
         "cost",
@@ -782,9 +782,117 @@
       ]
     },
     {
-      "id": "s065",
-      "sku": "SHA-PMP-ELC",
-      "slug": "electric-ball-pump-kit",
+      "id": "goat-nike-kobe-11-elite-low-usa",
+      "sku": "GOAT-K11-04",
+      "slug": "nike-kobe-11-elite-low-usa",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-11-elite-low-protro-fade-to-black-2026",
+      "sku": "GOAT-K11-05",
+      "slug": "nike-kobe-11-elite-low-protro-fade-to-black-2026",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-mid-pure-platinum",
+      "sku": "GOAT-K12-01",
+      "slug": "nike-kobe-12-ad-mid-pure-platinum",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-gs-triple-black",
+      "sku": "GOAT-K12-02",
+      "slug": "nike-kobe-12-ad-gs-triple-black",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-tb-fir",
+      "sku": "GOAT-K12-03",
+      "slug": "nike-kobe-12-ad-tb-fir",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-protro-purple-stardust",
+      "sku": "GOAT-K12-04",
+      "slug": "nike-kobe-12-ad-protro-purple-stardust",
+      "missing": [
+        "supplierSKU",
+        "cost",
+        "barcode",
+        "warehouse",
+        "leadTime",
+        "weight",
+        "dimensions",
+        "HSCode",
+        "countryOfOrigin",
+        "variantOrigin",
+        "inventoryLocation"
+      ]
+    },
+    {
+      "id": "goat-nike-kobe-12-ad-cool-grey",
+      "sku": "GOAT-K12-05",
+      "slug": "nike-kobe-12-ad-cool-grey",
       "missing": [
         "supplierSKU",
         "cost",
@@ -807,14 +915,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -825,14 +931,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -843,14 +947,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -861,14 +963,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -879,14 +979,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -897,14 +995,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -915,14 +1011,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -933,14 +1027,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -951,14 +1043,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -969,14 +1059,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -987,14 +1075,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -1005,14 +1091,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -1023,14 +1107,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -1077,14 +1159,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {
@@ -1095,14 +1175,12 @@
         "supplierSKU",
         "cost",
         "barcode",
-        "warehouse",
         "leadTime",
         "weight",
         "dimensions",
         "HSCode",
         "countryOfOrigin",
-        "variantOrigin",
-        "inventoryLocation"
+        "variantOrigin"
       ]
     },
     {

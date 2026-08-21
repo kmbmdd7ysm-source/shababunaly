@@ -492,3 +492,60 @@
   .s2-footer .newsletter-input-row { grid-template-columns: 1fr; }
   .s2-footer .newsletter-input-row button { justify-self: start; padding-inline: 0; }
 }
+
+/* Header-level region controls keep language and currency discoverable without
+   duplicating the underlying locale or commerce state. */
+.s2-locale-control { position: relative; }
+.s2-locale-popover {
+  position: absolute;
+  z-index: 980;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-end: 0;
+  width: min(290px, calc(100vw - 24px));
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  background: var(--sh-chalk);
+  color: var(--sh-ink);
+  border: 1px solid var(--s2-line);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px var(--sh-black-18);
+}
+.s2-locale-popover__row {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 0;
+  border-top: 1px solid var(--s2-line);
+  background: transparent;
+  color: inherit;
+  padding: 10px 0 0;
+  text-align: start;
+  font-size: .86rem;
+}
+.s2-locale-popover__row > span { color: var(--sh-ink-50); }
+.s2-locale-popover__language { cursor: pointer; }
+.s2-locale-popover__language strong { font-weight: 700; }
+.s2-locale-popover .currency-selector { display: inline-flex; }
+.s2-locale-popover .currency-selector select {
+  min-height: 34px;
+  border: 0;
+  border-bottom: 1px solid var(--s2-line);
+  background: transparent;
+  color: var(--sh-ink);
+  padding: 0 22px 0 4px;
+  font: inherit;
+  font-weight: 700;
+}
+[dir='rtl'] .s2-locale-popover .currency-selector select { padding: 0 4px 0 22px; }
+
+@media (max-width: 760px) {
+  .s2-locale-popover {
+    position: fixed;
+    inset-inline: 12px;
+    inset-block-start: calc(var(--s2-shell-h) + max(8px, env(safe-area-inset-top)));
+    width: auto;
+  }
+}

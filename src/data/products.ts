@@ -50,7 +50,7 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
         stock,
         active: true,
         inventoryTracking,
-        availabilityState: inventoryTracking && stock <= 0 ? 'out_of_stock' : 'in_stock',
+        availabilityState: input.reservationAvailable === true ? 'preorder' : inventoryTracking && stock <= 0 ? 'out_of_stock' : 'in_stock',
         readyToShip: Boolean(input.readyToShip && inventoryTracking && stock > 0),
         unitPrice: cleanPrice,
         wholesalePrice: cleanWholesalePrice || null,
@@ -139,7 +139,7 @@ export function normalizeCatalogProduct(input: Record<string, unknown>): Record<
     sizes,
     variants,
     stock,
-    availability: available ? 'in-stock' : 'sold-out',
+    availability: input.reservationAvailable === true ? 'preorder' : available ? 'in-stock' : 'sold-out',
     readyToShip: Boolean(input.readyToShip && inventoryTracking && stock > 0),
     inventoryLocation: input.inventoryLocation || null,
     deliveryProfile:

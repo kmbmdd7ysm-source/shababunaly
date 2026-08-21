@@ -83,6 +83,10 @@ html,body{max-inline-size:100%;overflow-x:clip}#root{max-inline-size:100%;min-in
   .s2-filter-trigger span{display:inline!important}.sort-select select{max-width:150px!important;font-size:.78rem!important}
 }
 
+@media(max-width:760px){
+  .cart-drawer{inline-size:100vw!important;max-inline-size:100vw!important}
+}
+
 @media(max-width:640px){
   .cart-drawer{inline-size:100vw!important;max-inline-size:100vw!important}
   .cart-drawer-head{padding:18px 18px!important;min-height:70px!important}.cart-drawer-head h2{font-size:1.35rem!important}
@@ -379,3 +383,26 @@ html[dir='rtl'] #root,html[dir='ltr'] #root,html[dir='rtl'] main,html[dir='ltr']
 
 /* Heavy Custom 3D is explicit opt-in: the 42 MB garment model is never part of first paint. */
 .cx-model-gate{position:absolute;z-index:4;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.96),rgba(242,242,239,.96) 62%,rgba(231,231,227,.98));padding:32px}.cx-model-gate .cx-product-jersey-shape{inline-size:min(180px,42vw);block-size:min(230px,52vw)}.cx-model-gate strong{font-size:clamp(1rem,2vw,1.35rem)}.cx-model-gate small{max-inline-size:34ch;color:#6b6b67;line-height:1.45}.cx-model-gate .btn-secondary,.cx-model-fallback .btn-secondary{position:relative;z-index:5}
+
+/* Public custom studio 2D garment preview. The dormant 3D implementation and
+   assets stay in source, but no 3D surface is exposed to customers. */
+.cx-concept--game-jersey{
+  width:min(54vw,430px);
+  aspect-ratio:.72;
+  clip-path:polygon(28% 0,40% 6%,60% 6%,72% 0,100% 21%,84% 38%,78% 100%,22% 100%,16% 38%,0 21%);
+}
+.cx-game-set-2d{
+  width:min(92%,760px);
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(150px,.75fr);
+  align-items:end;
+  justify-items:center;
+  gap:clamp(12px,4vw,44px);
+}
+.cx-game-set-2d .cx-concept--shorts{width:min(32vw,270px)}
+@media(max-width:640px){
+  .cx-concept--game-jersey{width:min(74vw,320px)}
+  .cx-game-set-2d{grid-template-columns:minmax(0,1.2fr) minmax(90px,.8fr);gap:10px}
+  .cx-game-set-2d .cx-concept--game-jersey{width:min(62vw,270px)}
+  .cx-game-set-2d .cx-concept--shorts{width:min(32vw,135px)}
+}

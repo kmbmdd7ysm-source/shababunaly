@@ -36,6 +36,7 @@ export default function MainHeader(): ReactElement {
   const hasReadyToShip = readyToShipProducts().length > 0;
   const [shopOpen, setShopOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [localeOpen, setLocaleOpen] = useState(false);
   const [solid, setSolid] = useState(() => {
     if (typeof document === 'undefined') return true;
     return document.documentElement.dataset.cinematicOpen !== 'yes';
@@ -43,10 +44,12 @@ export default function MainHeader(): ReactElement {
   const searchButton = useRef<HTMLButtonElement | null>(null);
   const menuButton = useRef<HTMLButtonElement | null>(null);
   const menuPanel = useRef<HTMLDivElement | null>(null);
+  const localePanel = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMenuOpen(false);
     setShopOpen(false);
+    setLocaleOpen(false);
   }, [location.pathname]);
 
   useLayoutEffect(() => {
@@ -104,6 +107,24 @@ export default function MainHeader(): ReactElement {
       requestAnimationFrame(() => trigger?.focus());
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!localeOpen) return undefined;
+    const onPointer = (event: MouseEvent | TouchEvent) => {
+      if (!localePanel.current?.contains(event.target as Node)) setLocaleOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setLocaleOpen(false);
+    };
+    document.addEventListener('mousedown', onPointer);
+    document.addEventListener('touchstart', onPointer, { passive: true });
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onPointer);
+      document.removeEventListener('touchstart', onPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [localeOpen]);
 
   const toggleLang = () => {
     const next = lang === 'en' ? 'ar' : 'en';
@@ -223,6 +244,31 @@ export default function MainHeader(): ReactElement {
             >
               <Icon name="user" />
             </Link>
+            <div className="s2-locale-control" ref={localePanel}>
+              <button
+                className="s2-icon-action s2-locale-control__trigger"
+                type="button"
+                aria-expanded={localeOpen}
+                aria-controls="s2-locale-popover"
+                aria-label={pick({ en: 'Language and currency', ar: 'اللغة والعملة' })}
+                onClick={() => setLocaleOpen((open) => !open)}
+              >
+                <Icon name="globe" />
+              </button>
+              {localeOpen ? (
+                <div id="s2-locale-popover" className="s2-locale-popover" role="group" aria-label={pick({ en: 'Language and currency', ar: 'اللغة والعملة' })}>
+                  <span className="s2-overline">{pick({ en: 'Region settings', ar: 'إعدادات المنطقة' })}</span>
+                  <label className="s2-locale-popover__row">
+                    <span>{pick({ en: 'Currency', ar: 'العملة' })}</span>
+                    <CurrencySelector compact />
+                  </label>
+                  <button type="button" className="s2-locale-popover__row s2-locale-popover__language" onClick={toggleLang}>
+                    <span>{pick({ en: 'Language', ar: 'اللغة' })}</span>
+                    <strong>{lang === 'en' ? 'العربية' : 'English'}</strong>
+                  </button>
+                </div>
+              ) : null}
+            </div>
             <button
               className="s2-icon-action"
               type="button"

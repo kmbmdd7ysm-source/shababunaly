@@ -19,21 +19,27 @@ record('catalog:master-119', catalogProducts.length === 119, `found ${catalogPro
 record('catalog:published-75', products.length === 75, `found ${products.length}`);
 record('catalog:hidden-incomplete-44', catalogProducts.length - products.length === 44);
 record('catalog:published-media-real', products.every(hasRealProductMedia));
-record('catalog:ready-lha-25', readyToShipProducts().length === 25);
+record('catalog:ready-lha-priced-only', readyToShipProducts().length === lhaStoreProducts().filter((item) => Number(item.price || 0) > 0).length);
 record('lha:products-25', lhaStoreProducts().length === 25);
 
 const lha = lhaStoreProducts();
 for (const product of lha) {
-  record(`lha:${product.id}:capacity`, Number(product.stockPerColor) === 5);
-  const byPool = new Map();
-  for (const variant of product.variants || []) {
-    const key = String(variant.inventoryPoolKey || '');
-    if (!key) continue;
-    if (!byPool.has(key)) byPool.set(key, []);
-    byPool.get(key).push(variant);
-  }
-  for (const [pool, variants] of byPool) {
-    record(`lha:${product.id}:${pool}:five`, variants.every((variant) => Number(variant.inventoryPoolStock) === 5));
+  const launchReady = Number(product.price || 0) > 0;
+  if (launchReady) {
+    record(`lha:${product.id}:capacity`, Number(product.stockPerColor) === 5);
+    const byPool = new Map();
+    for (const variant of product.variants || []) {
+      const key = String(variant.inventoryPoolKey || '');
+      if (!key) continue;
+      if (!byPool.has(key)) byPool.set(key, []);
+      byPool.get(key).push(variant);
+    }
+    for (const [pool, variants] of byPool) {
+      record(`lha:${product.id}:${pool}:five`, variants.every((variant) => Number(variant.inventoryPoolStock) === 5));
+    }
+  } else {
+    record(`lha:${product.id}:coming-soon`, product.comingSoon === true && product.readyToShip !== true && product.available === false);
+    record(`lha:${product.id}:no-fabricated-stock`, Number(product.stock || 0) === 0 && product.inventoryTracking !== true && product.inventoryVerified !== true);
   }
 }
 record('lha:no-stale-stockPerVariant', !read('src/data/lhaProducts.ts').includes('stockPerVariant:'));
@@ -74,7 +80,10 @@ record('special:email-only-explicit', read('api/special-request.ts').includes("s
 
 const showcase = read('src/components/custom/CustomJerseyShowcase.tsx');
 record('custom3d:no-eager-model-viewer-import', !showcase.startsWith("import '../product/engines/loadModelViewer.ts'"));
-record('custom3d:explicit-opt-in', showcase.includes("import(" + "'../product/engines/loadModelViewer.ts')") && showcase.includes('modelRequested') && showcase.includes('Open 3D preview'));
+record('custom3d:dormant-assets-preserved', showcase.includes("import(" + "'../product/engines/loadModelViewer.ts')") && showcase.includes('modelRequested'));
+const publicCustomPage = read('src/pages/CustomizePage.tsx');
+const appRoutes = read('src/App.tsx');
+record('custom3d:hidden-from-public-ui', !publicCustomPage.includes('Open 3D preview') && !publicCustomPage.includes('/customize/advanced') && /path=["']\/customize\/advanced["'][\s\S]{0,180}Navigate to=["']\/customize["']/.test(appRoutes));
 
 const migration = read('supabase/migrations/20260818030000_independent_catalog_hardening.sql');
 const poolReconciliation = read('supabase/migrations/20260818040000_lha_pool_reconciliation.sql');

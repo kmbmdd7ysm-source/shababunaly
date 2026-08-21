@@ -143,7 +143,7 @@ record('a11y:reduced-motion-global', /@media \(prefers-reduced-motion: reduce\)[
 const lha = products.filter((item) => String(item.brand || '').toUpperCase() === 'LHA');
 const kobe = products.filter((item) => String(item.collection || '') === 'kobe');
 record('truth:lha-count-25', lha.length === 25, `found ${lha.length}`);
-record('truth:lha-stock-five-per-color', lha.every((item) => Number(item.stockPerColor) === 5));
+record('truth:lha-priced-ready-unpriced-coming-soon', lha.every((item) => Number(item.price || 0) > 0 ? Number(item.stockPerColor) === 5 && item.readyToShip === true && item.comingSoon !== true : item.comingSoon === true && item.readyToShip !== true && item.available === false));
 record('truth:kobe-count-50', kobe.length === 50, `found ${kobe.length}`);
 const expectedKobe = roundStorePrice(1200 / commerceConfig.fallbackUsdToLydRate);
 record('truth:kobe-site-rate-price', kobe.every((item) => Number(item.price) === expectedKobe), `expected ${expectedKobe}`);
@@ -183,9 +183,9 @@ record('independent:deploy-preserves-tracked-inventory', trustedCatalogSql.inclu
 record('independent:deploy-reprices-site-rate', trustedCatalogSql.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") && trustedCatalogSql.includes("variant_data->>'priceLydSource'")); // 9
 record('independent:no-stale-stockPerVariant', !lhaSource.includes('stockPerVariant:')); // 10
 record('independent:lha-25', lha.length === 25); // 11
-record('independent:lha-capacity-five', lha.every((item) => Number(item.stockPerColor) === 5)); // 12
-record('independent:lha-every-pool-five', lha.every((item) => (item.variants || []).every((variant) => !variant.inventoryPoolKey || Number(variant.inventoryPoolStock) === 5))); // 13
-record('independent:ready-to-ship-25', readyToShipProducts().length === 25, `found ${readyToShipProducts().length}`); // 14
+record('independent:lha-priced-capacity-five', lha.filter((item) => Number(item.price || 0) > 0).every((item) => Number(item.stockPerColor) === 5)); // 12
+record('independent:lha-priced-pools-five-unpriced-zero', lha.every((item) => Number(item.price || 0) > 0 ? (item.variants || []).every((variant) => !variant.inventoryPoolKey || Number(variant.inventoryPoolStock) === 5) : (item.variants || []).every((variant) => Number(variant.inventoryPoolStock || 0) === 0 && variant.inventoryTracking !== true))); // 13
+record('independent:ready-to-ship-priced-lha', readyToShipProducts().length === lha.filter((item) => Number(item.price || 0) > 0).length, `found ${readyToShipProducts().length}`); // 14
 record('independent:kobe-50', kobe.length === 50); // 15
 record('independent:kobe-source-1200', kobe.every((item) => Number(item.priceLydSource) === 1200)); // 16
 record('independent:kobe-max-us12', kobe.every((item) => Math.max(...(item.sizes || []).map(Number)) <= 12)); // 17
@@ -211,7 +211,8 @@ record('independent:teams-email-only-truthful', teams.includes('result.persisted
 record('independent:custom-email-only-truthful', customizePage.includes('result.persisted === false') && /email/i.test(customizePage)); // 37
 record('independent:advanced-email-only-truthful', advanced.includes('result.persisted === false') && /email/i.test(advanced)); // 38
 record('independent:custom3d-no-eager-loader', !/^import\s+['\"]\.\.\/product\/engines\/loadModelViewer\.ts['\"];?/m.test(showcase)); // 39
-record('independent:custom3d-explicit-opt-in', showcase.includes('modelRequested') && showcase.includes('Open 3D preview') && showcase.includes("import(" + "'../product/engines/loadModelViewer.ts')")); // 40
+record('independent:custom3d-dormant-preserved', showcase.includes('modelRequested') && showcase.includes("import(" + "'../product/engines/loadModelViewer.ts')")); // 40
+record('independent:custom3d-public-hidden', !read('src/pages/CustomizePage.tsx').includes('/customize/advanced') && /path=["']\/customize\/advanced["'][\s\S]{0,180}Navigate to=["']\/customize["']/.test(read('src/App.tsx'))); // 41
 record('independent:db-color-pool-advisory-lock', hardeningMigration.includes('pg_advisory_xact_lock') && hardeningMigration.includes("variant_data->>'inventoryPoolKey'") && poolReconciliationMigration.includes('with pool_floor as') && poolReconciliationMigration.includes('min(inventory_quantity) as available')); // 41
 record('independent:db-site-rate-price-locked', hardeningMigration.includes('site_rate_price_locked')); // 42
 record('independent:db-rate-update-reprices', hardeningMigration.includes('staff_set_exchange_rate') && hardeningMigration.includes("variant_data->>'priceLydSource'")); // 43

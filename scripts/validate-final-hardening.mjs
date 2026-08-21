@@ -351,19 +351,33 @@ try {
   assert.equal(catalogProducts.length, 119);
   assert.equal(products.length, 75);
   assert.equal(catalogProducts.length - products.length, 44);
-  assert.equal(lhaStoreProducts().length, 25);
+  const lhaProducts = lhaStoreProducts();
+  assert.equal(lhaProducts.length, 25);
+  const pricedLha = lhaProducts.filter((item) => Number(item.price || 0) > 0);
+  const unpricedLha = lhaProducts.filter((item) => Number(item.price || 0) <= 0);
   const readyProducts = readyToShipProducts();
-  assert.equal(readyProducts.length, 25);
+  assert.equal(readyProducts.length, pricedLha.length);
   assert.equal(
-    readyProducts.every(
+    pricedLha.every(
       (item) =>
+        item.readyToShip === true &&
         item.inventoryLocation === 'LY' &&
-        (item.inventoryVerified === true ||
-          (item.legacyLha === true &&
-            item.inventorySource === 'owner_confirmed_lha_color_stock' &&
-            item.inventoryVerified === true &&
-            item.inventoryTracking === true &&
-            item.comingSoon !== true)),
+        item.inventorySource === 'owner_confirmed_lha_color_stock' &&
+        item.inventoryVerified === true &&
+        item.inventoryTracking === true &&
+        item.comingSoon !== true,
+    ),
+    true,
+  );
+  assert.equal(
+    unpricedLha.every(
+      (item) =>
+        item.readyToShip !== true &&
+        item.comingSoon === true &&
+        item.available === false &&
+        item.status === 'coming_soon' &&
+        item.inventoryTracking !== true &&
+        item.inventoryVerified !== true,
     ),
     true,
   );

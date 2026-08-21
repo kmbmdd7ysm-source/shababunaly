@@ -499,6 +499,7 @@ export const kobeGoatProducts = entries.map((entry) => {
     inventoryVerified: false,
     inventoryTracking: false,
     inventorySource: 'supplier_order',
+    reservationAvailable: true,
     customizable: false,
     featured: false,
     newArrival: false,

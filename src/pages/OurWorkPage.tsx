@@ -24,14 +24,14 @@ const stories = [
     to: '/basketball/shoe-finder',
   },
   {
-    image: E.lameloChairA,
+    image: E.lameloChairB,
     category: { en: 'Programs', ar: 'البرامج' },
     title: { en: 'One order. The whole program.', ar: 'طلب واحد. برنامج كامل.' },
     copy: { en: 'Uniforms, training, equipment and club supply organized as one basketball project.', ar: 'أطقم وتدريب ومعدات وتجهيز النادي ضمن مشروع كرة سلة واحد.' },
     to: '/teams-wholesale',
   },
   {
-    image: E.curryBallPortrait,
+    image: E.lebronCrown,
     category: { en: 'Culture', ar: 'الثقافة' },
     title: { en: 'Beyond the forty minutes.', ar: 'أبعد من الأربعين دقيقة.' },
     copy: { en: 'Travel, recovery and off-court products around the everyday life of basketball.', ar: 'السفر والاستشفاء ومنتجات خارج الملعب حول الحياة اليومية لكرة السلة.' },

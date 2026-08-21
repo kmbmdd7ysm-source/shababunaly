@@ -61,7 +61,7 @@ function trustedRow(
         : 'in_stock'
     : unavailable
       ? 'unavailable'
-      : product.quoteOnly === true || product.customizable === true
+      : product.reservationAvailable === true || product.quoteOnly === true || product.customizable === true
         ? 'preorder'
         : 'in_stock';
   const productId = text(product.id);
@@ -106,6 +106,7 @@ function trustedRow(
       customizable: product.customizable === true,
       largeEquipment: product.largeEquipment === true,
       readyToShip,
+      reservationAvailable: product.reservationAvailable === true,
       deliveryProfile: text(product.deliveryProfile || (readyToShip ? 'ready' : 'standard')),
       inventorySource: text(product.inventorySource || (inventoryTracking ? 'catalog' : 'supplier-order')),
       inventoryPoolKey: text(variant.inventoryPoolKey) || null,

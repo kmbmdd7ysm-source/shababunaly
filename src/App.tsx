@@ -28,7 +28,6 @@ const Cart = lazy(() => import('./pages/CartPage'));
 const Checkout = lazy(() => import('./pages/CheckoutPage'));
 const CheckoutStatus = lazy(() => import('./pages/CheckoutStatusPage'));
 const Customize = lazy(() => import('./pages/CustomizePage'));
-const AdvancedCustomize = lazy(() => import('./pages/AdvancedCustomizePage'));
 const TeamsWholesale = lazy(() => import('./pages/TeamsWholesalePage'));
 const LhaStore = lazy(() => import('./pages/LhaStorePage'));
 const OurWork = lazy(() => import('./pages/OurWorkPage'));
@@ -47,6 +46,7 @@ const Offline = lazy(() => import('./pages/OfflinePage'));
 const Help = lazy(() => import('./pages/HelpPage'));
 const Operations = lazy(() => import('./pages/OperationsPage'));
 const SpecialRequest = lazy(() => import('./pages/SpecialRequestPage'));
+const GiftCards = lazy(() => import('./pages/GiftCardsPage'));
 const TeamLocker = lazy(() => import('./pages/TeamLockerPage'));
 const DesignShare = lazy(() => import('./pages/DesignSharePage'));
 // Isolated design-direction prototype. Additive, noindex, robots-disallowed and
@@ -91,8 +91,9 @@ export default function App(): ReactElement {
                 <Route path="/checkout/success" element={<CheckoutStatus status="success" />} />
                 <Route path="/checkout/cancelled" element={<CheckoutStatus status="cancelled" />} />
                 <Route path="/customize" element={<Customize />} />
-                <Route path="/customize/advanced" element={<AdvancedCustomize />} />
+                <Route path="/customize/advanced" element={<Navigate to="/customize" replace />} />
                 <Route path="/special-request" element={<SpecialRequest />} />
+                <Route path="/gift-cards" element={<GiftCards />} />
                 <Route path="/teams-wholesale" element={<TeamsWholesale />} />
                 <Route path="/team-locker/:slug" element={<TeamLocker />} />
                 <Route path="/design-share/:token" element={<DesignShare />} />

@@ -28,22 +28,30 @@ for (const product of lha) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
   const stockByColor = product.stockByColor && typeof product.stockByColor === 'object' ? product.stockByColor : {};
   const colorKeys = colors.map((color) => String(color?.key || '')).filter(Boolean);
-  check(product.status === 'active' && product.comingSoon !== true, `LHA ${product.id} is active`);
-  check(product.inventoryVerified === true && product.inventoryTracking === true, `LHA ${product.id} inventory is verified/tracked`);
-  check(product.inventorySource === 'owner_confirmed_lha_color_stock', `LHA ${product.id} uses owner-confirmed stock source`);
-  check(product.inventoryLocation === 'LY', `LHA ${product.id} inventory location is Libya`);
-  check(product.readyToShip === true, `LHA ${product.id} is ready-to-ship from verified stock`);
-  check(Number(product.stockPerColor) === 5, `LHA ${product.id} has five pieces per color`);
-  check(Number(product.stock) === colorKeys.length * 5, `LHA ${product.id} total stock equals colors × 5`, `stock=${product.stock}, colors=${colorKeys.length}`);
-  for (const colorKey of colorKeys) {
-    check(Number(stockByColor[colorKey]) === 5, `LHA ${product.id}/${colorKey} pool equals 5`);
-    const colorVariants = variants.filter((variant) => String(variant.color || '') === colorKey);
-    check(colorVariants.length > 0, `LHA ${product.id}/${colorKey} has variants`);
-    for (const variant of colorVariants) {
-      check(variant.inventoryPoolKey === `color:${colorKey}`, `LHA ${product.id}/${variant.sku} shares the correct color pool`);
-      check(Number(variant.inventoryPoolStock) === 5, `LHA ${product.id}/${variant.sku} pool stock equals 5`);
-      check(variant.inventoryVerified === true && variant.inventoryTracking === true, `LHA ${product.id}/${variant.sku} inventory is verified/tracked`);
+  const launchReady = Number(product.price || 0) > 0;
+  if (launchReady) {
+    check(product.status === 'active' && product.comingSoon !== true, `Priced LHA ${product.id} is active`);
+    check(product.inventoryVerified === true && product.inventoryTracking === true, `Priced LHA ${product.id} inventory is verified/tracked`);
+    check(product.inventorySource === 'owner_confirmed_lha_color_stock', `Priced LHA ${product.id} uses owner-confirmed stock source`);
+    check(product.inventoryLocation === 'LY', `Priced LHA ${product.id} inventory location is Libya`);
+    check(product.readyToShip === true, `Priced LHA ${product.id} is ready-to-ship from verified stock`);
+    check(Number(product.stockPerColor) === 5, `Priced LHA ${product.id} has five pieces per color`);
+    check(Number(product.stock) === colorKeys.length * 5, `Priced LHA ${product.id} total stock equals colors × 5`, `stock=${product.stock}, colors=${colorKeys.length}`);
+    for (const colorKey of colorKeys) {
+      check(Number(stockByColor[colorKey]) === 5, `Priced LHA ${product.id}/${colorKey} pool equals 5`);
+      const colorVariants = variants.filter((variant) => String(variant.color || '') === colorKey);
+      check(colorVariants.length > 0, `Priced LHA ${product.id}/${colorKey} has variants`);
+      for (const variant of colorVariants) {
+        check(variant.inventoryPoolKey === `color:${colorKey}`, `Priced LHA ${product.id}/${variant.sku} shares the correct color pool`);
+        check(Number(variant.inventoryPoolStock) === 5, `Priced LHA ${product.id}/${variant.sku} pool stock equals 5`);
+        check(variant.inventoryVerified === true && variant.inventoryTracking === true, `Priced LHA ${product.id}/${variant.sku} inventory is verified/tracked`);
+      }
     }
+  } else {
+    check(product.status === 'coming_soon' && product.comingSoon === true, `Unpriced LHA ${product.id} is Coming Soon`);
+    check(product.available === false && product.readyToShip !== true, `Unpriced LHA ${product.id} is not checkout-ready`);
+    check(product.inventoryVerified !== true && product.inventoryTracking !== true, `Unpriced LHA ${product.id} has no fabricated verified stock`);
+    check(Number(product.stock || 0) === 0, `Unpriced LHA ${product.id} has zero launch stock`);
   }
 }
 
@@ -55,6 +63,7 @@ for (const product of kobe) {
   check(product.pricingRateSource === 'site_exchange_rate', `Kobe ${product.id} uses site exchange-rate source`);
   check(Number(product.price) === expectedKobeUsd, `Kobe ${product.id} USD price uses site rate + clean rounding`, `expected ${expectedKobeUsd}, found ${product.price}`);
   check(product.quoteOnly === false, `Kobe ${product.id} is directly priced, not quote-only`);
+  check(product.reservationAvailable === true, `Kobe ${product.id} is available to reserve`);
   check(product.sizeSystem === 'US Men', `Kobe ${product.id} size system is US Men`);
   check(Number(product.maxUsMensSize) === 12 && Number(product.maxEuSize) === 46, `Kobe ${product.id} max size is US 12 / EU 46`);
   check(sizes.length > 0 && Math.max(...sizes) <= 12, `Kobe ${product.id} has no size above US 12`, `sizes=${sizes.join(',')}`);

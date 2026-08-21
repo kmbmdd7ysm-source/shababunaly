@@ -142,7 +142,18 @@
   .s2-plp-actions { padding-inline-end: 12px; }
   .s2-filter-trigger span { display: none; }
   .sort-select select { max-width: 92px; font-size: 0.75rem; }
-  .s2-subcategory-row { padding-inline: 16px; }
+  .s2-subcategory-row {
+    padding-inline: 16px;
+    gap: 16px;
+    scroll-snap-type: inline proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .s2-subcategory-row button {
+    flex: 0 0 auto;
+    min-inline-size: max-content;
+    scroll-snap-align: start;
+  }
   .s2-category-banner { min-height: 42svh; }
   .s2-category-banner strong { inset-inline: 18px; inset-block-end: 20px; }
   .s2-plp { padding-top: 34px; }

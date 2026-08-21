@@ -25,8 +25,12 @@ export function buildCatalog(input = products) {
           canonical_slug: product.slug,
           sku: variant.sku,
           product_name: product.name.en,
-          product_status: 'active',
-          active: product.availability !== 'sold-out',
+          product_status: product.comingSoon === true ? 'coming_soon' : (product.status || 'active'),
+          active:
+            product.available !== false &&
+            product.comingSoon !== true &&
+            variant.active !== false &&
+            product.availability !== 'sold-out',
           color: variant.color || null,
           size: variant.size || null,
           currency: product.currency,
@@ -40,7 +44,7 @@ export function buildCatalog(input = products) {
               : 'out_of_stock'
             : product.available === false || product.comingSoon
               ? 'unavailable'
-              : product.quoteOnly || product.customizable
+              : product.reservationAvailable === true || product.quoteOnly || product.customizable
                 ? 'preorder'
                 : 'in_stock',
           inventory_tracking: inventoryTracking,
@@ -68,6 +72,7 @@ export function buildCatalog(input = products) {
             customizable: Boolean(product.customizable),
             largeEquipment: Boolean(product.largeEquipment),
             readyToShip: Boolean(product.readyToShip),
+            reservationAvailable: product.reservationAvailable === true,
             deliveryProfile:
               product.deliveryProfile || (product.readyToShip ? 'ready' : 'standard'),
             inventorySource:

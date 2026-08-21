@@ -70,6 +70,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
   const [profile, setProfile] = useState<Record<string, unknown>>({});
   const [status, setStatus] = useState('local');
   const [notices, setNotices] = useState<Array<Record<string, unknown>>>([]);
+  const [hydrationReady, setHydrationReady] = useState(false);
   const hydrated = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const abort = useRef<AbortController | undefined>(undefined);
@@ -119,6 +120,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
   useEffect(() => {
     if (auth.loading) return undefined;
     hydrated.current = false;
+    setHydrationReady(false);
     abort.current?.abort();
     abort.current = new AbortController();
     const local = {
@@ -135,6 +137,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
       setProfile({});
       setStatus('local');
       hydrated.current = true;
+      setHydrationReady(true);
       return undefined;
     }
     setStatus('syncing');
@@ -155,10 +158,12 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
         await upsertCloudState(uid, { ...state, version: state.version } as Record<string, unknown>);
         version.current = Number(state.version || 0);
         hydrated.current = true;
+        setHydrationReady(true);
         setStatus('synced');
       } catch {
         if (abort.current?.signal.aborted) return;
         hydrated.current = true;
+        setHydrationReady(true);
         setStatus(navigator.onLine ? 'error' : 'offline');
       }
     })();
@@ -166,7 +171,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [uid, auth.loading]);
   useEffect(() => {
-    if (!hydrated.current) return;
+    if (!hydrationReady || !hydrated.current) return;
     writeScoped(STORAGE_KEYS.wishlist, uid, wishlist);
     writeScoped(STORAGE_KEYS.recentlyViewed, uid, recent);
     channel.current?.post('wishlist', wishlist, {
@@ -174,7 +179,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
       version: version.current,
     });
     channel.current?.post('recent', recent, { scope: uid || 'guest', version: version.current });
-  }, [wishlist, recent, uid]);
+  }, [wishlist, recent, uid, hydrationReady]);
   const persist = useCallback(
     async (state: Record<string, unknown> = snapshot() as Record<string, unknown>) => {
       if (!uid) return;
@@ -196,7 +201,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
     [uid, snapshot],
   );
   useEffect(() => {
-    if (!uid || !hydrated.current) return undefined;
+    if (!uid || !hydrationReady || !hydrated.current) return undefined;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       void persist().catch(() => {
@@ -205,7 +210,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
       });
     }, 750);
     return () => clearTimeout(timer.current);
-  }, [uid, cart.items, wishlist, compare.ids, recent, profile, persist, snapshot]);
+  }, [uid, cart.items, wishlist, compare.ids, recent, profile, persist, snapshot, hydrationReady]);
   useEffect(() => {
     const online = () => {
       void (async () => {
@@ -300,6 +305,7 @@ export function UserDataProvider({ children }: { children?: ReactNode }) {
       cart.replaceItems([]);
       compare.replace([]);
       hydrated.current = false;
+      setHydrationReady(false);
       // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
     }, [uid, cart.replaceItems, compare.replace]);
   return (

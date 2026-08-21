@@ -154,6 +154,7 @@ export default function ProductPage(): ReactElement {
   };
 
   const comingSoon = product.available === false || product.comingSoon === true;
+  const reservationAvailable = product.reservationAvailable === true;
   const soldOut = product.availability === 'sold-out';
   const low = isLowStock(product);
   const quoteOnly = product.quoteOnly === true;
@@ -254,8 +255,13 @@ export default function ProductPage(): ReactElement {
     .map((id) => getProductById(String(id)))
     .filter((item): item is CatalogProduct => Boolean(item))
     .slice(0, 4);
-  const shippingCopy = showReady
+  const shippingCopy = reservationAvailable
     ? pick({
+        en: 'Available by reservation. Shababuna confirms the selected size, final availability and delivery timing after the order is placed.',
+        ar: 'متوفر بالحجز. يؤكد فريق شبابنا المقاس المختار والتوفر النهائي وموعد التسليم بعد تسجيل الطلب.',
+      })
+    : showReady
+      ? pick({
         en: 'Ready in Libya · estimated delivery 24–72 hours.',
         ar: 'متوفر داخل ليبيا · التوصيل المتوقع خلال 24–72 ساعة.',
       })
@@ -401,7 +407,9 @@ export default function ProductPage(): ReactElement {
               </div>
 
               <div className="pdx-status-row">
-                {showReady ? (
+                {reservationAvailable ? (
+                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Available to Reserve', ar: 'متوفر بالحجز' })}</span>
+                ) : showReady ? (
                   <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Verified stock in Libya', ar: 'مخزون موثق داخل ليبيا' })}</span>
                 ) : null}
                 {!comingSoon && !soldOut && onSale ? <Badge tone="sale">{badge.sale || 'Sale'}</Badge> : null}
@@ -504,7 +512,9 @@ export default function ProductPage(): ReactElement {
                 <button type="button" className="pdx-add" onClick={addToCart} disabled={adding}>
                   {adding
                     ? pick({ en: 'Adding…', ar: 'جارٍ الإضافة…' })
-                    : productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
+                    : reservationAvailable
+                      ? pick({ en: 'Reserve in bag', ar: 'احجز في الحقيبة' })
+                      : productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
                 </button>
                 {matchedVariant && low && Number(matchedVariant.stock || 0) > 0 ? <p className="stock-note">{productCopy.lowStock}</p> : null}
                 {isWholesale ? (

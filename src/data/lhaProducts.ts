@@ -17,16 +17,19 @@ const C = {
 
 // Factory: fills defaults + builds variants/inventory from sizes × colours.
 export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, unknown> {
-  // Owner-confirmed inventory truth: every LHA product currently has five
-  // physical pieces in each listed colour. The stock pool is colour-level;
-  // sizes share the same five-piece pool rather than multiplying inventory.
+  // Phase 1 storefront truth: priced LHA products are owner-confirmed ready
+  // stock; products without a retail price remain Coming Soon and cannot leak
+  // into checkout as zero-price or quote-only ready inventory.
   const OWNER_STOCK_PER_COLOR = 5;
   const sizes = (Array.isArray(p.sizes) ? p.sizes : DEFAULT_CLOTHING_SIZES) as string[];
   const colors = (
     Array.isArray(p.colors) ? p.colors : [C.black]
   ) as Array<{ key: string; [k: string]: unknown }>;
   const cleanPrice = roundStorePrice(p.price || 0);
-  const stockByColor = Object.fromEntries(colors.map((color) => [color.key, OWNER_STOCK_PER_COLOR]));
+  const launchReady = cleanPrice > 0;
+  const stockByColor = Object.fromEntries(
+    colors.map((color) => [color.key, launchReady ? OWNER_STOCK_PER_COLOR : 0]),
+  );
   const variants: Array<Record<string, unknown>> = [];
 
   for (const color of colors) {
@@ -35,20 +38,18 @@ export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, 
         size,
         color: color.key,
         sku: `${p.sku}-${color.key.slice(0, 2).toUpperCase()}-${String(size).replace(/[^A-Za-z0-9]/g, '')}`,
-        // A variant can consume up to the whole colour pool, but all sizes of
-        // this colour share that same pool in the cart.
-        stock: OWNER_STOCK_PER_COLOR,
+        stock: launchReady ? OWNER_STOCK_PER_COLOR : 0,
         inventoryPoolKey: `color:${color.key}`,
-        inventoryPoolStock: OWNER_STOCK_PER_COLOR,
-        inventoryTracking: true,
-        inventoryVerified: true,
-        availabilityState: 'in_stock',
-        readyToShip: true,
+        inventoryPoolStock: launchReady ? OWNER_STOCK_PER_COLOR : 0,
+        inventoryTracking: launchReady,
+        inventoryVerified: launchReady,
+        availabilityState: launchReady ? 'in_stock' : 'unavailable',
+        readyToShip: launchReady,
       });
     }
   }
 
-  const stock = colors.length * OWNER_STOCK_PER_COLOR;
+  const stock = launchReady ? colors.length * OWNER_STOCK_PER_COLOR : 0;
   return {
     currency: 'USD',
     lowStockThreshold: OWNER_STOCK_PER_COLOR,
@@ -68,22 +69,22 @@ export function normalizeLhaProduct(p: Record<string, unknown>): Record<string, 
     madeInUSA: false,
     ...p,
     price: cleanPrice,
-    comingSoon: false,
-    available: true,
-    status: 'active',
+    comingSoon: !launchReady,
+    available: launchReady,
+    status: launchReady ? 'active' : 'coming_soon',
     sizes,
     colors,
     variants,
     stockByColor,
-    stockPerColor: OWNER_STOCK_PER_COLOR,
+    stockPerColor: launchReady ? OWNER_STOCK_PER_COLOR : 0,
     stock,
-    inventoryTracking: true,
-    inventoryVerified: true,
-    inventorySource: 'owner_confirmed_lha_color_stock',
-    inventoryLocation: 'LY',
-    inventoryVerifiedAt: '2026-08-17',
-    readyToShip: true,
-    availability: 'in-stock',
+    inventoryTracking: launchReady,
+    inventoryVerified: launchReady,
+    inventorySource: launchReady ? 'owner_confirmed_lha_color_stock' : 'pending_launch',
+    inventoryLocation: launchReady ? 'LY' : null,
+    inventoryVerifiedAt: launchReady ? '2026-08-17' : null,
+    readyToShip: launchReady,
+    availability: launchReady ? 'in-stock' : 'coming-soon',
     image: p.image ?? null,
     hoverImage: p.hoverImage && p.hoverImage !== p.image ? p.hoverImage : null,
     socialImage: p.socialImage ?? p.image ?? null,

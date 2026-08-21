@@ -25,8 +25,10 @@ describe('phase 2 production systems', () => {
     expect(home).toContain('autoPlay');
     expect(editorial).toContain('<video');
     const localMp4s = map.match(/\/media\/hero-videos\/[a-z-]+\.mp4/g) || [];
-    expect(localMp4s.length).toBe(13);
-    expect(new Set(localMp4s).size).toBe(13);
+    const heroSlots = map.match(/^\s{2}[A-Za-z]+: entry\(/gm) || [];
+    expect(heroSlots.length).toBe(13);
+    expect(localMp4s.length).toBe(15);
+    expect(new Set(localMp4s).size).toBe(15);
     expect(`${map}\n${home}\n${editorial}`).not.toContain('youtube-nocookie.com');
   });
 

@@ -175,12 +175,18 @@ export default function HomePage(): ReactElement {
         </div>
       </section>
 
-      <section className="s2-team-teaser">
-        <div>
+      <section className="s2-team-teaser" aria-labelledby="s2-team-teaser-title">
+        <picture className="s2-team-teaser__media" aria-hidden="true">
+          <source media="(max-width: 700px)" srcSet={E.tatumKids} />
+          <img src={E.franceGroup} alt="" width="1600" height="1000" loading="lazy" />
+        </picture>
+        <span className="s2-team-teaser__shade" />
+        <div className="s2-team-teaser__copy">
           <span className="s2-overline">{pick({ en: 'For clubs', ar: 'للأندية' })}</span>
-          <h2>{pick({ en: 'Outfit your team.', ar: 'جهّز فريقك.' })}</h2>
+          <h2 id="s2-team-teaser-title">{pick({ en: 'Outfit your team.', ar: 'جهّز فريقك.' })}</h2>
+          <p>{pick({ en: 'Uniforms, training gear and club supply built around your program.', ar: 'أطقم وملابس تدريب وتجهيزات للأندية مبنية حول احتياجات فريقك.' })}</p>
+          <Link to="/teams-wholesale">{pick({ en: 'Explore Teams & Wholesale', ar: 'اكتشف الأندية والجملة' })}</Link>
         </div>
-        <Link to="/teams-wholesale">{pick({ en: 'Teams & Wholesale', ar: 'الأندية والجملة' })}</Link>
       </section>
     </>
   );

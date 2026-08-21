@@ -10,6 +10,7 @@ Main sections:
 - /shop — clothing, footwear, accessories, basketballs and equipment
 - /customize — custom product design and quote requests
 - /teams-wholesale — clubs, academies, federations, distributors and bulk supply
+- /gift-cards — digital Shababuna gift-card requests and recipient delivery
 - /lha-store — official LHA clothing and accessories shop
 - /stories — basketball stories and editorial content
 

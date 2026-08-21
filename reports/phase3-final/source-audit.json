@@ -1,13 +1,12 @@
 {
-  "generatedAt": "2026-08-18T20:15:22.335Z",
+  "generatedAt": "2026-08-21T21:28:53.984Z",
   "phase": 3,
   "scope": "destruction source QA and release-honesty pass",
   "sourcePassed": true,
   "releaseVerdict": "SOURCE_VERIFIED_EXTERNAL_GATES_PENDING",
-  "checks": 187,
+  "checks": 151,
   "failures": [],
   "warnings": [
-    "hero-video-first-party-ownership — 13 hero videos remain direct external MP4 sources; local licensed video payloads were not present in the user ZIP.",
     "provider-readiness — Payment/signature provider selection and live evidence are still external inputs.",
     "factory-readiness — No approved manufacturer evidence is present; quote flows must remain quote-specific.",
     "arabic-human-review — Arabic keys are structurally complete but human approval is not current.",
@@ -18,11 +17,11 @@
     "publishedProducts": 75,
     "lhaProducts": 25,
     "kobeProducts": 50,
-    "heroPosterBytes": 696756,
-    "cssFiles": 64,
-    "cssLines": 22554,
-    "importantCount": 1135,
-    "nodeModulesPresent": false
+    "heroPosterBytes": 0,
+    "cssFiles": 65,
+    "cssLines": 23443,
+    "importantCount": 1196,
+    "nodeModulesPresent": true
   },
   "results": [
     {
@@ -84,11 +83,6 @@
       "name": "route-target:Customize",
       "ok": true,
       "detail": "CustomizePage"
-    },
-    {
-      "name": "route-target:AdvancedCustomize",
-      "ok": true,
-      "detail": "AdvancedCustomizePage"
     },
     {
       "name": "route-target:TeamsWholesale",
@@ -181,6 +175,11 @@
       "detail": "SpecialRequestPage"
     },
     {
+      "name": "route-target:GiftCards",
+      "ok": true,
+      "detail": "GiftCardsPage"
+    },
+    {
       "name": "route-target:TeamLocker",
       "ok": true,
       "detail": "TeamLockerPage"
@@ -253,7 +252,7 @@
     {
       "name": "sitemap:no-duplicates",
       "ok": true,
-      "detail": "24 urls"
+      "detail": "25 urls"
     },
     {
       "name": "prerender:no-duplicate-static-paths",
@@ -426,14 +425,19 @@
       "detail": ""
     },
     {
-      "name": "hero:13-direct-video-sources",
+      "name": "hero:15-local-original-source-refs",
       "ok": true,
-      "detail": "found 13"
+      "detail": "found 15"
     },
     {
-      "name": "hero:13-unique-video-sources",
+      "name": "hero:15-unique-local-sources",
       "ok": true,
-      "detail": "unique 13"
+      "detail": "unique 15"
+    },
+    {
+      "name": "hero:all-local-source-files-exist",
+      "ok": true,
+      "detail": ""
     },
     {
       "name": "hero:native-video-components",
@@ -451,209 +455,19 @@
       "detail": ""
     },
     {
-      "name": "hero:13-local-posters",
+      "name": "hero:no-local-posters",
       "ok": true,
-      "detail": "found 13"
-    },
-    {
-      "name": "hero-poster:exists:home.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:home.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:home.webp",
-      "ok": true,
-      "detail": "68266 bytes"
-    },
-    {
-      "name": "hero-poster:exists:shop.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:shop.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:shop.webp",
-      "ok": true,
-      "detail": "23168 bytes"
-    },
-    {
-      "name": "hero-poster:exists:footwear.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:footwear.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:footwear.webp",
-      "ok": true,
-      "detail": "12674 bytes"
-    },
-    {
-      "name": "hero-poster:exists:clothing.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:clothing.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:clothing.webp",
-      "ok": true,
-      "detail": "22086 bytes"
-    },
-    {
-      "name": "hero-poster:exists:accessories.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:accessories.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:accessories.webp",
-      "ok": true,
-      "detail": "161174 bytes"
-    },
-    {
-      "name": "hero-poster:exists:basketballs.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:basketballs.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:basketballs.webp",
-      "ok": true,
-      "detail": "119848 bytes"
-    },
-    {
-      "name": "hero-poster:exists:equipment.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:equipment.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:equipment.webp",
-      "ok": true,
-      "detail": "24198 bytes"
-    },
-    {
-      "name": "hero-poster:exists:shoe-finder.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:shoe-finder.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:shoe-finder.webp",
-      "ok": true,
-      "detail": "15708 bytes"
-    },
-    {
-      "name": "hero-poster:exists:custom.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:custom.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:custom.webp",
-      "ok": true,
-      "detail": "60234 bytes"
-    },
-    {
-      "name": "hero-poster:exists:discover.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:discover.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:discover.webp",
-      "ok": true,
-      "detail": "63626 bytes"
-    },
-    {
-      "name": "hero-poster:exists:teams.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:teams.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:teams.webp",
-      "ok": true,
-      "detail": "10928 bytes"
-    },
-    {
-      "name": "hero-poster:exists:stories.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:stories.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:stories.webp",
-      "ok": true,
-      "detail": "55910 bytes"
-    },
-    {
-      "name": "hero-poster:exists:releases.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:webp:releases.webp",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "hero-poster:budget:releases.webp",
-      "ok": true,
-      "detail": "58936 bytes"
+      "detail": "found 0"
     },
     {
       "name": "hero-poster:aggregate-budget",
       "ok": true,
-      "detail": "696756 bytes"
+      "detail": "0 bytes"
+    },
+    {
+      "name": "hero:no-remote-video-sources",
+      "ok": true,
+      "detail": ""
     },
     {
       "name": "locale:first-paint-lang-dir",
@@ -701,7 +515,7 @@
       "detail": "found 25"
     },
     {
-      "name": "truth:lha-stock-five-per-color",
+      "name": "truth:lha-priced-ready-unpriced-coming-soon",
       "ok": true,
       "detail": ""
     },
@@ -781,19 +595,19 @@
       "detail": ""
     },
     {
-      "name": "independent:lha-capacity-five",
+      "name": "independent:lha-priced-capacity-five",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "independent:lha-every-pool-five",
+      "name": "independent:lha-priced-pools-five-unpriced-zero",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "independent:ready-to-ship-25",
+      "name": "independent:ready-to-ship-priced-lha",
       "ok": true,
-      "detail": "found 25"
+      "detail": "found 15"
     },
     {
       "name": "independent:kobe-50",
@@ -921,7 +735,12 @@
       "detail": ""
     },
     {
-      "name": "independent:custom3d-explicit-opt-in",
+      "name": "independent:custom3d-dormant-preserved",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "independent:custom3d-public-hidden",
       "ok": true,
       "detail": ""
     },

@@ -183,16 +183,30 @@ export function CartProvider({ children }: { children?: ReactNode }) {
     catalog = useCatalog(),
     scope = auth.user?.id || null;
   const [items, dispatch] = useReducer(reducer, [] as CartItem[]),
-    [drawerOpen, setDrawerOpen] = useState(false);
+    [drawerOpen, setDrawerOpen] = useState(false),
+    [hydrationReady, setHydrationReady] = useState(false);
   const priorScope = useRef<string | null | symbol>(Symbol('initial'));
   const channel = useRef<ReturnType<typeof createChannel> | null>(null);
   const ready = useRef(false);
+  const hydrationVersion = useRef(0);
   useEffect(() => {
-    if (auth.loading) return;
+    if (auth.loading) return undefined;
+    const version = ++hydrationVersion.current;
     ready.current = false;
+    setHydrationReady(false);
     dispatch({ type: 'REPLACE', items: readScoped(STORAGE_KEYS.cart, scope, []) });
     priorScope.current = scope;
-    ready.current = true;
+    // Persistence effects from the scope-changing render run before this
+    // microtask, so they cannot overwrite the newly selected scope with the
+    // previous scope's cart. The following render persists only hydrated data.
+    queueMicrotask(() => {
+      if (hydrationVersion.current !== version) return;
+      ready.current = true;
+      setHydrationReady(true);
+    });
+    return () => {
+      if (hydrationVersion.current === version) ready.current = false;
+    };
   }, [scope, auth.loading]);
   useEffect(() => {
     if (!ready.current || !catalog.products?.length) return;
@@ -200,7 +214,7 @@ export function CartProvider({ children }: { children?: ReactNode }) {
       type: 'RECONCILE_CATALOG',
       byId: new Map((catalog.products as Array<Record<string, unknown>>).map((product) => [String(product.id), product])),
     });
-  }, [catalog.products]);
+  }, [catalog.products, hydrationReady]);
   useEffect(() => {
     channel.current?.close();
     channel.current = createChannel('shababuna-cart-channel', (msg) => {
@@ -210,10 +224,10 @@ export function CartProvider({ children }: { children?: ReactNode }) {
     return () => channel.current?.close();
   }, [scope]);
   useEffect(() => {
-    if (!ready.current) return;
+    if (!hydrationReady || !ready.current) return;
     writeScoped(STORAGE_KEYS.cart, scope, items);
     channel.current?.post('cart', items, { scope: scope || 'guest', version: Date.now() });
-  }, [items, scope]);
+  }, [items, scope, hydrationReady]);
   const addItem = useCallback((item: CartItem, { openDrawer = true }: { openDrawer?: boolean } = {}) => {
       dispatch({ type: 'ADD', item });
       trackEvent('add_to_cart', { item_id: item.id, item_type: item.type, value: item.price });

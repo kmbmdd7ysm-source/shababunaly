@@ -97,7 +97,22 @@
   .s2-discover-card__copy { inset-inline: 18px; inset-block-end: 18px; }
   .s2-discover-hero { min-height: 66svh; }
   .s2-discover-hero__copy { inset-inline: 18px; inset-block-end: 34px; }
-  .s2-discover-more { grid-template-columns: 1fr; gap: 28px; }
+  .s2-discover-more {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(210px, 72vw);
+    grid-template-columns: none;
+    gap: 12px;
+    overflow-x: auto;
+    padding-inline: 16px;
+    scroll-snap-type: inline mandatory;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .s2-discover-more::-webkit-scrollbar { display: none; }
+  .s2-discover-more a { scroll-snap-align: start; gap: 10px; }
+  .s2-discover-more img { aspect-ratio: 4 / 5; max-height: 64svh; }
   .s2-release-row { grid-template-columns: 64px minmax(0, 1fr); min-height: 84px; gap: 14px; }
   .s2-release-row__action { display: none; }
 }
