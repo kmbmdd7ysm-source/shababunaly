@@ -65,7 +65,7 @@ export default function ProductCard({
   const availability = resolveAvailabilityState(p, { countryCode });
   const comingSoon = availability === 'COMING_SOON';
   const reservationAvailable = p.reservationAvailable === true;
-  const soldOut = availability === 'OUT_OF_STOCK';
+  const soldOut = availability === 'OUT_OF_STOCK' && !reservationAvailable;
   const low = isLowStock(p) && p.inventoryVerified === true;
   const availabilityCopy = availabilityLabel(availability, lang === 'ar' ? 'ar' : 'en');
   const to = `/products/${String(p.slug || '')}${displayColor ? `?color=${displayColor}` : ''}`;

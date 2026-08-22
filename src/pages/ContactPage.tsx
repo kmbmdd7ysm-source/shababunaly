@@ -10,6 +10,7 @@ import '../styles/composition.css';
 import Breadcrumbs from '../components/common/Breadcrumbs';
 import { sendFormspree } from '../services/formspree';
 import TurnstileWidget from '../components/security/TurnstileWidget';
+import CountrySelect from '../components/common/CountrySelect';
 import '../styles/content.css';
 import '../styles/domain-forms.css';
 
@@ -31,7 +32,7 @@ export default function ContactPage(): ReactElement {
     name: '',
     email: '',
     phone: '',
-    country: '',
+    country: 'LY',
     organization: '',
     orderNumber: '',
     message: '',
@@ -144,10 +145,9 @@ export default function ContactPage(): ReactElement {
                   <label className="field" data-field="country">
                     <span className="field__label">{pick({ en: 'Country', ar: 'الدولة' })}</span>
                     <div className="field__control">
-                      <input
-                      value={form.country}
-                      onChange={set('country')}
-                      autoComplete="country-name"
+                      <CountrySelect
+                        value={form.country}
+                        onChange={(country) => setForm((current) => ({ ...current, country }))}
                       />
                     </div>
                   </label>

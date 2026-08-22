@@ -7,9 +7,11 @@ import {
   type KeyboardEvent,
   type ReactElement,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { getCountryName, getLocalizedCountries, normalizeCountryCode } from '../../data/countries';
 import { useLanguage } from '../../context/LanguageContext';
 import Icon from '../icons/Icon';
+import '../../styles/country-picker.css';
 
 function normalizeSearch(value: unknown): string {
   return String(value || '')
@@ -20,6 +22,12 @@ function normalizeSearch(value: unknown): string {
     .replace(/ى/g, 'ي')
     .toLocaleLowerCase()
     .trim();
+}
+
+function flagEmoji(code: string): string {
+  const safe = String(code || '').toUpperCase();
+  if (!/^[A-Z]{2}$/.test(safe)) return '◉';
+  return String.fromCodePoint(...[...safe].map((char) => 127397 + char.charCodeAt(0)));
 }
 
 type CountryOption = {
@@ -61,10 +69,8 @@ export default function CountrySelect({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
-  const rootRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
 
   const filtered = useMemo(() => {
     const term = normalizeSearch(query);
@@ -87,42 +93,41 @@ export default function CountrySelect({
       .map(({ country }) => country);
   }, [options, query]);
 
+  const close = (restoreFocus = true) => {
+    setOpen(false);
+    setQuery('');
+    if (restoreFocus) globalThis.setTimeout(() => triggerRef.current?.focus(), 0);
+  };
+
   useEffect(() => {
     if (!open) return;
     const selectedIndex = filtered.findIndex((country) => country.code === selectedCode);
     setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
-    inputRef.current?.focus();
-  }, [open, selectedCode, filtered]);
-
-  const close = (restoreFocus = true) => {
-    setOpen(false);
-    setQuery('');
-    if (restoreFocus) triggerRef.current?.focus();
-  };
+    const timer = globalThis.setTimeout(() => inputRef.current?.focus(), 40);
+    return () => globalThis.clearTimeout(timer);
+  }, [open, selectedCode]);
 
   useEffect(() => {
     if (!open) return undefined;
-    const onPointerDown = (event: MouseEvent) => {
-      if (!(event.target instanceof Node) || !rootRef.current?.contains(event.target))
-        close(false);
-    };
+    document.documentElement.classList.add('country-picker-open');
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
         close();
       }
     };
-    document.addEventListener('pointerdown', onPointerDown);
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('pointerdown', onPointerDown);
+      document.documentElement.classList.remove('country-picker-open');
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [open]);
 
   useEffect(() => {
-    optionRefs.current[activeIndex]?.scrollIntoView?.({ block: 'nearest' });
-  }, [activeIndex]);
+    if (!open || !filtered[activeIndex]) return;
+    const option = document.getElementById(`${controlId}-option-${filtered[activeIndex].code}`);
+    option?.scrollIntoView?.({ block: 'nearest' });
+  }, [activeIndex, controlId, filtered, open]);
 
   const choose = (country: CountryOption) => {
     onChange(country.code);
@@ -153,101 +158,120 @@ export default function CountrySelect({
     }
   };
 
+  const picker = open && typeof document !== 'undefined'
+    ? createPortal(
+        <div
+          className="country-picker-backdrop"
+          onMouseDown={(event) => {
+            if (event.currentTarget === event.target) close();
+          }}
+        >
+          <section
+            className="country-combobox__popover country-picker-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`${controlId}-title`}
+          >
+            <header className="country-picker-head">
+              <div>
+                <span>{pick({ en: 'Shipping & location', ar: 'الشحن والموقع' })}</span>
+                <strong id={`${controlId}-title`}>{pick({ en: 'Select country', ar: 'اختر الدولة' })}</strong>
+              </div>
+              <button type="button" className="country-picker-close" onClick={() => close()} aria-label={pick({ en: 'Close country picker', ar: 'إغلاق اختيار الدولة' })}>
+                <Icon name="close" size={20} />
+              </button>
+            </header>
+
+            <label className="country-combobox__search country-picker-search" htmlFor={searchId}>
+              <Icon name="search" size={19} />
+              <span className="sr-only">{pick({ en: 'Search countries', ar: 'ابحث عن دولة' })}</span>
+              <input
+                ref={inputRef}
+                id={searchId}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="true"
+                aria-controls={listboxId}
+                aria-activedescendant={
+                  filtered[activeIndex]
+                    ? `${controlId}-option-${filtered[activeIndex].code}`
+                    : undefined
+                }
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setActiveIndex(0);
+                }}
+                onKeyDown={onSearchKeyDown}
+                placeholder={pick({ en: 'Search country or code', ar: 'ابحث باسم الدولة أو الرمز' })}
+                autoComplete="off"
+                enterKeyHint="search"
+              />
+            </label>
+
+            <div className="country-picker-current" aria-hidden="true">
+              <span className="country-picker-flag">{flagEmoji(selected?.code || selectedCode)}</span>
+              <div><small>{pick({ en: 'Current', ar: 'الحالية' })}</small><strong>{selected?.name || selectedCode}</strong></div>
+              <b dir="ltr">{selectedCode}</b>
+            </div>
+
+            <p className="sr-only" aria-live="polite">
+              {filtered.length
+                ? pick({ en: `${filtered.length} countries found`, ar: `تم العثور على ${filtered.length} دولة` })
+                : pick({ en: 'No countries found', ar: 'لم يتم العثور على دول' })}
+            </p>
+
+            <ul id={listboxId} role="listbox" className="country-combobox__list country-picker-list">
+              {filtered.map((country, index) => {
+                const chosen = country.code === selectedCode;
+                return (
+                  <li
+                    key={country.code}
+                    id={`${controlId}-option-${country.code}`}
+                    role="option"
+                    aria-selected={chosen}
+                    tabIndex={-1}
+                    className={`${index === activeIndex ? 'is-active' : ''}${chosen ? ' is-selected' : ''}`.trim()}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => choose(country)}
+                  >
+                    <span className="country-picker-flag" aria-hidden="true">{flagEmoji(country.code)}</span>
+                    <span className="country-picker-name">{country.name}</span>
+                    <span className="country-picker-code" dir="ltr">{country.code}</span>
+                    {chosen ? <Icon name="check" size={18} /> : null}
+                  </li>
+                );
+              })}
+            </ul>
+            {!filtered.length ? <div className="country-combobox__empty">{pick({ en: 'No matching countries', ar: 'لا توجد دول مطابقة' })}</div> : null}
+          </section>
+        </div>,
+        document.body,
+      )
+    : null;
+
   return (
-    <div className="country-combobox" ref={rootRef}>
+    <div className="country-combobox">
       <input type="hidden" name={name} value={selectedCode} required={required} />
       <button
         ref={triggerRef}
         id={controlId}
         type="button"
-        className="country-combobox__trigger"
+        className="country-combobox__trigger country-picker-trigger"
         disabled={disabled}
-        aria-haspopup="listbox"
+        aria-haspopup="dialog"
         aria-expanded={open}
-        aria-controls={listboxId}
         aria-describedby={describedBy}
         aria-invalid={invalid}
-        onClick={() => setOpen((current) => !current)}
+        onClick={() => setOpen(true)}
       >
-        <span>{selected?.name || selectedCode}</span>
-        <span className="country-combobox__code" aria-hidden="true">
-          {selectedCode}
-        </span>
+        <span className="country-picker-trigger__flag" aria-hidden="true">{flagEmoji(selected?.code || selectedCode)}</span>
+        <span className="country-picker-trigger__name">{selected?.name || selectedCode}</span>
+        <span className="country-combobox__code" aria-hidden="true">{selectedCode}</span>
         <Icon name="chevron" size={18} />
       </button>
-
-      {open && (
-        <div
-          className="country-combobox__popover"
-          role="dialog"
-          aria-label={pick({ en: 'Select country', ar: 'اختر الدولة' })}
-        >
-          <label className="country-combobox__search" htmlFor={searchId}>
-            <span className="sr-only">{pick({ en: 'Search countries', ar: 'ابحث عن دولة' })}</span>
-            <input
-              ref={inputRef}
-              id={searchId}
-              role="combobox"
-              aria-autocomplete="list"
-              aria-expanded="true"
-              aria-controls={listboxId}
-              aria-activedescendant={
-                filtered[activeIndex]
-                  ? `${controlId}-option-${filtered[activeIndex].code}`
-                  : undefined
-              }
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                setActiveIndex(0);
-              }}
-              onKeyDown={onSearchKeyDown}
-              placeholder={pick({
-                en: 'Search by country or code',
-                ar: 'ابحث باسم الدولة أو الرمز',
-              })}
-              autoComplete="off"
-            />
-          </label>
-          <p className="sr-only" aria-live="polite">
-            {filtered.length
-              ? pick({
-                  en: `${filtered.length} countries found`,
-                  ar: `تم العثور على ${filtered.length} دولة`,
-                })
-              : pick({ en: 'No countries found', ar: 'لم يتم العثور على دول' })}
-          </p>
-          <ul id={listboxId} role="listbox" className="country-combobox__list">
-            {filtered.map((country, index) => (
-              <li
-                key={country.code}
-                id={`${controlId}-option-${country.code}`}
-                ref={(node: HTMLLIElement | null) => {
-                  optionRefs.current[index] = node;
-                }}
-                role="option"
-                aria-selected={country.code === selectedCode}
-                tabIndex={-1}
-                className={index === activeIndex ? 'is-active' : undefined}
-                onMouseEnter={() => setActiveIndex(index)}
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => choose(country)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') choose(country);
-                }}
-              >
-                <span>{country.name}</span>
-                <span dir="ltr">{country.code}</span>
-              </li>
-            ))}
-          </ul>
-          {!filtered.length && (
-            <div className="country-combobox__empty">
-              {pick({ en: 'No matching countries', ar: 'لا توجد دول مطابقة' })}
-            </div>
-          )}
-        </div>
-      )}
+      {picker}
     </div>
   );
 }

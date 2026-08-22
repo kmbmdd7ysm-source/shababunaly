@@ -155,7 +155,7 @@ export default function ProductPage(): ReactElement {
 
   const comingSoon = product.available === false || product.comingSoon === true;
   const reservationAvailable = product.reservationAvailable === true;
-  const soldOut = product.availability === 'sold-out';
+  const soldOut = product.availability === 'sold-out' && !reservationAvailable;
   const low = isLowStock(product);
   const quoteOnly = product.quoteOnly === true;
   const isWholesale = purchaseMode === 'wholesale';

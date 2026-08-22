@@ -8,6 +8,7 @@ import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
 import { categories } from '../data/categories';
 import { useCommerce } from '../context/CommerceContext';
+import { EDITORIAL as E } from '../data/editorialAssets';
 import '../styles/consumer-commerce.css';
 
 export default function FavoritesPage(): ReactElement {
@@ -40,6 +41,15 @@ export default function FavoritesPage(): ReactElement {
               <span className="gw-kicker">{pick({ en: 'saved', ar: 'محفوظ' })}</span>
             </p>
           </header>
+          {savedCount ? (
+            <figure className="cc-favorites-editorial" aria-label={pick({ en: 'Basketball editorial', ar: 'صورة تحريرية لكرة السلة' })}>
+              <img src={E.curryHeroBall} alt="" />
+              <figcaption>
+                <span>{pick({ en: 'YOUR ROTATION', ar: 'اختياراتك' })}</span>
+                <strong>{pick({ en: 'Saved for the next move.', ar: 'محفوظة للخطوة القادمة.' })}</strong>
+              </figcaption>
+            </figure>
+          ) : null}
         </div>
       </section>
 

@@ -206,6 +206,25 @@ const paths = {
       <path d="M8 13h3M13.5 13H16M8 16h3" />
     </>
   ),
+  mail: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="1.5" />
+      <path d="m4.5 7 7.5 6 7.5-6" />
+    </>
+  ),
+  message: (
+    <>
+      <path d="M4 5.5h16v11H9l-5 3v-14Z" />
+      <path d="M8 9.5h8M8 12.5h5" />
+    </>
+  ),
+  upload: (
+    <>
+      <path d="M12 16V4" />
+      <path d="m7.5 8.5 4.5-4.5 4.5 4.5" />
+      <path d="M5 14v5h14v-5" />
+    </>
+  ),
 
   /* Fallback so a missing key is visibly wrong in review rather than invisible. */
   grid: (

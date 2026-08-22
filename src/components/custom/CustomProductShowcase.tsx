@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { EDITORIAL as E } from '../../data/editorialAssets';
 import { customColorKey } from './customColors';
 
 type Props = {
@@ -12,46 +13,43 @@ type Props = {
   label: string;
 };
 
-function Identity({ teamName, logoPreview, number }: { teamName: string; logoPreview?: string; number?: string }) {
-  return <div className="cx-concept-identity" aria-hidden="true">
-    {logoPreview ? <img src={logoPreview} alt="" /> : null}
-    <strong>{teamName || 'SHABABUNA'}</strong>
-    {number ? <b>{number}</b> : null}
-  </div>;
-}
+const STAGE_MEDIA: Record<string, string> = {
+  'game-set': E.franceGroup,
+  'game-jersey': E.lebronUsa,
+  'game-shorts': E.curryPatternRear,
+  'practice-set': E.curryDrive,
+  'shooting-shirt': E.tatumKids,
+  hoodie: E.curryWhiteHoodClose,
+  'team-pants': E.lameloSpaceStanding,
+  tracksuit: E.lebronShanghai,
+  'team-bag': E.eventSigning,
+  sleeve: E.lebronClose,
+  basketball: E.curryHeroBall,
+  'hoop-padding': E.jordanDunkEvent,
+};
 
 export default function CustomProductShowcase(props: Props): ReactElement {
   const bodyKey = customColorKey(props.bodyColor);
   const trimKey = customColorKey(props.trimColor);
-  const identityNumber = ['game-jersey', 'game-set', 'game-shorts', 'basketball'].includes(props.productType)
-    ? props.playerNumber
-    : '';
+  const media = STAGE_MEDIA[props.productType] || E.shanghaiPlayers;
+  const showsPlayerIdentity = props.productType === 'game-jersey' || props.productType === 'game-set';
 
-  // Phase 1 keeps the entire public configurator available while deliberately
-  // removing the 3D presentation layer from the customer experience. The 3D
-  // components and model assets remain in the project for a future re-enable.
-  if (props.productType === 'game-set') {
-    return (
-      <div className="cx-concept-stage cx-concept-stage--game-set cx-color-surface" data-body-color={bodyKey} data-trim-color={trimKey}>
-        <div className="cx-game-set-2d" aria-label={props.label}>
-          <div className="cx-concept cx-concept--game-jersey">
-            <Identity teamName={props.teamName} logoPreview={props.logoPreview} number={identityNumber} />
-          </div>
-          <div className="cx-concept cx-concept--shorts">
-            <Identity teamName={props.teamName} logoPreview={props.logoPreview} number={identityNumber} />
-          </div>
+  return (
+    <div className="cx-media-stage" data-body-color={bodyKey} data-trim-color={trimKey} aria-label={props.label}>
+      <img src={media} alt="" className="cx-media-stage__image" />
+      <span className="cx-media-stage__shade" aria-hidden="true" />
+      <div className="cx-media-stage__content">
+        <p>SHABABUNA CUSTOM</p>
+        <strong>{props.label}</strong>
+        <div className="cx-media-stage__identity" aria-label="Current customization selections">
+          <span className="cx-media-stage__swatch" data-color={bodyKey} aria-label={`Body color ${bodyKey}`} />
+          <span className="cx-media-stage__swatch" data-color={trimKey} aria-label={`Trim color ${trimKey}`} />
+          <b>{props.teamName || 'SHABABUNA'}</b>
+          {showsPlayerIdentity && props.playerName ? <em>{props.playerName}</em> : null}
+          {showsPlayerIdentity && props.playerNumber ? <i>{props.playerNumber}</i> : null}
+          {props.logoPreview ? <img src={props.logoPreview} alt="" className="cx-media-stage__logo" /> : null}
         </div>
-        <p>{props.label}</p>
-        <small>Concept preview · final artwork and production placement are confirmed with Shababuna.</small>
       </div>
-    );
-  }
-
-  return <div className={`cx-concept-stage cx-concept-stage--${props.productType} cx-color-surface`} data-body-color={bodyKey} data-trim-color={trimKey}>
-    <div className={`cx-concept cx-concept--${props.productType}`}>
-      <Identity teamName={props.teamName} logoPreview={props.logoPreview} number={identityNumber} />
     </div>
-    <p>{props.label}</p>
-    <small>Concept preview · final artwork and production placement are confirmed with Shababuna.</small>
-  </div>;
+  );
 }

@@ -1,6 +1,6 @@
 # Phase 3 — Destruction Source QA
 
-Generated: 2026-08-21T21:28:53.984Z
+Generated: 2026-08-22T23:43:59.396Z
 Verdict: **SOURCE_VERIFIED_EXTERNAL_GATES_PENDING**
 
 - Checks: 151
@@ -9,7 +9,7 @@ Verdict: **SOURCE_VERIFIED_EXTERNAL_GATES_PENDING**
 - Published products: 75
 - LHA: 25; Kobe: 50
 - Hero poster payload: 0.0 KiB across 0 posters
-- CSS: 65 files / 23443 lines / 1196 !important declarations
+- CSS: 66 files / 23496 lines / 1288 !important declarations
 
 All Phase 3 source assertions passed.
 

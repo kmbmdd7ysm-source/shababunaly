@@ -34,6 +34,7 @@ export interface ProductLike {
   claimEvidenceReference?: unknown;
   customizable?: unknown;
   madeToOrder?: unknown;
+  reservationAvailable?: unknown;
   variants?: VariantLike[];
   availability?: AvailabilityState | string;
 }
@@ -120,13 +121,12 @@ export function isVariantPurchasable(
   if (!product || !isProductPublishable(product) || product.quoteOnly === true || !variant?.sku)
     return false;
   if (variant.active === false) return false;
-  if (
-    ['out_of_stock', 'unavailable', 'archived'].includes(
-      String(variant.availabilityState || '').toLowerCase(),
-    )
-  ) {
-    return false;
-  }
+  const variantState = String(variant.availabilityState || '').toLowerCase();
+  // Reservation/preorder products are intentionally sellable without tracked
+  // on-hand inventory. This keeps Kobe reservation state consistent in Shop,
+  // Favorites, Compare and PDP instead of leaking an out-of-stock badge.
+  if (product.reservationAvailable === true && variantState === 'preorder') return true;
+  if (['out_of_stock', 'unavailable', 'archived'].includes(variantState)) return false;
   if (variant.inventoryTracking === false || product.inventoryTracking === false) return true;
   return Number(variant.stock) > 0;
 }

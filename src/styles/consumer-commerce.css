@@ -86,3 +86,9 @@
   .cart-drawer-empty .gw-empty-actions .btn-primary,
   .cart-drawer-empty .gw-empty-actions .btn-secondary { width:100%!important; }
 }
+
+/* Favorites: the header is content-sized (not a blank 100vh page) and uses an
+   intentional editorial bridge before the product grid. */
+.cc-favorites-page{min-height:0!important;padding-bottom:clamp(1.25rem,3vw,2.5rem)!important}.cc-favorites-head{margin-bottom:clamp(1.5rem,3vw,2.5rem)!important}.cc-favorites-editorial{position:relative;margin:0;overflow:hidden;background:#111;aspect-ratio:21/7}.cc-favorites-editorial>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 44%}.cc-favorites-editorial::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.64),rgba(0,0,0,.08) 65%)}.cc-favorites-editorial figcaption{position:absolute;z-index:1;inset:auto auto clamp(18px,3vw,34px) clamp(18px,3vw,34px);display:grid;gap:6px;color:#fff;max-width:50%}.cc-favorites-editorial figcaption span{font-size:.65rem;font-weight:760;letter-spacing:.13em}.cc-favorites-editorial figcaption strong{font-size:clamp(1.5rem,3vw,3rem);line-height:.95;letter-spacing:-.04em}.cc-favorites-content{padding-top:clamp(1.25rem,3vw,2.5rem)!important}
+html[dir='rtl'] .cc-favorites-editorial figcaption{inset-inline:auto clamp(18px,3vw,34px)}
+@media(max-width:760px){.cc-favorites-page{padding-top:clamp(6.5rem,18vw,8rem)!important;padding-bottom:16px!important}.cc-favorites-head{padding-bottom:1.25rem!important;margin-bottom:1.1rem!important}.cc-favorites-editorial{aspect-ratio:16/9;border-radius:0}.cc-favorites-editorial figcaption{max-width:72%;inset-block-end:18px;inset-inline-start:18px}.cc-favorites-editorial figcaption strong{font-size:clamp(1.45rem,7vw,2.1rem)}.cc-favorites-content{padding-top:16px!important}}

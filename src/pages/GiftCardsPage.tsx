@@ -2,6 +2,7 @@ import type { FormEvent, ReactElement } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import Seo from '../components/common/Seo';
 import TurnstileWidget from '../components/security/TurnstileWidget';
+import Icon from '../components/icons/Icon';
 import { useCommerce } from '../context/CommerceContext';
 import { useLanguage } from '../context/LanguageContext';
 import { sendFormspree } from '../services/formspree';
@@ -101,15 +102,15 @@ export default function GiftCardsPage(): ReactElement {
               <>
                 <div className="gc-form__head"><p>02 / {pick({ en: 'Recipient', ar: 'المستلم' })}</p><h2>{pick({ en: 'Make it personal.', ar: 'خلّيها شخصية.' })}</h2></div>
                 <div className="field-row">
-                  <label className="field"><span className="field__label">{pick({ en: 'Recipient name', ar: 'اسم المستلم' })}</span><div className="field__control"><input required value={form.recipientName} onChange={(e) => update('recipientName', e.target.value)} /></div></label>
-                  <label className="field"><span className="field__label">{pick({ en: 'Recipient email', ar: 'بريد المستلم' })}</span><div className="field__control field__control--latin"><input required type="email" value={form.recipientEmail} onChange={(e) => update('recipientEmail', e.target.value)} /></div></label>
+                  <label className="field gc-field" data-field="recipient-name"><span className="field__label">{pick({ en: 'Recipient name', ar: 'اسم المستلم' })}</span><div className="field__control gc-field-control"><Icon name="user" size={20} /><input required value={form.recipientName} onChange={(e) => update('recipientName', e.target.value)} autoComplete="name" /></div></label>
+                  <label className="field gc-field" data-field="recipient-email"><span className="field__label">{pick({ en: 'Recipient email', ar: 'بريد المستلم' })}</span><div className="field__control field__control--latin gc-field-control"><Icon name="mail" size={20} /><input required type="email" value={form.recipientEmail} onChange={(e) => update('recipientEmail', e.target.value)} autoComplete="email" /></div></label>
                 </div>
                 <div className="field-row">
-                  <label className="field"><span className="field__label">{pick({ en: 'Your name', ar: 'اسمك' })}</span><div className="field__control"><input required value={form.senderName} onChange={(e) => update('senderName', e.target.value)} /></div></label>
-                  <label className="field"><span className="field__label">{pick({ en: 'Your email', ar: 'بريدك' })}</span><div className="field__control field__control--latin"><input required type="email" value={form.senderEmail} onChange={(e) => update('senderEmail', e.target.value)} /></div></label>
+                  <label className="field gc-field" data-field="sender-name"><span className="field__label">{pick({ en: 'Your name', ar: 'اسمك' })}</span><div className="field__control gc-field-control"><Icon name="user" size={20} /><input required value={form.senderName} onChange={(e) => update('senderName', e.target.value)} autoComplete="name" /></div></label>
+                  <label className="field gc-field" data-field="sender-email"><span className="field__label">{pick({ en: 'Your email', ar: 'بريدك' })}</span><div className="field__control field__control--latin gc-field-control"><Icon name="mail" size={20} /><input required type="email" value={form.senderEmail} onChange={(e) => update('senderEmail', e.target.value)} autoComplete="email" /></div></label>
                 </div>
-                <label className="field"><span className="field__label">{pick({ en: 'Delivery date (optional)', ar: 'تاريخ الإرسال (اختياري)' })}</span><div className="field__control field__control--latin"><input type="date" min={new Date().toISOString().slice(0, 10)} value={form.deliveryDate} onChange={(e) => update('deliveryDate', e.target.value)} /></div></label>
-                <label className="field"><span className="field__label">{pick({ en: 'Gift message (optional)', ar: 'رسالة الهدية (اختياري)' })}</span><div className="field__control field__control--textarea"><textarea rows={4} maxLength={320} value={form.message} onChange={(e) => update('message', e.target.value)} /></div></label>
+                <label className="field gc-field" data-field="delivery-date"><span className="field__label">{pick({ en: 'Delivery date (optional)', ar: 'تاريخ الإرسال (اختياري)' })}</span><div className="field__control field__control--latin gc-field-control gc-field-control--date"><Icon name="calendar" size={20} /><input type="date" min={new Date().toISOString().slice(0, 10)} value={form.deliveryDate} onChange={(e) => update('deliveryDate', e.target.value)} /></div></label>
+                <label className="field gc-field" data-field="gift-message"><span className="field__label">{pick({ en: 'Gift message (optional)', ar: 'رسالة الهدية (اختياري)' })}</span><div className="field__control field__control--textarea gc-field-control gc-field-control--textarea"><Icon name="message" size={20} /><textarea rows={4} maxLength={320} value={form.message} onChange={(e) => update('message', e.target.value)} /></div></label>
                 <TurnstileWidget onToken={setToken} language={lang} optionalWhenUnconfigured />
                 {status === 'error' ? <p className="form-error" role="alert">{pick({ en: 'The request could not be sent. Check the details and try again.', ar: 'تعذر إرسال الطلب. راجع البيانات وحاول مرة أخرى.' })}</p> : null}
                 <button type="submit" className="gc-submit" disabled={!valid || status === 'sending'}>{status === 'sending' ? pick({ en: 'Sending…', ar: 'جارٍ الإرسال…' }) : pick({ en: 'Request gift card', ar: 'اطلب بطاقة الهدية' })}</button>
