@@ -1,12 +1,12 @@
-import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
-import { supabaseAdminRequest } from './_supabase-admin.ts';
+import { guardPublicPost, applyApiHeaders } from './_request-security.js';
+import { supabaseAdminRequest } from './_supabase-admin.js';
 import {
   createGuestOrderToken,
   guestEmailHash,
   normalizeGuestEmail,
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
-} from './_guest-order-token.ts';
+} from './_guest-order-token.js';
 
 const clean = (value: unknown, max = 5000): string =>
   String(value ?? '')
