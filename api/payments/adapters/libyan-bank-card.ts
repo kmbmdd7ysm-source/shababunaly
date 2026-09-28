@@ -1,4 +1,4 @@
-import { createHttpAdapter } from './base.ts';
+import { createHttpAdapter } from './base.js';
 export default createHttpAdapter({
   id: 'libyan_bank_card',
   providerEnv: 'LIBYAN_BANK_CARD_PROVIDER',
