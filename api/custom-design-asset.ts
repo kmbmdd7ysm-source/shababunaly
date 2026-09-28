@@ -1,7 +1,7 @@
-import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
-import { validateEncodedFiles } from './_file-security.ts';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
-import { verifyFormTurnstileToken } from './_turnstile.ts';
+import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { validateEncodedFiles } from './_file-security.js';
+import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
+import { verifyFormTurnstileToken } from './_turnstile.js';
 
 type ApiReq = {
   method?: string;
