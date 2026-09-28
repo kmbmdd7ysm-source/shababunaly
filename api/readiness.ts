@@ -1,5 +1,5 @@
-import { applyApiHeaders } from './_request-security.ts';
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
+import { applyApiHeaders } from './_request-security.js';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
 
 const clean = (value: unknown, max = 2000): string =>
   String(value ?? '')
