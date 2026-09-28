@@ -9,6 +9,49 @@ const clean = (value: unknown, max = 5000) => String(value ?? '').trim().replace
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const METHODS = new Set(['cash_on_delivery','cash','online','online_card','libyan_bank_card']);
+const CENTER_VISION_API = (process.env.CENTER_VISION_API_BASE_URL || 'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api').replace(/\/$/, '');
+
+async function syncCenterVisionOrder(input: {
+  order: Record<string, unknown>;
+  email: string;
+  phone?: string;
+  fullName?: string;
+  shipping: Record<string, unknown>;
+  items: Array<Record<string, unknown>>;
+}) {
+  const payload = {
+    siteKey: 'SHABABUNA',
+    inquiryType: 'ORDER_CREATED',
+    fullName: clean(input.fullName || 'Shababuna customer', 160),
+    email: clean(input.email, 254).toLowerCase(),
+    phone: clean(input.phone, 80) || undefined,
+    message: `Shababuna website order ${clean(input.order.order_number, 120)} created`,
+    locale: clean(input.shipping.locale || input.shipping.language || 'en', 20),
+    metadata: {
+      source: 'shababunaly.com',
+      event: 'ORDER_CREATED',
+      orderNumber: input.order.order_number || null,
+      paymentMethod: input.order.payment_method || null,
+      paymentPlan: input.order.payment_plan || null,
+      currency: input.order.currency || 'USD',
+      subtotal: input.order.subtotal || null,
+      shippingTotal: input.order.shipping_total || null,
+      total: input.order.total || null,
+      amountDueNow: input.order.amount_due_now || null,
+      remainingBalance: input.order.remaining_balance || null,
+      shipping: input.shipping,
+      items: input.items,
+      createdAt: input.order.created_at || null,
+    },
+  };
+  const response = await fetch(`${CENTER_VISION_API}/v1/public/inquiries`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok) throw new Error(`center_vision_${response.status}`);
+}
 
 function normalizedItems(value: unknown) {
   if (!Array.isArray(value) || value.length < 1 || value.length > 50) throw new Error('invalid_items');
@@ -122,6 +165,20 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         display_line_total: Number((lineTotal * displayRate).toFixed(2)),
       };
     });
+    let centerVision = 'synced';
+    try {
+      await syncCenterVisionOrder({
+        order,
+        email: trustedEmail,
+        phone: clean(customer.phone || shipping.phone, 80),
+        fullName: clean(customer.name || shipping.customerName, 180),
+        shipping,
+        items: detailedItems as Array<Record<string, unknown>>,
+      });
+    } catch {
+      centerVision = 'pending';
+    }
+
     const notification = await sendInternalFormNotification({
       form_type: 'order',
       order_number: order.order_number,
@@ -151,7 +208,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       created_at: order.created_at,
     }, `New Shababuna order ${String(order.order_number)}`);
 
-    return res.status(result?.duplicate ? 200 : 201).json({ ok:true, ...result, guestAccessToken, notification: notification.delivered ? 'delivered' : 'pending' });
+    return res.status(result?.duplicate ? 200 : 201).json({ ok:true, ...result, guestAccessToken, notification: notification.delivered ? 'delivered' : 'pending', centerVision });
   } catch (error: unknown) {
     const message = clean(error && typeof error === 'object' && 'message' in error ? (error as {message?:unknown}).message : error, 500);
     const client = /invalid_|email_mismatch|cash_available_only_in_libya|insufficient_|unavailable|retail_unavailable/i.test(message);
