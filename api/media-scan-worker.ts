@@ -1,5 +1,5 @@
-import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.ts';
-import { applyApiHeaders } from './_request-security.ts';
+import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.js';
+import { applyApiHeaders } from './_request-security.js';
 
 type ApiReq = { method?: string; headers?: Record<string, string | string[] | undefined> };
 type ApiRes = {
