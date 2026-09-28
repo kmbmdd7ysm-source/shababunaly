@@ -1,4 +1,4 @@
-import { createHttpAdapter } from './base.ts';
+import { createHttpAdapter } from './base.js';
 export default createHttpAdapter({
   id: 'online_card',
   providerEnv: 'PAYMENTS_PROVIDER',
