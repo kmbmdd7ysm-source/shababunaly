@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
-import { recordBusinessEvent } from './_business-events.ts';
-import { sendInternalFormNotification } from './_internal-form-notification.ts';
+import { guardPublicPost, applyApiHeaders } from './_request-security.js';
+import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
+import { recordBusinessEvent } from './_business-events.js';
+import { sendInternalFormNotification } from './_internal-form-notification.js';
 
 type ApiReq = {
   method?: string;
