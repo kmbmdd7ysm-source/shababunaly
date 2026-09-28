@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { guardPublicPost } from './_request-security.ts';
-import { recordBusinessEvent } from './_business-events.ts';
+import { guardPublicPost } from './_request-security.js';
+import { recordBusinessEvent } from './_business-events.js';
 
 type ApiReq = { method?: string; body?: unknown };
 type ApiRes = {
