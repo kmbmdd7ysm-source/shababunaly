@@ -1,4 +1,4 @@
-import { scrapeGoatSeries, scrapeMarketplaceSeries } from './_kobe-marketplace-catalog.ts';
+import { scrapeGoatSeries, scrapeMarketplaceSeries } from './_kobe-marketplace-catalog.js';
 
 type ApiReq = {
   method?: string;
