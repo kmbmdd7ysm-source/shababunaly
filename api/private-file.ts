@@ -1,9 +1,9 @@
-import { applyApiHeaders } from './_request-security.ts';
+import { applyApiHeaders } from './_request-security.js';
 import {
   getSupabaseAdminConfig,
   resolveSupabaseUser,
   supabaseAdminRequest,
-} from './_supabase-admin.ts';
+} from './_supabase-admin.js';
 
 const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')
