@@ -1,6 +1,6 @@
-import { products } from '../src/data/products.ts';
-import { supabaseAdminRequest } from './_supabase-admin.ts';
-import { roundStorePrice } from '../src/config/commerce.ts';
+import { products } from '../src/data/products.js';
+import { supabaseAdminRequest } from './_supabase-admin.js';
+import { roundStorePrice } from '../src/config/commerce.js';
 
 type RequestedLine = {
   productId: string;
