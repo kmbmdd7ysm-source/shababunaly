@@ -144,12 +144,14 @@ export async function connectivityChecks(required: Record<string, unknown> = req
   if (required.formspree) {
     const endpoint = clean(resolveFormspreeEndpoint(), 1000);
     try {
-      const response = await fetchWithTimeout(
-        endpoint,
-        { method: 'HEAD', headers: { Accept: 'application/json' } },
-        2500,
-      );
-      formEndpoint = response.ok || (response.status >= 400 && response.status < 500);
+      const response = await fetch(endpoint, {
+        method: 'HEAD',
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(2500),
+        cache: 'no-store',
+        redirect: 'manual',
+      });
+      formEndpoint = response.ok || (response.status >= 300 && response.status < 500);
     } catch {
       formEndpoint = false;
     }
