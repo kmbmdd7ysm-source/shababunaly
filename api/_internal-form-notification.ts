@@ -1,4 +1,4 @@
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
 
 const clean = (value: unknown, max = 12000): string =>
   String(value ?? '').replace(/\0/g, '').trim().slice(0, max);
