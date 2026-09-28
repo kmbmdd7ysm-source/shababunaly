@@ -1,11 +1,11 @@
-import { applyApiHeaders } from './_request-security.ts';
-import { supabaseAdminRequest } from './_supabase-admin.ts';
+import { applyApiHeaders } from './_request-security.js';
+import { supabaseAdminRequest } from './_supabase-admin.js';
 import {
   getSignatureProviderConfig,
   normalizeSignatureEvent,
   verifySignatureWebhook,
-} from './signatures/provider.ts';
-import { verifyAndStoreSignatureEvidence } from './signatures/evidence.ts';
+} from './signatures/provider.js';
+import { verifyAndStoreSignatureEvidence } from './signatures/evidence.js';
 
 export const config = { api: { bodyParser: false } };
 

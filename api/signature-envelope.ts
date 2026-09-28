@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
-import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
-import { resolveSupabaseUser, supabaseUserRequest } from './_supabase-admin.ts';
-import { createSignatureEnvelope } from './signatures/provider.ts';
+import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { resolveSupabaseUser, supabaseUserRequest } from './_supabase-admin.js';
+import { createSignatureEnvelope } from './signatures/provider.js';
 
 const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')

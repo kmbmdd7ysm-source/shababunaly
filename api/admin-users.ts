@@ -1,5 +1,5 @@
-import { applyApiHeaders } from './_request-security.ts';
-import { requireStaffSession } from './_staff-auth.ts';
+import { applyApiHeaders } from './_request-security.js';
+import { requireStaffSession } from './_staff-auth.js';
 
 type ApiReq = {
   method?: string;

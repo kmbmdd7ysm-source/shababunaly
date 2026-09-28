@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
-import { getPaymentAdapter } from './payments/registry.ts';
-import { recordBusinessEvent } from './_business-events.ts';
+import { getPaymentAdapter } from './payments/registry.js';
+import { recordBusinessEvent } from './_business-events.js';
 
 export const config = { api: { bodyParser: false } };
 

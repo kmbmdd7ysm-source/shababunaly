@@ -1,5 +1,5 @@
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
-import { guardPublicPost } from './_request-security.ts';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+import { guardPublicPost } from './_request-security.js';
 
 type ApiReq = {
   method?: string;

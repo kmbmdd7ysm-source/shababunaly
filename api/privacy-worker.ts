@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.ts';
-import { applyApiHeaders } from './_request-security.ts';
+import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.js';
+import { applyApiHeaders } from './_request-security.js';
 
 const clean = (value: unknown, max = 1000): string =>
   String(value ?? '')

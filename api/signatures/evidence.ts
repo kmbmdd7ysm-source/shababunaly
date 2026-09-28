@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { getSupabaseAdminConfig } from '../_supabase-admin.ts';
+import { getSupabaseAdminConfig } from '../_supabase-admin.js';
 
 type EvidenceBlob = {
   bytes: Uint8Array;

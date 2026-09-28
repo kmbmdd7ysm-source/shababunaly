@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import { requireStaffSession } from './_staff-auth.ts';
-import { validateEncodedFiles } from './_file-security.ts';
-import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.ts';
-import { applyApiHeaders } from './_request-security.ts';
+import { requireStaffSession } from './_staff-auth.js';
+import { validateEncodedFiles } from './_file-security.js';
+import { getSupabaseAdminConfig, supabaseAdminRequest } from './_supabase-admin.js';
+import { applyApiHeaders } from './_request-security.js';
 
 type ApiReq = {
   method?: string;

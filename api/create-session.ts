@@ -1,5 +1,5 @@
-import { getPaymentAdapter } from './payments/registry.ts';
-import { guardPublicPost } from './_request-security.ts';
+import { getPaymentAdapter } from './payments/registry.js';
+import { guardPublicPost } from './_request-security.js';
 
 type ApiReq = {
   method?: string;

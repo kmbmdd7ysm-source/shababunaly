@@ -1,6 +1,6 @@
-import { applyApiHeaders, guardPublicPost, guardPublicRequest } from './_request-security.ts';
-import { supabaseAdminRequest } from './_supabase-admin.ts';
-import { verifyTurnstileToken } from './_turnstile.ts';
+import { applyApiHeaders, guardPublicPost, guardPublicRequest } from './_request-security.js';
+import { supabaseAdminRequest } from './_supabase-admin.js';
+import { verifyTurnstileToken } from './_turnstile.js';
 
 type ApiReq = {
   method?: string;

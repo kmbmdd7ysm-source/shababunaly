@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
+import { applyApiHeaders, guardPublicPost } from './_request-security.js';
 import {
   resolveSupabaseUser,
   getSupabaseAdminConfig,
   supabaseAdminRequest,
   supabaseUserRequest,
-} from './_supabase-admin.ts';
-import { validateEncodedFiles } from './_file-security.ts';
+} from './_supabase-admin.js';
+import { validateEncodedFiles } from './_file-security.js';
 
 type ApiReq = {
   method?: string;

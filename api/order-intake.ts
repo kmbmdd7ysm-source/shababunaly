@@ -1,8 +1,8 @@
-import { guardPublicPost, applyApiHeaders } from './_request-security.ts';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
-import { sendInternalFormNotification } from './_internal-form-notification.ts';
-import { createGuestOrderToken } from './_guest-order-token.ts';
-import { syncUntrackedRequestedCatalog } from './_trusted-static-catalog.ts';
+import { guardPublicPost, applyApiHeaders } from './_request-security.js';
+import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
+import { sendInternalFormNotification } from './_internal-form-notification.js';
+import { createGuestOrderToken } from './_guest-order-token.js';
+import { syncUntrackedRequestedCatalog } from './_trusted-static-catalog.js';
 
 type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
 type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
