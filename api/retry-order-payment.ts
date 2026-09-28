@@ -1,13 +1,13 @@
-import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.ts';
+import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
 import {
   guestEmailHash,
   normalizeGuestEmail,
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
-} from './_guest-order-token.ts';
-import { getPaymentAdapter } from './payments/registry.ts';
-import { clean } from './payments/adapters/base.ts';
+} from './_guest-order-token.js';
+import { getPaymentAdapter } from './payments/registry.js';
+import { clean } from './payments/adapters/base.js';
 
 const PAYABLE_PAYMENT = new Set(['pending', 'partially_paid', 'failed']);
 const PAYABLE_ORDER = new Set(['awaiting_payment', 'received', 'final_payment_required']);
