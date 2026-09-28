@@ -1,4 +1,4 @@
-import { scrapeStockXCatalogAll } from './_kobe-marketplace-catalog.ts';
+import { scrapeStockXCatalogAll } from './_kobe-marketplace-catalog.js';
 
 type ApiReq = { method?: string };
 type ApiRes = {
