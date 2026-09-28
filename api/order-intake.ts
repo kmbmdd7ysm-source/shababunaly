@@ -2,7 +2,6 @@ import { guardPublicPost, applyApiHeaders } from './_request-security.js';
 import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
 import { sendInternalFormNotification } from './_internal-form-notification.js';
 import { createGuestOrderToken } from './_guest-order-token.js';
-import { syncUntrackedRequestedCatalog } from './_trusted-static-catalog.js';
 
 type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
 type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
@@ -47,10 +46,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     // transaction. This fixes stale production catalogue rows without ever
     // resetting tracked inventory quantities.
     try {
+      const { syncUntrackedRequestedCatalog } = await import('./_trusted-static-catalog.js');
       await syncUntrackedRequestedCatalog(items);
     } catch {
-      // The transactional RPC remains the authority; a sync outage should not
-      // block an order when the production catalogue is already current.
+      // The transactional RPC remains the authority; optional catalogue sync
+      // must never prevent the order handler itself from starting or accepting
+      // an order when the production catalogue is already current.
     }
 
     const result = await supabaseAdminRequest('/rest/v1/rpc/create_order_transactional', {
