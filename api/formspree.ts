@@ -1,5 +1,5 @@
-import { guardPublicPost } from './_request-security.ts';
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
+import { guardPublicPost } from './_request-security.js';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
 
 const CENTER_VISION_API = (process.env.CENTER_VISION_API_BASE_URL || 'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api').replace(/\/$/, '');
 
