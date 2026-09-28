@@ -26,7 +26,7 @@ const recentEvidence = (value: unknown, maxAgeHours = 168): boolean => {
 export function requiredEnvironment(): Record<string, unknown> {
   const formEndpoint = clean(resolveFormspreeEndpoint(), 1000);
   return {
-    site_url: validHttps(process.env.SITE_URL),
+    site_url: validHttps(process.env.SITE_URL || 'https://shababuna.ly'),
     supabase_url: validHttps(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL),
     supabase_service_role: Boolean(clean(process.env.SUPABASE_SERVICE_ROLE_KEY, 5000)),
     supabase_public_key: Boolean(
