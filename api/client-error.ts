@@ -1,5 +1,5 @@
-import { applyApiHeaders, guardPublicPost } from './_request-security.ts';
-import { supabaseAdminRequest } from './_supabase-admin.ts';
+import { applyApiHeaders, guardPublicPost } from './_request-security.js';
+import { supabaseAdminRequest } from './_supabase-admin.js';
 
 type ApiReq = { method?: string; body?: unknown };
 type ApiRes = {
