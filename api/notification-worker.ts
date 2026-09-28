@@ -1,5 +1,5 @@
-import { resolveFormspreeEndpoint } from './_formspree-endpoint.ts';
-import { buildNotificationTemplate } from './_notification-templates.ts';
+import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+import { buildNotificationTemplate } from './_notification-templates.js';
 
 type ApiReq = {
   method?: string;
