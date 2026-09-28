@@ -33,7 +33,7 @@ async function syncCenterVision(payload: Record<string, unknown>) {
   return result.json().catch(() => ({}));
 }
 
-export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.ts';
+export { resolveFormspreeEndpoint, FORMSPREE_CANONICAL_ENDPOINT } from './_formspree-endpoint.js';
 
 export function sanitize(value: unknown, max = 12000): string {
   if (value == null) return '';
