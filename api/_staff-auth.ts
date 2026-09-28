@@ -1,4 +1,4 @@
-import { resolveSupabaseUser } from './_supabase-admin.ts';
+import { resolveSupabaseUser } from './_supabase-admin.js';
 
 const clean = (value: unknown, max = 6000): string =>
   String(value ?? '')
