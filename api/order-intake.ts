@@ -11,7 +11,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-
 const METHODS = new Set(['cash_on_delivery','cash','online','online_card','libyan_bank_card']);
 const CENTER_VISION_API = (process.env.CENTER_VISION_API_BASE_URL || 'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api').replace(/\/$/, '');
 
-async function syncCenterVisionOrder(input: {
+async function fallbackCenterVisionInquiry(input: {
   order: Record<string, unknown>;
   email: string;
   phone?: string;
@@ -29,7 +29,7 @@ async function syncCenterVisionOrder(input: {
     locale: clean(input.shipping.locale || input.shipping.language || 'en', 20),
     metadata: {
       source: 'shababunaly.com',
-      event: 'ORDER_CREATED',
+      event: 'ORDER_CREATED_FALLBACK',
       orderNumber: input.order.order_number || null,
       paymentMethod: input.order.payment_method || null,
       paymentPlan: input.order.payment_plan || null,
@@ -50,7 +50,36 @@ async function syncCenterVisionOrder(input: {
     body: JSON.stringify(payload),
     signal: AbortSignal.timeout(15000),
   });
-  if (!response.ok) throw new Error(`center_vision_${response.status}`);
+  if (!response.ok) throw new Error(`center_vision_inquiry_${response.status}`);
+}
+
+async function syncCenterVisionOrder(input: {
+  order: Record<string, unknown>;
+  email: string;
+  phone?: string;
+  fullName?: string;
+  shipping: Record<string, unknown>;
+  items: Array<Record<string, unknown>>;
+  ticket?: string | null;
+}) {
+  const orderNumber = clean(input.order.order_number, 120);
+  if (orderNumber && input.ticket) {
+    try {
+      const mirror = await fetch(`${CENTER_VISION_API}/v1/public/store/shababuna/sync-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ orderNumber, ticket: input.ticket }),
+        signal: AbortSignal.timeout(20000),
+      });
+      if (mirror.ok) return 'order-mirrored';
+    } catch {
+      // Fall through to the existing inquiry path so the order is still visible
+      // to Center Vision even if the operational mirror is temporarily unavailable.
+    }
+  }
+
+  await fallbackCenterVisionInquiry(input);
+  return 'inquiry-fallback';
 }
 
 function normalizedItems(value: unknown) {
@@ -131,6 +160,19 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       }
     }
 
+    let centerVisionSyncTicket: string | null = null;
+    try {
+      centerVisionSyncTicket = createGuestOrderToken({
+        orderNumber: order.order_number,
+        email: trustedEmail,
+        ttlSeconds: 24 * 60 * 60,
+      });
+    } catch {
+      // The legacy Public Inquiry fallback below remains available if the
+      // signed server-to-server mirror ticket cannot be created.
+      centerVisionSyncTicket = null;
+    }
+
     const trustedItems = Array.isArray(order.order_items) ? order.order_items : items;
     const canonicalSubtotal = Number(order.subtotal) || 0;
     const displaySubtotal = Number(shipping.displaySubtotal);
@@ -165,15 +207,16 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         display_line_total: Number((lineTotal * displayRate).toFixed(2)),
       };
     });
-    let centerVision = 'synced';
+    let centerVision = 'pending';
     try {
-      await syncCenterVisionOrder({
+      centerVision = await syncCenterVisionOrder({
         order,
         email: trustedEmail,
         phone: clean(customer.phone || shipping.phone, 80),
         fullName: clean(customer.name || shipping.customerName, 180),
         shipping,
         items: detailedItems as Array<Record<string, unknown>>,
+        ticket: centerVisionSyncTicket,
       });
     } catch {
       centerVision = 'pending';
