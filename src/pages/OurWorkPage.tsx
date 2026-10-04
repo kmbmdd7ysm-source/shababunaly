@@ -6,11 +6,12 @@ import EditorialMedia from '../components/common/EditorialMedia';
 import { useLanguage } from '../context/LanguageContext';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { EDITORIAL as E } from '../data/editorialAssets.ts';
+import { SHABABUNA_MEDIA } from '../data/shababunaMedia';
 import '../styles/teams-stories.css';
 
 const stories = [
   {
-    image: E.shanghaiPlayers,
+    image: SHABABUNA_MEDIA.images.teamLineup,
     category: { en: 'Team identity', ar: 'هوية الفريق' },
     title: { en: 'Build the look. Build the program.', ar: 'ابنِ الشكل. وابنِ البرنامج.' },
     copy: { en: 'A global basketball reference for thinking about uniforms, roster identity and presentation before production.', ar: 'مرجع بصري عالمي لكرة السلة للتفكير في الأطقم وهوية الفريق وطريقة العرض قبل الإنتاج.' },
