@@ -637,3 +637,62 @@
   background: var(--sh-ink-50);
   block-size: 3px;
 }
+
+
+/* LHA official store: available inventory and future releases are visually distinct. */
+.lha-store-clean{
+  background:var(--sh-chalk);
+  color:var(--sh-ink);
+}
+.lha-store-section{
+  max-inline-size:1600px;
+  margin-inline:auto;
+  padding:clamp(54px,7vw,96px) var(--sh-gutter);
+}
+.lha-store-section+.lha-store-section{
+  border-block-start:1px solid var(--sh-rule);
+}
+.lha-store-section--soon{
+  background:var(--sh-chalk-2);
+  max-inline-size:none;
+  padding-inline:max(var(--sh-gutter),calc((100vw - 1600px)/2 + var(--sh-gutter)));
+}
+.lha-store-section__head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  margin-block-end:clamp(28px,4vw,48px);
+}
+.lha-store-section__head h2{
+  margin:0;
+  font-family:var(--sh-font-display);
+  font-size:clamp(2rem,3.4vw,3.8rem);
+  line-height:1;
+  letter-spacing:-.035em;
+  font-weight:760;
+}
+.lha-store-section__head span{
+  color:var(--sh-ink-50);
+  font-size:.82rem;
+  font-variant-numeric:tabular-nums;
+}
+.lha-store-section .cc-product-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:clamp(14px,2vw,28px);
+}
+[lang='ar'] .lha-store-section__head h2{
+  letter-spacing:0;
+  line-height:1.24;
+}
+@media(max-width:980px){
+  .lha-store-section .cc-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .lha-store-section{padding:42px 16px}
+  .lha-store-section--soon{padding-inline:16px}
+  .lha-store-section .cc-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .lha-store-section__head{margin-block-end:24px}
+  .lha-store-section__head h2{font-size:clamp(1.8rem,9vw,2.7rem)}
+}
