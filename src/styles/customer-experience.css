@@ -413,3 +413,55 @@ html[dir='rtl'] #root,html[dir='ltr'] #root,html[dir='rtl'] main,html[dir='ltr']
 @media(max-width:980px){.cx-media-stage{position:relative;height:62svh;min-height:520px}}
 @media(max-width:640px){.cx-media-stage{height:58svh;min-height:460px}.cx-media-stage__content{inset:auto 20px 24px}.cx-media-stage__content>strong{font-size:clamp(2.3rem,12vw,4.2rem)}.cx-upload-control{grid-template-columns:auto minmax(0,1fr);gap:12px}.cx-upload-control>b{grid-column:2;justify-self:start}.cx-request-summary{grid-template-columns:1fr}.cx-request{gap:28px!important}.cx-request h2{font-size:clamp(3.1rem,14vw,5.3rem)!important}}
 .cx-media-stage__swatch[data-color="black"],.cx-summary-colors i[data-color="black"]{background:#0b0b0b}.cx-media-stage__swatch[data-color="white"],.cx-summary-colors i[data-color="white"]{background:#fff}.cx-media-stage__swatch[data-color="red"],.cx-summary-colors i[data-color="red"]{background:#d71920}.cx-media-stage__swatch[data-color="royal"],.cx-summary-colors i[data-color="royal"]{background:#0b3d91}.cx-media-stage__swatch[data-color="navy"],.cx-summary-colors i[data-color="navy"]{background:#101d3d}.cx-media-stage__swatch[data-color="green"],.cx-summary-colors i[data-color="green"]{background:#0b6539}.cx-media-stage__swatch[data-color="gold"],.cx-summary-colors i[data-color="gold"]{background:#f4c542}.cx-media-stage__swatch[data-color="orange"],.cx-summary-colors i[data-color="orange"]{background:#f07818}.cx-media-stage__swatch[data-color="purple"],.cx-summary-colors i[data-color="purple"]{background:#7b2d8e}.cx-media-stage__swatch[data-color="burgundy"],.cx-summary-colors i[data-color="burgundy"]{background:#6c1d2c}.cx-media-stage__swatch[data-color="grey"],.cx-summary-colors i[data-color="grey"]{background:#b8bcc2}.cx-media-stage__swatch[data-color="cyan"],.cx-summary-colors i[data-color="cyan"]{background:#19a7ce}
+
+
+/* Product identity: brand first, Shababuna as the storefront — compact and intentional. */
+.pdx-brand-lockup{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:8px 10px!important;
+  min-block-size:28px!important;
+  margin:0 0 14px!important;
+  color:#666!important;
+}
+.pdx-brand-lockup__brand{
+  color:#111!important;
+  font-size:.78rem!important;
+  font-weight:800!important;
+  letter-spacing:.055em!important;
+  text-transform:uppercase!important;
+}
+.pdx-brand-lockup>span{
+  font-size:.7rem!important;
+  line-height:1!important;
+  color:#888!important;
+}
+.pdx-brand-lockup__lha{
+  inline-size:auto!important;
+  block-size:24px!important;
+  max-inline-size:150px!important;
+  object-fit:contain!important;
+}
+.pdx-brand-lockup__shababuna{
+  inline-size:auto!important;
+  block-size:17px!important;
+  max-inline-size:130px!important;
+  object-fit:contain!important;
+}
+.s2-product-card__price--soon{
+  font-size:.76rem!important;
+  font-weight:750!important;
+  letter-spacing:.04em!important;
+  text-transform:uppercase!important;
+}
+[lang='ar'] .pdx-brand-lockup__brand,
+[lang='ar'] .s2-product-card__price--soon{
+  letter-spacing:0!important;
+  text-transform:none!important;
+}
+@media(max-width:640px){
+  .pdx-brand-lockup{margin-block-end:12px!important}
+  .pdx-brand-lockup__lha{block-size:22px!important}
+  .pdx-brand-lockup__shababuna{block-size:16px!important}
+}
