@@ -323,10 +323,12 @@ export default function CheckoutPage(): ReactElement {
     const fallbackOrderNumber = `SHB-${date}-${serial}`;
     const methodLabel =
       paymentMethod === 'cash'
-        ? 'Cash in Libya'
-        : paymentMethod === 'libyan_bank_card'
-          ? 'Libyan Bank Card'
-          : 'Card / Digital Payment';
+        ? 'Cash'
+        : paymentMethod === 'bank_transfer'
+          ? 'Bank transfer'
+          : paymentMethod === 'libyan_bank_card'
+            ? 'Libyan Bank Card'
+            : 'Card / Digital Payment';
     const requestedOrderStatus = shippingQuoteRequired
       ? 'pending_shipping_quote'
       : paymentMethod === 'cash'
@@ -579,7 +581,7 @@ export default function CheckoutPage(): ReactElement {
 
       if (
         !confirmation.shippingQuoteRequired &&
-        paymentMethod !== 'cash' &&
+        !['cash', 'bank_transfer'].includes(paymentMethod) &&
         paymentConfigured &&
         confirmation.source === 'cloud'
       ) {
@@ -628,7 +630,9 @@ export default function CheckoutPage(): ReactElement {
           ? 'shipping_quote_order_created'
           : paymentMethod === 'cash'
             ? 'cash_order_confirmed'
-            : 'order_awaiting_payment',
+            : paymentMethod === 'bank_transfer'
+              ? 'bank_transfer_order_confirmed'
+              : 'order_awaiting_payment',
         { value: total, currency: SITE.currency, payment_plan: confirmation.paymentPlan },
       );
       setOrderConfirmed({ ...confirmation, paymentMethod });
@@ -691,21 +695,31 @@ export default function CheckoutPage(): ReactElement {
                     : orderConfirmed.paymentMethod === 'cash'
                       ? orderConfirmed.deliveryProfile === 'ready'
                         ? pick({
-                            en: 'Your ready-to-ship order is confirmed. Pay the full cash amount when the order is delivered in Libya.',
-                            ar: 'تم تأكيد طلبك الجاهز للتسليم. ادفع القيمة النقدية كاملة عند استلام الطلب داخل ليبيا.',
+                            en: 'Ready-to-ship order confirmed. Pay the full amount in cash on delivery in Libya.',
+                            ar: 'تم تأكيد طلب التسليم الفوري. ادفع القيمة كاملة كاش عند الاستلام داخل ليبيا.',
                           })
                         : pick({
-                            en: 'Your reservation order is confirmed. We will contact you with the cash deposit and delivery steps.',
-                            ar: 'تم تأكيد طلب الحجز. سنتواصل معك بشأن الدفعة النقدية وخطوات التسليم.',
+                            en: 'Reservation confirmed. Complete the selected cash deposit to confirm the reservation; estimated delivery is 14–18 days.',
+                            ar: 'تم تسجيل الحجز. أكمل الدفعة النقدية المختارة لتأكيد الحجز؛ المدة المتوقعة 14–18 يومًا.',
                           })
-                      : pick({
-                          en: 'Your order is awaiting payment confirmation.',
-                          ar: 'طلبك في انتظار تأكيد الدفع.',
-                        })}
+                      : orderConfirmed.paymentMethod === 'bank_transfer'
+                        ? orderConfirmed.deliveryProfile === 'ready'
+                          ? pick({
+                              en: 'Ready-to-ship order confirmed. Complete the full bank transfer before dispatch.',
+                              ar: 'تم تأكيد طلب التسليم الفوري. أكمل الحوالة المصرفية بالقيمة كاملة قبل الإرسال.',
+                            })
+                          : pick({
+                              en: 'Reservation confirmed. Transfer the selected 50% or 100% amount to confirm; estimated delivery is 14–18 days.',
+                              ar: 'تم تسجيل الحجز. حوّل نسبة 50% أو 100% المختارة لتأكيده؛ المدة المتوقعة 14–18 يومًا.',
+                            })
+                        : pick({
+                            en: 'Your order is awaiting payment confirmation.',
+                            ar: 'طلبك في انتظار تأكيد الدفع.',
+                          })}
                 </p>
                 <div className="payment-balance-card">
                   <div>
-                    <span>{orderConfirmed.paymentMethod === 'cash' && orderConfirmed.deliveryProfile === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
+                    <span>{orderConfirmed.paymentMethod === 'cash' && orderConfirmed.deliveryProfile === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due to confirm', ar: 'المطلوب للتأكيد' })}</span>
                     <strong>
                       {(Number(orderConfirmed.displayDueNow) || 0).toFixed(2)} {currency}
                     </strong>
@@ -853,8 +867,9 @@ export default function CheckoutPage(): ReactElement {
                   libyanCardConfigured={libyanCardConfigured}
                   stagedOrder={stagedOrder}
                   shippingQuoteRequired={shippingQuoteRequired}
-                  allowCashPlanChoice={allowCashPlanChoice}
-                  immediateCash={immediateLibyaCash}
+                  allowManualPlanChoice={allowManualPlanChoice}
+                  immediateDelivery={immediateLibyaOrder}
+                  reservationOrder={hasReservation}
                 />
 
                 <div className={`checkout-context-card${shippingQuoteRequired ? ' is-pending' : ''}`}>
@@ -881,11 +896,11 @@ export default function CheckoutPage(): ReactElement {
                           })
                         : hasReservation
                           ? pick({
-                              en: 'Place the order now. Shababuna confirms availability and the final delivery timing.',
-                              ar: 'أرسل الطلب الآن. يؤكد شبابنا التوفر وموعد التسليم النهائي.',
+                              en: 'Reservation delivery in Libya is estimated at 14–18 days after confirmation.',
+                              ar: 'مدة توصيل الحجز داخل ليبيا متوقعة خلال 14–18 يومًا بعد التأكيد.',
                             })
                           : stagedOrder
-                            ? paymentMethod === 'cash' && cashPlan === 'full'
+                            ? manualPayment && cashPlan === 'full'
                               ? pick({
                                   en: 'Payment follows the confirmed order terms; production starts only after approval.',
                                   ar: 'يتم الدفع حسب شروط الطلب المؤكدة، ولا يبدأ الإنتاج إلا بعد الاعتماد.',
@@ -946,9 +961,11 @@ export default function CheckoutPage(): ReactElement {
                           en: 'Place Pending Shipping Order',
                           ar: 'إرسال الطلب بانتظار سعر الشحن',
                         })
-                      : paymentMethod !== 'cash' && paymentConfigured
-                        ? `${checkout.pay} · ${format(amountDueNow, lang)}`
-                        : `${pick({ en: 'Confirm Order', ar: 'تأكيد الطلب' })} · ${format(amountDueNow, lang)}`}
+                      : paymentMethod === 'bank_transfer'
+                        ? `${pick({ en: 'Confirm transfer order', ar: 'تأكيد طلب الحوالة' })} · ${format(amountDueNow, lang)}`
+                        : paymentMethod !== 'cash' && paymentConfigured
+                          ? `${checkout.pay} · ${format(amountDueNow, lang)}`
+                          : `${pick({ en: 'Confirm Order', ar: 'تأكيد الطلب' })} · ${format(amountDueNow, lang)}`}
                 </button>
                 <p className="summary-note">
                   {paymentMethod === 'online_card' || paymentMethod === 'libyan_bank_card'
@@ -961,10 +978,15 @@ export default function CheckoutPage(): ReactElement {
                           en: 'No payment is collected until the shipping quote is confirmed.',
                           ar: 'لا يتم تحصيل أي دفع قبل تأكيد سعر الشحن.',
                         })
-                      : pick({
-                          en: 'Your selected payment method is confirmed before the order is finalized.',
-                          ar: 'يتم تأكيد طريقة الدفع المختارة قبل إتمام الطلب.',
-                        })}
+                      : paymentMethod === 'bank_transfer'
+                        ? pick({
+                            en: 'After the order is created, Shababuna confirms the transfer amount and reference for this order.',
+                            ar: 'بعد تسجيل الطلب يؤكد شبابنا مبلغ الحوالة ومرجع الدفع الخاص بالطلب.',
+                          })
+                        : pick({
+                            en: 'Your selected payment method is confirmed before the order is finalized.',
+                            ar: 'يتم تأكيد طريقة الدفع المختارة قبل إتمام الطلب.',
+                          })}
                 </p>
                 <Link to="/cart" className="link-btn">
                   <Icon name="back" size={18} /> {checkout.backToCart}
@@ -1024,7 +1046,7 @@ export default function CheckoutPage(): ReactElement {
               </div>
               <div className="payment-balance-card">
                 <div>
-                  <span>{pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
+                  <span>{manualPayment ? pick({ en: 'Due to confirm', ar: 'المطلوب للتأكيد' }) : pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
                   <strong>{shippingQuoteRequired ? '—' : format(amountDueNow, lang)}</strong>
                 </div>
                 <div>
