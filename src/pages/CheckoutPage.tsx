@@ -545,6 +545,7 @@ export default function CheckoutPage(): ReactElement {
             lineTotal: price * quantity,
             purchaseMode: item.purchaseMode || 'retail',
             readyToShip: Boolean(item.readyToShip),
+            reservationAvailable: item.reservationAvailable === true,
             fulfillmentType: item.fulfillmentType,
             registrationId: item.registrationId || null,
           };
