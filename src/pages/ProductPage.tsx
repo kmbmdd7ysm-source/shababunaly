@@ -23,8 +23,6 @@ import { useWishlist } from '../hooks/useWishlist';
 import Icon from '../components/icons/Icon';
 import ColorSwatch from '../components/common/ColorSwatch';
 import ProductMediaViewer from '../components/product/ProductMediaViewer';
-import PerformanceProfile from '../components/product/PerformanceProfile';
-import { isBasketballPerformanceShoe } from '../utils/productIntelligence';
 import '../styles/domain-shop.css';
 import { getVariantPurchaseLimit, isVariantPurchasable } from '../utils/productEligibility';
 import '../styles/catalog.css';
@@ -579,8 +577,6 @@ export default function ProductPage(): ReactElement {
 
           </aside>
         </section>
-
-        {isBasketballPerformanceShoe(product) ? <PerformanceProfile product={product} /> : null}
 
         {related.length > 0 ? (
           <section className="pdx-related">
