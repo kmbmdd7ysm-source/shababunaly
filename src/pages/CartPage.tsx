@@ -166,6 +166,9 @@ export default function CartPage(): ReactElement {
                             ) : null}
                             {item.type === 'training' ? <span>{cartCopy.digital || ''}</span> : null}
                             {item.type === 'event' ? <span>{cartCopy.event || ''}</span> : null}
+                            {item.reservationAvailable === true ? (
+                              <span>{` · ${pick({ en: 'Reservation', ar: 'حجز' })}`}</span>
+                            ) : null}
                           </p>
                           <div className="gw-line-controls">
                             {item.type === 'product' ? (
