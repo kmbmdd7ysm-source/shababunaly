@@ -8,15 +8,15 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
-import { EDITORIAL as E } from '../data/editorialAssets.ts';
+import { BAL_MEDIA } from '../data/balMedia';
 import '../styles/domain-forms.css';
 import '../styles/teams-stories.css';
 
 const SERVICES = [
-  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: E.shanghaiPlayers },
-  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: E.usaWomanCelebrate },
-  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: E.lameloChairA },
-  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: E.jordanDunkEvent },
+  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: BAL_MEDIA.images.riversTeam },
+  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: BAL_MEDIA.images.riversVsAlAhly },
+  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: BAL_MEDIA.images.giantsDrive },
+  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: BAL_MEDIA.images.riversDunk },
 ];
 
 export default function TeamsWholesalePage(): ReactElement {
