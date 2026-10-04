@@ -13,15 +13,12 @@ import Breadcrumbs from '../components/common/Breadcrumbs';
 import Price from '../components/common/Price';
 import Badge from '../components/common/Badge';
 import Modal from '../components/common/Modal';
-import ShareButtons from '../components/common/ShareButtons';
 import ProductCard from '../components/shop/ProductCard';
 import { useCatalog } from '../context/CatalogContext';
 import { getCategory, getSubcategory } from '../data/categories';
 import { getSizeGuide } from '../data/sizeGuide';
 import NotFoundPage from './NotFoundPage';
 import MediaLightbox from '../components/media/MediaLightbox';
-import { useCompare } from '../context/CompareContext';
-import Recommendations from '../components/recommendations/Recommendations';
 import { useWishlist } from '../hooks/useWishlist';
 import Icon from '../components/icons/Icon';
 import ColorSwatch from '../components/common/ColorSwatch';
@@ -70,7 +67,7 @@ const asFeatureList = (product: CatalogProduct | undefined, lang: string): strin
 
 export default function ProductPage(): ReactElement {
   const { slug } = useParams();
-  const { getProduct, getProductById, relatedProducts, isLowStock } = useCatalog();
+  const { getProduct, relatedProducts, isLowStock } = useCatalog();
   const [searchParams, setSearchParams] = useSearchParams();
   const { t, pick, lang } = useLanguage();
   const productCopy = (t.product || {}) as Record<string, string>;
@@ -79,9 +76,8 @@ export default function ProductPage(): ReactElement {
   const badge = (t.badge || {}) as Record<string, string>;
   const { countryCode } = useCommerce();
   const { addItem } = useCart();
-  const compare = useCompare();
   const wishlist = useWishlist();
-  const { ids, record } = useRecentlyViewed();
+  const { record } = useRecentlyViewed();
   const product = slug ? getProduct(String(slug)) : undefined;
 
   const [color, setColor] = useState('');
@@ -153,9 +149,13 @@ export default function ProductPage(): ReactElement {
     return matching.reduce((sum, variant) => sum + Number(variant.stock || 0), 0);
   };
 
-  const comingSoon = product.available === false || product.comingSoon === true;
   const reservationAvailable = product.reservationAvailable === true;
-  const soldOut = product.availability === 'sold-out' && !reservationAvailable;
+  const comingSoon = product.comingSoon === true || product.status === 'coming_soon';
+  const soldOut =
+    !comingSoon &&
+    !reservationAvailable &&
+    (product.available === false || product.availability === 'sold-out');
+  const isLha = product.legacyLha === true || String(product.brand || '').toUpperCase() === 'LHA';
   const low = isLowStock(product);
   const quoteOnly = product.quoteOnly === true;
   const isWholesale = purchaseMode === 'wholesale';
@@ -230,13 +230,19 @@ export default function ProductPage(): ReactElement {
       quantity: qty,
       purchaseMode,
       readyToShip: product.readyToShip === true,
+      reservationAvailable,
       customizable: product.customizable === true,
       madeInUSA:
         product.madeInUSA === true &&
         product.claimVerified === true &&
         Boolean(product.claimEvidenceReference),
       largeEquipment: product.largeEquipment === true,
-      deliveryProfile: isWholesale ? 'custom' : product.readyToShip ? 'ready' : 'standard',
+      deliveryProfile:
+        isWholesale || reservationAvailable
+          ? 'custom'
+          : product.readyToShip
+            ? 'ready'
+            : 'standard',
     } as CartItem);
     trackEvent('add_to_cart', {
       item_id: product.id,
@@ -250,35 +256,30 @@ export default function ProductPage(): ReactElement {
 
   const guide = product.sizeGuide ? getSizeGuide(String(product.sizeGuide || '')) : null;
   const related = relatedProducts(product) as CatalogProduct[];
-  const recent = ids
-    .filter((id) => id !== product.id)
-    .map((id) => getProductById(String(id)))
-    .filter((item): item is CatalogProduct => Boolean(item))
-    .slice(0, 4);
   const shippingCopy = reservationAvailable
     ? pick({
-        en: 'Available by reservation. Shababuna confirms the selected size, final availability and delivery timing after the order is placed.',
-        ar: 'متوفر بالحجز. يؤكد فريق شبابنا المقاس المختار والتوفر النهائي وموعد التسليم بعد تسجيل الطلب.',
+        en: 'Order now by reservation. Size availability and delivery timing are confirmed by Shababuna.',
+        ar: 'اطلب الآن بالحجز. يؤكد شبابنا توفر المقاس وموعد التسليم.',
       })
     : showReady
       ? pick({
-        en: 'Ready in Libya · estimated delivery 24–72 hours.',
-        ar: 'متوفر داخل ليبيا · التوصيل المتوقع خلال 24–72 ساعة.',
-      })
-    : isWholesale
-      ? pick({
-          en: 'Wholesale timing and payment terms are confirmed in the approved quote for the product, quantity and destination.',
-          ar: 'يتم تأكيد مدة الجملة وشروط الدفع في عرض السعر المعتمد حسب المنتج والكمية والوجهة.',
+          en: 'In stock in Libya · delivery in 24–72 hours.',
+          ar: 'متوفر داخل ليبيا · التوصيل خلال 24–72 ساعة.',
         })
-      : isLibya
+      : isWholesale
         ? pick({
-            en: 'Estimated delivery to Libya: 14–18 days.',
-            ar: 'التوصيل المتوقع إلى ليبيا: 14–18 يومًا.',
+            en: 'Timing and payment follow the confirmed wholesale order.',
+            ar: 'المدة والدفع حسب طلب الجملة المؤكد.',
           })
-        : pick({
-            en: 'Worldwide shipping is available. Price and delivery time are confirmed for each destination; the order stays pending until shipping is added.',
-            ar: 'الشحن متاح لجميع دول العالم. يتم تأكيد السعر والمدة لكل وجهة، ويبقى الطلب قيد الانتظار حتى إضافة تكلفة الشحن.',
-          });
+        : isLibya
+          ? pick({
+              en: 'Estimated Libya delivery · 14–18 days.',
+              ar: 'التوصيل المتوقع داخل ليبيا · 14–18 يومًا.',
+            })
+          : pick({
+              en: 'International delivery is confirmed after checkout.',
+              ar: 'يتم تأكيد الشحن الدولي بعد تسجيل الطلب.',
+            });
 
   const featureList = asFeatureList(product, lang);
 
@@ -377,7 +378,15 @@ export default function ProductPage(): ReactElement {
             <div className="pdx-identity">
               <div className="pdx-title-line">
                 <div>
-                  <p className="pdx-brand">{product.brand}</p>
+                  <div className="pdx-brand-lockup" aria-label={pick({ en: 'Brand and store', ar: 'العلامة والمتجر' })}>
+                    {isLha ? (
+                      <img className="pdx-brand-lockup__lha" src="/brand/lha-wordmark-black.svg" alt="Libya Hoops Academy" width="156" height="46" />
+                    ) : (
+                      <strong className="pdx-brand-lockup__brand">{String(product.brand || 'Shababuna')}</strong>
+                    )}
+                    <span>{pick({ en: 'via', ar: 'عبر' })}</span>
+                    <img className="pdx-brand-lockup__shababuna" src="/brand/shababuna-wordmark-black.png" alt="Shababuna" width="140" height="34" />
+                  </div>
                   <h1 id="pdx-product-title">{shareTitle}</h1>
                   {selectedColor ? (
                     <p className="pdx-color-name">
@@ -408,7 +417,7 @@ export default function ProductPage(): ReactElement {
 
               <div className="pdx-status-row">
                 {reservationAvailable ? (
-                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Available to Reserve', ar: 'متوفر بالحجز' })}</span>
+                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Available by reservation', ar: 'متوفر بالحجز' })}</span>
                 ) : showReady ? (
                   <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Verified stock in Libya', ar: 'مخزون موثق داخل ليبيا' })}</span>
                 ) : null}
@@ -416,7 +425,14 @@ export default function ProductPage(): ReactElement {
                 {!comingSoon && !soldOut && product.newArrival ? <Badge tone="new">{badge.new || 'New'}</Badge> : null}
               </div>
 
-              <p className="pdx-description">{pick(product.description as { en?: string; ar?: string })}</p>
+              <p className="pdx-description">
+                {reservationAvailable
+                  ? pick({
+                      en: `${String(product.brand || '')} basketball product available by reservation through Shababuna.`,
+                      ar: `منتج كرة سلة من ${String(product.brand || '')} متوفر بالحجز عبر شبابنا.`,
+                    })
+                  : pick(product.description as { en?: string; ar?: string })}
+              </p>
             </div>
 
             {purchasable && Boolean(product.wholesaleAvailable) ? (
@@ -513,7 +529,7 @@ export default function ProductPage(): ReactElement {
                   {adding
                     ? pick({ en: 'Adding…', ar: 'جارٍ الإضافة…' })
                     : reservationAvailable
-                      ? pick({ en: 'Reserve in bag', ar: 'احجز في الحقيبة' })
+                      ? pick({ en: 'Order by reservation', ar: 'اطلب بالحجز' })
                       : productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
                 </button>
                 {matchedVariant && low && Number(matchedVariant.stock || 0) > 0 ? <p className="stock-note">{productCopy.lowStock}</p> : null}
@@ -524,7 +540,7 @@ export default function ProductPage(): ReactElement {
               </div>
             ) : null}
 
-            {quoteOnly ? (
+            {quoteOnly && !comingSoon ? (
               <div className="pdx-quote">
                 <p>{pick({ en: 'This product is available by confirmed quote. Request the final price and order details before checkout.', ar: 'هذا المنتج متوفر بعرض سعر مؤكد. اطلب السعر النهائي وتفاصيل الطلب قبل إتمام الشراء.' })}</p>
                 <Link to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`} className="pdx-add">
@@ -561,64 +577,29 @@ export default function ProductPage(): ReactElement {
               ))}
             </div>
 
-            <div className="pdx-utility-actions">
-              <button
-                type="button"
-                className={`pdx-compare-action${compare.has(product.id) ? ' is-active' : ''}`}
-                onClick={() => compare.toggle(product.id)}
-              >
-                <Icon name="compare" size={18} />
-                <span>{pick({ en: compare.has(product.id) ? 'Remove from compare' : 'Compare product', ar: compare.has(product.id) ? 'إزالة من المقارنة' : 'قارن المنتج' })}</span>
-              </button>
-              <div className="pdx-share-block">
-                <ShareButtons title={shareTitle} text={pick(product.description as { en?: string; ar?: string })} label={productCopy.share} />
-              </div>
-            </div>
           </aside>
         </section>
 
         {isBasketballPerformanceShoe(product) ? <PerformanceProfile product={product} /> : null}
 
-        {(product.material || product.features) ? (
-          <section className="px-technology" aria-labelledby="px-technology-title">
-            <div className="px-section-head">
-              <p className="px-eyebrow">{pick({ en: 'Product intelligence', ar: 'معلومات المنتج' })}</p>
-              <h2 id="px-technology-title">{pick({ en: 'The details that matter.', ar: 'التفاصيل التي تهمك.' })}</h2>
-            </div>
-            <div className="px-technology-grid">
-              {product.material ? <article><span>{pick({ en: 'Material', ar: 'الخامة' })}</span><p>{pick(product.material as { en?: string; ar?: string })}</p></article> : null}
-              {product.fit ? <article><span>{pick({ en: 'Fit', ar: 'القَصّة' })}</span><p>{pick(product.fit as { en?: string; ar?: string })}</p></article> : null}
-              {featureList.length ? <article><span>{pick({ en: 'Features', ar: 'المزايا' })}</span><p>{featureList.join(' · ')}</p></article> : null}
-            </div>
-          </section>
-        ) : null}
-
         {related.length > 0 ? (
           <section className="pdx-related">
-            <div className="pdx-section-head"><p>{pick({ en: 'More to explore', ar: 'اكتشف المزيد' })}</p><h2>{productCopy.related || pick({ en: 'Related products', ar: 'منتجات مرتبطة' })}</h2></div>
+            <div className="pdx-section-head"><h2>{pick({ en: 'You may also like', ar: 'قد يعجبك أيضاً' })}</h2></div>
             <div className="pdx-related-rail">
               {related.map((item) => <ProductCard key={String(item?.id)} product={item || {}} />)}
             </div>
           </section>
         ) : null}
 
-        <Recommendations current={product} />
-
-        {recent.length > 0 ? (
-          <section className="pdx-related pdx-recent">
-            <div className="pdx-section-head"><p>{pick({ en: 'Recently viewed', ar: 'شاهدتها مؤخراً' })}</p><h2>{productCopy.recentlyViewed || pick({ en: 'Your recent products', ar: 'منتجاتك الأخيرة' })}</h2></div>
-            <div className="pdx-related-rail">
-              {recent.map((item) => <ProductCard key={String(item?.id)} product={item || {}} />)}
-            </div>
-          </section>
-        ) : null}
       </main>
 
       {purchasable ? (
         <div className="pdx-mobile-buybar">
           <Price amount={activePrice} size="sm" />
           <button type="button" className="pdx-add" onClick={addToCart} disabled={adding}>
-            {productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
+            {reservationAvailable
+              ? pick({ en: 'Order by reservation', ar: 'اطلب بالحجز' })
+              : productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
           </button>
         </div>
       ) : null}
