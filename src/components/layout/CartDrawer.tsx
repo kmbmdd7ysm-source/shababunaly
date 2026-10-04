@@ -162,9 +162,11 @@ export default function CartDrawer(): ReactElement | null {
                     <Link to={item.href || '#'} className="cart-line-name" onClick={closeDrawer}>
                       {pick(item.name as { en?: string; ar?: string })}
                     </Link>
-                    {typeLabel(item.type) && (
+                    {item.reservationAvailable === true ? (
+                      <span className="cart-line-type">{pick({ en: 'Reservation', ar: 'حجز' })}</span>
+                    ) : typeLabel(item.type) ? (
                       <span className="cart-line-type">{typeLabel(item.type)}</span>
-                    )}
+                    ) : null}
                     {item.size && item.size !== 'OS' ? (
                       <span className="cart-line-variant">
                         {common.size}: {String(item.size)}
