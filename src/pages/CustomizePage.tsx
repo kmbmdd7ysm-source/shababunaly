@@ -11,25 +11,26 @@ import { submitPublicQuote } from '../services/publicQuotes';
 import { uploadCustomDesignAsset, validateCustomLogo } from '../services/customDesignAssets';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
-import { EDITORIAL as E } from '../data/editorialAssets.ts';
+import { BAL_MEDIA } from '../data/balMedia';
+import { SHABABUNA_MEDIA } from '../data/shababunaMedia';
 import { CUSTOM_COLOR_OPTIONS, customColorKey } from '../components/custom/customColors';
 import '../styles/custom-experience.css';
 import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
 const fallbackArt: Record<string, string> = {
-  'game-set': E.shanghaiPlayers,
-  'game-jersey': E.usaWomanCelebrate,
-  'game-shorts': E.curryPatternShot,
-  'practice-set': E.kidsTunnel,
-  'shooting-shirt': E.tatumDark,
-  hoodie: E.lebronFullBody,
-  'team-pants': E.lameloSpaceSeated,
-  tracksuit: E.franceGroup,
-  'team-bag': E.jordanShoeBox,
-  sleeve: E.lebronClose,
-  basketball: E.curryPortraitBall,
-  'hoop-padding': E.jordanBuilding,
+  'game-set': SHABABUNA_MEDIA.images.teamLineup,
+  'game-jersey': SHABABUNA_MEDIA.images.red17Apparel,
+  'game-shorts': BAL_MEDIA.images.riversTeam,
+  'practice-set': BAL_MEDIA.images.giantsDrive,
+  'shooting-shirt': SHABABUNA_MEDIA.images.sadiCustom,
+  hoodie: BAL_MEDIA.images.futureProsGroup,
+  'team-pants': BAL_MEDIA.images.futureProsSafari,
+  tracksuit: BAL_MEDIA.images.futureProsSession,
+  'team-bag': BAL_MEDIA.images.pumaMerch,
+  sleeve: BAL_MEDIA.images.lualFabian,
+  basketball: BAL_MEDIA.images.riversVsAlAhly,
+  'hoop-padding': BAL_MEDIA.images.kigaliArena,
 };
 
 const NO_SIZE_BREAKDOWN = new Set(['basketball', 'hoop-padding', 'team-bag', 'sleeve']);

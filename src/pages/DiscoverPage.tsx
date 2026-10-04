@@ -7,7 +7,7 @@ import EmptyState from '../components/common/EmptyState';
 import { useCatalog, type CatalogProduct } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
 import { DISCOVER_COLLECTIONS, type DiscoverCollection } from '../data/merchandising';
-import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
+import { BAL_MEDIA } from '../data/balMedia';
 import { isReadyToShipEligible } from '../utils/productEligibility';
 import '../styles/design/phase2-discovery.css';
 import '../styles/design/phase2-commerce.css';
@@ -48,18 +48,6 @@ export default function DiscoverPage(): ReactElement {
   const { pick } = useLanguage();
   const { products } = useCatalog();
   const current = slug ? DISCOVER_COLLECTIONS.find((collection) => collection.slug === slug) : null;
-  const discoverHeroBySlug = {
-    'trending-now': LOCAL_HERO_MEDIA.stories,
-    'just-dropped': LOCAL_HERO_MEDIA.footwear,
-    'new-this-week': LOCAL_HERO_MEDIA.shop,
-    'best-sellers': LOCAL_HERO_MEDIA.home,
-    'performance-picks': LOCAL_HERO_MEDIA.accessories,
-    'court-essentials': LOCAL_HERO_MEDIA.basketballs,
-    'ready-now': LOCAL_HERO_MEDIA.teams,
-    'shababuna-selects': LOCAL_HERO_MEDIA.discover,
-  } as const;
-  const currentHero = current ? discoverHeroBySlug[current.slug as keyof typeof discoverHeroBySlug] : LOCAL_HERO_MEDIA.discover;
-
   if (slug && !current) return <Navigate to="/discover" replace />;
 
   const readyCount = products.filter((product) => isReadyToShipEligible(product, 'LY')).length;
@@ -79,9 +67,19 @@ export default function DiscoverPage(): ReactElement {
 
         <header className="s2-discover-hero s2-discover-hero--landing">
           <EditorialMedia
-            desktopVideo={LOCAL_HERO_MEDIA.discover.desktopVideo}
-            mobileVideo={LOCAL_HERO_MEDIA.discover.mobileVideo}
+            desktopMedia={BAL_MEDIA.images.futureProsGroup}
+            mobileMedia={BAL_MEDIA.images.futureProsSafari}
             loading="eager"
+          />
+          <iframe
+            className="s2-bal-video-frame"
+            src={BAL_MEDIA.videos.seasonSixCulture}
+            title="Basketball Africa League culture"
+            loading="eager"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            tabIndex={-1}
+            aria-hidden="true"
           />
           <span className="s2-discover-hero__shade" />
           <div className="s2-discover-hero__copy">
@@ -101,6 +99,8 @@ export default function DiscoverPage(): ReactElement {
               <EditorialMedia
                 desktopMedia={collection.desktopMedia}
                 mobileMedia={collection.mobileMedia}
+                desktopVideo={collection.desktopVideo}
+                mobileVideo={collection.mobileVideo}
                 loading={index < 2 ? 'eager' : 'lazy'}
               />
               <span className="s2-discover-card__shade" />
@@ -127,8 +127,8 @@ export default function DiscoverPage(): ReactElement {
         <EditorialMedia
           desktopMedia={current.desktopMedia}
           mobileMedia={current.mobileMedia}
-          desktopVideo={currentHero.desktopVideo}
-          mobileVideo={currentHero.mobileVideo}
+          desktopVideo={current.desktopVideo}
+          mobileVideo={current.mobileVideo}
           loading="eager"
         />
         <span className="s2-discover-hero__shade" />

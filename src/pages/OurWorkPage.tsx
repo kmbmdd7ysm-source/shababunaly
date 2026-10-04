@@ -4,34 +4,34 @@ import Seo from '../components/common/Seo';
 import SmartImage from '../components/common/SmartImage';
 import EditorialMedia from '../components/common/EditorialMedia';
 import { useLanguage } from '../context/LanguageContext';
-import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
-import { EDITORIAL as E } from '../data/editorialAssets.ts';
+import { BAL_MEDIA } from '../data/balMedia';
+import { SHABABUNA_MEDIA } from '../data/shababunaMedia';
 import '../styles/teams-stories.css';
 
 const stories = [
   {
-    image: E.shanghaiPlayers,
+    image: SHABABUNA_MEDIA.images.teamLineup,
     category: { en: 'Team identity', ar: 'هوية الفريق' },
     title: { en: 'Build the look. Build the program.', ar: 'ابنِ الشكل. وابنِ البرنامج.' },
     copy: { en: 'A global basketball reference for thinking about uniforms, roster identity and presentation before production.', ar: 'مرجع بصري عالمي لكرة السلة للتفكير في الأطقم وهوية الفريق وطريقة العرض قبل الإنتاج.' },
     to: '/customize',
   },
   {
-    image: E.curryHeroBall,
+    image: BAL_MEDIA.images.giantsDrive,
     category: { en: 'Performance', ar: 'الأداء' },
     title: { en: 'Shop basketball by how you play.', ar: 'تسوق كرة السلة حسب طريقة لعبك.' },
     copy: { en: 'Performance discovery without invented ratings. Verified data when it exists, honest unknowns when it does not.', ar: 'اكتشاف منتجات الأداء دون تقييمات مختلقة. بيانات موثقة عندما تتوفر ووضوح عندما لا تتوفر.' },
     to: '/basketball/shoe-finder',
   },
   {
-    image: E.lameloChairB,
+    image: BAL_MEDIA.images.futureProsGroup,
     category: { en: 'Programs', ar: 'البرامج' },
     title: { en: 'One order. The whole program.', ar: 'طلب واحد. برنامج كامل.' },
     copy: { en: 'Uniforms, training, equipment and club supply organized as one basketball project.', ar: 'أطقم وتدريب ومعدات وتجهيز النادي ضمن مشروع كرة سلة واحد.' },
     to: '/teams-wholesale',
   },
   {
-    image: E.lebronCrown,
+    image: SHABABUNA_MEDIA.images.championTrophy,
     category: { en: 'Culture', ar: 'الثقافة' },
     title: { en: 'Beyond the forty minutes.', ar: 'أبعد من الأربعين دقيقة.' },
     copy: { en: 'Travel, recovery and off-court products around the everyday life of basketball.', ar: 'السفر والاستشفاء ومنتجات خارج الملعب حول الحياة اليومية لكرة السلة.' },
@@ -57,9 +57,19 @@ export default function OurWorkPage(): ReactElement {
           </div>
           <div className="story-hero-media">
             <EditorialMedia
-              desktopVideo={LOCAL_HERO_MEDIA.stories.desktopVideo}
-              mobileVideo={LOCAL_HERO_MEDIA.stories.mobileVideo}
+              desktopMedia={BAL_MEDIA.images.clubAfricainFansWide}
+              mobileMedia={BAL_MEDIA.images.clubAfricainFansVertical}
               loading="eager"
+            />
+            <iframe
+              className="s2-bal-video-frame"
+              src={BAL_MEDIA.videos.seasonSixCulture}
+              title="Basketball Africa League culture"
+              loading="eager"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              tabIndex={-1}
+              aria-hidden="true"
             />
           </div>
         </header>
