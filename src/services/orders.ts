@@ -83,6 +83,7 @@ export function normalizeOrder(order: Row = {}): Row {
         purchaseMode: clean(item.purchaseMode || item.purchase_mode || 'retail').toLowerCase(),
         customizable: Boolean(item.customizable || item.isCustom || item.is_custom),
         readyToShip: Boolean(item.readyToShip ?? item.ready_to_ship),
+        reservationAvailable: Boolean(item.reservationAvailable ?? item.reservation_available),
         sku: item.sku || null,
         variantId:
           item.variantId ||
@@ -176,7 +177,13 @@ export function normalizeOrder(order: Row = {}): Row {
         order.total,
       ),
     ),
-    paymentMethod: clean(order.paymentMethod || order.payment_method || 'cash_on_delivery'),
+    paymentMethod: clean(
+      shippingSummary.manualPaymentMethod ||
+        shippingSummary.manual_payment_method ||
+        order.paymentMethod ||
+        order.payment_method ||
+        'cash_on_delivery',
+    ),
     paymentPlan: clean(order.paymentPlan || order.payment_plan || 'full'),
     amountPaid: Math.max(0, safeNumber(order.amountPaid ?? order.amount_paid)),
     displayAmountPaid: Math.max(
@@ -476,7 +483,9 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
   const candidateItems = Array.isArray(candidate.items) ? (candidate.items as Row[]) : [];
   if (!candidate.orderNumber || !candidate.email || !candidateItems.length)
     throw new Error('invalid_order');
-  const isCash = ['cash', 'cash_on_delivery', 'cod'].includes(String(candidate.paymentMethod || ''));
+  const isManualPayment = ['cash', 'cash_on_delivery', 'cod', 'bank_transfer'].includes(
+    String(candidate.paymentMethod || ''),
+  );
   const allowLocalPendingQuote = Boolean(options.allowPending && candidate.shippingQuoteRequired);
   if (options.cloud !== false) {
     const payload = {
@@ -551,7 +560,7 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
     }
     if (!allowLocalOrderStorage)
       throw new Error('cloud_order_creation_failed', { cause: cloud.error });
-    if (!isCash && !allowLocalPendingQuote)
+    if (!isManualPayment && !allowLocalPendingQuote)
       throw new Error('cloud_order_creation_failed', { cause: cloud.error });
     const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
     return {
@@ -562,7 +571,7 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
     };
   }
   if (!allowLocalOrderStorage) throw new Error('cloud_order_creation_required');
-  if (!isCash && !allowLocalPendingQuote) throw new Error('online_payment_requires_server');
+  if (!isManualPayment && !allowLocalPendingQuote) throw new Error('online_payment_requires_server');
   const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
   if (local.error && !local.order) throw local.error;
   return {
