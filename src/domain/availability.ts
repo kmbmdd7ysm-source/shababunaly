@@ -13,8 +13,8 @@ export function resolveAvailabilityState(
   options: { countryCode?: string } = {},
 ): AvailabilityState {
   if (!product) return 'OUT_OF_STOCK';
-  if (product.quoteOnly === true) return 'QUOTE_ONLY';
   if (product.status === 'coming_soon' || product.comingSoon === true) return 'COMING_SOON';
+  if (product.quoteOnly === true) return 'QUOTE_ONLY';
   if (!isProductPublishable(product)) return 'OUT_OF_STOCK';
 
   const tracking = product.inventoryTracking === true;
