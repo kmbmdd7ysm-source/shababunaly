@@ -109,10 +109,11 @@ export default function ProductCard({
       quantity: 1,
       purchaseMode: 'retail',
       readyToShip: p.readyToShip === true && variant.readyToShip !== false,
+      reservationAvailable: reservationAvailable,
       customizable: p.customizable === true,
       madeInUSA: p.madeInUSA === true && p.claimVerified === true && Boolean(p.claimEvidenceReference),
       largeEquipment: p.largeEquipment === true,
-      deliveryProfile: p.readyToShip ? 'ready' : 'standard',
+      deliveryProfile: reservationAvailable ? 'custom' : p.readyToShip ? 'ready' : 'standard',
     });
     window.setTimeout(() => {
       setAddState('added');
@@ -125,7 +126,7 @@ export default function ProductCard({
     : soldOut
       ? availabilityCopy.label
       : reservationAvailable
-        ? pick({ en: 'Available to Reserve', ar: 'متوفر بالحجز' })
+        ? pick({ en: 'Available by reservation', ar: 'متوفر بالحجز' })
         : availability === 'READY_TO_SHIP'
         ? availabilityCopy.label
         : p.newArrival
@@ -140,8 +141,8 @@ export default function ProductCard({
 
   const actionLabel = reservationAvailable
     ? action.type === 'choose-options'
-      ? pick({ en: 'Reserve options', ar: 'اختر للحجز' })
-      : pick({ en: 'Reserve', ar: 'احجز' })
+      ? pick({ en: 'Choose reservation', ar: 'اختر للحجز' })
+      : pick({ en: 'Order by reservation', ar: 'اطلب بالحجز' })
     : action.type === 'choose-options'
       ? pick({ en: 'Choose options', ar: 'اختر الخيارات' })
       : action.type === 'quote'
@@ -202,7 +203,9 @@ export default function ProductCard({
       <div className="s2-product-card__body">
         <div className="s2-product-card__title-row">
           <Link to={to} className="s2-product-card__name">{pick((p.name || '') as LocaleText)}</Link>
-          {p.quoteOnly ? (
+          {comingSoon ? (
+            <span className="s2-product-card__price s2-product-card__price--soon">{pick({ en: 'Coming soon', ar: 'قريباً' })}</span>
+          ) : p.quoteOnly ? (
             <span className="s2-product-card__price">{pick({ en: 'Price on request', ar: 'السعر عند الطلب' })}</span>
           ) : (
             <Price amount={Number(p.price) || 0} compareAt={p.compareAt == null ? null : Number(p.compareAt)} size="sm" />
