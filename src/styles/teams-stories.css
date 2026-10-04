@@ -4,6 +4,6 @@
 /* Media art direction: fill stages cleanly and crop editorial cards consistently. */
 .tw-hero-visual{position:relative;overflow:hidden;background:#050505}
 .tw-hero-visual picture,.tw-hero-visual img,.tw-hero-visual video{position:absolute;inset:0;width:100%;height:100%}
-.tw-hero-visual img,.tw-hero-visual video{object-fit:cover}
+.tw-hero-visual img,.tw-hero-visual video{object-fit:cover;object-position:center 52%}
 .tw-bal-video-frame,.story-hero-media .s2-bal-video-frame{position:absolute;z-index:1;top:50%;left:50%;width:max(100%,177.778vh);height:max(100%,56.25vw);transform:translate(-50%,-50%);border:0;pointer-events:none;background:#050505}
-.story-card-media img{object-fit:cover}
+.story-card-media img,.story-card-media video{width:100%;height:100%;object-fit:cover}
