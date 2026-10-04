@@ -49,6 +49,7 @@ export type CartItem = {
   inventoryPoolKey?: string;
   inventoryPoolStock?: number;
   readyToShip?: boolean;
+  reservationAvailable?: boolean;
   deliveryProfile?: string;
   unavailable?: boolean;
   updatedAt?: string;
@@ -164,7 +165,13 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
           inventoryPoolKey: variant.inventoryPoolKey ? String(variant.inventoryPoolKey) : undefined,
           inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock)) ? Number(variant.inventoryPoolStock) : undefined,
           readyToShip: Boolean(product.readyToShip && (!tracked || maxStock > 0)),
-          deliveryProfile: wholesale ? 'custom' : product.readyToShip ? 'ready' : 'standard',
+          reservationAvailable: product.reservationAvailable === true,
+          deliveryProfile:
+            wholesale || product.reservationAvailable === true
+              ? 'custom'
+              : product.readyToShip
+                ? 'ready'
+                : 'standard',
           unavailable: !purchasable,
           quantity: !purchasable
             ? Number(item.quantity || 1)
