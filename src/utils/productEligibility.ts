@@ -109,7 +109,7 @@ export function isProductVisible(product: ProductLike | null | undefined): boole
 }
 
 export function isProductPurchasable(product: ProductLike | null | undefined): boolean {
-  if (!product || !isProductPublishable(product) || product.quoteOnly === true) return false;
+  if (!product || product.quoteOnly === true) return false;
   if (!Array.isArray(product.variants) || product.variants.length === 0) return false;
   return product.variants.some((variant) => isVariantPurchasable(product, variant));
 }
@@ -118,14 +118,24 @@ export function isVariantPurchasable(
   product: ProductLike | null | undefined,
   variant: VariantLike | null | undefined,
 ): boolean {
-  if (!product || !isProductPublishable(product) || product.quoteOnly === true || !variant?.sku)
-    return false;
+  if (!product || product.quoteOnly === true || !variant?.sku) return false;
   if (variant.active === false) return false;
+
   const variantState = String(variant.availabilityState || '').toLowerCase();
-  // Reservation/preorder products are intentionally sellable without tracked
-  // on-hand inventory. This keeps Kobe reservation state consistent in Shop,
-  // Favorites, Compare and PDP instead of leaking an out-of-stock badge.
-  if (product.reservationAvailable === true && variantState === 'preorder') return true;
+  const reservationProduct =
+    product.reservationAvailable === true &&
+    product.status === PRODUCT_STATUSES.ACTIVE &&
+    product.comingSoon !== true &&
+    hasValidSku(product) &&
+    hasRealProductMedia(product) &&
+    hasSellablePrice(product);
+
+  // Reservation/preorder products are orderable without on-hand stock. The
+  // reservation itself is the fulfilment promise, so transient catalogue/rate
+  // readiness must not turn every reservable size into “Out of Stock”.
+  if (reservationProduct && variantState === 'preorder') return true;
+
+  if (!isProductPublishable(product)) return false;
   if (['out_of_stock', 'unavailable', 'archived'].includes(variantState)) return false;
   if (variant.inventoryTracking === false || product.inventoryTracking === false) return true;
   return Number(variant.stock) > 0;
