@@ -24,6 +24,10 @@ export default function CartPage(): ReactElement {
   const checkoutCopy = (t.checkout || {}) as Record<string, string>;
   const { format, usdToLydRate, countryCode } = useCommerce();
   const { items, updateQuantity, removeItem, subtotal, hasPhysical } = useCart();
+  const hasReservation = items.some((item) => item.reservationAvailable === true);
+  const hasReadyItems = items.some(
+    (item) => item.type === 'product' && item.readyToShip === true && item.reservationAvailable !== true,
+  );
 
   // Ready-to-ship is a Libya-only department; the empty-bag gates honour the
   // same rule the catalogue does.
@@ -166,10 +170,20 @@ export default function CartPage(): ReactElement {
                             ) : null}
                             {item.type === 'training' ? <span>{cartCopy.digital || ''}</span> : null}
                             {item.type === 'event' ? <span>{cartCopy.event || ''}</span> : null}
-                            {item.reservationAvailable === true ? (
-                              <span>{` · ${pick({ en: 'Reservation', ar: 'حجز' })}`}</span>
-                            ) : null}
                           </p>
+                          {item.type === 'product' ? (
+                            <div className="cc-cart-fulfillment">
+                              {item.reservationAvailable === true ? (
+                                <span className="cc-cart-fulfillment__chip is-reservation">
+                                  {pick({ en: 'Reservation · 14–18 days', ar: 'حجز · 14–18 يومًا' })}
+                                </span>
+                              ) : item.readyToShip === true ? (
+                                <span className="cc-cart-fulfillment__chip is-ready">
+                                  {pick({ en: 'Ready to ship · 24–72h', ar: 'تسليم فوري · 24–72 ساعة' })}
+                                </span>
+                              ) : null}
+                            </div>
+                          ) : null}
                           <div className="gw-line-controls">
                             {item.type === 'product' ? (
                               <QuantitySelector
@@ -229,14 +243,33 @@ export default function CartPage(): ReactElement {
                     </dd>
                   </div>
                 </dl>
+                <div className="cc-cart-summary__promise">
+                  {hasReservation ? (
+                    <div>
+                      <strong>{pick({ en: 'Reservation', ar: 'حجز' })}</strong>
+                      <span>{pick({ en: 'Estimated 14–18 days after confirmation', ar: 'المدة المتوقعة 14–18 يومًا بعد التأكيد' })}</span>
+                    </div>
+                  ) : null}
+                  {hasReadyItems ? (
+                    <div>
+                      <strong>{pick({ en: 'Ready to ship', ar: 'تسليم فوري' })}</strong>
+                      <span>{pick({ en: 'Libya delivery in 24–72 hours', ar: 'التوصيل داخل ليبيا خلال 24–72 ساعة' })}</span>
+                    </div>
+                  ) : null}
+                </div>
                 <p className="cc-cart-summary__total">
-                  <span>{cartCopy.total}</span>
+                  <span>{pick({ en: 'Products total', ar: 'إجمالي المنتجات' })}</span>
                   <span>{format(subtotal, lang)}</span>
                 </p>
                 <Link to="/checkout" className="gw-btn gw-btn--primary cc-cart-summary__checkout">
                   {cartCopy.checkout}
                 </Link>
-                <p className="cc-cart-summary__note">{checkoutCopy.secureNote}</p>
+                <p className="cc-cart-summary__note">
+                  {pick({
+                    en: 'Shipping and the exact payment amount are confirmed at checkout.',
+                    ar: 'يتم تأكيد الشحن وقيمة الدفع المطلوبة في صفحة إتمام الطلب.',
+                  })}
+                </p>
               </aside>
             </div>
           )}
