@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 import ProductCard from '../components/shop/ProductCard';
 import PublicPageHeader from '../components/content/PublicPageHeader';
@@ -7,43 +6,37 @@ import { useCatalog } from '../context/CatalogContext';
 import { useLanguage } from '../context/LanguageContext';
 import '../styles/catalog.css';
 
-/*
- * The LHA store, rebuilt onto the shared catalogue architecture.
- *
- * WAS: a bespoke `.lha-store-hero` with a wordmark, then a `.store-toolbar`
- * repeating the same heading, then a grid. Two competing headings and a
- * one-off hero that existed nowhere else on the site.
- *
- * NOW: the shared route masthead carrying the partner mark and the live product
- * count as a figure, then the measured catalogue grid. One heading, and the
- * route now reads as part of Shababuna rather than a separate microsite -
- * which is exactly what it is: same prices, same account, same cart, same
- * delivery system.
- */
 export default function LhaStorePage(): ReactElement {
   const { lhaStoreProducts } = useCatalog();
   const { pick } = useLanguage();
   const items = lhaStoreProducts() as Array<Record<string, unknown> & { id?: string }>;
+  const availableNow = items.filter(
+    (product) => product.comingSoon !== true && product.status !== 'coming_soon',
+  );
+  const comingSoon = items.filter(
+    (product) => product.comingSoon === true || product.status === 'coming_soon',
+  );
 
   return (
     <>
       <Seo
         title="LHA Official Store"
-        description="All Libya Hoops Academy clothing and accessories inside Shababuna."
+        description="Official Libya Hoops Academy products available through Shababuna."
         path="/lha-store"
       />
+
       <PublicPageHeader
         eyebrow={pick({
-          en: 'Official store · powered by Shababuna',
-          ar: 'المتجر الرسمي · بدعم من شبابنا',
+          en: 'Libya Hoops Academy · Shababuna',
+          ar: 'أكاديمية ليبيا هوبس · شبابنا',
         })}
-        title={pick({ en: 'LHA Clothing & Accessories', ar: 'ملابس وإكسسوارات LHA' })}
+        title={pick({ en: 'LHA Official Store', ar: 'متجر LHA الرسمي' })}
         lede={pick({
-          en: 'The complete LHA product catalogue, with the same prices, account, cart and delivery system.',
-          ar: 'كتالوج منتجات LHA بالكامل بنفس الأسعار والحساب والسلة ونظام التوصيل.',
+          en: 'Official LHA products, ordered through Shababuna.',
+          ar: 'منتجات LHA الرسمية، والطلب عبر شبابنا.',
         })}
         trail={[{ label: 'LHA' }]}
-        figure={{ value: items.length, label: pick({ en: 'products', ar: 'منتج' }) }}
+        figure={{ value: availableNow.length, label: pick({ en: 'available now', ar: 'متوفر الآن' }) }}
       >
         <img
           className="gw-partner-mark"
@@ -54,31 +47,33 @@ export default function LhaStorePage(): ReactElement {
         />
       </PublicPageHeader>
 
-      <section className="gw-partner-world" aria-label="LHA">
-        <div className="gw-partner-world-inner">
-          <p className="gw-kicker">
-            {pick({ en: 'Official partner collection', ar: 'مجموعة الشريك الرسمية' })}
-          </p>
-          <h2 className="gw-partner-world-title">
-            {pick({ en: 'All LHA clothing and accessories', ar: 'جميع ملابس وإكسسوارات LHA' })}
-          </h2>
-        </div>
-      </section>
-      <div className="cc-store-listing">
-        <div className="cc-store-listing__inner">
-          <div className="cc-store-listing__bar">
-            <p className="gw-kicker">{pick({ en: 'Full collection', ar: 'المجموعة كاملة' })}</p>
-            <Link to="/shop" className="gw-btn gw-btn--secondary">
-              {pick({ en: 'Back to Shababuna Shop', ar: 'العودة لمتجر شبابنا' })}
-            </Link>
+      <main className="lha-store-clean">
+        <section className="lha-store-section" aria-labelledby="lha-available-title">
+          <div className="lha-store-section__head">
+            <h2 id="lha-available-title">{pick({ en: 'Available now', ar: 'متوفر الآن' })}</h2>
+            <span>{availableNow.length}</span>
           </div>
           <div className="cc-product-grid">
-            {items.map((product, index) => (
+            {availableNow.map((product, index) => (
               <ProductCard key={String(product.id)} product={product} eager={index < 4} />
             ))}
           </div>
-        </div>
-      </div>
+        </section>
+
+        {comingSoon.length ? (
+          <section className="lha-store-section lha-store-section--soon" aria-labelledby="lha-soon-title">
+            <div className="lha-store-section__head">
+              <h2 id="lha-soon-title">{pick({ en: 'Coming soon', ar: 'قريباً' })}</h2>
+              <span>{comingSoon.length}</span>
+            </div>
+            <div className="cc-product-grid">
+              {comingSoon.map((product) => (
+                <ProductCard key={String(product.id)} product={product} />
+              ))}
+            </div>
+          </section>
+        ) : null}
+      </main>
     </>
   );
 }
