@@ -32,6 +32,10 @@ export const BAL_MEDIA = {
     alAhlyCelebration: `${BAL_CDN}/2023/05/ehab-omot-222-1024x683.jpg`,
     kigaliArena: `${BAL_CDN}/2023/05/kigali-arena-1-1-1024x683.jpg`,
     pumaMerch: `${BAL_CDN}/2026/05/NBAA-BAL-DTC-Puma-Merch-Promo_9_16-4-576x1024.jpg`,
+    balPuma: `${BAL_CDN}/2026/03/BALxPuma.png?im=Resize%3D%28900%2C506%29`,
+    alAhliTripoliSadi: `${BAL_CDN}/2025/05/Al-Ahli-Tripoli-Nile-2-1024x683.jpg`,
+    monastirHuddle: `${BAL_CDN}/2025/06/Vasco-Curado-US-Monastir-3-1024x683.jpg`,
+    ittihadHuddle: `${BAL_CDN}/2025/06/Omar-Soliman-3-Ittihad-1024x683.jpg`,
   },
   videos: {
     seasonSixRecap: youtubeBackground('K5RDhS00rg0'),
