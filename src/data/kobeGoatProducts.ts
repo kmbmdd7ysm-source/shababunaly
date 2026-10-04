@@ -1,6 +1,6 @@
 import { commerceConfig, roundStorePrice } from '../config/commerce.ts';
 
-const KOBE_SHOE_SIZES = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '12'];
+const KOBE_SHOE_SIZES = ['7', '8', '9', '10', '11', '12'];
 const KOBE_PRICE_LYD = 1200;
 const KOBE_PRICE_USD = roundStorePrice(KOBE_PRICE_LYD / commerceConfig.fallbackUsdToLydRate);
 
