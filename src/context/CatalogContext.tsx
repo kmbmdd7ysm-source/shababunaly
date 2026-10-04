@@ -149,6 +149,12 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     product.legacyLha === true &&
     product.inventorySource === 'owner_confirmed_lha_color_stock' &&
     product.inventoryVerified === true;
+  const lhaReservationEligible =
+    product.legacyLha === true &&
+    product.comingSoon !== true &&
+    product.status !== 'coming_soon' &&
+    product.quoteOnly !== true &&
+    Number(product.price) > 0;
   const activeRows = rows.filter((row) => row && row.variant_id && row.sku);
   if (!activeRows.length) return product;
   const variants = activeRows.map((row) => {
@@ -156,34 +162,40 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     const unitPrice = Number(row.unit_price);
     const compareAt = row.compare_at_price == null ? null : Number(row.compare_at_price);
     const wholesalePrice = data.wholesalePrice == null ? null : Number(data.wholesalePrice);
+    const cloudStock = row.inventory_tracking
+      ? Math.max(0, Number(row.inventory_quantity) || 0)
+      : 0;
+    const cloudState = String(row.availability_state || 'in_stock').toLowerCase();
+    const reservationVariant =
+      lhaReservationEligible &&
+      (cloudStock <= 0 || !row.inventory_tracking || ['out_of_stock', 'unavailable'].includes(cloudState));
+    const trackedVariant = Boolean(row.inventory_tracking) && !reservationVariant;
     return {
       size: String(row.size || 'OS'),
       color: String(row.color || 'black'),
       sku: String(row.sku),
-      // Once the cloud catalogue is available, its remaining quantity is
-      // authoritative. LHA starts with five physical pieces per colour, but a
-      // sale must never be "healed" back to five by the static source.
-      stock: row.inventory_tracking ? Math.max(0, Number(row.inventory_quantity) || 0) : 0,
-      inventoryPoolKey: ownerConfirmedLhaStock
+      // Verified on-hand quantity remains authoritative. When an active LHA
+      // size/color is not physically on hand it becomes a reservation lane
+      // instead of being falsely relabelled as stocked or blocked as unavailable.
+      stock: trackedVariant ? cloudStock : 0,
+      inventoryPoolKey: trackedVariant && ownerConfirmedLhaStock
         ? String(
             data.inventoryPoolKey ||
               (product.variants || []).find((entry) => String(entry.sku) === String(row.sku))
                 ?.inventoryPoolKey ||
               `color:${String(row.color || 'black')}`,
           )
-        : data.inventoryPoolKey
+        : trackedVariant && data.inventoryPoolKey
           ? String(data.inventoryPoolKey)
           : undefined,
-      inventoryPoolStock: ownerConfirmedLhaStock
-        ? row.inventory_tracking
-          ? Math.max(0, Number(row.inventory_quantity) || 0)
-          : 0
-        : Number.isFinite(Number(data.inventoryPoolStock))
+      inventoryPoolStock: trackedVariant && ownerConfirmedLhaStock
+        ? cloudStock
+        : trackedVariant && Number.isFinite(Number(data.inventoryPoolStock))
           ? Number(data.inventoryPoolStock)
           : undefined,
-      inventoryTracking: Boolean(row.inventory_tracking),
-      inventoryVerified: Boolean(row.inventory_tracking),
-      availabilityState: String(row.availability_state || 'in_stock'),
+      inventoryTracking: trackedVariant,
+      inventoryVerified: trackedVariant,
+      availabilityState: reservationVariant ? 'preorder' : String(row.availability_state || 'in_stock'),
       unitPrice: ownerConfirmedLhaStock
         ? Number(product.price)
         : Number.isFinite(unitPrice)
@@ -193,11 +205,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       wholesalePrice: Number.isFinite(wholesalePrice)
         ? wholesalePrice
         : Number(product.wholesalePrice || 0) || null,
-      readyToShip: ownerConfirmedLhaStock
-        ? Boolean(row.inventory_tracking) && Number(row.inventory_quantity) > 0
-        : Boolean(data.readyToShip) &&
-          Boolean(row.inventory_tracking) &&
-          Number(row.inventory_quantity) > 0,
+      readyToShip: trackedVariant && cloudStock > 0,
       catalogUpdatedAt: row.updated_at || null,
     };
   });
@@ -215,11 +223,16 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       Number(row.inventory_quantity) > 0
     );
   });
-  const hasAvailableVariant = activeRows.some((row) =>
-    row.inventory_tracking
-      ? Number(row.inventory_quantity) > 0
-      : !['out_of_stock', 'unavailable'].includes(String(row.availability_state || '')),
-  );
+  const hasAvailableVariant = variants.some((variant) => {
+    const state = String(variant.availabilityState || '').toLowerCase();
+    if (state === 'preorder') return true;
+    return variant.inventoryTracking
+      ? Number(variant.stock) > 0
+      : !['out_of_stock', 'unavailable'].includes(state);
+  });
+  const reservationAvailable =
+    lhaReservationEligible &&
+    variants.some((variant) => String(variant.availabilityState || '').toLowerCase() === 'preorder');
   const retailPrices = variants
     .map((variant) => variant.unitPrice)
     .filter((value): value is number => Number.isFinite(value));
@@ -278,13 +291,24 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     name: productName,
     description,
     comingSoon,
+    reservationAvailable:
+      product.reservationAvailable === true || reservationAvailable,
     readyToShip,
-    inventoryTracking: ownerConfirmedLhaStock ? true : tracked,
+    inventoryTracking: tracked,
     inventoryVerified: ownerConfirmedLhaStock ? true : product.inventoryVerified,
     variants,
     stock: ownerConfirmedLhaStock ? Number(product.stock || 0) : stock,
-    availability: !comingSoon && hasAvailableVariant ? 'in-stock' : 'sold-out',
-    available: !comingSoon && hasAvailableVariant,
+    availability:
+      comingSoon
+        ? 'coming-soon'
+        : readyToShip
+          ? 'in-stock'
+          : reservationAvailable
+            ? 'preorder'
+            : hasAvailableVariant
+              ? 'in-stock'
+              : 'sold-out',
+    available: !comingSoon && (hasAvailableVariant || reservationAvailable),
     priceVaries: new Set(retailPrices.map((value) => value.toFixed(2))).size > 1,
     wholesalePriceVaries: new Set(wholesalePrices.map((value) => value.toFixed(2))).size > 1,
     wholesaleMin: Number(data.wholesaleMin ?? product.wholesaleMin),
@@ -360,14 +384,24 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     const currentStock = [...poolStock.values()].reduce((sum, value) => sum + value, 0);
     next.inventorySource = 'owner_confirmed_lha_color_stock';
     next.inventoryLocation = 'LY';
-    next.inventoryVerified = variants.length > 0 && variants.every((variant) => variant.inventoryTracking === true);
-    next.inventoryTracking = true;
+    const trackedVariants = variants.filter((variant) => variant.inventoryTracking === true);
+    next.inventoryVerified =
+      trackedVariants.length > 0 &&
+      trackedVariants.every((variant) => variant.inventoryVerified === true);
+    next.inventoryTracking = trackedVariants.length > 0;
     next.stockByColor = currentStockByColor;
     next.stockPerColor = product.stockPerColor;
     next.stock = currentStock;
     next.readyToShip = currentStock > 0;
-    next.available = !comingSoon && currentStock > 0;
-    next.availability = !comingSoon && currentStock > 0 ? 'in-stock' : 'sold-out';
+    next.available =
+      !comingSoon && (currentStock > 0 || next.reservationAvailable === true);
+    next.availability = comingSoon
+      ? 'coming-soon'
+      : currentStock > 0
+        ? 'in-stock'
+        : next.reservationAvailable === true
+          ? 'preorder'
+          : 'sold-out';
     next.inventoryVerifiedAt = activeRows.reduce<unknown>((latest, row) => {
       const stamp = row.updated_at;
       return !latest || String(stamp || '') > String(latest) ? stamp : latest;
