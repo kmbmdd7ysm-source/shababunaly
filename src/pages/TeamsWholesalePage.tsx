@@ -15,7 +15,7 @@ import '../styles/teams-stories.css';
 const SERVICES = [
   { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: SHABABUNA_MEDIA.images.red17Apparel },
   { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: BAL_MEDIA.images.giantsDrive },
-  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: SHABABUNA_MEDIA.images.teamLineup },
+  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: BAL_MEDIA.images.balPuma },
   { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: BAL_MEDIA.images.kigaliArena },
 ];
 
@@ -61,8 +61,8 @@ export default function TeamsWholesalePage(): ReactElement {
           <div className="tw-hero-copy"><p>SHABABUNA TEAM</p><h1>{pick({ en: 'Build your program.', ar: 'جهّز فريقك.' })}</h1><span>{pick({ en: 'Uniforms, training, teamwear and equipment — handled through one Shababuna team.', ar: 'أطقم لعب وتدريب وملابس فريق ومعدات — كلها عبر فريق شبابنا.' })}</span><a href="#team-quote" className="btn-primary">{pick({ en: 'Start a team request', ar: 'ابدأ طلب فريق' })}</a></div>
           <div className="tw-hero-visual">
             <EditorialMedia
-              desktopMedia={BAL_MEDIA.images.alAhlyChampions}
-              mobileMedia={BAL_MEDIA.images.alAhlyCelebration}
+              desktopMedia={SHABABUNA_MEDIA.images.teamLineup}
+              mobileMedia={SHABABUNA_MEDIA.images.teamLineup}
               loading="eager"
             />
           </div>
