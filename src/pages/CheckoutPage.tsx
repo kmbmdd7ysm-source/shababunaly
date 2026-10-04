@@ -142,14 +142,14 @@ export default function CheckoutPage(): ReactElement {
   const stagedOrder = items.some(
     (item) =>
       item.purchaseMode === 'wholesale' ||
-      item.deliveryProfile === 'custom' ||
-      item.reservationAvailable === true,
+      (item.deliveryProfile === 'custom' && item.reservationAvailable !== true),
   );
   const largeEquipment = items.some((item) => item.largeEquipment);
   const allReady =
     items.length > 0 && items.every((item) => item.type !== 'product' || item.readyToShip);
-  const immediateLibyaCash = isLibya && allReady && !stagedOrder;
-  const allowCashPlanChoice = isLibya && !allReady;
+  const manualPayment = paymentMethod === 'cash' || paymentMethod === 'bank_transfer';
+  const immediateLibyaOrder = isLibya && allReady && !stagedOrder && !hasReservation;
+  const allowManualPlanChoice = isLibya && (hasReservation || stagedOrder);
 
   const changeCountry = (nextCode: string) => {
     const normalized = String(normalizeCountryCode(nextCode) || '');
@@ -162,7 +162,7 @@ export default function CheckoutPage(): ReactElement {
       delete next.state;
       return next;
     });
-    if (!isCashEligibleCountry(normalized) && paymentMethod === 'cash')
+    if (!isCashEligibleCountry(normalized) && ['cash', 'bank_transfer'].includes(paymentMethod))
       setPaymentMethod(isPaymentMethodConfigured('online_card') ? 'online_card' : 'pending');
   };
 
@@ -183,7 +183,7 @@ export default function CheckoutPage(): ReactElement {
       phone: String(address.phone || current.phone),
     }));
     setCountryCode(nextCountry);
-    if (!isCashEligibleCountry(nextCountry) && paymentMethod === 'cash')
+    if (!isCashEligibleCountry(nextCountry) && ['cash', 'bank_transfer'].includes(paymentMethod))
       setPaymentMethod(isPaymentMethodConfigured('online_card') ? 'online_card' : 'pending');
   };
 
@@ -239,16 +239,24 @@ export default function CheckoutPage(): ReactElement {
   const total = subtotal + shippingEstimate;
   const deliveryProfile = stagedOrder
     ? 'custom'
-    : isLibya && allReady
+    : isLibya && allReady && !hasReservation
       ? 'ready'
       : isLibya
         ? 'standard'
         : shippingQuoteRequired
           ? 'international_pending'
           : 'international';
-  const paymentConfigured = paymentMethod === 'cash' || (paymentMethod !== 'pending' && isPaymentMethodConfigured(paymentMethod));
+  const paymentConfigured =
+    manualPayment ||
+    (paymentMethod !== 'pending' && isPaymentMethodConfigured(paymentMethod));
   // prettier-ignore
-  const paymentPlan = shippingQuoteRequired ? 'pending_shipping_quote' : paymentMethod === 'cash' ? (immediateLibyaCash ? 'full' : allowCashPlanChoice ? cashPlan : 'full') : 'full';
+  const paymentPlan = shippingQuoteRequired
+    ? 'pending_shipping_quote'
+    : manualPayment
+      ? allowManualPlanChoice
+        ? cashPlan
+        : 'full'
+      : 'full';
   const dueRatio = paymentPlan === 'half' ? 0.5 : paymentPlan === 'pending_shipping_quote' ? 0 : 1;
   const amountDueNow = total * dueRatio;
   const remainingBalance = Math.max(0, total - amountDueNow);
@@ -280,17 +288,17 @@ export default function CheckoutPage(): ReactElement {
     }
     if (
       !shippingQuoteRequired &&
-      paymentMethod !== 'cash' &&
+      !manualPayment &&
       (paymentMethod === 'pending' || !isPaymentMethodConfigured(paymentMethod))
     )
       next.payment = pick({
         en: 'No online payment method is currently available.',
         ar: 'لا توجد وسيلة دفع إلكتروني متاحة حاليًا.',
       });
-    if (paymentMethod === 'cash' && !isCashEligibleCountry(shippingCountryCode))
+    if (manualPayment && !isCashEligibleCountry(shippingCountryCode))
       next.payment = pick({
-        en: 'Cash is available only for deliveries inside Libya.',
-        ar: 'الدفع النقدي متاح فقط للتوصيل داخل ليبيا.',
+        en: 'Cash and bank transfer are available only for deliveries inside Libya.',
+        ar: 'الكاش والحوالة المصرفية متاحان فقط للتوصيل داخل ليبيا.',
       });
     if (!rateReady && currency === 'LYD')
       next.shipping = pick({
