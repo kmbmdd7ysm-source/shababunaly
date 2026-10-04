@@ -96,6 +96,38 @@ const BASE_PRODUCTS = [...(staticProducts as CatalogProduct[]), ...(spaldingOffi
 
 function failClosedTrackedInventory(product: CatalogProduct): CatalogProduct {
   if (product.inventoryTracking !== true) return product;
+
+  const activeLhaReservation =
+    product.legacyLha === true &&
+    product.comingSoon !== true &&
+    product.status !== 'coming_soon' &&
+    product.quoteOnly !== true &&
+    Number(product.price) > 0;
+
+  if (activeLhaReservation) {
+    return {
+      ...product,
+      stock: 0,
+      readyToShip: false,
+      inventoryTracking: false,
+      inventoryVerified: false,
+      reservationAvailable: true,
+      available: true,
+      availability: 'preorder',
+      inventoryRuntimeStatus: 'reservation_fallback',
+      variants: (product.variants || []).map((variant) => ({
+        ...variant,
+        stock: 0,
+        readyToShip: false,
+        inventoryTracking: false,
+        inventoryVerified: false,
+        inventoryPoolKey: undefined,
+        inventoryPoolStock: undefined,
+        availabilityState: 'preorder',
+      })),
+    };
+  }
+
   return {
     ...product,
     stock: 0,
