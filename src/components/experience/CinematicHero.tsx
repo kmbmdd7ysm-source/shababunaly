@@ -7,32 +7,59 @@ import '../../styles/design/phase2-home.css';
 
 const HERO = LOCAL_HERO_MEDIA.home;
 const HOME_POSTER = '/media/hero-posters/home.webp';
+const MOBILE_BREAKPOINT = '(max-width: 899px)';
 
 export default function CinematicHero(): ReactElement {
   const { pick } = useLanguage();
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [videoSrc, setVideoSrc] = useState(() =>
+    typeof globalThis.matchMedia === 'function' && globalThis.matchMedia(MOBILE_BREAKPOINT).matches
+      ? HERO.mobileVideo
+      : HERO.desktopVideo,
+  );
 
   const startPlayback = () => {
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
+    video.defaultMuted = true;
     const attempt = video.play();
-    if (attempt && typeof attempt.catch === 'function') {
-      void attempt.catch(() => undefined);
-    }
+    if (attempt && typeof attempt.catch === 'function') void attempt.catch(() => undefined);
   };
+
+  useEffect(() => {
+    const query = globalThis.matchMedia?.(MOBILE_BREAKPOINT);
+    if (!query) return undefined;
+
+    const syncSource = () => {
+      setVideoSrc(query.matches ? HERO.mobileVideo : HERO.desktopVideo);
+    };
+
+    syncSource();
+    query.addEventListener?.('change', syncSource);
+    return () => query.removeEventListener?.('change', syncSource);
+  }, []);
 
   useEffect(() => {
     startPlayback();
 
+    const retry = () => startPlayback();
     const onVisible = () => {
       if (document.visibilityState === 'visible') startPlayback();
     };
 
     document.addEventListener('visibilitychange', onVisible);
-    return () => document.removeEventListener('visibilitychange', onVisible);
-  }, []);
+    globalThis.addEventListener('pointerdown', retry, { once: true });
+    globalThis.addEventListener('touchstart', retry, { once: true, passive: true });
+    globalThis.addEventListener('keydown', retry, { once: true });
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      globalThis.removeEventListener('pointerdown', retry);
+      globalThis.removeEventListener('touchstart', retry);
+      globalThis.removeEventListener('keydown', retry);
+    };
+  }, [videoSrc]);
 
   return (
     <section className="s2-hero" aria-labelledby="s2-home-title">
@@ -46,25 +73,22 @@ export default function CinematicHero(): ReactElement {
           decoding="async"
           fetchPriority="high"
         />
-        {!failed ? (
-          <video
-            ref={videoRef}
-            muted
-            loop
-            playsInline
-            autoPlay
-            controls={false}
-            disablePictureInPicture
-            preload="auto"
-            poster={HOME_POSTER}
-            onLoadedData={startPlayback}
-            onCanPlay={startPlayback}
-            onError={() => setFailed(true)}
-          >
-            <source media="(max-width: 899px)" src={HERO.mobileVideo} type="video/mp4" />
-            <source src={HERO.desktopVideo} type="video/mp4" />
-          </video>
-        ) : null}
+        <video
+          key={videoSrc}
+          ref={videoRef}
+          src={videoSrc}
+          muted
+          loop
+          playsInline
+          autoPlay
+          controls={false}
+          disablePictureInPicture
+          preload="auto"
+          poster={HOME_POSTER}
+          onLoadedMetadata={startPlayback}
+          onLoadedData={startPlayback}
+          onCanPlay={startPlayback}
+        />
         <span className="s2-hero__scrim" />
       </div>
       <div className="s2-hero__content">
