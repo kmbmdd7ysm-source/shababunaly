@@ -105,17 +105,6 @@
 .s2-campaign__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
 .s2-campaign__media img,
 .s2-campaign__media video { object-fit: cover; }
-.s2-bal-video-frame {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(100%, 177.778vh);
-  height: max(100%, 56.25vw);
-  transform: translate(-50%, -50%);
-  border: 0;
-  pointer-events: none;
-  background: var(--sh-night);
-}
 .s2-campaign__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 66%, transparent), var(--sh-black-08) 58%); }
 .s2-campaign__copy { position: absolute; z-index: 2; inset-inline: var(--s2-gutter, 44px); inset-block-end: clamp(44px, 7vw, 94px); max-width: 720px; }
 .s2-campaign__copy h2 { margin: 7px 0 25px; font-size: clamp(2.8rem, 6vw, 6.8rem); line-height: 0.92; letter-spacing: -0.06em; }
@@ -139,20 +128,15 @@
 .s2-category-world video,
 .s2-category-world__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
 .s2-category-world img,
-.s2-category-world video { object-fit: cover; object-position: center; transition: transform 550ms var(--s2-ease, ease); }
-.s2-category-world--clothing img { object-position: center 24%; }
-.s2-category-world--basketballs img { object-position: center 34%; }
-.s2-category-world--accessories img { object-position: center 42%; }
-.s2-category-world--equipment img { object-position: center 50%; }
+.s2-category-world video { object-fit: cover; transition: transform 550ms var(--s2-ease, ease); }
 .s2-category-world:hover img,
 .s2-category-world:hover video { transform: scale(1.025); }
 .s2-category-world__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 52%, transparent), transparent 52%); }
 .s2-category-world strong { position: absolute; z-index: 2; inset-inline: 24px; inset-block-end: 24px; font-size: clamp(1.45rem, 2vw, 2.4rem); letter-spacing: -0.035em; }
 
 .s2-split-feature { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 720px; background: var(--sh-ink); color: var(--sh-chalk); }
-.s2-split-feature__media { min-height: 600px; background: var(--sh-night); overflow: hidden; }
+.s2-split-feature__media { min-height: 600px; }
 .s2-split-feature__media img { width: 100%; height: 100%; object-fit: cover; }
-.s2-split-feature__media .s2-custom-studio-image { object-fit: cover; object-position: center 38%; }
 .s2-split-feature__copy { padding: clamp(44px, 7vw, 110px); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
 .s2-split-feature__copy h2 { margin: 10px 0 28px; font-size: clamp(2.8rem, 5vw, 6rem); line-height: 0.92; letter-spacing: -0.055em; }
 [lang='ar'] .s2-split-feature__copy h2 { line-height: 1.18; letter-spacing: 0; }
@@ -177,7 +161,7 @@
 .s2-team-teaser__media,
 .s2-team-teaser__media img,
 .s2-team-teaser__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-.s2-team-teaser__media img { object-fit: cover; object-position: center 56%; }
+.s2-team-teaser__media img { object-fit: cover; object-position: center; }
 .s2-team-teaser__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 78%, transparent) 4%, color-mix(in srgb, var(--sh-night) 18%, transparent) 64%, transparent); }
 .s2-team-teaser__copy {
   position: relative;
@@ -218,7 +202,7 @@
   .s2-split-feature__media { min-height: 62svh; }
   .s2-split-feature__copy { padding: 44px 18px 64px; }
   .s2-team-teaser { min-height: 72svh; }
-  .s2-team-teaser__media img { object-position: center 52%; }
+  .s2-team-teaser__media img { object-position: center 28%; }
   .s2-team-teaser__copy { padding: 48px 18px 54px; }
 }
 
