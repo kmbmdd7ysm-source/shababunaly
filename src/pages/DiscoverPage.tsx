@@ -71,16 +71,6 @@ export default function DiscoverPage(): ReactElement {
             mobileMedia={BAL_MEDIA.images.futureProsSafari}
             loading="eager"
           />
-          <iframe
-            className="s2-bal-video-frame"
-            src={BAL_MEDIA.videos.seasonSixCulture}
-            title="Basketball Africa League culture"
-            loading="eager"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            referrerPolicy="strict-origin-when-cross-origin"
-            tabIndex={-1}
-            aria-hidden="true"
-          />
           <span className="s2-discover-hero__shade" />
           <div className="s2-discover-hero__copy">
             <span className="s2-overline">Shababuna</span>

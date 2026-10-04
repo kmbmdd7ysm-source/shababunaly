@@ -61,16 +61,6 @@ export default function OurWorkPage(): ReactElement {
               mobileMedia={BAL_MEDIA.images.clubAfricainFansVertical}
               loading="eager"
             />
-            <iframe
-              className="s2-bal-video-frame"
-              src={BAL_MEDIA.videos.seasonSixCulture}
-              title="Basketball Africa League culture"
-              loading="eager"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              tabIndex={-1}
-              aria-hidden="true"
-            />
           </div>
         </header>
 

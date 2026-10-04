@@ -65,16 +65,6 @@ export default function TeamsWholesalePage(): ReactElement {
               mobileMedia={BAL_MEDIA.images.alAhlyCelebration}
               loading="eager"
             />
-            <iframe
-              className="tw-bal-video-frame"
-              src={BAL_MEDIA.videos.seasonSixTeams}
-              title="Basketball Africa League teams"
-              loading="eager"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              tabIndex={-1}
-              aria-hidden="true"
-            />
           </div>
         </header>
 

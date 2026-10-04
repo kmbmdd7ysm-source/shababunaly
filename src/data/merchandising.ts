@@ -25,7 +25,7 @@ export const HOME_TRENDS: MerchandisingWorld[] = [
 
 export const CATEGORY_WORLDS: MerchandisingWorld[] = [
   { slug:'footwear', title:{en:'Footwear',ar:'الأحذية'}, to:'/shop/footwear', desktopMedia:E.goldShoeHands, mobileMedia:E.jordanShoePink, theme:'dark' },
-  { slug:'clothing', title:{en:'Apparel',ar:'الملابس'}, to:'/shop/clothing', desktopMedia:SHABABUNA_MEDIA.images.red17Apparel, mobileMedia:SHABABUNA_MEDIA.images.red17Apparel, desktopVideo:SHABABUNA_MEDIA.videos.sadiShot, mobileVideo:SHABABUNA_MEDIA.videos.sadiShot, theme:'dark' },
+  { slug:'clothing', title:{en:'Apparel',ar:'الملابس'}, to:'/shop/clothing', desktopMedia:SHABABUNA_MEDIA.images.red17Apparel, mobileMedia:SHABABUNA_MEDIA.images.red17Apparel, theme:'dark' },
   { slug:'basketballs', title:{en:'Basketballs',ar:'كرات السلة'}, to:'/shop/basketballs', desktopMedia:SHABABUNA_MEDIA.images.teamLineup, mobileMedia:SHABABUNA_MEDIA.images.teamLineup, theme:'dark' },
   { slug:'accessories', title:{en:'Accessories',ar:'الإكسسوارات'}, to:'/shop/accessories', desktopMedia:BAL_MEDIA.images.pumaMerch, mobileMedia:BAL_MEDIA.images.pumaMerch, theme:'dark' },
   { slug:'equipment', title:{en:'Equipment',ar:'المعدات'}, to:'/shop/equipment', desktopMedia:BAL_MEDIA.images.kigaliArena, mobileMedia:BAL_MEDIA.images.sunBetArena, theme:'dark' },

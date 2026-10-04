@@ -7,7 +7,6 @@ import ProductCard from '../components/shop/ProductCard';
 import { useLanguage } from '../context/LanguageContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useCinematicOpening } from '../hooks/useCinematicOpening';
-import { useReducedMotion } from '../hooks/useReducedMotion';
 import { SITE } from '../config';
 import { CATEGORY_WORLDS, HOME_CAMPAIGN, HOME_TRENDS } from '../data/merchandising';
 import { BAL_MEDIA } from '../data/balMedia';
@@ -19,7 +18,6 @@ export default function HomePage(): ReactElement {
   const { pick } = useLanguage();
   const { newArrivals, featuredProducts, bestSellers, readyToShipProducts } = useCatalog();
   useCinematicOpening();
-  const reducedMotion = useReducedMotion();
 
   const fresh = newArrivals().slice(0, 8);
   const featured = featuredProducts();
@@ -87,18 +85,6 @@ export default function HomePage(): ReactElement {
             mobileMedia={HOME_CAMPAIGN.mobileMedia}
             loading="lazy"
           />
-          {!reducedMotion ? (
-            <iframe
-              className="s2-bal-video-frame"
-              src={BAL_MEDIA.videos.seasonSixMovement}
-              title="Basketball Africa League Season 6 recap"
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              tabIndex={-1}
-              aria-hidden="true"
-            />
-          ) : null}
         </div>
         <span className="s2-campaign__shade" />
         <div className="s2-campaign__copy">

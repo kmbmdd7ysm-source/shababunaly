@@ -10,7 +10,6 @@ import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { uploadCustomDesignAsset, validateCustomLogo } from '../services/customDesignAssets';
 import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
-import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { BAL_MEDIA } from '../data/balMedia';
 import { SHABABUNA_MEDIA } from '../data/shababunaMedia';
 import { CUSTOM_COLOR_OPTIONS, customColorKey } from '../components/custom/customColors';
@@ -170,7 +169,13 @@ export default function CustomizePage(): ReactElement {
       <main className="cx-page">
         <header className="cx-hero cx-hero--editorial">
           <div className="cx-hero-media" aria-hidden="true">
-            <EditorialMedia desktopVideo={LOCAL_HERO_MEDIA.custom.desktopVideo} mobileVideo={LOCAL_HERO_MEDIA.custom.mobileVideo} loading="eager" />
+            <EditorialMedia
+              desktopMedia={SHABABUNA_MEDIA.images.sadiCustom}
+              mobileMedia={SHABABUNA_MEDIA.images.sadiCustom}
+              desktopVideo={SHABABUNA_MEDIA.videos.sadiShot}
+              mobileVideo={SHABABUNA_MEDIA.videos.sadiShot}
+              loading="eager"
+            />
             <span className="cx-hero-media__shade" />
           </div>
           <div className="cx-hero-copy">
