@@ -7,16 +7,16 @@ import EditorialMedia from '../components/common/EditorialMedia';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { submitPublicQuote } from '../services/publicQuotes';
-import { BAL_MEDIA } from '../data/balMedia';
-import { SHABABUNA_MEDIA } from '../data/shababunaMedia';
+import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
+import { EDITORIAL as E } from '../data/editorialAssets.ts';
 import '../styles/domain-forms.css';
 import '../styles/teams-stories.css';
 
 const SERVICES = [
-  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: SHABABUNA_MEDIA.images.red17Apparel },
-  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: BAL_MEDIA.images.giantsDrive },
-  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: BAL_MEDIA.images.balPuma },
-  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: BAL_MEDIA.images.kigaliArena },
+  { key: 'custom-teamwear', title: { en: 'Uniforms', ar: 'أطقم اللعب' }, copy: { en: 'Custom game jerseys, shorts and full sets.', ar: 'سيريات وشورتات وأطقم لعب مخصصة.' }, image: E.shanghaiPlayers },
+  { key: 'training', title: { en: 'Training', ar: 'التدريب' }, copy: { en: 'Practice gear, shooting shirts and staff wear.', ar: 'ملابس تمرين وقمصان إحماء وملابس الطاقم.' }, image: E.usaWomanCelebrate },
+  { key: 'teamwear', title: { en: 'Teamwear', ar: 'ملابس الفريق' }, copy: { en: 'Hoodies, tracksuits, travel and off-court pieces.', ar: 'هوديز وبدلات سفر وملابس خارج الملعب.' }, image: E.lameloChairA },
+  { key: 'equipment', title: { en: 'Equipment', ar: 'المعدات' }, copy: { en: 'Basketballs, hoops and court equipment.', ar: 'كرات وسلات وتجهيزات الملعب.' }, image: E.jordanDunkEvent },
 ];
 
 export default function TeamsWholesalePage(): ReactElement {
@@ -59,13 +59,11 @@ export default function TeamsWholesalePage(): ReactElement {
       <main className="tw-page">
         <header className="tw-hero">
           <div className="tw-hero-copy"><p>SHABABUNA TEAM</p><h1>{pick({ en: 'Build your program.', ar: 'جهّز فريقك.' })}</h1><span>{pick({ en: 'Uniforms, training, teamwear and equipment — handled through one Shababuna team.', ar: 'أطقم لعب وتدريب وملابس فريق ومعدات — كلها عبر فريق شبابنا.' })}</span><a href="#team-quote" className="btn-primary">{pick({ en: 'Start a team request', ar: 'ابدأ طلب فريق' })}</a></div>
-          <div className="tw-hero-visual">
-            <EditorialMedia
-              desktopMedia={SHABABUNA_MEDIA.images.teamLineup}
-              mobileMedia={SHABABUNA_MEDIA.images.teamLineup}
-              loading="eager"
-            />
-          </div>
+          <div className="tw-hero-visual"><EditorialMedia
+            desktopVideo={LOCAL_HERO_MEDIA.teams.desktopVideo}
+            mobileVideo={LOCAL_HERO_MEDIA.teams.mobileVideo}
+            loading="eager"
+          /></div>
         </header>
 
         <section className="tw-services" aria-labelledby="tw-services-title">
