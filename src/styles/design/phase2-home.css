@@ -105,6 +105,17 @@
 .s2-campaign__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
 .s2-campaign__media img,
 .s2-campaign__media video { object-fit: cover; }
+.s2-bal-video-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 177.778vh);
+  height: max(100%, 56.25vw);
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
+  background: var(--sh-night);
+}
 .s2-campaign__shade { background: linear-gradient(to top, color-mix(in srgb, var(--sh-night) 66%, transparent), var(--sh-black-08) 58%); }
 .s2-campaign__copy { position: absolute; z-index: 2; inset-inline: var(--s2-gutter, 44px); inset-block-end: clamp(44px, 7vw, 94px); max-width: 720px; }
 .s2-campaign__copy h2 { margin: 7px 0 25px; font-size: clamp(2.8rem, 6vw, 6.8rem); line-height: 0.92; letter-spacing: -0.06em; }
