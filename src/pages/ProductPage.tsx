@@ -295,7 +295,6 @@ export default function ProductPage(): ReactElement {
         </ul>
       ),
     },
-    { title: productCopy.shipping, content: <p>{shippingCopy}</p> },
   ].filter((entry): entry is { title: string; content: ReactElement } => Boolean(entry));
 
   const purchasable = !comingSoon && !soldOut && !quoteOnly;
@@ -540,9 +539,9 @@ export default function ProductPage(): ReactElement {
 
             {quoteOnly && !comingSoon ? (
               <div className="pdx-quote">
-                <p>{pick({ en: 'This product is available by confirmed quote. Request the final price and order details before checkout.', ar: 'هذا المنتج متوفر بعرض سعر مؤكد. اطلب السعر النهائي وتفاصيل الطلب قبل إتمام الشراء.' })}</p>
+                <p>{pick({ en: 'Request the final price to place this order.', ar: 'اطلب السعر النهائي لتسجيل الطلب.' })}</p>
                 <Link to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`} className="pdx-add">
-                  {pick({ en: 'Request a quote', ar: 'اطلب عرض سعر' })}
+                  {pick({ en: 'Request price', ar: 'اطلب السعر' })}
                 </Link>
               </div>
             ) : null}
@@ -556,15 +555,17 @@ export default function ProductPage(): ReactElement {
               </div>
             ) : null}
 
-            <div className="pdx-delivery">
-              <strong>{pick({ en: 'Delivery', ar: 'التوصيل' })}</strong>
-              <p>{shippingCopy}</p>
-              {Boolean(product.customizable) ? (
-                <Link to={`/customize?product=${product.slug}`} className="pdx-text-link">
-                  {pick({ en: 'Customize this product', ar: 'خصص هذا المنتج' })}
-                </Link>
-              ) : null}
-            </div>
+            {!comingSoon ? (
+              <div className="pdx-delivery">
+                <strong>{reservationAvailable ? pick({ en: 'Reservation', ar: 'الحجز' }) : pick({ en: 'Delivery', ar: 'التوصيل' })}</strong>
+                <p>{shippingCopy}</p>
+                {Boolean(product.customizable) ? (
+                  <Link to={`/customize?product=${product.slug}`} className="pdx-text-link">
+                    {pick({ en: 'Customize', ar: 'خصصه' })}
+                  </Link>
+                ) : null}
+              </div>
+            ) : null}
 
             <div className="pdx-details">
               {details.map((entry) => (
