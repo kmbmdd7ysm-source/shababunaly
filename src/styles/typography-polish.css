@@ -1,0 +1,310 @@
+/* ==========================================================================
+   SHABABUNA — PUBLIC TYPOGRAPHY POLISH
+   Consistent editorial scale across the public storefront.
+   Big type stays cinematic without becoming oversized, cramped or poster-like.
+   ========================================================================== */
+
+:root {
+  --sha-type-hero: clamp(3rem, 5.7vw, 6.25rem);
+  --sha-type-page: clamp(2.55rem, 4.7vw, 5.2rem);
+  --sha-type-section: clamp(2.05rem, 3.6vw, 3.9rem);
+  --sha-type-card: clamp(1.4rem, 2.15vw, 2.35rem);
+  --sha-type-lead: clamp(1rem, 0.96rem + 0.25vw, 1.18rem);
+  --sha-type-display-leading: 0.98;
+  --sha-type-heading-leading: 1.04;
+  --sha-type-display-tracking: -0.038em;
+  --sha-type-heading-tracking: -0.028em;
+}
+
+/* Hero / opening statements — large, but never giant or crushed. */
+:where(
+  .s2-hero h1,
+  .s2-shop-hero h1,
+  .s2-discover-hero h1,
+  .story-hero-copy h1,
+  .tw-hero-copy h1,
+  .cx-hero-copy h1,
+  .gw-entrance-title,
+  .gw-teams-hero-title,
+  .gw-gate-title,
+  .bf-hero h1
+) {
+  font-size: var(--sha-type-hero) !important;
+  line-height: var(--sha-type-display-leading) !important;
+  letter-spacing: var(--sha-type-display-tracking) !important;
+  text-transform: none !important;
+  text-wrap: balance;
+  max-inline-size: 13ch;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Page titles and product identity. */
+:where(
+  .s2-discover-head h1,
+  .s2-releases-head h1,
+  .s2-plp-head h1,
+  .sb-pagehead__title,
+  .gw-stage-title,
+  .pdx-identity h1,
+  .gw-account-title,
+  .gw-checkout-title,
+  .gw-review-head h1,
+  .gw-terminal-title,
+  .gw-ledger-title,
+  .cc-favorites-title,
+  .cc-cart-title,
+  .cc-cart-empty__title,
+  .gw-request-rail-title,
+  .contact-info h2,
+  .contact-brand-wordmark
+) {
+  font-size: var(--sha-type-page) !important;
+  line-height: 1 !important;
+  letter-spacing: -0.035em !important;
+  text-transform: none !important;
+  text-wrap: balance;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Section titles — clear hierarchy without taking over the whole viewport. */
+:where(
+  .s2-section__head h2,
+  .s2-campaign__copy h2,
+  .s2-split-feature__copy h2,
+  .s2-team-teaser h2,
+  .s2-release-empty h2,
+  .tw-section-head h2,
+  .tw-quote-copy h2,
+  .cx-request h2,
+  .cx-controls h2,
+  .px-section-head h2,
+  .pdx-section-head h2,
+  .gw-continue-title,
+  .gw-teams-title,
+  .gw-lab-title,
+  .gw-toolbench-title,
+  .gw-modulehead-title,
+  .gw-console-title,
+  .gw-matrix-blank-title,
+  .story-cta h2,
+  .sb-content-guide__section h2,
+  .section-title
+) {
+  font-size: var(--sha-type-section) !important;
+  line-height: var(--sha-type-heading-leading) !important;
+  letter-spacing: var(--sha-type-heading-tracking) !important;
+  text-transform: none !important;
+  text-wrap: balance;
+  max-inline-size: 18ch;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Editorial/card titles: readable at a glance, not mini billboards. */
+:where(
+  .s2-editorial-tile__copy strong,
+  .s2-category-world strong,
+  .s2-category-banner strong,
+  .s2-discover-card__copy strong,
+  .story-card h2,
+  .tw-service-card-copy strong,
+  .cx-media-stage__content > strong,
+  .gw-principle-title,
+  .gw-helptopic-title
+) {
+  font-size: var(--sha-type-card) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.025em !important;
+  text-transform: none !important;
+  text-wrap: balance;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Supporting copy gets a consistent retail/editorial rhythm. */
+:where(
+  .s2-hero__content > p,
+  .s2-shop-hero p,
+  .s2-discover-hero p,
+  .s2-team-teaser p,
+  .story-hero-copy > p:last-child,
+  .tw-hero-copy > span,
+  .tw-quote-copy > span,
+  .cx-hero-copy > span,
+  .sb-pagehead__lede,
+  .gw-entrance-copy,
+  .gw-teams-hero-lede,
+  .gw-deck-desc,
+  .px-section-head > p:last-child
+) {
+  font-size: var(--sha-type-lead) !important;
+  line-height: 1.58 !important;
+  letter-spacing: 0 !important;
+  max-inline-size: 54ch;
+  text-wrap: pretty;
+}
+
+/* Small editorial labels stay refined rather than overly tracked. */
+:where(
+  .s2-overline,
+  .s2-hero__eyebrow,
+  .px-eyebrow,
+  .cc-eyebrow,
+  .story-card-meta,
+  .tw-section-head > p,
+  .tw-quote-copy > p,
+  .cx-step,
+  .cx-hero-copy > p,
+  .gw-kicker,
+  .gw-stage-origin,
+  .gw-stage-sku
+) {
+  letter-spacing: 0.065em !important;
+  line-height: 1.4 !important;
+}
+
+/* Arabic has its own optical rhythm: no tracking and more breathing room. */
+html[lang='ar'] #main-content :where(
+  .s2-hero h1,
+  .s2-shop-hero h1,
+  .s2-discover-hero h1,
+  .story-hero-copy h1,
+  .tw-hero-copy h1,
+  .cx-hero-copy h1,
+  .gw-entrance-title,
+  .gw-teams-hero-title,
+  .gw-gate-title,
+  .bf-hero h1,
+  .s2-discover-head h1,
+  .s2-releases-head h1,
+  .s2-plp-head h1,
+  .sb-pagehead__title,
+  .gw-stage-title,
+  .pdx-identity h1,
+  .gw-account-title,
+  .gw-checkout-title,
+  .contact-info h2,
+  .contact-brand-wordmark
+) {
+  letter-spacing: 0 !important;
+  line-height: 1.22 !important;
+  text-transform: none !important;
+}
+
+html[lang='ar'] #main-content :where(
+  .s2-section__head h2,
+  .s2-campaign__copy h2,
+  .s2-split-feature__copy h2,
+  .s2-team-teaser h2,
+  .tw-section-head h2,
+  .tw-quote-copy h2,
+  .cx-request h2,
+  .cx-controls h2,
+  .px-section-head h2,
+  .pdx-section-head h2,
+  .gw-continue-title,
+  .gw-teams-title,
+  .gw-lab-title,
+  .story-cta h2,
+  .sb-content-guide__section h2,
+  .section-title,
+  .s2-editorial-tile__copy strong,
+  .s2-category-world strong,
+  .s2-category-banner strong,
+  .s2-discover-card__copy strong,
+  .story-card h2
+) {
+  letter-spacing: 0 !important;
+  line-height: 1.28 !important;
+  text-transform: none !important;
+}
+
+html[lang='ar'] #main-content :where(
+  .s2-overline,
+  .s2-hero__eyebrow,
+  .px-eyebrow,
+  .cc-eyebrow,
+  .story-card-meta,
+  .tw-section-head > p,
+  .tw-quote-copy > p,
+  .cx-step,
+  .cx-hero-copy > p,
+  .gw-kicker,
+  .gw-stage-origin,
+  .gw-stage-sku
+) {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.55 !important;
+}
+
+/* Keep title blocks from feeling glued to the copy that follows. */
+:where(
+  .s2-section__head,
+  .s2-discover-hero__copy,
+  .s2-shop-hero__copy,
+  .tw-section-head,
+  .tw-quote-copy,
+  .cx-hero-copy,
+  .px-section-head,
+  .story-hero-copy,
+  .sb-pagehead__copy
+) > :where(h1, h2) + :where(p, span) {
+  margin-top: clamp(14px, 1.4vw, 22px) !important;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --sha-type-hero: clamp(2.75rem, 12vw, 4.55rem);
+    --sha-type-page: clamp(2.35rem, 10vw, 4rem);
+    --sha-type-section: clamp(1.95rem, 8.4vw, 3.15rem);
+    --sha-type-card: clamp(1.35rem, 6.5vw, 2.05rem);
+    --sha-type-display-leading: 1;
+    --sha-type-heading-leading: 1.08;
+  }
+
+  :where(
+    .s2-hero h1,
+    .s2-shop-hero h1,
+    .s2-discover-hero h1,
+    .story-hero-copy h1,
+    .tw-hero-copy h1,
+    .cx-hero-copy h1,
+    .gw-entrance-title,
+    .gw-teams-hero-title,
+    .gw-gate-title,
+    .bf-hero h1
+  ) {
+    max-inline-size: 14ch;
+  }
+
+  :where(
+    .s2-discover-head h1,
+    .s2-releases-head h1,
+    .s2-plp-head h1,
+    .sb-pagehead__title,
+    .gw-stage-title,
+    .pdx-identity h1
+  ) {
+    max-inline-size: 16ch;
+  }
+
+  html[lang='ar'] #main-content :where(
+    .s2-hero h1,
+    .s2-shop-hero h1,
+    .s2-discover-hero h1,
+    .story-hero-copy h1,
+    .tw-hero-copy h1,
+    .cx-hero-copy h1,
+    .gw-stage-title,
+    .s2-discover-head h1,
+    .s2-releases-head h1,
+    .s2-plp-head h1,
+    .sb-pagehead__title
+  ) {
+    line-height: 1.25 !important;
+    max-inline-size: 100%;
+  }
+}
