@@ -8,8 +8,4 @@ export const SHABABUNA_MEDIA = {
     championTrophy: `${M}/champion-trophy.webp`,
     red17Apparel: `${M}/red-17-apparel.webp`,
   },
-  videos: {
-    sadiShot: `${M}/sadi-shot-hq.mp4`,
-    sadiDrive: `${M}/sadi-drive-hq.mp4`,
-  },
 } as const;
