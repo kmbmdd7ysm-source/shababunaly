@@ -167,11 +167,13 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
           readyToShip: Boolean(product.readyToShip && (!tracked || maxStock > 0)),
           reservationAvailable: product.reservationAvailable === true,
           deliveryProfile:
-            wholesale || product.reservationAvailable === true
+            wholesale
               ? 'custom'
-              : product.readyToShip
-                ? 'ready'
-                : 'standard',
+              : product.reservationAvailable === true
+                ? 'standard'
+                : product.readyToShip
+                  ? 'ready'
+                  : 'standard',
           unavailable: !purchasable,
           quantity: !purchasable
             ? Number(item.quantity || 1)
