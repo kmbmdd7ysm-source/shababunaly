@@ -10,7 +10,8 @@ import '../styles/teams-stories.css';
 
 const stories = [
   {
-    image: SHABABUNA_MEDIA.images.teamLineup,
+    image: BAL_MEDIA.images.ittihadHuddle,
+    video: undefined,
     category: { en: 'Team identity', ar: 'هوية الفريق' },
     title: { en: 'Build the look. Build the program.', ar: 'ابنِ الشكل. وابنِ البرنامج.' },
     copy: { en: 'A global basketball reference for thinking about uniforms, roster identity and presentation before production.', ar: 'مرجع بصري عالمي لكرة السلة للتفكير في الأطقم وهوية الفريق وطريقة العرض قبل الإنتاج.' },
@@ -18,6 +19,7 @@ const stories = [
   },
   {
     image: BAL_MEDIA.images.giantsDrive,
+    video: SHABABUNA_MEDIA.videos.sadiShot,
     category: { en: 'Performance', ar: 'الأداء' },
     title: { en: 'Shop basketball by how you play.', ar: 'تسوق كرة السلة حسب طريقة لعبك.' },
     copy: { en: 'Performance discovery without invented ratings. Verified data when it exists, honest unknowns when it does not.', ar: 'اكتشاف منتجات الأداء دون تقييمات مختلقة. بيانات موثقة عندما تتوفر ووضوح عندما لا تتوفر.' },
@@ -25,6 +27,7 @@ const stories = [
   },
   {
     image: BAL_MEDIA.images.futureProsGroup,
+    video: undefined,
     category: { en: 'Programs', ar: 'البرامج' },
     title: { en: 'One order. The whole program.', ar: 'طلب واحد. برنامج كامل.' },
     copy: { en: 'Uniforms, training, equipment and club supply organized as one basketball project.', ar: 'أطقم وتدريب ومعدات وتجهيز النادي ضمن مشروع كرة سلة واحد.' },
@@ -32,6 +35,7 @@ const stories = [
   },
   {
     image: SHABABUNA_MEDIA.images.championTrophy,
+    video: undefined,
     category: { en: 'Culture', ar: 'الثقافة' },
     title: { en: 'Beyond the forty minutes.', ar: 'أبعد من الأربعين دقيقة.' },
     copy: { en: 'Travel, recovery and off-court products around the everyday life of basketball.', ar: 'السفر والاستشفاء ومنتجات خارج الملعب حول الحياة اليومية لكرة السلة.' },
@@ -67,7 +71,13 @@ export default function OurWorkPage(): ReactElement {
         <section className="story-grid" aria-label={pick({ en: 'Stories', ar: 'القصص' })}>
           {stories.map((story) => (
             <Link className="story-card" to={story.to} key={story.title.en}>
-              <div className="story-card-media"><SmartImage src={story.image} alt="" width={1000} height={1250} /></div>
+              <div className="story-card-media">
+                {story.video ? (
+                  <video src={story.video} autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
+                ) : (
+                  <SmartImage src={story.image} alt="" width={1000} height={1250} />
+                )}
+              </div>
               <div className="story-card-meta"><span>{pick(story.category)}</span><span>{pick({ en: 'Editorial reference', ar: 'مرجع بصري' })}</span></div>
               <h2>{pick(story.title)}</h2>
               <p>{pick(story.copy)}</p>
