@@ -19,6 +19,7 @@ type ProductLike = {
   wholesalePrice?: number | null;
   colors?: Array<{ key?: string; hex?: string; name?: unknown; image?: string }>;
   readyToShip?: boolean;
+  reservationAvailable?: boolean;
   customizable?: boolean;
   madeInUSA?: boolean;
   claimVerified?: boolean;
@@ -51,7 +52,7 @@ export default function QuickAddSheet({
   onClose,
 }: QuickAddSheetProps): ReactElement | null {
   const product = productInput as ProductLike;
-  const { pick, lang } = useLanguage();
+  const { pick } = useLanguage();
   const { addItem } = useCart();
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -146,13 +147,14 @@ export default function QuickAddSheet({
       quantity: 1,
       purchaseMode: 'retail',
       readyToShip: product.readyToShip === true && selected.readyToShip !== false,
+      reservationAvailable: product.reservationAvailable === true,
       customizable: product.customizable === true,
       madeInUSA:
         product.madeInUSA === true &&
         product.claimVerified === true &&
         Boolean(product.claimEvidenceReference),
       largeEquipment: product.largeEquipment === true,
-      deliveryProfile: product.readyToShip ? 'ready' : 'standard',
+      deliveryProfile: product.reservationAvailable === true ? 'custom' : product.readyToShip ? 'ready' : 'standard',
     });
     window.setTimeout(() => {
       setStatus('added');
@@ -178,7 +180,7 @@ export default function QuickAddSheet({
       >
         <div className="gw-quick-sheet-head">
           <div>
-            <p className="gw-spec">{pick({ en: 'Quick add', ar: 'إضافة سريعة' })}</p>
+            <p className="gw-spec">{product.reservationAvailable === true ? pick({ en: 'Reservation order', ar: 'طلب بالحجز' }) : pick({ en: 'Quick add', ar: 'إضافة سريعة' })}</p>
             <h2 id={titleId}>{pick(product.name as { en?: string; ar?: string })}</h2>
           </div>
           <button
@@ -247,14 +249,12 @@ export default function QuickAddSheet({
               ? pick({ en: 'Adding…', ar: 'جاري الإضافة…' })
               : status === 'added'
                 ? pick({ en: 'Added', ar: 'تمت الإضافة' })
-                : pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
+                : product.reservationAvailable === true
+                  ? pick({ en: 'Order by reservation', ar: 'اطلب بالحجز' })
+                  : pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
           </button>
         </div>
-        <p className="gw-quick-sheet-note">
-          {lang === 'ar'
-            ? 'تُحفظ الاختيارات في الحقيبة ويمكن تعديلها لاحقًا.'
-            : 'Selections save to your bag and can be adjusted later.'}
-        </p>
+
       </div>
     </div>
   );
