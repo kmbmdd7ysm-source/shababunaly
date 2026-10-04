@@ -1,7 +1,7 @@
 /** Runtime hero media — supplied originals, self-hosted without re-encoding. */
 const entry = (desktopVideo: string, mobileVideo = desktopVideo) => ({ desktopVideo, mobileVideo });
 export const LOCAL_HERO_MEDIA = {
-  home: entry('/media/hero-videos/home-desktop.mp4','/media/hero-videos/home-mobile.mp4'),
+  home: entry('/media/hero-videos/home.mp4','/media/hero-videos/home-mobile.mp4'),
   shop: entry('/media/hero-videos/shop.mp4'),
   footwear: entry('/media/hero-videos/footwear.mp4'),
   clothing: entry('/media/hero-videos/clothing.mp4'),
