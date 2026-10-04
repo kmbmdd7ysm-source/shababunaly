@@ -19,7 +19,7 @@ export default function CartDrawer(): ReactElement | null {
   const a11y = (t.a11y || {}) as Record<string, string>;
   const common = (t.common || {}) as Record<string, string>;
   const { format, usdToLydRate, countryCode } = useCommerce();
-  const { readyToShipProducts } = useCatalog();
+  const { readyToShipProducts, getProduct } = useCatalog();
   const hasReadyToShip = readyToShipProducts().length > 0;
   const {
     items,
@@ -153,7 +153,21 @@ export default function CartDrawer(): ReactElement | null {
               </div>
             ) : null}
             <ul className="cart-drawer-items">
-              {items.map((item) => (
+              {items.map((item) => {
+                const product =
+                  item.type === 'product' && item.slug ? getProduct(String(item.slug)) : null;
+                const colorLabel =
+                  item.color && product
+                    ? pick(
+                        ((Array.isArray(product.colors) ? product.colors : []).find(
+                          (entry) => entry.key === item.color,
+                        )?.name as { en?: string; ar?: string } | undefined) || {
+                          en: String(item.color),
+                          ar: String(item.color),
+                        },
+                      )
+                    : String(item.color || '');
+                return (
                 <li key={item.key} className="cart-line">
                   <Link to={item.href || '#'} className="cart-line-media" onClick={closeDrawer}>
                     <SmartImage src={String(item.image || '')} alt={pick(item.name as { en?: string; ar?: string })} />
@@ -163,7 +177,13 @@ export default function CartDrawer(): ReactElement | null {
                       {pick(item.name as { en?: string; ar?: string })}
                     </Link>
                     {item.reservationAvailable === true ? (
-                      <span className="cart-line-type">{pick({ en: 'Reservation', ar: 'حجز' })}</span>
+                      <span className="cart-line-type is-reservation">
+                        {pick({ en: 'Reservation · 14–18 days', ar: 'حجز · 14–18 يومًا' })}
+                      </span>
+                    ) : item.type === 'product' && item.readyToShip === true ? (
+                      <span className="cart-line-type is-ready">
+                        {pick({ en: 'Ready to ship · 24–72h', ar: 'تسليم فوري · 24–72 ساعة' })}
+                      </span>
                     ) : typeLabel(item.type) ? (
                       <span className="cart-line-type">{typeLabel(item.type)}</span>
                     ) : null}
@@ -174,7 +194,7 @@ export default function CartDrawer(): ReactElement | null {
                     ) : null}
                     {item.color ? (
                       <span className="cart-line-variant">
-                        {common.color}: {String(item.color)}
+                        {common.color}: {colorLabel}
                       </span>
                     ) : null}
                     <div className="cart-line-controls">
@@ -197,7 +217,8 @@ export default function CartDrawer(): ReactElement | null {
                     {format(Number(item.price || 0) * Number(item.quantity || 0), lang)}
                   </span>
                 </li>
-              ))}
+                );
+              })}
             </ul>
 
             <div className="cart-drawer-foot">
@@ -205,7 +226,19 @@ export default function CartDrawer(): ReactElement | null {
                 <span>{cartCopy.subtotal}</span>
                 <strong dir="ltr">{format(subtotal, lang)}</strong>
               </div>
-              <p className="cart-shipping-note">{cartCopy.shippingCalc}</p>
+              <p className="cart-shipping-note">
+                {items.some((item) => item.reservationAvailable === true)
+                  ? pick({
+                      en: 'Reservation items: estimated 14–18 days after confirmation.',
+                      ar: 'منتجات الحجز: المدة المتوقعة 14–18 يومًا بعد التأكيد.',
+                    })
+                  : items.some((item) => item.readyToShip === true)
+                    ? pick({
+                        en: 'Ready-to-ship delivery in Libya: 24–72 hours.',
+                        ar: 'التسليم الفوري داخل ليبيا خلال 24–72 ساعة.',
+                      })
+                    : cartCopy.shippingCalc}
+              </p>
               <button
                 type="button"
                 className="btn-primary block"
