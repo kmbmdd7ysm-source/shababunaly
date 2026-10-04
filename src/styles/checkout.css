@@ -298,3 +298,68 @@
 .gw-checkout-steps .field-check input{inline-size:18px;block-size:18px;margin:2px 0 0;accent-color:var(--sh-ink)}
 [dir='rtl'] .gw-checkout-steps .payment-choice,[dir='rtl'] .gw-checkout-steps .field-check{grid-template-columns:20px minmax(0,1fr)}
 @media(max-width:640px){.gw-checkout-steps .payment-choice{padding:14px;min-block-size:68px}.gw-checkout-steps .payment-plan-grid{grid-template-columns:1fr!important}.gw-checkout-steps .payment-plan-grid label{min-height:96px!important;padding:16px!important}}
+
+
+/* Libya manual payment choices: one professional decision surface. */
+.gw-checkout-steps .payment-methods{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.gw-checkout-steps .payment-methods>legend{
+  grid-column:1/-1!important;
+}
+.gw-checkout-steps .payment-choice{
+  margin:0!important;
+  min-height:96px!important;
+  padding:17px!important;
+  border-radius:12px!important;
+  background:#fff!important;
+}
+.gw-checkout-steps .payment-choice.active{
+  border-color:#111!important;
+  box-shadow:inset 0 0 0 1px #111!important;
+  background:#f9f8f5!important;
+}
+.gw-checkout-steps .payment-plan{
+  margin-top:14px!important;
+}
+.gw-checkout-steps .payment-plan-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.gw-checkout-steps .payment-plan-grid label{
+  min-height:112px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:6px!important;
+  padding:16px 18px!important;
+  border:1px solid var(--sh-rule-strong)!important;
+  border-radius:12px!important;
+  background:#fff!important;
+}
+.gw-checkout-steps .payment-plan-grid label.active{
+  border-color:#111!important;
+  box-shadow:inset 0 0 0 1px #111!important;
+  background:#f9f8f5!important;
+}
+.gw-checkout-steps .payment-plan-grid label strong{
+  font-size:1.55rem!important;
+  line-height:1!important;
+  letter-spacing:-.04em!important;
+}
+.checkout-context-card{
+  border-radius:12px!important;
+  background:#f4f3ef!important;
+}
+.payment-balance-card{
+  border-radius:12px!important;
+}
+@media(max-width:680px){
+  .gw-checkout-steps .payment-methods,
+  .gw-checkout-steps .payment-plan-grid{
+    grid-template-columns:1fr!important;
+  }
+}
