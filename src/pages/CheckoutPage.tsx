@@ -138,8 +138,12 @@ export default function CheckoutPage(): ReactElement {
     : '';
   const addressRequirements = getAddressRequirements(shippingCountryCode);
   const isLibya = shippingCountryCode === 'LY';
+  const hasReservation = items.some((item) => item.reservationAvailable === true);
   const stagedOrder = items.some(
-    (item) => item.purchaseMode === 'wholesale' || item.deliveryProfile === 'custom',
+    (item) =>
+      item.purchaseMode === 'wholesale' ||
+      item.deliveryProfile === 'custom' ||
+      item.reservationAvailable === true,
   );
   const largeEquipment = items.some((item) => item.largeEquipment);
   const allReady =
@@ -854,6 +858,8 @@ export default function CheckoutPage(): ReactElement {
                         ? pick({ en: 'Shipping quote required', ar: 'يحتاج تسعير الشحن' })
                         : deliveryProfile === 'ready'
                           ? pick({ en: 'Ready for delivery', ar: 'جاهز للتسليم' })
+                          : hasReservation
+                          ? pick({ en: 'Reservation order', ar: 'طلب بالحجز' })
                           : stagedOrder
                             ? pick({ en: 'Made to order', ar: 'تصنيع حسب الطلب' })
                             : pick({ en: 'Delivery', ar: 'التوصيل' })}
@@ -864,16 +870,21 @@ export default function CheckoutPage(): ReactElement {
                             en: 'Place the order now. We confirm the shipping price before collecting payment.',
                             ar: 'أرسل الطلب الآن. نؤكد سعر الشحن قبل تحصيل أي دفع.',
                           })
-                        : stagedOrder
-                          ? paymentMethod === 'cash' && cashPlan === 'full'
-                            ? pick({
-                                en: 'Payment follows the confirmed order terms; production starts only after approval.',
-                                ar: 'يتم الدفع حسب شروط الطلب المؤكدة، ولا يبدأ الإنتاج إلا بعد الاعتماد.',
-                              })
-                            : pick({
-                                en: 'The required deposit and remaining balance follow the approved quote for this order.',
-                                ar: 'تتبع الدفعة المطلوبة والرصيد المتبقي عرض السعر المعتمد لهذا الطلب.',
-                              })
+                        : hasReservation
+                          ? pick({
+                              en: 'Place the order now. Shababuna confirms availability and the final delivery timing.',
+                              ar: 'أرسل الطلب الآن. يؤكد شبابنا التوفر وموعد التسليم النهائي.',
+                            })
+                          : stagedOrder
+                            ? paymentMethod === 'cash' && cashPlan === 'full'
+                              ? pick({
+                                  en: 'Payment follows the confirmed order terms; production starts only after approval.',
+                                  ar: 'يتم الدفع حسب شروط الطلب المؤكدة، ولا يبدأ الإنتاج إلا بعد الاعتماد.',
+                                })
+                              : pick({
+                                  en: 'The required deposit and remaining balance follow the approved quote for this order.',
+                                  ar: 'تتبع الدفعة المطلوبة والرصيد المتبقي عرض السعر المعتمد لهذا الطلب.',
+                                })
                           : pick(deliveryCopy)}
                     </small>
                   </span>
@@ -969,7 +980,9 @@ export default function CheckoutPage(): ReactElement {
                         {item.size && item.size !== 'OS' ? (
                           <small>{String(item.size)}</small>
                         ) : null}
-                        {item.purchaseMode === 'wholesale' ? (
+                        {item.reservationAvailable === true ? (
+                          <small>{pick({ en: 'Reservation', ar: 'حجز' })}</small>
+                        ) : item.purchaseMode === 'wholesale' ? (
                           <small>{pick({ en: 'Wholesale', ar: 'جملة' })}</small>
                         ) : null}
                       </div>
