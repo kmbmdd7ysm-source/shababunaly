@@ -42,6 +42,7 @@ import './styles/customer-experience.css';
 import './styles/arabic-hardening.css';
 import './styles/icon-hardening.css';
 import './styles/form-control-luxury.css';
+import './styles/typography-polish.css';
 
 installGlobalErrorMonitoring();
 
