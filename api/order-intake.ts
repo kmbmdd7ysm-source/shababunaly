@@ -8,7 +8,7 @@ type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) =
 const clean = (value: unknown, max = 5000) => String(value ?? '').trim().replace(/\0/g, '').slice(0, max);
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const METHODS = new Set(['cash_on_delivery','cash','online','online_card','libyan_bank_card']);
+const METHODS = new Set(['cash_on_delivery','cash','bank_transfer','online','online_card','libyan_bank_card']);
 const CENTER_VISION_API = (process.env.CENTER_VISION_API_BASE_URL || 'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api').replace(/\/$/, '');
 
 async function fallbackCenterVisionInquiry(input: {
@@ -126,20 +126,47 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       // an order when the production catalogue is already current.
     }
 
-    const result = await supabaseAdminRequest('/rest/v1/rpc/create_order_transactional', {
-      method: 'POST',
-      body: JSON.stringify({
-        p_user_id: user?.id || null,
-        p_customer_email: trustedEmail,
-        p_currency: 'USD',
-        p_payment_method: paymentMethod,
-        p_idempotency_key: idempotencyKey,
-        p_shipping: shipping,
-        p_items: items,
-      }),
-    }) as Record<string, unknown>;
+    const rpcShipping = {
+      ...shipping,
+      ...(paymentMethod === 'bank_transfer' ? { manualPaymentMethod: 'bank_transfer' } : {}),
+    };
+    const callTrustedOrder = (method: string) =>
+      supabaseAdminRequest('/rest/v1/rpc/create_order_transactional', {
+        method: 'POST',
+        body: JSON.stringify({
+          p_user_id: user?.id || null,
+          p_customer_email: trustedEmail,
+          p_currency: 'USD',
+          p_payment_method: method,
+          p_idempotency_key: idempotencyKey,
+          p_shipping: rpcShipping,
+          p_items: items,
+        }),
+      }) as Promise<Record<string, unknown>>;
+
+    let result: Record<string, unknown>;
+    try {
+      result = await callTrustedOrder(paymentMethod);
+    } catch (error) {
+      // Production may still be on the previous payment-method DB constraint.
+      // Bank transfer is a manual Libya payment, so it is transactionally
+      // equivalent to cash while the exact channel is preserved in shipping
+      // metadata and the API response/Center Vision mirror.
+      if (paymentMethod !== 'bank_transfer') throw error;
+      result = await callTrustedOrder('cash');
+    }
+
     const order = result?.order && typeof result.order === 'object' ? result.order as Record<string, unknown> : null;
     if (!order?.order_number) throw new Error('order_create_failed');
+    if (paymentMethod === 'bank_transfer') {
+      order.payment_method = 'bank_transfer';
+      order.shipping_summary = {
+        ...((order.shipping_summary && typeof order.shipping_summary === 'object'
+          ? order.shipping_summary
+          : {}) as Record<string, unknown>),
+        manualPaymentMethod: 'bank_transfer',
+      };
+    }
 
     // Email is sent server-side immediately after the trusted transaction. The
     // checkout can close and the notification does not depend on browser state.
