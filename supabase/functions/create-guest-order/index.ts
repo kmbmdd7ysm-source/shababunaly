@@ -4,6 +4,7 @@ const MAX_BYTES = 64_000;
 const ALLOWED_METHODS = new Set([
   'cash_on_delivery',
   'cash',
+  'bank_transfer',
   'online',
   'online_card',
   'libyan_bank_card',
@@ -78,13 +79,16 @@ Deno.serve(async (request) => {
   if (limitError) return json({ error: 'service_unavailable' }, 503);
   if (!allowed) return json({ error: 'too_many_requests' }, 429);
 
+  const manualTransfer = body.paymentMethod === 'bank_transfer';
   const { data, error } = await admin.rpc('create_order_transactional', {
     p_user_id: null,
     p_customer_email: email,
     p_currency: 'USD',
-    p_payment_method: body.paymentMethod,
+    p_payment_method: manualTransfer ? 'cash' : body.paymentMethod,
     p_idempotency_key: body.idempotencyKey,
-    p_shipping: shipping,
+    p_shipping: manualTransfer
+      ? { ...shipping, manualPaymentMethod: 'bank_transfer' }
+      : shipping,
     p_items: body.items.map((item: any) => ({
       productId: item.productId,
       variantId: item.variantId,
@@ -101,6 +105,13 @@ Deno.serve(async (request) => {
     )
       return json({ error: 'invalid_order' }, 400);
     return json({ error: 'order_service_unavailable' }, 503);
+  }
+  if (manualTransfer && data?.order) {
+    data.order.payment_method = 'bank_transfer';
+    data.order.shipping_summary = {
+      ...(data.order.shipping_summary || {}),
+      manualPaymentMethod: 'bank_transfer',
+    };
   }
   return json(data, data?.duplicate ? 200 : 201);
 });
