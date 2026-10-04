@@ -7,6 +7,7 @@ import ProductCard from '../components/shop/ProductCard';
 import { useLanguage } from '../context/LanguageContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useCinematicOpening } from '../hooks/useCinematicOpening';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { SITE } from '../config';
 import { CATEGORY_WORLDS, HOME_CAMPAIGN, HOME_TRENDS } from '../data/merchandising';
 import { BAL_MEDIA } from '../data/balMedia';
@@ -18,6 +19,7 @@ export default function HomePage(): ReactElement {
   const { pick } = useLanguage();
   const { newArrivals, featuredProducts, bestSellers, readyToShipProducts } = useCatalog();
   useCinematicOpening();
+  const reducedMotion = useReducedMotion();
 
   const fresh = newArrivals().slice(0, 8);
   const featured = featuredProducts();
@@ -51,6 +53,8 @@ export default function HomePage(): ReactElement {
               <EditorialMedia
                 desktopMedia={world.desktopMedia}
                 mobileMedia={world.mobileMedia}
+                desktopVideo={world.desktopVideo}
+                mobileVideo={world.mobileVideo}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
               <span className="s2-editorial-tile__shade" />
@@ -85,6 +89,18 @@ export default function HomePage(): ReactElement {
             mobileMedia={HOME_CAMPAIGN.mobileMedia}
             loading="lazy"
           />
+          {!reducedMotion ? (
+            <iframe
+              className="s2-bal-video-frame"
+              src={BAL_MEDIA.videos.seasonSixMovement}
+              title="Basketball Africa League movement film"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              tabIndex={-1}
+              aria-hidden="true"
+            />
+          ) : null}
         </div>
         <span className="s2-campaign__shade" />
         <div className="s2-campaign__copy">
@@ -103,7 +119,7 @@ export default function HomePage(): ReactElement {
         </div>
         <div className="s2-category-strip">
           {CATEGORY_WORLDS.map((world) => (
-            <Link key={world.slug} to={world.to} className="s2-category-world">
+            <Link key={world.slug} to={world.to} className={`s2-category-world s2-category-world--${world.slug}`}>
               <EditorialMedia
                 desktopMedia={world.desktopMedia}
                 mobileMedia={world.mobileMedia}
@@ -166,11 +182,11 @@ export default function HomePage(): ReactElement {
         </div>
         <div className="s2-story-pair s2-container">
           <Link to="/stories" className="s2-story-card">
-            <img src={BAL_MEDIA.images.futureProsSession} alt="" width="1400" height="900" loading="lazy" />
-            <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'Inside the game', ar: 'داخل اللعبة' })}</strong></span>
+            <img src={SHABABUNA_MEDIA.images.libyaCelebration} alt="" width="1400" height="900" loading="lazy" />
+            <span><small>{pick({ en: 'Basketball', ar: 'كرة السلة' })}</small><strong>{pick({ en: 'What the game feels like', ar: 'إحساس اللعبة' })}</strong></span>
           </Link>
           <Link to="/stories" className="s2-story-card">
-            <img src={BAL_MEDIA.images.clubAfricainVsDakar} alt="" width="1400" height="900" loading="lazy" />
+            <img src={BAL_MEDIA.images.futureProsSession} alt="" width="1400" height="900" loading="lazy" />
             <span><small>{pick({ en: 'Basketball culture', ar: 'ثقافة كرة السلة' })}</small><strong>{pick({ en: 'Beyond the game', ar: 'أبعد من اللعبة' })}</strong></span>
           </Link>
         </div>
@@ -178,8 +194,8 @@ export default function HomePage(): ReactElement {
 
       <section className="s2-team-teaser" aria-labelledby="s2-team-teaser-title">
         <picture className="s2-team-teaser__media" aria-hidden="true">
-          <source media="(max-width: 700px)" srcSet={BAL_MEDIA.images.riversDunk} />
-          <img src={BAL_MEDIA.images.riversTeam} alt="" width="1600" height="1000" loading="lazy" />
+          <source media="(max-width: 700px)" srcSet={SHABABUNA_MEDIA.images.teamLineup} />
+          <img src={SHABABUNA_MEDIA.images.teamLineup} alt="" width="1440" height="1800" loading="lazy" />
         </picture>
         <span className="s2-team-teaser__shade" />
         <div className="s2-team-teaser__copy">
