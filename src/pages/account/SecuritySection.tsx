@@ -76,6 +76,18 @@ export default function SecuritySection({
 
   return (
     <div className="security-stack">
+      <div className="account-section-heading">
+        <div>
+          <p className="section-label">{pick({ en: 'Security', ar: 'الأمان' })}</p>
+          <h2>{pick({ en: 'Security & privacy', ar: 'الأمان والخصوصية' })}</h2>
+          <p>
+            {pick({
+              en: 'Manage your password, account protection and privacy controls.',
+              ar: 'أدر كلمة المرور وحماية الحساب وخيارات الخصوصية.',
+            })}
+          </p>
+        </div>
+      </div>
       <form
         onSubmit={(event) => {
           void change(event);
