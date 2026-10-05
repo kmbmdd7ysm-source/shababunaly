@@ -282,8 +282,9 @@ export default function Icon({
   strokeWidth?: number;
   className?: string;
 }): ReactElement | null {
-  if (!name || !(name in paths)) return null;
-  const icon = paths[name as keyof typeof paths];
+  if (!name) return null;
+  const resolvedName = name in paths ? name : 'grid';
+  const icon = paths[resolvedName as keyof typeof paths];
   return (
     <svg
       className={`sh-icon ${className}`.trim()}
@@ -297,7 +298,7 @@ export default function Icon({
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
-      data-icon={name}
+      data-icon={resolvedName}
     >
       {icon}
     </svg>
