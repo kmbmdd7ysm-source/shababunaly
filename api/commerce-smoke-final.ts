@@ -24,11 +24,6 @@ type ApiRes = {
   status: (code: number) => { json: (body: unknown) => unknown };
 };
 
-const CENTER_VISION_API = (
-  process.env.CENTER_VISION_API_BASE_URL ||
-  'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api'
-).replace(/\/$/, '');
-
 export default async function handler(req: ApiReq, res: ApiRes) {
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   if (req.method !== 'GET') {
@@ -84,12 +79,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     });
     const guest = verifyGuestOrderToken(guestToken, orderNumber);
 
-    const liveResponse = await fetch(`${CENTER_VISION_API}/v1/health/live`, {
-      headers: { Accept: 'application/json' },
-      signal: AbortSignal.timeout(12_000),
-    });
-    const liveBody = await liveResponse.json().catch(() => ({}));
-
     const checks = {
       nativeOrderCreated: Boolean(created.order?.order_number),
       blobOrderRead: direct?.order_number === orderNumber,
@@ -97,14 +86,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       guestLookupToken:
         Boolean(guest) &&
         guest?.orderNumber === orderNumber,
-      centerVisionLive:
-        liveResponse.ok &&
-        Boolean(
-          liveBody &&
-          typeof liveBody === 'object' &&
-          'status' in liveBody &&
-          (liveBody as { status?: unknown }).status === 'ok',
-        ),
     };
 
     const allPassed = Object.values(checks).every(Boolean);
@@ -119,7 +100,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         paymentStatus: created.order.payment_status,
         orderStatus: created.order.order_status,
       },
-      centerVision: liveBody,
       cleanupScheduled: true,
     });
   } catch (error: unknown) {
