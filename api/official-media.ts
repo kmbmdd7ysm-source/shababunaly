@@ -158,7 +158,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   if (req.method === 'HEAD') return res.status(204).end();
 
   if (isDirect) {
-    const asset = DIRECT_SOURCES[source as keyof typeof DIRECT_SOURCES];
+    const asset: DirectSource = DIRECT_SOURCES[source as keyof typeof DIRECT_SOURCES];
     return json(res, 200, {
       ok: true,
       source,
