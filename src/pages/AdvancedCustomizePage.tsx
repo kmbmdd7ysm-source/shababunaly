@@ -608,8 +608,8 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
   return (
     <>
       <Seo
-        title="Customize"
-        description="Professional online basketball uniform and team-product design studio by Shababuna."
+        title={pick({ en: 'Customize', ar: 'التصميم المخصص' })}
+        description={pick({ en: 'Professional online basketball uniform and team-product design studio by Shababuna.', ar: 'استوديو شبابنا الاحترافي لتصميم أطقم كرة السلة ومنتجات الفرق عبر الإنترنت.' })}
         path="/customize"
       />
       {/* ================================================================
@@ -805,9 +805,9 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                       value={String(design.variant ?? '')}
                       onChange={(event) => setDesignValue('variant', event.target.value)}
                     >
-                      <option value="home">Home</option>
-                      <option value="away">Away</option>
-                      <option value="third">Third</option>
+                      <option value="home">{pick({ en: 'Home', ar: 'الأساسي' })}</option>
+                      <option value="away">{pick({ en: 'Away', ar: 'الاحتياطي' })}</option>
+                      <option value="third">{pick({ en: 'Third', ar: 'الثالث' })}</option>
                     </select>
                   </label>
                   <label>
@@ -1106,7 +1106,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                         <th>{pick({ en: 'Jersey', ar: 'السيريا' })}</th>
                         <th>{pick({ en: 'Shorts', ar: 'الشورت' })}</th>
                         <th>
-                          <span className="sr-only">Actions</span>
+                          <span className="sr-only">{pick({ en: 'Actions', ar: 'الإجراءات' })}</span>
                         </th>
                       </tr>
                     </thead>
@@ -1225,7 +1225,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
 
 {step === 'review' && (
               <section aria-labelledby="custom-review-title">
-                <p className="section-label">04 — REVIEW</p>
+                <p className="section-label">{pick({ en: '04 — REVIEW', ar: '04 — المراجعة' })}</p>
                 <h2 id="custom-review-title" className="section-title">
                   {pick({ en: 'Production review request', ar: 'طلب مراجعة الإنتاج' })}
                 </h2>
@@ -1300,7 +1300,7 @@ ${design.notes || ''}`.trim() || `${selected.label.en} customization`,
                   </div>
                   <div className="field-row">
                     <label className="field">
-                      <span>Email</span>
+                      <span>{pick({ en: 'Email', ar: 'البريد الإلكتروني' })}</span>
                       <input
                         required
                         type="email"
