@@ -413,7 +413,7 @@ export default function AccountPage(): ReactElement {
             capability list the account itself exposes, so it makes no promise
             the product does not keep. The form panel holds nothing but the
             task. */}
-        <div className="gw-gatewall">
+        <div className="gw-gatewall sb-auth-shell">
           <aside className="gw-gatewall-identity">
             <img
               className="gw-gatewall-mark"
@@ -450,7 +450,7 @@ export default function AccountPage(): ReactElement {
           </aside>
           <section className="gw-gate">
             <form
-              className="gw-gate-form"
+              className="gw-gate-form sb-auth-form"
               onSubmit={(event) => {
                 void submit(event);
               }}
@@ -477,14 +477,6 @@ export default function AccountPage(): ReactElement {
                           : 'تسجيل الدخول',
                 })}
               </h1>
-              {!auth.configured && (
-                <p className="form-notice">
-                  {pick({
-                    en: 'Accounts created here are currently saved on this device.',
-                    ar: 'الحسابات التي تنشئها هنا محفوظة حاليًا على هذا الجهاز.',
-                  })}
-                </p>
-              )}
               {mode === 'signup' && (
                 <>
                   <fieldset className="account-type-choice">
@@ -565,39 +557,52 @@ export default function AccountPage(): ReactElement {
                       onChange={(e) => setFullName(e.target.value)}
                     />
                   </label>
-                  <label>
-                    {pick({ en: 'Profile photo (optional)', ar: 'الصورة الشخصية (اختيارية)' })}
-                    <input
-                      ref={photoRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        void (async () => {
-                        const f = e.target.files?.[0];
-                        if (!f) return;
-                        const result = await validateProfileImage(f);
-                        if (!result.valid) {
-                          const message =
-                            result.reason === 'signature'
-                              ? pick({
-                                  en: 'This file is not a valid image.',
-                                  ar: 'هذا الملف ليس صورة صالحة.',
-                                })
-                              : pick({
-                                  en: 'Choose a JPG, PNG, or WebP image.',
-                                  ar: 'اختر صورة بصيغة JPG أو PNG أو WebP.',
-                                });
-                          setMsg(message);
-                          e.target.value = '';
-                          focusField(photoRef);
-                          return;
-                        }
-                        if (photoPreview) URL.revokeObjectURL(photoPreview);
-                        setPhotoPreview(URL.createObjectURL(f));
-                        setMsg('');
-                        })();
-                      }}
-                    />
+                  <label className="sb-auth-photo-field">
+                    <span className="sb-auth-label">
+                      {pick({ en: 'Profile photo (optional)', ar: 'الصورة الشخصية (اختيارية)' })}
+                    </span>
+                    <span className="sb-photo-upload">
+                      <input
+                        ref={photoRef}
+                        className="sb-photo-upload__input"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          void (async () => {
+                          const f = e.target.files?.[0];
+                          if (!f) return;
+                          const result = await validateProfileImage(f);
+                          if (!result.valid) {
+                            const message =
+                              result.reason === 'signature'
+                                ? pick({
+                                    en: 'This file is not a valid image.',
+                                    ar: 'هذا الملف ليس صورة صالحة.',
+                                  })
+                                : pick({
+                                    en: 'Choose a JPG, PNG, or WebP image.',
+                                    ar: 'اختر صورة بصيغة JPG أو PNG أو WebP.',
+                                  });
+                            setMsg(message);
+                            e.target.value = '';
+                            focusField(photoRef);
+                            return;
+                          }
+                          if (photoPreview) URL.revokeObjectURL(photoPreview);
+                          setPhotoPreview(URL.createObjectURL(f));
+                          setMsg('');
+                          })();
+                        }}
+                      />
+                      <span className="sb-photo-upload__button">
+                        {pick({ en: 'Choose photo', ar: 'اختر صورة' })}
+                      </span>
+                      <span className="sb-photo-upload__meta">
+                        {photoPreview
+                          ? pick({ en: 'Photo selected', ar: 'تم اختيار الصورة' })
+                          : pick({ en: 'JPG, PNG or WebP', ar: 'JPG أو PNG أو WebP' })}
+                      </span>
+                    </span>
                   </label>
                   {photoPreview && (
                     <div className="profile-photo-preview">
