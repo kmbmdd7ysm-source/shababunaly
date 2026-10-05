@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateReturnRequest, recordRefund } from '../../services/operations';
-import { RETURN_TRANSITIONS } from './commerceHelpers';
+import { RETURN_TRANSITIONS, workflowLabel } from './commerceHelpers';
 import type { OperationsRunFn } from '../../types/operations';
 
 export function ReturnOperationsCard({
@@ -40,7 +40,7 @@ export function ReturnOperationsCard({
     <article className="operations-card return-operations-card">
       <div>
         <span>{String(request.return_number ?? '')}</span>
-        <strong>{String(request.status ?? '')}</strong>
+        <strong>{workflowLabel(request.status, pick)}</strong>
       </div>
       <p>
         {String(request.order_number ?? '')} · {String(request.customer_email ?? '')}
@@ -60,7 +60,7 @@ export function ReturnOperationsCard({
         <span>{pick({ en: 'Next return status', ar: 'حالة الإرجاع التالية' })}</span>
         <select value={String(status)} onChange={(event) => setStatus(event.target.value)}>
           {transitions.map((value) => (
-            <option key={value}>{value}</option>
+            <option key={value} value={value}>{workflowLabel(value, pick)}</option>
           ))}
         </select>
       </label>
@@ -70,10 +70,10 @@ export function ReturnOperationsCard({
           value={String(resolution ?? '')}
           onChange={(event) => setResolution(event.target.value)}
         >
-          <option value="refund">Refund</option>
-          <option value="replacement">Replacement</option>
-          <option value="store_credit">Store Credit</option>
-          <option value="no_action">No Action</option>
+          <option value="refund">{pick({ en: 'Refund', ar: 'استرداد' })}</option>
+          <option value="replacement">{pick({ en: 'Replacement', ar: 'استبدال' })}</option>
+          <option value="store_credit">{pick({ en: 'Store Credit', ar: 'رصيد متجر' })}</option>
+          <option value="no_action">{pick({ en: 'No Action', ar: 'بدون إجراء' })}</option>
         </select>
       </label>
       <textarea
