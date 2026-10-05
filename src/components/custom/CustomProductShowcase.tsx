@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import { EDITORIAL as E } from '../../data/editorialAssets';
 import { customColorKey } from './customColors';
 
@@ -29,6 +30,7 @@ const STAGE_MEDIA: Record<string, string> = {
 };
 
 export default function CustomProductShowcase(props: Props): ReactElement {
+  const { pick, lang } = useLanguage();
   const bodyKey = customColorKey(props.bodyColor);
   const trimKey = customColorKey(props.trimColor);
   const media = STAGE_MEDIA[props.productType] || E.shanghaiPlayers;
@@ -39,12 +41,12 @@ export default function CustomProductShowcase(props: Props): ReactElement {
       <img src={media} alt="" className="cx-media-stage__image" />
       <span className="cx-media-stage__shade" aria-hidden="true" />
       <div className="cx-media-stage__content">
-        <p>SHABABUNA CUSTOM</p>
+        <p>{pick({ en: 'SHABABUNA CUSTOM', ar: 'تخصيص شبابنا' })}</p>
         <strong>{props.label}</strong>
-        <div className="cx-media-stage__identity" aria-label="Current customization selections">
-          <span className="cx-media-stage__swatch" data-color={bodyKey} aria-label={`Body color ${bodyKey}`} />
-          <span className="cx-media-stage__swatch" data-color={trimKey} aria-label={`Trim color ${trimKey}`} />
-          <b>{props.teamName || 'SHABABUNA'}</b>
+        <div className="cx-media-stage__identity" aria-label={pick({ en: 'Current customization selections', ar: 'خيارات التخصيص الحالية' })}>
+          <span className="cx-media-stage__swatch" data-color={bodyKey} aria-label={pick({ en: `Body color ${bodyKey}`, ar: `لون القماش ${bodyKey}` })} />
+          <span className="cx-media-stage__swatch" data-color={trimKey} aria-label={pick({ en: `Trim color ${trimKey}`, ar: `لون الحواف ${trimKey}` })} />
+          <b>{props.teamName || (lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}</b>
           {showsPlayerIdentity && props.playerName ? <em>{props.playerName}</em> : null}
           {showsPlayerIdentity && props.playerNumber ? <i>{props.playerNumber}</i> : null}
           {props.logoPreview ? <img src={props.logoPreview} alt="" className="cx-media-stage__logo" /> : null}
