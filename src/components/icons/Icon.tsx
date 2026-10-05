@@ -193,6 +193,15 @@ const paths = {
       <path d="M10 4c.3 1.5 1 2.2 2 2.2S13.7 5.5 14 4" />
     </>
   ),
+  basketball: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 3.5c2.2 2.1 3.4 5 3.4 8.5S14.2 18.4 12 20.5" />
+      <path d="M12 3.5C9.8 5.6 8.6 8.5 8.6 12s1.2 6.4 3.4 8.5" />
+      <path d="M3.7 10.2c2.7.7 5.5 1.1 8.3 1.1s5.6-.4 8.3-1.1" />
+      <path d="M4.5 15.8c2.3-1.1 4.8-1.7 7.5-1.7s5.2.6 7.5 1.7" />
+    </>
+  ),
   compass: (
     <>
       <circle cx="12" cy="12" r="8.5" />
@@ -288,6 +297,7 @@ export default function Icon({
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
+      data-icon={name}
     >
       {icon}
     </svg>
