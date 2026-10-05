@@ -2,13 +2,14 @@ import type { ReactElement } from 'react';
 import Icon from '../icons/Icon';
 import { useEffect, useRef, useState } from 'react';
 import { lockDocumentScroll } from '../../utils/scrollLock';
+import { useLanguage } from '../../context/LanguageContext';
 export default function MediaLightbox({
   open,
   onClose,
   items = [],
   index = 0,
   onIndexChange,
-  label = 'Media viewer',
+  label,
 }: {
   open?: boolean;
   onClose: () => void;
@@ -17,6 +18,7 @@ export default function MediaLightbox({
   onIndexChange?: (index: number) => void;
   label?: string;
 }): ReactElement | null {
+  const { pick } = useLanguage();
   const dialog = useRef<HTMLDivElement | null>(null);
   const [zoom, setZoom] = useState(1);
   const [i, setI] = useState(index);
@@ -54,14 +56,14 @@ export default function MediaLightbox({
       className="media-lightbox"
       role="dialog"
       aria-modal="true"
-      aria-label={label}
+      aria-label={label || pick({ en: 'Media viewer', ar: 'عارض الوسائط' })}
       ref={dialog}
       tabIndex={-1}
     >
-      <button className="lightbox-close" onClick={onClose} aria-label="Close">
+      <button className="lightbox-close" onClick={onClose} aria-label={pick({ en: 'Close', ar: 'إغلاق' })}>
         <Icon name="close" />
       </button>
-      <button className="lightbox-nav prev" onClick={prev} aria-label="Previous">
+      <button className="lightbox-nav prev" onClick={prev} aria-label={pick({ en: 'Previous', ar: 'السابق' })}>
         <Icon name="previous" />
       </button>
       <div
@@ -98,17 +100,17 @@ export default function MediaLightbox({
           decoding="async"
         />
       </div>
-      <button className="lightbox-nav next" onClick={next} aria-label="Next">
+      <button className="lightbox-nav next" onClick={next} aria-label={pick({ en: 'Next', ar: 'التالي' })}>
         <Icon name="next" />
       </button>
       <div className="lightbox-tools">
-        <button onClick={() => setZoom((z) => Math.max(1, z - 0.25))} aria-label="Zoom out">
+        <button onClick={() => setZoom((z) => Math.max(1, z - 0.25))} aria-label={pick({ en: 'Zoom out', ar: 'تصغير' })}>
           <Icon name="minus" />
         </button>
         <span>
           {i + 1} / {items.length}
         </span>
-        <button onClick={() => setZoom((z) => Math.min(3, z + 0.25))} aria-label="Zoom in">
+        <button onClick={() => setZoom((z) => Math.min(3, z + 0.25))} aria-label={pick({ en: 'Zoom in', ar: 'تكبير' })}>
           <Icon name="plus" />
         </button>
       </div>
