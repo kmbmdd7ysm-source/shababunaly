@@ -99,5 +99,16 @@
       "path": "/api/media-scan-worker",
       "schedule": "*/15 * * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/order-intake.ts": {
+      "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
+    },
+    "api/guest-order-access.ts": {
+      "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
+    },
+    "api/customer-orders.ts": {
+      "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
+    }
+  }
 }
