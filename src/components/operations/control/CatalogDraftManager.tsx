@@ -90,7 +90,7 @@ export default function CatalogDraftManager({
             <input
               value={product.nameEn}
               onChange={(event) => setProduct({ ...product, nameEn: event.target.value })}
-              placeholder="Product name EN"
+              placeholder={pick({ en: 'Product name EN', ar: 'اسم المنتج بالإنجليزية' })}
               required
             />
             <input
@@ -102,24 +102,24 @@ export default function CatalogDraftManager({
             <input
               value={product.brand}
               onChange={(event) => setProduct({ ...product, brand: event.target.value })}
-              placeholder="Brand"
+              placeholder={pick({ en: 'Brand', ar: 'العلامة التجارية' })}
               required
             />
             <input
               value={product.category}
               onChange={(event) => setProduct({ ...product, category: event.target.value })}
-              placeholder="Category"
+              placeholder={pick({ en: 'Category', ar: 'التصنيف' })}
               required
             />
             <input
               value={product.subcategory}
               onChange={(event) => setProduct({ ...product, subcategory: event.target.value })}
-              placeholder="Subcategory"
+              placeholder={pick({ en: 'Subcategory', ar: 'التصنيف الفرعي' })}
             />
             <input
               value={product.productType}
               onChange={(event) => setProduct({ ...product, productType: event.target.value })}
-              placeholder="Product type"
+              placeholder={pick({ en: 'Product type', ar: 'نوع المنتج' })}
             />
             <input
               value={product.sku}
@@ -132,19 +132,19 @@ export default function CatalogDraftManager({
             <input
               value={product.color}
               onChange={(event) => setProduct({ ...product, color: event.target.value })}
-              placeholder="Color"
+              placeholder={pick({ en: 'Color', ar: 'اللون' })}
             />
             <input
               value={product.size}
               onChange={(event) => setProduct({ ...product, size: event.target.value })}
-              placeholder="Size"
+              placeholder={pick({ en: 'Size', ar: 'المقاس' })}
             />
           </div>
           <textarea
             rows={3}
             value={product.descriptionEn}
             onChange={(event) => setProduct({ ...product, descriptionEn: event.target.value })}
-            placeholder="Description EN"
+            placeholder={pick({ en: 'Description EN', ar: 'الوصف بالإنجليزية' })}
           />
           <textarea
             rows={3}
@@ -189,12 +189,12 @@ export default function CatalogDraftManager({
           <input
             value={variant.color}
             onChange={(event) => setVariant({ ...variant, color: event.target.value })}
-            placeholder="Color"
+            placeholder={pick({ en: 'Color', ar: 'اللون' })}
           />
           <input
             value={variant.size}
             onChange={(event) => setVariant({ ...variant, size: event.target.value })}
-            placeholder="Size"
+            placeholder={pick({ en: 'Size', ar: 'المقاس' })}
           />
           <button className="btn-primary compact" disabled={saving === 'catalog-variant-create'}>
             {pick({ en: 'Add variant', ar: 'إضافة الخيار' })}
