@@ -50,10 +50,10 @@ export default function ContentCms({
       </p>
       <div className="enterprise-action-card">
         <select value={key} onChange={(event) => switchKey(event.target.value)}>
-          <option value="home_sections">Home sections</option>
-          <option value="our_work_projects">Our Work projects</option>
-          <option value="policies">Policies</option>
-          <option value="translation_overrides">Translation overrides</option>
+          <option value="home_sections">{pick({ en: 'Home sections', ar: 'أقسام الرئيسية' })}</option>
+          <option value="our_work_projects">{pick({ en: 'Our Work projects', ar: 'مشاريع أعمالنا' })}</option>
+          <option value="policies">{pick({ en: 'Policies', ar: 'السياسات' })}</option>
+          <option value="translation_overrides">{pick({ en: 'Translation overrides', ar: 'تجاوزات الترجمة' })}</option>
         </select>
         <textarea
           className="operations-json-editor"
