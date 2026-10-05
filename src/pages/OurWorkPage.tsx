@@ -45,8 +45,8 @@ export default function OurWorkPage(): ReactElement {
   return (
     <>
       <Seo
-        title="Stories | Shababuna"
-        description="Basketball stories, product intelligence, custom teamwear and Shababuna projects."
+        title={pick({ en: 'Stories | Shababuna', ar: 'القصص | شبابنا' })}
+        description={pick({ en: 'Basketball stories, product intelligence, custom teamwear and Shababuna projects.', ar: 'قصص كرة السلة ومعلومات المنتجات وأطقم الفرق المخصصة ومشاريع شبابنا.' })}
         path="/stories"
       />
       <main className="story-page">
