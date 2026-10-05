@@ -54,3 +54,59 @@ export const RETURN_TRANSITIONS = {
 };
 export const money = (value: unknown): string =>
   value == null ? '—' : `$${Number(value).toFixed(2)}`;
+
+
+export const WORKFLOW_LABELS: Record<string, { en: string; ar: string }> = {
+  received: { en: 'Received', ar: 'مستلم' },
+  pending_shipping_quote: { en: 'Pending shipping quote', ar: 'بانتظار تسعيرة الشحن' },
+  awaiting_cash_confirmation: { en: 'Awaiting cash confirmation', ar: 'بانتظار تأكيد النقد' },
+  awaiting_payment: { en: 'Awaiting payment', ar: 'بانتظار الدفع' },
+  confirmed: { en: 'Confirmed', ar: 'مؤكد' },
+  processing: { en: 'Processing', ar: 'قيد المعالجة' },
+  design_in_progress: { en: 'Design in progress', ar: 'التصميم قيد التنفيذ' },
+  awaiting_design_approval: { en: 'Awaiting design approval', ar: 'بانتظار اعتماد التصميم' },
+  design_approved: { en: 'Design approved', ar: 'التصميم معتمد' },
+  in_production: { en: 'In production', ar: 'قيد الإنتاج' },
+  quality_control: { en: 'Quality control', ar: 'فحص الجودة' },
+  arrived: { en: 'Arrived', ar: 'وصل' },
+  final_payment_required: { en: 'Final payment required', ar: 'الدفعة النهائية مطلوبة' },
+  ready_to_ship: { en: 'Ready to ship', ar: 'جاهز للشحن' },
+  shipped: { en: 'Shipped', ar: 'تم الشحن' },
+  out_for_delivery: { en: 'Out for delivery', ar: 'خرج للتوصيل' },
+  completed: { en: 'Completed', ar: 'مكتمل' },
+  delivered: { en: 'Delivered', ar: 'تم التسليم' },
+  cancelled: { en: 'Cancelled', ar: 'ملغي' },
+  under_review: { en: 'Under review', ar: 'قيد المراجعة' },
+  quote_sent: { en: 'Quote sent', ar: 'تم إرسال العرض' },
+  awaiting_approval: { en: 'Awaiting approval', ar: 'بانتظار الاعتماد' },
+  deposit_required: { en: 'Deposit required', ar: 'العربون مطلوب' },
+  deposit_paid: { en: 'Deposit paid', ar: 'تم دفع العربون' },
+  requested: { en: 'Requested', ar: 'تم الطلب' },
+  approved: { en: 'Approved', ar: 'معتمد' },
+  rejected: { en: 'Rejected', ar: 'مرفوض' },
+  refund_pending: { en: 'Refund pending', ar: 'الاسترداد قيد الانتظار' },
+  refunded: { en: 'Refunded', ar: 'تم الاسترداد' },
+  closed: { en: 'Closed', ar: 'مغلق' },
+  draft: { en: 'Draft', ar: 'مسودة' },
+  active: { en: 'Active', ar: 'نشط' },
+  paused: { en: 'Paused', ar: 'متوقف مؤقتًا' },
+  archived: { en: 'Archived', ar: 'مؤرشف' },
+  private: { en: 'Private', ar: 'خاص' },
+  public: { en: 'Public', ar: 'عام' },
+  hidden: { en: 'Hidden', ar: 'مخفي' },
+  sold_out: { en: 'Sold out', ar: 'نفد المخزون' },
+  submitted: { en: 'Submitted', ar: 'تم الإرسال' },
+  quoted: { en: 'Quoted', ar: 'تم التسعير' },
+  accepted: { en: 'Accepted', ar: 'مقبول' },
+};
+
+export const workflowLabel = (
+  value: unknown,
+  pick: (label: { en: string; ar: string }) => string,
+): string => {
+  const key = String(value || '');
+  const known = WORKFLOW_LABELS[key];
+  if (known) return pick(known);
+  const fallback = key.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return fallback || '—';
+};
