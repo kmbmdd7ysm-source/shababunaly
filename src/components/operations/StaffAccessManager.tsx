@@ -92,11 +92,11 @@ function StaffAccessRow({
           onChange={(event) => setRole(event.target.value)}
           disabled={user.id === currentUserId}
         >
-          <option value="customer">Customer</option>
-          <option value="sales">Sales</option>
-          <option value="operations">Operations</option>
-          <option value="admin">Admin</option>
-          <option value="super_admin">Super Admin</option>
+          <option value="customer">{pick({ en: 'Customer', ar: 'عميل' })}</option>
+          <option value="sales">{pick({ en: 'Sales', ar: 'مبيعات' })}</option>
+          <option value="operations">{pick({ en: 'Operations', ar: 'العمليات' })}</option>
+          <option value="admin">{pick({ en: 'Admin', ar: 'مشرف' })}</option>
+          <option value="super_admin">{pick({ en: 'Super Admin', ar: 'مشرف عام' })}</option>
         </select>
       </td>
       <td>
