@@ -25,7 +25,7 @@ export default function CheckoutContactStage({
     <fieldset className="form-block">
       <legend>{pick({ en: 'Contact', ar: 'التواصل' })}</legend>
       <label className="field">
-        <span>Email</span>
+        <span>{pick({ en: 'Email', ar: 'البريد الإلكتروني' })}</span>
         <input
           type="email"
           value={form.email}
