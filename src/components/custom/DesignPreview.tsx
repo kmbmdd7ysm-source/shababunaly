@@ -44,6 +44,7 @@ function fillFor(design: DesignView, id: string): string {
 
 function TextBlock({
   design,
+  lang,
   back = false,
   x = 210,
   y = 190,
@@ -51,14 +52,15 @@ function TextBlock({
   width = 230,
 }: {
   design: DesignView;
+  lang: string;
   back?: boolean;
   x?: number;
   y?: number;
   numberY?: number;
   width?: number;
 }) {
-  const team = safeText(design.teamName, 'SHABABUNA');
-  const player = safeText(design.playerName, 'PLAYER', 14);
+  const team = safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA');
+  const player = safeText(design.playerName, lang === 'ar' ? 'لاعب' : 'PLAYER', 14);
   const number = safeText(design.number, '00', 2);
   const fontFamily =
     design.font === 'condensed'
@@ -90,7 +92,7 @@ function TextBlock({
         </text>
       ) : null}
       <text x={x} y={numberY + 94} fontSize="11" fontWeight="800" letterSpacing="2.4">
-        BUILT DIFFERENT
+        {lang === 'ar' ? 'مختلفون' : 'BUILT DIFFERENT'}
       </text>
       <rect
         x={x - width / 2}
@@ -105,12 +107,12 @@ function TextBlock({
   );
 }
 
-function UniformPreview({ design, id }: { design: DesignView; id: string }) {
+function UniformPreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   const stripe = design.pattern === 'side-stripe';
   const split = design.pattern === 'split';
   return (
-    <svg viewBox="0 0 920 650" role="img" aria-label="Custom uniform front and back preview">
+    <svg viewBox="0 0 920 650" role="img" aria-label={lang === 'ar' ? 'معاينة الزي من الأمام والخلف' : 'Custom uniform front and back preview'}>
       <PatternDefs id={id} design={design} />
       <g filter={`url(#${id}-shadow)`}>
         {[70, 500].map((offset, index) => {
@@ -146,7 +148,7 @@ function UniformPreview({ design, id }: { design: DesignView; id: string }) {
                 strokeWidth="13"
               />
               <path d="M70 150L102 128M318 128L350 150" stroke={design.accent} strokeWidth="8" />
-              <TextBlock design={design} back={back} x={210} y={190} numberY={292} />
+              <TextBlock design={design} lang={lang} back={back} x={210} y={190} numberY={292} />
               <path
                 d="M118 478H302L324 604H96Z"
                 fill={baseFill}
@@ -184,15 +186,17 @@ function UniformPreview({ design, id }: { design: DesignView; id: string }) {
 function JerseyPreview({
   design,
   id,
+  lang,
   shirt = false,
 }: {
   design: DesignView;
   id: string;
+  lang: string;
   shirt?: boolean;
 }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 920 570" role="img" aria-label="Custom jersey preview">
+    <svg viewBox="0 0 920 570" role="img" aria-label={lang === 'ar' ? 'معاينة القميص المخصص' : 'Custom jersey preview'}>
       <PatternDefs id={id} design={design} />
       {[70, 500].map((offset, index) => (
         <g key={offset} transform={`translate(${offset} 44)`} filter={`url(#${id}-shadow)`}>
@@ -212,17 +216,17 @@ function JerseyPreview({
           {design.pattern === 'split' ? (
             <path d="M210 54H350V466H210Z" fill={design.secondary} opacity=".33" />
           ) : null}
-          <TextBlock design={design} back={index === 1} x={210} y={190} numberY={292} />
+          <TextBlock design={design} lang={lang} back={index === 1} x={210} y={190} numberY={292} />
         </g>
       ))}
     </svg>
   );
 }
 
-function ShortsPreview({ design, id }: { design: DesignView; id: string }) {
+function ShortsPreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 920 580" role="img" aria-label="Custom basketball shorts preview">
+    <svg viewBox="0 0 920 580" role="img" aria-label={lang === 'ar' ? 'معاينة شورت كرة السلة المخصص' : 'Custom basketball shorts preview'}>
       <PatternDefs id={id} design={design} />
       {[110, 510].map((offset, index) => (
         <g key={offset} transform={`translate(${offset} 42)`} filter={`url(#${id}-shadow)`}>
@@ -262,7 +266,7 @@ function ShortsPreview({ design, id }: { design: DesignView; id: string }) {
             fontWeight="800"
             letterSpacing="2"
           >
-            {index ? 'BACK' : 'FRONT'}
+            {lang === 'ar' ? (index ? 'خلفي' : 'أمامي') : index ? 'BACK' : 'FRONT'}
           </text>
         </g>
       ))}
@@ -270,10 +274,10 @@ function ShortsPreview({ design, id }: { design: DesignView; id: string }) {
   );
 }
 
-function PantsPreview({ design, id }: { design: DesignView; id: string }) {
+function PantsPreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 920 650" role="img" aria-label="Custom team pants preview">
+    <svg viewBox="0 0 920 650" role="img" aria-label={lang === 'ar' ? 'معاينة بنطال الفريق المخصص' : 'Custom team pants preview'}>
       <PatternDefs id={id} design={design} />
       {[110, 510].map((offset, index) => (
         <g key={offset} transform={`translate(${offset} 24)`} filter={`url(#${id}-shadow)`}>
@@ -299,7 +303,7 @@ function PantsPreview({ design, id }: { design: DesignView; id: string }) {
             fontSize="28"
             fontWeight="900"
           >
-            {safeText(design.teamName, 'SHABABUNA')}
+            {safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}
           </text>
           <text
             x="200"
@@ -322,15 +326,17 @@ function PantsPreview({ design, id }: { design: DesignView; id: string }) {
 function HoodiePreview({
   design,
   id,
+  lang,
   tracksuit = false,
 }: {
   design: DesignView;
   id: string;
+  lang: string;
   tracksuit?: boolean;
 }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 920 650" role="img" aria-label="Custom team apparel preview">
+    <svg viewBox="0 0 920 650" role="img" aria-label={lang === 'ar' ? 'معاينة ملابس الفريق المخصصة' : 'Custom team apparel preview'}>
       <PatternDefs id={id} design={design} />
       <g transform="translate(235 30)" filter={`url(#${id}-shadow)`}>
         <path
@@ -355,7 +361,7 @@ function HoodiePreview({
           fontWeight="900"
           letterSpacing="2"
         >
-          {safeText(design.teamName, 'SHABABUNA')}
+          {safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}
         </text>
         <text
           x="225"
@@ -367,7 +373,7 @@ function HoodiePreview({
           fontWeight="800"
           letterSpacing="3"
         >
-          BUILT DIFFERENT
+          {lang === 'ar' ? 'مختلفون' : 'BUILT DIFFERENT'}
         </text>
         {tracksuit ? (
           <>
@@ -391,10 +397,10 @@ function HoodiePreview({
   );
 }
 
-function BagPreview({ design, id }: { design: DesignView; id: string }) {
+function BagPreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 760 560" role="img" aria-label="Custom bag preview">
+    <svg viewBox="0 0 760 560" role="img" aria-label={lang === 'ar' ? 'معاينة الحقيبة المخصصة' : 'Custom bag preview'}>
       <PatternDefs id={id} design={design} />
       <g filter={`url(#${id}-shadow)`}>
         <path d="M225 122Q380 20 535 122" fill="none" stroke={design.secondary} strokeWidth="24" />
@@ -427,7 +433,7 @@ function BagPreview({ design, id }: { design: DesignView; id: string }) {
           fontSize="38"
           fontWeight="900"
         >
-          {safeText(design.teamName, 'SHABABUNA')}
+          {safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}
         </text>
         <text
           x="380"
@@ -439,17 +445,17 @@ function BagPreview({ design, id }: { design: DesignView; id: string }) {
           fontWeight="800"
           letterSpacing="3"
         >
-          BUILT DIFFERENT
+          {lang === 'ar' ? 'مختلفون' : 'BUILT DIFFERENT'}
         </text>
       </g>
     </svg>
   );
 }
 
-function SleevePreview({ design, id }: { design: DesignView; id: string }) {
+function SleevePreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 760 560" role="img" aria-label="Custom sleeve preview">
+    <svg viewBox="0 0 760 560" role="img" aria-label={lang === 'ar' ? 'معاينة الكم المخصص' : 'Custom sleeve preview'}>
       <PatternDefs id={id} design={design} />
       <g transform="translate(185 38)" filter={`url(#${id}-shadow)`}>
         <path
@@ -468,17 +474,17 @@ function SleevePreview({ design, id }: { design: DesignView; id: string }) {
           fontWeight="900"
           letterSpacing="2"
         >
-          {safeText(design.teamName, 'SHABABUNA')}
+          {safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}
         </text>
       </g>
     </svg>
   );
 }
 
-function BallPreview({ design, id }: { design: DesignView; id: string }) {
+function BallPreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 760 560" role="img" aria-label="Custom basketball preview">
+    <svg viewBox="0 0 760 560" role="img" aria-label={lang === 'ar' ? 'معاينة كرة السلة المخصصة' : 'Custom basketball preview'}>
       <PatternDefs id={id} design={design} />
       <g filter={`url(#${id}-shadow)`}>
         <circle
@@ -513,7 +519,7 @@ function BallPreview({ design, id }: { design: DesignView; id: string }) {
           fontSize="30"
           fontWeight="900"
         >
-          {safeText(design.teamName, 'SHABABUNA')}
+          {safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}
         </text>
         <text
           x="380"
@@ -525,17 +531,17 @@ function BallPreview({ design, id }: { design: DesignView; id: string }) {
           fontWeight="800"
           letterSpacing="2"
         >
-          BUILT DIFFERENT
+          {lang === 'ar' ? 'مختلفون' : 'BUILT DIFFERENT'}
         </text>
       </g>
     </svg>
   );
 }
 
-function PaddingPreview({ design, id }: { design: DesignView; id: string }) {
+function PaddingPreview({ design, id, lang }: { design: DesignView; id: string; lang: string }) {
   const baseFill = fillFor(design, id);
   return (
-    <svg viewBox="0 0 920 580" role="img" aria-label="Custom basketball hoop padding preview">
+    <svg viewBox="0 0 920 580" role="img" aria-label={lang === 'ar' ? 'معاينة واقي عمود السلة المخصص' : 'Custom basketball hoop padding preview'}>
       <PatternDefs id={id} design={design} />
       <g filter={`url(#${id}-shadow)`}>
         <rect
@@ -576,7 +582,7 @@ function PaddingPreview({ design, id }: { design: DesignView; id: string }) {
           fontWeight="900"
           letterSpacing="2"
         >
-          {safeText(design.teamName, 'SHABABUNA')}
+          {safeText(design.teamName, lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}
         </text>
         <text
           x="460"
@@ -587,7 +593,7 @@ function PaddingPreview({ design, id }: { design: DesignView; id: string }) {
           fontSize="29"
           fontWeight="900"
         >
-          BUILT DIFFERENT
+          {lang === 'ar' ? 'مختلفون' : 'BUILT DIFFERENT'}
         </text>
       </g>
     </svg>
@@ -602,7 +608,7 @@ export default function DesignPreview({
   className?: string;
 }): ReactElement {
   const viewDesign = asDesign(design);
-  const { pick } = useLanguage();
+  const { pick, lang } = useLanguage();
   const id = useId().replace(/:/g, '');
   const product = getCustomProductType(String(viewDesign.productType || ''));
   const preview = product.preview;
@@ -618,17 +624,17 @@ export default function DesignPreview({
               : pick({ en: 'Home', ar: 'الأساسي' })}
         </small>
       </div>
-      {preview === 'uniform' ? <UniformPreview design={viewDesign} id={id} /> : null}
-      {preview === 'jersey' ? <JerseyPreview design={viewDesign} id={id} /> : null}
-      {preview === 'shirt' ? <JerseyPreview design={viewDesign} id={id} shirt /> : null}
-      {preview === 'shorts' ? <ShortsPreview design={viewDesign} id={id} /> : null}
-      {preview === 'hoodie' ? <HoodiePreview design={viewDesign} id={id} /> : null}
-      {preview === 'pants' ? <PantsPreview design={viewDesign} id={id} /> : null}
-      {preview === 'tracksuit' ? <HoodiePreview design={viewDesign} id={id} tracksuit /> : null}
-      {preview === 'bag' ? <BagPreview design={viewDesign} id={id} /> : null}
-      {preview === 'sleeve' ? <SleevePreview design={viewDesign} id={id} /> : null}
-      {preview === 'ball' ? <BallPreview design={viewDesign} id={id} /> : null}
-      {preview === 'padding' ? <PaddingPreview design={viewDesign} id={id} /> : null}
+      {preview === 'uniform' ? <UniformPreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'jersey' ? <JerseyPreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'shirt' ? <JerseyPreview design={viewDesign} id={id} lang={lang} shirt /> : null}
+      {preview === 'shorts' ? <ShortsPreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'hoodie' ? <HoodiePreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'pants' ? <PantsPreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'tracksuit' ? <HoodiePreview design={viewDesign} id={id} lang={lang} tracksuit /> : null}
+      {preview === 'bag' ? <BagPreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'sleeve' ? <SleevePreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'ball' ? <BallPreview design={viewDesign} id={id} lang={lang} /> : null}
+      {preview === 'padding' ? <PaddingPreview design={viewDesign} id={id} lang={lang} /> : null}
       <p className="design-preview-disclaimer">
         {pick({
           en: 'Interactive design draft. Manufacturing starts only after the final production proof is approved.',
