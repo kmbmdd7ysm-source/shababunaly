@@ -122,8 +122,8 @@ export default function DesignSharePage(): ReactElement {
   if (state === 'invalid')
     return (
       <section className="gw-terminal gw-review-invalid">
-        <Seo title="Design link unavailable" noindex />
-        <p className="section-label">SECURE DESIGN REVIEW</p>
+        <Seo title={pick({ en: 'Design link unavailable', ar: 'رابط التصميم غير متاح' })} noindex />
+        <p className="section-label">{pick({ en: 'SECURE DESIGN REVIEW', ar: 'مراجعة تصميم آمنة' })}</p>
         <h1>{pick({ en: 'This design link is unavailable', ar: 'رابط التصميم غير متاح' })}</h1>
         <p>
           {pick({
@@ -141,8 +141,8 @@ export default function DesignSharePage(): ReactElement {
   return (
     <section className="gw-review">
       <Seo
-        title={`${String(record.name || 'Design Review')} | SHABABUNA`}
-        description="Secure SHABABUNA production design review."
+        title={`${String(record.name || pick({ en: 'Design Review', ar: 'مراجعة التصميم' }))} | ${pick({ en: 'SHABABUNA', ar: 'شبابنا' })}`}
+        description={pick({ en: 'Secure SHABABUNA production design review.', ar: 'مراجعة آمنة لتصميم الإنتاج من شبابنا.' })}
         noindex
       />
       <header className="gw-review-head">
@@ -181,9 +181,9 @@ export default function DesignSharePage(): ReactElement {
           <h2>{pick({ en: 'Review comments', ar: 'تعليقات المراجعة' })}</h2>
           {(record.comments as Array<Record<string, unknown>>).map((item) => (
             <article key={String(item.id)}>
-              <strong>{String(item.author || 'Reviewer')}</strong>
+              <strong>{String(item.author || pick({ en: 'Reviewer', ar: 'المراجع' }))}</strong>
               <span>
-                {String(item.view || 'front').toUpperCase()} ·{' '}
+                {pick({ en: String(item.view || 'front').toUpperCase(), ar: ({ front: 'أمامي', back: 'خلفي', side: 'جانبي' } as Record<string, string>)[String(item.view || 'front')] || String(item.view || '') })} ·{' '}
                 {new Date(String(item.createdAt || Date.now())).toLocaleString()}
               </span>
               <p>{String(item.text || '')}</p>
@@ -216,7 +216,7 @@ export default function DesignSharePage(): ReactElement {
               />
             </label>
             <label>
-              <span>Email</span>
+              <span>{pick({ en: 'Email', ar: 'البريد الإلكتروني' })}</span>
               <input
                 type="email"
                 value={comment.email}
@@ -230,9 +230,9 @@ export default function DesignSharePage(): ReactElement {
                 value={comment.view}
                 onChange={(event) => setComment({ ...comment, view: event.target.value })}
               >
-                <option value="front">Front</option>
-                <option value="back">Back</option>
-                <option value="side">Side</option>
+                <option value="front">{pick({ en: 'Front', ar: 'أمامي' })}</option>
+                <option value="back">{pick({ en: 'Back', ar: 'خلفي' })}</option>
+                <option value="side">{pick({ en: 'Side', ar: 'جانبي' })}</option>
               </select>
             </label>
             <label>
