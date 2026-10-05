@@ -65,7 +65,7 @@ export function ProductContentCard({
       <div className="operations-product-editor">
         <div className="operations-form-grid">
           <label>
-            <span>English name</span>
+            <span>{pick({ en: 'English name', ar: 'الاسم الإنجليزي' })}</span>
             <input value={values.nameEn} onChange={set('nameEn')} />
           </label>
           <label>
@@ -73,19 +73,19 @@ export function ProductContentCard({
             <input value={values.nameAr} onChange={set('nameAr')} />
           </label>
           <label>
-            <span>Brand</span>
+            <span>{pick({ en: 'Brand', ar: 'العلامة التجارية' })}</span>
             <input value={values.brand} onChange={set('brand')} />
           </label>
           <label>
-            <span>Product type</span>
+            <span>{pick({ en: 'Product type', ar: 'نوع المنتج' })}</span>
             <input value={values.productType} onChange={set('productType')} />
           </label>
           <label>
-            <span>Category</span>
+            <span>{pick({ en: 'Category', ar: 'التصنيف' })}</span>
             <input value={values.category} onChange={set('category')} />
           </label>
           <label>
-            <span>Subcategory</span>
+            <span>{pick({ en: 'Subcategory', ar: 'التصنيف الفرعي' })}</span>
             <input value={values.subcategory} onChange={set('subcategory')} />
           </label>
         </div>
@@ -99,12 +99,12 @@ export function ProductContentCard({
           <input
             value={values.imageUrl}
             onChange={set('imageUrl')}
-            placeholder="e.g. /images/products/product-name.webp"
+            placeholder={pick({ en: 'e.g. /images/products/product-name.webp', ar: 'مثال: /images/products/product-name.webp' })}
           />
         </label>
         <div className="operations-form-grid operations-form-grid--descriptions">
           <label>
-            <span>English description</span>
+            <span>{pick({ en: 'English description', ar: 'الوصف الإنجليزي' })}</span>
             <textarea rows={4} value={values.descriptionEn} onChange={set('descriptionEn')} />
           </label>
           <label>
@@ -115,16 +115,16 @@ export function ProductContentCard({
         <div className="operations-check-grid">
           {(
             [
-              ['featured', 'Featured'],
-              ['newArrival', 'New Arrival'],
-              ['bestSeller', 'Best Seller'],
-              ['comingSoon', 'Coming Soon'],
-              ['quoteOnly', 'Quote Only'],
+              ['featured', { en: 'Featured', ar: 'مميز' }],
+              ['newArrival', { en: 'New Arrival', ar: 'وصل حديثًا' }],
+              ['bestSeller', { en: 'Best Seller', ar: 'الأكثر مبيعًا' }],
+              ['comingSoon', { en: 'Coming Soon', ar: 'قريبًا' }],
+              ['quoteOnly', { en: 'Quote Only', ar: 'بعرض سعر فقط' }],
             ] as const
           ).map(([field, label]) => (
             <label key={field}>
               <input type="checkbox" checked={Boolean(values[field])} onChange={set(field)} />
-              <span>{label}</span>
+              <span>{pick(label)}</span>
             </label>
           ))}
         </div>
