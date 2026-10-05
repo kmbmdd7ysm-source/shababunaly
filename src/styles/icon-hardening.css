@@ -296,3 +296,13 @@ html[dir='rtl'] .country-combobox__code {
 html[dir='rtl'] .country-combobox__trigger .sh-icon {
   grid-column: 1;
 }
+
+
+/* Directional navigation glyphs follow the reading direction. Decorative and
+   semantic object icons never mirror, only arrows used for previous/next flow. */
+html[dir='rtl'] .sh-icon[data-icon='arrow'],
+html[dir='rtl'] .sh-icon[data-icon='back'],
+html[dir='rtl'] .sh-icon[data-icon='next'],
+html[dir='rtl'] .sh-icon[data-icon='previous'] {
+  transform: scaleX(-1);
+}
