@@ -8,10 +8,49 @@ import { retryOrderPayment } from '../services/paymentRecovery';
 import { presentOrderStatus } from '../services/orderStatus';
 import Seo from '../components/common/Seo';
 import PublicPageHeader from '../components/content/PublicPageHeader';
+import Icon from '../components/icons/Icon';
 import '../styles/composition.css';
+import '../styles/account-tracking-premium.css';
 
 const payableStatuses = new Set(['pending', 'partially_paid', 'failed']);
 const payableOrderStatuses = new Set(['awaiting_payment', 'received', 'final_payment_required']);
+
+function orderVariantLabel(value: unknown, lang: string): string {
+  if (!value) return '';
+
+  let source: unknown = value;
+  if (typeof source === 'string') {
+    const trimmed = source.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+      try {
+        source = JSON.parse(trimmed);
+      } catch {
+        return trimmed;
+      }
+    } else {
+      return trimmed;
+    }
+  }
+
+  if (!source || typeof source !== 'object' || Array.isArray(source)) return '';
+
+  const variant = source as Record<string, unknown>;
+  const size = String(variant.size || variant.Size || '').trim();
+  const color = String(
+    variant.colorway || variant.colourway || variant.color || variant.colour || '',
+  ).trim();
+  const style = String(variant.style || variant.option || '').trim();
+  const parts: string[] = [];
+
+  if (size) parts.push(`${lang === 'ar' ? 'المقاس' : 'Size'} ${size}`);
+  if (color && !/^(listed[-_ ]?colorway|default|standard)$/i.test(color)) {
+    parts.push(color);
+  }
+  if (style && !parts.includes(style)) parts.push(style);
+
+  return parts.join(' · ');
+}
 
 type OrderDetailState = {
   state: string;
@@ -304,23 +343,21 @@ export default function OrderDetailPage(): ReactElement {
                 ).map((item, index) => {
                   const unit = Number(item.displayUnitPrice ?? item.unitPrice) || 0;
                   const line = Number(item.displayLineTotal ?? item.lineTotal) || 0;
+                  const variantLabel = orderVariantLabel(item.variant, lang);
                   return (
                     <li key={`${String(item.id || item.sku || index)}-${index}`}>
+                      <div className="order-detail-item__icon" aria-hidden="true">
+                        <Icon name="bag" size={21} strokeWidth={1.75} />
+                      </div>
                       <div>
                         <strong>{String(item.name || '')}</strong>
-                        {item.variant ? (
-                          <small>
-                            {typeof item.variant === 'string'
-                              ? item.variant
-                              : JSON.stringify(item.variant)}
-                          </small>
-                        ) : null}
+                        {variantLabel ? <small>{variantLabel}</small> : null}
                       </div>
-                      <span>
+                      <span className="order-detail-item__quantity">
                         {Number(item.quantity) || 0} × {unit.toFixed(2)}{' '}
                         {String(order.displayCurrency || '')}
                       </span>
-                      <strong>
+                      <strong className="order-detail-item__total">
                         {line.toFixed(2)} {String(order.displayCurrency || '')}
                       </strong>
                     </li>
@@ -353,6 +390,7 @@ export default function OrderDetailPage(): ReactElement {
             </article>
           )}
           <Link className="link-btn" to="/order-tracking">
+            <Icon name="back" size={16} strokeWidth={1.8} />
             {pick({ en: 'Back to Order Tracking', ar: 'العودة إلى تتبع الطلب' })}
           </Link>
         </div>
