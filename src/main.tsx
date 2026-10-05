@@ -43,6 +43,7 @@ import './styles/arabic-hardening.css';
 import './styles/icon-hardening.css';
 import './styles/form-control-luxury.css';
 import './styles/typography-polish.css';
+import './styles/commerce-premium-final.css';
 
 installGlobalErrorMonitoring();
 
