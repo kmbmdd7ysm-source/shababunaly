@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
-import { products } from '../src/data/products.js';
-import { commerceConfig } from '../src/config/commerce.js';
+import { products } from '../src/data/products.ts';
+import { commerceConfig } from '../src/config/commerce.ts';
 import { mutateBlobJson, readBlobJson, writeBlobJson } from './_blob-store.js';
 import {
   orderPath,
