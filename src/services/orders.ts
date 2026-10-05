@@ -1,12 +1,9 @@
-import { getSupabase } from './supabase';
-
 type Row = Record<string, unknown>;
 
 const STORAGE_KEY = 'shababuna-orders-v4';
 const LEGACY_KEYS = ['shababuna-orders-v3', 'shababuna-orders-v2'];
 const MAX_ORDERS = 50;
 const SCHEMA_VERSION = 4;
-const CLOUD_ORDER_HISTORY_KEY = 'orderHistory';
 const allowLocalOrderStorage = true; // Cash/pending orders can fall back locally after cloud creation fails.
 const clean = (value: unknown = ''): string => String(value ?? '').trim();
 const emailKey = (value: unknown = ''): string => clean(value).toLowerCase();
@@ -333,29 +330,24 @@ function saveLocal(order: Row) {
   return { order, duplicate: false, error: write.error || current.error };
 }
 
-async function invokeOrderFunction(name: string, body: Row) {
-  const supabase = await getSupabase();
-  if (!supabase) return { data: null, error: new Error('cloud_unconfigured') };
-  const { data, error } = await supabase.functions.invoke(name, { body });
-  return { data, error: error || null };
-}
-
 async function invokeOrderApi(body: Row) {
   try {
-    const supabase = await getSupabase();
-    const session = supabase ? (await supabase.auth.getSession()).data?.session : null;
     const response = await fetch('/api/order-intake', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
       },
       credentials: 'same-origin',
       body: JSON.stringify(body),
     });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) return { data: null, error: new Error(String(data?.error || `order_api_failed:${response.status}`)) };
+    const data = (await response.json().catch(() => ({}))) as Row;
+    if (!response.ok) {
+      return {
+        data: null,
+        error: new Error(String(data.error || `order_api_failed:${response.status}`)),
+      };
+    }
     return { data, error: null };
   } catch (error) {
     return { data: null, error };
@@ -399,81 +391,6 @@ function mergeOrderLists(...groups: Array<unknown[] | Row[]>) {
     .slice(0, MAX_ORDERS);
 }
 
-async function readCloudOrderHistory(userId: string) {
-  const supabase = await getSupabase();
-  if (!supabase || !userId) throw new Error('cloud_unconfigured');
-  const { data, error } = await supabase
-    .from('user_state')
-    .select('preferences')
-    .eq('user_id', userId)
-    .maybeSingle();
-  if (error) throw error;
-  const preferences =
-    data?.preferences && typeof data.preferences === 'object' ? data.preferences : {};
-  const orders = Array.isArray(preferences[CLOUD_ORDER_HISTORY_KEY])
-    ? preferences[CLOUD_ORDER_HISTORY_KEY]
-    : [];
-  return orders.map((order) =>
-    normalizeOrder({ ...order, userId, source: 'cloud', syncState: 'synced' }),
-  );
-}
-
-async function writeCloudOrderHistory(userId: string, orders: Row[]) {
-  const supabase = await getSupabase();
-  if (!supabase || !userId) throw new Error('cloud_unconfigured');
-  const { data: current, error: readError } = await supabase
-    .from('user_state')
-    .select('preferences')
-    .eq('user_id', userId)
-    .maybeSingle();
-  if (readError) throw readError;
-  const existingPreferences =
-    current?.preferences && typeof current.preferences === 'object' ? current.preferences : {};
-  const preferences = {
-    ...existingPreferences,
-    [CLOUD_ORDER_HISTORY_KEY]: mergeOrderLists(orders).map((order) => ({
-      ...order,
-      source: 'cloud',
-      syncState: 'synced',
-    })),
-  };
-  let query;
-  if (current) {
-    query = supabase
-      .from('user_state')
-      .update({ preferences, updated_at: new Date().toISOString() })
-      .eq('user_id', userId);
-  } else {
-    query = supabase.from('user_state').upsert(
-      {
-        user_id: userId,
-        cart: [],
-        wishlist: [],
-        compare: [],
-        recently_viewed: [],
-        preferences,
-        version: 1,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'user_id' },
-    );
-  }
-  const { error } = await query;
-  if (error) throw error;
-  return preferences[CLOUD_ORDER_HISTORY_KEY];
-}
-
-async function saveCloudHistoryOrder(order: Row) {
-  if (!order.userId) throw new Error('user_required');
-  const existing = (await readCloudOrderHistory(String(order.userId))) as Row[];
-  const synced = normalizeOrder({ ...order, source: 'cloud', syncState: 'synced' } as Row);
-  await writeCloudOrderHistory(
-    String(order.userId),
-    mergeOrderLists([synced], Array.isArray(existing) ? existing : []),
-  );
-  return synced;
-}
-
 export async function createOrder(input: unknown, options: Row = {}): Promise<Row> {
   const inputRow = (input && typeof input === 'object' ? input : {}) as Row;
   const candidate = normalizeOrder({
@@ -481,12 +398,15 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
     idempotencyKey: inputRow.idempotencyKey || options.idempotencyKey,
   });
   const candidateItems = Array.isArray(candidate.items) ? (candidate.items as Row[]) : [];
-  if (!candidate.orderNumber || !candidate.email || !candidateItems.length)
+  if (!candidate.orderNumber || !candidate.email || !candidateItems.length) {
     throw new Error('invalid_order');
+  }
+
   const isManualPayment = ['cash', 'cash_on_delivery', 'cod', 'bank_transfer'].includes(
     String(candidate.paymentMethod || ''),
   );
   const allowLocalPendingQuote = Boolean(options.allowPending && candidate.shippingQuoteRequired);
+
   if (options.cloud !== false) {
     const payload = {
       idempotencyKey: candidate.idempotencyKey,
@@ -494,7 +414,9 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
       paymentMethod: candidate.paymentMethod,
       email: candidate.email,
       shipping: {
-        ...((candidate.shipping && typeof candidate.shipping === 'object' ? candidate.shipping : {}) as Row),
+        ...((candidate.shipping && typeof candidate.shipping === 'object'
+          ? candidate.shipping
+          : {}) as Row),
         paymentPlan: candidate.paymentPlan,
         shippingQuoteRequired: candidate.shippingQuoteRequired,
         deliveryProfile: candidate.deliveryProfile,
@@ -518,14 +440,10 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
         purchaseMode: item.purchaseMode || 'retail',
       })),
     };
-    let cloud = await invokeOrderApi(payload);
-    // Keep the Supabase Edge implementation as a secondary path for deployments
-    // that have the function active while the Vercel API is unavailable.
-    if (cloud.error || !cloud.data?.order) {
-      cloud = await invokeOrderFunction(candidate.userId ? 'create-order' : 'create-guest-order', payload);
-    }
+
+    const cloud = await invokeOrderApi(payload);
     if (!cloud.error && cloud.data?.order) {
-      const serverOrder = cloud.data.order;
+      const serverOrder = cloud.data.order as Row;
       const order = normalizeOrder({
         ...candidate,
         ...serverOrder,
@@ -533,45 +451,36 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
         idempotencyKey:
           serverOrder.idempotency_key || serverOrder.idempotencyKey || candidate.idempotencyKey,
         items: serverOrder.order_items || serverOrder.items_snapshot || candidate.items,
-        displayCurrency: candidate.displayCurrency,
-        displaySubtotal: candidate.displaySubtotal,
-        displayShippingTotal: candidate.displayShippingTotal,
-        displayTotal: candidate.displayTotal,
-        displayAmountDueNow: candidate.displayAmountDueNow,
-        displayRemainingBalance: candidate.displayRemainingBalance,
-        displayOutstandingBalance: candidate.displayOutstandingBalance,
-        displayAmountPaid: candidate.displayAmountPaid,
-        displayAmountRefunded: candidate.displayAmountRefunded,
-        customer: candidate.customer,
+        customer: serverOrder.customer_summary || candidate.customer,
         shipping: serverOrder.shipping_summary || candidate.shipping,
         shippingRate: candidate.shippingRate,
         source: 'cloud',
         syncState: 'synced',
       });
       if (allowLocalOrderStorage) saveLocal(order);
-      if (candidate.userId) {
-        try {
-          await saveCloudHistoryOrder(order);
-        } catch {
-          /* ignore */
-        }
-      }
-      return { order, source: 'cloud', duplicate: Boolean(cloud.data.duplicate), warning: null, notification: cloud.data.notification || null, accessToken: cloud.data.guestAccessToken || cloud.data.accessToken || null };
+      return {
+        order,
+        source: 'cloud',
+        duplicate: Boolean(cloud.data.duplicate),
+        warning: null,
+        notification: cloud.data.notification || null,
+        accessToken: cloud.data.guestAccessToken || cloud.data.accessToken || null,
+        centerVision: cloud.data.centerVision || null,
+      };
     }
-    if (!allowLocalOrderStorage)
+
+    if (!isManualPayment && !allowLocalPendingQuote) {
       throw new Error('cloud_order_creation_failed', { cause: cloud.error });
-    if (!isManualPayment && !allowLocalPendingQuote)
-      throw new Error('cloud_order_creation_failed', { cause: cloud.error });
+    }
     const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
     return {
       order: local.order,
       source: 'local',
       duplicate: local.duplicate,
-      warning: 'development_only_local_order',
+      warning: 'temporary_local_order',
     };
   }
-  if (!allowLocalOrderStorage) throw new Error('cloud_order_creation_required');
-  if (!isManualPayment && !allowLocalPendingQuote) throw new Error('online_payment_requires_server');
+
   const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
   if (local.error && !local.order) throw local.error;
   return {
@@ -627,89 +536,42 @@ function mapCloudOrder(row: Row) {
   });
 }
 
-export async function getMyOrders(userId: string): Promise<{ state: string; orders: Row[]; error?: unknown; source?: string }> {
+export async function getMyOrders(
+  userId: string,
+): Promise<{ state: string; orders: Row[]; error?: unknown; source?: string }> {
   if (!userId) return { state: 'success', orders: [], source: 'none', error: null };
   const local = readLocalOrders();
-  const localOrders = local.orders.filter((order) => (order as Row).userId === userId) as Row[];
-  const supabase = await getSupabase();
-  if (!supabase)
+  const localOrders = local.orders.filter(
+    (order) => (order as Row).userId === userId,
+  ) as Row[];
+
+  try {
+    const response = await fetch('/api/customer-orders', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    });
+    const data = (await response.json().catch(() => ({}))) as Row;
+    if (!response.ok) throw new Error(String(data.error || `orders_api_${response.status}`));
+    const cloudOrders = Array.isArray(data.orders)
+      ? (data.orders as Row[]).map(mapCloudOrder)
+      : [];
+    const merged = mergeOrderLists(cloudOrders, localOrders);
     return {
-      state: local.error ? 'error' : localOrders.length ? 'partial' : 'success',
+      state: local.error ? (merged.length ? 'partial' : 'error') : 'success',
+      orders: merged,
+      source: cloudOrders.length ? (localOrders.length ? 'mixed' : 'cloud') : 'local',
+      error: local.error || null,
+    };
+  } catch (error) {
+    return {
+      state: localOrders.length ? 'partial' : 'error',
       orders: localOrders,
       source: 'local',
-      error: local.error || (localOrders.length ? new Error('cloud_unconfigured') : null),
+      error: local.error || error,
     };
-
-  let tableOrders: Row[] = [];
-  let historyOrders: Row[] = [];
-  let tableError = null;
-  let historyError = null;
-  try {
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    tableOrders = (data || []).map(mapCloudOrder);
-  } catch (error) {
-    tableError = error;
   }
-  try {
-    historyOrders = await readCloudOrderHistory(userId);
-  } catch (error) {
-    historyError = error;
-  }
-
-  let cloudOrders = mergeOrderLists(tableOrders, historyOrders);
-  const localOnly = localOrders.filter(
-    (localOrder) =>
-      !cloudOrders.some(
-        (cloudOrder) =>
-          cloudOrder.idempotencyKey === localOrder.idempotencyKey ||
-          (localOrder.orderNumber && cloudOrder.orderNumber === localOrder.orderNumber),
-      ),
-  );
-
-  if (!historyError && localOnly.length) {
-    try {
-      const promoted = localOnly.map((order: unknown) =>
-        normalizeOrder({
-          ...((order && typeof order === 'object' ? order : {}) as Row),
-          userId,
-          source: 'cloud',
-          syncState: 'synced',
-        }),
-      );
-      await writeCloudOrderHistory(userId, mergeOrderLists(promoted, cloudOrders));
-      cloudOrders = mergeOrderLists(promoted, cloudOrders);
-      const allLocal = readLocalOrders();
-      if (!allLocal.error) {
-        const promotedKeys = new Set(promoted.map((order) => orderIdentity(order)));
-        writeLocalOrders(
-          allLocal.orders.map((order) => {
-            const row = order as Row;
-            return promotedKeys.has(orderIdentity(row))
-              ? normalizeOrder({ ...row, source: 'cloud', syncState: 'synced' })
-              : row;
-          }),
-        );
-      }
-    } catch (error) {
-      historyError = error;
-    }
-  }
-
-  const merged = mergeOrderLists(cloudOrders, localOrders);
-  const cloudAvailable = !historyError || !tableError;
-  const cloudHasData = cloudOrders.length > 0;
-  const error = local.error || (cloudAvailable ? null : historyError || tableError);
-  return {
-    state: error ? (merged.length ? 'partial' : 'error') : 'success',
-    orders: merged,
-    source: cloudHasData ? (localOrders.length ? 'mixed' : 'cloud') : 'local',
-    error,
-  };
 }
 
 export async function lookupGuestOrder(
