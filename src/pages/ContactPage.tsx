@@ -75,7 +75,7 @@ export default function ContactPage(): ReactElement {
         path="/contact"
       />
       <PublicPageHeader
-        eyebrow="Shababuna support"
+        eyebrow={pick({ en: 'Shababuna support', ar: 'دعم شبابنا' })}
         title={pick({ en: 'Talk to the right team.', ar: 'تواصل مع الفريق المناسب.' })}
         lede={pick({
           en: 'Retail orders, custom design, club supply, wholesale and basketball equipment.',
@@ -123,7 +123,7 @@ export default function ContactPage(): ReactElement {
                     {errors.name && <span className="form-error">{errors.name}</span>}
                   </label>
                   <label className="field" data-field="email">
-                    <span className="field__label">Email</span>
+                    <span className="field__label">{pick({ en: 'Email', ar: 'البريد الإلكتروني' })}</span>
                     <div className="field__control field__control--latin">
                       <input
                       type="email"
@@ -206,7 +206,7 @@ export default function ContactPage(): ReactElement {
             )}
           </div>
           <aside className="contact-info">
-            <p className="section-label">DIRECT CONTACT</p>
+            <p className="section-label">{pick({ en: 'DIRECT CONTACT', ar: 'تواصل مباشر' })}</p>
             <h2>SHABABUNA</h2>
             <ul>
               <li>
