@@ -1,5 +1,4 @@
 import { guardPublicPost, applyApiHeaders } from './_request-security.js';
-import { supabaseAdminRequest } from './_supabase-admin.js';
 import {
   createGuestOrderToken,
   guestEmailHash,
@@ -7,54 +6,23 @@ import {
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
 } from './_guest-order-token.js';
+import { readNativeOrder } from './_native-orders.js';
 
 const clean = (value: unknown, max = 5000): string =>
-  String(value ?? '')
-    .trim()
-    .slice(0, max);
-const SELECT = [
-  'id',
-  'order_number',
-  'customer_email',
-  'currency',
-  'subtotal',
-  'shipping_total',
-  'tax_total',
-  'discount_total',
-  'total',
-  'payment_method',
-  'payment_plan',
-  'amount_paid',
-  'amount_refunded',
-  'amount_due_now',
-  'outstanding_balance',
-  'remaining_balance',
-  'payment_stage',
-  'payment_provider',
-  'payment_status',
-  'order_status',
-  'fulfillment_status',
-  'shipping_quote_required',
-  'payment_expires_at',
-  'shipping_quote_expires_at',
-  'delivery_profile',
-  'created_at',
-  'updated_at',
-  'delivered_at',
-  'shipping_summary',
-  'order_items(product_id,sku,product_name,variant_snapshot,quantity,unit_price,line_total)',
-].join(',');
-
-async function findOrder(orderNumber: string): Promise<Record<string, unknown> | null> {
-  const rows = await supabaseAdminRequest(
-    `/rest/v1/orders?select=${encodeURIComponent(SELECT)}&order_number=eq.${encodeURIComponent(orderNumber)}&limit=1`,
-  );
-  return Array.isArray(rows) ? (rows[0] as Record<string, unknown>) || null : null;
-}
+  String(value ?? '').trim().slice(0, max);
 
 function publicOrder(row: Record<string, unknown>) {
-  const { customer_email: _customerEmail, order_items: orderItems, ...safe } = row;
-  return { ...safe, items: orderItems || [] };
+  const {
+    customer_email: _customerEmail,
+    customer_phone: _customerPhone,
+    customer_name: _customerName,
+    idempotency_key: _idempotencyKey,
+    ...safe
+  } = row;
+  return {
+    ...safe,
+    items: Array.isArray(row.order_items) ? row.order_items : [],
+  };
 }
 
 function orderEmail(row: Record<string, unknown>): string {
@@ -62,13 +30,28 @@ function orderEmail(row: Record<string, unknown>): string {
     row.shipping_summary && typeof row.shipping_summary === 'object'
       ? (row.shipping_summary as Record<string, unknown>)
       : {};
-  return normalizeGuestEmail(row.customer_email || shipping.email || '');
+  const customer =
+    row.customer_summary && typeof row.customer_summary === 'object'
+      ? (row.customer_summary as Record<string, unknown>)
+      : {};
+  return normalizeGuestEmail(row.customer_email || customer.email || shipping.email || '');
 }
 
-type ApiReq = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined>; query?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown } };
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers: Record<string, string | string[] | undefined>;
+  query?: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+};
+type ApiRes = {
+  setHeader: (n: string, v: string | string[]) => void;
+  status: (c: number) => { json: (b: unknown) => unknown; end?: () => unknown };
+};
+
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res);
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
@@ -79,20 +62,29 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       limit: 10,
       windowMs: 15 * 60_000,
       bucket: 'guest-order-access',
+      allowEphemeralFallback: true,
     }))
-  )
-    return;
+  ) return;
+
   try {
-    const body = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+    const body =
+      req.body && typeof req.body === 'object'
+        ? (req.body as Record<string, unknown>)
+        : {};
     const orderNumber = normalizeGuestOrderNumber(body.orderNumber);
     if (!orderNumber) return res.status(200).json({ ok: true, order: null });
-    const existing = verifyGuestOrderToken(body.accessToken, orderNumber);
-    const order = await findOrder(orderNumber);
+
+    const order = await readNativeOrder(orderNumber);
     if (!order) return res.status(200).json({ ok: true, order: null });
+
+    const existing = verifyGuestOrderToken(body.accessToken, orderNumber);
+    const storedEmail = orderEmail(order);
+    if (!storedEmail) return res.status(200).json({ ok: true, order: null });
+
     if (existing) {
-      const storedEmail = orderEmail(order);
-      if (!storedEmail || guestEmailHash(storedEmail) !== existing.emailHash)
+      if (guestEmailHash(storedEmail) !== existing.emailHash) {
         return res.status(200).json({ ok: true, order: null });
+      }
       return res.status(200).json({
         ok: true,
         order: publicOrder(order),
@@ -100,11 +92,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         expiresAt: new Date(existing.exp * 1000).toISOString(),
       });
     }
+
     const email = normalizeGuestEmail(body.email);
-    if (!email) return res.status(200).json({ ok: true, order: null });
-    const storedEmail = orderEmail(order);
-    if (!storedEmail || storedEmail !== email)
+    if (!email || storedEmail !== email) {
       return res.status(200).json({ ok: true, order: null });
+    }
+
     let accessToken = '';
     let expiresAt: string | null = null;
     try {
@@ -113,11 +106,9 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       if (verified) expiresAt = new Date(verified.exp * 1000).toISOString();
       else accessToken = '';
     } catch {
-      // Exact order-number + checkout-email matching has already succeeded.
-      // Token signing is an optimization for refresh/cross-page access, not a
-      // reason to block the customer from viewing their own order.
       accessToken = '';
     }
+
     return res.status(200).json({
       ok: true,
       order: publicOrder(order),
