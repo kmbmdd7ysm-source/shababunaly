@@ -60,7 +60,7 @@ export default function GiftCardsPage(): ReactElement {
       />
       <main className="gc-page">
         <header className="gc-hero">
-          <div className="gc-hero__art" aria-hidden="true"><span>SHABABUNA</span><b>GIFT CARD</b></div>
+          <div className="gc-hero__art" aria-hidden="true"><span>{lang === 'ar' ? 'شبابنا' : 'SHABABUNA'}</span><b>{pick({ en: 'GIFT CARD', ar: 'بطاقة هدية' })}</b></div>
           <div className="gc-hero__copy">
             <p>{pick({ en: 'SHABABUNA GIFT CARDS', ar: 'بطاقات هدايا شبابنا' })}</p>
             <h1>{pick({ en: 'Give them the game.', ar: 'أهديهم اللعبة.' })}</h1>
