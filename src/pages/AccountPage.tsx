@@ -480,8 +480,8 @@ export default function AccountPage(): ReactElement {
               {!auth.configured && (
                 <p className="form-notice">
                   {pick({
-                    en: 'Cloud sync is temporarily unavailable. You can still create and use an account on this device.',
-                    ar: 'المزامنة السحابية غير متاحة مؤقتًا. تقدر تنشئ وتستخدم الحساب على هذا الجهاز.',
+                    en: 'Accounts created here are currently saved on this device.',
+                    ar: 'الحسابات التي تنشئها هنا محفوظة حاليًا على هذا الجهاز.',
                   })}
                 </p>
               )}
