@@ -73,7 +73,7 @@ export default function MerchandisingManager({
           <input
             value={collection.name_en}
             onChange={(event) => setCollection({ ...collection, name_en: event.target.value })}
-            placeholder="Name EN"
+            placeholder={pick({ en: 'Name EN', ar: 'الاسم بالإنجليزية' })}
             required
           />
           <input
@@ -86,9 +86,9 @@ export default function MerchandisingManager({
             value={collection.status}
             onChange={(event) => setCollection({ ...collection, status: event.target.value })}
           >
-            <option>draft</option>
-            <option>active</option>
-            <option>archived</option>
+            <option value="draft">{pick({ en: 'Draft', ar: 'مسودة' })}</option>
+            <option value="active">{pick({ en: 'Active', ar: 'نشط' })}</option>
+            <option value="archived">{pick({ en: 'Archived', ar: 'مؤرشف' })}</option>
           </select>
           <button className="btn-primary compact" disabled={saving === 'collection'}>
             {pick({ en: 'Save collection', ar: 'حفظ المجموعة' })}
@@ -122,8 +122,8 @@ export default function MerchandisingManager({
             value={coupon.discount_type}
             onChange={(event) => setCoupon({ ...coupon, discount_type: event.target.value })}
           >
-            <option value="percent">percent</option>
-            <option value="fixed">fixed</option>
+            <option value="percent">{pick({ en: 'Percent', ar: 'نسبة مئوية' })}</option>
+            <option value="fixed">{pick({ en: 'Fixed', ar: 'قيمة ثابتة' })}</option>
           </select>
           <input
             type="number"
