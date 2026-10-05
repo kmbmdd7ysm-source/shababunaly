@@ -56,6 +56,27 @@ export default function OperationsPage(): ReactElement | null {
   if (!auth.user) return <Navigate to="/account?returnTo=/operations/dashboard" replace />;
   if (!isStaffUser(auth.user)) return <Navigate to="/account" replace />;
   const role = getStaffRole(auth.user);
+  const roleLabel =
+    {
+      customer: { en: 'Customer', ar: 'عميل' },
+      sales: { en: 'Sales', ar: 'مبيعات' },
+      operations: { en: 'Operations', ar: 'العمليات' },
+      admin: { en: 'Admin', ar: 'مشرف' },
+      super_admin: { en: 'Super Admin', ar: 'مشرف عام' },
+    }[role] || { en: role || 'Staff', ar: 'موظف' };
+  const moduleLabels: Record<string, { en: string; ar: string }> = {
+    dashboard: { en: 'Dashboard', ar: 'لوحة التحكم' },
+    orders: { en: 'Orders', ar: 'الطلبات' },
+    payments: { en: 'Payments', ar: 'المدفوعات' },
+    b2b: { en: 'B2B', ar: 'المؤسسات' },
+    shipping: { en: 'Shipping', ar: 'الشحن' },
+    catalog: { en: 'Catalog', ar: 'الكتالوج' },
+    inventory: { en: 'Inventory', ar: 'المخزون' },
+    media: { en: 'Media', ar: 'الوسائط' },
+    security: { en: 'Security', ar: 'الأمان' },
+    users: { en: 'Users', ar: 'المستخدمون' },
+    settings: { en: 'Settings', ar: 'الإعدادات' },
+  };
 
   return (
     <div className="gw-command" data-staff-role={role}>
@@ -70,7 +91,7 @@ export default function OperationsPage(): ReactElement | null {
           title={pick({ en: 'Signed-in staff role', ar: 'دور الموظف' })}
         >
           <span className="gw-command-role-dot" aria-hidden="true" />
-          {role}
+          {pick(roleLabel)}
         </p>
         <nav
           className="gw-command-modules"
@@ -80,7 +101,7 @@ export default function OperationsPage(): ReactElement | null {
             <NavLink key={name} to={`/operations/${name}`} className="gw-command-module">
               <Icon name={(MODULE_ICONS as Record<string, string>)[name] || 'grid'} />
               <span>
-                {name === 'b2b' ? 'B2B' : `${(name[0] || '').toUpperCase()}${name.slice(1)}`}
+                {pick(moduleLabels[name] || { en: name, ar: name })}
               </span>
             </NavLink>
           ))}
