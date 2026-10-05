@@ -70,9 +70,9 @@ export default function TurnstileWidget({
     if (optionalWhenUnconfigured) return null;
     return (
       <p className="gw-verify-note" role="status">
-        Request verification is temporarily unavailable.
+        {language === 'ar' ? 'التحقق من الطلب غير متاح مؤقتًا.' : 'Request verification is temporarily unavailable.'}
       </p>
     );
   }
-  return <div className="turnstile-wrap" ref={host} aria-label="Bot verification" />;
+  return <div className="turnstile-wrap" ref={host} aria-label={language === 'ar' ? 'التحقق الآلي' : 'Bot verification'} />;
 }
