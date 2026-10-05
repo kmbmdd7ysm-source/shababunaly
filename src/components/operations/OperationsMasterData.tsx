@@ -12,6 +12,28 @@ function asRows(source: unknown, key: string): Array<Record<string, unknown>> {
   return Array.isArray(value) ? (value as Array<Record<string, unknown>>) : [];
 }
 
+const MASTER_FIELD_LABELS: Record<string, { en: string; ar: string }> = {
+  Name: { en: 'Name', ar: 'الاسم' },
+  Slug: { en: 'Slug', ar: 'المعرف النصي' },
+  'English name': { en: 'English name', ar: 'الاسم الإنجليزي' },
+  'Arabic name': { en: 'Arabic name', ar: 'الاسم العربي' },
+  Code: { en: 'Code', ar: 'الرمز' },
+  Country: { en: 'Country', ar: 'الدولة' },
+  City: { en: 'City', ar: 'المدينة' },
+  Email: { en: 'Email', ar: 'البريد الإلكتروني' },
+  Phone: { en: 'Phone', ar: 'الهاتف' },
+  'Tracking URL': { en: 'Tracking URL', ar: 'رابط التتبع' },
+};
+
+const STOCK_MOVEMENT_LABELS: Record<string, { en: string; ar: string }> = {
+  receipt: { en: 'Receipt', ar: 'استلام' },
+  adjustment: { en: 'Adjustment', ar: 'تسوية' },
+  damage: { en: 'Damage', ar: 'تالف' },
+  return: { en: 'Return', ar: 'إرجاع' },
+  transfer_in: { en: 'Transfer in', ar: 'تحويل داخل' },
+  transfer_out: { en: 'Transfer out', ar: 'تحويل خارج' },
+};
+
 import ProductMasterFields from './control/ProductMasterFields';
 import { useEffect, useMemo, useState } from 'react';
 import { getLocalizedCountries } from '../../data/countries';
@@ -161,7 +183,7 @@ function MasterEntityCard({
       </select>
       {fields.map(([field, label]: [string, string]) => (
         <label key={field}>
-          <span>{label}</span>
+          <span>{pick(MASTER_FIELD_LABELS[label] || { en: label, ar: label })}</span>
           <input
             value={values[field] || ''}
             onChange={(event) =>
@@ -233,7 +255,7 @@ export function StockMovementManager({
         </select>
       </label>
       <label>
-        <span>SKU / Variant</span>
+        <span>{pick({ en: 'SKU / Variant', ar: 'SKU / الخيار' })}</span>
         <select value={variantId} onChange={(e) => setVariantId(e.target.value)}>
           <option value="">—</option>
           {catalogList.slice(0, 1000).map((row: Record<string, unknown>) => (
@@ -248,7 +270,9 @@ export function StockMovementManager({
         <select value={movementType} onChange={(e) => setMovementType(e.target.value)}>
           {['receipt', 'adjustment', 'damage', 'return', 'transfer_in', 'transfer_out'].map(
             (type) => (
-              <option key={type}>{type}</option>
+              <option key={type} value={type}>
+                {pick(STOCK_MOVEMENT_LABELS[type] || { en: type, ar: type })}
+              </option>
             ),
           )}
         </select>
