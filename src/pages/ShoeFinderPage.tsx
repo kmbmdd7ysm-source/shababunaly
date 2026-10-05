@@ -42,8 +42,8 @@ export default function ShoeFinderPage(): ReactElement {
   return (
     <>
       <Seo
-        title="Basketball Shoe Finder | Shababuna"
-        description="Find basketball shoes using verified catalogue and performance data."
+        title={pick({ en: 'Basketball Shoe Finder | Shababuna', ar: 'اختيار حذاء كرة السلة | شبابنا' })}
+        description={pick({ en: 'Find basketball shoes using verified catalogue and performance data.', ar: 'اعثر على حذاء كرة السلة المناسب باستخدام بيانات كتالوج وأداء موثقة.' })}
         path="/basketball/shoe-finder"
       />
       <div className="bf-page">
@@ -78,7 +78,7 @@ export default function ShoeFinderPage(): ReactElement {
             <legend><span>01</span>{pick({ en: 'Position', ar: 'المركز' })}</legend>
             <div className="bf-choice-row">
               {positions.map((item) => (
-                <button key={item} type="button" className={prefs.position === item ? 'is-active' : ''} onClick={() => set('position', item)}>{item}</button>
+                <button key={item} type="button" className={prefs.position === item ? 'is-active' : ''} onClick={() => set('position', item)}>{item === 'All Around' ? pick({ en: 'All Around', ar: 'شامل' }) : item}</button>
               ))}
             </div>
           </fieldset>
