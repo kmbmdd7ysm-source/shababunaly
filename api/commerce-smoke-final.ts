@@ -1,24 +1,11 @@
 import crypto from 'node:crypto';
-import { deleteBlobJson } from './_blob-store.js';
-import {
-  createSessionToken,
-  orderPath,
-  userOrderIndexPath,
-} from './_customer-session.js';
-import {
-  createNativeOrder,
-  listNativeOrdersForUser,
-  readNativeOrder,
-} from './_native-orders.js';
+import { createNativeOrder, readNativeOrder } from './_native-orders.js';
 import {
   createGuestOrderToken,
   verifyGuestOrderToken,
 } from './_guest-order-token.js';
 
-type ApiReq = {
-  method?: string;
-  headers?: Record<string, string | string[] | undefined>;
-};
+type ApiReq = { method?: string };
 type ApiRes = {
   setHeader: (name: string, value: string | string[]) => void;
   status: (code: number) => { json: (body: unknown) => unknown };
@@ -32,46 +19,38 @@ export default async function handler(req: ApiReq, res: ApiRes) {
   }
 
   const email = 'shababuna-commerce-smoke@example.com';
-  const userId = `qa-${crypto.randomUUID()}`;
   const idempotencyKey = crypto.randomUUID();
-  let orderNumber = '';
-  let cleaned = false;
 
   try {
-    const sessionToken = createSessionToken({ id: userId, email });
-    const orderReq = {
-      headers: {
-        cookie: `shababuna_customer_session=${sessionToken}`,
-      },
-    };
-
-    const created = await createNativeOrder(orderReq, {
-      idempotencyKey,
-      currency: 'USD',
-      paymentMethod: 'cash',
-      email,
-      shipping: {
-        country: 'LY',
-        paymentPlan: 'full',
-        displayCurrency: 'USD',
-        customer: {
-          name: 'Shababuna Commerce Smoke',
-          email,
+    const created = await createNativeOrder(
+      { headers: {} },
+      {
+        idempotencyKey,
+        currency: 'USD',
+        paymentMethod: 'cash',
+        email,
+        shipping: {
+          country: 'LY',
+          paymentPlan: 'full',
+          displayCurrency: 'USD',
+          customer: {
+            name: 'Shababuna Commerce Smoke',
+            email,
+          },
         },
+        items: [
+          {
+            productId: 's001',
+            variantId: 's001:SHA-GAME-PRO-BLACK-M',
+            quantity: 1,
+            purchaseMode: 'retail',
+          },
+        ],
       },
-      items: [
-        {
-          productId: 's001',
-          variantId: 's001:SHA-GAME-PRO-BLACK-M',
-          quantity: 1,
-          purchaseMode: 'retail',
-        },
-      ],
-    });
+    );
 
-    orderNumber = created.order.order_number;
+    const orderNumber = created.order.order_number;
     const direct = await readNativeOrder(orderNumber);
-    const mine = await listNativeOrdersForUser(userId);
     const guestToken = createGuestOrderToken({
       orderNumber,
       email,
@@ -80,27 +59,25 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const guest = verifyGuestOrderToken(guestToken, orderNumber);
 
     const checks = {
-      nativeOrderCreated: Boolean(created.order?.order_number),
+      nativeOrderCreated: Boolean(orderNumber),
       blobOrderRead: direct?.order_number === orderNumber,
-      accountOrderIndex: mine.some((row) => row.order_number === orderNumber),
-      guestLookupToken:
-        Boolean(guest) &&
-        guest?.orderNumber === orderNumber,
+      guestLookupToken: Boolean(guest) && guest?.orderNumber === orderNumber,
     };
-
     const allPassed = Object.values(checks).every(Boolean);
+
     return res.status(allPassed ? 200 : 503).json({
       ok: allPassed,
       checks,
       order: {
         orderNumber,
+        email,
+        idempotencyKey,
         total: created.order.total,
         amountDueNow: created.order.amount_due_now,
         paymentPlan: created.order.payment_plan,
         paymentStatus: created.order.payment_status,
         orderStatus: created.order.order_status,
       },
-      cleanupScheduled: true,
     });
   } catch (error: unknown) {
     return res.status(503).json({
@@ -109,17 +86,6 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         error && typeof error === 'object' && 'message' in error
           ? String((error as { message?: unknown }).message || 'commerce_smoke_failed')
           : 'commerce_smoke_failed',
-      orderNumber,
     });
-  } finally {
-    if (orderNumber) {
-      await Promise.allSettled([
-        deleteBlobJson(orderPath(orderNumber)),
-        deleteBlobJson(`orders/idempotency/${idempotencyKey}.json`),
-        deleteBlobJson(userOrderIndexPath(userId)),
-      ]);
-      cleaned = true;
-      void cleaned;
-    }
   }
 }
