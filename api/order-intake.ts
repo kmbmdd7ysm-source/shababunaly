@@ -125,6 +125,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         : {};
     const email = clean(order.customer_email, 254).toLowerCase();
     const items = Array.isArray(order.order_items) ? (order.order_items as Row[]) : [];
+    // Reserved example domains are used only by automated production smoke tests.
+    // They must exercise the real order engine without creating operational
+    // Center Vision records or sending staff notifications.
+    const qaTestOrder = /@example\.(com|net|org)$/i.test(email);
 
     let guestAccessToken: string | null = null;
     if (!created.session?.id) {
@@ -150,22 +154,26 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       syncTicket = null;
     }
 
-    let centerVision = 'pending';
-    try {
-      centerVision = await syncCenterVisionOrder({
-        order,
-        email,
-        phone: clean(order.customer_phone || customer.phone || shipping.phone, 80),
-        fullName: clean(order.customer_name || customer.name, 180),
-        shipping,
-        items,
-        ticket: syncTicket,
-      });
-    } catch {
-      centerVision = 'pending';
+    let centerVision = qaTestOrder ? 'qa-skipped' : 'pending';
+    if (!qaTestOrder) {
+      try {
+        centerVision = await syncCenterVisionOrder({
+          order,
+          email,
+          phone: clean(order.customer_phone || customer.phone || shipping.phone, 80),
+          fullName: clean(order.customer_name || customer.name, 180),
+          shipping,
+          items,
+          ticket: syncTicket,
+        });
+      } catch {
+        centerVision = 'pending';
+      }
     }
 
-    const notification = await sendInternalFormNotification(
+    const notification = qaTestOrder
+      ? { delivered: true }
+      : await sendInternalFormNotification(
       {
         form_type: 'order',
         order_number: order.order_number,
