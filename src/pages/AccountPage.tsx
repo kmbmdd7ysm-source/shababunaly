@@ -457,7 +457,7 @@ export default function AccountPage(): ReactElement {
               }}
               noValidate
             >
-              <p className="gw-kicker">SHABABUNA ACCOUNT</p>
+              <p className="gw-kicker">{pick({ en: 'SHABABUNA ACCOUNT', ar: 'حساب شبابنا' })}</p>
               <h1 className="gw-gate-title">
                 {pick({
                   en:
