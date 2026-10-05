@@ -34,20 +34,20 @@ const MAP: Record<string, LangPair> = {
     ar: 'يوجد حساب بهذا البريد بالفعل. سجّل الدخول بدلًا من ذلك.',
   },
   signup_disabled: {
-    en: 'Account creation is temporarily disabled in Supabase settings.',
-    ar: 'إنشاء الحسابات متوقف مؤقتًا من إعدادات Supabase.',
+    en: 'Account creation is temporarily unavailable. Please try again later.',
+    ar: 'إنشاء الحساب غير متاح مؤقتًا. حاول مرة أخرى لاحقًا.',
   },
   signup_database: {
-    en: 'The account database setup is incomplete. Run the included Supabase account migration, then try again.',
-    ar: 'إعداد قاعدة بيانات الحسابات غير مكتمل. شغّل ملف إعداد حسابات Supabase المرفق ثم حاول مرة أخرى.',
+    en: 'We could not create the account right now. Please try again shortly.',
+    ar: 'تعذر إنشاء الحساب الآن. حاول مرة أخرى بعد قليل.',
   },
   email_delivery: {
-    en: 'The account was created, but the verification email could not be delivered. Check the Supabase email provider, then resend verification.',
-    ar: 'تم إنشاء الحساب لكن تعذر إرسال رسالة التأكيد. تحقق من إعدادات البريد في Supabase ثم أعد إرسال التأكيد.',
+    en: 'Your account was created, but the verification email could not be sent. Please resend it in a moment.',
+    ar: 'تم إنشاء حسابك لكن تعذر إرسال رسالة التأكيد. أعد إرسالها بعد قليل.',
   },
   cloud_config: {
-    en: 'Cloud accounts are not connected. Add the Supabase URL and publishable key in Vercel, then redeploy.',
-    ar: 'الحسابات السحابية غير متصلة. أضف رابط Supabase والمفتاح العام في Vercel ثم أعد النشر.',
+    en: 'Account service is temporarily unavailable. Please try again shortly.',
+    ar: 'خدمة الحساب غير متاحة مؤقتًا. حاول مرة أخرى بعد قليل.',
   },
   auth_network: {
     en: 'The account service could not be reached. Check your connection and try again.',
