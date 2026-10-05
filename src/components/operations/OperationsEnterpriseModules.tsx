@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { reviewPaymentProof, upsertOperationalEntity } from '../../services/operations';
 import type { OperationsRunFn } from '../../types/operations';
+import { workflowLabel } from './commerceHelpers';
 
 export { InventoryCsvManager } from './InventoryCsvManager';
 
@@ -86,7 +87,7 @@ export function EnterpriseOperationsPanel({
         >
           <div>
             <span>{pick({ en: 'New contract', ar: 'عقد جديد' })}</span>
-            <strong>{contract.status}</strong>
+            <strong>{workflowLabel(contract.status, pick)}</strong>
           </div>
           <label>
             <span>{pick({ en: 'Organization', ar: 'المؤسسة' })}</span>
@@ -146,7 +147,7 @@ export function EnterpriseOperationsPanel({
         >
           <div>
             <span>{pick({ en: 'New team locker', ar: 'متجر فريق جديد' })}</span>
-            <strong>{locker.status}</strong>
+            <strong>{workflowLabel(locker.status, pick)}</strong>
           </div>
           <label>
             <span>{pick({ en: 'Organization', ar: 'المؤسسة' })}</span>
@@ -185,17 +186,17 @@ export function EnterpriseOperationsPanel({
               value={String(locker.status || '')}
               onChange={(event) => setLocker({ ...locker, status: event.target.value })}
             >
-              <option value="draft">draft</option>
-              <option value="active">active</option>
-              <option value="paused">paused</option>
+              <option value="draft">{workflowLabel('draft', pick)}</option>
+              <option value="active">{workflowLabel('active', pick)}</option>
+              <option value="paused">{workflowLabel('paused', pick)}</option>
             </select>
             <select
               value={String(locker.access_mode || '')}
               onChange={(event) => setLocker({ ...locker, access_mode: event.target.value })}
             >
-              <option value="private">private</option>
-              <option value="code">code</option>
-              <option value="public">public</option>
+              <option value="private">{pick({ en: 'Private', ar: 'خاص' })}</option>
+              <option value="code">{pick({ en: 'Access code', ar: 'رمز دخول' })}</option>
+              <option value="public">{pick({ en: 'Public', ar: 'عام' })}</option>
             </select>
           </div>
           <button
@@ -251,10 +252,10 @@ export function EnterpriseOperationsPanel({
             value={lockerProduct.status}
             onChange={(event) => setLockerProduct({ ...lockerProduct, status: event.target.value })}
           >
-            <option value="active">active</option>
-            <option value="draft">draft</option>
-            <option value="hidden">hidden</option>
-            <option value="sold_out">sold_out</option>
+            <option value="active">{workflowLabel('active', pick)}</option>
+            <option value="draft">{workflowLabel('draft', pick)}</option>
+            <option value="hidden">{workflowLabel('hidden', pick)}</option>
+            <option value="sold_out">{workflowLabel('sold_out', pick)}</option>
           </select>
           <button
             className="btn-secondary compact"
@@ -302,7 +303,7 @@ export function EnterpriseOperationsPanel({
                 <div>
                   <h3>{String(row.contract_number ?? '')}</h3>
                   <p>
-                    {String(row.title || '')} · {String(row.status ?? '')}
+                    {String(row.title || '')} · {workflowLabel(row.status, pick)}
                   </p>
                 </div>
               </div>
@@ -316,7 +317,7 @@ export function EnterpriseOperationsPanel({
                 <div>
                   <h3>{String(row.request_number ?? '')}</h3>
                   <p>
-                    {String(row.request_type ?? '')} · {String(row.status ?? '')}
+                    {String(row.request_type ?? '')} · {workflowLabel(row.status, pick)}
                   </p>
                 </div>
               </div>
@@ -335,14 +336,14 @@ export function EnterpriseOperationsPanel({
                   )
                 }
               >
-                <option>submitted</option>
-                <option>under_review</option>
-                <option>quoted</option>
-                <option>accepted</option>
-                <option>rejected</option>
-                <option>in_production</option>
-                <option>completed</option>
-                <option>cancelled</option>
+                <option value="submitted">{workflowLabel('submitted', pick)}</option>
+                <option value="under_review">{workflowLabel('under_review', pick)}</option>
+                <option value="quoted">{workflowLabel('quoted', pick)}</option>
+                <option value="accepted">{workflowLabel('accepted', pick)}</option>
+                <option value="rejected">{workflowLabel('rejected', pick)}</option>
+                <option value="in_production">{workflowLabel('in_production', pick)}</option>
+                <option value="completed">{workflowLabel('completed', pick)}</option>
+                <option value="cancelled">{workflowLabel('cancelled', pick)}</option>
               </select>
             </article>
           ))}
@@ -377,7 +378,7 @@ function PaymentProofReviewCard({
     <article className="operations-card">
       <div>
         <span>{String(proof.proof_number ?? '')}</span>
-        <strong>{String(proof.status ?? '')}</strong>
+        <strong>{workflowLabel(proof.status, pick)}</strong>
       </div>
       <p>
         {Number(proof.amount || 0).toFixed(2)} {String(proof.currency ?? '')} ·{' '}
