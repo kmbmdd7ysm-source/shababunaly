@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateOrderWorkflow, recordManualPayment, recordRefund } from '../../services/operations';
-import { ORDER_TRANSITIONS, money } from './commerceHelpers';
+import { ORDER_TRANSITIONS, money, workflowLabel } from './commerceHelpers';
 import type { OperationsRunFn } from '../../types/operations';
 
 export function OrderOperationsCard({
@@ -64,7 +64,7 @@ export function OrderOperationsCard({
         <span>{pick({ en: 'Next valid status', ar: 'الحالة التالية المسموحة' })}</span>
         <select value={nextStatus} onChange={(event) => setNextStatus(event.target.value)}>
           {transitions.map((status) => (
-            <option key={status}>{status}</option>
+            <option key={status} value={status}>{workflowLabel(status, pick)}</option>
           ))}
         </select>
       </label>
@@ -103,9 +103,9 @@ export function OrderOperationsCard({
               onChange={(event) => setPayment(event.target.value)}
             />
             <select value={method} onChange={(event) => setMethod(event.target.value)}>
-              <option value="cash">Cash</option>
-              <option value="libyan_bank_card">Libyan Bank Card</option>
-              <option value="bank_transfer">Bank Transfer</option>
+              <option value="cash">{pick({ en: 'Cash', ar: 'نقدًا' })}</option>
+              <option value="libyan_bank_card">{pick({ en: 'Libyan Bank Card', ar: 'بطاقة مصرفية ليبية' })}</option>
+              <option value="bank_transfer">{pick({ en: 'Bank Transfer', ar: 'تحويل مصرفي' })}</option>
             </select>
             <input
               value={reference}
