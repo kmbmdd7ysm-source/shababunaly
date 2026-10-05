@@ -296,11 +296,25 @@ export default function OperationsPage(): ReactElement | null {
 
   return (
     <>
-      <Seo title="Operations" path="/operations" noindex />
+      <Seo title={pick({ en: 'Operations', ar: 'العمليات' })} path="/operations" noindex />
       {/* A module header, not a marketing hero. Dense, chalk-toned, and
           carrying the operator's role so it is never ambiguous. */}
       <header className="gw-modulehead">
-        <p className="gw-spec">{`STAFF · ${String(getStaffRole(auth.user) || '').toUpperCase()}`}</p>
+        <p className="gw-spec">
+          {pick({ en: 'STAFF', ar: 'الموظفون' })} ·{' '}
+          {pick(
+            ({
+              customer: { en: 'Customer', ar: 'عميل' },
+              sales: { en: 'Sales', ar: 'مبيعات' },
+              operations: { en: 'Operations', ar: 'العمليات' },
+              admin: { en: 'Admin', ar: 'مشرف' },
+              super_admin: { en: 'Super Admin', ar: 'مشرف عام' },
+            } as Record<string, { en: string; ar: string }>)[getStaffRole(auth.user)] || {
+              en: 'Staff',
+              ar: 'موظف',
+            },
+          )}
+        </p>
         <h1 className="gw-modulehead-title">
           {pick({ en: 'Commerce Operations', ar: 'عمليات المتجر' })}
         </h1>
