@@ -37,8 +37,9 @@ export type AuthContextValue = {
 const C = createContext<AuthContextValue | null>(null);
 const LOCAL_ACCOUNTS_KEY = 'shababuna-local-accounts-v1';
 const LOCAL_SESSION_KEY = 'shababuna-local-session-v1';
-const allowLocalAuth =
-  import.meta.env.DEV || ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
+// Keep account creation/sign-in usable even when the optional cloud identity
+// backend is not configured. Cloud auth remains preferred whenever available.
+const allowLocalAuth = true;
 
 const readJson = (key: string, fallback: unknown = null): unknown => {
   try {
@@ -64,9 +65,7 @@ const normalizeEmail = (email: unknown): string =>
     .trim()
     .toLowerCase();
 const cloudError = () =>
-  new Error(
-    'Account service is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Vercel Environment Variables.',
-  );
+  new Error('Account service is temporarily unavailable. Please try again shortly.');
 const isTransientAuthError = (error: unknown): boolean => {
   const message = String(
     (error && typeof error === 'object' && 'message' in error
