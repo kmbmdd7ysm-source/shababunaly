@@ -70,6 +70,18 @@ export default function ProfileSection({
       }}
       className="account-form"
     >
+      <div className="account-section-heading">
+        <div>
+          <p className="section-label">{pick({ en: 'Profile', ar: 'الملف الشخصي' })}</p>
+          <h2>{pick({ en: 'Personal details', ar: 'البيانات الشخصية' })}</h2>
+          <p>
+            {pick({
+              en: 'Keep your contact details and account identity up to date.',
+              ar: 'حدّث بيانات التواصل وهوية الحساب من مكان واحد.',
+            })}
+          </p>
+        </div>
+      </div>
       <div className="account-identity-card">
         <label>
           {pick({ en: 'Account email', ar: 'البريد الإلكتروني للحساب' })}
