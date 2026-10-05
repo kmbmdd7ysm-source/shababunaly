@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { updateQuoteWorkflow, recordQuotePayment } from '../../services/operations';
-import { QUOTE_TRANSITIONS, money } from './commerceHelpers';
+import { QUOTE_TRANSITIONS, money, workflowLabel } from './commerceHelpers';
 import type { OperationsRunFn } from '../../types/operations';
 
 export function QuoteCard({
@@ -70,7 +70,7 @@ export function QuoteCard({
         onChange={(event) => setValues({ ...values, status: event.target.value })}
       >
         {transitions.map((status) => (
-          <option key={String(status)}>{String(status)}</option>
+          <option key={String(status)} value={String(status)}>{workflowLabel(status, pick)}</option>
         ))}
       </select>
       <div className="operations-price-grid">
@@ -78,7 +78,7 @@ export function QuoteCard({
           type="number"
           min="0"
           step="0.01"
-          placeholder="Subtotal"
+          placeholder={pick({ en: 'Subtotal', ar: 'الإجمالي الفرعي' })}
           value={String(values.subtotal ?? '')}
           onChange={(event) => setValues({ ...values, subtotal: event.target.value })}
         />
@@ -86,7 +86,7 @@ export function QuoteCard({
           type="number"
           min="0"
           step="0.01"
-          placeholder="Shipping"
+          placeholder={pick({ en: 'Shipping', ar: 'الشحن' })}
           value={String(values.shipping ?? '')}
           onChange={(event) => setValues({ ...values, shipping: event.target.value })}
         />
@@ -94,7 +94,7 @@ export function QuoteCard({
           type="number"
           min="0"
           step="0.01"
-          placeholder="Tax"
+          placeholder={pick({ en: 'Tax', ar: 'الضريبة' })}
           value={String(values.tax ?? '')}
           onChange={(event) => setValues({ ...values, tax: event.target.value })}
         />
@@ -102,15 +102,15 @@ export function QuoteCard({
           type="number"
           min="0"
           step="0.01"
-          placeholder="Discount"
+          placeholder={pick({ en: 'Discount', ar: 'الخصم' })}
           value={String(values.discount ?? '')}
           onChange={(event) => setValues({ ...values, discount: event.target.value })}
         />
-        <output aria-label="Verified quote total">
+        <output aria-label={pick({ en: 'Verified quote total', ar: 'إجمالي عرض السعر المتحقق منه' })}>
           {total == null || !Number.isFinite(total) ? '—' : money(total)}
         </output>
       </div>
-      <small>Subtotal + Shipping + Tax − Discount</small>
+      <small>{pick({ en: 'Subtotal + Shipping + Tax − Discount', ar: 'الإجمالي الفرعي + الشحن + الضريبة − الخصم' })}</small>
       <button
         className="btn-secondary"
         disabled={saving === key}
@@ -148,9 +148,9 @@ export function QuoteCard({
               value={String(method ?? '')}
               onChange={(event) => setMethod(event.target.value)}
             >
-              <option value="bank_transfer">Bank Transfer</option>
-              <option value="libyan_bank_card">Libyan Bank Card</option>
-              <option value="cash">Cash</option>
+              <option value="bank_transfer">{pick({ en: 'Bank Transfer', ar: 'تحويل مصرفي' })}</option>
+              <option value="libyan_bank_card">{pick({ en: 'Libyan Bank Card', ar: 'بطاقة مصرفية ليبية' })}</option>
+              <option value="cash">{pick({ en: 'Cash', ar: 'نقدًا' })}</option>
             </select>
             <input
               value={String(reference ?? '')}
