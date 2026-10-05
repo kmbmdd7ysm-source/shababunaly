@@ -1041,3 +1041,315 @@
     transition: none !important;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   ACCOUNT SUBSECTIONS — addresses, security, returns, requests, B2B
+   -------------------------------------------------------------------------- */
+
+.gw-account .account-section-heading {
+  margin-bottom: 22px !important;
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid #e4e4df !important;
+}
+
+.gw-account .account-section-heading h2,
+.gw-account .address-section h2 {
+  margin: 0 0 7px !important;
+}
+
+.gw-account .account-section-heading p,
+.gw-account .address-section > p,
+.gw-account .returns-policy-note,
+.gw-account .special-requests-account p {
+  color: #6d6e68 !important;
+  line-height: 1.55 !important;
+}
+
+.gw-account .account-empty {
+  margin: 0 0 22px !important;
+  padding: 24px !important;
+  border: 1px dashed #d4d4ce !important;
+  border-radius: 16px !important;
+  background: #fafaf8 !important;
+}
+
+.gw-account .account-empty h3 {
+  margin: 0 0 6px !important;
+  font-size: 1rem !important;
+}
+
+.gw-account .account-empty p {
+  margin: 0 !important;
+  color: #74756f !important;
+}
+
+.gw-account .address-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  margin-bottom: 24px !important;
+}
+
+.gw-account .address-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  min-height: 190px !important;
+  padding: 18px !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 16px !important;
+  background: #fafaf8 !important;
+}
+
+.gw-account .address-card strong {
+  font-size: .92rem !important;
+}
+
+.gw-account .address-card p {
+  margin: 9px 0 0 !important;
+  color: #666762 !important;
+  font-size: .82rem !important;
+  line-height: 1.6 !important;
+}
+
+.gw-account .address-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  padding-top: 13px !important;
+  border-top: 1px solid #e3e3de !important;
+}
+
+.gw-account .address-actions button {
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border: 1px solid #d8d8d2 !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: #242424 !important;
+  font-size: .72rem !important;
+  font-weight: 700 !important;
+}
+
+.gw-account .address-form {
+  margin-top: 22px !important;
+  padding-top: 26px !important;
+  border-top: 1px solid #e3e3de !important;
+}
+
+.gw-account .address-form > h3 {
+  margin: 0 0 2px !important;
+  font-size: 1.1rem !important;
+  letter-spacing: -.02em !important;
+}
+
+.gw-account .address-form .form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.gw-account .address-form .form-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+
+.gw-account .field-error {
+  color: #9b2929 !important;
+  font-size: .7rem !important;
+}
+
+.gw-account .security-stack > form,
+.gw-account .security-stack > section,
+.gw-account .security-stack > div:not(.form-status) {
+  padding: 20px !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 16px !important;
+  background: #fafaf8 !important;
+}
+
+.gw-account .security-stack > form h2,
+.gw-account .security-stack > section h2 {
+  margin-bottom: 12px !important;
+  font-size: 1.08rem !important;
+}
+
+.gw-account .privacy-export-list {
+  list-style: none !important;
+  display: grid !important;
+  gap: 8px !important;
+  margin: 14px 0 0 !important;
+  padding: 0 !important;
+}
+
+.gw-account .privacy-export-list > li {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 10px 12px !important;
+  border: 1px solid #dfdfda !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  font-size: .78rem !important;
+}
+
+.gw-account .returns-section,
+.gw-account .special-requests-account {
+  max-width: none !important;
+}
+
+.gw-account .returns-policy-note {
+  padding: 14px 16px !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 14px !important;
+  background: #f8f8f5 !important;
+}
+
+.gw-account .returns-history,
+.gw-account .special-request-account-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.gw-account .return-history-card,
+.gw-account .special-request-account-card {
+  padding: 18px !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 16px !important;
+  background: #fafaf8 !important;
+  box-shadow: none !important;
+}
+
+.gw-account .return-history-card h3,
+.gw-account .special-request-account-card h3 {
+  margin: 0 !important;
+  font-size: .96rem !important;
+}
+
+.gw-account .return-request-form {
+  display: grid !important;
+  gap: 15px !important;
+  margin-top: 22px !important;
+  padding: 20px !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 16px !important;
+  background: #fafaf8 !important;
+}
+
+.gw-account .return-request-form input,
+.gw-account .return-request-form select,
+.gw-account .return-request-form textarea,
+.gw-account .special-requests-account input,
+.gw-account .special-requests-account select,
+.gw-account .special-requests-account textarea {
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 11px 13px !important;
+  border: 1px solid #d7d7d1 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #111 !important;
+  font: inherit !important;
+}
+
+.gw-account .return-request-form textarea,
+.gw-account .special-requests-account textarea {
+  min-height: 112px !important;
+  resize: vertical !important;
+}
+
+.gw-account .return-item-list {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+.gw-account .return-item-row {
+  padding: 12px !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+}
+
+.gw-account .special-request-card-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding-bottom: 12px !important;
+  margin-bottom: 12px !important;
+  border-bottom: 1px solid #e3e3de !important;
+}
+
+.gw-account .special-request-note,
+.gw-account .special-request-response {
+  margin-top: 12px !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #60615c !important;
+}
+
+.gw-account .organization-upgrade-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 20px !important;
+  padding: clamp(22px, 3vw, 34px) !important;
+  border: 1px solid #e0e0da !important;
+  border-radius: 18px !important;
+  background: #fafaf8 !important;
+}
+
+.gw-account .workspace-tabs {
+  gap: 6px !important;
+  padding: 6px !important;
+  border: 1px solid #e1e1dc !important;
+  border-radius: 14px !important;
+  background: #f3f3ef !important;
+}
+
+.gw-account .workspace-tabs button {
+  min-height: 44px !important;
+  border-radius: 10px !important;
+  font-size: .76rem !important;
+}
+
+.gw-account .workspace-tabs button.active {
+  background: #111 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.gw-account .workspace-tabs button.active b {
+  background: rgba(255,255,255,.16) !important;
+  color: #fff !important;
+}
+
+.gw-account .workspace-empty,
+.gw-account .workspace-card,
+.gw-account .workspace-list article {
+  border-color: #e0e0da !important;
+  border-radius: 16px !important;
+  background: #fafaf8 !important;
+}
+
+@media (max-width: 820px) {
+  .gw-account .address-grid,
+  .gw-account .returns-history,
+  .gw-account .special-request-account-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .gw-account .address-form .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .gw-account .organization-upgrade-card {
+    grid-template-columns: 1fr !important;
+  }
+}
