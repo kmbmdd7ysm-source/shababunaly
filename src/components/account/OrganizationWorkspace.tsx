@@ -199,7 +199,7 @@ export default function OrganizationWorkspace(): ReactElement {
     return (
       <div className="organization-upgrade-card">
         <div>
-          <p className="section-label">TEAMS & WHOLESALE</p>
+          <p className="section-label">{pick({ en: 'TEAMS & WHOLESALE', ar: 'الأندية والجملة' })}</p>
           <h2>{pick({ en: 'Organization workspace', ar: 'منصة المؤسسة' })}</h2>
           <p>
             {pick({
@@ -219,7 +219,7 @@ export default function OrganizationWorkspace(): ReactElement {
     <section className="organization-workspace" aria-labelledby="organization-workspace-title">
       <div className="section-heading-row">
         <div>
-          <p className="section-label">B2B WORKSPACE</p>
+          <p className="section-label">{pick({ en: 'B2B WORKSPACE', ar: 'منصة المؤسسات' })}</p>
           <h2 id="organization-workspace-title">
             {String(userMeta.organization_name || '') ||
               pick({ en: 'Organization workspace', ar: 'منصة المؤسسة' })}
@@ -794,7 +794,7 @@ function EnterpriseDocuments({ rows, quotes, accessToken, user, pick, lang, onSa
     <div className="enterprise-panel-stack">
       <form className="enterprise-action-card" onSubmit={(event) => { void upload(event); }}>
         <div>
-          <p className="section-label">PAYMENT PROOF</p>
+          <p className="section-label">{pick({ en: 'PAYMENT PROOF', ar: 'إثبات الدفع' })}</p>
           <h3>{pick({ en: 'Submit bank-transfer proof', ar: 'إرسال إثبات التحويل المصرفي' })}</h3>
           <p>
             {pick({
