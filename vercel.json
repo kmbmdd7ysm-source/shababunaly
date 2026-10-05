@@ -109,6 +109,9 @@
     },
     "api/customer-orders.ts": {
       "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
+    },
+    "api/center-vision-order-export.ts": {
+      "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
     }
   }
 }
