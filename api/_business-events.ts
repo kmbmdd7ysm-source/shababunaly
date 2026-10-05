@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { supabaseAdminRequest } from './_supabase-admin.js';
+import { writeBlobJson } from './_blob-store.js';
 
 const ALLOWED_EVENTS = new Set([
   'checkout_started',
@@ -30,7 +30,12 @@ const clean = (value: unknown, max = 160) =>
     .slice(0, max);
 const safeNumber = (value: unknown) => (Number.isFinite(Number(value)) ? Number(value) : null);
 function analyticsSalt() {
-  const value = clean(process.env.ANALYTICS_HASH_SALT, 5000);
+  const value = clean(
+    process.env.ANALYTICS_HASH_SALT ||
+      process.env.SHABABUNA_AUTH_SECRET ||
+      process.env.GUEST_ORDER_ACCESS_SECRET,
+    5000,
+  );
   if (process.env.NODE_ENV === 'production' && value.length < 32)
     throw new Error('analytics_hash_salt_not_configured');
   return value || 'development-only-analytics-salt-not-for-production';
@@ -82,16 +87,24 @@ export async function recordBusinessEvent(
     properties,
     source_event_id: sourceEventId,
   };
+  const safeEvent = normalized.replace(/[^a-z0-9_-]/g, '');
+  const safeSource = sourceEventId.replace(/[^A-Za-z0-9._-]/g, '').slice(0, 160);
+  if (!safeEvent || !safeSource) return false;
   try {
-    await supabaseAdminRequest('/rest/v1/commerce_events?on_conflict=event_name,source_event_id', {
-      method: 'POST',
-      headers: { Prefer: 'resolution=ignore-duplicates,return=minimal' },
-      body: JSON.stringify(row),
-    });
+    await writeBlobJson(
+      `analytics/commerce/${safeEvent}/${safeSource}.json`,
+      { ...row, recorded_at: new Date().toISOString() },
+      { allowOverwrite: false },
+    );
     return true;
-  } catch {
-    // Analytics remain fail-open for customer transactions. Production readiness
-    // separately verifies the event store and reconciles it against ledgers.
+  } catch (error) {
+    const status =
+      error && typeof error === 'object' && 'status' in error
+        ? Number((error as { status?: unknown }).status)
+        : 0;
+    // Duplicate source ids are successful idempotent replays.
+    if ([409, 412].includes(status)) return true;
+    // Analytics remain fail-open for customer transactions.
     return false;
   }
 }
