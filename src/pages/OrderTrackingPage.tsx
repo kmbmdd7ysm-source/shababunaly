@@ -8,6 +8,7 @@ import Seo from '../components/common/Seo';
 import PublicPageHeader from '../components/content/PublicPageHeader';
 import '../styles/composition.css';
 import '../styles/consumer-commerce.css';
+import '../styles/account-tracking-premium.css';
 import OrderCard, { type OrderLike } from '../components/account/OrderCard';
 
 export default function OrderTrackingPage(): ReactElement {
