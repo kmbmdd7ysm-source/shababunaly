@@ -54,6 +54,18 @@ export default function PreferencesSection({
       }}
       className="account-form"
     >
+      <div className="account-section-heading">
+        <div>
+          <p className="section-label">{pick({ en: 'Preferences', ar: 'التفضيلات' })}</p>
+          <h2>{pick({ en: 'Shopping preferences', ar: 'تفضيلات التسوق' })}</h2>
+          <p>
+            {pick({
+              en: 'Choose the defaults Shababuna should remember for your shopping experience.',
+              ar: 'اختر الإعدادات التي تريد من شبابنا تذكرها أثناء التسوق.',
+            })}
+          </p>
+        </div>
+      </div>
       <div className="account-preference-row">
         <div>
           <strong>{pick({ en: 'Display currency', ar: 'عملة العرض' })}</strong>
