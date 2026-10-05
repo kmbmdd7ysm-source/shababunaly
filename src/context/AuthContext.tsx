@@ -120,6 +120,28 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
         setConfigStatus(getSupabaseConfigStatus());
 
         if (!s) {
+          try {
+            const response = await fetch('/api/customer-auth', {
+              method: 'GET',
+              credentials: 'same-origin',
+              headers: { Accept: 'application/json' },
+              cache: 'no-store',
+            });
+            const payload = (await response.json().catch(() => ({}))) as {
+              ok?: boolean;
+              user?: AuthUser | null;
+              session?: Record<string, unknown> | null;
+            };
+            if (response.ok && payload.ok) {
+              setCloudConfigured(true);
+              setSession(payload.session || null);
+              setUser(payload.user || null);
+              return;
+            }
+          } catch {
+            // A previous local development account can still open while the
+            // native account service is temporarily unreachable.
+          }
           if (allowLocalAuth) {
             const saved = readJson(LOCAL_SESSION_KEY, null) as { user?: AuthUser } | null;
             if (saved?.user) {
@@ -193,42 +215,83 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
 
   const client = useCallback(async () => await getSupabase(), []);
 
-  const localSignUp = useCallback(async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
-    const normalized = normalizeEmail(email);
-    const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-    if (accounts.some((item) => item.email === normalized)) {
-      return { data: null, error: new Error('An account with this email already exists.') };
-    }
-    const record = {
-      id: crypto.randomUUID?.() || `local-${Date.now()}`,
-      email: normalized,
-      passwordHash: await hashPassword(password),
-      metadata,
-      createdAt: new Date().toISOString(),
-    };
-    writeJson(LOCAL_ACCOUNTS_KEY, [...accounts, record]);
-    const nextUser = localUser(record);
-    const nextSession = { user: nextUser, access_token: `local-${record.id}` };
-    writeJson(LOCAL_SESSION_KEY, nextSession);
-    setUser(nextUser);
-    setSession(nextSession);
-    return { data: { user: nextUser, session: nextSession }, error: null };
-  }, []);
+  const nativeAuth = useCallback(
+    async (body?: Record<string, unknown>) => {
+      const response = await fetch('/api/customer-auth', {
+        method: body ? 'POST' : 'GET',
+        credentials: 'same-origin',
+        headers: body
+          ? { 'Content-Type': 'application/json', Accept: 'application/json' }
+          : { Accept: 'application/json' },
+        ...(body ? { body: JSON.stringify(body) } : {}),
+        cache: 'no-store',
+      });
+      const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+      if (!response.ok) {
+        const code = String(payload.error || `account_api_${response.status}`);
+        const messages: Record<string, string> = {
+          invalid_credentials: 'Invalid email or password.',
+          email_exists: 'An account with this email already exists.',
+          invalid_signup: 'Check your email and choose a password with at least 8 characters.',
+          weak_password: 'Choose a stronger password with at least 8 characters.',
+          invalid_email: 'Enter a valid email address.',
+          authentication_required: 'Sign in first.',
+        };
+        throw new Error(messages[code] || 'Account service is temporarily unavailable. Please try again shortly.');
+      }
+      return payload;
+    },
+    [],
+  );
 
-  const localSignIn = useCallback(async (email: string, password: string) => {
-    const normalized = normalizeEmail(email);
-    const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-    const record = accounts.find((item: LocalAccount) => item.email === normalized);
-    if (!record || record.passwordHash !== (await hashPassword(password))) {
-      return { data: null, error: new Error('Invalid email or password.') };
-    }
-    const nextUser = localUser(record);
-    const nextSession = { user: nextUser, access_token: `local-${record.id}` };
-    writeJson(LOCAL_SESSION_KEY, nextSession);
-    setUser(nextUser);
-    setSession(nextSession);
-    return { data: { user: nextUser, session: nextSession }, error: null };
-  }, []);
+  const localSignUp = useCallback(
+    async (email: string, password: string, metadata: Record<string, unknown> = {}) => {
+      try {
+        const payload = await nativeAuth({
+          action: 'signup',
+          email: normalizeEmail(email),
+          password,
+          metadata,
+        });
+        const result = (payload.data || {}) as {
+          user?: AuthUser;
+          session?: Record<string, unknown>;
+        };
+        setCloudConfigured(true);
+        setUser(result.user || null);
+        setSession(result.session || null);
+        localStorage.removeItem(LOCAL_SESSION_KEY);
+        return { data: result, error: null };
+      } catch (error) {
+        return { data: null, error };
+      }
+    },
+    [nativeAuth],
+  );
+
+  const localSignIn = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const payload = await nativeAuth({
+          action: 'signin',
+          email: normalizeEmail(email),
+          password,
+        });
+        const result = (payload.data || {}) as {
+          user?: AuthUser;
+          session?: Record<string, unknown>;
+        };
+        setCloudConfigured(true);
+        setUser(result.user || null);
+        setSession(result.session || null);
+        localStorage.removeItem(LOCAL_SESSION_KEY);
+        return { data: result, error: null };
+      } catch (error) {
+        return { data: null, error };
+      }
+    },
+    [nativeAuth],
+  );
 
   const api = useMemo(
     () => ({
@@ -321,9 +384,7 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
       },
       resendVerification: async (email: string) => {
         const s = await client();
-        if (!s) {
-          return allowLocalAuth ? { data: {}, error: null } : { data: null, error: cloudError() };
-        }
+        if (!s) return { data: {}, error: null };
         return s.auth.resend({
           type: 'signup',
           email: normalizeEmail(email),
@@ -333,29 +394,15 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
       updateMetadata: async (metadata: Record<string, unknown> = {}) => {
         const s = await client();
         if (s) return s.auth.updateUser({ data: metadata });
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-        let updatedRecord: LocalAccount | null = null;
-        const updated = accounts.map((item) => {
-          if (item.email !== user.email) return item;
-          updatedRecord = { ...item, metadata: { ...(item.metadata || {}), ...metadata } };
-          return updatedRecord;
-        });
-        writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        const nextUser = localUser(
-          updatedRecord || {
-            id: String(user.id || `local-${user.email}`),
-            email: String(user.email),
-            passwordHash: '',
-            metadata,
-          },
-        );
-        const nextSession = { ...(session || {}), user: nextUser };
-        writeJson(LOCAL_SESSION_KEY, nextSession);
-        setUser(nextUser);
-        setSession(nextSession);
-        return { data: { user: nextUser }, error: null };
+        try {
+          const payload = await nativeAuth({ action: 'metadata', metadata });
+          const data = (payload.data || {}) as { user?: AuthUser };
+          if (data.user) setUser(data.user);
+          setCloudConfigured(true);
+          return { data, error: null };
+        } catch (error) {
+          return { data: null, error };
+        }
       },
       reset: async (email: string) => {
         const s = await client();
@@ -364,54 +411,35 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
             redirectTo: authRedirectUrl('recovery'),
           });
         }
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        const exists = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).some(
-          (item) => item.email === normalizeEmail(email),
-        );
-        return exists
-          ? { data: {}, error: null }
-          : { data: null, error: new Error('No account was found for this email.') };
+        try {
+          await nativeAuth({ action: 'reset', email: normalizeEmail(email) });
+          return { data: { manual: true }, error: null };
+        } catch (error) {
+          return { data: null, error };
+        }
       },
       updatePassword: async (password: string) => {
         const s = await client();
         if (s) return s.auth.updateUser({ password });
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-        const updated = await Promise.all(
-          accounts.map(async (item) =>
-            item.email === user.email
-              ? { ...item, passwordHash: await hashPassword(password) }
-              : item,
-          ),
-        );
-        writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        return { data: { user }, error: null };
+        try {
+          const payload = await nativeAuth({ action: 'password', password });
+          return { data: payload.data || { user }, error: null };
+        } catch (error) {
+          return { data: null, error };
+        }
       },
       updateEmail: async (email: string) => {
         const s = await client();
         if (s) return s.auth.updateUser({ email: normalizeEmail(email) });
-        if (!allowLocalAuth) return { data: null, error: cloudError() };
-        if (!user?.email) return { data: null, error: new Error('Sign in first.') };
-        const normalized = normalizeEmail(email);
-        const accounts = (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]);
-        if (accounts.some((item) => item.email === normalized && item.email !== user.email)) {
-          return { data: null, error: new Error('An account with this email already exists.') };
+        try {
+          const payload = await nativeAuth({ action: 'email', email: normalizeEmail(email) });
+          const data = (payload.data || {}) as { user?: AuthUser };
+          if (data.user) setUser(data.user);
+          setCloudConfigured(true);
+          return { data, error: null };
+        } catch (error) {
+          return { data: null, error };
         }
-        let updatedRecord: LocalAccount | null = null;
-        const updated = accounts.map((item) => {
-          if (item.email !== user.email) return item;
-          updatedRecord = { ...item, email: normalized, emailConfirmedAt: null };
-          return updatedRecord;
-        });
-        writeJson(LOCAL_ACCOUNTS_KEY, updated);
-        if (!updatedRecord) return { data: null, error: new Error('Account not found.') };
-        const nextUser = localUser(updatedRecord);
-        const nextSession = { ...(session || {}), user: nextUser };
-        writeJson(LOCAL_SESSION_KEY, nextSession);
-        setUser(nextUser);
-        setSession(nextSession);
-        return { data: { user: nextUser }, error: null };
       },
       signOut: async (scope?: string) => {
         const s = await client();
@@ -419,7 +447,11 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
           return s.auth.signOut(
             scope ? ({ scope } as { scope: 'global' | 'local' | 'others' }) : undefined,
           );
-        if (!allowLocalAuth) return { error: cloudError() };
+        try {
+          await nativeAuth({ action: 'signout' });
+        } catch {
+          // Clear the browser state even if the server is temporarily unreachable.
+        }
         localStorage.removeItem(LOCAL_SESSION_KEY);
         setUser(null);
         setSession(null);
@@ -433,11 +465,7 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
           await s.auth.signOut();
           return;
         }
-        if (!allowLocalAuth) throw cloudError();
-        writeJson(
-          LOCAL_ACCOUNTS_KEY,
-          (readJson(LOCAL_ACCOUNTS_KEY, []) as LocalAccount[]).filter((item) => item.email !== user?.email),
-        );
+        await nativeAuth({ action: 'delete' });
         localStorage.removeItem(LOCAL_SESSION_KEY);
         setUser(null);
         setSession(null);
@@ -449,8 +477,13 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
           if (error) throw error;
           return data;
         }
-        if (!allowLocalAuth) throw cloudError();
-        return { session, user };
+        const payload = await nativeAuth();
+        const nextUser = (payload.user || null) as AuthUser | null;
+        const nextSession = (payload.session || null) as Record<string, unknown> | null;
+        setUser(nextUser);
+        setSession(nextSession);
+        setCloudConfigured(true);
+        return { session: nextSession, user: nextUser };
       },
       listMfaFactors: async () => {
         const s = await client();
@@ -495,7 +528,7 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
         return data;
       },
     }) as AuthContextValue,
-    [user, session, loading, cloudConfigured, configStatus, client, localSignIn, localSignUp],
+    [user, session, loading, cloudConfigured, configStatus, client, localSignIn, localSignUp, nativeAuth],
   );
 
   return <C.Provider value={api}>{children}</C.Provider>;
