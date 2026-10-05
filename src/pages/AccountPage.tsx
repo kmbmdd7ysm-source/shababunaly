@@ -34,6 +34,7 @@ import '../styles/workspace.css';
 import '../styles/domain-misc.css';
 import '../styles/domain-forms.css';
 import '../styles/consumer-commerce.css';
+import '../styles/account-tracking-premium.css';
 
 const OrganizationWorkspace = lazy(() => import('../components/account/OrganizationWorkspace'));
 const ReturnsSection = lazy(() => import('../components/account/ReturnsSection'));
