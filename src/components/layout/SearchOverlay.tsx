@@ -152,7 +152,7 @@ export default function SearchOverlay({
   return (
     <div ref={dialogRef} className="s2-search" role="dialog" aria-modal="true" aria-labelledby={`${listId}-title`}>
       <div className="s2-search__top">
-        <span id={`${listId}-title`} className="s2-search__brand">Shababuna</span>
+        <span id={`${listId}-title`} className="s2-search__brand">{pick({ en: 'Shababuna', ar: 'شبابنا' })}</span>
         <button type="button" className="s2-icon-action" onClick={() => close('close')} aria-label={pick({ en: 'Close search', ar: 'إغلاق البحث' })}>
           <Icon name="close" />
         </button>
