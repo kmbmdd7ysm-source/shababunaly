@@ -952,7 +952,7 @@ export default function CheckoutPage(): ReactElement {
                 <button
                   type="submit"
                   className="btn-primary block checkout-submit"
-                  disabled={busy || !rateReady}
+                  disabled={busy || (!rateReady && currency === 'LYD')}
                 >
                   {busy
                     ? checkout.processing
