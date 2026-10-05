@@ -732,3 +732,46 @@ html[dir='rtl'] .cc-favorites-editorial figcaption{inset-inline:auto clamp(18px,
     min-height: 86px !important;
   }
 }
+
+
+/* 2026-10-04 auth density pass */
+.gw-gatewall .gw-gate-form {
+  inline-size: min(100%, 520px) !important;
+  max-inline-size: 520px !important;
+  gap: 12px !important;
+}
+.gw-gatewall .gw-gate-title {
+  font-size: clamp(2.25rem, 3.6vw, 3.55rem) !important;
+  margin-bottom: 2px !important;
+}
+.gw-gate-form .form-notice {
+  padding: 10px 12px !important;
+  font-size: .78rem !important;
+}
+.gw-gate-form .account-type-choice legend {
+  margin-bottom: 7px !important;
+}
+.gw-gate-form .account-type-choice-grid > button {
+  min-height: 88px !important;
+  padding: 12px 13px !important;
+}
+.gw-gate-form input[type='email'],
+.gw-gate-form input[type='password'],
+.gw-gate-form input[type='text'],
+.gw-gate-form input[type='tel'],
+.gw-gate-form select,
+.gw-gate-form input[type='file'] {
+  min-height: 46px !important;
+}
+.gw-gate-form > button[type='submit'] {
+  min-height: 48px !important;
+  margin-top: 2px !important;
+}
+@media (max-width: 900px) {
+  .gw-gatewall .gw-gate-form {
+    max-inline-size: 540px !important;
+  }
+  .gw-gatewall .gw-gate-title {
+    font-size: clamp(2.15rem, 8vw, 3.25rem) !important;
+  }
+}
