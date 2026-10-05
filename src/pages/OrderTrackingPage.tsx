@@ -213,14 +213,18 @@ export default function OrderTrackingPage(): ReactElement {
             {lookup.state === 'error' && (
               <div className="notice notice--info" role="alert">
                 {pick({
-                  en: 'Order lookup is temporarily unavailable. Please retry later.',
-                  ar: 'البحث عن الطلب غير متاح مؤقتاً. يرجى المحاولة لاحقاً.',
+                  en: 'We could not check this order right now. Please try again in a moment.',
+                  ar: 'تعذر التحقق من هذا الطلب الآن. حاول مرة أخرى بعد قليل.',
                 })}
               </div>
             )}
           </section>
-          <p className="notice notice--muted">
-            {ot.note} <Link to="/contact?type=order">{ot.contact}</Link>
+          <p className="notice notice--muted sb-tracking-support">
+            {pick({
+              en: 'Tracking updates appear here as your order moves through confirmation, preparation and delivery.',
+              ar: 'تظهر تحديثات الطلب هنا أثناء انتقاله من التأكيد إلى التجهيز ثم التسليم.',
+            })}{' '}
+            <Link to="/contact?type=order">{ot.contact}</Link>
           </p>
         </div>
       </section>
