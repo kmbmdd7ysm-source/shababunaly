@@ -203,7 +203,7 @@ export default function ReturnsSection({
     <section className="returns-section" aria-labelledby="account-returns-title">
       <div className="section-heading-row">
         <div>
-          <p className="section-label">RETURNS</p>
+          <p className="section-label">{pick({ en: 'RETURNS', ar: 'الإرجاع' })}</p>
           <h2 id="account-returns-title">
             {pick({ en: 'Returns & refunds', ar: 'الإرجاع واسترداد المبالغ' })}
           </h2>
