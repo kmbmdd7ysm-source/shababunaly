@@ -39,11 +39,13 @@ import './styles/shell.css';
 import App from './App';
 import './styles/worldclass-polish.css';
 import './styles/customer-experience.css';
-import './styles/arabic-hardening.css';
 import './styles/icon-hardening.css';
 import './styles/form-control-luxury.css';
 import './styles/typography-polish.css';
 import './styles/commerce-premium-final.css';
+/* Locale hardening is intentionally last so later route/polish sheets cannot
+   reintroduce Latin tracking, compressed leading or uppercase into Arabic. */
+import './styles/arabic-hardening.css';
 
 installGlobalErrorMonitoring();
 
