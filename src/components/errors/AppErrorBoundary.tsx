@@ -82,7 +82,7 @@ export default class AppErrorBoundary extends Component<Props, State> {
     return (
       <section className="section error-boundary" role="alert" aria-live="assertive">
         <div className="container narrow">
-          <p className="section-label">SHABABUNA</p>
+          <p className="section-label">{lang === 'ar' ? 'شبابنا' : 'SHABABUNA'}</p>
           <h1>{t.title}</h1>
           <p>{t.body}</p>
           <p className="error-reference">
