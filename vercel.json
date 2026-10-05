@@ -112,6 +112,9 @@
     },
     "api/center-vision-order-export.ts": {
       "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
+    },
+    "api/commerce-smoke-final.ts": {
+      "includeFiles": "{src/data/**,src/config/**,src/utils/**,src/domain/**}"
     }
   }
 }
