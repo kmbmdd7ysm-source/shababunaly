@@ -33,6 +33,19 @@ export default function MediaLibrary({
   });
   const [edits, setEdits] = useState<Record<string, Record<string, unknown>>>({});
   const doUpload = () => uploadOperationalMedia({ accessToken, ...upload });
+  const localizeStatus = (value: unknown) => {
+    const key = String(value || '');
+    const labels: Record<string, { en: string; ar: string }> = {
+      pending: { en: 'Pending', ar: 'قيد الانتظار' },
+      quarantined: { en: 'Quarantined', ar: 'في الحجر' },
+      scanning: { en: 'Scanning', ar: 'قيد الفحص' },
+      clean: { en: 'Clean', ar: 'سليم' },
+      failed: { en: 'Scan failed', ar: 'فشل الفحص' },
+      private: { en: 'Private', ar: 'خاص' },
+      public: { en: 'Public', ar: 'عام' },
+    };
+    return labels[key] ? pick(labels[key]) : key;
+  };
   return (
     <section className="operations-subsection">
       <h3>{pick({ en: 'Secure media library', ar: 'مكتبة الوسائط الآمنة' })}</h3>
@@ -72,12 +85,12 @@ export default function MediaLibrary({
             value={upload.assetRole}
             onChange={(event) => setUpload({ ...upload, assetRole: event.target.value })}
           >
-            <option value="reference">reference</option>
-            <option value="logo">logo</option>
-            <option value="sponsor">sponsor</option>
-            <option value="proof">proof</option>
-            <option value="production">production</option>
-            <option value="tech_pack">tech_pack</option>
+            <option value="reference">{pick({ en: 'Reference', ar: 'مرجع' })}</option>
+            <option value="logo">{pick({ en: 'Logo', ar: 'شعار' })}</option>
+            <option value="sponsor">{pick({ en: 'Sponsor', ar: 'راعٍ' })}</option>
+            <option value="proof">{pick({ en: 'Proof', ar: 'بروفة' })}</option>
+            <option value="production">{pick({ en: 'Production', ar: 'إنتاج' })}</option>
+            <option value="tech_pack">{pick({ en: 'Tech pack', ar: 'ملف تقني' })}</option>
           </select>
           <input
             type="file"
@@ -110,12 +123,12 @@ export default function MediaLibrary({
                 <div>
                   <h3>{String(asset.original_name || '')}</h3>
                   <p>
-                    {String(asset.entity_type || 'media')} · {String(asset.scan_status || '')} ·{' '}
-                    {String(asset.visibility || '')}
+                    {String(asset.entity_type || 'media')} · {localizeStatus(asset.scan_status)} ·{' '}
+                    {localizeStatus(asset.visibility)}
                   </p>
                   <div className="operations-form-grid">
                     <input
-                      aria-label="English alt text"
+                      aria-label={pick({ en: 'English alt text', ar: 'النص البديل الإنجليزي' })}
                       value={String(edit.altTextEn || '')}
                       onChange={(event) =>
                         setEdits({
@@ -123,10 +136,10 @@ export default function MediaLibrary({
                           [assetId]: { ...edit, altTextEn: event.target.value },
                         })
                       }
-                      placeholder="Alt text EN"
+                      placeholder={pick({ en: 'Alt text EN', ar: 'النص البديل بالإنجليزية' })}
                     />
                     <input
-                      aria-label="Arabic alt text"
+                      aria-label={pick({ en: 'Arabic alt text', ar: 'النص البديل العربي' })}
                       value={String(edit.altTextAr || '')}
                       onChange={(event) =>
                         setEdits({
@@ -156,8 +169,8 @@ export default function MediaLibrary({
                         })
                       }
                     >
-                      <option value="private">private</option>
-                      <option value="public">public</option>
+                      <option value="private">{pick({ en: 'Private', ar: 'خاص' })}</option>
+                      <option value="public">{pick({ en: 'Public', ar: 'عام' })}</option>
                     </select>
                   </div>
                 </div>
