@@ -1,5 +1,3 @@
-import { reportClientError } from '../telemetry';
-import { getSupabase } from '../supabase';
 import { getAddressRequirements, normalizeCountryCode } from '../../data/countries';
 
 type AddressRow = Record<string, unknown> & {
@@ -53,55 +51,16 @@ type NormalizedAddress = {
   is_default: boolean;
 };
 
-const allowLocalPersistence =
-  Boolean(import.meta.env.DEV) ||
-  ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname || '');
-
 const clean = (value: unknown): string =>
   String(value ?? '')
     .replace(/[<>]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 
-const localKey = (userId: string): string => `shababuna-addresses-v2:${userId}`;
-
-const readLocal = (userId: string): AddressRow[] => {
-  if (!allowLocalPersistence) return [];
-  try {
-    const parsed: unknown = JSON.parse(localStorage.getItem(localKey(userId)) || '[]');
-    return Array.isArray(parsed) ? (parsed as AddressRow[]) : [];
-  } catch {
-    return [];
-  }
-};
-
-const writeLocal = (userId: string, rows: AddressRow[]): void => {
-  if (allowLocalPersistence) localStorage.setItem(localKey(userId), JSON.stringify(rows));
-};
-
-const now = (): string => new Date().toISOString();
-
 const normalizeRow = (row: AddressRow = {}): AddressRow => ({
   ...row,
   address_line_1: String(row.address_line_1 || row.line1 || ''),
   address_line_2: (row.address_line_2 || row.line2 || null) as string | null,
-});
-
-const cloudPayload = (value: NormalizedAddress, userId: string) => ({
-  user_id: userId,
-  label: value.label,
-  first_name: value.first_name,
-  last_name: value.last_name,
-  company: value.company,
-  line1: value.address_line_1,
-  line2: value.address_line_2,
-  city: value.city,
-  region: value.region,
-  postal_code: value.postal_code,
-  country: value.country,
-  phone: value.phone,
-  is_default: value.is_default,
-  updated_at: now(),
 });
 
 export function normalizeAddress(input: AddressInput | Record<string, unknown>): NormalizedAddress {
@@ -159,67 +118,35 @@ export function validateAddress(input: AddressInput | Record<string, unknown>): 
   return { value: address, errors, valid: Object.keys(errors).length === 0 };
 }
 
-async function cloud(): Promise<Awaited<ReturnType<typeof getSupabase>>> {
-  const client = await getSupabase();
-  if (!client && !allowLocalPersistence) {
-    throw Object.assign(new Error('cloud_not_configured'), { code: 'CLOUD_REQUIRED' });
+async function api(body?: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const response = await fetch('/api/customer-addresses', {
+    method: body ? 'POST' : 'GET',
+    credentials: 'same-origin',
+    headers: body
+      ? { 'Content-Type': 'application/json', Accept: 'application/json' }
+      : { Accept: 'application/json' },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+    cache: 'no-store',
+  });
+  const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!response.ok) {
+    throw Object.assign(new Error(String(payload.error || `addresses_${response.status}`)), {
+      status: response.status,
+    });
   }
-  return client;
-}
-
-function localSave(userId: string, value: NormalizedAddress, id?: string): AddressRow {
-  let rows = readLocal(userId);
-  if (value.is_default) rows = rows.map((row) => ({ ...row, is_default: false }));
-  const record: AddressRow = {
-    ...value,
-    id: id || globalThis.crypto?.randomUUID?.() || `addr-${Date.now()}`,
-    user_id: userId,
-    updated_at: now(),
-    created_at: rows.find((row) => row.id === id)?.created_at || now(),
-  };
-  rows = id ? rows.map((row) => (row.id === id ? record : row)) : [record, ...rows];
-  if (!rows.some((row) => row.is_default)) {
-    rows = rows.map((row, index) => (index === 0 ? { ...row, is_default: true } : row));
-  }
-  writeLocal(userId, rows);
-  return record;
+  return payload;
 }
 
 export async function listAddresses(
   userId: string,
   options: { signal?: AbortSignal } = {},
 ): Promise<AddressRow[]> {
-  const client = await cloud();
-  if (!client) {
-    return readLocal(userId).sort((a, b) => Number(b.is_default) - Number(a.is_default));
-  }
-  try {
-    let query = client
-      .from('addresses')
-      .select('*')
-      .eq('user_id', userId)
-      .order('is_default', { ascending: false })
-      .order('updated_at', { ascending: false });
-    const queryWithAbort = query as { abortSignal?: (signal: AbortSignal) => typeof query };
-    if (options.signal && typeof queryWithAbort.abortSignal === 'function') {
-      query = queryWithAbort.abortSignal(options.signal);
-    }
-    const { data, error } = await query;
-    if (error) throw error;
-    const normalized = ((data || []) as AddressRow[]).map(normalizeRow);
-    if (normalized.length && allowLocalPersistence) writeLocal(userId, normalized);
-    return normalized.length
-      ? normalized
-      : allowLocalPersistence
-        ? readLocal(userId).map(normalizeRow)
-        : [];
-  } catch (error: unknown) {
-    if (allowLocalPersistence) {
-      const cached = readLocal(userId);
-      if (cached.length) return cached;
-    }
-    throw error;
-  }
+  if (!userId) return [];
+  if (options.signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+  const payload = await api();
+  return (Array.isArray(payload.addresses) ? payload.addresses : []).map((row) =>
+    normalizeRow(row as AddressRow),
+  );
 }
 
 export async function saveAddress(
@@ -227,87 +154,28 @@ export async function saveAddress(
   input: AddressInput | Record<string, unknown>,
   id?: string,
 ): Promise<AddressRow> {
+  if (!userId) throw new Error('authentication_required');
   const { value, errors, valid } = validateAddress(input);
   if (!valid) {
     throw Object.assign(new Error('Invalid address'), { code: 'VALIDATION', fields: errors });
   }
-  const localRecord = allowLocalPersistence ? localSave(userId, value, id) : null;
-  const client = await cloud();
-  if (!client) {
-    if (!localRecord) throw new Error('address_save_unavailable');
-    return localRecord;
-  }
-  try {
-    if (value.is_default) {
-      const { error } = await client
-        .from('addresses')
-        .update({ is_default: false, updated_at: now() })
-        .eq('user_id', userId)
-        .eq('is_default', true);
-      if (error) throw error;
-    }
-    const payload = cloudPayload(value, userId);
-    const query = id
-      ? client.from('addresses').update(payload).eq('id', id).eq('user_id', userId)
-      : client.from('addresses').insert(payload);
-    const { data, error } = await query.select().single();
-    if (error) throw error;
-    if (allowLocalPersistence && localRecord) {
-      const rows = readLocal(userId).map((row) =>
-        row.id === localRecord.id ? (data as AddressRow) : row,
-      );
-      writeLocal(userId, rows);
-    }
-    return normalizeRow((data || {}) as AddressRow);
-  } catch (error: unknown) {
-    reportClientError(error, { source: 'address_save_cloud' });
-    if (allowLocalPersistence && localRecord) return localRecord;
-    throw error;
-  }
+  const payload = await api({
+    action: 'save',
+    id: id || '',
+    address: value,
+  });
+  return normalizeRow((payload.address || {}) as AddressRow);
 }
 
 export async function deleteAddress(userId: string, id: string): Promise<void> {
-  if (allowLocalPersistence) {
-    writeLocal(
-      userId,
-      readLocal(userId).filter((row) => row.id !== id),
-    );
-  }
-  const client = await cloud();
-  if (!client) return;
-  const { error } = await client.from('addresses').delete().eq('id', id).eq('user_id', userId);
-  if (error) {
-    reportClientError(error, { source: 'address_delete_cloud' });
-    throw error;
-  }
+  if (!userId) return;
+  await api({ action: 'delete', id });
 }
 
 export async function setDefaultAddress(userId: string, id: string): Promise<AddressRow[]> {
-  if (allowLocalPersistence) {
-    const rows = readLocal(userId).map((row) => ({
-      ...row,
-      is_default: row.id === id,
-      updated_at: now(),
-    }));
-    writeLocal(userId, rows);
-  }
-  const client = await cloud();
-  if (client) {
-    try {
-      await client
-        .from('addresses')
-        .update({ is_default: false, updated_at: now() })
-        .eq('user_id', userId);
-      const { error } = await client
-        .from('addresses')
-        .update({ is_default: true, updated_at: now() })
-        .eq('id', id)
-        .eq('user_id', userId);
-      if (error) throw error;
-    } catch (error: unknown) {
-      reportClientError(error, { source: 'address_default_cloud' });
-      if (!allowLocalPersistence) throw error;
-    }
-  }
-  return listAddresses(userId);
+  if (!userId) return [];
+  const payload = await api({ action: 'default', id });
+  return (Array.isArray(payload.addresses) ? payload.addresses : []).map((row) =>
+    normalizeRow(row as AddressRow),
+  );
 }
