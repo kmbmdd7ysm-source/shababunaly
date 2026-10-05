@@ -1,23 +1,35 @@
 import { guardPublicPost, applyApiHeaders } from './_request-security.js';
-import { resolveSupabaseUser, supabaseAdminRequest } from './_supabase-admin.js';
 import { sendInternalFormNotification } from './_internal-form-notification.js';
 import { createGuestOrderToken } from './_guest-order-token.js';
+import { createNativeOrder } from './_native-orders.js';
 
-type ApiReq = { method?: string; body?: unknown; headers?: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } };
-type ApiRes = { setHeader: (n: string, v: string) => void; status: (c: number) => { json: (b: unknown) => unknown } };
-const clean = (value: unknown, max = 5000) => String(value ?? '').trim().replace(/\0/g, '').slice(0, max);
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const METHODS = new Set(['cash_on_delivery','cash','bank_transfer','online','online_card','libyan_bank_card']);
-const CENTER_VISION_API = (process.env.CENTER_VISION_API_BASE_URL || 'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api').replace(/\/$/, '');
+type Row = Record<string, unknown>;
+type ApiReq = {
+  method?: string;
+  body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+};
+type ApiRes = {
+  setHeader: (n: string, v: string | string[]) => void;
+  status: (c: number) => { json: (b: unknown) => unknown };
+};
+
+const clean = (value: unknown, max = 5000) =>
+  String(value ?? '').trim().replace(/\0/g, '').slice(0, max);
+
+const CENTER_VISION_API = (
+  process.env.CENTER_VISION_API_BASE_URL ||
+  'https://br-sweet-mountain-b46pgqvs-centerapi.compute.c-6.us-east-2.aws.neon.tech/api'
+).replace(/\/$/, '');
 
 async function fallbackCenterVisionInquiry(input: {
-  order: Record<string, unknown>;
+  order: Row;
   email: string;
   phone?: string;
   fullName?: string;
-  shipping: Record<string, unknown>;
-  items: Array<Record<string, unknown>>;
+  shipping: Row;
+  items: Row[];
 }) {
   const payload = {
     siteKey: 'SHABABUNA',
@@ -48,18 +60,18 @@ async function fallbackCenterVisionInquiry(input: {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(15_000),
   });
   if (!response.ok) throw new Error(`center_vision_inquiry_${response.status}`);
 }
 
 async function syncCenterVisionOrder(input: {
-  order: Record<string, unknown>;
+  order: Row;
   email: string;
   phone?: string;
   fullName?: string;
-  shipping: Record<string, unknown>;
-  items: Array<Record<string, unknown>>;
+  shipping: Row;
+  items: Row[];
   ticket?: string | null;
 }) {
   const orderNumber = clean(input.order.order_number, 120);
@@ -69,219 +81,156 @@ async function syncCenterVisionOrder(input: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ orderNumber, ticket: input.ticket }),
-        signal: AbortSignal.timeout(20000),
+        signal: AbortSignal.timeout(20_000),
       });
       if (mirror.ok) return 'order-mirrored';
     } catch {
-      // Fall through to the existing inquiry path so the order is still visible
-      // to Center Vision even if the operational mirror is temporarily unavailable.
+      // Fall through to inquiry recovery.
     }
   }
-
   await fallbackCenterVisionInquiry(input);
   return 'inquiry-fallback';
 }
 
-function normalizedItems(value: unknown) {
-  if (!Array.isArray(value) || value.length < 1 || value.length > 50) throw new Error('invalid_items');
-  return value.map((raw) => {
-    const item = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {};
-    const productId = clean(item.productId, 180);
-    const variantId = clean(item.variantId, 260);
-    const quantity = Math.trunc(Number(item.quantity || 0));
-    const purchaseMode = clean(item.purchaseMode || 'retail', 20).toLowerCase();
-    if (!productId || !variantId || quantity < 1 || quantity > 999 || !['retail','wholesale','custom'].includes(purchaseMode)) throw new Error('invalid_items');
-    return { productId, variantId, quantity, purchaseMode };
-  });
-}
-
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res);
-  if (req.method !== 'POST') { res.setHeader('Allow','POST'); return res.status(405).json({ ok:false,error:'method_not_allowed' }); }
-  if (!(await guardPublicPost(req, res, { maxBytes: 96_000, limit: 8, windowMs: 10 * 60_000, bucket: 'order-intake', honeypot: false, allowEphemeralFallback: true }))) return;
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ ok: false, error: 'method_not_allowed' });
+  }
+  if (
+    !(await guardPublicPost(req, res, {
+      maxBytes: 96_000,
+      limit: 8,
+      windowMs: 10 * 60_000,
+      bucket: 'order-intake',
+      honeypot: false,
+      allowEphemeralFallback: true,
+    }))
+  ) return;
+
   try {
-    const body = req.body && typeof req.body === 'object' ? req.body as Record<string, unknown> : {};
-    const idempotencyKey = clean(body.idempotencyKey, 36);
-    const paymentMethod = clean(body.paymentMethod, 40).toLowerCase();
-    const email = clean(body.email, 254).toLowerCase();
-    const shipping = body.shipping && typeof body.shipping === 'object' ? body.shipping as Record<string, unknown> : {};
-    const items = normalizedItems(body.items);
-    if (!UUID.test(idempotencyKey) || !METHODS.has(paymentMethod) || !EMAIL.test(email)) throw new Error('invalid_order');
+    const body =
+      req.body && typeof req.body === 'object' ? (req.body as Row) : {};
+    const created = await createNativeOrder(req, body);
+    const order = created.order;
+    const shipping =
+      order.shipping_summary && typeof order.shipping_summary === 'object'
+        ? (order.shipping_summary as Row)
+        : {};
+    const customer =
+      order.customer_summary && typeof order.customer_summary === 'object'
+        ? (order.customer_summary as Row)
+        : {};
+    const email = clean(order.customer_email, 254).toLowerCase();
+    const items = Array.isArray(order.order_items) ? (order.order_items as Row[]) : [];
 
-    const authHeader = req.headers?.authorization;
-    const user = await resolveSupabaseUser(Array.isArray(authHeader) ? authHeader[0] : authHeader);
-    const trustedEmail = user?.email ? clean(user.email,254).toLowerCase() : email;
-    if (user?.email && trustedEmail !== email) throw new Error('email_mismatch');
-
-    // Keep non-inventory-tracked catalogue rows (especially owner-confirmed
-    // LHA immediate-delivery items) synchronized on demand before the trusted
-    // transaction. This fixes stale production catalogue rows without ever
-    // resetting tracked inventory quantities.
-    try {
-      const { syncUntrackedRequestedCatalog } = await import('./_trusted-static-catalog.js');
-      await syncUntrackedRequestedCatalog(items);
-    } catch {
-      // The transactional RPC remains the authority; optional catalogue sync
-      // must never prevent the order handler itself from starting or accepting
-      // an order when the production catalogue is already current.
-    }
-
-    const rpcShipping = {
-      ...shipping,
-      ...(paymentMethod === 'bank_transfer' ? { manualPaymentMethod: 'bank_transfer' } : {}),
-    };
-    const callTrustedOrder = (method: string) =>
-      supabaseAdminRequest('/rest/v1/rpc/create_order_transactional', {
-        method: 'POST',
-        body: JSON.stringify({
-          p_user_id: user?.id || null,
-          p_customer_email: trustedEmail,
-          p_currency: 'USD',
-          p_payment_method: method,
-          p_idempotency_key: idempotencyKey,
-          p_shipping: rpcShipping,
-          p_items: items,
-        }),
-      }) as Promise<Record<string, unknown>>;
-
-    let result: Record<string, unknown>;
-    try {
-      result = await callTrustedOrder(paymentMethod);
-    } catch (error) {
-      // Production may still be on the previous payment-method DB constraint.
-      // Bank transfer is a manual Libya payment, so it is transactionally
-      // equivalent to cash while the exact channel is preserved in shipping
-      // metadata and the API response/Center Vision mirror.
-      if (paymentMethod !== 'bank_transfer') throw error;
-      result = await callTrustedOrder('cash');
-    }
-
-    const order = result?.order && typeof result.order === 'object' ? result.order as Record<string, unknown> : null;
-    if (!order?.order_number) throw new Error('order_create_failed');
-    if (paymentMethod === 'bank_transfer') {
-      order.payment_method = 'bank_transfer';
-      order.shipping_summary = {
-        ...((order.shipping_summary && typeof order.shipping_summary === 'object'
-          ? order.shipping_summary
-          : {}) as Record<string, unknown>),
-        manualPaymentMethod: 'bank_transfer',
-      };
-    }
-
-    // Email is sent server-side immediately after the trusted transaction. The
-    // checkout can close and the notification does not depend on browser state.
-    const displayCurrency = clean(shipping.displayCurrency || 'USD', 8).toUpperCase();
-    const customer = shipping.customer && typeof shipping.customer === 'object' ? shipping.customer as Record<string, unknown> : {};
     let guestAccessToken: string | null = null;
-    if (!user?.id) {
+    if (!created.session?.id) {
       try {
         guestAccessToken = createGuestOrderToken({
           orderNumber: order.order_number,
-          email: trustedEmail,
+          email,
           ttlSeconds: 60 * 60,
         });
       } catch {
-        // The trusted order is already persisted. Tracking can still be unlocked
-        // later with order number + email + Turnstile if token signing is unavailable.
         guestAccessToken = null;
       }
     }
 
-    let centerVisionSyncTicket: string | null = null;
+    let syncTicket: string | null = null;
     try {
-      centerVisionSyncTicket = createGuestOrderToken({
+      syncTicket = createGuestOrderToken({
         orderNumber: order.order_number,
-        email: trustedEmail,
+        email,
         ttlSeconds: 24 * 60 * 60,
       });
     } catch {
-      // The legacy Public Inquiry fallback below remains available if the
-      // signed server-to-server mirror ticket cannot be created.
-      centerVisionSyncTicket = null;
+      syncTicket = null;
     }
 
-    const trustedItems = Array.isArray(order.order_items) ? order.order_items : items;
-    const canonicalSubtotal = Number(order.subtotal) || 0;
-    const displaySubtotal = Number(shipping.displaySubtotal);
-    const displayRate =
-      displayCurrency !== String(order.currency || 'USD').toUpperCase() &&
-      canonicalSubtotal > 0 &&
-      Number.isFinite(displaySubtotal) &&
-      displaySubtotal > 0
-        ? displaySubtotal / canonicalSubtotal
-        : 1;
-    const detailedItems = trustedItems.map((raw: unknown) => {
-      const line = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
-      const snapshot =
-        line.variant_snapshot && typeof line.variant_snapshot === 'object'
-          ? (line.variant_snapshot as Record<string, unknown>)
-          : {};
-      const unit = Number(line.unit_price) || 0;
-      const lineTotal = Number(line.line_total) || unit * (Number(line.quantity) || 0);
-      return {
-        product_name: line.product_name || line.productId || '',
-        product_id: line.product_id || line.productId || '',
-        sku: line.sku || '',
-        variant_id: line.variant_id || line.variantId || '',
-        color: snapshot.color || '',
-        size: snapshot.size || '',
-        purchase_mode: line.purchase_mode || line.purchaseMode || 'retail',
-        quantity: Number(line.quantity) || 0,
-        unit_price_usd: unit,
-        line_total_usd: lineTotal,
-        display_currency: displayCurrency,
-        display_unit_price: Number((unit * displayRate).toFixed(2)),
-        display_line_total: Number((lineTotal * displayRate).toFixed(2)),
-      };
-    });
     let centerVision = 'pending';
     try {
       centerVision = await syncCenterVisionOrder({
         order,
-        email: trustedEmail,
-        phone: clean(customer.phone || shipping.phone, 80),
-        fullName: clean(customer.name || shipping.customerName, 180),
+        email,
+        phone: clean(order.customer_phone || customer.phone || shipping.phone, 80),
+        fullName: clean(order.customer_name || customer.name, 180),
         shipping,
-        items: detailedItems as Array<Record<string, unknown>>,
-        ticket: centerVisionSyncTicket,
+        items,
+        ticket: syncTicket,
       });
     } catch {
       centerVision = 'pending';
     }
 
-    const notification = await sendInternalFormNotification({
-      form_type: 'order',
-      order_number: order.order_number,
-      customer_name: clean(customer.name || shipping.customerName, 180),
-      customer_email: trustedEmail,
-      customer_phone: clean(customer.phone || shipping.phone, 80),
-      country: clean(shipping.country, 2).toUpperCase(),
-      address: [shipping.line1 || shipping.address, shipping.apartment, shipping.city, shipping.state, shipping.postal, shipping.country].map((v) => clean(v,300)).filter(Boolean).join(', '),
-      payment_method: order.payment_method || paymentMethod,
-      payment_plan: order.payment_plan,
-      delivery_profile: order.delivery_profile,
-      shipping_quote_required: order.shipping_quote_required,
-      canonical_currency: order.currency || 'USD',
-      canonical_subtotal: order.subtotal,
-      canonical_shipping: order.shipping_total,
-      canonical_total: order.total,
-      display_currency: displayCurrency,
-      display_subtotal: shipping.displaySubtotal,
-      display_shipping: shipping.displayShippingTotal,
-      display_total: shipping.displayTotal,
-      amount_due_now: order.amount_due_now,
-      display_amount_due_now: shipping.displayAmountDueNow,
-      remaining_balance: order.remaining_balance,
-      display_remaining_balance: shipping.displayRemainingBalance,
-      items: detailedItems,
-      item_count: detailedItems.length,
-      created_at: order.created_at,
-    }, `New Shababuna order ${String(order.order_number)}`);
+    const notification = await sendInternalFormNotification(
+      {
+        form_type: 'order',
+        order_number: order.order_number,
+        customer_name: clean(order.customer_name || customer.name, 180),
+        customer_email: email,
+        customer_phone: clean(order.customer_phone || customer.phone, 80),
+        country: clean(shipping.country, 2).toUpperCase(),
+        address: [
+          shipping.line1 || shipping.address,
+          shipping.apartment,
+          shipping.city,
+          shipping.state,
+          shipping.postal,
+          shipping.country,
+        ]
+          .map((value) => clean(value, 300))
+          .filter(Boolean)
+          .join(', '),
+        payment_method: order.payment_method,
+        payment_plan: order.payment_plan,
+        delivery_profile: order.delivery_profile,
+        shipping_quote_required: order.shipping_quote_required,
+        canonical_currency: order.currency || 'USD',
+        canonical_subtotal: order.subtotal,
+        canonical_shipping: order.shipping_total,
+        canonical_total: order.total,
+        display_currency: order.display_currency,
+        display_subtotal: order.display_subtotal,
+        display_shipping: order.display_shipping_total,
+        display_total: order.display_total,
+        amount_due_now: order.amount_due_now,
+        display_amount_due_now: order.display_amount_due_now,
+        remaining_balance: order.remaining_balance,
+        display_remaining_balance: order.display_remaining_balance,
+        items,
+        item_count: items.length,
+        created_at: order.created_at,
+      },
+      `New Shababuna order ${String(order.order_number)}`,
+    );
 
-    return res.status(result?.duplicate ? 200 : 201).json({ ok:true, ...result, guestAccessToken, notification: notification.delivered ? 'delivered' : 'pending', centerVision });
+    return res.status(created.duplicate ? 200 : 201).json({
+      ok: true,
+      order,
+      duplicate: created.duplicate,
+      guestAccessToken,
+      accessToken: guestAccessToken,
+      notification: notification.delivered ? 'delivered' : 'pending',
+      centerVision,
+    });
   } catch (error: unknown) {
-    const message = clean(error && typeof error === 'object' && 'message' in error ? (error as {message?:unknown}).message : error, 500);
-    const client = /invalid_|email_mismatch|cash_available_only_in_libya|insufficient_|unavailable|retail_unavailable/i.test(message);
-    return res.status(client ? 400 : 503).json({ ok:false, error: client ? 'invalid_order' : 'order_service_unavailable', detail: message });
+    const message = clean(
+      error && typeof error === 'object' && 'message' in error
+        ? (error as { message?: unknown }).message
+        : error,
+      500,
+    );
+    const client =
+      /invalid_|email_mismatch|cash_available_only_in_libya|insufficient_|unavailable|minimum_quantity|retail_|wholesale_|product_|variant_|price_/i.test(
+        message,
+      );
+    return res.status(client ? 400 : 503).json({
+      ok: false,
+      error: client ? 'invalid_order' : 'order_service_unavailable',
+      detail: message,
+    });
   }
 }
