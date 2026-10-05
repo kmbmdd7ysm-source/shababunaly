@@ -201,7 +201,7 @@ export default function LabHomePage(): ReactElement {
     <div className="lab-scope" data-prototype="groundwork" data-capability-observed={capability}>
       <Seo
         title={pick({ en: 'GROUNDWORK prototype', ar: 'نموذج خَطّ الأرض' })}
-        description="Isolated design-direction prototype. Not a public page."
+        description={pick({ en: 'Isolated design-direction prototype. Not a public page.', ar: 'نموذج معزول لاتجاه التصميم. ليست صفحة عامة.' })}
         path="/lab/home"
         noindex
       />
@@ -218,8 +218,8 @@ export default function LabHomePage(): ReactElement {
               {pick({ en: 'Shababuna · Basketball supply', ar: 'شبابنا · تجهيز كرة السلة' })}
             </p>
             <h1 id="gw-hero-title" className="gw-hero-title">
-              <span className="gw-hero-line">BUILT</span>
-              <span className="gw-hero-line gw-hero-line--outline">DIFFERENT.</span>
+              <span className="gw-hero-line">{pick({ en: 'BUILT', ar: 'مبني' })}</span>
+              <span className="gw-hero-line gw-hero-line--outline">{pick({ en: 'DIFFERENT.', ar: 'بشكل مختلف.' })}</span>
             </h1>
             <p className="gw-lead">
               {pick({
@@ -255,9 +255,14 @@ export default function LabHomePage(): ReactElement {
             {pick({ en: 'Basketball, without compromise.', ar: 'كرة السلة، بدون تنازلات.' })}
           </p>
           <ul className="gw-measure-terms">
-            {['Retail', 'Custom', 'Teams', 'Wholesale'].map((term) => (
-              <li key={term} className="gw-spec">
-                {term}
+            {[
+              { en: 'Retail', ar: 'التجزئة' },
+              { en: 'Custom', ar: 'التخصيص' },
+              { en: 'Teams', ar: 'الفرق' },
+              { en: 'Wholesale', ar: 'الجملة' },
+            ].map((term) => (
+              <li key={term.en} className="gw-spec">
+                {pick(term)}
               </li>
             ))}
           </ul>
@@ -416,7 +421,7 @@ export default function LabHomePage(): ReactElement {
             })}
           </p>
           <p className="gw-spec">
-            {SITE.shortName} · {SITE.slogan.en}
+            {SITE.shortName} · {pick(SITE.slogan)}
           </p>
         </div>
       </section>
