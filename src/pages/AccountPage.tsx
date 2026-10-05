@@ -480,8 +480,8 @@ export default function AccountPage(): ReactElement {
               {!auth.configured && (
                 <p className="form-notice">
                   {pick({
-                    en: 'Cloud accounts require Supabase configuration. Guest shopping remains available.',
-                    ar: 'تحتاج الحسابات السحابية إلى إعداد Supabase. يظل التسوق كضيف متاحًا.',
+                    en: 'Cloud sync is temporarily unavailable. You can still create and use an account on this device.',
+                    ar: 'المزامنة السحابية غير متاحة مؤقتًا. تقدر تنشئ وتستخدم الحساب على هذا الجهاز.',
                   })}
                 </p>
               )}
@@ -672,7 +672,7 @@ export default function AccountPage(): ReactElement {
                   />
                 </label>
               )}
-              <button className="btn-primary" type="submit" disabled={busy || !auth.configured}>
+              <button className="btn-primary" type="submit" disabled={busy}>
                 {busy
                   ? pick({ en: 'Please wait…', ar: 'يرجى الانتظار…' })
                   : pick(
