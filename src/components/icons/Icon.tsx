@@ -226,6 +226,34 @@ const paths = {
     </>
   ),
 
+  /* Account navigation additions — same 24px stroke grammar. */
+  shield: (
+    <>
+      <path d="M12 3.5 19 6v5.2c0 4.5-2.6 7.5-7 9.3-4.4-1.8-7-4.8-7-9.3V6l7-2.5Z" />
+      <path d="m8.8 12 2.1 2.1 4.4-4.6" />
+    </>
+  ),
+  pin: (
+    <>
+      <path d="M19 10.2c0 5-7 10.3-7 10.3S5 15.2 5 10.2a7 7 0 1 1 14 0Z" />
+      <circle cx="12" cy="10" r="2.3" />
+    </>
+  ),
+  sliders: (
+    <>
+      <path d="M4 6h7M15 6h5M4 12h3M11 12h9M4 18h10M18 18h2" />
+      <circle cx="13" cy="6" r="2" />
+      <circle cx="9" cy="12" r="2" />
+      <circle cx="16" cy="18" r="2" />
+    </>
+  ),
+  return: (
+    <>
+      <path d="M9 7 4 12l5 5" />
+      <path d="M5 12h9a5 5 0 0 1 5 5v2" />
+    </>
+  ),
+
   /* Fallback so a missing key is visibly wrong in review rather than invisible. */
   grid: (
     <>
