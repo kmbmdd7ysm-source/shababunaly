@@ -187,4 +187,3 @@ npm run quality:gate
 The protected release requires both local/deployed Lighthouse evidence and Google PageSpeed Insights evidence. It rejects a release unless the generated reports meet the requested score profile: mobile `99 / 100 / 100 / 100` and desktop `100 / 100 / 100 / 100`, plus strict LCP, CLS and TBT budgets. Scores must still be measured against the final deployed domain because hosting, third-party scripts, real media, network conditions and payment providers affect the result. The project never fabricates PageSpeed reports.
 
 See [`docs/WORLD_CLASS_RELEASE_GATE.md`](docs/WORLD_CLASS_RELEASE_GATE.md) and [`docs/TEST_EVIDENCE.md`](docs/TEST_EVIDENCE.md).
-<!-- production customer services redeploy 2026-10-05 -->
