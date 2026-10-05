@@ -7,7 +7,7 @@ import '../../styles/commerce-welcome.css';
 
 export default function CurrencyWelcome(): ReactElement | null {
   const { currency, setCurrency, setCountryCode } = useCommerce();
-  const { pick } = useLanguage();
+  const { pick, lang } = useLanguage();
   const [eligible, setEligible] = useState(false);
   const [open, setOpen] = useState(false);
   const [suggested, setSuggested] = useState(currency);
@@ -78,13 +78,13 @@ export default function CurrencyWelcome(): ReactElement | null {
       <div className="commerce-welcome-backdrop" />
       <div className="commerce-welcome-panel">
         <img
-          src="/brand/shababuna-wordmark-black.png"
-          alt="Shababuna"
+          src={lang === 'ar' ? '/brand/shababuna-wordmark-ar-black.png' : '/brand/shababuna-wordmark-black.png'}
+          alt={pick({ en: 'Shababuna', ar: 'شبابنا' })}
           className="commerce-welcome-logo"
           width={244}
           height={68}
         />
-        <p className="section-label">BUILT DIFFERENT.</p>
+        <p className="section-label">{pick({ en: 'BUILT DIFFERENT.', ar: 'مختلفون.' })}</p>
         <h2 id="commerce-welcome-title">
           {pick({ en: 'Choose your currency', ar: 'اختر العملة' })}
         </h2>
