@@ -252,7 +252,7 @@ export default function SpecialRequestPage(): ReactElement {
                 </div>
               </label>
               <label className="field" data-field="email">
-                <span className="field__label">Email</span>
+                <span className="field__label">{pick({ en: 'Email', ar: 'البريد الإلكتروني' })}</span>
                 <div className="field__control field__control--latin">
                   <input
                     required
