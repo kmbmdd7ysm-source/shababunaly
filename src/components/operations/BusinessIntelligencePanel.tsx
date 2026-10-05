@@ -85,7 +85,7 @@ export default function BusinessIntelligencePanel({
     <section className="operations-card operations-bi" aria-labelledby="operations-bi-title">
       <div className="operations-section-head">
         <div>
-          <p className="section-label">BUSINESS INTELLIGENCE</p>
+          <p className="section-label">{pick({ en: 'BUSINESS INTELLIGENCE', ar: 'ذكاء الأعمال' })}</p>
           <h2 id="operations-bi-title">
             {pick({ en: 'Commerce performance', ar: 'أداء التجارة' })}
           </h2>
