@@ -4,11 +4,11 @@ import {
   normalizeGuestOrderNumber,
   verifyGuestOrderToken,
 } from './_guest-order-token.js';
-import { supabaseAdminRequest } from './_supabase-admin.js';
+import { readNativeOrder } from './_native-orders.js';
 
 type ApiReq = { method?: string; body?: unknown };
 type ApiRes = {
-  setHeader: (name: string, value: string) => void;
+  setHeader: (name: string, value: string | string[]) => void;
   status: (code: number) => { json: (body: unknown) => unknown };
 };
 
@@ -27,6 +27,7 @@ const numeric = (value: unknown): number | null => {
 
 export default async function handler(req: ApiReq, res: ApiRes) {
   applyApiHeaders(res);
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
@@ -45,37 +46,23 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       return res.status(401).json({ ok: false, error: 'invalid_sync_ticket' });
     }
 
-    const rows = (await supabaseAdminRequest(
-      `/rest/v1/orders?order_number=eq.${encodeURIComponent(orderNumber)}&select=*&limit=1`,
-    )) as Array<Record<string, unknown>>;
-    const order = Array.isArray(rows) ? rows[0] : null;
+    const order = await readNativeOrder(orderNumber);
     if (!order) return res.status(404).json({ ok: false, error: 'order_not_found' });
 
-    const shipping = objectValue(order.shipping ?? order.shipping_address);
-    const billing = objectValue(order.billing ?? order.billing_address);
-    const customer = objectValue(shipping.customer ?? order.customer);
-    const email = clean(
-      order.customer_email ?? order.email ?? customer.email ?? shipping.email,
-      254,
-    ).toLowerCase();
-
+    const shipping = objectValue(order.shipping_summary);
+    const customer = objectValue(order.customer_summary);
+    const email = clean(order.customer_email ?? customer.email ?? shipping.email, 254).toLowerCase();
     if (!email || guestEmailHash(email) !== verified.emailHash) {
       return res.status(401).json({ ok: false, error: 'ticket_order_mismatch' });
     }
 
-    const orderId = clean(order.id, 200);
-    let items: Array<Record<string, unknown>> = [];
-    if (orderId) {
-      const itemRows = await supabaseAdminRequest(
-        `/rest/v1/order_items?order_id=eq.${encodeURIComponent(orderId)}&select=*&order=created_at.asc`,
-      );
-      if (Array.isArray(itemRows)) items = itemRows as Array<Record<string, unknown>>;
-    }
-
+    const items = Array.isArray(order.order_items)
+      ? (order.order_items as Array<Record<string, unknown>>)
+      : [];
     const normalizedItems = items.slice(0, 100).map((item) => {
       const snapshot = objectValue(item.variant_snapshot);
       return {
-        productName: clean(item.product_name ?? item.name ?? item.product_id, 500),
+        productName: clean(item.product_name ?? item.product_id, 500),
         productId: clean(item.product_id, 200) || null,
         sku: clean(item.sku, 160) || null,
         variantId: clean(item.variant_id, 260) || null,
@@ -90,13 +77,14 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       };
     });
 
-    const fullName = clean(
-      order.customer_name ??
-        customer.name ??
-        shipping.customerName ??
-        [shipping.firstName, shipping.lastName].filter(Boolean).join(' '),
-      180,
-    ) || 'Shababuna customer';
+    const fullName =
+      clean(
+        order.customer_name ??
+          customer.name ??
+          shipping.customerName ??
+          [shipping.firstName, shipping.lastName].filter(Boolean).join(' '),
+        180,
+      ) || 'Shababuna customer';
 
     return res.status(200).json({
       ok: true,
@@ -108,20 +96,20 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         locale: clean(shipping.locale ?? shipping.language ?? order.locale, 20) || 'en',
         currency: clean(order.currency, 8).toUpperCase() || 'USD',
         subtotal: numeric(order.subtotal) ?? 0,
-        discountTotal: numeric(order.discount_total ?? order.discount) ?? 0,
-        taxTotal: numeric(order.tax_total ?? order.tax) ?? 0,
+        discountTotal: numeric(order.discount_total) ?? 0,
+        taxTotal: numeric(order.tax_total) ?? 0,
         shippingTotal: numeric(order.shipping_total) ?? 0,
         total: numeric(order.total) ?? 0,
         paymentStatus: clean(order.payment_status, 40) || undefined,
         fulfillmentStatus: clean(order.fulfillment_status, 40) || undefined,
-        orderStatus: clean(order.status, 40) || undefined,
+        orderStatus: clean(order.order_status, 40) || undefined,
         paymentMethod: clean(order.payment_method, 80) || undefined,
         paymentPlan: clean(order.payment_plan, 80) || undefined,
         amountDueNow: numeric(order.amount_due_now),
         remainingBalance: numeric(order.remaining_balance),
         createdAt: clean(order.created_at, 100) || undefined,
         shipping,
-        billing,
+        billing: objectValue(order.billing_summary),
         items: normalizedItems,
       },
     });
