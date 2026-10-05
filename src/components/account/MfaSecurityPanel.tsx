@@ -132,7 +132,7 @@ export default function MfaSecurityPanel({
     <section className="mfa-security-panel" aria-labelledby="mfa-title">
       <div className="section-heading-row">
         <div>
-          <p className="section-label">MULTI-FACTOR AUTHENTICATION</p>
+          <p className="section-label">{pick({ en: 'MULTI-FACTOR AUTHENTICATION', ar: 'المصادقة متعددة العوامل' })}</p>
           <h2 id="mfa-title">
             {pick({ en: 'Authenticator protection', ar: 'حماية تطبيق المصادقة' })}
           </h2>
@@ -153,7 +153,7 @@ export default function MfaSecurityPanel({
       {state.factors.map((factor) => (
         <article className="mfa-factor-row" key={String(factor.id)}>
           <div>
-            <strong>{String(factor.friendly_name || 'Authenticator')}</strong>
+            <strong>{String(factor.friendly_name || pick({ en: 'Authenticator', ar: 'تطبيق المصادقة' }))}</strong>
             <small>{String(factor.status || '')}</small>
           </div>
           <button
