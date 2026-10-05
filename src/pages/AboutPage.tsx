@@ -65,7 +65,7 @@ export default function AboutPage(): ReactElement {
         path="/about"
       />
       <PublicPageHeader
-        eyebrow="Shababuna · Built Different"
+        eyebrow={pick({ en: 'Shababuna · Built Different', ar: 'شبابنا · مختلفون' })}
         title={pick({ en: 'More than a basketball store.', ar: 'أكثر من متجر كرة سلة.' })}
         lede={pick({
           en: 'A complete basketball commerce and supply platform built in Libya for players, clubs, academies, federations and distributors.',
@@ -77,7 +77,7 @@ export default function AboutPage(): ReactElement {
 
       <section className="gw-manifesto">
         <div className="gw-manifesto-inner">
-          <p className="gw-spec">BUILT DIFFERENT.</p>
+          <p className="gw-spec">{pick({ en: 'BUILT DIFFERENT.', ar: 'مختلفون.' })}</p>
           <p className="gw-manifesto-claim">
             {pick({
               en: 'We make basketball easier to buy, design and supply.',
@@ -110,7 +110,7 @@ export default function AboutPage(): ReactElement {
       <section className="gw-reach">
         <div className="gw-reach-inner gw-reach-inner--single">
           <div className="gw-reach-copy">
-            <p className="gw-spec">FROM TRIPOLI TO THE WORLD</p>
+            <p className="gw-spec">{pick({ en: 'FROM TRIPOLI TO THE WORLD', ar: 'من طرابلس إلى العالم' })}</p>
             <h2 className="gw-reach-title">
               {pick({
                 en: 'Local understanding. Global standard.',
