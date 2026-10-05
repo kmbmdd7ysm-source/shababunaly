@@ -27,6 +27,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       windowMs: 60_000,
       bucket: 'commerce-event',
       honeypot: false,
+      allowEphemeralFallback: true,
     }))
   )
     return;
