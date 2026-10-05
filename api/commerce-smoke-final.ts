@@ -31,7 +31,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         email,
         shipping: {
           country: 'LY',
-          paymentPlan: 'full',
+          paymentPlan: 'half',
           displayCurrency: 'USD',
           customer: {
             name: 'Shababuna Commerce Smoke',
@@ -40,8 +40,9 @@ export default async function handler(req: ApiReq, res: ApiRes) {
         },
         items: [
           {
-            productId: 's001',
-            variantId: 's001:SHA-GAME-PRO-BLACK-M',
+            productId: 'goat-nike-kobe-4-protro-philly-2024',
+            variantId:
+              'goat-nike-kobe-4-protro-philly-2024:GOAT-K04-05-LISTED-COLORWAY-12',
             quantity: 1,
             purchaseMode: 'retail',
           },
