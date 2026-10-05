@@ -98,6 +98,8 @@ export const WORKFLOW_LABELS: Record<string, { en: string; ar: string }> = {
   submitted: { en: 'Submitted', ar: 'تم الإرسال' },
   quoted: { en: 'Quoted', ar: 'تم التسعير' },
   accepted: { en: 'Accepted', ar: 'مقبول' },
+  verified: { en: 'Verified', ar: 'موثق' },
+  failed: { en: 'Failed', ar: 'فشل' },
 };
 
 export const workflowLabel = (
