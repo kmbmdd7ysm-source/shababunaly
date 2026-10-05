@@ -119,7 +119,7 @@ export default function ShoeFinderPage(): ReactElement {
                   type="number"
                   min="0"
                   step="5"
-                  placeholder="No limit"
+                  placeholder={pick({ en: 'No limit', ar: 'بدون حد' })}
                   value={prefs.maxPrice ?? ''}
                   onChange={(event) => set('maxPrice', event.target.value ? Number(event.target.value) : null)}
                 />
