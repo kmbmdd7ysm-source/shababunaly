@@ -722,6 +722,8 @@ export async function lookupGuestOrder(
   const normalizedEmail = emailKey(email);
   if (!number || (!normalizedEmail && !accessToken))
     return { state: 'invalid', order: null, source: 'none', error: null, accessToken: '' };
+
+  let remoteError: unknown = null;
   try {
     const response = await fetch('/api/guest-order-access', {
       method: 'POST',
@@ -736,19 +738,21 @@ export async function lookupGuestOrder(
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const error = new Error(String((data as Row)?.error || `guest_order_lookup_failed:${response.status}`)) as Error & {
-        status?: number;
-      };
+      const error = new Error(
+        String((data as Row)?.error || `guest_order_lookup_failed:${response.status}`),
+      ) as Error & { status?: number };
       error.status = response.status;
-      return {
-        state: response.status === 400 ? 'invalid' : 'error',
-        order: null,
-        source: 'none',
-        error,
-        accessToken: '',
-      };
-    }
-    if (data?.order) {
+      if (response.status === 400) {
+        return {
+          state: 'invalid',
+          order: null,
+          source: 'none',
+          error,
+          accessToken: '',
+        };
+      }
+      remoteError = error;
+    } else if (data?.order) {
       return {
         state: 'success',
         order: normalizeOrder({
@@ -763,9 +767,9 @@ export async function lookupGuestOrder(
       };
     }
   } catch (error) {
-    if (!allowLocalOrderStorage)
-      return { state: 'error', order: null, source: 'none', error, accessToken: '' };
+    remoteError = error;
   }
+
   if (allowLocalOrderStorage && normalizedEmail) {
     const local = readLocalOrders();
     const order =
@@ -776,8 +780,20 @@ export async function lookupGuestOrder(
           emailKey(row.email) === normalizedEmail
         );
       }) || null;
-    if (order)
-      return { state: 'success', order, source: 'local', error: local.error, accessToken: '' };
+    if (order) {
+      return {
+        state: 'success',
+        order,
+        source: 'local',
+        error: null,
+        accessToken: '',
+      };
+    }
+    if (local.error && !remoteError) remoteError = local.error;
+  }
+
+  if (remoteError) {
+    return { state: 'error', order: null, source: 'none', error: remoteError, accessToken: '' };
   }
   return { state: 'not-found', order: null, source: 'none', error: null, accessToken: '' };
 }
