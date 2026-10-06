@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SITE } from '../../config.ts';
 import { useLanguage } from '../../context/LanguageContext';
@@ -22,10 +23,19 @@ export default function Seo({
   const { lang } = useLanguage();
   const canonical = `${SITE.domain}${path === '/' ? '' : path}`;
   const absoluteImage = image?.startsWith('http') ? image : `${SITE.domain}${image}`;
+  const siteName = lang === 'ar' ? SITE.nameAr : SITE.name;
   const fullTitle =
-    title?.includes(SITE.name) || title?.includes(SITE.nameAr) ? title : `${title} | ${SITE.name}`;
+    title?.includes(SITE.name) || title?.includes(SITE.nameAr) ? title : `${title} | ${siteName}`;
+
+  // Keep the live browser title synchronized even when a statically pre-rendered
+  // route supplied the initial English <title>. Helmet still owns the remaining
+  // metadata; this effect makes language switches deterministic in every browser.
+  useEffect(() => {
+    document.title = fullTitle;
+  }, [fullTitle]);
+
   return (
-    <Helmet htmlAttributes={{ lang, dir: lang === 'ar' ? 'rtl' : 'ltr' }}>
+    <Helmet key={lang} htmlAttributes={{ lang, dir: lang === 'ar' ? 'rtl' : 'ltr' }}>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <meta
@@ -33,7 +43,7 @@ export default function Seo({
         content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
       />
       <link rel="canonical" href={canonical} />
-      <meta property="og:site_name" content={SITE.name} />
+      <meta property="og:site_name" content={siteName} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
       <meta property="og:title" content={fullTitle} />
