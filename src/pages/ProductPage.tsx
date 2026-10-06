@@ -559,7 +559,7 @@ export default function ProductPage(): ReactElement {
               <div className="pdx-delivery">
                 <strong>{reservationAvailable ? pick({ en: 'Reservation', ar: 'الحجز' }) : pick({ en: 'Delivery', ar: 'التوصيل' })}</strong>
                 <p>{shippingCopy}</p>
-                {Boolean(product.customizable) ? (
+                {product.customizable ? (
                   <Link to={`/customize?product=${product.slug}`} className="pdx-text-link">
                     {pick({ en: 'Customize', ar: 'خصصه' })}
                   </Link>
