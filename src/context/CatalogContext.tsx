@@ -186,7 +186,6 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     const cloudStock = row.inventory_tracking
       ? Math.max(0, Number(row.inventory_quantity) || 0)
       : 0;
-    const cloudState = String(row.availability_state || 'in_stock').toLowerCase();
     const cloudUpdatedAt = Date.parse(String(row.updated_at || ''));
     const cloudIsNewerThanOwner =
       Number.isFinite(ownerConfirmedAt) &&
