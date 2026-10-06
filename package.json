@@ -109,7 +109,7 @@
     "react-dom": "19.3.0",
     "react-helmet-async": "3.0.0",
     "react-router-dom": "7.18.4",
-    "three": "0.186.1"
+    "three": "0.183.2"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
