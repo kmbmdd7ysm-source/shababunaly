@@ -210,7 +210,7 @@ record('independent:special-api-email-only-status', specialApi.includes("status:
 record('independent:teams-email-only-truthful', teams.includes('result.persisted === false') && /email/i.test(teams)); // 36
 record('independent:custom-email-only-truthful', customizePage.includes('result.persisted === false') && /email/i.test(customizePage)); // 37
 record('independent:advanced-email-only-truthful', advanced.includes('result.persisted === false') && /email/i.test(advanced)); // 38
-record('independent:custom3d-no-eager-loader', !/^import\s+['\"]\.\.\/product\/engines\/loadModelViewer\.ts['\"];?/m.test(showcase)); // 39
+record('independent:custom3d-no-eager-loader', !/^import\s+['"]\.\.\/product\/engines\/loadModelViewer\.ts['"];?/m.test(showcase)); // 39
 record('independent:custom3d-dormant-preserved', showcase.includes('modelRequested') && showcase.includes("import(" + "'../product/engines/loadModelViewer.ts')")); // 40
 record('independent:custom3d-public-hidden', !read('src/pages/CustomizePage.tsx').includes('/customize/advanced') && /path=["']\/customize\/advanced["'][\s\S]{0,180}Navigate to=["']\/customize["']/.test(read('src/App.tsx'))); // 41
 record('independent:db-color-pool-advisory-lock', hardeningMigration.includes('pg_advisory_xact_lock') && hardeningMigration.includes("variant_data->>'inventoryPoolKey'") && poolReconciliationMigration.includes('with pool_floor as') && poolReconciliationMigration.includes('min(inventory_quantity) as available')); // 41
