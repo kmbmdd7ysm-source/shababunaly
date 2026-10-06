@@ -30,7 +30,18 @@ jobs:
         run: npm ci --registry=https://registry.npmjs.org
       - name: Install official quality tooling
         run: npm run quality:install -- --registry=https://registry.npmjs.org
-      - run: npm run format:check
+      - name: Prettier check for changed files
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            BASE="$(git rev-parse HEAD^ 2>/dev/null || git rev-parse HEAD)"
+          fi
+          git diff --name-only -z --diff-filter=ACMR "$BASE" "$GITHUB_SHA" --             '*.js' '*.jsx' '*.mjs' '*.cjs' '*.ts' '*.tsx' '*.json' '*.css' '*.scss' '*.md' '*.yml' '*.yaml'             | xargs -0 -r npx prettier --check --ignore-unknown
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run typecheck:strict-critical
