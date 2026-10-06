@@ -7,13 +7,13 @@ const required = [];
 
 const shell = readFileSync('index.html', 'utf8');
 if (/hero-posters\/home\.webp/.test(shell)) {
-  console.error('Performance budget: obsolete home poster preload remains.'); failures += 1;
+  failures.push('Obsolete home poster preload remains.');
 }
 if (/i\.ytimg\.com|youtube(?:-nocookie)?\.com/i.test(shell)) {
   failures.push('Home first paint must not depend on YouTube media');
 }
 if (!existsSync('public/media/hero-videos/home-desktop.mp4')) {
-  console.error('Performance budget: supplied home hero video is missing.'); failures += 1;
+  failures.push('Supplied home hero video is missing.');
 }
 
 for (const [file, maximum] of required) {
