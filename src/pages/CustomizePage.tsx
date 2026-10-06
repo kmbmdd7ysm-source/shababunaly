@@ -9,7 +9,7 @@ import Icon from '../components/icons/Icon';
 import { useLanguage } from '../context/LanguageContext';
 import { submitPublicQuote } from '../services/publicQuotes';
 import { uploadCustomDesignAsset, validateCustomLogo } from '../services/customDesignAssets';
-import { CUSTOM_PRODUCT_TYPES } from '../data/customization';
+import { CUSTOM_PRODUCT_TYPES, type CustomProductType } from '../data/customization';
 import { LOCAL_HERO_MEDIA } from '../data/localHeroMedia';
 import { EDITORIAL as E } from '../data/editorialAssets.ts';
 import { CUSTOM_COLOR_OPTIONS, customColorKey } from '../components/custom/customColors';
@@ -17,6 +17,15 @@ import '../styles/custom-experience.css';
 import '../styles/domain-forms.css';
 
 const FEATURED = [...CUSTOM_PRODUCT_TYPES];
+const DEFAULT_FEATURED: CustomProductType = {
+  key: 'game-jersey',
+  category: 'gamewear',
+  label: { en: 'Game Jersey', ar: 'سيريا لعب' },
+  minimum: 10,
+  preview: 'jersey',
+  supportsRoster: true,
+  madeInUSA: false,
+};
 const fallbackArt: Record<string, string> = {
   'game-set': E.shanghaiPlayers,
   'game-jersey': E.usaWomanCelebrate,
@@ -50,7 +59,7 @@ export default function CustomizePage(): ReactElement {
   const [turnstileToken, setTurnstileToken] = useState('');
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState('');
-  const selected = useMemo(() => FEATURED.find((item) => item.key === productType) || FEATURED[0]!, [productType]);
+  const selected = useMemo(() => FEATURED.find((item) => item.key === productType) ?? DEFAULT_FEATURED, [productType]);
   const showSizeBreakdown = !NO_SIZE_BREAKDOWN.has(productType);
   const bodyColorName = customColorKey(bodyColor);
   const trimColorName = customColorKey(trimColor);
