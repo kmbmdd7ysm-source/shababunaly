@@ -87,6 +87,14 @@
   min-width: 0;
 }
 
+[dir='ltr'] .s2-header__nav {
+  direction: ltr;
+}
+
+[dir='rtl'] .s2-header__nav {
+  direction: rtl;
+}
+
 .s2-header__nav-item { position: static; }
 
 .s2-header__link {

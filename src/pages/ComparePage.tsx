@@ -67,7 +67,15 @@ export default function ComparePage(): ReactElement {
 
   return (
     <>
-      <Seo title="Compare products" path="/compare" noindex />
+      <Seo
+        title={pick({ en: 'Compare products', ar: 'مقارنة المنتجات' })}
+        description={pick({
+          en: 'Compare up to four basketball products side by side.',
+          ar: 'قارن بين ما يصل إلى أربعة منتجات لكرة السلة جنبًا إلى جنب.',
+        })}
+        path="/compare"
+        noindex
+      />
       <main className="cc-compare-page">
         <header className="cc-page-head">
           <div>

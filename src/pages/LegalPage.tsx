@@ -9,10 +9,10 @@ import '../styles/domain-content.css';
 import '../styles/content.css';
 
 export default function LegalPage({ docKey }: { docKey: string }) {
-  const { t, pick } = useLanguage();
+  const { pick } = useLanguage();
   const doc = getLegal(docKey);
-  const footer = (t.footer || {}) as Record<string, string>;
-  const legal = (t.legal || {}) as Record<string, string>;
+  const legalLabel = pick({ en: 'Legal', ar: 'قانوني' });
+  const lastUpdatedLabel = pick({ en: 'Last updated', ar: 'آخر تحديث' });
 
   if (!doc) return <NotFoundPage />;
 
@@ -37,10 +37,10 @@ export default function LegalPage({ docKey }: { docKey: string }) {
         path={`/${docKey}`}
       />
       <PublicPageHeader
-        eyebrow={footer.legal}
+        eyebrow={legalLabel}
         title={pick(typed.title) || ''}
         trail={[
-          { label: footer.legal || 'Legal' },
+          { label: legalLabel },
           { label: pick(typed.title) || '' },
         ]}
         figure={{
@@ -49,7 +49,7 @@ export default function LegalPage({ docKey }: { docKey: string }) {
         }}
       />
       <ContentGuide
-        meta={`${legal.lastUpdated}: ${pick(SITE.legalUpdated)}`}
+        meta={`${lastUpdatedLabel}: ${pick(SITE.legalUpdated)}`}
         lede={typed.intro ? pick(typed.intro) : null}
         chapters={chapters}
       />

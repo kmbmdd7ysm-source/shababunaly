@@ -1,9 +1,7 @@
-import { build } from 'vite';
 import { brotliCompressSync, gzipSync } from 'node:zlib';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 
-await build();
 
 const rows = [];
 async function walk(directory) {

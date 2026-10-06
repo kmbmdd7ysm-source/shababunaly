@@ -60,8 +60,11 @@ export default function AboutPage(): ReactElement {
   return (
     <>
       <Seo
-        title="About Shababuna"
-        description="Shababuna is a basketball retail, custom design, teams and wholesale platform based in Tripoli, Libya."
+        title={pick({ en: 'About Shababuna', ar: 'عن شبابنا' })}
+        description={pick({
+          en: 'Shababuna is a basketball retail, custom design, teams and wholesale platform based in Tripoli, Libya.',
+          ar: 'شبابنا منصة لكرة السلة تجمع المتجر والتصميم المخصص وتجهيز الفرق والجملة، ومقرها طرابلس، ليبيا.',
+        })}
         path="/about"
       />
       <PublicPageHeader
