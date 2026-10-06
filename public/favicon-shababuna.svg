@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SHABABUNA">
+  <rect width="512" height="512" rx="112" fill="#0A0B0D"/>
+  <path d="M365 153c-29-35-72-54-121-54-72 0-126 35-126 91 0 50 38 75 119 92 72 15 102 31 102 65 0 39-40 66-98 66-56 0-106-22-141-62" fill="none" stroke="#F7F5F0" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M128 415h256" stroke="#F7F5F0" stroke-opacity=".36" stroke-width="12" stroke-linecap="round"/>
+</svg>
