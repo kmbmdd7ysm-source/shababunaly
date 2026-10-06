@@ -40,6 +40,7 @@ import {
   InventoryCsvManager,
 } from '../components/operations/OperationsEnterpriseModules';
 import '../styles/operations.css';
+import type { OperationsRunFn } from '../types/operations';
 
 type OpsRow = Record<string, unknown>;
 type OpsState = {
@@ -271,23 +272,25 @@ export default function OperationsPage(): ReactElement | null {
       .slice(0, 200);
   }, [state.catalog, catalogQuery]);
 
-  const run = async (key: string, action: () => Promise<unknown>, success: string) => {
-    setSaving(key);
-    setNotice('');
-    try {
-      await action();
-      invalidateOperationsCache();
-      setNotice(success);
-      await Promise.all([load(), catalog.refresh({ quiet: true })]);
-    } catch (error) {
-      setNotice(
-        `${pick({ en: 'Could not save:', ar: 'تعذر الحفظ:' })} ${
-          error instanceof Error ? error.message : String(error || '')
-        }`,
-      );
-    } finally {
-      setSaving('');
-    }
+  const run: OperationsRunFn = (key, action, success) => {
+    void (async () => {
+      setSaving(key);
+      setNotice('');
+      try {
+        await action();
+        invalidateOperationsCache();
+        setNotice(success);
+        await Promise.all([load(), catalog.refresh({ quiet: true })]);
+      } catch (error) {
+        setNotice(
+          `${pick({ en: 'Could not save:', ar: 'تعذر الحفظ:' })} ${
+            error instanceof Error ? error.message : String(error || '')
+          }`,
+        );
+      } finally {
+        setSaving('');
+      }
+    })();
   };
 
   if (auth.loading) return null;
