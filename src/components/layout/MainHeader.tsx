@@ -159,6 +159,7 @@ export default function MainHeader(): ReactElement {
             {mainNav.map((item) => (
               <div
                 className="s2-header__nav-item"
+                role="presentation"
                 key={String(item.to)}
                 onMouseEnter={() => item.mega && setShopOpen(true)}
                 onMouseLeave={() => item.mega && setShopOpen(false)}
@@ -186,7 +187,7 @@ export default function MainHeader(): ReactElement {
                   {label(item)}
                 </NavLink>
                 {item.mega && shopOpen ? (
-                  <div className="s2-mega" onMouseEnter={() => setShopOpen(true)} onMouseLeave={() => setShopOpen(false)}>
+                  <div className="s2-mega" role="presentation" onMouseEnter={() => setShopOpen(true)} onMouseLeave={() => setShopOpen(false)}>
                     <div className="s2-mega__inner">
                       <div className="s2-mega__feature">
                         <span className="s2-overline">{pick({ en: 'Start here', ar: 'ابدأ من هنا' })}</span>
