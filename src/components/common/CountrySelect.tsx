@@ -105,7 +105,7 @@ export default function CountrySelect({
     setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
     const timer = globalThis.setTimeout(() => inputRef.current?.focus(), 40);
     return () => globalThis.clearTimeout(timer);
-  }, [open, selectedCode]);
+  }, [open, selectedCode, filtered]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -162,6 +162,7 @@ export default function CountrySelect({
     ? createPortal(
         <div
           className="country-picker-backdrop"
+          role="presentation"
           onMouseDown={(event) => {
             if (event.currentTarget === event.target) close();
           }}
@@ -230,10 +231,16 @@ export default function CountrySelect({
                     id={`${controlId}-option-${country.code}`}
                     role="option"
                     aria-selected={chosen}
-                    tabIndex={-1}
+                    tabIndex={index === activeIndex ? 0 : -1}
                     className={`${index === activeIndex ? 'is-active' : ''}${chosen ? ' is-selected' : ''}`.trim()}
                     onMouseEnter={() => setActiveIndex(index)}
                     onMouseDown={(event) => event.preventDefault()}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        choose(country);
+                      }
+                    }}
                     onClick={() => choose(country)}
                   >
                     <span className="country-picker-flag" aria-hidden="true">{flagEmoji(country.code)}</span>
