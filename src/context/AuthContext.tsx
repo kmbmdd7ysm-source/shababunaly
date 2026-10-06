@@ -16,14 +16,6 @@ import {
 } from '../services/supabase.ts';
 import { reportClientError } from '../services/telemetry.ts';
 
-type LocalAccount = {
-  id: string;
-  email: string;
-  passwordHash: string;
-  emailConfirmedAt?: string | null;
-  metadata?: Record<string, unknown>;
-};
-
 export type AuthUser = User | (Record<string, unknown> & { id: string; email?: string });
 export type AuthContextValue = {
   user: AuthUser | null;
@@ -35,7 +27,6 @@ export type AuthContextValue = {
 };
 
 const C = createContext<AuthContextValue | null>(null);
-const LOCAL_ACCOUNTS_KEY = 'shababuna-local-accounts-v1';
 const LOCAL_SESSION_KEY = 'shababuna-local-session-v1';
 // Keep account creation/sign-in usable even when the optional cloud identity
 // backend is not configured. Cloud auth remains preferred whenever available.
@@ -48,18 +39,6 @@ const readJson = (key: string, fallback: unknown = null): unknown => {
     return fallback;
   }
 };
-const writeJson = (key: string, value: unknown): void => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-const localUser = (record: LocalAccount): AuthUser =>
-  ({
-    id: record.id,
-    email: record.email,
-    email_confirmed_at: record.emailConfirmedAt || null,
-    confirmed_at: record.emailConfirmedAt || null,
-    user_metadata: record.metadata || {},
-    app_metadata: { provider: 'local' },
-  }) as AuthUser;
 const normalizeEmail = (email: unknown): string =>
   String(email || '')
     .trim()
@@ -79,12 +58,6 @@ const isTransientAuthError = (error: unknown): boolean => {
     message.includes('temporarily unavailable')
   );
 };
-
-async function hashPassword(value: string): Promise<string> {
-  const bytes = new TextEncoder().encode(value);
-  const digest = await crypto.subtle.digest('SHA-256', bytes);
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
-}
 
 export function AuthProvider({ children }: { children?: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
