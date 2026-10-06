@@ -12,8 +12,27 @@ import '../styles/account-tracking-premium.css';
 import OrderCard, { type OrderLike } from '../components/account/OrderCard';
 
 export default function OrderTrackingPage(): ReactElement {
-  const { t, pick } = useLanguage();
-  const ot = (t.orderTracking || {}) as Record<string, string>;
+  const { lang, pick } = useLanguage();
+  const ot = {
+    en: {
+      label: 'Help',
+      title: 'Order Tracking',
+      sub: 'Track the status of your order.',
+      orderNumber: 'Order number',
+      email: 'Email',
+      track: 'Track Order',
+      contact: 'Contact Support',
+    },
+    ar: {
+      label: 'المساعدة',
+      title: 'تتبع الطلب',
+      sub: 'تتبّع حالة طلبك.',
+      orderNumber: 'رقم الطلب',
+      email: 'البريد الإلكتروني',
+      track: 'تتبّع الطلب',
+      contact: 'تواصل مع الدعم',
+    },
+  }[lang];
   const auth = useAuth();
   const navigate = useNavigate();
   const [orderNumber, setOrderNumber] = useState('');
@@ -82,7 +101,7 @@ export default function OrderTrackingPage(): ReactElement {
         trail={[{ label: ot.title || pick({ en: 'Order tracking', ar: 'تتبع الطلب' }) }]}
         figure={auth.user && ordersState.orders.length ? { value: ordersState.orders.length, label: pick({ en: 'orders', ar: 'طلب' }) } : null}
       />
-      <section className="cc-tracking">
+      <section className="cc-tracking" data-locale={lang} key={lang}>
         <div className="cc-tracking__inner">
           {auth.user && (
             <section aria-labelledby="my-orders-title">
