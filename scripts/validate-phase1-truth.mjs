@@ -106,7 +106,7 @@ check(commerceConfig.fallbackUsdToLydRate === 9, 'Site exchange-rate source rema
 const generatedCatalog = read('supabase/generated/product_catalog.sql');
 check(!generatedCatalog.includes('owner_confirmed_lha_ready'), 'Generated trusted catalogue contains no stale LHA inventory source');
 check(generatedCatalog.includes('owner_confirmed_lha_color_stock'), 'Generated trusted catalogue contains owner-confirmed LHA color stock');
-check(generatedCatalog.includes('\"inventoryPoolKey\":\"color:'), 'Generated trusted catalogue serializes shared color-pool keys');
+check(generatedCatalog.includes('"inventoryPoolKey":"color:'), 'Generated trusted catalogue serializes shared color-pool keys');
 check(generatedCatalog.includes('inventory_quantity=case') && generatedCatalog.includes('when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity') && generatedCatalog.includes('with pool_floor as') && generatedCatalog.includes("variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'"), 'Catalogue deploy preserves and reconciles already-decremented tracked LHA pool inventory');
 
 const poolMigration = read('supabase/migrations/20260818010000_lha_color_inventory_pools.sql');
