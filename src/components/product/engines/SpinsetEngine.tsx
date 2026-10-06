@@ -155,6 +155,8 @@ export default function SpinsetEngine({
       <div
         ref={stage}
         className="gw-spin-stage"
+        role="application"
+        aria-label={pick({ en: 'Rotate product view', ar: 'تدوير عرض المنتج' })}
         tabIndex={0}
         onKeyDown={(event) => {
           if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
