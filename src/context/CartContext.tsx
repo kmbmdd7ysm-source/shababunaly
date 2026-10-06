@@ -214,7 +214,7 @@ export function CartProvider({ children }: { children?: ReactNode }) {
       setHydrationReady(true);
     });
     return () => {
-      if (hydrationVersion.current === version) ready.current = false;
+      ready.current = false;
     };
   }, [scope, auth.loading]);
   useEffect(() => {
