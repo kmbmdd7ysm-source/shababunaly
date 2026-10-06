@@ -13,25 +13,6 @@ type Realtime3DEngineProps = {
   pick: PickFn;
 };
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
-          src?: string;
-          alt?: string;
-          'camera-controls'?: boolean;
-          'touch-action'?: string;
-          'shadow-intensity'?: string | number;
-          exposure?: string | number;
-          className?: string;
-        },
-        HTMLElement
-      >;
-    }
-  }
-}
-
 /**
  * Level A — verified real-time 3D from .glb/.gltf.
  * Model-viewer loads via JS side-effect so package .d.ts never enters tsc.
