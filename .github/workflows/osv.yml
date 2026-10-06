@@ -47,7 +47,7 @@ jobs:
           fs.appendFileSync(process.env.GITHUB_OUTPUT || '/dev/null', `count=${total}\n`);
           NODE
         id: osv_summary
-      - uses: github/codeql-action/upload-sarif@6c2f101c6fa32380a686d71a3e678f84d12c8f71 # v4.37.7
+      - uses: github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
         if: always()
         with: { sarif_file: results.sarif }
       - name: Enforce zero OSV findings
