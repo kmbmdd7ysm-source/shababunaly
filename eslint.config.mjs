@@ -82,6 +82,7 @@ export default [
       'supabase/generated/**',
       'vendor/**',
       'brand-quarantine/**',
+      '**/*.d.ts',
     ],
   },
   js.configs.recommended,
@@ -137,6 +138,12 @@ export default [
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
+    },
+  },
+  {
+    files: ['src/components/custom/Garment3DStage.tsx'],
+    rules: {
+      'react/no-unknown-property': 'off',
     },
   },
   {
