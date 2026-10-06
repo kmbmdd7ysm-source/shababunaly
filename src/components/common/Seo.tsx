@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SITE } from '../../config.ts';
 import { useLanguage } from '../../context/LanguageContext';
@@ -30,13 +30,12 @@ export default function Seo({
   // Keep the live browser title synchronized even when a statically pre-rendered
   // route supplied the initial English <title>. Helmet still owns the remaining
   // metadata; this effect makes language switches deterministic in every browser.
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = fullTitle;
   }, [fullTitle]);
 
   return (
     <Helmet key={lang} htmlAttributes={{ lang, dir: lang === 'ar' ? 'rtl' : 'ltr' }}>
-      <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <meta
         name="robots"

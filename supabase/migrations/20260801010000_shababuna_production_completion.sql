@@ -465,7 +465,7 @@ begin
     execute format('alter table public.%I enable row level security',t);
     execute format('revoke all on public.%I from anon,authenticated',t);
     execute format('grant select,insert,update,delete on public.%I to service_role',t);
-    execute format('drop policy if exists %L on public.%I','staff manage '||t,t);
+    execute format('drop policy if exists %I on public.%I','staff manage '||t,t);
     execute format('create policy %I on public.%I for all to authenticated using (public.is_shababuna_staff()) with check (public.is_shababuna_staff())','staff manage '||t,t);
     execute format('grant select,insert,update,delete on public.%I to authenticated',t);
   end loop;
