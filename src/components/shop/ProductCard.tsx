@@ -12,10 +12,9 @@ import Icon from '../icons/Icon';
 import ColorSwatch from '../common/ColorSwatch';
 import QuickAddSheet from './QuickAddSheet';
 import { getCompareAction } from '../../utils/productOptions';
-import { getVariantPurchaseLimit, type VariantLike } from '../../utils/productEligibility';
+import { getVariantPurchaseLimit, type ProductLike, type VariantLike } from '../../utils/productEligibility';
 import type { LocaleText } from '../../types/i18n';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability';
-import type { ProductLike } from '../../utils/productEligibility';
 import '../../styles/design/phase2-commerce.css';
 
 type CardColor = { key?: string; image?: string; name?: unknown; hex?: string };
