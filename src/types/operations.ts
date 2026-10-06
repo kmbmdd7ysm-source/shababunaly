@@ -3,4 +3,4 @@ export type OperationsRunFn = (
   key: string,
   action: () => Promise<unknown>,
   success: string,
-) => Promise<void>;
+) => void;
