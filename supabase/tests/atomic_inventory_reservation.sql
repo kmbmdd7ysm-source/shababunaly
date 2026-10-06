@@ -29,7 +29,7 @@ insert into public.product_catalog(
 -- Successful reservation.
 select public.create_order_transactional(
   null,'atomic-test-success@example.com','USD','cash_on_delivery',
-  '10000000-0000-0000-0000-000000000001','{}',
+  '10000000-0000-0000-0000-000000000001','{"country":"LY"}',
   '[{"variantId":"__atomic_test_success_v","productId":"__atomic_test_success","quantity":2}]'
 );
 select pg_temp.assert_true(
@@ -48,7 +48,7 @@ select pg_temp.assert_true(
 -- Duplicate idempotent request must return the existing order without reserving again.
 select public.create_order_transactional(
   null,'atomic-test-success@example.com','USD','cash_on_delivery',
-  '10000000-0000-0000-0000-000000000001','{}',
+  '10000000-0000-0000-0000-000000000001','{"country":"LY"}',
   '[{"variantId":"__atomic_test_success_v","productId":"__atomic_test_success","quantity":2}]'
 );
 select pg_temp.assert_true(
@@ -82,7 +82,7 @@ select pg_temp.assert_true(
 -- Unlimited inventory is explicit and is never decremented.
 select public.create_order_transactional(
   null,'atomic-test-unlimited@example.com','USD','cash_on_delivery',
-  '10000000-0000-0000-0000-000000000003','{}',
+  '10000000-0000-0000-0000-000000000003','{"country":"LY"}',
   '[{"variantId":"__atomic_test_unlimited_v","productId":"__atomic_test_unlimited","quantity":99}]'
 );
 select pg_temp.assert_true(
@@ -127,8 +127,8 @@ select pg_temp.assert_true(
 );
 
 -- Two concurrent checkouts compete for the final unit. Exactly one succeeds.
-select dblink_connect('atomic_a', 'dbname=' || current_database());
-select dblink_connect('atomic_b', 'dbname=' || current_database());
+select dblink_connect('atomic_a', 'host=127.0.0.1 port=5432 dbname=' || current_database() || ' user=postgres password=postgres');
+select dblink_connect('atomic_b', 'host=127.0.0.1 port=5432 dbname=' || current_database() || ' user=postgres password=postgres');
 select dblink_send_query('atomic_a', $$
   select public.create_order_transactional(
     null,'atomic-test-race-a@example.com','USD','cash_on_delivery',
