@@ -126,7 +126,7 @@ begin
   v_status=coalesce(nullif(btrim(p_status),''),'pending');
   if v_status not in ('pending','label_created','in_transit','out_for_delivery','delivered','exception','cancelled') then raise exception 'invalid_shipment_status'; end if;
   if p_shipment_id is null then
-    v_number=coalesce(nullif(btrim(p_shipment_number),''),'SHP-'||to_char(now(),'YYYYMMDD')||'-'||upper(substr(encode(gen_random_bytes(5),'hex'),1,8)));
+    v_number=coalesce(nullif(btrim(p_shipment_number),''),'SHP-'||to_char(now(),'YYYYMMDD')||'-'||upper(substr(encode(extensions.gen_random_bytes(5),'hex'),1,8)));
     insert into public.shipments(shipment_number,order_id,quote_id,carrier_id,tracking_number,status,shipped_at,delivered_at,metadata)
     values(v_number,p_order_id,p_quote_id,p_carrier_id,nullif(btrim(p_tracking_number),''),v_status,
       case when v_status in ('in_transit','out_for_delivery','delivered') then now() else null end,
