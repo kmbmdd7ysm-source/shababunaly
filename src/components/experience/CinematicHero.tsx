@@ -23,8 +23,7 @@ export default function CinematicHero(): ReactElement {
     if (!video) return;
     video.muted = true;
     video.defaultMuted = true;
-    const attempt = video.play();
-    if (attempt && typeof attempt.catch === 'function') void attempt.catch(() => undefined);
+    void video.play().catch(() => undefined);
   };
 
   useEffect(() => {
