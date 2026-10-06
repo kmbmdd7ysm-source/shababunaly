@@ -21,7 +21,6 @@ export default function CartPage(): ReactElement {
   const { t, pick, lang } = useLanguage();
   const cartCopy = (t.cart || {}) as Record<string, string>;
   const nav = (t.nav || {}) as Record<string, string>;
-  const checkoutCopy = (t.checkout || {}) as Record<string, string>;
   const { format, usdToLydRate, countryCode } = useCommerce();
   const { items, updateQuantity, removeItem, subtotal, hasPhysical } = useCart();
   const hasReservation = items.some((item) => item.reservationAvailable === true);
