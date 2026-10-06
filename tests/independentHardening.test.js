@@ -78,8 +78,8 @@ describe('independent final hardening invariants', () => {
     expect(read('src/components/shop/QuickAddSheet.tsx')).toContain('product.quoteOnly === true');
     expect(read('src/pages/ShopPage.tsx')).toContain('product.quoteOnly === true && (min != null || max != null)');
     const trustedSql = read('supabase/generated/product_catalog.sql');
-    expect(trustedSql).toContain('\"quoteOnly\":true');
-    expect(trustedSql).toContain('\"retailAvailable\":false');
+    expect(trustedSql).toContain('"quoteOnly":true');
+    expect(trustedSql).toContain('"retailAvailable":false');
     expect(read('supabase/migrations/20260818050000_quote_only_checkout_guard.sql')).toContain('v_catalog.unit_price <= 0');
   });
 
