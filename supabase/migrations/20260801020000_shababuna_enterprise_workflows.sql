@@ -26,7 +26,7 @@ create table if not exists public.organization_contracts (
   created_by uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  check (quote_id is not null or order_id is not null or jsonb_object_length(terms)>0)
+  check (quote_id is not null or order_id is not null or terms <> '{}'::jsonb)
 );
 
 create table if not exists public.contract_signatures (
