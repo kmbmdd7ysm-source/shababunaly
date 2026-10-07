@@ -8,14 +8,14 @@ import '../../styles/garment-concept.css';
 type ViewPreset = 'front' | 'back' | 'left' | 'right' | 'detail';
 
 type Garment3DStageProps = {
-  productLabel?: string;
-  baseColor?: string;
-  accentColor?: string;
-  teamName?: string;
-  playerName?: string;
-  playerNumber?: string;
-  pattern?: string;
-  logoPreview?: string;
+  productLabel?: string | undefined;
+  baseColor?: string | undefined;
+  accentColor?: string | undefined;
+  teamName?: string | undefined;
+  playerName?: string | undefined;
+  playerNumber?: string | undefined;
+  pattern?: string | undefined;
+  logoPreview?: string | undefined;
 };
 
 const PRESET_POS: Record<ViewPreset, [number, number, number]> = {
@@ -73,7 +73,7 @@ function useArtworkTexture({
   color: string;
   accentColor: string;
   pattern: string;
-  logoPreview?: string;
+  logoPreview?: string | undefined;
 }) {
   const [texture, setTexture] = useState<CanvasTexture | null>(null);
 
@@ -174,13 +174,13 @@ function JerseyMesh({
   pattern = 'solid',
   logoPreview,
 }: {
-  baseColor?: string;
-  accentColor?: string;
-  teamName?: string;
-  playerName?: string;
-  playerNumber?: string;
-  pattern?: string;
-  logoPreview?: string;
+  baseColor?: string | undefined;
+  accentColor?: string | undefined;
+  teamName?: string | undefined;
+  playerName?: string | undefined;
+  playerNumber?: string | undefined;
+  pattern?: string | undefined;
+  logoPreview?: string | undefined;
 }) {
   const shape = useMemo(makeJerseyShape, []);
   const frontArtwork = useArtworkTexture({
@@ -260,8 +260,8 @@ function ShortsMesh({
   baseColor = '#1a1a1a',
   accentColor = '#c4a35a',
 }: {
-  baseColor?: string;
-  accentColor?: string;
+  baseColor?: string | undefined;
+  accentColor?: string | undefined;
 }) {
   const shape = useMemo(makeShortsShape, []);
   return (
