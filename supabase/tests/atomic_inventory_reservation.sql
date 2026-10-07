@@ -2,7 +2,6 @@
 -- This test intentionally commits fixtures because dblink sessions must see them.
 \set ON_ERROR_STOP on
 create extension if not exists dblink;
-grant execute on function dblink_connect_u(text,text) to current_user;
 
 create or replace function pg_temp.assert_true(p_condition boolean, p_message text)
 returns void language plpgsql as $$
@@ -128,8 +127,8 @@ select pg_temp.assert_true(
 );
 
 -- Two concurrent checkouts compete for the final unit. Exactly one succeeds.
-select dblink_connect_u('atomic_a', 'dbname=' || current_database());
-select dblink_connect_u('atomic_b', 'dbname=' || current_database());
+select dblink_connect('atomic_a','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('atomic_b','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
 select dblink_send_query('atomic_a', $$
   select public.create_order_transactional(
     null,'atomic-test-race-a@example.com','USD','cash_on_delivery',
