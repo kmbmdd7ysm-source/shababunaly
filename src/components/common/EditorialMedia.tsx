@@ -2,12 +2,12 @@ import type { ReactElement } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 type EditorialMediaProps = {
-  desktopMedia?: string;
-  mobileMedia?: string;
-  desktopVideo?: string;
-  mobileVideo?: string;
-  alt?: string;
-  loading?: 'eager' | 'lazy';
+  desktopMedia?: string | undefined;
+  mobileMedia?: string | undefined;
+  desktopVideo?: string | undefined;
+  mobileVideo?: string | undefined;
+  alt?: string | undefined;
+  loading?: 'eager' | 'lazy' | undefined;
 };
 function videoType(url: string): string { return /\.webm($|\?)/i.test(url) ? 'video/webm' : 'video/mp4'; }
 export default function EditorialMedia({desktopMedia='',mobileMedia,desktopVideo,mobileVideo,alt='',loading='lazy'}: EditorialMediaProps): ReactElement {
