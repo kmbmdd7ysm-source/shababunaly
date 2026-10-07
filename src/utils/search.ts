@@ -1,22 +1,25 @@
 import { products } from '../data/products.ts';
 
-export type LocaleObject = { en?: string; ar?: string };
+export type LocaleObject = { en?: string | undefined; ar?: string | undefined };
 export type LocaleText = LocaleObject | string | null | undefined;
-export type LocaleKeywordBag = { en?: string[]; ar?: string[] };
+export type LocaleKeywordBag = {
+  en?: string[] | undefined;
+  ar?: string[] | undefined;
+};
 
 export interface CatalogItem {
-  id?: string;
-  slug?: string;
-  name?: LocaleText;
-  description?: LocaleText;
-  brand?: string;
-  category?: string;
-  subcategory?: string;
-  productType?: string;
-  colors?: Array<{ key?: string; name?: LocaleText }>;
-  tags?: string[];
-  image?: string;
-  availability?: string;
+  id?: string | undefined;
+  slug?: string | undefined;
+  name?: LocaleText | undefined;
+  description?: LocaleText | undefined;
+  brand?: string | undefined;
+  category?: string | undefined;
+  subcategory?: string | undefined;
+  productType?: string | undefined;
+  colors?: Array<Record<string, unknown>> | undefined;
+  tags?: string[] | undefined;
+  image?: string | undefined;
+  availability?: string | undefined;
   [key: string]: unknown;
 }
 
@@ -186,16 +189,19 @@ const NORMALIZED_ALIAS_GROUPS = Object.entries(SEARCH_ALIASES).map(([canonical, 
   aliases: aliases.map(normalizeSearchText),
 }));
 
-export const localizedValues = (value: LocaleText | LocaleKeywordBag): string[] => {
+export const localizedValues = (value: unknown): string[] => {
   if (!value) return [];
   if (typeof value === 'string') return [value];
-  const en = value.en;
-  const ar = value.ar;
+  if (typeof value !== 'object' || Array.isArray(value)) return [];
+  const localized = value as { en?: unknown; ar?: unknown };
   const parts: string[] = [];
-  if (Array.isArray(en)) parts.push(...en);
-  else if (en) parts.push(en);
-  if (Array.isArray(ar)) parts.push(...ar);
-  else if (ar) parts.push(ar);
+  for (const entry of [localized.en, localized.ar]) {
+    if (Array.isArray(entry)) {
+      parts.push(...entry.filter((item): item is string => typeof item === 'string'));
+    } else if (typeof entry === 'string') {
+      parts.push(entry);
+    }
+  }
   return parts;
 };
 
