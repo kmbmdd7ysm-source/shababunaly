@@ -339,7 +339,14 @@ export default function CheckoutPage(): ReactElement {
       ? (payload.items as Array<Record<string, unknown>>)
       : [];
     const customer = (payload.customer || {}) as Record<string, unknown>;
-    const clientItems = payloadItems.map((item) => {
+    type ClientCheckoutItem = Record<string, unknown> & {
+      quantity: number;
+      name: string;
+      purchaseMode: string;
+      displayUnitPrice: number;
+      displayLineTotal: number;
+    };
+    const clientItems: ClientCheckoutItem[] = payloadItems.map((item): ClientCheckoutItem => {
       const unitPrice = Number(item.unitPrice) || 0;
       const lineTotal = Number(item.lineTotal) || 0;
       return {
