@@ -29,7 +29,7 @@ const PRESET_POS: Record<ViewPreset, [number, number, number]> = {
 function makeJerseyShape(): Shape {
   const shape = new Shape();
   shape.moveTo(-0.58, -0.78);
-  shape.lineTo(-0.66, 0.30);
+  shape.lineTo(-0.66, 0.3);
   shape.lineTo(-1.08, 0.48);
   shape.lineTo(-0.86, 0.92);
   shape.lineTo(-0.48, 0.76);
@@ -37,7 +37,7 @@ function makeJerseyShape(): Shape {
   shape.quadraticCurveTo(0.28, 0.92, 0.48, 0.76);
   shape.lineTo(0.86, 0.92);
   shape.lineTo(1.08, 0.48);
-  shape.lineTo(0.66, 0.30);
+  shape.lineTo(0.66, 0.3);
   shape.lineTo(0.58, -0.78);
   shape.quadraticCurveTo(0, -0.9, -0.58, -0.78);
   return shape;
@@ -307,7 +307,10 @@ function ConceptKit({
   pattern,
   logoPreview,
 }: Required<Pick<Garment3DStageProps, 'productLabel' | 'baseColor' | 'accentColor'>> &
-  Pick<Garment3DStageProps, 'teamName' | 'playerName' | 'playerNumber' | 'pattern' | 'logoPreview'>) {
+  Pick<
+    Garment3DStageProps,
+    'teamName' | 'playerName' | 'playerNumber' | 'pattern' | 'logoPreview'
+  >) {
   const normalized = productLabel.toLowerCase();
   const shortsOnly = normalized.includes('short') && !normalized.includes('set');
   const fullSet = normalized.includes('set') || normalized.includes('kit');

@@ -1,35 +1,48 @@
 import { EDITORIAL as E } from './editorialAssets.ts';
-export type OfficialMediaEntry={source:string;alt:string;width?:number|undefined;height?:number|undefined};
-const createEntry=(source:string,alt:string,width?:number,height?:number):OfficialMediaEntry=>({source,alt,width,height});
-export const OFFICIAL_MEDIA={
-  nikeWinningPoster:createEntry(E.curryShoesBlue,'Basketball editorial reference image.'),
-  nikeWinningCollage:createEntry(E.curryHeroBall,'Basketball editorial reference image.'),
-  nikeKobeHeroDesktop:createEntry(E.curryDrive,'Basketball editorial reference image.'),
-  nikeKobeHeroMobile:createEntry(E.curryPatternRear,'Basketball editorial reference image.'),
-  nikeKobeGroup:createEntry(E.curryLayupWide,'Basketball editorial reference image.'),
-  nikeKobeOne:createEntry(E.dloShoes,'Basketball editorial reference image.'),
-  nikeKobeTwo:createEntry(E.curryLayupVertical,'Basketball editorial reference image.'),
-  nikeKobeThree:createEntry(E.curryWhiteHoodClose,'Basketball editorial reference image.'),
-  nikeCustomGameTop:createEntry(E.curryPatternShot,'Basketball editorial reference image.'),
-  nikeCustomGameShorts:createEntry(E.curryShoeColor,'Basketball editorial reference image.'),
-  nikeCustomShootingShirt:createEntry(E.curryBallPortrait,'Basketball editorial reference image.'),
-  nikeCustomHoodie:createEntry(E.redShoe,'Basketball editorial reference image.'),
-  nikeCustomTracksuit:createEntry(E.lameloChairA,'Basketball editorial reference image.'),
-  nikeCustomBag:createEntry(E.curryLayupVertical2,'Basketball editorial reference image.'),
-  nikeCustomBasketball:createEntry(E.lameloChairB,'Basketball editorial reference image.'),
-  nikeCustomDuffle:createEntry(E.lameloSpaceStanding,'Basketball editorial reference image.'),
-  spaldingGameBall:createEntry(E.curryDribbleWide,'Basketball editorial reference image.'),
-  spaldingBackboard:createEntry(E.curryPortraitBall,'Basketball editorial reference image.'),
-  spaldingPolePad:createEntry(E.lameloSpaceSeated,'Basketball editorial reference image.'),
-  spaldingPump:createEntry(E.lameloSpaceShoe,'Basketball editorial reference image.'),
-  nbKawhi:createEntry(E.whiteShoeOrange,'Basketball editorial reference image.'),
-  nbTyrese:createEntry(E.jordanDunkEvent,'Basketball editorial reference image.'),
-  nbCameron:createEntry(E.lukaRedCourt,'Basketball editorial reference image.'),
-  nbCooper:createEntry(E.curryActionAlt,'Basketball editorial reference image.'),
-  nbDejounte:createEntry(E.jordanShoePink,'Basketball editorial reference image.'),
-  nbZach:createEntry(E.whiteStudioDribbler,'Basketball editorial reference image.'),
-  nbJamal:createEntry(E.tatumDark,'Basketball editorial reference image.'),
-  nbAaron:createEntry(E.jordanDunkVertical,'Basketball editorial reference image.'),
-  nbNickSmith:createEntry(E.jordanShoesOrange,'Basketball editorial reference image.'),
-  nbDarius:createEntry(E.jordanShoeBox,'Basketball editorial reference image.'),
+export type OfficialMediaEntry = {
+  source: string;
+  alt: string;
+  width?: number | undefined;
+  height?: number | undefined;
+};
+const createEntry = (
+  source: string,
+  alt: string,
+  width?: number,
+  height?: number,
+): OfficialMediaEntry => ({ source, alt, width, height });
+export const OFFICIAL_MEDIA = {
+  nikeWinningPoster: createEntry(E.curryShoesBlue, 'Basketball editorial reference image.'),
+  nikeWinningCollage: createEntry(E.curryHeroBall, 'Basketball editorial reference image.'),
+  nikeKobeHeroDesktop: createEntry(E.curryDrive, 'Basketball editorial reference image.'),
+  nikeKobeHeroMobile: createEntry(E.curryPatternRear, 'Basketball editorial reference image.'),
+  nikeKobeGroup: createEntry(E.curryLayupWide, 'Basketball editorial reference image.'),
+  nikeKobeOne: createEntry(E.dloShoes, 'Basketball editorial reference image.'),
+  nikeKobeTwo: createEntry(E.curryLayupVertical, 'Basketball editorial reference image.'),
+  nikeKobeThree: createEntry(E.curryWhiteHoodClose, 'Basketball editorial reference image.'),
+  nikeCustomGameTop: createEntry(E.curryPatternShot, 'Basketball editorial reference image.'),
+  nikeCustomGameShorts: createEntry(E.curryShoeColor, 'Basketball editorial reference image.'),
+  nikeCustomShootingShirt: createEntry(
+    E.curryBallPortrait,
+    'Basketball editorial reference image.',
+  ),
+  nikeCustomHoodie: createEntry(E.redShoe, 'Basketball editorial reference image.'),
+  nikeCustomTracksuit: createEntry(E.lameloChairA, 'Basketball editorial reference image.'),
+  nikeCustomBag: createEntry(E.curryLayupVertical2, 'Basketball editorial reference image.'),
+  nikeCustomBasketball: createEntry(E.lameloChairB, 'Basketball editorial reference image.'),
+  nikeCustomDuffle: createEntry(E.lameloSpaceStanding, 'Basketball editorial reference image.'),
+  spaldingGameBall: createEntry(E.curryDribbleWide, 'Basketball editorial reference image.'),
+  spaldingBackboard: createEntry(E.curryPortraitBall, 'Basketball editorial reference image.'),
+  spaldingPolePad: createEntry(E.lameloSpaceSeated, 'Basketball editorial reference image.'),
+  spaldingPump: createEntry(E.lameloSpaceShoe, 'Basketball editorial reference image.'),
+  nbKawhi: createEntry(E.whiteShoeOrange, 'Basketball editorial reference image.'),
+  nbTyrese: createEntry(E.jordanDunkEvent, 'Basketball editorial reference image.'),
+  nbCameron: createEntry(E.lukaRedCourt, 'Basketball editorial reference image.'),
+  nbCooper: createEntry(E.curryActionAlt, 'Basketball editorial reference image.'),
+  nbDejounte: createEntry(E.jordanShoePink, 'Basketball editorial reference image.'),
+  nbZach: createEntry(E.whiteStudioDribbler, 'Basketball editorial reference image.'),
+  nbJamal: createEntry(E.tatumDark, 'Basketball editorial reference image.'),
+  nbAaron: createEntry(E.jordanDunkVertical, 'Basketball editorial reference image.'),
+  nbNickSmith: createEntry(E.jordanShoesOrange, 'Basketball editorial reference image.'),
+  nbDarius: createEntry(E.jordanShoeBox, 'Basketball editorial reference image.'),
 } as const;

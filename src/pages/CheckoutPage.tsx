@@ -247,8 +247,7 @@ export default function CheckoutPage(): ReactElement {
           ? 'international_pending'
           : 'international';
   const paymentConfigured =
-    manualPayment ||
-    (paymentMethod !== 'pending' && isPaymentMethodConfigured(paymentMethod));
+    manualPayment || (paymentMethod !== 'pending' && isPaymentMethodConfigured(paymentMethod));
   // prettier-ignore
   const paymentPlan = shippingQuoteRequired
     ? 'pending_shipping_quote'
@@ -403,7 +402,12 @@ export default function CheckoutPage(): ReactElement {
         discountTotal: 0,
       } as Record<string, unknown>,
       { idempotencyKey: idempotencyRef.current, allowPending: true },
-    )) as { order?: Record<string, unknown>; source?: string; notification?: string | null; accessToken?: string | null };
+    )) as {
+      order?: Record<string, unknown>;
+      source?: string;
+      notification?: string | null;
+      accessToken?: string | null;
+    };
 
     const trusted = (result?.order || {}) as Record<string, unknown>;
     const confirmedNumber = String(trusted.orderNumber || fallbackOrderNumber);
@@ -492,7 +496,6 @@ export default function CheckoutPage(): ReactElement {
       }
     }
 
-
     const guestAccessToken = String(result?.accessToken || '').trim();
     if (guestAccessToken) {
       try {
@@ -556,7 +559,7 @@ export default function CheckoutPage(): ReactElement {
             variantKey: item.key,
             size: String(item.size || ''),
             color: String(item.color || ''),
-            name: pick((item.name || "") as LocaleText),
+            name: pick((item.name || '') as LocaleText),
             quantity,
             unitPrice: price,
             lineTotal: price * quantity,
@@ -726,7 +729,12 @@ export default function CheckoutPage(): ReactElement {
                 </p>
                 <div className="payment-balance-card">
                   <div>
-                    <span>{orderConfirmed.paymentMethod === 'cash' && orderConfirmed.deliveryProfile === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due to confirm', ar: 'المطلوب للتأكيد' })}</span>
+                    <span>
+                      {orderConfirmed.paymentMethod === 'cash' &&
+                      orderConfirmed.deliveryProfile === 'ready'
+                        ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' })
+                        : pick({ en: 'Due to confirm', ar: 'المطلوب للتأكيد' })}
+                    </span>
                     <strong>
                       {(Number(orderConfirmed.displayDueNow) || 0).toFixed(2)} {currency}
                     </strong>
@@ -739,7 +747,10 @@ export default function CheckoutPage(): ReactElement {
                   </div>
                 </div>
                 <div className="button-row">
-                  <Link to={`/order-tracking/${encodeURIComponent(String(orderConfirmed.number || ''))}`} className="btn-primary">
+                  <Link
+                    to={`/order-tracking/${encodeURIComponent(String(orderConfirmed.number || ''))}`}
+                    className="btn-primary"
+                  >
                     {pick({ en: 'Track Order', ar: 'تتبع الطلب' })}
                   </Link>
                   <Link to="/shop" className="btn-secondary">
@@ -879,9 +890,20 @@ export default function CheckoutPage(): ReactElement {
                   reservationOrder={hasReservation}
                 />
 
-                <div className={`checkout-context-card${shippingQuoteRequired ? ' is-pending' : ''}`}>
+                <div
+                  className={`checkout-context-card${shippingQuoteRequired ? ' is-pending' : ''}`}
+                >
                   <span className="checkout-context-card__icon" aria-hidden="true">
-                    <Icon name={shippingQuoteRequired ? 'alert' : deliveryProfile === 'ready' ? 'check' : 'orders'} size={20} />
+                    <Icon
+                      name={
+                        shippingQuoteRequired
+                          ? 'alert'
+                          : deliveryProfile === 'ready'
+                            ? 'check'
+                            : 'orders'
+                      }
+                      size={20}
+                    />
                   </span>
                   <span className="checkout-context-card__copy">
                     <strong>
@@ -890,10 +912,10 @@ export default function CheckoutPage(): ReactElement {
                         : deliveryProfile === 'ready'
                           ? pick({ en: 'Ready for delivery', ar: 'جاهز للتسليم' })
                           : hasReservation
-                          ? pick({ en: 'Reservation order', ar: 'طلب بالحجز' })
-                          : stagedOrder
-                            ? pick({ en: 'Made to order', ar: 'تصنيع حسب الطلب' })
-                            : pick({ en: 'Delivery', ar: 'التوصيل' })}
+                            ? pick({ en: 'Reservation order', ar: 'طلب بالحجز' })
+                            : stagedOrder
+                              ? pick({ en: 'Made to order', ar: 'تصنيع حسب الطلب' })
+                              : pick({ en: 'Delivery', ar: 'التوصيل' })}
                     </strong>
                     <small>
                       {shippingQuoteRequired
@@ -916,7 +938,7 @@ export default function CheckoutPage(): ReactElement {
                                   en: 'The required deposit and remaining balance follow the approved quote for this order.',
                                   ar: 'تتبع الدفعة المطلوبة والرصيد المتبقي عرض السعر المعتمد لهذا الطلب.',
                                 })
-                          : pick(deliveryCopy)}
+                            : pick(deliveryCopy)}
                     </small>
                   </span>
                 </div>
@@ -1010,11 +1032,14 @@ export default function CheckoutPage(): ReactElement {
                   return (
                     <li key={String(item.key)} className="summary-item">
                       <div className="summary-item-media">
-                        <SmartImage src={String(item.image || '')} alt={pick((item.name || "") as LocaleText)} />
+                        <SmartImage
+                          src={String(item.image || '')}
+                          alt={pick((item.name || '') as LocaleText)}
+                        />
                         <span className="summary-item-qty">{quantity}</span>
                       </div>
                       <div className="summary-item-name">
-                        <span>{pick((item.name || "") as LocaleText)}</span>
+                        <span>{pick((item.name || '') as LocaleText)}</span>
                         {item.size && item.size !== 'OS' ? (
                           <small>{String(item.size)}</small>
                         ) : null}
@@ -1053,7 +1078,11 @@ export default function CheckoutPage(): ReactElement {
               </div>
               <div className="payment-balance-card">
                 <div>
-                  <span>{manualPayment ? pick({ en: 'Due to confirm', ar: 'المطلوب للتأكيد' }) : pick({ en: 'Due now', ar: 'المطلوب الآن' })}</span>
+                  <span>
+                    {manualPayment
+                      ? pick({ en: 'Due to confirm', ar: 'المطلوب للتأكيد' })
+                      : pick({ en: 'Due now', ar: 'المطلوب الآن' })}
+                  </span>
                   <strong>{shippingQuoteRequired ? '—' : format(amountDueNow, lang)}</strong>
                 </div>
                 <div>

@@ -18,7 +18,11 @@ import {
 import { getSupabase } from '../services/supabase.ts';
 import { spaldingOfficialProducts } from '../data/spaldingOfficialProducts.ts';
 import { getRelatedProducts } from '../utils/relatedProducts.ts';
-import { hasRealProductMedia, isReadyToShipEligible, type ProductLike } from '../utils/productEligibility.ts';
+import {
+  hasRealProductMedia,
+  isReadyToShipEligible,
+  type ProductLike,
+} from '../utils/productEligibility.ts';
 import { applySiteRatePricing } from '../utils/siteRatePricing.ts';
 import { useCommerce } from './CommerceContext.tsx';
 
@@ -153,7 +157,6 @@ const SAFE_FALLBACK_PRODUCTS = import.meta.env.PROD
 const asRecord = (value: unknown): Record<string, unknown> =>
   value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
 
-
 const finiteNumber = (value: unknown): number | null => {
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
@@ -176,8 +179,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     product.legacyLha === true &&
     product.inventorySource === 'owner_confirmed_lha_color_stock' &&
     product.inventoryVerified === true;
-  const supplierReservation =
-    product.reservationAvailable === true && product.legacyLha !== true;
+  const supplierReservation = product.reservationAvailable === true && product.legacyLha !== true;
   const ownerConfirmedAt = Date.parse(String(product.inventoryVerifiedAt || ''));
   const activeRows = rows.filter((row) => row && row.variant_id && row.sku);
   if (!activeRows.length) return product;
@@ -221,24 +223,28 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       color: String(row.color || 'black'),
       sku: String(row.sku),
       stock: trackedVariant ? effectiveStock : 0,
-      inventoryPoolKey: trackedVariant && ownerConfirmedLhaStock
-        ? String(
-            data.inventoryPoolKey ||
-              (product.variants || []).find((entry) => String(entry.sku) === String(row.sku))
-                ?.inventoryPoolKey ||
-              `color:${String(row.color || 'black')}`,
-          )
-        : trackedVariant && data.inventoryPoolKey
-          ? String(data.inventoryPoolKey)
-          : undefined,
-      inventoryPoolStock: trackedVariant && ownerConfirmedLhaStock
-        ? effectiveStock
-        : trackedVariant && Number.isFinite(Number(data.inventoryPoolStock))
-          ? Number(data.inventoryPoolStock)
-          : undefined,
+      inventoryPoolKey:
+        trackedVariant && ownerConfirmedLhaStock
+          ? String(
+              data.inventoryPoolKey ||
+                (product.variants || []).find((entry) => String(entry.sku) === String(row.sku))
+                  ?.inventoryPoolKey ||
+                `color:${String(row.color || 'black')}`,
+            )
+          : trackedVariant && data.inventoryPoolKey
+            ? String(data.inventoryPoolKey)
+            : undefined,
+      inventoryPoolStock:
+        trackedVariant && ownerConfirmedLhaStock
+          ? effectiveStock
+          : trackedVariant && Number.isFinite(Number(data.inventoryPoolStock))
+            ? Number(data.inventoryPoolStock)
+            : undefined,
       inventoryTracking: trackedVariant,
       inventoryVerified: trackedVariant,
-      availabilityState: reservationVariant ? 'preorder' : String(row.availability_state || 'in_stock'),
+      availabilityState: reservationVariant
+        ? 'preorder'
+        : String(row.availability_state || 'in_stock'),
       unitPrice: ownerConfirmedLhaStock
         ? Number(product.price)
         : Number.isFinite(unitPrice)
@@ -273,7 +279,9 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
   });
   const reservationAvailable =
     supplierReservation &&
-    variants.some((variant) => String(variant.availabilityState || '').toLowerCase() === 'preorder');
+    variants.some(
+      (variant) => String(variant.availabilityState || '').toLowerCase() === 'preorder',
+    );
   const retailPrices = variants
     .map((variant) => variant.unitPrice)
     .filter((value): value is number => Number.isFinite(value));
@@ -283,19 +291,18 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
   const wholesalePrices = variants
     .map((variant) => variant.wholesalePrice)
     .filter((value): value is number => value != null && Number.isFinite(value) && value > 0);
-  const unitPrice = retailPrices.length
-    ? Math.min(...retailPrices)
-    : Number(product.price);
+  const unitPrice = retailPrices.length ? Math.min(...retailPrices) : Number(product.price);
   const compareAt = comparePrices.length ? Math.min(...comparePrices) : product.compareAt;
   const wholesalePrice = wholesalePrices.length
     ? Math.min(...wholesalePrices)
     : Number(product.wholesalePrice);
 
-  const comingSoon = product.legacyLha === true
-    ? Boolean(product.comingSoon)
-    : data.comingSoon == null
+  const comingSoon =
+    product.legacyLha === true
       ? Boolean(product.comingSoon)
-      : Boolean(data.comingSoon);
+      : data.comingSoon == null
+        ? Boolean(product.comingSoon)
+        : Boolean(data.comingSoon);
   const productName =
     data.nameEn || data.nameAr
       ? {
@@ -333,22 +340,23 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     description,
     comingSoon,
     reservationAvailable:
-      product.legacyLha === true ? false : product.reservationAvailable === true || reservationAvailable,
+      product.legacyLha === true
+        ? false
+        : product.reservationAvailable === true || reservationAvailable,
     readyToShip,
     inventoryTracking: tracked,
     inventoryVerified: ownerConfirmedLhaStock ? true : product.inventoryVerified,
     variants,
     stock: ownerConfirmedLhaStock ? Number(product.stock || 0) : stock,
-    availability:
-      comingSoon
-        ? 'coming-soon'
-        : readyToShip
-          ? 'in-stock'
-          : reservationAvailable
-            ? 'preorder'
-            : hasAvailableVariant
-              ? 'in-stock'
-              : 'sold-out',
+    availability: comingSoon
+      ? 'coming-soon'
+      : readyToShip
+        ? 'in-stock'
+        : reservationAvailable
+          ? 'preorder'
+          : hasAvailableVariant
+            ? 'in-stock'
+            : 'sold-out',
     available: !comingSoon && (hasAvailableVariant || reservationAvailable),
     priceVaries: new Set(retailPrices.map((value) => value.toFixed(2))).size > 1,
     wholesalePriceVaries: new Set(wholesalePrices.map((value) => value.toFixed(2))).size > 1,
@@ -394,17 +402,12 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
       ? Boolean(product.wholesaleAvailable)
       : Boolean(data.wholesaleAvailable);
   next.retailAvailable =
-    data.retailAvailable == null
-      ? Boolean(product.retailAvailable)
-      : Boolean(data.retailAvailable);
+    data.retailAvailable == null ? Boolean(product.retailAvailable) : Boolean(data.retailAvailable);
   next.customizable =
     data.customizable == null ? Boolean(product.customizable) : Boolean(data.customizable);
   next.largeEquipment =
-    data.largeEquipment == null
-      ? Boolean(product.largeEquipment)
-      : Boolean(data.largeEquipment);
-  next.madeInUSA =
-    data.madeInUSA == null ? Boolean(product.madeInUSA) : Boolean(data.madeInUSA);
+    data.largeEquipment == null ? Boolean(product.largeEquipment) : Boolean(data.largeEquipment);
+  next.madeInUSA = data.madeInUSA == null ? Boolean(product.madeInUSA) : Boolean(data.madeInUSA);
   next.deliveryProfile = readyToShip
     ? 'ready'
     : data.deliveryProfile || product.deliveryProfile || 'standard';
@@ -434,8 +437,7 @@ function overlayProduct(product: CatalogProduct, rows: CatalogRow[]): CatalogPro
     next.stockPerColor = product.stockPerColor;
     next.stock = currentStock;
     next.readyToShip = currentStock > 0;
-    next.available =
-      !comingSoon && (currentStock > 0 || next.reservationAvailable === true);
+    next.available = !comingSoon && (currentStock > 0 || next.reservationAvailable === true);
     next.availability = comingSoon
       ? 'coming-soon'
       : currentStock > 0
@@ -572,35 +574,38 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const marketplaceProductsRef = useRef<CatalogProduct[]>([]);
 
-  const refresh = useCallback(async ({ quiet = false }: { quiet?: boolean } = {}) => {
-    if (!quiet) setStatus((current) => (current === 'ready' ? 'refreshing' : 'loading'));
-    try {
-      const client = await getSupabase();
-      if (!client) {
+  const refresh = useCallback(
+    async ({ quiet = false }: { quiet?: boolean } = {}) => {
+      if (!quiet) setStatus((current) => (current === 'ready' ? 'refreshing' : 'loading'));
+      try {
+        const client = await getSupabase();
+        if (!client) {
+          setStatus('static');
+          return SAFE_FALLBACK_PRODUCTS;
+        }
+        const { data, error: queryError } = await client.rpc('get_public_product_catalog');
+        if (queryError) throw queryError;
+        if (!Array.isArray(data) || !data.length) throw new Error('catalog_empty');
+        const merged = mergeCatalogProducts(BASE_PRODUCTS, data as CatalogRow[], {
+          authoritative: true,
+        });
+        if (!merged.length) throw new Error('catalog_empty');
+        const withMarketplace = mergeMarketplaceProducts(merged, marketplaceProductsRef.current);
+        setSourceProducts(withMarketplace);
+        setStatus('ready');
+        setError(null);
+        setUpdatedAt(new Date().toISOString());
+        return withMarketplace.map((product) =>
+          applySiteRatePricing(product, commerce.usdToLydRate),
+        );
+      } catch (nextError) {
+        setError(nextError);
         setStatus('static');
         return SAFE_FALLBACK_PRODUCTS;
       }
-      const { data, error: queryError } = await client.rpc('get_public_product_catalog');
-      if (queryError) throw queryError;
-      if (!Array.isArray(data) || !data.length) throw new Error('catalog_empty');
-      const merged = mergeCatalogProducts(
-        BASE_PRODUCTS,
-        data as CatalogRow[],
-        { authoritative: true },
-      );
-      if (!merged.length) throw new Error('catalog_empty');
-      const withMarketplace = mergeMarketplaceProducts(merged, marketplaceProductsRef.current);
-      setSourceProducts(withMarketplace);
-      setStatus('ready');
-      setError(null);
-      setUpdatedAt(new Date().toISOString());
-      return withMarketplace.map((product) => applySiteRatePricing(product, commerce.usdToLydRate));
-    } catch (nextError) {
-      setError(nextError);
-      setStatus('static');
-      return SAFE_FALLBACK_PRODUCTS;
-    }
-  }, [commerce.usdToLydRate]);
+    },
+    [commerce.usdToLydRate],
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -674,7 +679,9 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
   }, [refresh]);
 
   const value = useMemo<CatalogContextValue>(() => {
-    const visualProducts = products.filter((product) => hasRealProductMedia(product as ProductLike));
+    const visualProducts = products.filter((product) =>
+      hasRealProductMedia(product as ProductLike),
+    );
     const byId = new Map(visualProducts.map((product) => [product.id, product]));
     const bySlug = new Map(
       visualProducts
@@ -713,7 +720,9 @@ export function CatalogProvider({ children }: { children?: ReactNode }) {
       readyToShipProducts: () =>
         visualProducts.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY')),
       lhaStoreProducts: () =>
-        visualProducts.filter((product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha')),
+        visualProducts.filter(
+          (product) => Array.isArray(product.storefronts) && product.storefronts.includes('lha'),
+        ),
       productsByCategory: (category: string) =>
         category === 'ready-to-ship'
           ? visualProducts.filter((product) => isReadyToShipEligible(product as ProductLike, 'LY'))

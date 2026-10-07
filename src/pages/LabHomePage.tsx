@@ -54,15 +54,7 @@ const minimumFor = (key: string): number => {
  * delivery promise, so every range is isolated — the same discipline
  * `services/money.ts` already applies to currency.
  */
-function Range({
-  from,
-  to,
-  unit,
-}: {
-  from: string | number;
-  to: string | number;
-  unit: string;
-}) {
+function Range({ from, to, unit }: { from: string | number; to: string | number; unit: string }) {
   return (
     <>
       <span className="gw-isolate-ltr">
@@ -201,7 +193,10 @@ export default function LabHomePage(): ReactElement {
     <div className="lab-scope" data-prototype="groundwork" data-capability-observed={capability}>
       <Seo
         title={pick({ en: 'GROUNDWORK prototype', ar: 'نموذج خَطّ الأرض' })}
-        description={pick({ en: 'Isolated design-direction prototype. Not a public page.', ar: 'نموذج معزول لاتجاه التصميم. ليست صفحة عامة.' })}
+        description={pick({
+          en: 'Isolated design-direction prototype. Not a public page.',
+          ar: 'نموذج معزول لاتجاه التصميم. ليست صفحة عامة.',
+        })}
         path="/lab/home"
         noindex
       />
@@ -219,7 +214,9 @@ export default function LabHomePage(): ReactElement {
             </p>
             <h1 id="gw-hero-title" className="gw-hero-title">
               <span className="gw-hero-line">{pick({ en: 'BUILT', ar: 'مبني' })}</span>
-              <span className="gw-hero-line gw-hero-line--outline">{pick({ en: 'DIFFERENT.', ar: 'بشكل مختلف.' })}</span>
+              <span className="gw-hero-line gw-hero-line--outline">
+                {pick({ en: 'DIFFERENT.', ar: 'بشكل مختلف.' })}
+              </span>
             </h1>
             <p className="gw-lead">
               {pick({
@@ -287,7 +284,9 @@ export default function LabHomePage(): ReactElement {
               >
                 <span className="gw-spec">
                   {pick(
-                    (ZONE_LABELS as Record<string, { en: string; ar: string }>)[department.slug] || {
+                    (ZONE_LABELS as Record<string, { en: string; ar: string }>)[
+                      department.slug
+                    ] || {
                       en: department.slug,
                       ar: department.slug,
                     },

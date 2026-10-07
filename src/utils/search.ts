@@ -30,13 +30,15 @@ export interface SearchCandidate {
   id?: string;
 }
 
-
 export const SEARCH_PAGES = [
   {
     type: 'page',
     title: { en: 'Discover', ar: 'اكتشف' },
     to: '/discover',
-    keywords: { en: ['trending', 'drops', 'new', 'discover'], ar: ['رائج', 'جديد', 'اكتشف', 'إصدارات'] },
+    keywords: {
+      en: ['trending', 'drops', 'new', 'discover'],
+      ar: ['رائج', 'جديد', 'اكتشف', 'إصدارات'],
+    },
   },
   {
     type: 'page',
@@ -93,7 +95,10 @@ export const SEARCH_PAGES = [
     type: 'page',
     title: { en: 'Stories', ar: 'القصص' },
     to: '/stories',
-    keywords: { en: ['stories', 'basketball culture', 'editorial'], ar: ['قصص', 'ثقافة كرة السلة', 'محتوى'] },
+    keywords: {
+      en: ['stories', 'basketball culture', 'editorial'],
+      ar: ['قصص', 'ثقافة كرة السلة', 'محتوى'],
+    },
   },
   {
     type: 'page',
@@ -125,13 +130,21 @@ export const POPULAR_SEARCHES = [
   { id: 'shoes', query: { en: 'Basketball Shoes', ar: 'أحذية كرة السلة' }, to: '/shop/footwear' },
   { id: 'balls', query: { en: 'Basketballs', ar: 'كرات السلة' }, to: '/shop/basketballs' },
   { id: 'custom', query: { en: 'Custom Uniforms', ar: 'أطقم بتصميم خاص' }, to: '/customize' },
-  { id: 'trending', query: { en: 'Trending Now', ar: 'الرائج الآن' }, to: '/discover/trending-now' },
+  {
+    id: 'trending',
+    query: { en: 'Trending Now', ar: 'الرائج الآن' },
+    to: '/discover/trending-now',
+  },
   {
     id: 'equipment',
     query: { en: 'Basketball Equipment', ar: 'معدات كرة السلة' },
     to: '/shop/equipment',
   },
-  { id: 'performance', query: { en: 'Performance Picks', ar: 'اختيارات الأداء' }, to: '/discover/performance-picks' },
+  {
+    id: 'performance',
+    query: { en: 'Performance Picks', ar: 'اختيارات الأداء' },
+    to: '/discover/performance-picks',
+  },
 ];
 
 export const normalizeSearchText = (value: unknown = '') =>
@@ -199,7 +212,8 @@ function queryAlternatives(query: string): string[] {
       group.aliases.forEach((alias) => alternatives.add(alias));
     }
     for (const alias of [group.canonical, ...group.aliases]) {
-      if (alias && normalized.includes(alias)) alternatives.add(normalized.replace(alias, group.canonical).trim());
+      if (alias && normalized.includes(alias))
+        alternatives.add(normalized.replace(alias, group.canonical).trim());
     }
   }
   return [...alternatives].filter(Boolean);
@@ -232,7 +246,8 @@ function fuzzyWordScore(query: string, candidate: string): number {
   for (const word of words) {
     const maxDistance = query.length >= 8 ? 2 : 1;
     const distance = editDistance(query, word);
-    if (distance <= maxDistance) best = Math.max(best, 118 - distance * 18 - Math.abs(word.length - query.length) * 2);
+    if (distance <= maxDistance)
+      best = Math.max(best, 118 - distance * 18 - Math.abs(word.length - query.length) * 2);
   }
   return best;
 }
@@ -248,14 +263,19 @@ function scoreNormalized(query: string, candidate: string): number {
   const queryWords = query.split(' ').filter(Boolean);
   const wordScores = queryWords.map((word) => scoreNormalized(word, candidate));
   if (wordScores.length > 1 && wordScores.every((score) => score >= 0))
-    return 100 + Math.round(wordScores.reduce((sum, score) => sum + score, 0) / wordScores.length / 4);
+    return (
+      100 + Math.round(wordScores.reduce((sum, score) => sum + score, 0) / wordScores.length / 4)
+    );
   return -1;
 }
 
 export const scoreText = (query: string, candidate: string) => {
   const c = normalizeSearchText(candidate);
   if (!c) return -1;
-  return queryAlternatives(query).reduce((best, alternative) => Math.max(best, scoreNormalized(alternative, c)), -1);
+  return queryAlternatives(query).reduce(
+    (best, alternative) => Math.max(best, scoreNormalized(alternative, c)),
+    -1,
+  );
 };
 
 export const hit = (query: string, ...values: unknown[]) =>
@@ -299,7 +319,9 @@ function routeForTerm(term: unknown, item?: CatalogItem): string {
   return '/shop';
 }
 
-export function suggestionCandidates(catalog: CatalogItem[] = products as CatalogItem[]): SuggestionRecord[] {
+export function suggestionCandidates(
+  catalog: CatalogItem[] = products as CatalogItem[],
+): SuggestionRecord[] {
   const out: SuggestionRecord[] = [];
   catalog.forEach((item) => {
     out.push({
@@ -308,34 +330,49 @@ export function suggestionCandidates(catalog: CatalogItem[] = products as Catalo
       label: item.name,
       to: `/products/${item.slug}`,
       searchable: flattenText(
-        ...localizedValues(item.name), item.brand, item.productType, item.category, item.subcategory,
-        item.collection, item.tags, item.keywords, item.colors?.flatMap((c) => localizedValues(c.name)),
+        ...localizedValues(item.name),
+        item.brand,
+        item.productType,
+        item.category,
+        item.subcategory,
+        item.collection,
+        item.tags,
+        item.keywords,
+        item.colors?.flatMap((c) => localizedValues(c.name)),
       ),
       item,
     });
-    [item.brand, item.productType, item.category, item.subcategory].filter(Boolean).forEach((term) =>
-      out.push({
-        id: `term:${normalizeSearchText(term)}:${routeForTerm(term, item)}`,
-        type: 'category',
-        label: { en: String(term), ar: String(term) },
-        to: routeForTerm(term, item),
-        searchable: flattenText(term),
-      }),
-    );
+    [item.brand, item.productType, item.category, item.subcategory]
+      .filter(Boolean)
+      .forEach((term) =>
+        out.push({
+          id: `term:${normalizeSearchText(term)}:${routeForTerm(term, item)}`,
+          type: 'category',
+          label: { en: String(term), ar: String(term) },
+          to: routeForTerm(term, item),
+          searchable: flattenText(term),
+        }),
+      );
   });
-  SEARCH_PAGES.forEach((item) => out.push({
-    id: `page:${item.to}`,
-    type: 'page',
-    label: item.title,
-    to: item.to,
-    searchable: flattenText(...localizedValues(item.title), ...localizedValues(item.keywords)),
-    item,
-  }));
+  SEARCH_PAGES.forEach((item) =>
+    out.push({
+      id: `page:${item.to}`,
+      type: 'page',
+      label: item.title,
+      to: item.to,
+      searchable: flattenText(...localizedValues(item.title), ...localizedValues(item.keywords)),
+      item,
+    }),
+  );
   return out;
 }
 
 const candidateCache = new WeakMap<object, SuggestionRecord[]>();
-export function getSearchSuggestions(query: string, limit = 8, catalog: CatalogItem[] = products as CatalogItem[]) {
+export function getSearchSuggestions(
+  query: string,
+  limit = 8,
+  catalog: CatalogItem[] = products as CatalogItem[],
+) {
   const q = normalizeSearchText(query);
   if (!q || limit <= 0) return [];
   let candidates = candidateCache.get(catalog as object);
@@ -359,13 +396,25 @@ export function getSearchSuggestions(query: string, limit = 8, catalog: CatalogI
 
 function productSearchText(item: CatalogItem): string {
   return flattenText(
-    ...localizedValues(item.name), item.brand, item.productType, item.category, item.subcategory,
-    item.collection, item.tags, item.keywords, ...localizedValues(item.description),
+    ...localizedValues(item.name),
+    item.brand,
+    item.productType,
+    item.category,
+    item.subcategory,
+    item.collection,
+    item.tags,
+    item.keywords,
+    ...localizedValues(item.description),
     item.colors?.flatMap((color) => localizedValues(color.name)),
   );
 }
 
-export function searchSite(query = '', limit = 999, filters: Record<string, unknown> = {}, catalog: CatalogItem[] = products as CatalogItem[]) {
+export function searchSite(
+  query = '',
+  limit = 999,
+  filters: Record<string, unknown> = {},
+  catalog: CatalogItem[] = products as CatalogItem[],
+) {
   const types = (Array.isArray(filters.types) ? filters.types : []) as string[];
   const allow = (type: string) => !types.length || types.includes(type);
   const colors = (Array.isArray(filters.colors) ? filters.colors : []) as string[];
@@ -373,27 +422,37 @@ export function searchSite(query = '', limit = 999, filters: Record<string, unkn
   const normalizedQuery = normalizeSearchText(query);
   const productResults = allow('products')
     ? catalog
-        .map((item, index) => ({ item, index, score: normalizedQuery ? scoreText(normalizedQuery, productSearchText(item)) : 0 }))
-        .filter(({ item, score }) =>
-          score >= 0 &&
-          (!colors.length || item.colors?.some((color) => {
-            const name = color.name;
-            const en = typeof name === 'object' && name ? name.en : undefined;
-            return en ? colors.includes(en) : false;
-          })) &&
-          (!brands.length || (item.brand ? brands.includes(item.brand) : false)),
+        .map((item, index) => ({
+          item,
+          index,
+          score: normalizedQuery ? scoreText(normalizedQuery, productSearchText(item)) : 0,
+        }))
+        .filter(
+          ({ item, score }) =>
+            score >= 0 &&
+            (!colors.length ||
+              item.colors?.some((color) => {
+                const name = color.name;
+                const en = typeof name === 'object' && name ? name.en : undefined;
+                return en ? colors.includes(en) : false;
+              })) &&
+            (!brands.length || (item.brand ? brands.includes(item.brand) : false)),
         )
         .sort((a, b) => b.score - a.score || a.index - b.index)
         .slice(0, limit)
         .map(({ item }) => item)
     : [];
   const pages = allow('pages')
-    ? SEARCH_PAGES
-        .map((item, index) => ({
-          item,
-          index,
-          score: normalizedQuery ? scoreText(normalizedQuery, flattenText(...localizedValues(item.title), ...localizedValues(item.keywords))) : 0,
-        }))
+    ? SEARCH_PAGES.map((item, index) => ({
+        item,
+        index,
+        score: normalizedQuery
+          ? scoreText(
+              normalizedQuery,
+              flattenText(...localizedValues(item.title), ...localizedValues(item.keywords)),
+            )
+          : 0,
+      }))
         .filter(({ score }) => score >= 0)
         .sort((a, b) => b.score - a.score || a.index - b.index)
         .slice(0, limit)
@@ -407,7 +466,8 @@ export function getSearchFacets(catalog: CatalogItem[] = products as CatalogItem
     types: ['products', 'pages'],
     colors: [
       ...new Set(
-        catalog.flatMap((p) => p.colors || [])
+        catalog
+          .flatMap((p) => p.colors || [])
           .map((c) => (typeof c.name === 'object' && c.name ? c.name.en : undefined))
           .filter(Boolean),
       ),

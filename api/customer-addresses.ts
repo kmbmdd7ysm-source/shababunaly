@@ -23,9 +23,17 @@ type Address = Record<string, unknown> & {
 };
 
 const clean = (value: unknown, max = 500): string =>
-  String(value ?? '').replace(/[<>\0]/g, '').replace(/\s+/g, ' ').trim().slice(0, max);
+  String(value ?? '')
+    .replace(/[<>\0]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, max);
 
-function normalizeAddress(source: Record<string, unknown>, userId: string, existing?: Address): Address {
+function normalizeAddress(
+  source: Record<string, unknown>,
+  userId: string,
+  existing?: Address,
+): Address {
   const now = new Date().toISOString();
   const first = clean(source.first_name ?? source.firstName, 80);
   const last = clean(source.last_name ?? source.lastName, 80);
@@ -43,7 +51,8 @@ function normalizeAddress(source: Record<string, unknown>, userId: string, exist
     last_name: last,
     company: clean(source.company, 120) || null,
     address_line_1: line1,
-    address_line_2: clean(source.address_line_2 ?? source.line2 ?? source.addressLine2, 180) || null,
+    address_line_2:
+      clean(source.address_line_2 ?? source.line2 ?? source.addressLine2, 180) || null,
     line1,
     line2: clean(source.address_line_2 ?? source.line2 ?? source.addressLine2, 180) || null,
     city,
@@ -89,13 +98,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       honeypot: false,
       allowEphemeralFallback: true,
     }))
-  ) return;
+  )
+    return;
 
   try {
     const body =
-      req.body && typeof req.body === 'object'
-        ? (req.body as Record<string, unknown>)
-        : {};
+      req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
     const action = clean(body.action, 30).toLowerCase();
     const id = clean(body.id, 100);
 
@@ -145,9 +153,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     });
 
     const selected =
-      action === 'save'
-        ? rows.find((row) => row.id === id) || rows[0] || null
-        : null;
+      action === 'save' ? rows.find((row) => row.id === id) || rows[0] || null : null;
     return res.status(200).json({ ok: true, addresses: rows, address: selected });
   } catch (error: unknown) {
     const message =

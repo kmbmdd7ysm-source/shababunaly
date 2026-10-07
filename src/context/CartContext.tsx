@@ -14,20 +14,14 @@ import { trackEvent } from '../utils/analytics.ts';
 import { useAuth } from './AuthContext';
 import { useCatalog } from './CatalogContext';
 import { readScoped, writeScoped, createChannel } from '../services/sync/storage.ts';
-import {
-  cartRequiresPhysicalShipping,
-  type FulfillmentItem,
-} from '../utils/fulfillment.ts';
+import { cartRequiresPhysicalShipping, type FulfillmentItem } from '../utils/fulfillment.ts';
 import {
   getVariantPurchaseLimit,
   isVariantPurchasable,
   type ProductLike,
   type VariantLike,
 } from '../utils/productEligibility.ts';
-import {
-  enforceInventoryPools,
-  getMaxInventoryPoolQuantity,
-} from '../utils/inventoryPools.ts';
+import { enforceInventoryPools, getMaxInventoryPoolQuantity } from '../utils/inventoryPools.ts';
 
 export type CartItem = {
   key: string;
@@ -83,13 +77,16 @@ export type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 function reducer(state: CartItem[], action: CartAction): CartItem[] {
-
   switch (action.type) {
     case 'ADD': {
       const item = action.item;
       const existing = state.find((i) => i.key === item.key);
       const limit = getMaxInventoryPoolQuantity(state, item, existing?.key);
-      if (!existing && item.type === 'product' && limit < Math.max(1, Number(item.minQuantity || 1))) {
+      if (
+        !existing &&
+        item.type === 'product' &&
+        limit < Math.max(1, Number(item.minQuantity || 1))
+      ) {
         return state;
       }
       if (existing) {
@@ -136,53 +133,60 @@ function reducer(state: CartItem[], action: CartAction): CartItem[] {
     case 'REPLACE':
       return Array.isArray(action.items) ? action.items : state;
     case 'RECONCILE_CATALOG':
-      return enforceInventoryPools(state.map((item): CartItem => {
-        if (item.type !== 'product') return item;
-        const product = action.byId.get(item.id) as Record<string, unknown> | undefined;
-        if (!product) return { ...item, unavailable: true, maxStock: 0 };
-        const variants = Array.isArray(product.variants) ? (product.variants as Array<Record<string, unknown>>) : [];
-        const variant = variants.find((entry) => entry.sku === item.sku);
-        if (!variant) return { ...item, unavailable: true, maxStock: 0 };
-        const wholesale = item.purchaseMode === 'wholesale';
-        const retailPrice = Number(variant.unitPrice ?? product.price);
-        const wholesalePrice = Number(variant.wholesalePrice ?? product.wholesalePrice ?? 0);
-        const price = wholesale && wholesalePrice > 0 ? wholesalePrice : retailPrice;
-        const tracked = variant.inventoryTracking !== false;
-        const purchasable = isVariantPurchasable(product as ProductLike, variant as VariantLike);
-        const maxStock = getVariantPurchaseLimit(variant as VariantLike);
-        return {
-          ...item,
-          name: product.name as CartItem['name'],
-          image: String(product.image || item.image || ''),
-          slug: String(product.slug || ''),
-          href: `/products/${product.slug}`,
-          price,
-          retailPrice,
-          wholesalePrice: wholesalePrice > 0 ? wholesalePrice : null,
-          minQuantity: wholesale ? Number(product.wholesaleMin || product.minimumOrder || 1) : 1,
-          maxStock,
-          inventoryTracking: tracked,
-          inventoryPoolKey: variant.inventoryPoolKey ? String(variant.inventoryPoolKey) : undefined,
-          inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock)) ? Number(variant.inventoryPoolStock) : undefined,
-          readyToShip: Boolean(product.readyToShip && (!tracked || maxStock > 0)),
-          reservationAvailable: product.reservationAvailable === true,
-          deliveryProfile:
-            wholesale
+      return enforceInventoryPools(
+        state.map((item): CartItem => {
+          if (item.type !== 'product') return item;
+          const product = action.byId.get(item.id) as Record<string, unknown> | undefined;
+          if (!product) return { ...item, unavailable: true, maxStock: 0 };
+          const variants = Array.isArray(product.variants)
+            ? (product.variants as Array<Record<string, unknown>>)
+            : [];
+          const variant = variants.find((entry) => entry.sku === item.sku);
+          if (!variant) return { ...item, unavailable: true, maxStock: 0 };
+          const wholesale = item.purchaseMode === 'wholesale';
+          const retailPrice = Number(variant.unitPrice ?? product.price);
+          const wholesalePrice = Number(variant.wholesalePrice ?? product.wholesalePrice ?? 0);
+          const price = wholesale && wholesalePrice > 0 ? wholesalePrice : retailPrice;
+          const tracked = variant.inventoryTracking !== false;
+          const purchasable = isVariantPurchasable(product as ProductLike, variant as VariantLike);
+          const maxStock = getVariantPurchaseLimit(variant as VariantLike);
+          return {
+            ...item,
+            name: product.name as CartItem['name'],
+            image: String(product.image || item.image || ''),
+            slug: String(product.slug || ''),
+            href: `/products/${product.slug}`,
+            price,
+            retailPrice,
+            wholesalePrice: wholesalePrice > 0 ? wholesalePrice : null,
+            minQuantity: wholesale ? Number(product.wholesaleMin || product.minimumOrder || 1) : 1,
+            maxStock,
+            inventoryTracking: tracked,
+            inventoryPoolKey: variant.inventoryPoolKey
+              ? String(variant.inventoryPoolKey)
+              : undefined,
+            inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock))
+              ? Number(variant.inventoryPoolStock)
+              : undefined,
+            readyToShip: Boolean(product.readyToShip && (!tracked || maxStock > 0)),
+            reservationAvailable: product.reservationAvailable === true,
+            deliveryProfile: wholesale
               ? 'custom'
               : product.reservationAvailable === true
                 ? 'standard'
                 : product.readyToShip
                   ? 'ready'
                   : 'standard',
-          unavailable: !purchasable,
-          quantity: !purchasable
-            ? Number(item.quantity || 1)
-            : Math.max(
-                wholesale ? Number(product.wholesaleMin || 1) : 1,
-                Math.min(Number(item.quantity || 1), maxStock || 99),
-              ),
-        };
-      }));
+            unavailable: !purchasable,
+            quantity: !purchasable
+              ? Number(item.quantity || 1)
+              : Math.max(
+                  wholesale ? Number(product.wholesaleMin || 1) : 1,
+                  Math.min(Number(item.quantity || 1), maxStock || 99),
+                ),
+          };
+        }),
+      );
     default:
       return state;
   }
@@ -221,14 +225,22 @@ export function CartProvider({ children }: { children?: ReactNode }) {
     if (!ready.current || !catalog.products?.length) return;
     dispatch({
       type: 'RECONCILE_CATALOG',
-      byId: new Map((catalog.products as Array<Record<string, unknown>>).map((product) => [String(product.id), product])),
+      byId: new Map(
+        (catalog.products as Array<Record<string, unknown>>).map((product) => [
+          String(product.id),
+          product,
+        ]),
+      ),
     });
   }, [catalog.products, hydrationReady]);
   useEffect(() => {
     channel.current?.close();
     channel.current = createChannel('shababuna-cart-channel', (msg) => {
       if (msg.type === 'cart' && msg.scope === (scope || 'guest'))
-        dispatch({ type: 'REPLACE', items: Array.isArray(msg.payload) ? (msg.payload as CartItem[]) : [] });
+        dispatch({
+          type: 'REPLACE',
+          items: Array.isArray(msg.payload) ? (msg.payload as CartItem[]) : [],
+        });
     });
     return () => channel.current?.close();
   }, [scope]);
@@ -237,18 +249,24 @@ export function CartProvider({ children }: { children?: ReactNode }) {
     writeScoped(STORAGE_KEYS.cart, scope, items);
     channel.current?.post('cart', items, { scope: scope || 'guest', version: Date.now() });
   }, [items, scope, hydrationReady]);
-  const addItem = useCallback((item: CartItem, { openDrawer = true }: { openDrawer?: boolean } = {}) => {
-      dispatch({ type: 'ADD', item });
-      trackEvent('add_to_cart', { item_id: item.id, item_type: item.type, value: item.price });
-      if (openDrawer) setDrawerOpen(true);
-    }, []),
+  const addItem = useCallback(
+      (item: CartItem, { openDrawer = true }: { openDrawer?: boolean } = {}) => {
+        dispatch({ type: 'ADD', item });
+        trackEvent('add_to_cart', { item_id: item.id, item_type: item.type, value: item.price });
+        if (openDrawer) setDrawerOpen(true);
+      },
+      [],
+    ),
     updateQuantity = useCallback(
       (key: string, quantity: number) => dispatch({ type: 'UPDATE_QTY', key, quantity }),
       [],
     ),
     removeItem = useCallback((key: string) => dispatch({ type: 'REMOVE', key }), []),
     clearCart = useCallback(() => dispatch({ type: 'CLEAR' }), []),
-    replaceItems = useCallback((next: CartItem[]) => dispatch({ type: 'REPLACE', items: next }), []);
+    replaceItems = useCallback(
+      (next: CartItem[]) => dispatch({ type: 'REPLACE', items: next }),
+      [],
+    );
   const subtotal = useMemo(
       () => items.reduce((s, i) => s + Number(i.price || 0) * Number(i.quantity || 0), 0),
       [items],
@@ -317,4 +335,5 @@ export const useCart = (): CartContextValue => {
   }
   return ctx;
 };
-export const cartKey = (type: string, id: string, variant = ''): string => `${type}:${id}:${variant}`;
+export const cartKey = (type: string, id: string, variant = ''): string =>
+  `${type}:${id}:${variant}`;

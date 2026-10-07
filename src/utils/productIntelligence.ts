@@ -18,7 +18,9 @@ export type VerifiedPerformanceMetric = {
   verified?: boolean;
 };
 
-export type PerformanceProfile = Partial<Record<PerformanceMetricKey, VerifiedPerformanceMetric>> & {
+export type PerformanceProfile = Partial<
+  Record<PerformanceMetricKey, VerifiedPerformanceMetric>
+> & {
   positions?: string[];
   playStyles?: string[];
   courtTypes?: string[];
@@ -41,10 +43,17 @@ export const PERFORMANCE_METRICS: Array<{ key: PerformanceMetricKey; en: string;
 ];
 
 const asRecord = (value: unknown): Record<string, unknown> =>
-  value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
+  value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
 
 const asStringArray = (value: unknown): string[] =>
-  Array.isArray(value) ? value.map(String).map((item) => item.trim()).filter(Boolean) : [];
+  Array.isArray(value)
+    ? value
+        .map(String)
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
 
 function metric(value: unknown): VerifiedPerformanceMetric | undefined {
   if (typeof value === 'number' && Number.isFinite(value)) {
@@ -67,8 +76,13 @@ export function getPerformanceProfile(product?: CatalogProduct | null): Performa
     positions: asStringArray(raw.positions ?? product?.positions),
     playStyles: asStringArray(raw.playStyles ?? product?.playStyles),
     courtTypes: asStringArray(raw.courtTypes ?? product?.courtTypes),
-    wideFoot: typeof (raw.wideFoot ?? product?.wideFoot) === 'boolean' ? Boolean(raw.wideFoot ?? product?.wideFoot) : null,
-    weightGrams: Number.isFinite(Number(raw.weightGrams ?? product?.weightGrams)) ? Number(raw.weightGrams ?? product?.weightGrams) : null,
+    wideFoot:
+      typeof (raw.wideFoot ?? product?.wideFoot) === 'boolean'
+        ? Boolean(raw.wideFoot ?? product?.wideFoot)
+        : null,
+    weightGrams: Number.isFinite(Number(raw.weightGrams ?? product?.weightGrams))
+      ? Number(raw.weightGrams ?? product?.weightGrams)
+      : null,
     provenance: typeof raw.provenance === 'string' ? raw.provenance : null,
   };
 
@@ -81,13 +95,23 @@ export function getPerformanceProfile(product?: CatalogProduct | null): Performa
 
 export function hasVerifiedPerformanceData(product?: CatalogProduct | null): boolean {
   const profile = getPerformanceProfile(product);
-  return PERFORMANCE_METRICS.some(({ key }) => Boolean(profile[key])) ||
-    Boolean(profile.positions?.length || profile.playStyles?.length || profile.courtTypes?.length || profile.provenance);
+  return (
+    PERFORMANCE_METRICS.some(({ key }) => Boolean(profile[key])) ||
+    Boolean(
+      profile.positions?.length ||
+      profile.playStyles?.length ||
+      profile.courtTypes?.length ||
+      profile.provenance,
+    )
+  );
 }
 
 export function isBasketballPerformanceShoe(product?: CatalogProduct | null): boolean {
   if (!product) return false;
-  return String(product.category || '') === 'footwear' && String(product.subcategory || '') === 'in-court';
+  return (
+    String(product.category || '') === 'footwear' &&
+    String(product.subcategory || '') === 'in-court'
+  );
 }
 
 export type ShoeFinderPreferences = {
@@ -154,5 +178,7 @@ export function rankBasketballShoes(
       if (product.newArrival === true) score += 0.15;
       return { product, score, matched, unverified };
     })
-    .sort((a, b) => b.score - a.score || Number(a.product.price || 0) - Number(b.product.price || 0));
+    .sort(
+      (a, b) => b.score - a.score || Number(a.product.price || 0) - Number(b.product.price || 0),
+    );
 }
