@@ -353,7 +353,7 @@ export default function LabHomePage(): ReactElement {
             <p className="gw-spec">{pick({ en: 'Production drawing', ar: 'رسم الإنتاج' })}</p>
             <img
               className="gw-media gw-media--square gw-workshop-art"
-              src={OFFICIAL_MEDIA.nbKawhi}
+              src={OFFICIAL_MEDIA.nbKawhi.source}
               alt={pick({ en: 'Shababuna custom jersey drawing', ar: 'رسم سيريا شبابنا المخصصة' })}
               width="480"
               height="480"
