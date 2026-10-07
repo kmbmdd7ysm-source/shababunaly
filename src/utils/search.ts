@@ -215,14 +215,14 @@ function editDistance(a: string, b: string): number {
     current[0] = i;
     for (let j = 1; j <= b.length; j += 1) {
       current[j] = Math.min(
-        current[j - 1] + 1,
-        previous[j] + 1,
-        previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+        (current[j - 1] ?? 0) + 1,
+        (previous[j] ?? 0) + 1,
+        (previous[j - 1] ?? 0) + (a[i - 1] === b[j - 1] ? 0 : 1),
       );
     }
-    for (let j = 0; j <= b.length; j += 1) previous[j] = current[j];
+    for (let j = 0; j <= b.length; j += 1) previous[j] = current[j] ?? 0;
   }
-  return previous[b.length];
+  return previous[b.length] ?? 0;
 }
 
 function fuzzyWordScore(query: string, candidate: string): number {
@@ -285,10 +285,13 @@ const CATEGORY_ROUTES: Record<string, string> = {
 
 function routeForTerm(term: unknown, item?: CatalogItem): string {
   const normalized = normalizeSearchText(term);
-  if (CATEGORY_ROUTES[normalized]) return CATEGORY_ROUTES[normalized];
-  if (item?.category && CATEGORY_ROUTES[normalizeSearchText(item.category)]) {
-    const categoryRoute = CATEGORY_ROUTES[normalizeSearchText(item.category)];
-    if (item.subcategory && normalizeSearchText(item.subcategory) === normalized) {
+  const directRoute = CATEGORY_ROUTES[normalized];
+  if (directRoute) return directRoute;
+  const categoryRoute = item?.category
+    ? CATEGORY_ROUTES[normalizeSearchText(item.category)]
+    : undefined;
+  if (categoryRoute) {
+    if (item?.subcategory && normalizeSearchText(item.subcategory) === normalized) {
       return `${categoryRoute}/${String(item.subcategory).toLowerCase().replace(/\s+/g, '-')}`;
     }
     return categoryRoute;
