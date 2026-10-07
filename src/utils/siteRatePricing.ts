@@ -4,7 +4,7 @@ export type SiteRatePricedProduct = Record<string, unknown> & {
   price?: unknown;
   priceLydSource?: unknown;
   pricingRateSource?: unknown;
-  variants?: Array<Record<string, unknown>>;
+  variants?: Array<Record<string, unknown>> | undefined;
 };
 
 export const SITE_RATE_PRICING_SOURCE = 'site_exchange_rate';
