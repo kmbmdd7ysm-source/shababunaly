@@ -46,8 +46,8 @@ export type CartItem = {
   retailPrice?: number;
   wholesalePrice?: number | null;
   inventoryTracking?: boolean;
-  inventoryPoolKey?: string;
-  inventoryPoolStock?: number;
+  inventoryPoolKey?: string | undefined;
+  inventoryPoolStock?: number | undefined;
   readyToShip?: boolean;
   reservationAvailable?: boolean;
   deliveryProfile?: string;
