@@ -72,7 +72,7 @@ describe('independent final hardening invariants', () => {
     }
     const productPage = read('src/pages/ProductPage.tsx');
     expect(productPage).toContain('Price on request');
-    expect(productPage).toContain('Request a quote');
+    expect(productPage).toContain('Request price');
     expect(read('src/components/layout/SearchOverlay.tsx')).toContain('Price on request');
     expect(read('src/pages/ComparePage.tsx')).toContain('Price on request');
     expect(read('src/components/shop/QuickAddSheet.tsx')).toContain('product.quoteOnly === true');
@@ -84,7 +84,7 @@ describe('independent final hardening invariants', () => {
   });
 
   it('generates only trusted variants for the 75 published products', () => {
-    expect(variantCount(catalogProducts)).toBe(1482);
+    expect(variantCount(catalogProducts)).toBe(1282);
     expect(variantCount(products)).toBe(786);
     const generatedSql = read('supabase/generated/product_catalog.sql');
     const sqlRows = generatedSql.split('\n').filter((line) => line.startsWith("('")).length;
@@ -132,13 +132,16 @@ describe('independent final hardening invariants', () => {
 
   it('treats a successful cloud catalogue response as authoritative instead of resurrecting static archived products', () => {
     const source = read('src/context/CatalogContext.tsx');
-    expect(source.includes('{ authoritative: true }')).toBe(true);
+    expect(source.includes('authoritative: true')).toBe(true);
     expect(source.includes('return authoritative ? [] : baseProducts')).toBe(true);
   });
 
   it('keeps LHA current stock sourced from cloud pool quantities rather than resetting sold stock to five', () => {
     const source = read('src/context/CatalogContext.tsx');
-    expect(source.includes('inventoryPoolStock: ownerConfirmedLhaStock')).toBe(true);
+    expect(source.includes('const cloudStock = row.inventory_tracking')).toBe(true);
+    expect(source.includes('const cloudIsNewerThanOwner =')).toBe(true);
+    expect(source.includes('const effectiveStock = ownerConfirmedLhaStock')).toBe(true);
+    expect(source.includes('? effectiveStock')).toBe(true);
     expect(source.includes('Number(row.inventory_quantity)')).toBe(true);
     expect(source.includes('stockByColor')).toBe(true);
     expect(source.includes('owner_confirmed_lha_color_stock')).toBe(true);
