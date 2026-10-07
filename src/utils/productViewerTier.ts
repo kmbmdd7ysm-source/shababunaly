@@ -8,13 +8,13 @@ export type ViewerTier = 'A' | 'B' | 'C' | 'D';
 export type ProductMediaMode = 'GALLERY' | 'MULTI_ANGLE' | 'SPIN_360' | 'MODEL_3D' | 'VIDEO_GALLERY' | 'HYBRID';
 
 export interface ProductViewerSource {
-  id?: string;
-  image?: string;
-  hoverImage?: string;
-  gallery?: string[];
-  colors?: Array<{ key?: string; image?: string } | null>;
-  spin360?: string[];
-  model3d?: string;
+  id?: string | undefined;
+  image?: string | undefined;
+  hoverImage?: string | undefined;
+  gallery?: string[] | undefined;
+  colors?: Array<Record<string, unknown> | null> | undefined;
+  spin360?: string[] | undefined;
+  model3d?: string | undefined;
 }
 
 export interface ResolvedProductViewer {
@@ -50,7 +50,9 @@ export function spinFrames(product?: ProductViewerSource | null): string[] {
   return frames.length >= MIN_SPIN_FRAMES ? frames.map(String) : [];
 }
 
-export function resolveProductMediaMode(product?: (ProductViewerSource & { videos?: unknown[] }) | null): ProductMediaMode {
+export function resolveProductMediaMode(
+  product?: (ProductViewerSource & { videos?: unknown[] | undefined }) | null,
+): ProductMediaMode {
   const resolved = resolveProductViewer(product);
   const hasVideo = Array.isArray(product?.videos) && product.videos.some(Boolean);
   const richVisual = resolved.model || resolved.frames.length > 0 || resolved.images.length >= 2;
