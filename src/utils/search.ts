@@ -439,8 +439,11 @@ export function searchSite(
             (!colors.length ||
               item.colors?.some((color) => {
                 const name = color.name;
-                const en = typeof name === 'object' && name ? name.en : undefined;
-                return en ? colors.includes(en) : false;
+                const en =
+                  typeof name === 'object' && name && !Array.isArray(name)
+                    ? (name as Record<string, unknown>).en
+                    : undefined;
+                return typeof en === 'string' ? colors.includes(en) : false;
               })) &&
             (!brands.length || (item.brand ? brands.includes(item.brand) : false)),
         )
@@ -474,7 +477,14 @@ export function getSearchFacets(catalog: CatalogItem[] = products as CatalogItem
       ...new Set(
         catalog
           .flatMap((p) => p.colors || [])
-          .map((c) => (typeof c.name === 'object' && c.name ? c.name.en : undefined))
+          .map((c) => {
+            const name = c.name;
+            const en =
+              typeof name === 'object' && name && !Array.isArray(name)
+                ? (name as Record<string, unknown>).en
+                : undefined;
+            return typeof en === 'string' ? en : undefined;
+          })
           .filter(Boolean),
       ),
     ].sort(),
