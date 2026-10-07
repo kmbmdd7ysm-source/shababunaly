@@ -2,6 +2,7 @@
 -- This test intentionally commits fixtures because dblink sessions must see them.
 \set ON_ERROR_STOP on
 create extension if not exists dblink;
+grant execute on function dblink_connect_u(text,text) to current_user;
 
 create or replace function pg_temp.assert_true(p_condition boolean, p_message text)
 returns void language plpgsql as $$
@@ -62,7 +63,7 @@ begin
   begin
     perform public.create_order_transactional(
       null,'atomic-test-insufficient@example.com','USD','cash_on_delivery',
-      '10000000-0000-0000-0000-000000000002','{}',
+      '10000000-0000-0000-0000-000000000002','{"country":"LY"}',
       '[{"variantId":"__atomic_test_success_v","productId":"__atomic_test_success","quantity":4}]'
     );
     raise exception 'expected insufficient_inventory';
@@ -108,7 +109,7 @@ begin
   begin
     perform public.create_order_transactional(
       null,'atomic-test-rollback@example.com','USD','cash_on_delivery',
-      '10000000-0000-0000-0000-000000000004','{}',
+      '10000000-0000-0000-0000-000000000004','{"country":"LY"}',
       '[{"variantId":"__atomic_test_rollback_v","productId":"__atomic_test_rollback","quantity":2}]'
     );
     raise exception 'expected forced_order_item_failure';
@@ -127,19 +128,19 @@ select pg_temp.assert_true(
 );
 
 -- Two concurrent checkouts compete for the final unit. Exactly one succeeds.
-select dblink_connect('atomic_a', 'host=127.0.0.1 port=5432 dbname=' || current_database() || ' user=postgres password=postgres');
-select dblink_connect('atomic_b', 'host=127.0.0.1 port=5432 dbname=' || current_database() || ' user=postgres password=postgres');
+select dblink_connect_u('atomic_a', 'dbname=' || current_database());
+select dblink_connect_u('atomic_b', 'dbname=' || current_database());
 select dblink_send_query('atomic_a', $$
   select public.create_order_transactional(
     null,'atomic-test-race-a@example.com','USD','cash_on_delivery',
-    '10000000-0000-0000-0000-000000000005','{}',
+    '10000000-0000-0000-0000-000000000005','{"country":"LY"}',
     '[{"variantId":"__atomic_test_race_v","productId":"__atomic_test_race","quantity":1}]'
   )::text
 $$);
 select dblink_send_query('atomic_b', $$
   select public.create_order_transactional(
     null,'atomic-test-race-b@example.com','USD','cash_on_delivery',
-    '10000000-0000-0000-0000-000000000006','{}',
+    '10000000-0000-0000-0000-000000000006','{"country":"LY"}',
     '[{"variantId":"__atomic_test_race_v","productId":"__atomic_test_race","quantity":1}]'
   )::text
 $$);
