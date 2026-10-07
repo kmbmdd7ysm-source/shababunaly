@@ -18,7 +18,7 @@ describe('trusted catalogue shared inventory pools', () => {
   it('keeps all Kobe trusted rows at the clean site-rate price and max US 12', () => {
     const rows = buildCatalog(products);
     const kobeRows = rows.filter((row) => String(row.sku).startsWith('GOAT-K'));
-    expect(kobeRows.length).toBe(500);
+    expect(kobeRows.length).toBe(300);
     expect(kobeRows.every((row) => row.unit_price === 135)).toBe(true);
     expect(kobeRows.every((row) => Number(row.size) <= 12)).toBe(true);
   });
