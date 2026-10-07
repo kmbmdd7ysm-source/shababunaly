@@ -21,9 +21,12 @@ jobs:
           node-version: 22
           cache: npm
           registry-url: https://registry.npmjs.org
+      - name: Use repository-pinned npm
+        run: npm install --global npm@10.9.2 --registry=https://registry.npmjs.org
       - name: Regenerate lockfile for security tooling upgrades
         run: |
           rm -f package-lock.json
+          npm --version
           npm install --package-lock-only --ignore-scripts --registry=https://registry.npmjs.org
       - name: Commit lockfile
         run: |
