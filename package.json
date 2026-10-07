@@ -148,7 +148,8 @@
     "vitest": "5.0.3",
     "word-wrap": "file:vendor/word-wrap",
     "yallist": "file:vendor/yallist",
-    "yocto-queue": "file:vendor/yocto-queue"
+    "yocto-queue": "file:vendor/yocto-queue",
+    "micromatch": "file:vendor/micromatch"
   },
   "engines": {
     "node": "22.x",
