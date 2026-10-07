@@ -3,11 +3,11 @@ export type InventoryPoolItem = {
   id: string;
   type: string;
   quantity: number;
-  maxStock?: number | null;
-  minQuantity?: number;
-  inventoryPoolKey?: string;
-  inventoryPoolStock?: number;
-  unavailable?: boolean;
+  maxStock?: number | null | undefined;
+  minQuantity?: number | undefined;
+  inventoryPoolKey?: string | undefined;
+  inventoryPoolStock?: number | undefined;
+  unavailable?: boolean | undefined;
 };
 
 export function getInventoryPoolLimit(item: InventoryPoolItem): number {
