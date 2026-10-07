@@ -10,11 +10,7 @@
 }
 
 .gw-teams-hero-media::after {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72),
-    rgba(0, 0, 0, 0.08) 65%
-  ) !important;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.08) 65%) !important;
 }
 
 .gw-teams-hero-inner {
