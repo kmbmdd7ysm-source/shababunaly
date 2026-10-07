@@ -11,7 +11,11 @@ import { translations } from '../data/translations.ts';
 import { STORAGE_KEYS } from '../config.ts';
 
 export type Lang = 'en' | 'ar';
-export type LocaleValue = { en?: string; ar?: string } | string | null | undefined;
+export type LocaleValue =
+  | { en?: string | undefined; ar?: string | undefined }
+  | string
+  | null
+  | undefined;
 
 export type LanguageContextValue = {
   lang: Lang;
