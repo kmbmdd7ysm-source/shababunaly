@@ -2,6 +2,7 @@
 -- Run only against the disposable local Supabase database.
 \set ON_ERROR_STOP on
 create extension if not exists dblink;
+grant execute on function dblink_connect_u(text,text) to current_user;
 
 create or replace function pg_temp.assert_true(p_condition boolean, p_message text)
 returns void language plpgsql as $$
