@@ -10,9 +10,17 @@ const testFiles = readdirSync(resolve(root, 'tests'))
   .filter((name) => name.endsWith('.test.js') && name !== 'all-node-coverage.test.js')
   .sort()
   .map((name) => `tests/${name}`);
+const typescriptImportResolver = new URL('./resolve-typescript-imports.mjs', import.meta.url).href;
 const run = spawnSync(
   process.execPath,
-  ['--experimental-strip-types', '--test', '--test-concurrency=4', ...testFiles],
+  [
+    '--experimental-strip-types',
+    '--experimental-loader',
+    typescriptImportResolver,
+    '--test',
+    '--test-concurrency=4',
+    ...testFiles,
+  ],
   {
     cwd: root,
     encoding: 'utf8',
