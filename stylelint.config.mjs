@@ -10,6 +10,7 @@ export default {
     '**/public/**',
     '**/vendor/**',
     '**/brand-quarantine/**',
+    '**/src/styles/_archive/**',
     /* Legacy sheets pending selective extraction — still validated for parse errors via custom syntax pass. */
     '**/src/styles/global.css',
     '**/src/styles/premium.css',
