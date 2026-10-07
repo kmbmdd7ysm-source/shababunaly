@@ -104,7 +104,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
 
       if (action === 'delete') {
         const next = list.filter((row) => row.id !== id);
-        if (next.length && !next.some((row) => row.is_default)) next[0] = { ...next[0], is_default: true };
+        const firstRemaining = next[0];
+        if (firstRemaining && !next.some((row) => row.is_default)) {
+          next[0] = { ...firstRemaining, is_default: true };
+        }
         return next;
       }
 
@@ -129,8 +132,11 @@ export default async function handler(req: ApiReq, res: ApiRes) {
           : [record, ...list].slice(0, 30);
         if (record.is_default) {
           next = next.map((row) => ({ ...row, is_default: row.id === record.id }));
-        } else if (next.length && !next.some((row) => row.is_default)) {
-          next[0] = { ...next[0], is_default: true };
+        } else {
+          const firstRemaining = next[0];
+          if (firstRemaining && !next.some((row) => row.is_default)) {
+            next[0] = { ...firstRemaining, is_default: true };
+          }
         }
         return next;
       }
