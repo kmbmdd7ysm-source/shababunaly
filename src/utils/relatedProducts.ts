@@ -2,13 +2,13 @@ import type { ProductLike } from './productEligibility.ts';
 
 export interface RelatedCandidate extends ProductLike {
   id: string;
-  slug?: string;
-  category?: string;
-  subcategory?: string;
-  productType?: string;
-  brand?: string;
-  price?: number;
-  related?: string[];
+  slug?: string | undefined;
+  category?: string | undefined;
+  subcategory?: string | undefined;
+  productType?: string | undefined;
+  brand?: string | undefined;
+  price?: number | undefined;
+  related?: string[] | undefined;
   customizable?: unknown;
   quoteOnly?: unknown;
 }
