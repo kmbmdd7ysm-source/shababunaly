@@ -127,8 +127,8 @@ select pg_temp.assert_true(
 );
 
 -- Two concurrent checkouts compete for the final unit. Exactly one succeeds.
-select dblink_connect('atomic_a','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
-select dblink_connect('atomic_b','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('atomic_a','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('atomic_b','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
 select dblink_send_query('atomic_a', $$
   select public.create_order_transactional(
     null,'atomic-test-race-a@example.com','USD','cash_on_delivery',
