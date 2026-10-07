@@ -14,7 +14,7 @@ export type PerformanceMetricKey =
 
 export type VerifiedPerformanceMetric = {
   value: number;
-  source?: string;
+  source?: string | undefined;
   verified?: boolean;
 };
 
