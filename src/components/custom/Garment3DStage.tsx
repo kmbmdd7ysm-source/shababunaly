@@ -311,7 +311,7 @@ function ConceptKit({
     Garment3DStageProps,
     'teamName' | 'playerName' | 'playerNumber' | 'pattern' | 'logoPreview'
   >) {
-  const normalized = productLabel.toLowerCase();
+  const normalized = String(productLabel || '').toLowerCase();
   const shortsOnly = normalized.includes('short') && !normalized.includes('set');
   const fullSet = normalized.includes('set') || normalized.includes('kit');
 
