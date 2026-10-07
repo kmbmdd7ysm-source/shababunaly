@@ -1,5 +1,5 @@
 import { EDITORIAL as E } from './editorialAssets.ts';
-export type OfficialMediaEntry={source:string;alt:string;width?:number;height?:number};
+export type OfficialMediaEntry={source:string;alt:string;width?:number|undefined;height?:number|undefined};
 const createEntry=(source:string,alt:string,width?:number,height?:number):OfficialMediaEntry=>({source,alt,width,height});
 export const OFFICIAL_MEDIA={
   nikeWinningPoster:createEntry(E.curryShoesBlue,'Basketball editorial reference image.'),
