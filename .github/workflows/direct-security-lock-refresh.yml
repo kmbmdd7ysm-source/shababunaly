@@ -22,7 +22,9 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
       - name: Regenerate lockfile for security tooling upgrades
-        run: npm install --package-lock-only --ignore-scripts --registry=https://registry.npmjs.org
+        run: |
+          rm -f package-lock.json
+          npm install --package-lock-only --ignore-scripts --registry=https://registry.npmjs.org
       - name: Commit lockfile
         run: |
           git config user.name "github-actions[bot]"
