@@ -97,8 +97,8 @@ export type CatalogContextValue = {
 const CatalogContext = createContext<CatalogContextValue | null>(null);
 const REFRESH_MS = 5 * 60 * 1000;
 const BASE_PRODUCTS: CatalogProduct[] = [
-  ...(staticProducts as readonly CatalogProduct[]),
-  ...(spaldingOfficialProducts as readonly CatalogProduct[]),
+  ...(staticProducts as unknown as readonly CatalogProduct[]),
+  ...(spaldingOfficialProducts as unknown as readonly CatalogProduct[]),
 ];
 
 function failClosedTrackedInventory(product: CatalogProduct): CatalogProduct {
