@@ -75,8 +75,8 @@ begin
 end; $$;
 
 -- The same provider event delivered twice concurrently must charge exactly once.
-select dblink_connect('pay_a','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
-select dblink_connect('pay_b','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('pay_a','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('pay_b','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
 select dblink_send_query('pay_a',$$select public.__race_apply_payment('evt-race-payment')$$);
 select dblink_send_query('pay_b',$$select public.__race_apply_payment('evt-race-payment')$$);
 do $$
@@ -101,8 +101,8 @@ select pg_temp.assert_true(
 );
 
 -- Two different 80 USD refunds against a 100 USD payment must not over-refund.
-select dblink_connect('refund_a','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
-select dblink_connect('refund_b','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('refund_a','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('refund_b','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
 select dblink_send_query('refund_a',$$select public.__race_apply_refund('evt-race-refund-a')$$);
 select dblink_send_query('refund_b',$$select public.__race_apply_refund('evt-race-refund-b')$$);
 do $$
@@ -123,8 +123,8 @@ select pg_temp.assert_true(
 );
 
 -- Two concurrent customer requests for the same delivered order must create one active return.
-select dblink_connect('return_a','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
-select dblink_connect('return_b','host=127.0.0.1 port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('return_a','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
+select dblink_connect('return_b','host='||coalesce(host(inet_server_addr()), '127.0.0.1')||' port=5432 dbname='||current_database()||' user=postgres password=postgres');
 select dblink_send_query('return_a',$$select public.__race_create_return()$$);
 select dblink_send_query('return_b',$$select public.__race_create_return()$$);
 do $$
