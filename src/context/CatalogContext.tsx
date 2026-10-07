@@ -26,30 +26,30 @@ type LocaleText = { en?: string; ar?: string } | string | null | undefined;
 
 export type CatalogProduct = Record<string, unknown> & {
   id: string;
-  slug?: string;
-  price?: number;
-  compareAt?: number | null;
-  wholesalePrice?: number | null;
-  name?: LocaleText;
-  description?: LocaleText;
-  brand?: string;
-  category?: string;
-  subcategory?: string;
-  productType?: string;
-  colors?: Array<Record<string, unknown>>;
-  sizes?: unknown[];
-  variants?: Array<Record<string, unknown>>;
-  storefronts?: string[];
-  featured?: boolean;
-  newArrival?: boolean;
-  bestSeller?: boolean;
-  comingSoon?: boolean;
-  readyToShip?: boolean;
-  inventoryTracking?: boolean;
-  inventoryVerified?: boolean;
-  stock?: number;
-  lowStockThreshold?: number;
-  legacyLha?: boolean;
+  slug?: string | undefined;
+  price?: number | undefined;
+  compareAt?: number | null | undefined;
+  wholesalePrice?: number | null | undefined;
+  name?: LocaleText | undefined;
+  description?: LocaleText | undefined;
+  brand?: string | undefined;
+  category?: string | undefined;
+  subcategory?: string | undefined;
+  productType?: string | undefined;
+  colors?: Array<Record<string, unknown>> | undefined;
+  sizes?: unknown[] | undefined;
+  variants?: Array<Record<string, unknown>> | undefined;
+  storefronts?: string[] | undefined;
+  featured?: boolean | undefined;
+  newArrival?: boolean | undefined;
+  bestSeller?: boolean | undefined;
+  comingSoon?: boolean | undefined;
+  readyToShip?: boolean | undefined;
+  inventoryTracking?: boolean | undefined;
+  inventoryVerified?: boolean | undefined;
+  stock?: number | undefined;
+  lowStockThreshold?: number | undefined;
+  legacyLha?: boolean | undefined;
 };
 
 type CatalogRow = Record<string, unknown> & {
@@ -92,7 +92,10 @@ export type CatalogContextValue = {
 
 const CatalogContext = createContext<CatalogContextValue | null>(null);
 const REFRESH_MS = 5 * 60 * 1000;
-const BASE_PRODUCTS = [...(staticProducts as CatalogProduct[]), ...(spaldingOfficialProducts as CatalogProduct[])];
+const BASE_PRODUCTS: CatalogProduct[] = [
+  ...(staticProducts as readonly CatalogProduct[]),
+  ...(spaldingOfficialProducts as readonly CatalogProduct[]),
+];
 
 function failClosedTrackedInventory(product: CatalogProduct): CatalogProduct {
   if (product.inventoryTracking !== true) return product;
@@ -519,6 +522,7 @@ function mergeMarketplaceProducts(
     // Keep the project's existing product as the source of truth for its local media,
     // inventory and merchandising. Only enrich marketplace provenance metadata.
     const existing = merged[existingIndex];
+    if (!existing) continue;
     const marketplaces = new Set<string>();
     const existingSources = Array.isArray(existing.sourceMarketplaces)
       ? existing.sourceMarketplaces
