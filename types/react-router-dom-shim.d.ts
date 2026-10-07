@@ -4,7 +4,7 @@
  * Full migration should replace this with compatible package types later.
  */
 declare module 'react-router-dom' {
-  import type { ComponentType, ReactNode, MouseEventHandler } from 'react';
+  import type { ComponentType, ReactNode, MouseEventHandler, FocusEventHandler } from 'react';
 
   export type To = string | { pathname?: string; search?: string; hash?: string };
 
@@ -24,6 +24,7 @@ declare module 'react-router-dom' {
     children?: ReactNode;
     end?: boolean;
     onClick?: (event?: unknown) => void;
+    onFocus?: FocusEventHandler<HTMLAnchorElement>;
   }>;
 
   export const Navigate: ComponentType<{ to: To; replace?: boolean; state?: unknown }>;
@@ -54,7 +55,10 @@ declare module 'react-router-dom' {
   export function useParams<T extends Record<string, string | undefined> = Record<string, string | undefined>>(): T;
   export function useSearchParams(): [
     URLSearchParams,
-    (next: URLSearchParams | Record<string, string>) => void,
+    (
+      next: URLSearchParams | Record<string, string>,
+      options?: { replace?: boolean; state?: unknown },
+    ) => void,
   ];
   export function useMatch(pattern: string): { params: Record<string, string> } | null;
   export function generatePath(path: string, params?: Record<string, string | undefined>): string;
