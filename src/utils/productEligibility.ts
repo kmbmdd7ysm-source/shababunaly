@@ -35,8 +35,8 @@ export interface ProductLike {
   customizable?: unknown;
   madeToOrder?: unknown;
   reservationAvailable?: unknown;
-  variants?: VariantLike[];
-  availability?: AvailabilityState | string;
+  variants?: VariantLike[] | undefined;
+  availability?: AvailabilityState | string | undefined;
 }
 
 export const PRODUCT_STATUSES = Object.freeze({
