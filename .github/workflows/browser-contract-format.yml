@@ -1,4 +1,5 @@
 name: Temporary Browser Contract Formatter
+# trigger: exact-format
 
 on:
   push:
