@@ -129,8 +129,9 @@ export default function OrderDetailPage(): ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, orderNumber]);
 
+  const hasVerifiedOrder = Boolean(state.order);
   useEffect(() => {
-    if (auth.loading || !state.order) return undefined;
+    if (auth.loading || !hasVerifiedOrder) return undefined;
     let active = true;
     const verifiedEmail = String(state.order.email || auth.user?.email || email || '');
     const refresh = async () => {
@@ -164,7 +165,7 @@ export default function OrderDetailPage(): ReactElement {
     auth.user?.email,
     orderNumber,
     accessToken,
-    Boolean(state.order),
+    hasVerifiedOrder,
     email,
   ]);
 
