@@ -65,7 +65,10 @@ export default function OrderDetailPage(): ReactElement {
   const auth = useAuth();
   const { pick, lang } = useLanguage();
   const storageKey = `shababuna-order-access:${orderNumber}`;
-  const locationState = (location.state || {}) as { accessToken?: string; verifiedOrder?: Record<string, unknown> };
+  const locationState = (location.state || {}) as {
+    accessToken?: string;
+    verifiedOrder?: Record<string, unknown>;
+  };
   const [accessToken, setAccessToken] = useState(
     locationState.accessToken || sessionStorage.getItem(storageKey) || '',
   );
@@ -155,7 +158,15 @@ export default function OrderDetailPage(): ReactElement {
       clearInterval(interval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- track order identity, not changing snapshot objects
-  }, [auth.loading, auth.user?.id, auth.user?.email, orderNumber, accessToken, Boolean(state.order), email]);
+  }, [
+    auth.loading,
+    auth.user?.id,
+    auth.user?.email,
+    orderNumber,
+    accessToken,
+    Boolean(state.order),
+    email,
+  ]);
 
   const order = state.order;
   const payment = order
@@ -335,20 +346,30 @@ export default function OrderDetailPage(): ReactElement {
                 <div>
                   <dt>{pick({ en: 'Paid', ar: 'المدفوع' })}</dt>
                   <dd>
-                    {(Number(order.displayAmountPaid ?? order.amountPaid) || 0).toFixed(2)} {String(order.displayCurrency || order.currency || '')}
+                    {(Number(order.displayAmountPaid ?? order.amountPaid) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Outstanding balance', ar: 'الرصيد غير المدفوع' })}</dt>
                   <dd>
-                    {(Number(order.displayOutstandingBalance ?? order.outstandingBalance) || 0).toFixed(2)}{' '}
+                    {(
+                      Number(order.displayOutstandingBalance ?? order.outstandingBalance) || 0
+                    ).toFixed(2)}{' '}
                     {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
                 <div>
-                  <dt>{['cash', 'cash_on_delivery', 'cod'].includes(String(order.paymentMethod || '')) && String(order.deliveryProfile || '') === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due now', ar: 'المستحق الآن' })}</dt>
+                  <dt>
+                    {['cash', 'cash_on_delivery', 'cod'].includes(
+                      String(order.paymentMethod || ''),
+                    ) && String(order.deliveryProfile || '') === 'ready'
+                      ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' })
+                      : pick({ en: 'Due now', ar: 'المستحق الآن' })}
+                  </dt>
                   <dd>
-                    {(Number(order.displayAmountDueNow ?? order.amountDueNow) || 0).toFixed(2)} {String(order.displayCurrency || order.currency || '')}
+                    {(Number(order.displayAmountDueNow ?? order.amountDueNow) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
               </dl>

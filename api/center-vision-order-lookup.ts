@@ -21,8 +21,12 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     req.body && typeof req.body === 'object' && !Array.isArray(req.body)
       ? (req.body as Record<string, unknown>)
       : {};
-  const orderNumber = String(body.orderNumber || '').trim().toUpperCase();
-  const email = String(body.email || '').trim().toLowerCase();
+  const orderNumber = String(body.orderNumber || '')
+    .trim()
+    .toUpperCase();
+  const email = String(body.email || '')
+    .trim()
+    .toLowerCase();
   if (
     !/^SHB-\d{8}-\d{7}$/.test(orderNumber) ||
     email.length > 240 ||
