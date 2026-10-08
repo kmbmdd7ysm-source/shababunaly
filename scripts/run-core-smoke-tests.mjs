@@ -47,8 +47,25 @@ assert.equal(smokeLha.length, 25);
 const smokePricedLha = smokeLha.filter((item) => Number(item.price || 0) > 0);
 const smokeUnpricedLha = smokeLha.filter((item) => Number(item.price || 0) <= 0);
 assert.equal(readyToShipProducts().length, smokePricedLha.length);
-assert.equal(smokePricedLha.every((item) => item.legacyLha === true && item.readyToShip === true && item.inventorySource === 'owner_confirmed_lha_color_stock' && item.inventoryVerified === true && item.inventoryTracking === true && item.inventoryLocation === 'LY' && item.comingSoon !== true), true);
-assert.equal(smokeUnpricedLha.every((item) => item.comingSoon === true && item.readyToShip !== true && item.available === false), true);
+assert.equal(
+  smokePricedLha.every(
+    (item) =>
+      item.legacyLha === true &&
+      item.readyToShip === true &&
+      item.inventorySource === 'owner_confirmed_lha_color_stock' &&
+      item.inventoryVerified === true &&
+      item.inventoryTracking === true &&
+      item.inventoryLocation === 'LY' &&
+      item.comingSoon !== true,
+  ),
+  true,
+);
+assert.equal(
+  smokeUnpricedLha.every(
+    (item) => item.comingSoon === true && item.readyToShip !== true && item.available === false,
+  ),
+  true,
+);
 assert.equal(products.every(isProductVisible), true);
 assert.equal(
   products
