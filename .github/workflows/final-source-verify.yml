@@ -1,5 +1,5 @@
 name: Temporary Final Source Verification
-# verification-pass: final-hardening-media-order
+# verification-pass: core-checkout-smoke
 
 on:
   push:
@@ -23,15 +23,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --registry=https://registry.npmjs.org
-      - run: npx prettier --write src/hooks/useDeviceCapability.ts src/components/experience/CinematicHero.tsx scripts/validate-final-hardening.mjs src/styles/tokens.css src/styles/checkout.css coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs scripts/validate-world-class.mjs
+      - run: npx prettier --write scripts/run-core-smoke-tests.mjs src/hooks/useDeviceCapability.ts src/components/experience/CinematicHero.tsx scripts/validate-final-hardening.mjs src/styles/tokens.css src/styles/checkout.css coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs scripts/validate-world-class.mjs
       - name: Commit exact formatting if needed
         run: |
-          if git diff --quiet -- src/hooks/useDeviceCapability.ts src/components/experience/CinematicHero.tsx scripts/validate-final-hardening.mjs src/styles/tokens.css src/styles/checkout.css coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs scripts/validate-world-class.mjs; then
+          if git diff --quiet -- scripts/run-core-smoke-tests.mjs src/hooks/useDeviceCapability.ts src/components/experience/CinematicHero.tsx scripts/validate-final-hardening.mjs src/styles/tokens.css src/styles/checkout.css coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs scripts/validate-world-class.mjs; then
             echo "Formatting already exact"
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add src/hooks/useDeviceCapability.ts src/components/experience/CinematicHero.tsx scripts/validate-final-hardening.mjs src/styles/tokens.css src/styles/checkout.css coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs scripts/validate-world-class.mjs
+            git add scripts/run-core-smoke-tests.mjs src/hooks/useDeviceCapability.ts src/components/experience/CinematicHero.tsx scripts/validate-final-hardening.mjs src/styles/tokens.css src/styles/checkout.css coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs scripts/validate-world-class.mjs
             git commit -m "Format coverage gate configuration"
             git push origin HEAD:main
           fi
