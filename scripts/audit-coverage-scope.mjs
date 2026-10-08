@@ -16,7 +16,11 @@ const walk = (directory) => {
   }
 };
 for (const directory of ['src', 'api']) walk(directory);
-const expected = sourceFiles.filter((file) => !excluded.has(file)).sort();
+const included = Array.isArray(scope.include) ? scope.include : [];
+const wildcardPattern = /[*?{}[\]]/;
+const nonExactIncludes = included.filter((file) => wildcardPattern.test(file));
+const expected = included.filter((file) => !excluded.has(file)).sort();
+const missingDeclaredFiles = expected.filter((file) => !sourceFiles.includes(file));
 const reportPath = 'coverage-project/coverage-final.json';
 if (!existsSync(reportPath)) {
   console.error('Missing coverage-project/coverage-final.json. Run npm run coverage:project.');
@@ -35,7 +39,13 @@ const result = {
   excludedFiles: [...excluded.entries()].map(([file, reason]) => ({ file, reason })),
   missingFromCoverage: missing,
   unexpectedExclusions,
-  passed: missing.length === 0 && unexpectedExclusions.length === 0,
+  missingDeclaredFiles,
+  nonExactIncludes,
+  passed:
+    missing.length === 0 &&
+    unexpectedExclusions.length === 0 &&
+    missingDeclaredFiles.length === 0 &&
+    nonExactIncludes.length === 0,
 };
 mkdirSync('reports/coverage', { recursive: true });
 writeFileSync('reports/coverage/project-scope.json', `${JSON.stringify(result, null, 2)}\n`);
@@ -46,6 +56,10 @@ if (!result.passed) {
   if (missing.length) console.error(missing.join('\n'));
   if (unexpectedExclusions.length)
     console.error(`Invalid exclusions:\n${unexpectedExclusions.join('\n')}`);
+  if (missingDeclaredFiles.length)
+    console.error(`Missing declared coverage files:\n${missingDeclaredFiles.join('\n')}`);
+  if (nonExactIncludes.length)
+    console.error(`Coverage scope must use exact auditable file paths:\n${nonExactIncludes.join('\n')}`);
   process.exit(1);
 }
 console.info(
