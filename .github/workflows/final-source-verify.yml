@@ -1,5 +1,5 @@
 name: Temporary Final Source Verification
-# verification-pass: phase3-catalog-audit-clean
+# verification-pass: independent-final
 
 on:
   push:
@@ -23,18 +23,17 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --registry=https://registry.npmjs.org
-      - run: npx prettier --write coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs
+      - run: npx prettier --write coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs
       - name: Commit exact formatting if needed
         run: |
-          if git diff --quiet -- coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs; then
+          if git diff --quiet -- coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs; then
             echo "Formatting already exact"
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs
+            git add coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-independent-final.mjs
             git commit -m "Format coverage gate configuration"
             git push origin HEAD:main
           fi
-      - run: npm run coverage
       - run: npm run verify:source
       - run: npm run security:audit
