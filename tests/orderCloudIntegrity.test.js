@@ -24,11 +24,12 @@ test('cash, bank transfer and pending quotes fail closed when server cannot save
       ['cash', true],
     ]) {
       await assert.rejects(
-        () => createOrder(input(method, pending), {
-          cloud: true,
-          allowPending: true,
-          idempotencyKey: 'stable-retry-key',
-        }),
+        () =>
+          createOrder(input(method, pending), {
+            cloud: true,
+            allowPending: true,
+            idempotencyKey: 'stable-retry-key',
+          }),
         { message: 'cloud_order_creation_failed' },
       );
     }
@@ -50,10 +51,9 @@ test('missing server confirmation and network failures cannot masquerade as comp
     globalThis.fetch = async () => {
       throw new Error('network_offline');
     };
-    await assert.rejects(
-      () => createOrder(input('cash'), { idempotencyKey: 'offline-key' }),
-      { message: 'cloud_order_creation_failed' },
-    );
+    await assert.rejects(() => createOrder(input('cash'), { idempotencyKey: 'offline-key' }), {
+      message: 'cloud_order_creation_failed',
+    });
   } finally {
     globalThis.fetch = previousFetch;
   }
