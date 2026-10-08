@@ -24,7 +24,9 @@ function res() {
 
 describe('Center Vision verified Shababuna order status proxy', () => {
   it('rejects malformed order identifiers and customer emails without fetching data', async () => {
-    const fetchMock = vi.fn(async () => { throw new Error('unexpected'); });
+    const fetchMock = vi.fn(async () => {
+      throw new Error('unexpected');
+    });
     vi.stubGlobal('fetch', fetchMock);
     const response = res();
     await handler(
@@ -50,8 +52,10 @@ describe('Center Vision verified Shababuna order status proxy', () => {
   });
 
   it('only returns authoritative status and shipment fields, never private customer details', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      status: 200,
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        status: 200,
       ok: true,
       json: async () => ({
         externalOrderNumber: 'SHB-20261008-0000001',
@@ -62,7 +66,8 @@ describe('Center Vision verified Shababuna order status proxy', () => {
         customerPersonId: 'secret-person-id',
         shippingAddress: { city: 'Tripoli' },
       }),
-    }));
+      }),
+    );
     const response = res();
     await handler(
       {
