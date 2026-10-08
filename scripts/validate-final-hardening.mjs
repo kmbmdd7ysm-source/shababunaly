@@ -62,12 +62,10 @@ for (const token of [
   has(env, token, `.env ${token}`);
 
 const ordersService = read('src/services/orders.ts');
-for (const token of [
-  'allowLocalPendingQuote',
-  'online_payment_requires_server',
-  'cloud_order_creation_failed',
-])
+for (const token of ['allowLocalPendingQuote', 'cloud_order_creation_failed'])
   has(ordersService, token, `order fail-closed ${token}`);
+if (!/if\s*\(\s*!isManualPayment\s*&&\s*!allowLocalPendingQuote\s*\)\s*\{[\s\S]{0,180}cloud_order_creation_failed/.test(ordersService))
+  fail.push('Missing order fail-closed online payment server requirement');
 const operations = read('src/services/operations.ts');
 if (/user_metadata\?\.role|user_metadata\.role/u.test(operations))
   fail.push('Staff authorization still trusts user_metadata.role');
@@ -209,8 +207,17 @@ for (const token of [
 const commerceContext = read('src/context/CommerceContext.tsx');
 has(commerceContext, 'fetchPublicShippingRates', 'public country shipping rates');
 const hero = read('src/components/experience/CinematicHero.tsx');
-for (const token of ['LOCAL_HERO_MEDIA', 'HERO.desktopVideo', 'HERO.mobileVideo', 'useReducedMotion', 'saveData'])
+const capabilityHook = read('src/hooks/useDeviceCapability.ts');
+for (const token of [
+  'LOCAL_HERO_MEDIA',
+  'HERO.desktopVideo',
+  'HERO.mobileVideo',
+  'useDeviceCapability',
+  'prefers-reduced-motion: reduce',
+  "capability !== 'c'",
+])
   has(hero, token, `hero runtime ${token}`);
+has(capabilityHook, 'connection.saveData === true', 'hero capability saveData gate');
 if (/fetchSiteContent|official-media/u.test(hero))
   fail.push('Home hero must not depend on runtime resolver services');
 if (!hero.includes('<video') || !hero.includes('autoPlay') || !hero.includes('muted') || !hero.includes('playsInline'))
