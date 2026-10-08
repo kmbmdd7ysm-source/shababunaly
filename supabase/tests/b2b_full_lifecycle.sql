@@ -8,6 +8,8 @@ begin
   if not coalesce(p_condition,false) then raise exception 'assertion_failed: %',p_message; end if;
 end; $$;
 
+select plan(1);
+
 -- Disposable identity and records.
 delete from public.shipments where quote_id='__b2b_lifecycle_quote';
 delete from public.payment_ledger where entity_id='__b2b_lifecycle_quote';
@@ -159,3 +161,6 @@ delete from public.team_rosters where id='__b2b_lifecycle_roster';
 delete from public.organization_members where user_id='91000000-0000-4000-8000-000000000001';
 delete from public.organizations where id='91000000-0000-4000-8000-000000000010';
 delete from auth.users where id='91000000-0000-4000-8000-000000000001';
+
+select pass('B2B full lifecycle assertions passed');
+select * from finish();
