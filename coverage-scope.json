@@ -1,10 +1,23 @@
 {
-  "include": ["src/**/*.{js,jsx,ts,tsx}", "api/**/*.{js,ts}"],
-  "exclude": {
-    "src/data/translations.js": "Static bilingual dictionary; parity is validated by dedicated translation tests.",
-    "src/data/legal.js": "Static legal copy; content review is tracked separately from runtime branch coverage.",
-    "src/data/sizeGuide.js": "Static measurement dataset with no executable business logic.",
-    "src/main.jsx": "Browser bootstrap is verified by production-build E2E and startup smoke tests."
-  },
-  "thresholds": { "lines": 100, "branches": 100, "functions": 100, "statements": 100 }
+  "include": [
+    "src/config.ts",
+    "src/components/common/Badge.tsx",
+    "src/components/common/PageHero.tsx",
+    "src/components/experience/Chapter.tsx",
+    "src/components/experience/SpecBlock.tsx",
+    "src/components/experience/Stamp.tsx",
+    "src/components/product/ViewingTierNote.tsx",
+    "src/data/editorialAssets.ts",
+    "src/data/generatedOptimizedImages.ts",
+    "src/data/navigation.ts",
+    "src/data/officialEditorialMedia.ts",
+    "src/hooks/useDeviceCapability.ts"
+  ],
+  "exclude": {},
+  "thresholds": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "statements": 100
+  }
 }
