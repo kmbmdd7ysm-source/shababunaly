@@ -139,11 +139,21 @@ export default function OrderDetailPage(): ReactElement {
         accessToken,
       });
       if (active && result.order) {
-        setState((current) => ({ ...current, state: 'success', order: result.order as Record<string, unknown>, error: null }));
+        setState((current) => ({
+          ...current,
+          state: 'success',
+          order: result.order as Record<string, unknown>,
+          error: null,
+        }));
       }
     };
-    const interval = setInterval(() => { void refresh(); }, 30_000);
-    return () => { active = false; clearInterval(interval); };
+    const interval = setInterval(() => {
+      void refresh();
+    }, 30_000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- track order identity, not changing snapshot objects
   }, [auth.loading, auth.user?.id, auth.user?.email, orderNumber, accessToken, Boolean(state.order), email]);
 
@@ -155,9 +165,10 @@ export default function OrderDetailPage(): ReactElement {
   const fulfillment = order
     ? presentOrderStatus('fulfillment', order.fulfillmentStatus, lang as 'en' | 'ar')
     : null;
-  const latestShipment = order?.shipment && typeof order.shipment === 'object'
-    ? (order.shipment as Record<string, unknown>)
-    : null;
+  const latestShipment =
+    order?.shipment && typeof order.shipment === 'object'
+      ? (order.shipment as Record<string, unknown>)
+      : null;
   const shipmentStatus = latestShipment
     ? presentOrderStatus('shipment', latestShipment.status, lang as 'en' | 'ar')
     : null;

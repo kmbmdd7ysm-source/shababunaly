@@ -17,13 +17,17 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-  const body = req.body && typeof req.body === 'object' && !Array.isArray(req.body)
-    ? (req.body as Record<string, unknown>)
-    : {};
+  const body =
+    req.body && typeof req.body === 'object' && !Array.isArray(req.body)
+      ? (req.body as Record<string, unknown>)
+      : {};
   const orderNumber = String(body.orderNumber || '').trim().toUpperCase();
   const email = String(body.email || '').trim().toLowerCase();
-  if (!/^SHB-\d{8}-\d{7}$/.test(orderNumber) ||
-      email.length > 240 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (
+    !/^SHB-\d{8}-\d{7}$/.test(orderNumber) ||
+    email.length > 240 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
     return res.status(400).json({ ok: false, error: 'invalid_lookup' });
   }
   try {
@@ -34,8 +38,10 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       signal: AbortSignal.timeout(12000),
       cache: 'no-store',
     });
-    if (response.status === 404) return res.status(404).json({ ok: false, error: 'order_not_found' });
-    if (!response.ok) return res.status(503).json({ ok: false, error: 'center_vision_unavailable' });
+    if (response.status === 404)
+      return res.status(404).json({ ok: false, error: 'order_not_found' });
+    if (!response.ok)
+      return res.status(503).json({ ok: false, error: 'center_vision_unavailable' });
     const order = await response.json();
     if (!order || order.externalOrderNumber !== orderNumber)
       return res.status(502).json({ ok: false, error: 'invalid_center_vision_response' });

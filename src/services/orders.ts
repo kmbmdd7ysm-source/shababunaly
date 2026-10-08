@@ -713,7 +713,12 @@ export async function getOrderDetails({
     const order =
       result.orders.find((item) => clean(item.orderNumber).toUpperCase() === number) || null;
     const currentOrder = await withCenterVisionStatus(order, clean(order?.email || email));
-    return { ...result, state: order ? result.state : 'not-found', order: currentOrder, accessToken: '' };
+    return {
+      ...result,
+      state: order ? result.state : 'not-found',
+      order: currentOrder,
+      accessToken: '',
+    };
   }
   if (!email && !accessToken)
     return { state: 'verification-required', order: null, error: null, accessToken: '' };
