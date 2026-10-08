@@ -133,7 +133,7 @@ export default function OrderDetailPage(): ReactElement {
   useEffect(() => {
     if (auth.loading || !hasVerifiedOrder) return undefined;
     let active = true;
-    const verifiedEmail = String(state.order.email || auth.user?.email || email || '');
+    const verifiedEmail = String(state.order?.email || auth.user?.email || email || '');
     const refresh = async () => {
       if (document.visibilityState === 'hidden') return;
       const result = await getOrderDetails({
@@ -328,7 +328,7 @@ export default function OrderDetailPage(): ReactElement {
                     <dd>{shipmentStatus.label}</dd>
                   </div>
                 )}
-                {latestShipment?.trackingNumber && (
+                {Boolean(latestShipment?.trackingNumber) && (
                   <div>
                     <dt>{pick({ en: 'Tracking number', ar: 'رقم تتبع الشحنة' })}</dt>
                     <dd>{String(latestShipment.trackingNumber)}</dd>
