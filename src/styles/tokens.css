@@ -30,8 +30,8 @@
 
   /* Exact neutral surfaces retained by checkout; centralized here so the
      checkout composition keeps identical pixels without raw colour literals. */
-  --sh-white: #ffffff;
-  --sh-ink-strong: #111111;
+  --sh-white: #fff;
+  --sh-ink-strong: #111;
   --sh-chalk-bright: #f9f8f5;
   --sh-chalk-soft: #f4f3ef;
 
