@@ -54,6 +54,7 @@ export default function CheckoutPaymentStage({
             <input
               type="radio"
               name="payment"
+              value="cash"
               checked={paymentMethod === 'cash'}
               onChange={() => setPaymentMethod('cash')}
             />
@@ -81,6 +82,7 @@ export default function CheckoutPaymentStage({
             <input
               type="radio"
               name="payment"
+              value="bank_transfer"
               checked={paymentMethod === 'bank_transfer'}
               onChange={() => setPaymentMethod('bank_transfer')}
             />
@@ -111,6 +113,7 @@ export default function CheckoutPaymentStage({
             <input
               type="radio"
               name="payment"
+              value="libyan_bank_card"
               checked={paymentMethod === 'libyan_bank_card'}
               onChange={() => setPaymentMethod('libyan_bank_card')}
             />
@@ -126,6 +129,7 @@ export default function CheckoutPaymentStage({
             <input
               type="radio"
               name="payment"
+              value="online_card"
               checked={paymentMethod === 'online_card'}
               onChange={() => setPaymentMethod('online_card')}
             />
@@ -145,6 +149,7 @@ export default function CheckoutPaymentStage({
               <input
                 type="radio"
                 name="cash-plan"
+                value="half"
                 checked={cashPlan === 'half'}
                 onChange={() => setCashPlan('half')}
               />
@@ -155,6 +160,7 @@ export default function CheckoutPaymentStage({
               <input
                 type="radio"
                 name="cash-plan"
+                value="full"
                 checked={cashPlan === 'full'}
                 onChange={() => setCashPlan('full')}
               />
