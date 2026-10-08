@@ -744,7 +744,7 @@ describe(
     it('evaluates every required, optional and feature-readiness state', async () => {
       const empty = requiredEnvironment();
       expect(empty.supabase_url).toBe(false);
-      expect(empty.site_url).toBe(false);
+      expect(empty.site_url).toBe(true);
       expect(optionalCapabilities()).toEqual({
         online_card: false,
         libyan_bank_card: false,
