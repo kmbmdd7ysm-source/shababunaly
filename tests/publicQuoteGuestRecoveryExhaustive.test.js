@@ -386,8 +386,7 @@ describe('guest order access and payment recovery APIs', { concurrency: false },
       'fetch',
       vi.fn().mockImplementation(async (url) => {
         if (String(url).includes('consume_edge_rate_limit')) return reply(true);
-        if (String(url).includes('.private.blob.vercel-storage.com/orders/'))
-          return reply(order());
+        if (String(url).includes('.private.blob.vercel-storage.com/orders/')) return reply(order());
         throw new Error('unexpected');
       }),
     );
