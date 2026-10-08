@@ -294,7 +294,9 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     expect(captured[0].paymentPlan).toBe('pending_shipping_quote');
   });
 
-  test('protected route contracts do not claim B2B, return, refund or inventory lifecycle completion', async ({ page }) => {
+  test('protected route contracts do not claim B2B, return, refund or inventory lifecycle completion', async ({
+    page,
+  }) => {
     await page.goto('/teams-wholesale');
     await expect(page.getByRole('heading', { name: 'Build your program.' })).toBeVisible();
     await page.goto('/operations');
