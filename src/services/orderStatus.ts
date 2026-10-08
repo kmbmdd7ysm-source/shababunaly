@@ -28,7 +28,21 @@ const STATUS_MAP = {
     fulfilled: { category: 'success', en: 'Fulfilled', ar: 'تم التنفيذ' },
     cancelled: { category: 'error', en: 'Cancelled', ar: 'ملغي' },
   },
+  shipment: {
+    draft: { category: 'pending', en: 'Shipping Pending', ar: 'الشحن قيد الانتظار' },
+    ready: { category: 'pending', en: 'Ready to Ship', ar: 'جاهز للشحن' },
+    picked_up: { category: 'pending', en: 'Picked Up', ar: 'تم استلام الشحنة' },
+    in_transit: { category: 'pending', en: 'In Transit', ar: 'الشحنة في الطريق' },
+    customs: { category: 'warning', en: 'At Customs', ar: 'في الجمارك' },
+    out_for_delivery: { category: 'pending', en: 'Out for Delivery', ar: 'خرج للتوصيل' },
+    delivered: { category: 'success', en: 'Delivered', ar: 'تم التسليم' },
+    issue: { category: 'warning', en: 'Delivery Issue', ar: 'مشكلة في التوصيل' },
+    returned: { category: 'warning', en: 'Returned', ar: 'تم الإرجاع' },
+    cancelled: { category: 'error', en: 'Shipping Cancelled', ar: 'تم إلغاء الشحن' },
+  },
   fulfillment: {
+    partial: { category: 'warning', en: 'Partially Fulfilled', ar: 'تم تنفيذ جزء من الطلب' },
+    on_hold: { category: 'warning', en: 'On Hold', ar: 'الطلب معلق' },
     unfulfilled: { category: 'pending', en: 'Not Fulfilled', ar: 'لم يتم التنفيذ' },
     processing: { category: 'pending', en: 'Preparing', ar: 'قيد التحضير' },
     in_delivery_process: { category: 'pending', en: 'In Delivery Process', ar: 'قيد التوصيل' },
@@ -69,4 +83,5 @@ export const ALLOWED_ORDER_STATUSES = {
   payment: Object.keys(STATUS_MAP.payment),
   order: Object.keys(STATUS_MAP.order),
   fulfillment: Object.keys(STATUS_MAP.fulfillment),
+  shipment: Object.keys(STATUS_MAP.shipment),
 };
