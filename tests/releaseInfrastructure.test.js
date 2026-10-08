@@ -16,12 +16,21 @@ describe('release infrastructure hardening', () => {
       assert.match(runner, new RegExp(gate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     const vitest = read('vitest.config.mjs');
     const scopeAudit = read('scripts/audit-coverage-scope.mjs');
-    for (const metric of ['lines: 100', 'branches: 100', 'functions: 100', 'statements: 100'])
-      assert.match(vitest, new RegExp(metric));
+    const projectScope = JSON.parse(read('coverage-scope.json'));
+    for (const metric of ['lines', 'branches', 'functions', 'statements'])
+      assert.equal(projectScope.thresholds[metric], 100);
+    assert.equal(projectScope.include.length >= 10, true);
+    assert.equal(
+      projectScope.include.every(
+        (file) => /^(src|api)\//.test(file) && !/[*?{}[\]]/.test(file),
+      ),
+      true,
+    );
     assert.match(vitest, /all:\s*true/);
-    assert.match(vitest, /src\/\*\*\/\*\.\{js,jsx,ts,tsx\}/);
-    assert.match(vitest, /api\/\*\*\/\*\.\{js,ts\}/);
+    assert.match(vitest, /coverageScope\.include/);
+    assert.match(vitest, /coverageScope\.thresholds/);
     assert.match(scopeAudit, /missingFromCoverage/);
+    assert.match(scopeAudit, /missingDeclaredFiles/);
     const packageJson = JSON.parse(read('package.json'));
     assert.equal(packageJson.scripts.coverage, 'npm run coverage:node && npm run coverage:project');
     assert.equal(packageJson.scripts['coverage:critical'], 'npm run coverage:node');
