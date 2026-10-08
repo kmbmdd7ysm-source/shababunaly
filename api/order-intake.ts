@@ -40,7 +40,7 @@ async function fallbackCenterVisionInquiry(input: {
     message: `Shababuna website order ${clean(input.order.order_number, 120)} created`,
     locale: clean(input.shipping.locale || input.shipping.language || 'en', 20),
     metadata: {
-      source: 'shababunaly.com',
+      source: 'shababuna.ly',
       event: 'ORDER_CREATED_FALLBACK',
       orderNumber: input.order.order_number || null,
       paymentMethod: input.order.payment_method || null,
@@ -238,7 +238,8 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     return res.status(client ? 400 : 503).json({
       ok: false,
       error: client ? 'invalid_order' : 'order_service_unavailable',
-      detail: message,
+      // Never disclose internal database/provider failure details to public clients.
+      ...(client ? { detail: message } : {}),
     });
   }
 }
