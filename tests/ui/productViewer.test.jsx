@@ -141,7 +141,7 @@ describe('ProductViewer', () => {
 
   test('a real turntable is labelled as a 360 and is keyboard operable', () => {
     activeLanguage = 'en';
-    render(
+    renderViewer(
       <ProductViewer product={{ ...base, image: '/a.webp', spin360: frames(MIN_SPIN_FRAMES) }} />,
     );
     expect(screen.getByText(/360° photographed turntable/i)).toBeVisible();
@@ -183,7 +183,7 @@ describe('ProductViewer', () => {
     activeLanguage = 'en';
     // No verified assets at all: the viewer must fall back to whatever the
     // product does have, and must never offer rotation controls.
-    const { container } = render(
+    const { container } = renderViewer(
       <ProductViewer product={{ ...base, image: '/images/catalog/apparel.svg' }} />,
     );
     expect(container.querySelector('.gw-viewer')).toHaveAttribute('data-tier', 'D');
@@ -197,7 +197,7 @@ describe('ProductViewer', () => {
 
   test('view labels fall back gracefully beyond the named set', () => {
     activeLanguage = 'en';
-    render(
+    renderViewer(
       <ProductViewer
         product={{
           ...base,
