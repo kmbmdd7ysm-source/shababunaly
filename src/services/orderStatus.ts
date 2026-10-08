@@ -11,7 +11,11 @@ const STATUS_MAP = {
   payment: {
     pending: { category: 'pending', en: 'Payment Pending', ar: 'الدفع قيد الانتظار' },
     partially_paid: { category: 'warning', en: 'Partially Paid', ar: 'مدفوع جزئياً' },
-    partially_refunded: { category: 'warning', en: 'Partially Refunded', ar: 'تم رد جزء من المبلغ' },
+    partially_refunded: {
+      category: 'warning',
+      en: 'Partially Refunded',
+      ar: 'تم رد جزء من المبلغ',
+    },
     paid: { category: 'success', en: 'Paid', ar: 'مدفوع' },
     unpaid: { category: 'warning', en: 'Unpaid', ar: 'غير مدفوع' },
     failed: { category: 'error', en: 'Payment Failed', ar: 'فشل الدفع' },
