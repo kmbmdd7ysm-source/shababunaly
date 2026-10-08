@@ -11,6 +11,8 @@ begin
   end if;
 end; $$;
 
+select plan(1);
+
 -- Clean and seed isolated fixtures.
 delete from public.order_items where product_id like '__atomic_test_%';
 delete from public.orders where customer_email like 'atomic-test-%@example.com';
@@ -176,3 +178,6 @@ select pg_temp.assert_true(
 delete from public.order_items where product_id like '__atomic_test_%';
 delete from public.orders where customer_email like 'atomic-test-%@example.com';
 delete from public.product_catalog where product_id like '__atomic_test_%';
+
+select pass('atomic inventory reservation assertions passed');
+select * from finish();
