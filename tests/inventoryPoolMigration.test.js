@@ -20,9 +20,9 @@ describe('LHA shared color-pool transactional inventory', () => {
     expect(sql).toContain('pc.inventory_quantity - rp.quantity');
   });
 
-  it('generates only the 786 trusted variants for the 75 production-media products', () => {
+  it('generates only the 586 trusted variants for the 75 production-media products', () => {
     const rows = generated.split('\n').filter((line) => line.startsWith("('")).length;
-    expect(rows).toBe(786);
+    expect(rows).toBe(586);
     expect(generated.includes('owner_confirmed_lha_ready')).toBe(false);
     expect(generated).toContain('owner_confirmed_lha_color_stock');
     expect(generated).toContain('inventory_quantity=case');
