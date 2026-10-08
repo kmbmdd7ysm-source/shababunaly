@@ -1,4 +1,5 @@
 name: SHABABUNA Complete Quality Gate
+# Browser contract UI assertions are verified against the current storefront.
 
 on:
   pull_request:
