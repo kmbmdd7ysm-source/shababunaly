@@ -574,6 +574,36 @@ export async function getMyOrders(
   }
 }
 
+async function withCenterVisionStatus(order: Row | null, verifiedEmail: string): Promise<Row | null> {
+  if (!order || !verifiedEmail) return order;
+  try {
+    const response = await fetch('/api/center-vision-order-lookup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      credentials: 'same-origin',
+      cache: 'no-store',
+      body: JSON.stringify({
+        orderNumber: clean(order.orderNumber || order.order_number),
+        email: emailKey(verifiedEmail),
+      }),
+      signal: AbortSignal.timeout(12000),
+    });
+    if (!response.ok) return order;
+    const data = (await response.json()) as Row;
+    if (!data.ok) return order;
+    return {
+      ...order,
+      orderStatus: clean(data.status).toLowerCase(),
+      paymentStatus: clean(data.paymentStatus).toLowerCase(),
+      fulfillmentStatus: clean(data.fulfillmentStatus).toLowerCase(),
+      shipment: data.shipment || null,
+      centerVisionSynced: true,
+    };
+  } catch {
+    return order;
+  }
+}
+
 export async function lookupGuestOrder(
   orderNumber: string,
   email = '',
@@ -617,11 +647,14 @@ export async function lookupGuestOrder(
     } else if (data?.order) {
       return {
         state: 'success',
-        order: normalizeOrder({
-          ...(data.order as Row),
-          source: 'cloud',
-          syncState: 'synced',
-        }),
+        order: await withCenterVisionStatus(
+          normalizeOrder({
+            ...(data.order as Row),
+            source: 'cloud',
+            syncState: 'synced',
+          }),
+          clean(normalizedEmail || (data.order as Row).email),
+        ),
         source: 'cloud',
         error: null,
         accessToken: clean(data.accessToken),
@@ -679,7 +712,8 @@ export async function getOrderDetails({
     const result = await getMyOrders(userId);
     const order =
       result.orders.find((item) => clean(item.orderNumber).toUpperCase() === number) || null;
-    return { ...result, state: order ? result.state : 'not-found', order, accessToken: '' };
+    const currentOrder = await withCenterVisionStatus(order, clean(order?.email || email));
+    return { ...result, state: order ? result.state : 'not-found', order: currentOrder, accessToken: '' };
   }
   if (!email && !accessToken)
     return { state: 'verification-required', order: null, error: null, accessToken: '' };
