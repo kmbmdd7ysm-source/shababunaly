@@ -63,7 +63,7 @@ for (const token of [
 
 const ordersService = read('src/services/orders.ts');
 const cloudOrderBlock = ordersService.match(
-  /if \(options\.cloud !== false\) \{([\s\S]*?)\n  \}\n\n  const local = saveLocal/,
+  /if \(options\.cloud !== false\) \{([\s\S]*?)\n[ ]{2}\}\n\n[ ]{2}const local = saveLocal/,
 )?.[1];
 if (
   !cloudOrderBlock ||
