@@ -79,7 +79,7 @@ describe('Formspree public gateway exhaustive', { concurrency: false }, () => {
     const pinned = responseMock();
     await handler(request({ turnstileToken: 'test-pass' }), pinned);
     expect(pinned.statusCode).toBe(200);
-    expect(pinned.body).toEqual({ ok: true, provider: 'formspree' });
+    expect(pinned.body).toEqual({ ok: true, provider: 'formspree', centerVision: 'pending' });
   });
 
   it('accepts a valid public form without captcha and contacts Formspree', async () => {
@@ -89,7 +89,7 @@ describe('Formspree public gateway exhaustive', { concurrency: false }, () => {
     const result = responseMock();
     await handler(request({ turnstileToken: '' }), result);
     expect(result.statusCode).toBe(200);
-    expect(result.body).toEqual({ ok: true, provider: 'formspree' });
+    expect(result.body).toEqual({ ok: true, provider: 'formspree', centerVision: 'pending' });
   });
 
   it('sanitizes keys and scalar/object/null values, removes captcha and caps entries', async () => {
@@ -107,7 +107,7 @@ describe('Formspree public gateway exhaustive', { concurrency: false }, () => {
     const result = responseMock();
     await handler(request(payload), result);
     expect(result.statusCode).toBe(200);
-    expect(result.body).toEqual({ ok: true, provider: 'formspree' });
+    expect(result.body).toEqual({ ok: true, provider: 'formspree', centerVision: 'pending' });
     const upstream = calls.find(([url]) => url.includes('formspree.io'));
     expect(upstream[1].headers['Content-Type']).toContain('application/x-www-form-urlencoded');
     const params = new URLSearchParams(upstream[1].body);
