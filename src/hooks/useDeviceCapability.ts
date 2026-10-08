@@ -45,7 +45,9 @@ export function resolveCapabilityTier(nav?: { connection?: { saveData?: boolean;
  * @returns {'a'|'b'|'c'}
  */
 export function useDeviceCapability(): 'a' | 'b' | 'c' {
-  const [tier, setTier] = useState<'a' | 'b' | 'c'>('a');
+  const [tier, setTier] = useState<'a' | 'b' | 'c'>(() =>
+    resolveCapabilityTier(typeof navigator === 'undefined' ? null : globalThis.navigator),
+  );
 
   useEffect(() => {
     const resolved = resolveCapabilityTier(globalThis.navigator);
