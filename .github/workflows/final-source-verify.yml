@@ -1,5 +1,5 @@
 name: Temporary Final Source Verification
-# verification-pass: phase2-youtube-cleanup
+# verification-pass: phase3-catalog-audit
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --registry=https://registry.npmjs.org
-      - run: npx prettier --write coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs
+      - run: npx prettier --write coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs scripts/validate-phase3-release.mjs scripts/validate-phase3-release.mjs
       - name: Commit exact formatting if needed
         run: |
           if git diff --quiet -- coverage-scope.json vitest.config.mjs scripts/audit-coverage-scope.mjs tests/releaseInfrastructure.test.js scripts/run-coverage.mjs; then
