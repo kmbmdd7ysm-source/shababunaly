@@ -210,7 +210,9 @@ if (
     return product.inventoryLocation !== 'LY' || (!product.inventoryVerified && !ownerConfirmedLha);
   })
 )
-  failures.push('Ready-to-ship exposes inventory outside the verified or owner-confirmed Libya lanes');
+  failures.push(
+    'Ready-to-ship exposes inventory outside the verified or owner-confirmed Libya lanes',
+  );
 if (
   !products.some((product) => product.wholesaleAvailable && product.wholesalePrice < product.price)
 )
@@ -221,7 +223,11 @@ if (
   )
 )
   failures.push('Unverified Made in USA claim is visible');
-if (catalogProducts.some((product) => product.customizable && hasRealProductMedia(product) && !isProductVisible(product)))
+if (
+  catalogProducts.some(
+    (product) => product.customizable && hasRealProductMedia(product) && !isProductVisible(product),
+  )
+)
   failures.push('Custom product with approved real media is unexpectedly hidden');
 
 for (const forbidden of [
