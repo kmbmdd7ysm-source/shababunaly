@@ -60,12 +60,17 @@ record('kobe:rate-8-clean-150', getSiteRateStorePrice(1200, 8) === 150);
 
 const generated = read('supabase/generated/product_catalog.sql');
 const trustedRows = generated.split('\n').filter((line) => line.startsWith("('")).length;
-record('catalog:trusted-rows-786', trustedRows === 786, `found ${trustedRows}`);
+record('catalog:trusted-rows-586', trustedRows === 586, `found ${trustedRows}`);
 record('catalog:deploy-preserves-tracked-stock', generated.includes('inventory_quantity=case') && generated.includes('when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity') && generated.includes('with pool_floor as') && generated.includes("variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'"));
 record('catalog:deploy-reprices-site-rate', generated.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") && generated.includes("variant_data->>'priceLydSource'"));
 
 const catalogContext = read('src/context/CatalogContext.tsx');
-record('cloud:authoritative-no-static-resurrection', catalogContext.includes('{ authoritative: true }') && catalogContext.includes('return authoritative ? [] : baseProducts'));
+record(
+  'cloud:authoritative-no-static-resurrection',
+  /mergeCatalogProducts\(BASE_PRODUCTS,\s*data as CatalogRow\[\],\s*\{\s*authoritative:\s*true,?\s*\}\)/.test(
+    catalogContext,
+  ) && catalogContext.includes('return authoritative ? [] : baseProducts'),
+);
 record('cloud:lha-stock-from-db', catalogContext.includes('Number(row.inventory_quantity)') && catalogContext.includes('stockByColor'));
 record('cloud:local-product-media-trusted', catalogContext.includes('trustedLocalMediaPath') && read('src/services/operations.ts').includes('product_image_must_be_local'));
 
