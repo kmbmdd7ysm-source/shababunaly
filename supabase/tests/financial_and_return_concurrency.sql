@@ -9,6 +9,8 @@ begin
   if not coalesce(p_condition, false) then raise exception 'assertion_failed: %', p_message; end if;
 end; $$;
 
+select plan(1);
+
 -- Clean fixtures from any previous interrupted run.
 delete from public.refund_events where order_number like 'SHB-RACE-%';
 delete from public.payment_events where order_number like 'SHB-RACE-%';
@@ -150,3 +152,6 @@ delete from public.payment_ledger where metadata->>'orderNumber' like 'SHB-RACE-
 delete from public.return_requests where order_number like 'SHB-RACE-%';
 delete from public.orders where order_number like 'SHB-RACE-%';
 delete from auth.users where id='90000000-0000-4000-8000-000000000001';
+
+select pass('financial and return concurrency assertions passed');
+select * from finish();
