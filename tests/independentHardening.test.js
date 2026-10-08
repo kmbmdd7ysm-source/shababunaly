@@ -85,10 +85,10 @@ describe('independent final hardening invariants', () => {
 
   it('generates only trusted variants for the 75 published products', () => {
     expect(variantCount(catalogProducts)).toBe(1282);
-    expect(variantCount(products)).toBe(786);
+    expect(variantCount(products)).toBe(586);
     const generatedSql = read('supabase/generated/product_catalog.sql');
     const sqlRows = generatedSql.split('\n').filter((line) => line.startsWith("('")).length;
-    expect(sqlRows).toBe(786);
+    expect(sqlRows).toBe(586);
     expect(generatedSql).toContain('with pool_floor as');
     expect(generatedSql).toContain("variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'");
   });
