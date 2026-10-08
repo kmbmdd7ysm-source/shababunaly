@@ -31,9 +31,16 @@ const first = (...values: unknown[]): string => values.map(clean).find(Boolean) 
 function validConfig(url: string, key: string): boolean {
   try {
     const parsed = new URL(url);
+    const env = (buildEnvOverride ??
+      (import.meta as ImportMeta & { env?: Record<string, string> }).env ??
+      {}) as Record<string, string>;
+    const explicitLocalTestConfig =
+      String(env.VITE_ALLOW_LOCAL_SUPABASE || '').toLowerCase() === 'true' &&
+      parsed.protocol === 'http:' &&
+      ['127.0.0.1', 'localhost', '[::1]'].includes(parsed.hostname);
     return (
-      parsed.protocol === 'https:' &&
-      /\.supabase\.(co|in)$/.test(parsed.hostname) &&
+      ((parsed.protocol === 'https:' && /\.supabase\.(co|in)$/.test(parsed.hostname)) ||
+        explicitLocalTestConfig) &&
       key.length > 20
     );
   } catch {
