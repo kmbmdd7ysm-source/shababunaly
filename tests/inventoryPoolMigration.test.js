@@ -1,7 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from './test-api.js';
 
-const sql = readFileSync('supabase/migrations/20260818010000_lha_color_inventory_pools.sql', 'utf8');
+const sql = readFileSync(
+  'supabase/migrations/20260818010000_lha_color_inventory_pools.sql',
+  'utf8',
+);
 const generated = readFileSync('supabase/generated/product_catalog.sql', 'utf8');
 
 describe('LHA shared color-pool transactional inventory', () => {
@@ -26,8 +29,12 @@ describe('LHA shared color-pool transactional inventory', () => {
     expect(generated.includes('owner_confirmed_lha_ready')).toBe(false);
     expect(generated).toContain('owner_confirmed_lha_color_stock');
     expect(generated).toContain('inventory_quantity=case');
-    expect(generated).toContain('when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity');
+    expect(generated).toContain(
+      'when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity',
+    );
     expect(generated).toContain('with pool_floor as');
-    expect(generated).toContain("variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'");
+    expect(generated).toContain(
+      "variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'",
+    );
   });
 });
