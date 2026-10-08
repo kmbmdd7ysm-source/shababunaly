@@ -42,6 +42,7 @@ const trackedEnv = [
   'SIGNATURE_PROVIDER_SANDBOX_URL',
   'SIGNATURE_WEBHOOK_HEADER',
   'SIGNATURE_TIMEOUT_MS',
+  'BLOB_READ_WRITE_TOKEN',
 ];
 const reset = () => {
   globalThis.fetch = originalFetch;
@@ -72,6 +73,7 @@ const configureDb = () => {
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service';
   process.env.CRON_SECRET = 'cron-secret';
   process.env.NODE_ENV = 'test';
+  process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_teststore_secret';
 };
 
 function signatureEnv() {
