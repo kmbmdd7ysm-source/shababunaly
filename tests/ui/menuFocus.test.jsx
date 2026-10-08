@@ -46,6 +46,9 @@ vi.mock('../../src/context/AuthContext', () => ({
 vi.mock('../../src/context/CommerceContext', () => ({
   useCommerce: () => ({ countryCode: 'LY' }),
 }));
+vi.mock('../../src/context/CatalogContext', () => ({
+  useCatalog: () => ({ readyToShipProducts: () => [] }),
+}));
 vi.mock('../../src/hooks/useWishlist', () => ({ useWishlist: () => ({ ids: [] }) }));
 vi.mock('../../src/utils/analytics', () => ({ trackEvent: vi.fn() }));
 vi.mock('../../src/components/layout/AnnouncementBar', () => ({ default: () => null }));
