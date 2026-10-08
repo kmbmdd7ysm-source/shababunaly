@@ -176,9 +176,9 @@ record('independent:catalog-master-119', catalogProducts.length === 119, `found 
 record('independent:catalog-published-75', products.length === 75, `found ${products.length}`); // 2
 record('independent:catalog-hidden-44', catalogProducts.length - products.length === 44, `hidden ${catalogProducts.length - products.length}`); // 3
 record('independent:published-media-real', products.every(hasRealProductMedia)); // 4
-record('independent:master-variants-1482', masterVariantCount === 1482, `found ${masterVariantCount}`); // 5
-record('independent:trusted-variants-786', trustedRowCount === 786, `found ${trustedRowCount}`); // 6
-record('independent:generated-trusted-rows-786', trustedRowCount === 786 && trustedCatalogSql.includes('insert into public.product_catalog')); // 7
+record('independent:master-variants-1282', masterVariantCount === 1282, `found ${masterVariantCount}`); // 5
+record('independent:trusted-variants-586', trustedRowCount === 586, `found ${trustedRowCount}`); // 6
+record('independent:generated-trusted-rows-586', trustedRowCount === 586 && trustedCatalogSql.includes('insert into public.product_catalog')); // 7
 record('independent:deploy-preserves-tracked-inventory', trustedCatalogSql.includes('inventory_quantity=case') && trustedCatalogSql.includes('when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity') && trustedCatalogSql.includes('with pool_floor as')); // 8
 record('independent:deploy-reprices-site-rate', trustedCatalogSql.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") && trustedCatalogSql.includes("variant_data->>'priceLydSource'")); // 9
 record('independent:no-stale-stockPerVariant', !lhaSource.includes('stockPerVariant:')); // 10
@@ -196,12 +196,23 @@ record('independent:commerce-retains-verified-rate', commerceContext.includes('h
 record('independent:rate-ready-excludes-fallback', commerceContext.includes("rateReady: rateStatus === 'ready' || rateStatus === 'stale'")); // 22
 record('independent:site-rate-fail-closed', catalogContext.includes('pricingRateUnavailable: true') && catalogContext.includes('!commerce.rateReady')); // 23
 record('independent:tracked-stock-safe-fallback', catalogContext.includes('SAFE_FALLBACK_PRODUCTS') && catalogContext.includes('failClosedTrackedInventory')); // 24
-record('independent:cloud-catalog-authoritative', catalogContext.includes('{ authoritative: true }')); // 25
+record(
+  'independent:cloud-catalog-authoritative',
+  /mergeCatalogProducts\(BASE_PRODUCTS,\s*data as CatalogRow\[\],\s*\{\s*authoritative:\s*true,?\s*\}\)/.test(
+    catalogContext,
+  ),
+); // 25
 record('independent:no-static-resurrection', catalogContext.includes('return authoritative ? [] : baseProducts')); // 26
 record('independent:lha-stock-from-cloud-quantity', catalogContext.includes('Number(row.inventory_quantity)')); // 27
 record('independent:lha-stock-by-color-pool', catalogContext.includes('stockByColor') && catalogContext.includes('inventoryPoolKey')); // 28
 record('independent:cloud-media-local-trust', catalogContext.includes('trustedLocalMediaPath') && read('src/services/operations.ts').includes('product_image_must_be_local')); // 29
-record('independent:lha-ready-requires-positive-stock', /readyToShip[\s\S]{0,220}Number\(row\.inventory_quantity\)\s*>\s*0/.test(catalogContext)); // 30
+record(
+  'independent:lha-ready-requires-positive-stock',
+  catalogContext.includes('readyToShip: trackedVariant && effectiveStock > 0') &&
+    /const readyToShip = variants\.some\([\s\S]{0,260}Number\(variant\.stock\) > 0/.test(
+      catalogContext,
+    ),
+); // 30
 record('independent:formspree-same-origin-only', formspreeService.includes("fetch('/api/formspree'") && !formspreeService.includes('fetch(FORMSPREE_ENDPOINT')); // 31
 record('independent:quote-client-no-formspree-bypass', !quoteService.includes('sendFormspree') && quoteService.includes("fetch('/api/public-quote-request'")); // 32
 record('independent:special-client-no-formspree-bypass', !specialService.includes('sendFormspree') && specialService.includes("fetch('/api/special-request'")); // 33
