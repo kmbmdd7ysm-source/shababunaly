@@ -64,7 +64,11 @@ for (const token of [
 const ordersService = read('src/services/orders.ts');
 for (const token of ['allowLocalPendingQuote', 'cloud_order_creation_failed'])
   has(ordersService, token, `order fail-closed ${token}`);
-if (!/if\s*\(\s*!isManualPayment\s*&&\s*!allowLocalPendingQuote\s*\)\s*\{[\s\S]{0,180}cloud_order_creation_failed/.test(ordersService))
+if (
+  !/if\s*\(\s*!isManualPayment\s*&&\s*!allowLocalPendingQuote\s*\)\s*\{[\s\S]{0,180}cloud_order_creation_failed/.test(
+    ordersService,
+  )
+)
   fail.push('Missing order fail-closed online payment server requirement');
 const operations = read('src/services/operations.ts');
 if (/user_metadata\?\.role|user_metadata\.role/u.test(operations))
@@ -220,7 +224,12 @@ for (const token of [
 has(capabilityHook, 'connection.saveData === true', 'hero capability saveData gate');
 if (/fetchSiteContent|official-media/u.test(hero))
   fail.push('Home hero must not depend on runtime resolver services');
-if (!hero.includes('<video') || !hero.includes('autoPlay') || !hero.includes('muted') || !hero.includes('playsInline'))
+if (
+  !hero.includes('<video') ||
+  !hero.includes('autoPlay') ||
+  !hero.includes('muted') ||
+  !hero.includes('playsInline')
+)
   fail.push('Home hero must use a native muted autoplay inline video element');
 if (hero.includes('YouTubeBackground') || /youtube|vimeo/i.test(hero))
   fail.push('Home hero must not embed third-party player chrome');
@@ -229,7 +238,9 @@ if (/youtube(?:-nocookie)?\.com|vimeo\.com|i\.ytimg\.com/i.test(heroMediaMap))
   fail.push('Hero video map must not use YouTube/Vimeo embeds or thumbnails');
 if (/\/media\/heroes\/|\/media\/official-brand\//u.test(heroMediaMap))
   fail.push('Hero video map still references legacy local fake-motion media');
-const filmUrls = [...heroMediaMap.matchAll(/\/media\/hero-videos\/[a-z-]+\.mp4/gmu)].map((match) => match[0]);
+const filmUrls = [...heroMediaMap.matchAll(/\/media\/hero-videos\/[a-z-]+\.mp4/gmu)].map(
+  (match) => match[0],
+);
 if (filmUrls.length < 13 || new Set(filmUrls).size < 13)
   fail.push('Hero video map must include at least 13 distinct local basketball MP4 renditions');
 for (const url of filmUrls) {

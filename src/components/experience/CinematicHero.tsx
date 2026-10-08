@@ -17,8 +17,7 @@ export default function CinematicHero(): ReactElement {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     () =>
-      typeof globalThis.matchMedia === 'function' &&
-      globalThis.matchMedia(REDUCED_MOTION).matches,
+      typeof globalThis.matchMedia === 'function' && globalThis.matchMedia(REDUCED_MOTION).matches,
   );
   const [videoSrc, setVideoSrc] = useState(() =>
     typeof globalThis.matchMedia === 'function' && globalThis.matchMedia(MOBILE_BREAKPOINT).matches
@@ -117,14 +116,22 @@ export default function CinematicHero(): ReactElement {
         <span className="s2-hero__scrim" />
       </div>
       <div className="s2-hero__content">
-        <p className="s2-hero__eyebrow">{pick({ en: 'Shababuna Basketball', ar: 'شبابنا لكرة السلة' })}</p>
+        <p className="s2-hero__eyebrow">
+          {pick({ en: 'Shababuna Basketball', ar: 'شبابنا لكرة السلة' })}
+        </p>
         <h1 id="s2-home-title">{pick({ en: 'Built for the game.', ar: 'مصنوع للعبة.' })}</h1>
         <div className="s2-hero__actions">
           <Link to="/shop">{pick({ en: 'Shop now', ar: 'تسوق الآن' })}</Link>
           <Link to="/discover">{pick({ en: 'Discover', ar: 'اكتشف' })}</Link>
         </div>
       </div>
-      <a className="s2-hero__scroll" href="#s2-trending" aria-label={pick({ en: 'Explore more', ar: 'اكتشف المزيد' })}><span /></a>
+      <a
+        className="s2-hero__scroll"
+        href="#s2-trending"
+        aria-label={pick({ en: 'Explore more', ar: 'اكتشف المزيد' })}
+      >
+        <span />
+      </a>
     </section>
   );
 }
