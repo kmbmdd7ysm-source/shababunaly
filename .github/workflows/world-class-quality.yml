@@ -131,6 +131,7 @@ jobs:
       TURNSTILE_TEST_MODE: 'true'
       MALWARE_SCAN_TEST_MODE: 'true'
       VITE_ALLOW_LOCAL_AUTH: 'false'
+      VITE_ALLOW_LOCAL_SUPABASE: 'true'
       VITE_PAYMENTS_PROVIDER: e2e_mock_card
       VITE_PAYMENTS_PUBLISHABLE_KEY: e2e-publishable
       VITE_CHECKOUT_API_BASE: /api
