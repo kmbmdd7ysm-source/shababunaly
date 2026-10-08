@@ -67,6 +67,7 @@ const ENV = [
   'MALWARE_SCAN_API_URL',
   'MALWARE_SCAN_API_KEY',
   'MALWARE_SCAN_TEST_MODE',
+  'BLOB_READ_WRITE_TOKEN',
 ];
 
 afterEach(() => {
@@ -140,6 +141,7 @@ function configure() {
   process.env.LIBYAN_BANK_CARD_PROVIDER = 'bank';
   process.env.LIBYAN_BANK_CARD_SESSION_URL = 'https://bank.example/session';
   process.env.LIBYAN_BANK_CARD_SECRET_KEY = 'bank-secret';
+  process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_teststore_secret';
 }
 /** @returns {any} */
 function order(overrides = {}) {
@@ -395,9 +397,9 @@ describe('absolute API branch coverage', { concurrency: false }, () => {
       vi.fn().mockImplementation(async (url) => {
         const u = String(url);
         if (rateLimit(u)) return reply(true);
-        if (u.includes('/rest/v1/orders?')) {
+        if (u.includes('.private.blob.vercel-storage.com/orders/')) {
           if (mode === 'throw') throw 'db';
-          return reply(mode === 'none' ? [] : [current]);
+          return mode === 'none' ? reply(null, 404) : reply(current);
         }
         throw new Error(`unexpected:${u}`);
       }),
