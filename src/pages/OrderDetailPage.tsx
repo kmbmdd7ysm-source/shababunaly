@@ -331,7 +331,7 @@ export default function OrderDetailPage(): ReactElement {
                 {Boolean(latestShipment?.trackingNumber) && (
                   <div>
                     <dt>{pick({ en: 'Tracking number', ar: 'رقم تتبع الشحنة' })}</dt>
-                    <dd>{String(latestShipment.trackingNumber)}</dd>
+                    <dd>{String(latestShipment?.trackingNumber)}</dd>
                   </div>
                 )}
                 <div>
