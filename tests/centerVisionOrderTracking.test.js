@@ -24,20 +24,19 @@ function res() {
 
 describe('Center Vision verified Shababuna order status proxy', () => {
   it('rejects malformed order identifiers and customer emails without fetching data', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
-      throw new Error('unexpected');
-    });
+    const fetchMock = vi.fn(async () => { throw new Error('unexpected'); });
+    vi.stubGlobal('fetch', fetchMock);
     const response = res();
     await handler(
       { method: 'POST', body: { orderNumber: 'wrong', email: 'not-an-email' } },
       response,
     );
     expect(response.statusCode).toBe(400);
-    expect(fetchMock).not.toHaveBeenCalled();
+    expect(fetchMock.mock.calls).toHaveLength(0);
   });
 
   it('does not reveal customer data when the verified upstream order is missing', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue({ status: 404, ok: false });
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ status: 404, ok: false }));
     const response = res();
     await handler(
       {
@@ -51,7 +50,7 @@ describe('Center Vision verified Shababuna order status proxy', () => {
   });
 
   it('only returns authoritative status and shipment fields, never private customer details', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       status: 200,
       ok: true,
       json: async () => ({
@@ -63,7 +62,7 @@ describe('Center Vision verified Shababuna order status proxy', () => {
         customerPersonId: 'secret-person-id',
         shippingAddress: { city: 'Tripoli' },
       }),
-    });
+    }));
     const response = res();
     await handler(
       {
@@ -75,7 +74,7 @@ describe('Center Vision verified Shababuna order status proxy', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe('PROCESSING');
     expect(response.body.shipment.trackingNumber).toBe('TRACK-1');
-    expect(response.body).not.toHaveProperty('customerPersonId');
-    expect(response.body).not.toHaveProperty('shippingAddress');
+    expect(Object.hasOwn(response.body, 'customerPersonId')).toBe(false);
+    expect(Object.hasOwn(response.body, 'shippingAddress')).toBe(false);
   });
 });
