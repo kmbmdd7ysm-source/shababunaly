@@ -1,0 +1,25 @@
+name: Temporary Final Source Verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/final-source-verify.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --registry=https://registry.npmjs.org
+      - run: npm run coverage
+      - run: npm run verify:source
+      - run: npm run security:audit
