@@ -12,6 +12,7 @@ vi.mock('../../src/context/LanguageContext', () => ({
 }));
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { within } from '@testing-library/dom';
 import ProductViewer from '../../src/components/product/ProductViewer';
 import {
@@ -24,6 +25,7 @@ import {
 
 const base = { id: 'p1', alt: { en: 'A product', ar: 'منتج' } };
 const frames = (n) => Array.from({ length: n }, (_, i) => `/images/products/spin-${i}.webp`);
+const renderViewer = (ui) => render(<MemoryRouter>{ui}</MemoryRouter>);
 
 describe('product-viewing tier resolution', () => {
   test('placeholder concept art never counts as a verified asset', () => {
@@ -115,7 +117,7 @@ describe('product-viewing tier resolution', () => {
 describe('ProductViewer', () => {
   test('a single verified image offers no rotation and says what it is', () => {
     activeLanguage = 'en';
-    const { container } = render(<ProductViewer product={{ ...base, image: '/a.webp' }} />);
+    const { container } = renderViewer(<ProductViewer product={{ ...base, image: '/a.webp' }} />);
     expect(container.querySelector('.gw-viewer')).toHaveAttribute('data-tier', 'D');
     expect(screen.getByText('Single verified photograph')).toBeVisible();
     // No fake rotation controls are offered.
@@ -124,7 +126,7 @@ describe('ProductViewer', () => {
 
   test('multi-angle is labelled as NOT a 360 and switches views', () => {
     activeLanguage = 'en';
-    render(
+    renderViewer(
       <ProductViewer
         product={{ ...base, image: '/a.webp', hoverImage: '/b.webp', gallery: ['/c.webp'] }}
       />,
@@ -164,7 +166,7 @@ describe('ProductViewer', () => {
 
   test('arrow keys follow the reading direction in Arabic', () => {
     activeLanguage = 'ar';
-    render(<ProductViewer product={{ ...base, image: '/a.webp', hoverImage: '/b.webp' }} eager />);
+    renderViewer(<ProductViewer product={{ ...base, image: '/a.webp', hoverImage: '/b.webp' }} eager />);
     expect(screen.getByText(/ليست نموذجًا/)).toBeVisible();
     const stage = screen.getByRole('group', { name: 'عروض المنتج' });
     // In RTL, "forward" is ArrowLeft.
