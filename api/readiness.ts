@@ -151,7 +151,9 @@ export async function connectivityChecks(required: Record<string, unknown> = req
         cache: 'no-store',
         redirect: 'manual',
       });
-      // 4xx (including 404/429) is not proof that the configured form exists.\n      // Only an actual success or redirect can establish endpoint reachability.\n      formEndpoint = response.ok || (response.status >= 300 && response.status < 400);
+      // 4xx (including 404/429) is not proof that the configured form exists.
+      // Only an actual success or redirect can establish endpoint reachability.
+      formEndpoint = response.ok || (response.status >= 300 && response.status < 400);
     } catch {
       formEndpoint = false;
     }

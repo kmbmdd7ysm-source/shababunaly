@@ -220,16 +220,28 @@ describe('production readiness endpoint', { concurrency: false }, () => {
 
     const responses = [
       { ok: true, status: 200, json: async () => [] },
-      { ok: true, status: 499 },
+      { ok: false, status: 499 },
     ];
     const fallbackFetch = vi.fn().mockImplementation(async () => responses.shift());
     vi.stubGlobal('fetch', fallbackFetch);
     expect(await connectivityChecks(checks)).toEqual({
       supabase_catalog: true,
-      form_endpoint: true,
+      form_endpoint: false,
       skipped: false,
     });
     expect(fallbackFetch.mock.calls[0][0]).toContain('fallback.supabase.co');
     expect(fallbackFetch.mock.calls[1][0]).toBe('https://formspree.io/f/mvzenjgv');
+    
+    // A genuine HTTP redirect is reachable; a 4xx client error is not.
+    const redirectResponses = [
+      { ok: true, status: 200, json: async () => [] },
+      { ok: false, status: 302 },
+    ];
+    vi.stubGlobal('fetch', vi.fn().mockImplementation(async () => redirectResponses.shift()));
+    expect(await connectivityChecks(checks)).toEqual({
+      supabase_catalog: true,
+      form_endpoint: true,
+      skipped: false,
+    });
   });
 });
