@@ -155,6 +155,12 @@ export default function OrderDetailPage(): ReactElement {
   const fulfillment = order
     ? presentOrderStatus('fulfillment', order.fulfillmentStatus, lang as 'en' | 'ar')
     : null;
+  const latestShipment = order?.shipment && typeof order.shipment === 'object'
+    ? (order.shipment as Record<string, unknown>)
+    : null;
+  const shipmentStatus = latestShipment
+    ? presentOrderStatus('shipment', latestShipment.status, lang as 'en' | 'ar')
+    : null;
   const canRetryPayment = Boolean(
     order &&
     !['cash', 'cash_on_delivery', 'cod'].includes(String(order.paymentMethod || '')) &&
@@ -293,6 +299,18 @@ export default function OrderDetailPage(): ReactElement {
                   <dt>{pick({ en: 'Fulfillment status', ar: 'حالة التنفيذ' })}</dt>
                   <dd>{String(fulfillment?.label || '')}</dd>
                 </div>
+                {shipmentStatus && (
+                  <div>
+                    <dt>{pick({ en: 'Shipping status', ar: 'حالة الشحن' })}</dt>
+                    <dd>{shipmentStatus.label}</dd>
+                  </div>
+                )}
+                {latestShipment?.trackingNumber && (
+                  <div>
+                    <dt>{pick({ en: 'Tracking number', ar: 'رقم تتبع الشحنة' })}</dt>
+                    <dd>{String(latestShipment.trackingNumber)}</dd>
+                  </div>
+                )}
                 <div>
                   <dt>{pick({ en: 'Payment method', ar: 'طريقة الدفع' })}</dt>
                   <dd>
