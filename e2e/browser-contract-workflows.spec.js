@@ -150,63 +150,65 @@ test.describe('isolated browser contract workflows with mocked provider boundari
   });
 
   test(
-  'registration UI requests verification; an admin-confirmed test account signs in on another browser context',
-  async ({ page, request, browser }) => {
-    const email = uniqueEmail('registration');
-    let userId = '';
-    try {
-      await page.goto('/account?mode=signup');
-      await page.getByLabel('Full name').fill('Registration Customer');
-      await page.getByRole('textbox', { name: 'Email', exact: true }).fill(email);
-      const signupPasswords = page.locator('input[autocomplete="new-password"]');
-      await signupPasswords.first().fill(password);
-      await signupPasswords.last().fill(password);
-      await page.getByRole('button', { name: 'Create Account' }).click();
-      await expect(page.getByText('Verify your email')).toBeVisible();
-      const usersResponse = await request.get(
-        `${supabaseUrl}/auth/v1/admin/users?page=1&per_page=1000`,
-        { headers: adminHeaders() },
-      );
-      expect(usersResponse.ok()).toBeTruthy();
-      const usersBody = await usersResponse.json();
-      const users = Array.isArray(usersBody) ? usersBody : usersBody.users || [];
-      const user = users.find((entry) => entry.email === email);
-      expect(user?.id).toBeTruthy();
-      userId = user.id;
-      const confirm = await request.put(`${supabaseUrl}/auth/v1/admin/users/${userId}`, {
-        headers: adminHeaders(),
-        data: { email_confirm: true },
-      });
-      expect(confirm.ok(), await confirm.text()).toBeTruthy();
-      const second = await browser.newContext();
-      const secondPage = await second.newPage();
-      await signIn(secondPage, email);
-      await expect(secondPage.getByText(email)).toBeVisible();
-      await second.close();
-    } finally {
-      await deleteUser(request, userId);
-    }
-  });
+    'registration UI requests verification; an admin-confirmed test account signs in on another browser context',
+    async ({ page, request, browser }) => {
+      const email = uniqueEmail('registration');
+      let userId = '';
+      try {
+        await page.goto('/account?mode=signup');
+        await page.getByLabel('Full name').fill('Registration Customer');
+        await page.getByRole('textbox', { name: 'Email', exact: true }).fill(email);
+        const signupPasswords = page.locator('input[autocomplete="new-password"]');
+        await signupPasswords.first().fill(password);
+        await signupPasswords.last().fill(password);
+        await page.getByRole('button', { name: 'Create Account' }).click();
+        await expect(page.getByText('Verify your email')).toBeVisible();
+        const usersResponse = await request.get(
+          `${supabaseUrl}/auth/v1/admin/users?page=1&per_page=1000`,
+          { headers: adminHeaders() },
+        );
+        expect(usersResponse.ok()).toBeTruthy();
+        const usersBody = await usersResponse.json();
+        const users = Array.isArray(usersBody) ? usersBody : usersBody.users || [];
+        const user = users.find((entry) => entry.email === email);
+        expect(user?.id).toBeTruthy();
+        userId = user.id;
+        const confirm = await request.put(`${supabaseUrl}/auth/v1/admin/users/${userId}`, {
+          headers: adminHeaders(),
+          data: { email_confirm: true },
+        });
+        expect(confirm.ok(), await confirm.text()).toBeTruthy();
+        const second = await browser.newContext();
+        const secondPage = await second.newPage();
+        await signIn(secondPage, email);
+        await expect(secondPage.getByText(email)).toBeVisible();
+        await second.close();
+      } finally {
+        await deleteUser(request, userId);
+      }
+    },
+  );
 
   test(
-  'login, logout, password-reset request UI and cross-device sessions use Supabase without claiming email-link completion',
-  async ({ page, request, browser }) => {
-    const user = await createVerifiedUser(request);
-    try {
-      await signIn(page, user.email);
-      await page.getByRole('button', { name: 'Sign out', exact: true }).click();
-      await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
-      await page.getByRole('button', { name: 'Forgot password?' }).click();
-      await page.getByRole('textbox', { name: 'Email', exact: true }).fill(user.email);
-      await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.getByRole('alert')).toContainText('Check your email');
-      const other = await browser.newContext();
-      await signIn(await other.newPage(), user.email);
-      await other.close();
-    } finally {
-      await deleteUser(request, user.id);
-    }
-  });
+    'login, logout, password-reset request UI and cross-device sessions use Supabase without claiming email-link completion',
+    async ({ page, request, browser }) => {
+      const user = await createVerifiedUser(request);
+      try {
+        await signIn(page, user.email);
+        await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+        await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
+        await page.getByRole('button', { name: 'Forgot password?' }).click();
+        await page.getByRole('textbox', { name: 'Email', exact: true }).fill(user.email);
+        await page.getByRole('button', { name: 'Continue' }).click();
+        await expect(page.getByRole('alert')).toContainText('Check your email');
+        const other = await browser.newContext();
+        await signIn(await other.newPage(), user.email);
+        await other.close();
+      } finally {
+        await deleteUser(request, user.id);
+      }
+    },
+  );
 
   test('MFA enrollment verifies a real TOTP factor and reaches AAL2', async ({ page, request }) => {
     const user = await createVerifiedUser(request);
@@ -276,30 +278,32 @@ test.describe('isolated browser contract workflows with mocked provider boundari
   });
 
   test(
-  'international checkout accepts address requirements and creates a shipping-quote order when no live rate exists',
-  async ({ page }) => {
-    const captured = [];
-    await mockOrder(page, captured);
-    await addRetailProduct(page);
-    await fillAddress(page, 'United States');
-    await expect(page.getByRole('radio', { name: /Cash in Libya/i })).toHaveCount(0);
-    await page.getByRole('button', { name: /Place Pending Shipping Order|Pay/i }).click();
-    await expect(page.getByRole('heading', { name: 'Order received' })).toBeVisible();
-    expect(captured[0].shippingQuoteRequired).toBe(true);
-    expect(captured[0].paymentPlan).toBe('pending_shipping_quote');
-  });
+    'international checkout accepts address requirements and creates a shipping-quote order when no live rate exists',
+    async ({ page }) => {
+      const captured = [];
+      await mockOrder(page, captured);
+      await addRetailProduct(page);
+      await fillAddress(page, 'United States');
+      await expect(page.getByRole('radio', { name: /Cash in Libya/i })).toHaveCount(0);
+      await page.getByRole('button', { name: /Place Pending Shipping Order|Pay/i }).click();
+      await expect(page.getByRole('heading', { name: 'Order received' })).toBeVisible();
+      expect(captured[0].shippingQuoteRequired).toBe(true);
+      expect(captured[0].paymentPlan).toBe('pending_shipping_quote');
+    },
+  );
 
   test(
-  'protected route contracts do not claim B2B, return, refund or inventory lifecycle completion',
-  async ({ page }) => {
-    await page.goto('/teams-wholesale');
-    await expect(page.getByRole('heading', { name: 'Build your program.' })).toBeVisible();
-    await page.goto('/operations');
-    await expect(page).toHaveURL(/\/account/);
-    await page.goto('/team-locker/private-team');
-    await expect(page).toHaveURL(/\/account/);
-    // This suite serves the built SPA with the production-test static server.
-    // API readiness is covered by Node/source gates and full-stack staging tests, not this static contract suite.
-    expect(process.env.FULL_STACK_E2E).not.toBe('true');
-  });
+    'protected route contracts do not claim B2B, return, refund or inventory lifecycle completion',
+    async ({ page }) => {
+      await page.goto('/teams-wholesale');
+      await expect(page.getByRole('heading', { name: 'Build your program.' })).toBeVisible();
+      await page.goto('/operations');
+      await expect(page).toHaveURL(/\/account/);
+      await page.goto('/team-locker/private-team');
+      await expect(page).toHaveURL(/\/account/);
+      // This suite serves the built SPA with the production-test static server.
+      // API readiness is covered by Node/source gates and full-stack staging tests, not this static contract suite.
+      expect(process.env.FULL_STACK_E2E).not.toBe('true');
+    },
+  );
 });
