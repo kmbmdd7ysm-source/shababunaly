@@ -16,7 +16,10 @@ type ApiRes = {
 };
 
 const clean = (value: unknown, max = 5000) =>
-  String(value ?? '').trim().replace(/\0/g, '').slice(0, max);
+  String(value ?? '')
+    .trim()
+    .replace(/\0/g, '')
+    .slice(0, max);
 
 const CENTER_VISION_API = (
   process.env.CENTER_VISION_API_BASE_URL ||
@@ -40,7 +43,7 @@ async function fallbackCenterVisionInquiry(input: {
     message: `Shababuna website order ${clean(input.order.order_number, 120)} created`,
     locale: clean(input.shipping.locale || input.shipping.language || 'en', 20),
     metadata: {
-      source: 'shababunaly.com',
+      source: 'shababuna.ly',
       event: 'ORDER_CREATED_FALLBACK',
       orderNumber: input.order.order_number || null,
       paymentMethod: input.order.payment_method || null,
@@ -108,11 +111,11 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       honeypot: false,
       allowEphemeralFallback: true,
     }))
-  ) return;
+  )
+    return;
 
   try {
-    const body =
-      req.body && typeof req.body === 'object' ? (req.body as Row) : {};
+    const body = req.body && typeof req.body === 'object' ? (req.body as Row) : {};
     const created = await createNativeOrder(req, body);
     const order = created.order;
     const shipping =
@@ -174,46 +177,46 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     const notification = qaTestOrder
       ? { delivered: true }
       : await sendInternalFormNotification(
-      {
-        form_type: 'order',
-        order_number: order.order_number,
-        customer_name: clean(order.customer_name || customer.name, 180),
-        customer_email: email,
-        customer_phone: clean(order.customer_phone || customer.phone, 80),
-        country: clean(shipping.country, 2).toUpperCase(),
-        address: [
-          shipping.line1 || shipping.address,
-          shipping.apartment,
-          shipping.city,
-          shipping.state,
-          shipping.postal,
-          shipping.country,
-        ]
-          .map((value) => clean(value, 300))
-          .filter(Boolean)
-          .join(', '),
-        payment_method: order.payment_method,
-        payment_plan: order.payment_plan,
-        delivery_profile: order.delivery_profile,
-        shipping_quote_required: order.shipping_quote_required,
-        canonical_currency: order.currency || 'USD',
-        canonical_subtotal: order.subtotal,
-        canonical_shipping: order.shipping_total,
-        canonical_total: order.total,
-        display_currency: order.display_currency,
-        display_subtotal: order.display_subtotal,
-        display_shipping: order.display_shipping_total,
-        display_total: order.display_total,
-        amount_due_now: order.amount_due_now,
-        display_amount_due_now: order.display_amount_due_now,
-        remaining_balance: order.remaining_balance,
-        display_remaining_balance: order.display_remaining_balance,
-        items,
-        item_count: items.length,
-        created_at: order.created_at,
-      },
-      `New Shababuna order ${String(order.order_number)}`,
-    );
+          {
+            form_type: 'order',
+            order_number: order.order_number,
+            customer_name: clean(order.customer_name || customer.name, 180),
+            customer_email: email,
+            customer_phone: clean(order.customer_phone || customer.phone, 80),
+            country: clean(shipping.country, 2).toUpperCase(),
+            address: [
+              shipping.line1 || shipping.address,
+              shipping.apartment,
+              shipping.city,
+              shipping.state,
+              shipping.postal,
+              shipping.country,
+            ]
+              .map((value) => clean(value, 300))
+              .filter(Boolean)
+              .join(', '),
+            payment_method: order.payment_method,
+            payment_plan: order.payment_plan,
+            delivery_profile: order.delivery_profile,
+            shipping_quote_required: order.shipping_quote_required,
+            canonical_currency: order.currency || 'USD',
+            canonical_subtotal: order.subtotal,
+            canonical_shipping: order.shipping_total,
+            canonical_total: order.total,
+            display_currency: order.display_currency,
+            display_subtotal: order.display_subtotal,
+            display_shipping: order.display_shipping_total,
+            display_total: order.display_total,
+            amount_due_now: order.amount_due_now,
+            display_amount_due_now: order.display_amount_due_now,
+            remaining_balance: order.remaining_balance,
+            display_remaining_balance: order.display_remaining_balance,
+            items,
+            item_count: items.length,
+            created_at: order.created_at,
+          },
+          `New Shababuna order ${String(order.order_number)}`,
+        );
 
     return res.status(created.duplicate ? 200 : 201).json({
       ok: true,
@@ -238,7 +241,8 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     return res.status(client ? 400 : 503).json({
       ok: false,
       error: client ? 'invalid_order' : 'order_service_unavailable',
-      detail: message,
+      // Never disclose internal database/provider failure details to public clients.
+      ...(client ? { detail: message } : {}),
     });
   }
 }

@@ -62,14 +62,19 @@ for (const token of [
   has(env, token, `.env ${token}`);
 
 const ordersService = read('src/services/orders.ts');
-for (const token of ['allowLocalPendingQuote', 'cloud_order_creation_failed'])
-  has(ordersService, token, `order fail-closed ${token}`);
+const cloudOrderBlock = ordersService.match(
+  /if \(options\.cloud !== false\) \{([\s\S]*?)\n[ ]{2}\}\n\n[ ]{2}const local = saveLocal/,
+)?.[1];
 if (
-  !/if\s*\(\s*!isManualPayment\s*&&\s*!allowLocalPendingQuote\s*\)\s*\{[\s\S]{0,180}cloud_order_creation_failed/.test(
-    ordersService,
-  )
+  !cloudOrderBlock ||
+  !cloudOrderBlock.includes('if (!cloud.error && cloud.data?.order)') ||
+  !cloudOrderBlock.includes("throw new Error('cloud_order_creation_failed'") ||
+  !cloudOrderBlock.includes("cause: cloud.error || new Error('persisted_order_missing')") ||
+  cloudOrderBlock.includes("source: 'local', syncState: 'local-only'")
 )
-  fail.push('Missing order fail-closed online payment server requirement');
+  fail.push('Cloud checkout must reject missing server confirmation for every payment plan');
+if (ordersService.includes('allowLocalPendingQuote'))
+  fail.push('Cloud checkout must not allow unpersisted shipping quotes');
 const operations = read('src/services/operations.ts');
 if (/user_metadata\?\.role|user_metadata\.role/u.test(operations))
   fail.push('Staff authorization still trusts user_metadata.role');

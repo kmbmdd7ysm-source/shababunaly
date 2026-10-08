@@ -45,9 +45,19 @@ export function requiredEnvironment(): Record<string, unknown> {
     turnstile_site_key: Boolean(clean(process.env.VITE_TURNSTILE_SITE_KEY, 5000)),
     cron_secret: clean(process.env.CRON_SECRET, 5000).length >= 24,
     rate_limit_salt:
-      clean(process.env.EDGE_RATE_LIMIT_SALT || process.env.CRON_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY, 5000).length >= 24,
+      clean(
+        process.env.EDGE_RATE_LIMIT_SALT ||
+          process.env.CRON_SECRET ||
+          process.env.SUPABASE_SERVICE_ROLE_KEY,
+        5000,
+      ).length >= 24,
     guest_order_access_secret:
-      clean(process.env.GUEST_ORDER_ACCESS_SECRET || process.env.CRON_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY, 5000).length >= 32,
+      clean(
+        process.env.GUEST_ORDER_ACCESS_SECRET ||
+          process.env.CRON_SECRET ||
+          process.env.SUPABASE_SERVICE_ROLE_KEY,
+        5000,
+      ).length >= 32,
   };
 }
 
@@ -105,7 +115,9 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutM
   });
 }
 
-export async function connectivityChecks(required: Record<string, unknown> = requiredEnvironment()) {
+export async function connectivityChecks(
+  required: Record<string, unknown> = requiredEnvironment(),
+) {
   const requestedSkip = process.env.READINESS_SKIP_NETWORK_CHECKS === 'true';
   const skipAllowed = !productionMode() || process.env.ALLOW_READINESS_NETWORK_SKIP === 'true';
   if (requestedSkip && skipAllowed) {
@@ -151,7 +163,9 @@ export async function connectivityChecks(required: Record<string, unknown> = req
         cache: 'no-store',
         redirect: 'manual',
       });
-      // 4xx (including 404/429) is not proof that the configured form exists.\n      // Only an actual success or redirect can establish endpoint reachability.\n      formEndpoint = response.ok || (response.status >= 300 && response.status < 400);
+      // 4xx (including 404/429) is not proof that the configured form exists.
+      // Only an actual success or redirect can establish endpoint reachability.
+      formEndpoint = response.ok || (response.status >= 300 && response.status < 400);
     } catch {
       formEndpoint = false;
     }
@@ -180,10 +194,7 @@ export function featureReadiness(
     core_commerce: accountCloud,
     account_cloud: accountCloud,
     public_forms: publicForms,
-    notification_outbox:
-      accountCloud &&
-      required.formspree &&
-      required.cron_secret,
+    notification_outbox: accountCloud && required.formspree && required.cron_secret,
     special_request_url: accountCloud && required.turnstile_secret && required.rate_limit_salt,
     special_request_uploads:
       accountCloud &&
