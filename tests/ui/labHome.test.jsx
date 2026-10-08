@@ -93,7 +93,8 @@ describe('GROUNDWORK homepage prototype', () => {
   test('renders a native Arabic cut of the same page', () => {
     const { container } = renderPage('ar');
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('BUILT');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('مبني');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('بشكل مختلف.');
     // Arabic copy is present, not a Latin fallback.
     expect(screen.getByText('كل ما تحتاجه كرة السلة')).toBeVisible();
     expect(screen.getByText('صمّم كل شيء.')).toBeVisible();
