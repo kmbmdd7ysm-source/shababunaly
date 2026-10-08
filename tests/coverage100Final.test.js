@@ -112,6 +112,7 @@ const ENV_KEYS = [
   'MALWARE_SCAN_API_URL',
   'MALWARE_SCAN_API_KEY',
   'MALWARE_SCAN_TEST_MODE',
+  'BLOB_READ_WRITE_TOKEN',
 ];
 
 afterEach(() => {
@@ -181,6 +182,7 @@ function configureCore() {
   process.env.EDGE_RATE_LIMIT_SALT = 'e'.repeat(64);
   process.env.CRON_SECRET = 'c'.repeat(64);
   process.env.GUEST_ORDER_ACCESS_SECRET = 'g'.repeat(64);
+  process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_teststore_secret';
 }
 function configurePayment(method = 'online_card') {
   process.env.PAYMENTS_PROVIDER = 'sandbox';
@@ -363,8 +365,8 @@ describe('100% API and security branch closure', { concurrency: false }, () => {
       vi.fn().mockImplementation(async (url) => {
         const u = String(url);
         if (u.includes('consume_edge_rate_limit')) return reply(true);
-        if (u.includes('/rest/v1/orders?'))
-          return reply(mode === 'object' ? stored : mode === 'none' ? [] : [stored]);
+        if (u.includes('.private.blob.vercel-storage.com/orders/'))
+          return mode === 'object' || mode === 'none' ? reply(null, 404) : reply(stored);
         throw new Error('unexpected');
       }),
     );
