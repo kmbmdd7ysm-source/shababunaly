@@ -126,6 +126,27 @@ export default function OrderDetailPage(): ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, orderNumber]);
 
+  useEffect(() => {
+    if (auth.loading || !state.order) return undefined;
+    let active = true;
+    const verifiedEmail = String(state.order.email || auth.user?.email || email || '');
+    const refresh = async () => {
+      if (document.visibilityState === 'hidden') return;
+      const result = await getOrderDetails({
+        orderNumber,
+        userId: auth.user?.id ? String(auth.user.id) : null,
+        email: verifiedEmail,
+        accessToken,
+      });
+      if (active && result.order) {
+        setState((current) => ({ ...current, state: 'success', order: result.order as Record<string, unknown>, error: null }));
+      }
+    };
+    const interval = setInterval(() => { void refresh(); }, 30_000);
+    return () => { active = false; clearInterval(interval); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- track order identity, not changing snapshot objects
+  }, [auth.loading, auth.user?.id, auth.user?.email, orderNumber, accessToken, Boolean(state.order), email]);
+
   const order = state.order;
   const payment = order
     ? presentOrderStatus('payment', order.paymentStatus, lang as 'en' | 'ar')
