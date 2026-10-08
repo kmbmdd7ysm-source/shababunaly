@@ -228,6 +228,8 @@ test.describe('isolated browser contract workflows with mocked provider boundari
       await mockOrder(page, captured);
       await addReservationProduct(page);
       await fillAddress(page, 'Libya');
+      await page.locator('input[name="payment"][value="cash"]').check();
+      await expect(page.locator('input[name="cash-plan"][value="half"]')).toBeVisible();
       await page.locator(`input[name="cash-plan"][value="${plan}"]`).check();
       await page.getByRole('button', { name: /Confirm Order/i }).click();
       await expect(page.getByRole('heading', { name: 'Order received' })).toBeVisible();
