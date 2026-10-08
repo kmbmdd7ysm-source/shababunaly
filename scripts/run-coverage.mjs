@@ -10,6 +10,25 @@ const reportName = process.argv.includes('--critical')
   ? 'critical-coverage.txt'
   : 'node-coverage.txt';
 const typescriptImportRegister = new URL('./register-typescript-imports.mjs', import.meta.url).href;
+const criticalCoverageScope = [
+  'api/_formspree-endpoint.ts',
+  'api/_notification-templates.ts',
+  'api/_supabase-admin.ts',
+  'api/payments/adapters/libyan-bank-card.ts',
+  'api/payments/adapters/online-card.ts',
+  'api/payments/registry.ts',
+  'src/config.ts',
+  'src/config/shipping.ts',
+  'src/data/categories.ts',
+  'src/data/editorialAssets.ts',
+  'src/data/kobeGoatProducts.ts',
+  'src/data/navigation.ts',
+  'src/services/money.ts',
+  'src/services/orderStatus.ts',
+  'src/utils/fulfillment.ts',
+  'src/utils/safeReturnPath.ts',
+  'src/utils/scrollLock.ts',
+];
 const args = [
   '--experimental-strip-types',
   '--import',
@@ -19,6 +38,7 @@ const args = [
   '--test-concurrency=1',
   '--test-coverage-exclude=tests/**',
   '--test-coverage-exclude=scripts/**',
+  ...criticalCoverageScope.flatMap((file) => ['--test-coverage-include', file]),
   '--test-coverage-lines=100',
   '--test-coverage-functions=100',
   '--test-coverage-branches=100',
