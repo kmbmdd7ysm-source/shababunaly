@@ -152,6 +152,7 @@ jobs:
           supabase start
           supabase db reset
           eval "$(supabase status -o env)"
+          psql "${DB_URL:-postgresql://postgres:postgres@127.0.0.1:54322/postgres}" -v ON_ERROR_STOP=1 -f supabase/generated/product_catalog.sql
           echo "VITE_SUPABASE_URL=${API_URL}" >> "$GITHUB_ENV"
           echo "VITE_SUPABASE_ANON_KEY=${ANON_KEY}" >> "$GITHUB_ENV"
           echo "SUPABASE_URL=${API_URL}" >> "$GITHUB_ENV"
