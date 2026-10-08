@@ -37,8 +37,8 @@ async function deleteUser(request, id) {
 }
 async function signIn(page, email) {
   await page.goto('/account?mode=signin');
-  await page.getByLabel('Email').fill(email);
-  await page.getByLabel('Password').fill(password);
+  await page.getByRole('textbox', { name: 'Email', exact: true }).fill(email);
+  await page.locator('input[autocomplete="current-password"]').fill(password);
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.getByRole('heading', { name: 'Your account' })).toBeVisible();
 }
@@ -64,8 +64,8 @@ function totp(secret, timestamp = Date.now()) {
 }
 async function addRetailProduct(page) {
   await page.goto('/products/all-i-know-is-win-tee');
-  await page.getByRole('radio', { name: 'M' }).click();
-  await page.getByRole('button', { name: /Add to cart/i }).click();
+  await page.getByRole('button', { name: 'M', exact: true }).click();
+  await page.getByRole('button', { name: /Add to (?:bag|cart)/i }).click();
   await page.goto('/checkout');
   await expect(page.getByRole('heading', { name: /Checkout/i })).toBeVisible();
 }
@@ -77,7 +77,7 @@ async function chooseCountry(page, name) {
   await search.press('Enter');
 }
 async function fillAddress(page, country = 'Libya') {
-  await page.getByLabel('Email').fill('checkout@example.com');
+  await page.getByRole('textbox', { name: 'Email', exact: true }).fill('checkout@example.com');
   await page.getByLabel(/First name/i).fill('Checkout');
   await page.getByLabel(/Last name/i).fill('Tester');
   await chooseCountry(page, country);
@@ -90,11 +90,18 @@ async function fillAddress(page, country = 'Libya') {
   await page.getByRole('checkbox').last().check();
 }
 async function mockOrder(page, capture, overrides = {}) {
-  await page.route('**/api/create-order', async (route) => {
+  await page.route('**/api/order-intake', async (route) => {
     const body = route.request().postDataJSON();
-    capture.push(body);
-    const plan = body.paymentPlan;
-    const total = Number(body.total || 20);
+    const shipping = body.shipping || {};
+    const capturedOrder = {
+      ...body,
+      paymentPlan: shipping.paymentPlan,
+      shippingQuoteRequired: shipping.shippingQuoteRequired,
+      deliveryProfile: shipping.deliveryProfile,
+    };
+    capture.push(capturedOrder);
+    const plan = capturedOrder.paymentPlan;
+    const total = 20;
     const due = plan === 'half' ? total / 2 : plan === 'pending_shipping_quote' ? 0 : total;
     await route.fulfill({
       status: 200,
@@ -112,8 +119,8 @@ async function mockOrder(page, capture, overrides = {}) {
           paymentPlan: plan,
           paymentStatus: body.paymentStatus,
           orderStatus: body.orderStatus,
-          shippingQuoteRequired: body.shippingQuoteRequired,
-          deliveryProfile: body.deliveryProfile,
+          shippingQuoteRequired: capturedOrder.shippingQuoteRequired,
+          deliveryProfile: capturedOrder.deliveryProfile,
           ...overrides,
         },
       }),
@@ -144,9 +151,10 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     try {
       await page.goto('/account?mode=signup');
       await page.getByLabel('Full name').fill('Registration Customer');
-      await page.getByLabel('Email').fill(email);
-      await page.getByLabel('Password').fill(password);
-      await page.getByLabel('Confirm new password').fill(password);
+      await page.getByRole('textbox', { name: 'Email', exact: true }).fill(email);
+      const signupPasswords = page.locator('input[autocomplete="new-password"]');
+      await signupPasswords.first().fill(password);
+      await signupPasswords.last().fill(password);
       await page.getByRole('button', { name: 'Create Account' }).click();
       await expect(page.getByText('Verify your email')).toBeVisible();
       const usersResponse = await request.get(
@@ -185,7 +193,7 @@ test.describe('isolated browser contract workflows with mocked provider boundari
       await page.getByRole('button', { name: 'Sign out', exact: true }).click();
       await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
       await page.getByRole('button', { name: 'Forgot password?' }).click();
-      await page.getByLabel('Email').fill(user.email);
+      await page.getByRole('textbox', { name: 'Email', exact: true }).fill(user.email);
       await page.getByRole('button', { name: 'Continue' }).click();
       await expect(page.getByRole('alert')).toContainText('Check your email');
       const other = await browser.newContext();
@@ -284,7 +292,7 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     request,
   }) => {
     await page.goto('/teams-wholesale');
-    await expect(page.getByRole('heading', { name: 'Teams & Wholesale' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Build your program.' })).toBeVisible();
     await page.goto('/operations');
     await expect(page).toHaveURL(/\/account/);
     await page.goto('/team-locker/private-team');
