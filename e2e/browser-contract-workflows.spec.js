@@ -149,11 +149,9 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     expect(serviceKey, 'SUPABASE_SERVICE_ROLE_KEY is required').not.toBe('');
   });
 
-  test('registration UI requests verification; an admin-confirmed test account signs in on another browser context', async ({
-    page,
-    request,
-    browser,
-  }) => {
+  test(
+  'registration UI requests verification; an admin-confirmed test account signs in on another browser context',
+  async ({ page, request, browser }) => {
     const email = uniqueEmail('registration');
     let userId = '';
     try {
@@ -190,11 +188,9 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     }
   });
 
-  test('login, logout, password-reset request UI and cross-device sessions use Supabase without claiming email-link completion', async ({
-    page,
-    request,
-    browser,
-  }) => {
+  test(
+  'login, logout, password-reset request UI and cross-device sessions use Supabase without claiming email-link completion',
+  async ({ page, request, browser }) => {
     const user = await createVerifiedUser(request);
     try {
       await signIn(page, user.email);
@@ -279,9 +275,9 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     }
   });
 
-  test('international checkout accepts address requirements and creates a shipping-quote order when no live rate exists', async ({
-    page,
-  }) => {
+  test(
+  'international checkout accepts address requirements and creates a shipping-quote order when no live rate exists',
+  async ({ page }) => {
     const captured = [];
     await mockOrder(page, captured);
     await addRetailProduct(page);
@@ -293,7 +289,9 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     expect(captured[0].paymentPlan).toBe('pending_shipping_quote');
   });
 
-  test('protected route contracts do not claim B2B, return, refund or inventory lifecycle completion', async ({ page }) => {
+  test(
+  'protected route contracts do not claim B2B, return, refund or inventory lifecycle completion',
+  async ({ page }) => {
     await page.goto('/teams-wholesale');
     await expect(page.getByRole('heading', { name: 'Build your program.' })).toBeVisible();
     await page.goto('/operations');
