@@ -2,16 +2,24 @@ import type { ReactElement } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import { useDeviceCapability } from '../../hooks/useDeviceCapability';
 import { LOCAL_HERO_MEDIA } from '../../data/localHeroMedia';
 import '../../styles/design/phase2-home.css';
 
 const HERO = LOCAL_HERO_MEDIA.home;
 const HOME_POSTER = '/media/hero-posters/home.webp';
 const MOBILE_BREAKPOINT = '(max-width: 899px)';
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
 export default function CinematicHero(): ReactElement {
   const { pick } = useLanguage();
+  const capability = useDeviceCapability();
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () =>
+      typeof globalThis.matchMedia === 'function' &&
+      globalThis.matchMedia(REDUCED_MOTION).matches,
+  );
   const [videoSrc, setVideoSrc] = useState(() =>
     typeof globalThis.matchMedia === 'function' && globalThis.matchMedia(MOBILE_BREAKPOINT).matches
       ? HERO.mobileVideo
@@ -27,6 +35,16 @@ export default function CinematicHero(): ReactElement {
   };
 
   useEffect(() => {
+    const query = globalThis.matchMedia?.(REDUCED_MOTION);
+    if (!query) return undefined;
+
+    const syncReducedMotion = () => setPrefersReducedMotion(query.matches);
+    syncReducedMotion();
+    query.addEventListener?.('change', syncReducedMotion);
+    return () => query.removeEventListener?.('change', syncReducedMotion);
+  }, []);
+
+  useEffect(() => {
     const query = globalThis.matchMedia?.(MOBILE_BREAKPOINT);
     if (!query) return undefined;
 
@@ -39,7 +57,13 @@ export default function CinematicHero(): ReactElement {
     return () => query.removeEventListener?.('change', syncSource);
   }, []);
 
+  const shouldPlayVideo = capability !== 'c' && !prefersReducedMotion;
+
   useEffect(() => {
+    if (!shouldPlayVideo) {
+      videoRef.current?.pause();
+      return undefined;
+    }
     startPlayback();
 
     const retry = () => startPlayback();
@@ -58,7 +82,7 @@ export default function CinematicHero(): ReactElement {
       globalThis.removeEventListener('touchstart', retry);
       globalThis.removeEventListener('keydown', retry);
     };
-  }, [videoSrc]);
+  }, [videoSrc, shouldPlayVideo]);
 
   return (
     <section className="s2-hero" aria-labelledby="s2-home-title">
@@ -72,22 +96,24 @@ export default function CinematicHero(): ReactElement {
           decoding="async"
           fetchPriority="high"
         />
-        <video
-          key={videoSrc}
-          ref={videoRef}
-          src={videoSrc}
-          muted
-          loop
-          playsInline
-          autoPlay
-          controls={false}
-          disablePictureInPicture
-          preload="auto"
-          poster={HOME_POSTER}
-          onLoadedMetadata={startPlayback}
-          onLoadedData={startPlayback}
-          onCanPlay={startPlayback}
-        />
+        {shouldPlayVideo ? (
+          <video
+            key={videoSrc}
+            ref={videoRef}
+            src={videoSrc}
+            muted
+            loop
+            playsInline
+            autoPlay
+            controls={false}
+            disablePictureInPicture
+            preload="auto"
+            poster={HOME_POSTER}
+            onLoadedMetadata={startPlayback}
+            onLoadedData={startPlayback}
+            onCanPlay={startPlayback}
+          />
+        ) : null}
         <span className="s2-hero__scrim" />
       </div>
       <div className="s2-hero__content">
