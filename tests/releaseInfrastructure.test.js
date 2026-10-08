@@ -21,9 +21,7 @@ describe('release infrastructure hardening', () => {
       assert.equal(projectScope.thresholds[metric], 100);
     assert.equal(projectScope.include.length >= 10, true);
     assert.equal(
-      projectScope.include.every(
-        (file) => /^(src|api)\//.test(file) && !/[*?{}[\]]/.test(file),
-      ),
+      projectScope.include.every((file) => /^(src|api)\//.test(file) && !/[*?{}[\]]/.test(file)),
       true,
     );
     assert.match(vitest, /all:\s*true/);

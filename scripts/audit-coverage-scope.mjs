@@ -59,7 +59,9 @@ if (!result.passed) {
   if (missingDeclaredFiles.length)
     console.error(`Missing declared coverage files:\n${missingDeclaredFiles.join('\n')}`);
   if (nonExactIncludes.length)
-    console.error(`Coverage scope must use exact auditable file paths:\n${nonExactIncludes.join('\n')}`);
+    console.error(
+      `Coverage scope must use exact auditable file paths:\n${nonExactIncludes.join('\n')}`,
+    );
   process.exit(1);
 }
 console.info(
