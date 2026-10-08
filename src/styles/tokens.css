@@ -28,6 +28,13 @@
   --sh-ink-50: #5f5f62;
   --sh-ink-35: #7b7b7d;
 
+  /* Exact neutral surfaces retained by checkout; centralized here so the
+     checkout composition keeps identical pixels without raw colour literals. */
+  --sh-white: #ffffff;
+  --sh-ink-strong: #111111;
+  --sh-chalk-bright: #f9f8f5;
+  --sh-chalk-soft: #f4f3ef;
+
   /* Hairlines are the most-used colour in the whole system. */
   --sh-rule: rgba(11, 11, 12, 0.12);
   --sh-rule-strong: rgba(11, 11, 12, 0.26);
