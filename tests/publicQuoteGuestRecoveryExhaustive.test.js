@@ -26,6 +26,7 @@ const ENV = [
   'LIBYAN_BANK_CARD_PROVIDER',
   'LIBYAN_BANK_CARD_SESSION_URL',
   'LIBYAN_BANK_CARD_SECRET_KEY',
+  'BLOB_READ_WRITE_TOKEN',
 ];
 afterEach(() => {
   vi.restoreAllMocks();
@@ -71,12 +72,14 @@ function configure() {
   process.env.GUEST_ORDER_ACCESS_SECRET = 'g'.repeat(64);
   process.env.SITE_URL = 'https://shababuna.ly';
   process.env.EDGE_RATE_LIMIT_SALT = 'r'.repeat(64);
+  process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_teststore_secret';
 }
 function reply(value, status = 200) {
   const text = typeof value === 'string' ? value : value == null ? '' : JSON.stringify(value);
   return {
     ok: status >= 200 && status < 300,
     status,
+    headers: { get: () => null },
     text: async () => text,
     json: async () => value,
   };
@@ -318,7 +321,8 @@ describe('guest order access and payment recovery APIs', { concurrency: false },
       vi.fn().mockImplementation(async (url) => {
         const target = String(url);
         if (target.includes('consume_edge_rate_limit')) return reply(true);
-        if (target.includes('/rest/v1/orders?')) return reply(stored ? [stored] : []);
+        if (target.includes('.private.blob.vercel-storage.com/orders/'))
+          return stored ? reply(stored) : reply(null, 404);
         throw new Error(`unexpected:${target}`);
       }),
     );
@@ -382,7 +386,7 @@ describe('guest order access and payment recovery APIs', { concurrency: false },
       'fetch',
       vi.fn().mockImplementation(async (url) => {
         if (String(url).includes('consume_edge_rate_limit')) return reply(true);
-        if (String(url).includes('/rest/v1/orders?')) return reply([order()]);
+        if (String(url).includes('.private.blob.vercel-storage.com/orders/')) return reply(order());
         throw new Error('unexpected');
       }),
     );
