@@ -33,11 +33,18 @@ export default function CheckoutPaymentStage({
   if (shippingQuoteRequired) {
     return (
       <div className="notice notice--info" role="status">
-        <strong>{pick({ en: 'Payment comes after the shipping quote.', ar: 'الدفع بعد تأكيد سعر الشحن.' })}</strong>
-        <p>{pick({
-          en: 'Submit the order details now. Shababuna confirms the shipping amount before payment.',
-          ar: 'أرسل بيانات الطلب الآن. يؤكد شبابنا قيمة الشحن قبل الدفع.',
-        })}</p>
+        <strong>
+          {pick({
+            en: 'Payment comes after the shipping quote.',
+            ar: 'الدفع بعد تأكيد سعر الشحن.',
+          })}
+        </strong>
+        <p>
+          {pick({
+            en: 'Submit the order details now. Shababuna confirms the shipping amount before payment.',
+            ar: 'أرسل بيانات الطلب الآن. يؤكد شبابنا قيمة الشحن قبل الدفع.',
+          })}
+        </p>
       </div>
     );
   }
@@ -109,7 +116,9 @@ export default function CheckoutPaymentStage({
         ) : null}
 
         {isLibya && libyanCardConfigured ? (
-          <label className={`payment-choice ${paymentMethod === 'libyan_bank_card' ? 'active' : ''}`}>
+          <label
+            className={`payment-choice ${paymentMethod === 'libyan_bank_card' ? 'active' : ''}`}
+          >
             <input
               type="radio"
               name="payment"
@@ -119,13 +128,20 @@ export default function CheckoutPaymentStage({
             />
             <span>
               <strong>{pick({ en: 'Libyan Bank Card', ar: 'بطاقة مصرفية ليبية' })}</strong>
-              <small>{pick({ en: 'Full payment through the connected bank provider.', ar: 'دفع كامل عبر مزود البطاقة المصرفية.' })}</small>
+              <small>
+                {pick({
+                  en: 'Full payment through the connected bank provider.',
+                  ar: 'دفع كامل عبر مزود البطاقة المصرفية.',
+                })}
+              </small>
             </span>
           </label>
         ) : null}
 
         {onlineCardConfigured ? (
-          <label className={`payment-choice payment-choice--card ${paymentMethod === 'online_card' ? 'active' : ''}`}>
+          <label
+            className={`payment-choice payment-choice--card ${paymentMethod === 'online_card' ? 'active' : ''}`}
+          >
             <input
               type="radio"
               name="payment"
