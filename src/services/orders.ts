@@ -459,11 +459,6 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
     throw new Error('invalid_order');
   }
 
-  const isManualPayment = ['cash', 'cash_on_delivery', 'cod', 'bank_transfer'].includes(
-    String(candidate.paymentMethod || ''),
-  );
-  const allowLocalPendingQuote = Boolean(options.allowPending && candidate.shippingQuoteRequired);
-
   if (options.cloud !== false) {
     const payload = {
       idempotencyKey: candidate.idempotencyKey,
@@ -526,16 +521,12 @@ export async function createOrder(input: unknown, options: Row = {}): Promise<Ro
       };
     }
 
-    if (!isManualPayment && !allowLocalPendingQuote) {
-      throw new Error('cloud_order_creation_failed', { cause: cloud.error });
-    }
-    const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
-    return {
-      order: local.order,
-      source: 'local',
-      duplicate: local.duplicate,
-      warning: 'temporary_local_order',
-    };
+    // A device-local record is not an accepted order. Do not confirm manual
+    // payment or a shipping quote before durable server persistence succeeds.
+    // The caller retains the idempotency key and cart for a safe retry.
+    throw new Error('cloud_order_creation_failed', {
+      cause: cloud.error || new Error('persisted_order_missing'),
+    });
   }
 
   const local = saveLocal({ ...candidate, source: 'local', syncState: 'local-only' });
