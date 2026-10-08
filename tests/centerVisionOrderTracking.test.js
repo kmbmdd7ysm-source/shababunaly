@@ -56,16 +56,16 @@ describe('Center Vision verified Shababuna order status proxy', () => {
       'fetch',
       vi.fn().mockResolvedValue({
         status: 200,
-      ok: true,
-      json: async () => ({
-        externalOrderNumber: 'SHB-20261008-0000001',
-        status: 'PROCESSING',
-        paymentStatus: 'PAID',
-        fulfillmentStatus: 'PARTIAL',
-        shipment: { status: 'IN_TRANSIT', trackingNumber: 'TRACK-1' },
-        customerPersonId: 'secret-person-id',
-        shippingAddress: { city: 'Tripoli' },
-      }),
+        ok: true,
+        json: async () => ({
+          externalOrderNumber: 'SHB-20261008-0000001',
+          status: 'PROCESSING',
+          paymentStatus: 'PAID',
+          fulfillmentStatus: 'PARTIAL',
+          shipment: { status: 'IN_TRANSIT', trackingNumber: 'TRACK-1' },
+          customerPersonId: 'secret-person-id',
+          shippingAddress: { city: 'Tripoli' },
+        }),
       }),
     );
     const response = res();
