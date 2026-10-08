@@ -69,6 +69,13 @@ async function addRetailProduct(page) {
   await page.goto('/checkout');
   await expect(page.getByRole('heading', { name: /Checkout/i })).toBeVisible();
 }
+async function addReservationProduct(page) {
+  await page.goto('/products/nike-kobe-3-protro-halo');
+  await page.getByRole('button', { name: '9', exact: true }).click();
+  await page.getByRole('button', { name: /Order by reservation/i }).click();
+  await page.goto('/checkout');
+  await expect(page.getByRole('heading', { name: /Checkout/i })).toBeVisible();
+}
 async function chooseCountry(page, name) {
   const trigger = page.locator('.country-combobox__trigger');
   await trigger.click();
@@ -87,7 +94,7 @@ async function fillAddress(page, country = 'Libya') {
     await page.getByLabel(/^State/i).fill('NY');
     await page.getByLabel(/Postal/i).fill('10001');
   }
-  await page.getByRole('checkbox').last().check();
+  await page.getByRole('checkbox', { name: /I agree to the Terms/i }).check();
 }
 async function mockOrder(page, capture, overrides = {}) {
   await page.route('**/api/order-intake', async (route) => {
@@ -109,6 +116,7 @@ async function mockOrder(page, capture, overrides = {}) {
       body: JSON.stringify({
         ok: true,
         source: 'e2e-mock',
+        notification: 'delivered',
         order: {
           orderNumber: `SHB-20260802-${String(capture.length).padStart(7, '0')}`,
           subtotal: body.subtotal,
@@ -226,7 +234,7 @@ test.describe('isolated browser contract workflows with mocked provider boundari
     }) => {
       const captured = [];
       await mockOrder(page, captured);
-      await addRetailProduct(page);
+      await addReservationProduct(page);
       await fillAddress(page, 'Libya');
       await page
         .getByRole('radio', { name: plan === 'half' ? /50%|Pay half/i : /100%|Pay in full/i })
