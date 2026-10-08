@@ -52,7 +52,7 @@ export function resolveCapabilityTier(
  */
 export function useDeviceCapability(): 'a' | 'b' | 'c' {
   const [tier, setTier] = useState<'a' | 'b' | 'c'>(() =>
-    resolveCapabilityTier(typeof navigator === 'undefined' ? null : globalThis.navigator),
+    resolveCapabilityTier(globalThis.navigator),
   );
 
   useEffect(() => {
