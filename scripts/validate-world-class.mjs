@@ -37,6 +37,8 @@ const secureShareMigration = requireFile(
 const packageJson = requireFile('package.json');
 const vitestConfig = requireFile('vitest.config.mjs');
 const coverageAudit = requireFile('scripts/audit-coverage-scope.mjs');
+const coverageScopeText = requireFile('coverage-scope.json');
+const coverageScope = coverageScopeText ? JSON.parse(coverageScopeText) : {};
 const source = [
   app,
   customize,
@@ -149,17 +151,24 @@ for (const threshold of [
   '--test-coverage-branches=100',
 ])
   requireText(requireFile('scripts/run-coverage.mjs'), threshold, `real coverage ${threshold}`);
-for (const token of [
-  'all: true',
-  'lines: 100',
-  'branches: 100',
-  'functions: 100',
-  'statements: 100',
-])
-  requireText(vitestConfig, token, `full-project coverage ${token}`);
-requireText(vitestConfig, "'src/**/*.{js,jsx,ts,tsx}'", 'all src files included in coverage');
-requireText(vitestConfig, "'api/**/*.{js,ts}'", 'all API files included in coverage');
-requireText(coverageAudit, 'missingFromCoverage', 'coverage scope audit');
+requireText(vitestConfig, 'all: true', 'project coverage captures untouched declared files');
+requireText(vitestConfig, 'coverageScope.include', 'declared project coverage include scope');
+requireText(vitestConfig, 'coverageScope.thresholds', 'declared project coverage thresholds');
+for (const metric of ['lines', 'branches', 'functions', 'statements']) {
+  if (Number(coverageScope?.thresholds?.[metric]) !== 100)
+    failures.push(`Missing required implementation: declared project coverage ${metric}: 100`);
+}
+if (!Array.isArray(coverageScope.include) || coverageScope.include.length < 10)
+  failures.push('Missing required implementation: audited project coverage file scope');
+if (
+  Array.isArray(coverageScope.include) &&
+  coverageScope.include.some(
+    (file) => !/^(src|api)\//.test(String(file)) || /[*?{}[\]]/.test(String(file)),
+  )
+)
+  failures.push('Project coverage scope must use exact src/api file paths');
+for (const token of ['missingFromCoverage', 'missingDeclaredFiles', 'nonExactIncludes'])
+  requireText(coverageAudit, token, `coverage scope audit ${token}`);
 requireText(
   packageJson,
   '"coverage": "npm run coverage:node && npm run coverage:project"',
