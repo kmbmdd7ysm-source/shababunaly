@@ -1,7 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { catalogProducts, products, lhaStoreProducts, readyToShipProducts } from '../src/data/products.ts';
+import {
+  catalogProducts,
+  products,
+  lhaStoreProducts,
+  readyToShipProducts,
+} from '../src/data/products.ts';
 import { hasRealProductMedia, isProductPurchasable } from '../src/utils/productEligibility.ts';
 import { getSiteRateStorePrice } from '../src/utils/siteRatePricing.ts';
 
@@ -19,7 +24,11 @@ record('catalog:master-119', catalogProducts.length === 119, `found ${catalogPro
 record('catalog:published-75', products.length === 75, `found ${products.length}`);
 record('catalog:hidden-incomplete-44', catalogProducts.length - products.length === 44);
 record('catalog:published-media-real', products.every(hasRealProductMedia));
-record('catalog:ready-lha-priced-only', readyToShipProducts().length === lhaStoreProducts().filter((item) => Number(item.price || 0) > 0).length);
+record(
+  'catalog:ready-lha-priced-only',
+  readyToShipProducts().length ===
+    lhaStoreProducts().filter((item) => Number(item.price || 0) > 0).length,
+);
 record('lha:products-25', lhaStoreProducts().length === 25);
 
 const lha = lhaStoreProducts();
@@ -35,23 +44,53 @@ for (const product of lha) {
       byPool.get(key).push(variant);
     }
     for (const [pool, variants] of byPool) {
-      record(`lha:${product.id}:${pool}:five`, variants.every((variant) => Number(variant.inventoryPoolStock) === 5));
+      record(
+        `lha:${product.id}:${pool}:five`,
+        variants.every((variant) => Number(variant.inventoryPoolStock) === 5),
+      );
     }
   } else {
-    record(`lha:${product.id}:coming-soon`, product.comingSoon === true && product.readyToShip !== true && product.available === false);
-    record(`lha:${product.id}:no-fabricated-stock`, Number(product.stock || 0) === 0 && product.inventoryTracking !== true && product.inventoryVerified !== true);
+    record(
+      `lha:${product.id}:coming-soon`,
+      product.comingSoon === true && product.readyToShip !== true && product.available === false,
+    );
+    record(
+      `lha:${product.id}:no-fabricated-stock`,
+      Number(product.stock || 0) === 0 &&
+        product.inventoryTracking !== true &&
+        product.inventoryVerified !== true,
+    );
   }
 }
-record('lha:no-stale-stockPerVariant', !read('src/data/lhaProducts.ts').includes('stockPerVariant:'));
+record(
+  'lha:no-stale-stockPerVariant',
+  !read('src/data/lhaProducts.ts').includes('stockPerVariant:'),
+);
 const zeroPricePublished = products.filter((product) => Number(product.price) <= 0);
-record('commerce:zero-price-is-quote-only', zeroPricePublished.length > 0 && zeroPricePublished.every((product) => product.quoteOnly === true));
-record('commerce:zero-price-not-retail', zeroPricePublished.every((product) => product.retailAvailable === false && product.wholesaleAvailable === false));
-record('commerce:zero-price-not-purchasable', zeroPricePublished.every((product) => !isProductPurchasable(product)));
+record(
+  'commerce:zero-price-is-quote-only',
+  zeroPricePublished.length > 0 &&
+    zeroPricePublished.every((product) => product.quoteOnly === true),
+);
+record(
+  'commerce:zero-price-not-retail',
+  zeroPricePublished.every(
+    (product) => product.retailAvailable === false && product.wholesaleAvailable === false,
+  ),
+);
+record(
+  'commerce:zero-price-not-purchasable',
+  zeroPricePublished.every((product) => !isProductPurchasable(product)),
+);
 
-const kobe = catalogProducts.filter((product) => product.pricingRateSource === 'site_exchange_rate');
+const kobe = catalogProducts.filter(
+  (product) => product.pricingRateSource === 'site_exchange_rate',
+);
 record('kobe:count-50', kobe.length === 50, `found ${kobe.length}`);
 for (const product of kobe) {
-  const sizes = (product.variants || []).map((variant) => Number(variant.size)).filter(Number.isFinite);
+  const sizes = (product.variants || [])
+    .map((variant) => Number(variant.size))
+    .filter(Number.isFinite);
   record(`kobe:${product.id}:1200-lyd`, Number(product.priceLydSource) === 1200);
   record(`kobe:${product.id}:max-us12`, !sizes.length || Math.max(...sizes) <= 12);
 }
@@ -61,8 +100,20 @@ record('kobe:rate-8-clean-150', getSiteRateStorePrice(1200, 8) === 150);
 const generated = read('supabase/generated/product_catalog.sql');
 const trustedRows = generated.split('\n').filter((line) => line.startsWith("('")).length;
 record('catalog:trusted-rows-586', trustedRows === 586, `found ${trustedRows}`);
-record('catalog:deploy-preserves-tracked-stock', generated.includes('inventory_quantity=case') && generated.includes('when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity') && generated.includes('with pool_floor as') && generated.includes("variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'"));
-record('catalog:deploy-reprices-site-rate', generated.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") && generated.includes("variant_data->>'priceLydSource'"));
+record(
+  'catalog:deploy-preserves-tracked-stock',
+  generated.includes('inventory_quantity=case') &&
+    generated.includes(
+      'when pc.inventory_tracking=true and pc.inventory_quantity is not null then pc.inventory_quantity',
+    ) &&
+    generated.includes('with pool_floor as') &&
+    generated.includes("variant_data->>'inventorySource'='owner_confirmed_lha_color_stock'"),
+);
+record(
+  'catalog:deploy-reprices-site-rate',
+  generated.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") &&
+    generated.includes("variant_data->>'priceLydSource'"),
+);
 
 const catalogContext = read('src/context/CatalogContext.tsx');
 record(
@@ -71,35 +122,87 @@ record(
     catalogContext,
   ) && catalogContext.includes('return authoritative ? [] : baseProducts'),
 );
-record('cloud:lha-stock-from-db', catalogContext.includes('Number(row.inventory_quantity)') && catalogContext.includes('stockByColor'));
-record('cloud:local-product-media-trusted', catalogContext.includes('trustedLocalMediaPath') && read('src/services/operations.ts').includes('product_image_must_be_local'));
+record(
+  'cloud:lha-stock-from-db',
+  catalogContext.includes('Number(row.inventory_quantity)') &&
+    catalogContext.includes('stockByColor'),
+);
+record(
+  'cloud:local-product-media-trusted',
+  catalogContext.includes('trustedLocalMediaPath') &&
+    read('src/services/operations.ts').includes('product_image_must_be_local'),
+);
 
 const formspree = read('src/services/formspree.ts');
 const quoteClient = read('src/services/publicQuotes.ts');
 const specialClient = read('src/services/specialRequests.ts');
-record('forms:no-browser-third-party-post', !formspree.includes('fetch(FORMSPREE_ENDPOINT') && formspree.includes("fetch('/api/formspree'") && !read('src/context/ReadinessContext.tsx').includes('https://formspree.io/'));
-record('quotes:server-only-fallback', !quoteClient.includes('sendFormspree') && quoteClient.includes("fetch('/api/public-quote-request'"));
-record('special:server-only-fallback', !specialClient.includes('sendFormspree') && specialClient.includes("fetch('/api/special-request'"));
-record('quotes:email-only-explicit', read('api/public-quote-request.ts').includes("status: 'email_only'"));
-record('special:email-only-explicit', read('api/special-request.ts').includes("status: 'email_only'"));
+record(
+  'forms:no-browser-third-party-post',
+  !formspree.includes('fetch(FORMSPREE_ENDPOINT') &&
+    formspree.includes("fetch('/api/formspree'") &&
+    !read('src/context/ReadinessContext.tsx').includes('https://formspree.io/'),
+);
+record(
+  'quotes:server-only-fallback',
+  !quoteClient.includes('sendFormspree') &&
+    quoteClient.includes("fetch('/api/public-quote-request'"),
+);
+record(
+  'special:server-only-fallback',
+  !specialClient.includes('sendFormspree') &&
+    specialClient.includes("fetch('/api/special-request'"),
+);
+record(
+  'quotes:email-only-explicit',
+  read('api/public-quote-request.ts').includes("status: 'email_only'"),
+);
+record(
+  'special:email-only-explicit',
+  read('api/special-request.ts').includes("status: 'email_only'"),
+);
 
 const showcase = read('src/components/custom/CustomJerseyShowcase.tsx');
-record('custom3d:no-eager-model-viewer-import', !showcase.startsWith("import '../product/engines/loadModelViewer.ts'"));
-record('custom3d:dormant-assets-preserved', showcase.includes("import(" + "'../product/engines/loadModelViewer.ts')") && showcase.includes('modelRequested'));
+record(
+  'custom3d:no-eager-model-viewer-import',
+  !showcase.startsWith("import '../product/engines/loadModelViewer.ts'"),
+);
+record(
+  'custom3d:dormant-assets-preserved',
+  showcase.includes('import(' + "'../product/engines/loadModelViewer.ts')") &&
+    showcase.includes('modelRequested'),
+);
 const publicCustomPage = read('src/pages/CustomizePage.tsx');
 const appRoutes = read('src/App.tsx');
-record('custom3d:hidden-from-public-ui', !publicCustomPage.includes('Open 3D preview') && !publicCustomPage.includes('/customize/advanced') && /path=["']\/customize\/advanced["'][\s\S]{0,180}Navigate to=["']\/customize["']/.test(appRoutes));
+record(
+  'custom3d:hidden-from-public-ui',
+  !publicCustomPage.includes('Open 3D preview') &&
+    !publicCustomPage.includes('/customize/advanced') &&
+    /path=["']\/customize\/advanced["'][\s\S]{0,180}Navigate to=["']\/customize["']/.test(
+      appRoutes,
+    ),
+);
 
 const migration = read('supabase/migrations/20260818030000_independent_catalog_hardening.sql');
 const poolReconciliation = read('supabase/migrations/20260818040000_lha_pool_reconciliation.sql');
-record('db:staff-color-pool-lock', migration.includes('pg_advisory_xact_lock') && migration.includes("variant_data->>'inventoryPoolKey'") && poolReconciliation.includes('with pool_floor as') && poolReconciliation.includes('min(inventory_quantity) as available'));
+record(
+  'db:staff-color-pool-lock',
+  migration.includes('pg_advisory_xact_lock') &&
+    migration.includes("variant_data->>'inventoryPoolKey'") &&
+    poolReconciliation.includes('with pool_floor as') &&
+    poolReconciliation.includes('min(inventory_quantity) as available'),
+);
 record('db:manual-kobe-price-locked', migration.includes('site_rate_price_locked'));
-record('db:rate-change-reprices-kobe', migration.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") && migration.includes("variant_data->>'priceLydSource'"));
+record(
+  'db:rate-change-reprices-kobe',
+  migration.includes("variant_data->>'pricingRateSource'='site_exchange_rate'") &&
+    migration.includes("variant_data->>'priceLydSource'"),
+);
 
 // Customer-visible product media must be local, present and primary images unique by bytes.
 const mediaRefs = [];
 const pushMedia = (product, key, value) => {
-  if (typeof value === 'string' && value.trim()) mediaRefs.push({ product: product.id, key, value });
+  if (typeof value === 'string' && value.trim())
+    mediaRefs.push({ product: product.id, key, value });
 };
 for (const product of products) {
   pushMedia(product, 'image', product.image);
@@ -124,11 +227,15 @@ for (const product of products) {
   primaryHashes.get(hash).push(product.id);
 }
 const duplicatePrimaryGroups = [...primaryHashes.values()].filter((group) => group.length > 1);
-record('media:primary-byte-unique', duplicatePrimaryGroups.length === 0, `duplicate groups ${duplicatePrimaryGroups.length}`);
+record(
+  'media:primary-byte-unique',
+  duplicatePrimaryGroups.length === 0,
+  `duplicate groups ${duplicatePrimaryGroups.length}`,
+);
 
 // Independent source integrity: relative imports resolve, JSON parses, no merge markers.
 const sourceRoots = ['src', 'api', 'scripts', 'tests', 'e2e', 'supabase/functions'];
-const sourceExtensions = new Set(['.js','.jsx','.ts','.tsx','.mjs','.cjs']);
+const sourceExtensions = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
 const sourceFiles = [];
 const jsonFiles = [];
 const walkSource = (dir) => {
@@ -151,7 +258,7 @@ const walkJson = (dir) => {
     if (entry.isDirectory() && skippedJsonDirs.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (path.relative(ROOT, full).replaceAll('\\','/').startsWith('reports/archive/')) continue;
+      if (path.relative(ROOT, full).replaceAll('\\', '/').startsWith('reports/archive/')) continue;
       walkJson(full);
     } else if (entry.name.endsWith('.json')) jsonFiles.push(full);
   }
@@ -162,9 +269,11 @@ let missingImports = 0;
 const importRe = /(?:from\s*|import\s*\()(['"])(\.[^'"]+)\1/g;
 const candidatesFor = (base) => [
   base,
-  ...['.ts','.tsx','.js','.jsx','.mjs','.cjs','.json','.css'].map((ext) => `${base}${ext}`),
+  ...['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.json', '.css'].map((ext) => `${base}${ext}`),
   ...(base.endsWith('.js') ? [base.slice(0, -3) + '.ts', base.slice(0, -3) + '.tsx'] : []),
-  ...['index.ts','index.tsx','index.js','index.jsx','index.mjs'].map((name) => path.join(base,name)),
+  ...['index.ts', 'index.tsx', 'index.js', 'index.jsx', 'index.mjs'].map((name) =>
+    path.join(base, name),
+  ),
 ];
 for (const file of sourceFiles) {
   const text = fs.readFileSync(file, 'utf8');
@@ -178,7 +287,11 @@ for (const file of sourceFiles) {
 }
 let invalidJson = 0;
 for (const file of jsonFiles) {
-  try { JSON.parse(fs.readFileSync(file, 'utf8')); } catch { invalidJson += 1; }
+  try {
+    JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    invalidJson += 1;
+  }
 }
 record('source:no-merge-markers', mergeMarkers === 0, `files ${mergeMarkers}`);
 record('source:relative-imports-resolve', missingImports === 0, `missing ${missingImports}`);
@@ -195,20 +308,29 @@ const report = {
     masterProducts: catalogProducts.length,
     publishedProducts: products.length,
     hiddenProducts: catalogProducts.length - products.length,
-    masterVariants: catalogProducts.reduce((sum,p) => sum + (p.variants?.length || 0), 0),
+    masterVariants: catalogProducts.reduce((sum, p) => sum + (p.variants?.length || 0), 0),
     trustedVariants: trustedRows,
     visibleMediaReferences: mediaRefs.length,
-    uniqueVisibleMediaPaths: new Set(mediaRefs.map(({value}) => value)).size,
+    uniqueVisibleMediaPaths: new Set(mediaRefs.map(({ value }) => value)).size,
     primaryImages: products.length,
     primaryImageDuplicateGroups: duplicatePrimaryGroups.length,
   },
   results: checks,
 };
 fs.mkdirSync(path.join(ROOT, 'reports/final-independent'), { recursive: true });
-fs.writeFileSync(path.join(ROOT, 'reports/final-independent/independent-hardening-audit.json'), `${JSON.stringify(report, null, 2)}\n`);
-console.log(`Independent final audit: ${checks.length} checks, ${failures.length} failure(s); ${sourceFiles.length} source files and ${jsonFiles.length} JSON files inspected.`);
-console.log(`Catalogue: ${catalogProducts.length} master / ${products.length} published / ${trustedRows} trusted variants.`);
-console.log(`Visible product media: ${mediaRefs.length} refs / ${new Set(mediaRefs.map(({value}) => value)).size} unique paths / ${duplicatePrimaryGroups.length} duplicate primary groups.`);
+fs.writeFileSync(
+  path.join(ROOT, 'reports/final-independent/independent-hardening-audit.json'),
+  `${JSON.stringify(report, null, 2)}\n`,
+);
+console.log(
+  `Independent final audit: ${checks.length} checks, ${failures.length} failure(s); ${sourceFiles.length} source files and ${jsonFiles.length} JSON files inspected.`,
+);
+console.log(
+  `Catalogue: ${catalogProducts.length} master / ${products.length} published / ${trustedRows} trusted variants.`,
+);
+console.log(
+  `Visible product media: ${mediaRefs.length} refs / ${new Set(mediaRefs.map(({ value }) => value)).size} unique paths / ${duplicatePrimaryGroups.length} duplicate primary groups.`,
+);
 if (failures.length) {
   for (const failure of failures) console.error(`FAIL: ${failure}`);
   process.exit(1);
