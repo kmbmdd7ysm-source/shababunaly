@@ -9,15 +9,16 @@ mkdirSync(reportDir, { recursive: true });
 const reportName = process.argv.includes('--critical')
   ? 'critical-coverage.txt'
   : 'node-coverage.txt';
-const typescriptImportResolver = new URL('./resolve-typescript-imports.mjs', import.meta.url).href;
+const typescriptImportRegister = new URL('./register-typescript-imports.mjs', import.meta.url).href;
 const args = [
   '--experimental-strip-types',
-  '--experimental-loader',
-  typescriptImportResolver,
+  '--import',
+  typescriptImportRegister,
   '--experimental-test-coverage',
   '--test',
   '--test-concurrency=1',
   '--test-coverage-exclude=tests/**',
+  '--test-coverage-exclude=scripts/**',
   '--test-coverage-lines=100',
   '--test-coverage-functions=100',
   '--test-coverage-branches=100',
