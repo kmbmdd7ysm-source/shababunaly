@@ -407,7 +407,7 @@ html[dir='rtl'] .cc-tracking__inner .field[data-field] .field__control .country-
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: rgba(17, 17, 17, 0.54);
+  color: rgba(17, 17, 17, 0.72);
 }
 
 .gw-contact .field__control > :is(input, select, textarea)::placeholder,

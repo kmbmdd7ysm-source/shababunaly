@@ -432,8 +432,9 @@
   }
 
 .special-request-info .btn-secondary {
-  border-color: #fff;
-  color: #fff;
+  border-color: #111;
+  color: #111;
+  background: #fff;
 }
 
 .checkbox-line {
