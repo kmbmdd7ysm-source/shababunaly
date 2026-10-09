@@ -1,10 +1,8 @@
 /* Domain CSS: domain-commerce.css — consolidated from legacy extracts; owned by route/components */
 
-
 /* ---- source: commerce-ops-from-global.css ---- */
 
 /* extract from global */
-
 
 .cart-drawer.open {
   transform: translateX(0);
@@ -158,24 +156,23 @@
 .checkout-summary {
   position: sticky;
   top: calc(var(--header-h) + 16px);
-}:where(
-    .mobile-menu-overlay,
-    .search-screen,
-    .cart-drawer-overlay,
-    .filters-drawer,
-    .modal-backdrop,
-    .media-lightbox
-  ) {
-    inset-inline: 0;
-    inline-size: 100%;
-    max-inline-size: 100%;
-  }
-
+}
+:where(
+  .mobile-menu-overlay,
+  .search-screen,
+  .cart-drawer-overlay,
+  .filters-drawer,
+  .modal-backdrop,
+  .media-lightbox
+) {
+  inset-inline: 0;
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
 
 /* ---- source: commerce-ops-from-premium.css ---- */
 
 /* extract from premium */
-
 
 .checkout-form select,
 .address-form select {
@@ -194,11 +191,9 @@
   outline-offset: 2px;
 }
 
-
 /* ---- source: commerce-ops-from-shababuna.css ---- */
 
 /* extract from shababuna */
-
 
 .checkout-main {
   min-width: 0;
@@ -238,16 +233,16 @@
   border: 0;
 }
 .checkout-summary {
-    position: relative;
-    top: auto;
-  }
+  position: relative;
+  top: auto;
+}
 .checkout-summary {
-    order: -1;
-  }
+  order: -1;
+}
 .checkout-access {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+  align-items: flex-start;
+  flex-direction: column;
+}
 
 .operations-page {
   background: #f5f5f2;
@@ -389,19 +384,19 @@
   gap: 7px;
 }
 .operations-toolbar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .operations-card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .operations-toolbar,
-  .operations-card-grid {
-    grid-template-columns: 1fr;
-  }
+.operations-card-grid {
+  grid-template-columns: 1fr;
+}
 .operations-rate {
-    align-items: stretch;
-    flex-direction: column;
-  }
+  align-items: stretch;
+  flex-direction: column;
+}
 
 .operations-toolbar {
   grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(280px, 1.4fr);
@@ -417,8 +412,8 @@
   background: #fff;
 }
 .operations-toolbar {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 
 .operations-payment-summary {
   display: grid;
@@ -548,16 +543,16 @@
   accent-color: #111;
 }
 .operations-product-grid,
-  .operations-form-grid,
-  .operations-form-grid--descriptions {
-    grid-template-columns: 1fr;
-  }
+.operations-form-grid,
+.operations-form-grid--descriptions {
+  grid-template-columns: 1fr;
+}
 .operations-payment-summary {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 
 .operations-check {
-  display:flex;
+  display: flex;
   align-items: flex-start;
   gap: 0.6rem;
 }
@@ -587,8 +582,8 @@
   margin-top: 34px;
 }
 .operations-card-grid {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 
 .operations-control-center {
   display: grid;
@@ -649,8 +644,8 @@
   align-items: end;
 }
 .operations-control-center .operations-form-grid {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+}
 .operations-json-editor {
-    min-height: 14rem;
-  }
+  min-height: 14rem;
+}

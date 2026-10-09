@@ -30,7 +30,12 @@ import '../styles/domain-misc.css';
 import '../styles/product-experience.css';
 import SizeGuideTable from '../components/product/SizeGuideTable';
 
-type ColorEntry = { key: string; hex?: string; name?: { en?: string; ar?: string }; image?: string };
+type ColorEntry = {
+  key: string;
+  hex?: string;
+  name?: { en?: string; ar?: string };
+  image?: string;
+};
 type SizeEntry = string;
 type VariantEntry = Record<string, unknown> & {
   color?: string;
@@ -90,7 +95,10 @@ export default function ProductPage(): ReactElement {
   useEffect(() => {
     if (!product) return;
     record(product.id);
-    trackEvent('view_item', { item_id: product.id, item_name: pick(product.name as { en?: string; ar?: string }) });
+    trackEvent('view_item', {
+      item_id: product.id,
+      item_name: pick(product.name as { en?: string; ar?: string }),
+    });
     const colors = asColors(product);
     const sizes = asSizes(product);
     const requestedColor = searchParams.get('color');
@@ -221,8 +229,12 @@ export default function ProductPage(): ReactElement {
       sku: matchedVariant.sku,
       maxStock: Math.max(getVariantPurchaseLimit(matchedVariant), qty),
       inventoryTracking: matchedVariant.inventoryTracking !== false,
-      inventoryPoolKey: matchedVariant.inventoryPoolKey ? String(matchedVariant.inventoryPoolKey) : undefined,
-      inventoryPoolStock: Number.isFinite(Number(matchedVariant.inventoryPoolStock)) ? Number(matchedVariant.inventoryPoolStock) : undefined,
+      inventoryPoolKey: matchedVariant.inventoryPoolKey
+        ? String(matchedVariant.inventoryPoolKey)
+        : undefined,
+      inventoryPoolStock: Number.isFinite(Number(matchedVariant.inventoryPoolStock))
+        ? Number(matchedVariant.inventoryPoolStock)
+        : undefined,
       minQuantity,
       href: `/products/${product.slug}`,
       quantity: qty,
@@ -236,11 +248,7 @@ export default function ProductPage(): ReactElement {
         Boolean(product.claimEvidenceReference),
       largeEquipment: product.largeEquipment === true,
       deliveryProfile:
-        isWholesale || reservationAvailable
-          ? 'custom'
-          : product.readyToShip
-            ? 'ready'
-            : 'standard',
+        isWholesale || reservationAvailable ? 'custom' : product.readyToShip ? 'ready' : 'standard',
     } as CartItem);
     trackEvent('add_to_cart', {
       item_id: product.id,
@@ -282,9 +290,18 @@ export default function ProductPage(): ReactElement {
   const featureList = asFeatureList(product, lang);
 
   const details = [
-    product.material && { title: productCopy.material, content: <p>{pick(product.material as { en?: string; ar?: string })}</p> },
-    product.fit && { title: productCopy.fit, content: <p>{pick(product.fit as { en?: string; ar?: string })}</p> },
-    product.care && { title: productCopy.care, content: <p>{pick(product.care as { en?: string; ar?: string })}</p> },
+    product.material && {
+      title: productCopy.material,
+      content: <p>{pick(product.material as { en?: string; ar?: string })}</p>,
+    },
+    product.fit && {
+      title: productCopy.fit,
+      content: <p>{pick(product.fit as { en?: string; ar?: string })}</p>,
+    },
+    product.care && {
+      title: productCopy.care,
+      content: <p>{pick(product.care as { en?: string; ar?: string })}</p>,
+    },
     featureList.length > 0 && {
       title: productCopy.features,
       content: (
@@ -299,7 +316,9 @@ export default function ProductPage(): ReactElement {
 
   const purchasable = !comingSoon && !soldOut && !quoteOnly;
 
-  const canUseAdvancedViewer = ['SPIN_360', 'MODEL_3D', 'VIDEO_GALLERY', 'HYBRID'].includes(mediaMode);
+  const canUseAdvancedViewer = ['SPIN_360', 'MODEL_3D', 'VIDEO_GALLERY', 'HYBRID'].includes(
+    mediaMode,
+  );
   const selectedColor = colors.find((entry) => entry.key === color);
   const shareTitle = pick(product.name as { en?: string; ar?: string });
 
@@ -307,9 +326,7 @@ export default function ProductPage(): ReactElement {
     <>
       <Seo
         title={String(
-          pick((product.seoTitle as { en?: string; ar?: string }) || {}) ||
-            shareTitle ||
-            '',
+          pick((product.seoTitle as { en?: string; ar?: string }) || {}) || shareTitle || '',
         )}
         description={String(
           pick((product.seoDescription as { en?: string; ar?: string }) || {}) ||
@@ -327,11 +344,18 @@ export default function ProductPage(): ReactElement {
         </div>
 
         <section className="pdx-main" aria-labelledby="pdx-product-title">
-          <div className="pdx-media" role="group" aria-label={pick({ en: 'Product media', ar: 'صور المنتج' })}>
+          <div
+            className="pdx-media"
+            role="group"
+            aria-label={pick({ en: 'Product media', ar: 'صور المنتج' })}
+          >
             <div className="pdx-gallery-shell">
               <div className="pdx-gallery-stage">
                 {canUseAdvancedViewer ? (
-                  <div className="pdx-media-cell pdx-media-cell--viewer" data-media-mode={mediaMode}>
+                  <div
+                    className="pdx-media-cell pdx-media-cell--viewer"
+                    data-media-mode={mediaMode}
+                  >
                     <ProductMediaViewer product={product} eager />
                   </div>
                 ) : gallery.length ? (
@@ -353,17 +377,55 @@ export default function ProductPage(): ReactElement {
                 ) : null}
                 {!canUseAdvancedViewer && gallery.length > 1 ? (
                   <>
-                    <button type="button" className="pdx-gallery-arrow pdx-gallery-arrow--prev" onClick={() => setActiveImg((current) => (current - 1 + gallery.length) % gallery.length)} aria-label={pick({ en: 'Previous image', ar: 'الصورة السابقة' })}>‹</button>
-                    <button type="button" className="pdx-gallery-arrow pdx-gallery-arrow--next" onClick={() => setActiveImg((current) => (current + 1) % gallery.length)} aria-label={pick({ en: 'Next image', ar: 'الصورة التالية' })}>›</button>
-                    <span className="pdx-gallery-count">{activeImg + 1} / {gallery.length}</span>
+                    <button
+                      type="button"
+                      className="pdx-gallery-arrow pdx-gallery-arrow--prev"
+                      onClick={() =>
+                        setActiveImg((current) => (current - 1 + gallery.length) % gallery.length)
+                      }
+                      aria-label={pick({ en: 'Previous image', ar: 'الصورة السابقة' })}
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      className="pdx-gallery-arrow pdx-gallery-arrow--next"
+                      onClick={() => setActiveImg((current) => (current + 1) % gallery.length)}
+                      aria-label={pick({ en: 'Next image', ar: 'الصورة التالية' })}
+                    >
+                      ›
+                    </button>
+                    <span className="pdx-gallery-count">
+                      {activeImg + 1} / {gallery.length}
+                    </span>
                   </>
                 ) : null}
               </div>
               {!canUseAdvancedViewer && gallery.length > 1 ? (
-                <div className="pdx-gallery-thumbs" role="group" aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}>
+                <div
+                  className="pdx-gallery-thumbs"
+                  role="group"
+                  aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}
+                >
                   {gallery.map((src, imageIndex) => (
-                    <button key={`${src}-${imageIndex}`} type="button" className={imageIndex === activeImg ? 'is-active' : ''} onClick={() => setActiveImg(imageIndex)} aria-label={pick({ en: `Show image ${imageIndex + 1}`, ar: `اعرض الصورة ${imageIndex + 1}` })}>
-                      <img src={src} alt="" width="120" height="150" loading="lazy" decoding="async" />
+                    <button
+                      key={`${src}-${imageIndex}`}
+                      type="button"
+                      className={imageIndex === activeImg ? 'is-active' : ''}
+                      onClick={() => setActiveImg(imageIndex)}
+                      aria-label={pick({
+                        en: `Show image ${imageIndex + 1}`,
+                        ar: `اعرض الصورة ${imageIndex + 1}`,
+                      })}
+                    >
+                      <img
+                        src={src}
+                        alt=""
+                        width="120"
+                        height="150"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </button>
                   ))}
                 </div>
@@ -375,14 +437,32 @@ export default function ProductPage(): ReactElement {
             <div className="pdx-identity">
               <div className="pdx-title-line">
                 <div>
-                  <div className="pdx-brand-lockup" role="group" aria-label={pick({ en: 'Brand and store', ar: 'العلامة والمتجر' })}>
+                  <div
+                    className="pdx-brand-lockup"
+                    role="group"
+                    aria-label={pick({ en: 'Brand and store', ar: 'العلامة والمتجر' })}
+                  >
                     {isLha ? (
-                      <img className="pdx-brand-lockup__lha" src="/brand/lha-wordmark-black.svg" alt="Libya Hoops Academy" width="156" height="46" />
+                      <img
+                        className="pdx-brand-lockup__lha"
+                        src="/brand/lha-wordmark-black.svg"
+                        alt="Libya Hoops Academy"
+                        width="156"
+                        height="46"
+                      />
                     ) : (
-                      <strong className="pdx-brand-lockup__brand">{String(product.brand || 'Shababuna')}</strong>
+                      <strong className="pdx-brand-lockup__brand">
+                        {String(product.brand || 'Shababuna')}
+                      </strong>
                     )}
                     <span>{pick({ en: 'via', ar: 'عبر' })}</span>
-                    <img className="pdx-brand-lockup__shababuna" src="/brand/shababuna-wordmark-black.png" alt="Shababuna" width="140" height="34" />
+                    <img
+                      className="pdx-brand-lockup__shababuna"
+                      src="/brand/shababuna-wordmark-black.png"
+                      alt="Shababuna"
+                      width="140"
+                      height="34"
+                    />
                   </div>
                   <h1 id="pdx-product-title">{shareTitle}</h1>
                   {selectedColor ? (
@@ -414,12 +494,22 @@ export default function ProductPage(): ReactElement {
 
               <div className="pdx-status-row">
                 {reservationAvailable ? (
-                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Available by reservation', ar: 'متوفر بالحجز' })}</span>
+                  <span className="pdx-ready">
+                    <i className="ready-dot" />
+                    {pick({ en: 'Available by reservation', ar: 'متوفر بالحجز' })}
+                  </span>
                 ) : showReady ? (
-                  <span className="pdx-ready"><i className="ready-dot" />{pick({ en: 'Verified stock in Libya', ar: 'مخزون موثق داخل ليبيا' })}</span>
+                  <span className="pdx-ready">
+                    <i className="ready-dot" />
+                    {pick({ en: 'Verified stock in Libya', ar: 'مخزون موثق داخل ليبيا' })}
+                  </span>
                 ) : null}
-                {!comingSoon && !soldOut && onSale ? <Badge tone="sale">{badge.sale || 'Sale'}</Badge> : null}
-                {!comingSoon && !soldOut && product.newArrival ? <Badge tone="new">{badge.new || 'New'}</Badge> : null}
+                {!comingSoon && !soldOut && onSale ? (
+                  <Badge tone="sale">{badge.sale || 'Sale'}</Badge>
+                ) : null}
+                {!comingSoon && !soldOut && product.newArrival ? (
+                  <Badge tone="new">{badge.new || 'New'}</Badge>
+                ) : null}
               </div>
 
               <p className="pdx-description">
@@ -437,12 +527,28 @@ export default function ProductPage(): ReactElement {
                 <div className="pdx-option-head">
                   <strong>{pick({ en: 'Purchase type', ar: 'نوع الشراء' })}</strong>
                 </div>
-                <div className="pdx-mode-grid" role="group" aria-label={pick({ en: 'Purchase type', ar: 'نوع الشراء' })}>
-                  <button type="button" className={purchaseMode === 'retail' ? 'is-active' : ''} aria-pressed={purchaseMode === 'retail'} onClick={() => changeMode('retail')}>
-                    <span>{pick({ en: 'Single item', ar: 'بالقطعة' })}</span><Price amount={retailPrice} size="sm" />
+                <div
+                  className="pdx-mode-grid"
+                  role="group"
+                  aria-label={pick({ en: 'Purchase type', ar: 'نوع الشراء' })}
+                >
+                  <button
+                    type="button"
+                    className={purchaseMode === 'retail' ? 'is-active' : ''}
+                    aria-pressed={purchaseMode === 'retail'}
+                    onClick={() => changeMode('retail')}
+                  >
+                    <span>{pick({ en: 'Single item', ar: 'بالقطعة' })}</span>
+                    <Price amount={retailPrice} size="sm" />
                   </button>
-                  <button type="button" className={purchaseMode === 'wholesale' ? 'is-active' : ''} aria-pressed={purchaseMode === 'wholesale'} onClick={() => changeMode('wholesale')}>
-                    <span>{pick({ en: 'Wholesale', ar: 'جملة' })}</span><Price amount={wholesalePrice || retailPrice} size="sm" />
+                  <button
+                    type="button"
+                    className={purchaseMode === 'wholesale' ? 'is-active' : ''}
+                    aria-pressed={purchaseMode === 'wholesale'}
+                    onClick={() => changeMode('wholesale')}
+                  >
+                    <span>{pick({ en: 'Wholesale', ar: 'جملة' })}</span>
+                    <Price amount={wholesalePrice || retailPrice} size="sm" />
                   </button>
                 </div>
               </div>
@@ -452,7 +558,11 @@ export default function ProductPage(): ReactElement {
               <div className="pdx-option-block">
                 <div className="pdx-option-head">
                   <strong>{common.color || pick({ en: 'Color', ar: 'اللون' })}</strong>
-                  {selectedColor ? <span>{pick(selectedColor.name || { en: selectedColor.key, ar: selectedColor.key })}</span> : null}
+                  {selectedColor ? (
+                    <span>
+                      {pick(selectedColor.name || { en: selectedColor.key, ar: selectedColor.key })}
+                    </span>
+                  ) : null}
                 </div>
                 <div className="pdx-colors" role="group" aria-label={common.color || 'Color'}>
                   {colors.map((entry) => (
@@ -483,7 +593,11 @@ export default function ProductPage(): ReactElement {
                 <div className="pdx-option-head">
                   <strong>{common.size || pick({ en: 'Size', ar: 'المقاس' })}</strong>
                   {guide ? (
-                    <button type="button" className="pdx-text-link" onClick={() => setGuideOpen(true)}>
+                    <button
+                      type="button"
+                      className="pdx-text-link"
+                      onClick={() => setGuideOpen(true)}
+                    >
                       {productCopy.sizeGuide || pick({ en: 'Size guide', ar: 'دليل المقاسات' })}
                     </button>
                   ) : null}
@@ -497,7 +611,10 @@ export default function ProductPage(): ReactElement {
                         type="button"
                         className={entry === size ? 'is-active' : ''}
                         disabled={!available}
-                        onClick={() => { setSize(entry); setError(''); }}
+                        onClick={() => {
+                          setSize(entry);
+                          setError('');
+                        }}
                         aria-pressed={entry === size}
                       >
                         {entry}
@@ -518,7 +635,9 @@ export default function ProductPage(): ReactElement {
                       min={minQuantity}
                       max={Math.max(maxStock, minQuantity)}
                       value={qty}
-                      onChange={(event) => setQty(Math.max(minQuantity, Number(event.target.value) || minQuantity))}
+                      onChange={(event) =>
+                        setQty(Math.max(minQuantity, Number(event.target.value) || minQuantity))
+                      }
                     />
                   </label>
                 ) : null}
@@ -529,35 +648,67 @@ export default function ProductPage(): ReactElement {
                       ? pick({ en: 'Order by reservation', ar: 'اطلب بالحجز' })
                       : productCopy.addToCart || pick({ en: 'Add to bag', ar: 'أضف إلى الحقيبة' })}
                 </button>
-                {matchedVariant && low && Number(matchedVariant.stock || 0) > 0 ? <p className="stock-note">{productCopy.lowStock}</p> : null}
-                {isWholesale ? (
-                  <p className="minimum-note">{pick({ en: `Wholesale price applies from ${minQuantity} units.`, ar: `يطبق سعر الجملة ابتداءً من ${minQuantity} قطع.` })}</p>
+                {matchedVariant && low && Number(matchedVariant.stock || 0) > 0 ? (
+                  <p className="stock-note">{productCopy.lowStock}</p>
                 ) : null}
-                {error ? <p className="form-error" role="alert">{error}</p> : null}
+                {isWholesale ? (
+                  <p className="minimum-note">
+                    {pick({
+                      en: `Wholesale price applies from ${minQuantity} units.`,
+                      ar: `يطبق سعر الجملة ابتداءً من ${minQuantity} قطع.`,
+                    })}
+                  </p>
+                ) : null}
+                {error ? (
+                  <p className="form-error" role="alert">
+                    {error}
+                  </p>
+                ) : null}
               </div>
             ) : null}
 
             {quoteOnly && !comingSoon ? (
               <div className="pdx-quote">
-                <p>{pick({ en: 'Request the final price to place this order.', ar: 'اطلب السعر النهائي لتسجيل الطلب.' })}</p>
-                <Link to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`} className="pdx-add">
+                <p>
+                  {pick({
+                    en: 'Request the final price to place this order.',
+                    ar: 'اطلب السعر النهائي لتسجيل الطلب.',
+                  })}
+                </p>
+                <Link
+                  to={`/teams-wholesale?product=${encodeURIComponent(String(product.slug || ''))}#quote`}
+                  className="pdx-add"
+                >
                   {pick({ en: 'Request price', ar: 'اطلب السعر' })}
                 </Link>
               </div>
             ) : null}
 
-            {(comingSoon || soldOut) ? (
+            {comingSoon || soldOut ? (
               <div className="pdx-unavailable">
-                <strong>{comingSoon ? pick({ en: 'Coming soon', ar: 'قريباً' }) : pick({ en: 'Currently unavailable', ar: 'غير متوفر حالياً' })}</strong>
-                <button type="button" className="pdx-secondary" onClick={() => wishlist.toggle(product.id)}>
-                  <Icon name="heart" size={20} /> {pick({ en: 'Save for later', ar: 'احفظه لاحقاً' })}
+                <strong>
+                  {comingSoon
+                    ? pick({ en: 'Coming soon', ar: 'قريباً' })
+                    : pick({ en: 'Currently unavailable', ar: 'غير متوفر حالياً' })}
+                </strong>
+                <button
+                  type="button"
+                  className="pdx-secondary"
+                  onClick={() => wishlist.toggle(product.id)}
+                >
+                  <Icon name="heart" size={20} />{' '}
+                  {pick({ en: 'Save for later', ar: 'احفظه لاحقاً' })}
                 </button>
               </div>
             ) : null}
 
             {!comingSoon ? (
               <div className="pdx-delivery">
-                <strong>{reservationAvailable ? pick({ en: 'Reservation', ar: 'الحجز' }) : pick({ en: 'Delivery', ar: 'التوصيل' })}</strong>
+                <strong>
+                  {reservationAvailable
+                    ? pick({ en: 'Reservation', ar: 'الحجز' })
+                    : pick({ en: 'Delivery', ar: 'التوصيل' })}
+                </strong>
                 <p>{shippingCopy}</p>
                 {product.customizable ? (
                   <Link to={`/customize?product=${product.slug}`} className="pdx-text-link">
@@ -575,19 +726,21 @@ export default function ProductPage(): ReactElement {
                 </details>
               ))}
             </div>
-
           </aside>
         </section>
 
         {related.length > 0 ? (
           <section className="pdx-related">
-            <div className="pdx-section-head"><h2>{pick({ en: 'You may also like', ar: 'قد يعجبك أيضاً' })}</h2></div>
+            <div className="pdx-section-head">
+              <h2>{pick({ en: 'You may also like', ar: 'قد يعجبك أيضاً' })}</h2>
+            </div>
             <div className="pdx-related-rail">
-              {related.map((item) => <ProductCard key={String(item?.id)} product={item || {}} />)}
+              {related.map((item) => (
+                <ProductCard key={String(item?.id)} product={item || {}} />
+              ))}
             </div>
           </section>
         ) : null}
-
       </main>
 
       {purchasable ? (
@@ -601,7 +754,14 @@ export default function ProductPage(): ReactElement {
         </div>
       ) : null}
 
-      <MediaLightbox open={lightboxOpen} onClose={() => setLightboxOpen(false)} items={gallery} index={activeImg} onIndexChange={setActiveImg} label={shareTitle} />
+      <MediaLightbox
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        items={gallery}
+        index={activeImg}
+        onIndexChange={setActiveImg}
+        label={shareTitle}
+      />
       {guide ? (
         <Modal open={guideOpen} onClose={() => setGuideOpen(false)} title={pick(guide.title)}>
           <SizeGuideTable guide={guide} lang={lang} />
