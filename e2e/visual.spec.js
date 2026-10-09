@@ -22,12 +22,7 @@ for (const route of routes)
   for (const locale of ['en', 'ar'])
     for (const viewport of viewports) {
       test(`visual ${viewport.name} ${locale} ${route}`, async ({ page }, testInfo) => {
-        // Run stable viewport screenshots in a single pinned browser; all other
-        // engines are covered by the separate cross-browser accessibility suite.
-        test.skip(
-          testInfo.project.name !== 'desktop-chromium',
-          'Viewport screenshots are recorded on desktop Chromium only.',
-        );
+        // The visual:run script selects desktop Chromium, then exercises all viewport sizes.
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         await page.addInitScript(
           (lang) => localStorage.setItem('shababuna-language', lang),
