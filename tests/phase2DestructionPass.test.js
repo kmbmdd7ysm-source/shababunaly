@@ -24,7 +24,13 @@ describe('Phase 2 destruction-pass regressions', () => {
 
   it('keeps the bag full-width across the complete phone/mobile breakpoint', () => {
     const css = read('src/styles/customer-experience.css');
-    expect(css).toContain('@media(max-width:760px){\n  .cart-drawer{inline-size:100vw!important;max-inline-size:100vw!important}');
+    const normalized = css.replace(/\s+/g, '');
+    expect(normalized).toContain(
+      '@media(max-width:760px){.cart-drawer{inline-size:100vw!important;max-inline-size:100vw!important',
+    );
+    expect(normalized).toContain(
+      '@media(max-width:640px){.cart-drawer{inline-size:100vw!important;max-inline-size:100vw!important',
+    );
   });
 
   it('keeps gift-card submission gated until request verification resolves', () => {
