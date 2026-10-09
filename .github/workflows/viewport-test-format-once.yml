@@ -1,0 +1,33 @@
+name: One-time viewport test formatter
+on:
+  push:
+    branches:
+      - fix/accessibility-rtl-checkout-20261009
+    paths:
+      - .github/workflows/viewport-test-format-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: fix/accessibility-rtl-checkout-20261009
+      - uses: actions/setup-node@249970729cb0ef3589644e2896644e5dc5ba9c38
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --registry=https://registry.npmjs.org
+      - run: npx prettier --write e2e/visual.spec.js
+      - name: Commit formatted viewport tests and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/viewport-test-format-once.yml
+          git add e2e/visual.spec.js
+          git commit -m "test: format viewport layout and approved-baseline checks"
+          git push origin HEAD:fix/accessibility-rtl-checkout-20261009
