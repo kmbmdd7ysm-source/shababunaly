@@ -101,7 +101,10 @@ test('checkout validation errors are announced and focus moves to an invalid fie
   await expect(summary).toBeVisible();
   await expect(summary).toBeFocused();
   await expect(summary).toHaveAttribute('aria-live', 'assertive');
-  await expect(page.locator('input[aria-describedby="checkout-email-error"]')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('input[aria-describedby="checkout-email-error"]')).toHaveAttribute(
+    'aria-invalid',
+    'true',
+  );
   await expect(page.locator('input[aria-describedby="checkout-email-error"]')).toHaveAttribute(
     'aria-describedby',
     'checkout-email-error',
