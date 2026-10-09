@@ -12,7 +12,11 @@ import Icon from '../icons/Icon';
 import ColorSwatch from '../common/ColorSwatch';
 import QuickAddSheet from './QuickAddSheet';
 import { getCompareAction } from '../../utils/productOptions';
-import { getVariantPurchaseLimit, type ProductLike, type VariantLike } from '../../utils/productEligibility';
+import {
+  getVariantPurchaseLimit,
+  type ProductLike,
+  type VariantLike,
+} from '../../utils/productEligibility';
 import type { LocaleText } from '../../types/i18n';
 import { availabilityLabel, resolveAvailabilityState } from '../../domain/availability';
 import '../../styles/design/phase2-commerce.css';
@@ -96,21 +100,26 @@ export default function ProductCard({
       image: String(image || ''),
       price: unitPrice,
       retailPrice: unitPrice,
-      wholesalePrice: Number((variant as { wholesalePrice?: number }).wholesalePrice ?? p.wholesalePrice ?? 0) || null,
+      wholesalePrice:
+        Number((variant as { wholesalePrice?: number }).wholesalePrice ?? p.wholesalePrice ?? 0) ||
+        null,
       size: String(variant.size || ''),
       color: String(variant.color || ''),
       sku: String(variant.sku || ''),
       maxStock: getVariantPurchaseLimit(variant as VariantLike),
       inventoryTracking: variant.inventoryTracking !== false,
       inventoryPoolKey: variant.inventoryPoolKey ? String(variant.inventoryPoolKey) : undefined,
-      inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock)) ? Number(variant.inventoryPoolStock) : undefined,
+      inventoryPoolStock: Number.isFinite(Number(variant.inventoryPoolStock))
+        ? Number(variant.inventoryPoolStock)
+        : undefined,
       href: to,
       quantity: 1,
       purchaseMode: 'retail',
       readyToShip: p.readyToShip === true && variant.readyToShip !== false,
       reservationAvailable: reservationAvailable,
       customizable: p.customizable === true,
-      madeInUSA: p.madeInUSA === true && p.claimVerified === true && Boolean(p.claimEvidenceReference),
+      madeInUSA:
+        p.madeInUSA === true && p.claimVerified === true && Boolean(p.claimEvidenceReference),
       largeEquipment: p.largeEquipment === true,
       deliveryProfile: reservationAvailable ? 'custom' : p.readyToShip ? 'ready' : 'standard',
     });
@@ -127,16 +136,16 @@ export default function ProductCard({
       : reservationAvailable
         ? pick({ en: 'Available by reservation', ar: 'متوفر بالحجز' })
         : availability === 'READY_TO_SHIP'
-        ? availabilityCopy.label
-        : p.newArrival
-          ? pick({ en: 'New', ar: 'جديد' })
-          : p.bestSeller
-            ? pick({ en: 'Popular', ar: 'رائج' })
-            : onSale
-              ? pick({ en: 'Sale', ar: 'تخفيض' })
-              : low
-                ? pick({ en: 'Limited', ar: 'كمية محدودة' })
-                : null;
+          ? availabilityCopy.label
+          : p.newArrival
+            ? pick({ en: 'New', ar: 'جديد' })
+            : p.bestSeller
+              ? pick({ en: 'Popular', ar: 'رائج' })
+              : onSale
+                ? pick({ en: 'Sale', ar: 'تخفيض' })
+                : low
+                  ? pick({ en: 'Limited', ar: 'كمية محدودة' })
+                  : null;
 
   const actionLabel = reservationAvailable
     ? action.type === 'choose-options'
@@ -151,7 +160,11 @@ export default function ProductCard({
   return (
     <article className="s2-product-card" data-product-id={String(p.id || '')}>
       <div className="s2-product-card__media">
-        <Link to={to} className="s2-product-card__media-link" aria-label={String(pick((p.name || '') as LocaleText) || '')}>
+        <Link
+          to={to}
+          className="s2-product-card__media-link"
+          aria-label={String(pick((p.name || '') as LocaleText) || '')}
+        >
           <SmartImage
             src={String(image || '')}
             alt={String(pick((p.alt || p.name || '') as LocaleText) || '')}
@@ -194,28 +207,51 @@ export default function ProductCard({
             aria-label={actionLabel}
           >
             <Icon name={addState === 'added' ? 'check' : 'plus'} size={18} />
-            <span>{addState === 'added' ? pick({ en: 'Added', ar: 'تمت الإضافة' }) : actionLabel}</span>
+            <span>
+              {addState === 'added' ? pick({ en: 'Added', ar: 'تمت الإضافة' }) : actionLabel}
+            </span>
           </button>
         ) : null}
       </div>
 
       <div className="s2-product-card__body">
         <div className="s2-product-card__title-row">
-          <Link to={to} className="s2-product-card__name">{pick((p.name || '') as LocaleText)}</Link>
+          <Link to={to} className="s2-product-card__name">
+            {pick((p.name || '') as LocaleText)}
+          </Link>
           {comingSoon ? (
-            <span className="s2-product-card__price s2-product-card__price--soon">{pick({ en: 'Coming soon', ar: 'قريباً' })}</span>
+            <span className="s2-product-card__price s2-product-card__price--soon">
+              {pick({ en: 'Coming soon', ar: 'قريباً' })}
+            </span>
           ) : p.quoteOnly ? (
-            <span className="s2-product-card__price">{pick({ en: 'Price on request', ar: 'السعر عند الطلب' })}</span>
+            <span className="s2-product-card__price">
+              {pick({ en: 'Price on request', ar: 'السعر عند الطلب' })}
+            </span>
           ) : (
-            <Price amount={Number(p.price) || 0} compareAt={p.compareAt == null ? null : Number(p.compareAt)} size="sm" />
+            <Price
+              amount={Number(p.price) || 0}
+              compareAt={p.compareAt == null ? null : Number(p.compareAt)}
+              size="sm"
+            />
           )}
         </div>
         <div className="s2-product-card__subrow">
           <span>{String(p.brand || 'Shababuna')}</span>
           {(p.colors || []).length > 1 ? (
-            <span className="s2-product-card__colors" aria-label={pick({ en: `${p.colors?.length || 0} colours`, ar: `${p.colors?.length || 0} ألوان` })}>
+            <span
+              className="s2-product-card__colors"
+              role="img"
+              aria-label={pick({
+                en: `${p.colors?.length || 0} colours`,
+                ar: `${p.colors?.length || 0} ألوان`,
+              })}
+            >
               {(p.colors || []).slice(0, 4).map((color) => (
-                <ColorSwatch key={String(color.key || color.hex || '')} color={String(color.hex || '#777')} className="s2-product-card__swatch" />
+                <ColorSwatch
+                  key={String(color.key || color.hex || '')}
+                  color={String(color.hex || '#777')}
+                  className="s2-product-card__swatch"
+                />
               ))}
               {(p.colors || []).length > 4 ? <small>+{(p.colors || []).length - 4}</small> : null}
             </span>

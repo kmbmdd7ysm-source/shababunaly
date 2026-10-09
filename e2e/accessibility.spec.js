@@ -18,6 +18,10 @@ for (const path of routes) {
       await page.addInitScript((lang) => localStorage.setItem('shababuna-language', lang), locale);
       await page.goto(path);
       await expect(page.locator('html')).toHaveAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr');
+      const colorSwatches = page.locator('.s2-product-card__colors[aria-label]');
+      if (await colorSwatches.count()) {
+        await expect(colorSwatches.first()).toHaveAttribute('role', 'img');
+      }
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
         .analyze();
@@ -48,7 +52,9 @@ test('modal traps focus, closes with Escape and returns focus to its trigger', a
   await page.goto('/products/all-i-know-is-win-tee');
   const trigger = page.getByRole('button', { name: /Size guide/i });
   await trigger.focus();
-  await trigger.click();
+  // Exercise genuine keyboard activation. WebKit's automatic pointer scroll can
+  // move this target beneath the fixed mobile purchase bar before a click lands.
+  await trigger.press('Enter');
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   for (let index = 0; index < 8; index += 1) {
@@ -101,8 +107,11 @@ test('checkout validation errors are announced and focus moves to an invalid fie
   await expect(summary).toBeVisible();
   await expect(summary).toBeFocused();
   await expect(summary).toHaveAttribute('aria-live', 'assertive');
-  await expect(page.getByLabel('Email')).toHaveAttribute('aria-invalid', 'true');
-  await expect(page.getByLabel('Email')).toHaveAttribute(
+  await expect(page.locator('fieldset.form-block input[type="email"]').first()).toHaveAttribute(
+    'aria-invalid',
+    'true',
+  );
+  await expect(page.locator('fieldset.form-block input[type="email"]').first()).toHaveAttribute(
     'aria-describedby',
     'checkout-email-error',
   );

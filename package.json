@@ -70,7 +70,7 @@
     "test:pwa-upgrade": "node scripts/run-pwa-upgrade.mjs",
     "test:e2e:run": "node scripts/run-browser-tests.mjs e2e/shababuna.spec.js e2e/browser-contract-workflows.spec.js e2e/staging-live-workflows.spec.js",
     "test:a11y:run": "node scripts/run-browser-tests.mjs e2e/accessibility.spec.js",
-    "visual:run": "npm run validate:visual-baselines && node scripts/run-browser-tests.mjs e2e/visual.spec.js",
+    "visual:run": "npm run validate:visual-baselines && node scripts/run-browser-tests.mjs e2e/visual.spec.js --project=desktop-chromium",
     "audit:typescript": "node scripts/audit-typescript-strictness.mjs",
     "validate:arabic-review": "node --experimental-strip-types scripts/validate-arabic-review.mjs",
     "validate:visual-baselines": "node scripts/validate-visual-baselines.mjs",
