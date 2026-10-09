@@ -638,12 +638,17 @@ async function withCenterVisionStatus(
     if (!response.ok) return order;
     const data = (await response.json()) as Row;
     if (!data.ok) return order;
+    const orderStatus = clean(data.status).toLowerCase();
+    const paymentStatus = clean(data.paymentStatus).toLowerCase();
+    const fulfillmentStatus = clean(data.fulfillmentStatus).toLowerCase();
+    // Never replace a trusted cloud status with a missing upstream field.
+    if (!orderStatus && !paymentStatus && !fulfillmentStatus) return order;
     return {
       ...order,
-      orderStatus: clean(data.status).toLowerCase(),
-      paymentStatus: clean(data.paymentStatus).toLowerCase(),
-      fulfillmentStatus: clean(data.fulfillmentStatus).toLowerCase(),
-      shipment: data.shipment || null,
+      ...(orderStatus ? { orderStatus } : {}),
+      ...(paymentStatus ? { paymentStatus } : {}),
+      ...(fulfillmentStatus ? { fulfillmentStatus } : {}),
+      ...(data.shipment && typeof data.shipment === 'object' ? { shipment: data.shipment } : {}),
       centerVisionSynced: true,
     };
   } catch {
