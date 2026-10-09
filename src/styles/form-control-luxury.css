@@ -588,7 +588,8 @@ html[dir='rtl'] .cc-tracking__inner .field[data-field] .field__control .country-
 }
 
 .gw-request .custom-upload > small {
-  color: rgba(17, 17, 17, 0.56);
+  /* Readable help text on white in both LTR and RTL (WCAG AA). */
+  color: rgba(17, 17, 17, 0.7);
 }
 
 .gw-contact .btn-primary,
