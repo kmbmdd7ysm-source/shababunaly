@@ -19,6 +19,9 @@ export default function Modal({
   const { t } = useLanguage();
   const common = (t.common || {}) as Record<string, string>;
   const ref = useRef<HTMLDivElement | null>(null);
+  // Keep the Escape handler stable while the parent re-renders.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
   useEffect(() => {
     if (!open) return undefined;
     const previous = document.activeElement;
@@ -26,7 +29,7 @@ export default function Modal({
     const onKey = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== 'Tab' || !ref.current) return;
@@ -58,7 +61,7 @@ export default function Modal({
       unlock();
       if (previous instanceof HTMLElement) previous.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
   if (!open) return null;
 
   const dialogProps: Record<string, string | undefined> = {};
