@@ -51,7 +51,7 @@ for (const route of routes)
         const slug = route === '/' ? 'home' : route.slice(1).replaceAll('/', '-');
         const fileName = `${slug}-${locale}-${viewport.name}.png`;
         const baseline = testInfo.snapshotPath(fileName);
-        if (existsSync(baseline)) {
+        if (existsSync(baseline) || process.env.VISUAL_BASELINE_REVIEW === 'generate') {
           // Comparison is strict only when an actual reviewed image was committed.
           await expect(page).toHaveScreenshot(fileName, {
             fullPage: true,
