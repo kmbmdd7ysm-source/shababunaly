@@ -41,7 +41,10 @@ for (const route of routes)
           viewportWidth: document.documentElement.clientWidth,
           mainWidth: document.querySelector('main')?.getBoundingClientRect().width ?? 0,
         }));
-        expect(layout.overflow, `Horizontal overflow on ${route} (${locale}/${viewport.name})`).toBeLessThanOrEqual(2);
+        expect(
+          layout.overflow,
+          `Horizontal overflow on ${route} (${locale}/${viewport.name})`,
+        ).toBeLessThanOrEqual(2);
         expect(layout.mainWidth).toBeGreaterThan(0);
         expect(layout.mainWidth).toBeLessThanOrEqual(layout.viewportWidth + 2);
 
