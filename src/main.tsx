@@ -45,6 +45,7 @@ import './styles/typography-polish.css';
 import './styles/commerce-premium-final.css';
 /* Locale hardening is intentionally last so later route/polish sheets cannot
    reintroduce Latin tracking, compressed leading or uppercase into Arabic. */
+import './styles/accessibility-contrast.css';
 import './styles/arabic-hardening.css';
 
 installGlobalErrorMonitoring();

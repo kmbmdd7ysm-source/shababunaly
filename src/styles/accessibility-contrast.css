@@ -1,0 +1,22 @@
+/* Critical WCAG AA text contrast fixes: keep editorial styling, make small labels readable. */
+.cx-product-card small,
+.cx-upload small,
+.cx-upload-control small,
+.cx-request-summary small,
+.pdx-section-head > p,
+.tw-section-head p,
+.tw-process li span,
+.tw-terms,
+.pdx-brand-lockup > span {
+  color: #555 !important;
+}
+
+.country-combobox__code,
+.custom-upload > small {
+  color: #555;
+}
+
+/* This secondary link sits on a pale background in the request flow. */
+a.btn-secondary[href^='/account?returnTo='] {
+  color: #222;
+}
