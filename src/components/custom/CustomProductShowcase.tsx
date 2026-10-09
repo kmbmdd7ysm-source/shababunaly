@@ -34,22 +34,48 @@ export default function CustomProductShowcase(props: Props): ReactElement {
   const bodyKey = customColorKey(props.bodyColor);
   const trimKey = customColorKey(props.trimColor);
   const media = STAGE_MEDIA[props.productType] || E.shanghaiPlayers;
-  const showsPlayerIdentity = props.productType === 'game-jersey' || props.productType === 'game-set';
+  const showsPlayerIdentity =
+    props.productType === 'game-jersey' || props.productType === 'game-set';
 
   return (
-    <div className="cx-media-stage" role="group" data-body-color={bodyKey} data-trim-color={trimKey} aria-label={props.label}>
+    <div
+      className="cx-media-stage"
+      role="group"
+      data-body-color={bodyKey}
+      data-trim-color={trimKey}
+      aria-label={props.label}
+    >
       <img src={media} alt="" className="cx-media-stage__image" />
       <span className="cx-media-stage__shade" aria-hidden="true" />
       <div className="cx-media-stage__content">
         <p>{pick({ en: 'SHABABUNA CUSTOM', ar: 'تخصيص شبابنا' })}</p>
         <strong>{props.label}</strong>
-        <div className="cx-media-stage__identity" role="group" aria-label={pick({ en: 'Current customization selections', ar: 'خيارات التخصيص الحالية' })}>
-          <span className="cx-media-stage__swatch" role="img" data-color={bodyKey} aria-label={pick({ en: `Body color ${bodyKey}`, ar: `لون القماش ${bodyKey}` })} />
-          <span className="cx-media-stage__swatch" role="img" data-color={trimKey} aria-label={pick({ en: `Trim color ${trimKey}`, ar: `لون الحواف ${trimKey}` })} />
+        <div
+          className="cx-media-stage__identity"
+          role="group"
+          aria-label={pick({
+            en: 'Current customization selections',
+            ar: 'خيارات التخصيص الحالية',
+          })}
+        >
+          <span
+            className="cx-media-stage__swatch"
+            role="img"
+            data-color={bodyKey}
+            aria-label={pick({ en: `Body color ${bodyKey}`, ar: `لون القماش ${bodyKey}` })}
+          />
+          <span
+            className="cx-media-stage__swatch"
+            role="img"
+            data-color={trimKey}
+            aria-label={pick({ en: `Trim color ${trimKey}`, ar: `لون الحواف ${trimKey}` })}
+          />
           <b>{props.teamName || (lang === 'ar' ? 'شبابنا' : 'SHABABUNA')}</b>
           {showsPlayerIdentity && props.playerName ? <em>{props.playerName}</em> : null}
           {showsPlayerIdentity && props.playerNumber ? <i>{props.playerNumber}</i> : null}
-          {props.logoPreview ? <img src={props.logoPreview} alt="" className="cx-media-stage__logo" /> : null}
+          {props.logoPreview ? (
+            <img src={props.logoPreview} alt="" className="cx-media-stage__logo" />
+          ) : null}
         </div>
       </div>
     </div>
