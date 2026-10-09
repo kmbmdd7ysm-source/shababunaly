@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from './test-api.js';
-import handler, { connectivityChecks, requiredEnvironment } from '../api/readiness.ts';
+import handler, { connectivityChecks, requiredEnvironment, nativeStorageReadiness } from '../api/readiness.ts';
 
 const keys = [
   'SITE_URL',
+  'BLOB_READ_WRITE_TOKEN',
+  'SHABABUNA_AUTH_SECRET',
   'SUPABASE_URL',
   'VITE_SUPABASE_URL',
   'SUPABASE_SERVICE_ROLE_KEY',
@@ -93,6 +95,40 @@ describe('production readiness endpoint', { concurrency: false }, () => {
     expect(JSON.stringify(res.body)).not.toContain('service-role-secret');
     expect(JSON.stringify(res.body)).not.toContain('turnstile-secret');
     expect(res.headers['Cache-Control']).toContain('no-store');
+  });
+
+
+  it('reports native Blob account storage separately without weakening strict production readiness', async () => {
+    process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_store_healthstore_secret';
+    process.env.SHABABUNA_AUTH_SECRET = 'x'.repeat(48);
+    const requests = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(async (url, options) => {
+        requests.push({ url: String(url), method: options?.method || 'GET' });
+        return { status: 404, ok: false, headers: { get: () => null } };
+      }),
+    );
+    const native = await nativeStorageReadiness();
+    expect(native).toEqual({
+      customer_auth_configured: true,
+      storage_configured: true,
+      storage_readable: true,
+    });
+    expect(requests).toHaveLength(1);
+    expect(requests[0].method).toBe('GET');
+    expect(requests[0].url).toContain('health/shababuna-readiness-probe.json');
+
+    const res = responseMock();
+    await handler({ method: 'GET' }, res);
+    expect(res.statusCode).toBe(503);
+    expect(res.body.native).toEqual(native);
+    expect(res.body.required.supabase_url).toBe(false);
+    expect(JSON.stringify(res.body)).not.toContain(process.env.SHABABUNA_AUTH_SECRET);
+    expect(JSON.stringify(res.body)).not.toContain(process.env.BLOB_READ_WRITE_TOKEN);
+
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')));
+    expect((await nativeStorageReadiness()).storage_readable).toBe(false);
   });
 
   it('reports ready only when every required environment contract is satisfied', async () => {

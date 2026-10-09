@@ -1,5 +1,6 @@
 import { applyApiHeaders } from './_request-security.js';
 import { resolveFormspreeEndpoint } from './_formspree-endpoint.js';
+import { blobStoreConfigured, readBlobJson } from './_blob-store.js';
 
 const clean = (value: unknown, max = 2000): string =>
   String(value ?? '')
@@ -58,6 +59,29 @@ export function requiredEnvironment(): Record<string, unknown> {
           process.env.SUPABASE_SERVICE_ROLE_KEY,
         5000,
       ).length >= 32,
+  };
+}
+
+// Native customer sessions and persisted orders use the private Vercel Blob store.
+// A 404 for this reserved health-only path still proves authenticated read access.
+// Do not write, list or inspect any customer account/order data in a health probe.
+export async function nativeStorageReadiness() {
+  const customerAuthConfigured =
+    clean(process.env.SHABABUNA_AUTH_SECRET, 5000).length >= 32;
+  const storageConfigured = blobStoreConfigured();
+  let storageReadable = false;
+  if (storageConfigured) {
+    try {
+      await readBlobJson('health/shababuna-readiness-probe.json');
+      storageReadable = true;
+    } catch {
+      storageReadable = false;
+    }
+  }
+  return {
+    customer_auth_configured: customerAuthConfigured,
+    storage_configured: storageConfigured,
+    storage_readable: storageReadable,
   };
 }
 
@@ -224,6 +248,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
     .filter(([, ready]) => !ready)
     .map(([name]) => name);
   const optional = optionalCapabilities();
+  const native = await nativeStorageReadiness();
   const connectivity = await connectivityChecks(checks);
   const features = featureReadiness(checks, optional, connectivity);
   const networkVerified = connectivity.skipped !== true || !productionMode();
@@ -239,6 +264,7 @@ export default async function handler(req: ApiReq, res: ApiRes) {
       Object.entries(checks).map(([name, value]) => [name, Boolean(value)]),
     ),
     connectivity,
+    native,
     optionalCapabilities: optional,
     providers: publicProviderMetadata(),
     features,
