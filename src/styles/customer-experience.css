@@ -1261,6 +1261,17 @@
   .pdx-mode-grid {
     grid-template-columns: 1fr;
   }
+  /* A usable 44px touch target and safe scroll offset for the fixed buy bar.
+     WebKit otherwise sends taps to the option block or the sticky cart button. */
+  .pdx-option-head .pdx-text-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: 12px;
+    scroll-margin-block: 108px;
+    touch-action: manipulation;
+  }
   .pdx-mobile-buybar {
     position: fixed;
     display: grid;
@@ -1279,7 +1290,7 @@
     min-height: 48px;
   }
   .pdx-page {
-    padding-bottom: 78px;
+    padding-bottom: calc(108px + env(safe-area-inset-bottom));
   }
   .recommendations-section .product-grid {
     display: flex !important;
