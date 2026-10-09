@@ -265,7 +265,10 @@ html[dir='rtl'] .cc-tracking__inner .field__control--date::after {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
   font: inherit;
   line-height: 1.25;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease,
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
     transform 0.2s ease;
 }
 
@@ -325,9 +328,23 @@ html[dir='rtl'] .cc-tracking__inner .field__control--date::after {
 }
 
 html[dir='rtl'] .gw-contact .field[data-field] .field__control > :is(input, select, textarea),
-html[dir='rtl'] .team-quote-grid form .field[data-field] .field__control > :is(input, select, textarea),
-html[dir='rtl'] .gw-request .special-request-form .field[data-field] .field__control > :is(input, select, textarea),
-html[dir='rtl'] .cc-tracking__inner .field[data-field] .field__control > :is(input, select, textarea) {
+html[dir='rtl']
+  .team-quote-grid
+  form
+  .field[data-field]
+  .field__control
+  > :is(input, select, textarea),
+html[dir='rtl']
+  .gw-request
+  .special-request-form
+  .field[data-field]
+  .field__control
+  > :is(input, select, textarea),
+html[dir='rtl']
+  .cc-tracking__inner
+  .field[data-field]
+  .field__control
+  > :is(input, select, textarea) {
   padding-inline-start: var(--sh-form-pad);
   padding-inline-end: var(--sh-form-pad-with-icon);
 }
@@ -375,7 +392,12 @@ html[dir='rtl'] .cc-tracking__inner .field__control--date > input {
 
 html[dir='rtl'] .gw-contact .field[data-field] .field__control .country-combobox__trigger,
 html[dir='rtl'] .team-quote-grid form .field[data-field] .field__control .country-combobox__trigger,
-html[dir='rtl'] .gw-request .special-request-form .field[data-field] .field__control .country-combobox__trigger,
+html[dir='rtl']
+  .gw-request
+  .special-request-form
+  .field[data-field]
+  .field__control
+  .country-combobox__trigger,
 html[dir='rtl'] .cc-tracking__inner .field[data-field] .field__control .country-combobox__trigger {
   padding-inline-start: var(--sh-form-pad);
   padding-inline-end: var(--sh-form-pad-with-icon);
@@ -453,36 +475,55 @@ html[dir='rtl'] .cc-tracking__inner .field[data-field] .field__control .country-
   unicode-bidi: plaintext;
 }
 
-.gw-contact .field[data-field='type'] { --field-glyph: var(--sh-form-glyph-filter); }
+.gw-contact .field[data-field='type'] {
+  --field-glyph: var(--sh-form-glyph-filter);
+}
 .gw-contact .field[data-field='name'],
 .team-quote-grid form .field[data-field='name'],
-.gw-request .special-request-form .field[data-field='name'] { --field-glyph: var(--sh-form-glyph-user); }
+.gw-request .special-request-form .field[data-field='name'] {
+  --field-glyph: var(--sh-form-glyph-user);
+}
 .gw-contact .field[data-field='email'],
 .cc-tracking__inner .field[data-field='email'],
 .team-quote-grid form .field[data-field='email'],
-.gw-request .special-request-form .field[data-field='email'] { --field-glyph: var(--sh-form-glyph-mail); }
+.gw-request .special-request-form .field[data-field='email'] {
+  --field-glyph: var(--sh-form-glyph-mail);
+}
 .gw-contact .field[data-field='phone'],
 .team-quote-grid form .field[data-field='phone'],
-.gw-request .special-request-form .field[data-field='phone'] { --field-glyph: var(--sh-form-glyph-phone); }
+.gw-request .special-request-form .field[data-field='phone'] {
+  --field-glyph: var(--sh-form-glyph-phone);
+}
 .gw-contact .field[data-field='country'],
 .team-quote-grid form .field[data-field='country'],
-.gw-request .special-request-form .field[data-field='country'] { --field-glyph: var(--sh-form-glyph-globe); }
+.gw-request .special-request-form .field[data-field='country'] {
+  --field-glyph: var(--sh-form-glyph-globe);
+}
 .gw-contact .field[data-field='organization'],
-.team-quote-grid form .field[data-field='organization'] { --field-glyph: var(--sh-form-glyph-briefcase); }
+.team-quote-grid form .field[data-field='organization'] {
+  --field-glyph: var(--sh-form-glyph-briefcase);
+}
 .cc-tracking__inner .field[data-field='order-number'],
 .gw-contact .field[data-field='order-number'],
-.team-quote-grid form .field[data-field='quantity'] { --field-glyph: var(--sh-form-glyph-hash); }
-.team-quote-grid form .field[data-field='deadline'] { --field-glyph: var(--sh-form-glyph-calendar); }
+.team-quote-grid form .field[data-field='quantity'] {
+  --field-glyph: var(--sh-form-glyph-hash);
+}
+.team-quote-grid form .field[data-field='deadline'] {
+  --field-glyph: var(--sh-form-glyph-calendar);
+}
 .gw-contact .field[data-field='message'],
 .team-quote-grid form .field[data-field='message'],
 .gw-request .special-request-form .field[data-field='message'],
-.gw-request .special-request-form .field[data-field='product-name'] { --field-glyph: var(--sh-form-glyph-pen); }
-.gw-request .special-request-form .field[data-field='product-link'] { --field-glyph: var(--sh-form-glyph-link); }
+.gw-request .special-request-form .field[data-field='product-name'] {
+  --field-glyph: var(--sh-form-glyph-pen);
+}
+.gw-request .special-request-form .field[data-field='product-link'] {
+  --field-glyph: var(--sh-form-glyph-link);
+}
 
 .team-quote-grid form .field[data-field='deadline'] .field__control--date::after {
   content: none;
 }
-
 
 .gw-contact .field-check,
 .gw-request .checkbox-line {
@@ -667,7 +708,10 @@ html[dir='rtl'] .cx-request-form .field__control::before {
   line-height: 1.25;
   padding-inline: var(--sh-form-pad-with-icon) var(--sh-form-pad);
   background-image: none !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease,
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
     transform 0.2s ease;
 }
 
@@ -704,13 +748,27 @@ html[dir='rtl'] .cx-request-form .field__control > :is(input, textarea) {
   unicode-bidi: plaintext;
 }
 
-.cx-request-form .field[data-field='name'] { --field-glyph: var(--sh-form-glyph-user); }
-.cx-request-form .field[data-field='email'] { --field-glyph: var(--sh-form-glyph-mail); }
-.cx-request-form .field[data-field='phone'] { --field-glyph: var(--sh-form-glyph-phone); }
-.cx-request-form .field[data-field='organization'] { --field-glyph: var(--sh-form-glyph-briefcase); }
-.cx-request-form .field[data-field='country'] { --field-glyph: var(--sh-form-glyph-globe); }
-.cx-request-form .field[data-field='quantity'] { --field-glyph: var(--sh-form-glyph-hash); }
-.cx-request-form .field[data-field='message'] { --field-glyph: var(--sh-form-glyph-pen); }
+.cx-request-form .field[data-field='name'] {
+  --field-glyph: var(--sh-form-glyph-user);
+}
+.cx-request-form .field[data-field='email'] {
+  --field-glyph: var(--sh-form-glyph-mail);
+}
+.cx-request-form .field[data-field='phone'] {
+  --field-glyph: var(--sh-form-glyph-phone);
+}
+.cx-request-form .field[data-field='organization'] {
+  --field-glyph: var(--sh-form-glyph-briefcase);
+}
+.cx-request-form .field[data-field='country'] {
+  --field-glyph: var(--sh-form-glyph-globe);
+}
+.cx-request-form .field[data-field='quantity'] {
+  --field-glyph: var(--sh-form-glyph-hash);
+}
+.cx-request-form .field[data-field='message'] {
+  --field-glyph: var(--sh-form-glyph-pen);
+}
 
 /* --------------------------------------------------------------------------
    FINAL CONTROL SLOT FIX
@@ -865,12 +923,13 @@ html[dir='rtl'] .cx-request-form .field__control > :is(input, textarea) {
 }
 
 :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-) > :is(input, select, textarea) {
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  )
+  > :is(input, select, textarea) {
   grid-area: control;
   align-self: stretch;
   inline-size: 100%;
@@ -889,60 +948,66 @@ html[dir='rtl'] .cx-request-form .field__control > :is(input, textarea) {
   line-height: 1.25;
 }
 
-html[dir='rtl'] :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-):not(.field__control--latin) > :is(input, select, textarea) {
+html[dir='rtl']
+  :is(
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  ):not(.field__control--latin)
+  > :is(input, select, textarea) {
   direction: rtl;
   text-align: right;
 }
 
 :is(
-  .gw-contact .field__control--latin,
-  .cc-tracking__inner .field__control--latin,
-  .team-quote-grid form .field__control--latin,
-  .gw-request .special-request-form .field__control--latin,
-  .cx-request-form .field__control--latin
-) > :is(input, select, textarea) {
+    .gw-contact .field__control--latin,
+    .cc-tracking__inner .field__control--latin,
+    .team-quote-grid form .field__control--latin,
+    .gw-request .special-request-form .field__control--latin,
+    .cx-request-form .field__control--latin
+  )
+  > :is(input, select, textarea) {
   direction: ltr !important;
   text-align: left !important;
   unicode-bidi: plaintext;
 }
 
 :is(
-  .gw-contact .field__control--textarea,
-  .cc-tracking__inner .field__control--textarea,
-  .team-quote-grid form .field__control--textarea,
-  .gw-request .special-request-form .field__control--textarea,
-  .cx-request-form .field__control--textarea
-) > textarea {
+    .gw-contact .field__control--textarea,
+    .cc-tracking__inner .field__control--textarea,
+    .team-quote-grid form .field__control--textarea,
+    .gw-request .special-request-form .field__control--textarea,
+    .cx-request-form .field__control--textarea
+  )
+  > textarea {
   min-block-size: 132px;
   padding-block: 16px !important;
   resize: vertical;
 }
 
 :is(
-  .gw-contact .field__control--select,
-  .cc-tracking__inner .field__control--select,
-  .team-quote-grid form .field__control--select,
-  .gw-request .special-request-form .field__control--select,
-  .cx-request-form .field__control--select
-) > select {
+    .gw-contact .field__control--select,
+    .cc-tracking__inner .field__control--select,
+    .team-quote-grid form .field__control--select,
+    .gw-request .special-request-form .field__control--select,
+    .cx-request-form .field__control--select
+  )
+  > select {
   appearance: none;
   -webkit-appearance: none;
   padding-inline-end: 8px !important;
 }
 
 :is(
-  .gw-contact .field__control--date,
-  .cc-tracking__inner .field__control--date,
-  .team-quote-grid form .field__control--date,
-  .gw-request .special-request-form .field__control--date,
-  .cx-request-form .field__control--date
-) > input[type='date']::-webkit-calendar-picker-indicator {
+    .gw-contact .field__control--date,
+    .cc-tracking__inner .field__control--date,
+    .team-quote-grid form .field__control--date,
+    .gw-request .special-request-form .field__control--date,
+    .cx-request-form .field__control--date
+  )
+  > input[type='date']::-webkit-calendar-picker-indicator {
   position: absolute;
   inset: 0;
   inline-size: 100%;
@@ -956,12 +1021,13 @@ html[dir='rtl'] :is(
    track, while the country component keeps its internal country/code/chevron
    layout. */
 :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-) > .country-combobox {
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  )
+  > .country-combobox {
   grid-area: control;
   align-self: stretch;
   inline-size: 100%;
@@ -969,23 +1035,26 @@ html[dir='rtl'] :is(
   direction: ltr;
 }
 
-html[dir='rtl'] :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-) > .country-combobox {
+html[dir='rtl']
+  :is(
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  )
+  > .country-combobox {
   direction: rtl;
 }
 
 :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-) .country-combobox__trigger {
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  )
+  .country-combobox__trigger {
   inline-size: 100%;
   min-inline-size: 0;
   min-block-size: calc(var(--sh-form-target) - 2px);
@@ -1025,19 +1094,21 @@ html[dir='rtl'] :is(
 
 /* Never let legacy per-input focus styles create a second inner ring. */
 :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-) > :is(input, select, textarea):focus-visible,
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  )
+  > :is(input, select, textarea):focus-visible,
 :is(
-  .gw-contact .field__control,
-  .cc-tracking__inner .field__control,
-  .team-quote-grid form .field__control,
-  .gw-request .special-request-form .field__control,
-  .cx-request-form .field__control
-) .country-combobox__trigger:focus-visible {
+    .gw-contact .field__control,
+    .cc-tracking__inner .field__control,
+    .team-quote-grid form .field__control,
+    .gw-request .special-request-form .field__control,
+    .cx-request-form .field__control
+  )
+  .country-combobox__trigger:focus-visible {
   outline: 0 !important;
   box-shadow: none !important;
   transform: none !important;
