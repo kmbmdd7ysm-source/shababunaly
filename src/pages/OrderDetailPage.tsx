@@ -65,7 +65,10 @@ export default function OrderDetailPage(): ReactElement {
   const auth = useAuth();
   const { pick, lang } = useLanguage();
   const storageKey = `shababuna-order-access:${orderNumber}`;
-  const locationState = (location.state || {}) as { accessToken?: string; verifiedOrder?: Record<string, unknown> };
+  const locationState = (location.state || {}) as {
+    accessToken?: string;
+    verifiedOrder?: Record<string, unknown>;
+  };
   const [accessToken, setAccessToken] = useState(
     locationState.accessToken || sessionStorage.getItem(storageKey) || '',
   );
@@ -126,6 +129,46 @@ export default function OrderDetailPage(): ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional dependency scope
   }, [auth.loading, auth.user?.id, orderNumber]);
 
+  const hasVerifiedOrder = Boolean(state.order);
+  useEffect(() => {
+    if (auth.loading || !hasVerifiedOrder) return undefined;
+    let active = true;
+    const verifiedEmail = String(state.order?.email || auth.user?.email || email || '');
+    const refresh = async () => {
+      if (document.visibilityState === 'hidden') return;
+      const result = await getOrderDetails({
+        orderNumber,
+        userId: auth.user?.id ? String(auth.user.id) : null,
+        email: verifiedEmail,
+        accessToken,
+      });
+      if (active && result.order) {
+        setState((current) => ({
+          ...current,
+          state: 'success',
+          order: result.order as Record<string, unknown>,
+          error: null,
+        }));
+      }
+    };
+    const interval = setInterval(() => {
+      void refresh();
+    }, 30_000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- track order identity, not changing snapshot objects
+  }, [
+    auth.loading,
+    auth.user?.id,
+    auth.user?.email,
+    orderNumber,
+    accessToken,
+    hasVerifiedOrder,
+    email,
+  ]);
+
   const order = state.order;
   const payment = order
     ? presentOrderStatus('payment', order.paymentStatus, lang as 'en' | 'ar')
@@ -133,6 +176,13 @@ export default function OrderDetailPage(): ReactElement {
   const status = order ? presentOrderStatus('order', order.orderStatus, lang as 'en' | 'ar') : null;
   const fulfillment = order
     ? presentOrderStatus('fulfillment', order.fulfillmentStatus, lang as 'en' | 'ar')
+    : null;
+  const latestShipment =
+    order?.shipment && typeof order.shipment === 'object'
+      ? (order.shipment as Record<string, unknown>)
+      : null;
+  const shipmentStatus = latestShipment
+    ? presentOrderStatus('shipment', latestShipment.status, lang as 'en' | 'ar')
     : null;
   const canRetryPayment = Boolean(
     order &&
@@ -272,6 +322,18 @@ export default function OrderDetailPage(): ReactElement {
                   <dt>{pick({ en: 'Fulfillment status', ar: 'حالة التنفيذ' })}</dt>
                   <dd>{String(fulfillment?.label || '')}</dd>
                 </div>
+                {shipmentStatus && (
+                  <div>
+                    <dt>{pick({ en: 'Shipping status', ar: 'حالة الشحن' })}</dt>
+                    <dd>{shipmentStatus.label}</dd>
+                  </div>
+                )}
+                {Boolean(latestShipment?.trackingNumber) && (
+                  <div>
+                    <dt>{pick({ en: 'Tracking number', ar: 'رقم تتبع الشحنة' })}</dt>
+                    <dd>{String(latestShipment?.trackingNumber)}</dd>
+                  </div>
+                )}
                 <div>
                   <dt>{pick({ en: 'Payment method', ar: 'طريقة الدفع' })}</dt>
                   <dd>
@@ -285,20 +347,30 @@ export default function OrderDetailPage(): ReactElement {
                 <div>
                   <dt>{pick({ en: 'Paid', ar: 'المدفوع' })}</dt>
                   <dd>
-                    {(Number(order.displayAmountPaid ?? order.amountPaid) || 0).toFixed(2)} {String(order.displayCurrency || order.currency || '')}
+                    {(Number(order.displayAmountPaid ?? order.amountPaid) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
                 <div>
                   <dt>{pick({ en: 'Outstanding balance', ar: 'الرصيد غير المدفوع' })}</dt>
                   <dd>
-                    {(Number(order.displayOutstandingBalance ?? order.outstandingBalance) || 0).toFixed(2)}{' '}
+                    {(
+                      Number(order.displayOutstandingBalance ?? order.outstandingBalance) || 0
+                    ).toFixed(2)}{' '}
                     {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
                 <div>
-                  <dt>{['cash', 'cash_on_delivery', 'cod'].includes(String(order.paymentMethod || '')) && String(order.deliveryProfile || '') === 'ready' ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' }) : pick({ en: 'Due now', ar: 'المستحق الآن' })}</dt>
+                  <dt>
+                    {['cash', 'cash_on_delivery', 'cod'].includes(
+                      String(order.paymentMethod || ''),
+                    ) && String(order.deliveryProfile || '') === 'ready'
+                      ? pick({ en: 'Pay on delivery', ar: 'الدفع عند الاستلام' })
+                      : pick({ en: 'Due now', ar: 'المستحق الآن' })}
+                  </dt>
                   <dd>
-                    {(Number(order.displayAmountDueNow ?? order.amountDueNow) || 0).toFixed(2)} {String(order.displayCurrency || order.currency || '')}
+                    {(Number(order.displayAmountDueNow ?? order.amountDueNow) || 0).toFixed(2)}{' '}
+                    {String(order.displayCurrency || order.currency || '')}
                   </dd>
                 </div>
               </dl>
