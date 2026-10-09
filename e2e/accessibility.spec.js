@@ -18,6 +18,10 @@ for (const path of routes) {
       await page.addInitScript((lang) => localStorage.setItem('shababuna-language', lang), locale);
       await page.goto(path);
       await expect(page.locator('html')).toHaveAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr');
+      const colorSwatches = page.locator('.s2-product-card__colors[aria-label]');
+      if (await colorSwatches.count()) {
+        await expect(colorSwatches.first()).toHaveAttribute('role', 'img');
+      }
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
         .analyze();
