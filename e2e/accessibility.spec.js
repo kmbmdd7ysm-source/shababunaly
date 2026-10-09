@@ -52,7 +52,9 @@ test('modal traps focus, closes with Escape and returns focus to its trigger', a
   await page.goto('/products/all-i-know-is-win-tee');
   const trigger = page.getByRole('button', { name: /Size guide/i });
   await trigger.focus();
-  await trigger.click();
+  // Exercise genuine keyboard activation. WebKit's automatic pointer scroll can
+  // move this target beneath the fixed mobile purchase bar before a click lands.
+  await trigger.press('Enter');
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   for (let index = 0; index < 8; index += 1) {
