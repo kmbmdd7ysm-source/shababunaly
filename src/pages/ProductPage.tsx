@@ -327,7 +327,7 @@ export default function ProductPage(): ReactElement {
         </div>
 
         <section className="pdx-main" aria-labelledby="pdx-product-title">
-          <div className="pdx-media" aria-label={pick({ en: 'Product media', ar: 'صور المنتج' })}>
+          <div className="pdx-media" role="group" aria-label={pick({ en: 'Product media', ar: 'صور المنتج' })}>
             <div className="pdx-gallery-shell">
               <div className="pdx-gallery-stage">
                 {canUseAdvancedViewer ? (
@@ -360,7 +360,7 @@ export default function ProductPage(): ReactElement {
                 ) : null}
               </div>
               {!canUseAdvancedViewer && gallery.length > 1 ? (
-                <div className="pdx-gallery-thumbs" role="list" aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}>
+                <div className="pdx-gallery-thumbs" role="group" aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}>
                   {gallery.map((src, imageIndex) => (
                     <button key={`${src}-${imageIndex}`} type="button" className={imageIndex === activeImg ? 'is-active' : ''} onClick={() => setActiveImg(imageIndex)} aria-label={pick({ en: `Show image ${imageIndex + 1}`, ar: `اعرض الصورة ${imageIndex + 1}` })}>
                       <img src={src} alt="" width="120" height="150" loading="lazy" decoding="async" />
@@ -375,7 +375,7 @@ export default function ProductPage(): ReactElement {
             <div className="pdx-identity">
               <div className="pdx-title-line">
                 <div>
-                  <div className="pdx-brand-lockup" aria-label={pick({ en: 'Brand and store', ar: 'العلامة والمتجر' })}>
+                  <div className="pdx-brand-lockup" role="group" aria-label={pick({ en: 'Brand and store', ar: 'العلامة والمتجر' })}>
                     {isLha ? (
                       <img className="pdx-brand-lockup__lha" src="/brand/lha-wordmark-black.svg" alt="Libya Hoops Academy" width="156" height="46" />
                     ) : (
