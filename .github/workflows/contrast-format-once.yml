@@ -1,0 +1,38 @@
+name: One-time contrast stylesheet formatter
+on:
+  push:
+    branches:
+      - fix/accessibility-rtl-checkout-20261009
+    paths:
+      - .github/workflows/contrast-format-once.yml
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: fix/accessibility-rtl-checkout-20261009
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --registry=https://registry.npmjs.org
+      - run: npx prettier --write src/styles/domain-forms.css src/styles/form-control-luxury.css
+      - name: Commit normalized styles and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/contrast-format-once.yml
+          git add src/styles/domain-forms.css src/styles/form-control-luxury.css
+          git commit -m "style: normalize accessibility contrast styles"
+          git push origin HEAD:fix/accessibility-rtl-checkout-20261009
+      - name: Run comprehensive tests against exact formatted head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run world-class-quality.yml --ref fix/accessibility-rtl-checkout-20261009
