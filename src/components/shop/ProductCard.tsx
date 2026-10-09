@@ -213,7 +213,7 @@ export default function ProductCard({
         <div className="s2-product-card__subrow">
           <span>{String(p.brand || 'Shababuna')}</span>
           {(p.colors || []).length > 1 ? (
-            <span className="s2-product-card__colors" aria-label={pick({ en: `${p.colors?.length || 0} colours`, ar: `${p.colors?.length || 0} ألوان` })}>
+            <span className="s2-product-card__colors" role="img" aria-label={pick({ en: `${p.colors?.length || 0} colours`, ar: `${p.colors?.length || 0} ألوان` })}>
               {(p.colors || []).slice(0, 4).map((color) => (
                 <ColorSwatch key={String(color.key || color.hex || '')} color={String(color.hex || '#777')} className="s2-product-card__swatch" />
               ))}

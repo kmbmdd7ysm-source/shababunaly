@@ -360,7 +360,7 @@ export default function ProductPage(): ReactElement {
                 ) : null}
               </div>
               {!canUseAdvancedViewer && gallery.length > 1 ? (
-                <div className="pdx-gallery-thumbs" role="list" aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}>
+                <div className="pdx-gallery-thumbs" role="group" aria-label={pick({ en: 'Product images', ar: 'صور المنتج' })}>
                   {gallery.map((src, imageIndex) => (
                     <button key={`${src}-${imageIndex}`} type="button" className={imageIndex === activeImg ? 'is-active' : ''} onClick={() => setActiveImg(imageIndex)} aria-label={pick({ en: `Show image ${imageIndex + 1}`, ar: `اعرض الصورة ${imageIndex + 1}` })}>
                       <img src={src} alt="" width="120" height="150" loading="lazy" decoding="async" />
